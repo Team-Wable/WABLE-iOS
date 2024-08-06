@@ -12,6 +12,18 @@
 		0547F49E2C60D968001E3039 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49D2C60D968001E3039 /* ViewController.swift */; };
 		0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A22C60D96B001E3039 /* Assets.xcassets */; };
 		0547F4A62C60D96B001E3039 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A52C60D96B001E3039 /* Base */; };
+		0547F4B72C6215D1001E3039 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 0547F4B62C6215D1001E3039 /* CombineMoya */; };
+		0547F4B92C6215D1001E3039 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 0547F4B82C6215D1001E3039 /* Moya */; };
+		0547F4BC2C6215F1001E3039 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0547F4BB2C6215F1001E3039 /* SnapKit */; };
+		0547F4BE2C621629001E3039 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4BD2C621629001E3039 /* UIView+.swift */; };
+		0547F4C02C62166C001E3039 /* Adjusted+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4BF2C62166C001E3039 /* Adjusted+.swift */; };
+		0547F4C22C621719001E3039 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4C12C621719001E3039 /* UIFont+.swift */; };
+		0547F4C42C62178C001E3039 /* ImageLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4C32C62178C001E3039 /* ImageLiterals.swift */; };
+		0547F4C62C6217B7001E3039 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4C52C6217B7001E3039 /* StringLiterals.swift */; };
+		0547F4C82C621ABC001E3039 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4C72C621ABC001E3039 /* Color.xcassets */; };
+		0547F4CE2C622283001E3039 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4CC2C622283001E3039 /* Pretendard-SemiBold.otf */; };
+		0547F4CF2C622283001E3039 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4CD2C622283001E3039 /* Pretendard-Regular.otf */; };
+		0547F4D22C622351001E3039 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0547F4D12C622351001E3039 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +34,14 @@
 		0547F4A22C60D96B001E3039 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0547F4A52C60D96B001E3039 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0547F4A72C60D96B001E3039 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0547F4BD2C621629001E3039 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		0547F4BF2C62166C001E3039 /* Adjusted+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Adjusted+.swift"; sourceTree = "<group>"; };
+		0547F4C12C621719001E3039 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
+		0547F4C32C62178C001E3039 /* ImageLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLiterals.swift; sourceTree = "<group>"; };
+		0547F4C52C6217B7001E3039 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
+		0547F4C72C621ABC001E3039 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
+		0547F4CC2C622283001E3039 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Pretendard-SemiBold.otf"; path = "../../../../../../Downloads/Pretendard-1.3.9/public/static/Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
+		0547F4CD2C622283001E3039 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Pretendard-Regular.otf"; path = "../../../../../../Downloads/Pretendard-1.3.9/public/static/Pretendard-Regular.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +49,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0547F4D22C622351001E3039 /* Kingfisher in Frameworks */,
+				0547F4BC2C6215F1001E3039 /* SnapKit in Frameworks */,
+				0547F4B92C6215D1001E3039 /* Moya in Frameworks */,
+				0547F4B72C6215D1001E3039 /* CombineMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +125,9 @@
 		0547F4B12C60E301001E3039 /* Extention */ = {
 			isa = PBXGroup;
 			children = (
+				0547F4BD2C621629001E3039 /* UIView+.swift */,
+				0547F4BF2C62166C001E3039 /* Adjusted+.swift */,
+				0547F4C12C621719001E3039 /* UIFont+.swift */,
 			);
 			path = Extention;
 			sourceTree = "<group>";
@@ -108,6 +135,8 @@
 		0547F4B22C60E30B001E3039 /* Literals */ = {
 			isa = PBXGroup;
 			children = (
+				0547F4C32C62178C001E3039 /* ImageLiterals.swift */,
+				0547F4C52C6217B7001E3039 /* StringLiterals.swift */,
 			);
 			path = Literals;
 			sourceTree = "<group>";
@@ -115,7 +144,9 @@
 		0547F4B32C60E31C001E3039 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0547F4CB2C622238001E3039 /* Fonts */,
 				0547F4A22C60D96B001E3039 /* Assets.xcassets */,
+				0547F4C72C621ABC001E3039 /* Color.xcassets */,
 				0547F4A72C60D96B001E3039 /* Info.plist */,
 			);
 			path = Resources;
@@ -126,6 +157,15 @@
 			children = (
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		0547F4CB2C622238001E3039 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4CD2C622283001E3039 /* Pretendard-Regular.otf */,
+				0547F4CC2C622283001E3039 /* Pretendard-SemiBold.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,6 +184,12 @@
 			dependencies = (
 			);
 			name = "Wable-iOS";
+			packageProductDependencies = (
+				0547F4B62C6215D1001E3039 /* CombineMoya */,
+				0547F4B82C6215D1001E3039 /* Moya */,
+				0547F4BB2C6215F1001E3039 /* SnapKit */,
+				0547F4D12C622351001E3039 /* Kingfisher */,
+			);
 			productName = "Wable-iOS";
 			productReference = 0547F4962C60D968001E3039 /* Wable-iOS.app */;
 			productType = "com.apple.product-type.application";
@@ -172,6 +218,11 @@
 				Base,
 			);
 			mainGroup = 0547F48D2C60D968001E3039;
+			packageReferences = (
+				0547F4B52C6215D1001E3039 /* XCRemoteSwiftPackageReference "Moya" */,
+				0547F4BA2C6215F1001E3039 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				0547F4D02C622351001E3039 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = 0547F4972C60D968001E3039 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -188,6 +239,9 @@
 			files = (
 				0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */,
 				0547F4A62C60D96B001E3039 /* Base in Resources */,
+				0547F4CF2C622283001E3039 /* Pretendard-Regular.otf in Resources */,
+				0547F4C82C621ABC001E3039 /* Color.xcassets in Resources */,
+				0547F4CE2C622283001E3039 /* Pretendard-SemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,8 +252,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0547F4BE2C621629001E3039 /* UIView+.swift in Sources */,
 				0547F49E2C60D968001E3039 /* ViewController.swift in Sources */,
 				0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */,
+				0547F4C02C62166C001E3039 /* Adjusted+.swift in Sources */,
+				0547F4C22C621719001E3039 /* UIFont+.swift in Sources */,
+				0547F4C42C62178C001E3039 /* ImageLiterals.swift in Sources */,
+				0547F4C62C6217B7001E3039 /* StringLiterals.swift in Sources */,
 				0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -413,6 +472,56 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0547F4B52C6215D1001E3039 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
+		0547F4BA2C6215F1001E3039 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		0547F4D02C622351001E3039 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.12.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0547F4B62C6215D1001E3039 /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0547F4B52C6215D1001E3039 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		0547F4B82C6215D1001E3039 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0547F4B52C6215D1001E3039 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		0547F4BB2C6215F1001E3039 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0547F4BA2C6215F1001E3039 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		0547F4D12C622351001E3039 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0547F4D02C622351001E3039 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0547F48E2C60D968001E3039 /* Project object */;
 }
