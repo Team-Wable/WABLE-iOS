@@ -24,6 +24,14 @@
 		0547F4CE2C622283001E3039 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4CC2C622283001E3039 /* Pretendard-SemiBold.otf */; };
 		0547F4CF2C622283001E3039 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4CD2C622283001E3039 /* Pretendard-Regular.otf */; };
 		0547F4D22C622351001E3039 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0547F4D12C622351001E3039 /* Kingfisher */; };
+		0547F4D52C624739001E3039 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4D42C624739001E3039 /* ErrorResponse.swift */; };
+		0547F4D72C624797001E3039 /* NetworkResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4D62C624797001E3039 /* NetworkResult.swift */; };
+		0547F4D92C6247CE001E3039 /* MoyaLoggingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4D82C6247CE001E3039 /* MoyaLoggingPlugin.swift */; };
+		0547F4DB2C624821001E3039 /* SuccessResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4DA2C624821001E3039 /* SuccessResponse.swift */; };
+		0547F4DD2C62484E001E3039 /* BaseTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4DC2C62484E001E3039 /* BaseTargetType.swift */; };
+		0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4DE2C62486C001E3039 /* APIConstants.swift */; };
+		0547F4E12C6248A0001E3039 /* BaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4E02C6248A0001E3039 /* BaseAPI.swift */; };
+		0547F4E62C637F30001E3039 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4E52C637F30001E3039 /* WableButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +50,14 @@
 		0547F4C72C621ABC001E3039 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		0547F4CC2C622283001E3039 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Pretendard-SemiBold.otf"; path = "../../../../../../Downloads/Pretendard-1.3.9/public/static/Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		0547F4CD2C622283001E3039 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Pretendard-Regular.otf"; path = "../../../../../../Downloads/Pretendard-1.3.9/public/static/Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		0547F4D42C624739001E3039 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		0547F4D62C624797001E3039 /* NetworkResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkResult.swift; sourceTree = "<group>"; };
+		0547F4D82C6247CE001E3039 /* MoyaLoggingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoyaLoggingPlugin.swift; sourceTree = "<group>"; };
+		0547F4DA2C624821001E3039 /* SuccessResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessResponse.swift; sourceTree = "<group>"; };
+		0547F4DC2C62484E001E3039 /* BaseTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTargetType.swift; sourceTree = "<group>"; };
+		0547F4DE2C62486C001E3039 /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
+		0547F4E02C6248A0001E3039 /* BaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAPI.swift; sourceTree = "<group>"; };
+		0547F4E52C637F30001E3039 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +116,7 @@
 		0547F4AE2C60E238001E3039 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				0547F4E42C637F04001E3039 /* UIComponent */,
 				0547F4B32C60E31C001E3039 /* Resources */,
 				0547F4B22C60E30B001E3039 /* Literals */,
 				0547F4B12C60E301001E3039 /* Extention */,
@@ -110,6 +127,7 @@
 		0547F4AF2C60E240001E3039 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				0547F4D32C624715001E3039 /* Foundation */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -166,6 +184,28 @@
 				0547F4CC2C622283001E3039 /* Pretendard-SemiBold.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		0547F4D32C624715001E3039 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4D42C624739001E3039 /* ErrorResponse.swift */,
+				0547F4D62C624797001E3039 /* NetworkResult.swift */,
+				0547F4D82C6247CE001E3039 /* MoyaLoggingPlugin.swift */,
+				0547F4DA2C624821001E3039 /* SuccessResponse.swift */,
+				0547F4DC2C62484E001E3039 /* BaseTargetType.swift */,
+				0547F4DE2C62486C001E3039 /* APIConstants.swift */,
+				0547F4E02C6248A0001E3039 /* BaseAPI.swift */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		0547F4E42C637F04001E3039 /* UIComponent */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4E52C637F30001E3039 /* WableButton.swift */,
+			);
+			path = UIComponent;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -252,9 +292,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0547F4DB2C624821001E3039 /* SuccessResponse.swift in Sources */,
+				0547F4D52C624739001E3039 /* ErrorResponse.swift in Sources */,
+				0547F4D72C624797001E3039 /* NetworkResult.swift in Sources */,
+				0547F4E62C637F30001E3039 /* WableButton.swift in Sources */,
 				0547F4BE2C621629001E3039 /* UIView+.swift in Sources */,
 				0547F49E2C60D968001E3039 /* ViewController.swift in Sources */,
+				0547F4DD2C62484E001E3039 /* BaseTargetType.swift in Sources */,
+				0547F4D92C6247CE001E3039 /* MoyaLoggingPlugin.swift in Sources */,
 				0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */,
+				0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */,
+				0547F4E12C6248A0001E3039 /* BaseAPI.swift in Sources */,
 				0547F4C02C62166C001E3039 /* Adjusted+.swift in Sources */,
 				0547F4C22C621719001E3039 /* UIFont+.swift in Sources */,
 				0547F4C42C62178C001E3039 /* ImageLiterals.swift in Sources */,
