@@ -8,5 +8,12 @@
 import UIKit
 
 enum StringLiterals {
+    enum TabBar {
+        static let home = "홈"
+        static let info = "소식"
+        static let noti = "알림"
+        static let my = "마이"
+
+    }
     
 }
