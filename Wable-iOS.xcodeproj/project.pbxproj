@@ -9,19 +9,70 @@
 /* Begin PBXBuildFile section */
 		0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4992C60D968001E3039 /* AppDelegate.swift */; };
 		0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49B2C60D968001E3039 /* SceneDelegate.swift */; };
-		0547F49E2C60D968001E3039 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49D2C60D968001E3039 /* ViewController.swift */; };
 		0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A22C60D96B001E3039 /* Assets.xcassets */; };
 		0547F4A62C60D96B001E3039 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A52C60D96B001E3039 /* Base */; };
+		0547F4B72C6215D1001E3039 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 0547F4B62C6215D1001E3039 /* CombineMoya */; };
+		0547F4B92C6215D1001E3039 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 0547F4B82C6215D1001E3039 /* Moya */; };
+		0547F4BC2C6215F1001E3039 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0547F4BB2C6215F1001E3039 /* SnapKit */; };
+		0547F4BE2C621629001E3039 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4BD2C621629001E3039 /* UIView+.swift */; };
+		0547F4C02C62166C001E3039 /* Adjusted+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4BF2C62166C001E3039 /* Adjusted+.swift */; };
+		0547F4C22C621719001E3039 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4C12C621719001E3039 /* UIFont+.swift */; };
+		0547F4C42C62178C001E3039 /* ImageLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4C32C62178C001E3039 /* ImageLiterals.swift */; };
+		0547F4C62C6217B7001E3039 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4C52C6217B7001E3039 /* StringLiterals.swift */; };
+		0547F4C82C621ABC001E3039 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4C72C621ABC001E3039 /* Color.xcassets */; };
+		0547F4CE2C622283001E3039 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4CC2C622283001E3039 /* Pretendard-SemiBold.otf */; };
+		0547F4CF2C622283001E3039 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4CD2C622283001E3039 /* Pretendard-Regular.otf */; };
+		0547F4D22C622351001E3039 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0547F4D12C622351001E3039 /* Kingfisher */; };
+		0547F4D52C624739001E3039 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4D42C624739001E3039 /* ErrorResponse.swift */; };
+		0547F4D72C624797001E3039 /* NetworkResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4D62C624797001E3039 /* NetworkResult.swift */; };
+		0547F4D92C6247CE001E3039 /* MoyaLoggingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4D82C6247CE001E3039 /* MoyaLoggingPlugin.swift */; };
+		0547F4DB2C624821001E3039 /* SuccessResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4DA2C624821001E3039 /* SuccessResponse.swift */; };
+		0547F4DD2C62484E001E3039 /* BaseTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4DC2C62484E001E3039 /* BaseTargetType.swift */; };
+		0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4DE2C62486C001E3039 /* APIConstants.swift */; };
+		0547F4E12C6248A0001E3039 /* BaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4E02C6248A0001E3039 /* BaseAPI.swift */; };
+		0547F4E62C637F30001E3039 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4E52C637F30001E3039 /* WableButton.swift */; };
+		0547F4E92C63E1BE001E3039 /* WableTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4E82C63E1BE001E3039 /* WableTabBarController.swift */; };
+		0547F4EB2C64C618001E3039 /* WableTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4EA2C64C618001E3039 /* WableTabBarItem.swift */; };
+		0547F4F52C64C76A001E3039 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4F42C64C76A001E3039 /* HomeViewController.swift */; };
+		0547F4F82C64C778001E3039 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4F72C64C778001E3039 /* InfoViewController.swift */; };
+		0547F4FA2C64C78C001E3039 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4F92C64C78C001E3039 /* NotificationViewController.swift */; };
+		0547F4FC2C64C797001E3039 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4FB2C64C797001E3039 /* MyPageViewController.swift */; };
+		0547F4FF2C64C954001E3039 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4FE2C64C954001E3039 /* ExampleViewController.swift */; };
+		0547F5012C64C99D001E3039 /* ExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F5002C64C99D001E3039 /* ExampleView.swift */; };
+		0547F5062C65290A001E3039 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 0547F5052C65290A001E3039 /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0547F4962C60D968001E3039 /* Wable-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wable-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0547F4992C60D968001E3039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0547F49B2C60D968001E3039 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		0547F49D2C60D968001E3039 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		0547F4A22C60D96B001E3039 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0547F4A52C60D96B001E3039 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0547F4A72C60D96B001E3039 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0547F4BD2C621629001E3039 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		0547F4BF2C62166C001E3039 /* Adjusted+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Adjusted+.swift"; sourceTree = "<group>"; };
+		0547F4C12C621719001E3039 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
+		0547F4C32C62178C001E3039 /* ImageLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLiterals.swift; sourceTree = "<group>"; };
+		0547F4C52C6217B7001E3039 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
+		0547F4C72C621ABC001E3039 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
+		0547F4CC2C622283001E3039 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Pretendard-SemiBold.otf"; path = "../../../../../../Downloads/Pretendard-1.3.9/public/static/Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
+		0547F4CD2C622283001E3039 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Pretendard-Regular.otf"; path = "../../../../../../Downloads/Pretendard-1.3.9/public/static/Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		0547F4D42C624739001E3039 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		0547F4D62C624797001E3039 /* NetworkResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkResult.swift; sourceTree = "<group>"; };
+		0547F4D82C6247CE001E3039 /* MoyaLoggingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoyaLoggingPlugin.swift; sourceTree = "<group>"; };
+		0547F4DA2C624821001E3039 /* SuccessResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessResponse.swift; sourceTree = "<group>"; };
+		0547F4DC2C62484E001E3039 /* BaseTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTargetType.swift; sourceTree = "<group>"; };
+		0547F4DE2C62486C001E3039 /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
+		0547F4E02C6248A0001E3039 /* BaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAPI.swift; sourceTree = "<group>"; };
+		0547F4E52C637F30001E3039 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
+		0547F4E82C63E1BE001E3039 /* WableTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableTabBarController.swift; sourceTree = "<group>"; };
+		0547F4EA2C64C618001E3039 /* WableTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableTabBarItem.swift; sourceTree = "<group>"; };
+		0547F4F42C64C76A001E3039 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		0547F4F72C64C778001E3039 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		0547F4F92C64C78C001E3039 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		0547F4FB2C64C797001E3039 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		0547F4FE2C64C954001E3039 /* ExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
+		0547F5002C64C99D001E3039 /* ExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +80,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0547F5062C65290A001E3039 /* Lottie in Frameworks */,
+				0547F4D22C622351001E3039 /* Kingfisher in Frameworks */,
+				0547F4BC2C6215F1001E3039 /* SnapKit in Frameworks */,
+				0547F4B92C6215D1001E3039 /* Moya in Frameworks */,
+				0547F4B72C6215D1001E3039 /* CombineMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,7 +114,6 @@
 				0547F4AF2C60E240001E3039 /* Network */,
 				0547F4AE2C60E238001E3039 /* Global */,
 				0547F4AD2C60E22F001E3039 /* Application */,
-				0547F49D2C60D968001E3039 /* ViewController.swift */,
 				0547F4A42C60D96B001E3039 /* LaunchScreen.storyboard */,
 			);
 			path = "Wable-iOS";
@@ -76,6 +131,7 @@
 		0547F4AE2C60E238001E3039 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				0547F4E42C637F04001E3039 /* UIComponent */,
 				0547F4B32C60E31C001E3039 /* Resources */,
 				0547F4B22C60E30B001E3039 /* Literals */,
 				0547F4B12C60E301001E3039 /* Extention */,
@@ -86,6 +142,7 @@
 		0547F4AF2C60E240001E3039 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				0547F4D32C624715001E3039 /* Foundation */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -93,7 +150,12 @@
 		0547F4B02C60E247001E3039 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				0547F4B42C60E6EC001E3039 /* Home */,
+				0547F4FD2C64C947001E3039 /* Example */,
+				0547F4EF2C64C6FA001E3039 /* MyPage */,
+				0547F4EE2C64C6F3001E3039 /* Notification */,
+				0547F4ED2C64C6EF001E3039 /* Info */,
+				0547F4EC2C64C6EB001E3039 /* Home */,
+				0547F4E72C63E164001E3039 /* TabBar */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -101,6 +163,9 @@
 		0547F4B12C60E301001E3039 /* Extention */ = {
 			isa = PBXGroup;
 			children = (
+				0547F4BD2C621629001E3039 /* UIView+.swift */,
+				0547F4BF2C62166C001E3039 /* Adjusted+.swift */,
+				0547F4C12C621719001E3039 /* UIFont+.swift */,
 			);
 			path = Extention;
 			sourceTree = "<group>";
@@ -108,6 +173,8 @@
 		0547F4B22C60E30B001E3039 /* Literals */ = {
 			isa = PBXGroup;
 			children = (
+				0547F4C32C62178C001E3039 /* ImageLiterals.swift */,
+				0547F4C52C6217B7001E3039 /* StringLiterals.swift */,
 			);
 			path = Literals;
 			sourceTree = "<group>";
@@ -115,17 +182,125 @@
 		0547F4B32C60E31C001E3039 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0547F4CB2C622238001E3039 /* Fonts */,
 				0547F4A22C60D96B001E3039 /* Assets.xcassets */,
+				0547F4C72C621ABC001E3039 /* Color.xcassets */,
 				0547F4A72C60D96B001E3039 /* Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		0547F4B42C60E6EC001E3039 /* Home */ = {
+		0547F4CB2C622238001E3039 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				0547F4CD2C622283001E3039 /* Pretendard-Regular.otf */,
+				0547F4CC2C622283001E3039 /* Pretendard-SemiBold.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		0547F4D32C624715001E3039 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4D42C624739001E3039 /* ErrorResponse.swift */,
+				0547F4D62C624797001E3039 /* NetworkResult.swift */,
+				0547F4D82C6247CE001E3039 /* MoyaLoggingPlugin.swift */,
+				0547F4DA2C624821001E3039 /* SuccessResponse.swift */,
+				0547F4DC2C62484E001E3039 /* BaseTargetType.swift */,
+				0547F4DE2C62486C001E3039 /* APIConstants.swift */,
+				0547F4E02C6248A0001E3039 /* BaseAPI.swift */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		0547F4E42C637F04001E3039 /* UIComponent */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4E52C637F30001E3039 /* WableButton.swift */,
+			);
+			path = UIComponent;
+			sourceTree = "<group>";
+		};
+		0547F4E72C63E164001E3039 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4E82C63E1BE001E3039 /* WableTabBarController.swift */,
+				0547F4EA2C64C618001E3039 /* WableTabBarItem.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		0547F4EC2C64C6EB001E3039 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4F02C64C706001E3039 /* ViewController */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		0547F4ED2C64C6EF001E3039 /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4F12C64C70B001E3039 /* ViewController */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
+		0547F4EE2C64C6F3001E3039 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4F22C64C759001E3039 /* ViewController */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		0547F4EF2C64C6FA001E3039 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4F32C64C75F001E3039 /* ViewController */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
+		0547F4F02C64C706001E3039 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4F42C64C76A001E3039 /* HomeViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0547F4F12C64C70B001E3039 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4F72C64C778001E3039 /* InfoViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0547F4F22C64C759001E3039 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4F92C64C78C001E3039 /* NotificationViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0547F4F32C64C75F001E3039 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4FB2C64C797001E3039 /* MyPageViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0547F4FD2C64C947001E3039 /* Example */ = {
+			isa = PBXGroup;
+			children = (
+				0547F4FE2C64C954001E3039 /* ExampleViewController.swift */,
+				0547F5002C64C99D001E3039 /* ExampleView.swift */,
+			);
+			path = Example;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,6 +319,13 @@
 			dependencies = (
 			);
 			name = "Wable-iOS";
+			packageProductDependencies = (
+				0547F4B62C6215D1001E3039 /* CombineMoya */,
+				0547F4B82C6215D1001E3039 /* Moya */,
+				0547F4BB2C6215F1001E3039 /* SnapKit */,
+				0547F4D12C622351001E3039 /* Kingfisher */,
+				0547F5052C65290A001E3039 /* Lottie */,
+			);
 			productName = "Wable-iOS";
 			productReference = 0547F4962C60D968001E3039 /* Wable-iOS.app */;
 			productType = "com.apple.product-type.application";
@@ -172,6 +354,12 @@
 				Base,
 			);
 			mainGroup = 0547F48D2C60D968001E3039;
+			packageReferences = (
+				0547F4B52C6215D1001E3039 /* XCRemoteSwiftPackageReference "Moya" */,
+				0547F4BA2C6215F1001E3039 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				0547F4D02C622351001E3039 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				0547F5042C652909001E3039 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			productRefGroup = 0547F4972C60D968001E3039 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -188,6 +376,9 @@
 			files = (
 				0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */,
 				0547F4A62C60D96B001E3039 /* Base in Resources */,
+				0547F4CF2C622283001E3039 /* Pretendard-Regular.otf in Resources */,
+				0547F4C82C621ABC001E3039 /* Color.xcassets in Resources */,
+				0547F4CE2C622283001E3039 /* Pretendard-SemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,8 +389,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0547F49E2C60D968001E3039 /* ViewController.swift in Sources */,
+				0547F4DB2C624821001E3039 /* SuccessResponse.swift in Sources */,
+				0547F4D52C624739001E3039 /* ErrorResponse.swift in Sources */,
+				0547F4F52C64C76A001E3039 /* HomeViewController.swift in Sources */,
+				0547F4D72C624797001E3039 /* NetworkResult.swift in Sources */,
+				0547F4E62C637F30001E3039 /* WableButton.swift in Sources */,
+				0547F4BE2C621629001E3039 /* UIView+.swift in Sources */,
+				0547F4DD2C62484E001E3039 /* BaseTargetType.swift in Sources */,
+				0547F4D92C6247CE001E3039 /* MoyaLoggingPlugin.swift in Sources */,
 				0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */,
+				0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */,
+				0547F5012C64C99D001E3039 /* ExampleView.swift in Sources */,
+				0547F4E12C6248A0001E3039 /* BaseAPI.swift in Sources */,
+				0547F4C02C62166C001E3039 /* Adjusted+.swift in Sources */,
+				0547F4C22C621719001E3039 /* UIFont+.swift in Sources */,
+				0547F4C42C62178C001E3039 /* ImageLiterals.swift in Sources */,
+				0547F4EB2C64C618001E3039 /* WableTabBarItem.swift in Sources */,
+				0547F4FF2C64C954001E3039 /* ExampleViewController.swift in Sources */,
+				0547F4F82C64C778001E3039 /* InfoViewController.swift in Sources */,
+				0547F4FC2C64C797001E3039 /* MyPageViewController.swift in Sources */,
+				0547F4FA2C64C78C001E3039 /* NotificationViewController.swift in Sources */,
+				0547F4E92C63E1BE001E3039 /* WableTabBarController.swift in Sources */,
+				0547F4C62C6217B7001E3039 /* StringLiterals.swift in Sources */,
 				0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -413,6 +624,69 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0547F4B52C6215D1001E3039 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
+		0547F4BA2C6215F1001E3039 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		0547F4D02C622351001E3039 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.12.0;
+			};
+		};
+		0547F5042C652909001E3039 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0547F4B62C6215D1001E3039 /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0547F4B52C6215D1001E3039 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		0547F4B82C6215D1001E3039 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0547F4B52C6215D1001E3039 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		0547F4BB2C6215F1001E3039 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0547F4BA2C6215F1001E3039 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		0547F4D12C622351001E3039 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0547F4D02C622351001E3039 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		0547F5052C65290A001E3039 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0547F5042C652909001E3039 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0547F48E2C60D968001E3039 /* Project object */;
 }
