@@ -7,6 +7,8 @@
 
 import UIKit
 
+import KakaoSDKAuth
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
@@ -15,9 +17,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         self.window = UIWindow(windowScene: windowScene)
-        let navigationController = UINavigationController(rootViewController: WableTabBarController())
-        self.window?.rootViewController = navigationController
+        self.window?.rootViewController = SplashViewController()
         self.window?.makeKeyAndVisible()
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
+            if loadUserData()?.isSocialLogined == true && loadUserData()?.isJoinedApp == true && loadUserData()?.isOnboardingFinished == true {
+                let navigationController = UINavigationController(rootViewController: WableTabBarController())
+                self.window?.rootViewController = navigationController
+            } else if loadUserData()?.isJoinedApp == false {
+                let navigationController = UINavigationController(rootViewController: LoginViewController(viewModel: LoginViewModel()))
+                self.window?.rootViewController = navigationController
+            } else {
+                let navigationController = UINavigationController(rootViewController: LoginViewController(viewModel: LoginViewModel()))
+                self.window?.rootViewController = navigationController
+            }
+            self.window?.makeKeyAndVisible()
+        }
+    }
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
