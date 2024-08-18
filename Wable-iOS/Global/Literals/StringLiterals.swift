@@ -54,4 +54,9 @@ enum StringLiterals {
     enum Camera {
         static let photoNoAuth = "Don't Be 앱에 사진 권한이 없습니다.\n설정으로 이동하여 권한 설정을 해주세요."
     }
+    
+    enum VersionUpdate {
+        static let versionTitle = "v 1.0.1 업데이트 안내\n와블이 업데이트 되었습니다."
+        static let versionMessage = "•푸쉬 알림 기능이 추가되었어요.\n•그 외 자잘한 오류들을 해결했어요."
+    }
 }
