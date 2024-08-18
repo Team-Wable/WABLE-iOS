@@ -70,6 +70,14 @@
 		3CDE2E062C713495004A84CB /* JoinLCKTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E052C713495004A84CB /* JoinLCKTeamView.swift */; };
 		3CDE2E082C7137C8004A84CB /* JoinLCKTeamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E072C7137C8004A84CB /* JoinLCKTeamViewModel.swift */; };
 		3CDE2E0B2C71CE30004A84CB /* AppStoreCheckManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E0A2C71CE30004A84CB /* AppStoreCheckManager.swift */; };
+		3CDE2E0E2C71D393004A84CB /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E0D2C71D393004A84CB /* InfoView.swift */; };
+		3CDE2E102C71D3CA004A84CB /* InfoMatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E0F2C71D3CA004A84CB /* InfoMatchViewController.swift */; };
+		3CDE2E122C71D3DC004A84CB /* InfoRankingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E112C71D3DC004A84CB /* InfoRankingViewController.swift */; };
+		3CDE2E142C71D665004A84CB /* InfoSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E132C71D665004A84CB /* InfoSegmentedControl.swift */; };
+		3CDE2E172C7232C5004A84CB /* NotificationActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E162C7232C5004A84CB /* NotificationActivityViewController.swift */; };
+		3CDE2E192C7232DC004A84CB /* NotificationInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E182C7232DC004A84CB /* NotificationInformationViewController.swift */; };
+		3CDE2E1B2C723305004A84CB /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E1A2C723305004A84CB /* NotificationView.swift */; };
+		3CDE2E1D2C723325004A84CB /* NotificationSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E1C2C723325004A84CB /* NotificationSegmentedControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -133,6 +141,14 @@
 		3CDE2E052C713495004A84CB /* JoinLCKTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinLCKTeamView.swift; sourceTree = "<group>"; };
 		3CDE2E072C7137C8004A84CB /* JoinLCKTeamViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinLCKTeamViewModel.swift; sourceTree = "<group>"; };
 		3CDE2E0A2C71CE30004A84CB /* AppStoreCheckManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreCheckManager.swift; sourceTree = "<group>"; };
+		3CDE2E0D2C71D393004A84CB /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		3CDE2E0F2C71D3CA004A84CB /* InfoMatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMatchViewController.swift; sourceTree = "<group>"; };
+		3CDE2E112C71D3DC004A84CB /* InfoRankingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRankingViewController.swift; sourceTree = "<group>"; };
+		3CDE2E132C71D665004A84CB /* InfoSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSegmentedControl.swift; sourceTree = "<group>"; };
+		3CDE2E162C7232C5004A84CB /* NotificationActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActivityViewController.swift; sourceTree = "<group>"; };
+		3CDE2E182C7232DC004A84CB /* NotificationInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationInformationViewController.swift; sourceTree = "<group>"; };
+		3CDE2E1A2C723305004A84CB /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		3CDE2E1C2C723325004A84CB /* NotificationSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSegmentedControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -307,6 +323,7 @@
 		0547F4ED2C64C6EF001E3039 /* Info */ = {
 			isa = PBXGroup;
 			children = (
+				3CDE2E0C2C71D384004A84CB /* View */,
 				0547F4F12C64C70B001E3039 /* ViewController */,
 			);
 			path = Info;
@@ -315,6 +332,7 @@
 		0547F4EE2C64C6F3001E3039 /* Notification */ = {
 			isa = PBXGroup;
 			children = (
+				3CDE2E152C723227004A84CB /* View */,
 				0547F4F22C64C759001E3039 /* ViewController */,
 			);
 			path = Notification;
@@ -340,6 +358,8 @@
 			isa = PBXGroup;
 			children = (
 				0547F4F72C64C778001E3039 /* InfoViewController.swift */,
+				3CDE2E0F2C71D3CA004A84CB /* InfoMatchViewController.swift */,
+				3CDE2E112C71D3DC004A84CB /* InfoRankingViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -348,6 +368,8 @@
 			isa = PBXGroup;
 			children = (
 				0547F4F92C64C78C001E3039 /* NotificationViewController.swift */,
+				3CDE2E162C7232C5004A84CB /* NotificationActivityViewController.swift */,
+				3CDE2E182C7232DC004A84CB /* NotificationInformationViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -482,6 +504,24 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		3CDE2E0C2C71D384004A84CB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3CDE2E0D2C71D393004A84CB /* InfoView.swift */,
+				3CDE2E132C71D665004A84CB /* InfoSegmentedControl.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3CDE2E152C723227004A84CB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3CDE2E1A2C723305004A84CB /* NotificationView.swift */,
+				3CDE2E1C2C723325004A84CB /* NotificationSegmentedControl.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -584,6 +624,7 @@
 				3CDE2E022C711F20004A84CB /* String+.swift in Sources */,
 				3C35319E2C6F222F0015A8FA /* CancelBag.swift in Sources */,
 				0547F4D92C6247CE001E3039 /* MoyaLoggingPlugin.swift in Sources */,
+				3CDE2E142C71D665004A84CB /* InfoSegmentedControl.swift in Sources */,
 				3CDE2DED2C6F31D9004A84CB /* BackButton.swift in Sources */,
 				0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */,
 				0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */,
@@ -592,6 +633,9 @@
 				3CDE2DFA2C70F89B004A84CB /* JoinLCKYearViewModel.swift in Sources */,
 				3C3531962C6F1FBF0015A8FA /* UILabel+.swift in Sources */,
 				0547F4E12C6248A0001E3039 /* BaseAPI.swift in Sources */,
+				3CDE2E172C7232C5004A84CB /* NotificationActivityViewController.swift in Sources */,
+				3CDE2E1B2C723305004A84CB /* NotificationView.swift in Sources */,
+				3CDE2E1D2C723325004A84CB /* NotificationSegmentedControl.swift in Sources */,
 				3C3531842C6F16D00015A8FA /* Config.swift in Sources */,
 				0547F4C02C62166C001E3039 /* Adjusted+.swift in Sources */,
 				3CDE2DE62C6F30BA004A84CB /* JoinAgreementViewController.swift in Sources */,
@@ -605,6 +649,7 @@
 				0547F4FF2C64C954001E3039 /* ExampleViewController.swift in Sources */,
 				0547F4F82C64C778001E3039 /* InfoViewController.swift in Sources */,
 				3C35318B2C6F1A040015A8FA /* SplashViewController.swift in Sources */,
+				3CDE2E102C71D3CA004A84CB /* InfoMatchViewController.swift in Sources */,
 				3CDE2DE42C6F292B004A84CB /* Publisher+UIControl.swift in Sources */,
 				0547F4FC2C64C797001E3039 /* MyPageViewController.swift in Sources */,
 				0547F4FA2C64C78C001E3039 /* NotificationViewController.swift in Sources */,
@@ -613,7 +658,9 @@
 				3CDE2E0B2C71CE30004A84CB /* AppStoreCheckManager.swift in Sources */,
 				3C3531A22C6F255D0015A8FA /* JoinLCKYearViewController.swift in Sources */,
 				3CDE2DFE2C71167A004A84CB /* JoinProfileView.swift in Sources */,
+				3CDE2E192C7232DC004A84CB /* NotificationInformationViewController.swift in Sources */,
 				3C3531822C6F15D30015A8FA /* KeychainWrapper.swift in Sources */,
+				3CDE2E0E2C71D393004A84CB /* InfoView.swift in Sources */,
 				3CDE2DEF2C6F3365004A84CB /* JoinAgreementListCustomView.swift in Sources */,
 				3C35319C2C6F22050015A8FA /* ViewModelType.swift in Sources */,
 				3CDE2DF42C6F401F004A84CB /* XButton.swift in Sources */,
@@ -622,6 +669,7 @@
 				0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */,
 				3CDE2DEB2C6F318A004A84CB /* JoinAgreementView.swift in Sources */,
 				3CDE2DF22C6F3E4E004A84CB /* JoinAgreementViewModel.swift in Sources */,
+				3CDE2E122C71D3DC004A84CB /* InfoRankingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
