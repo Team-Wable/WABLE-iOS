@@ -51,6 +51,10 @@ enum StringLiterals {
         static let JoinCompleteButtonTitle = "완료"
     }
     
+    enum Notification {
+        static let notificationNavigationTitle = "알림"
+    }
+    
     enum Camera {
         static let photoNoAuth = "Don't Be 앱에 사진 권한이 없습니다.\n설정으로 이동하여 권한 설정을 해주세요."
     }
