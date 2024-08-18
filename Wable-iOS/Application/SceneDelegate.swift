@@ -32,7 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 self.window?.rootViewController = navigationController
             }
             self.window?.makeKeyAndVisible()
-            self.checkAndUpdateIfNeeded()
+//            self.checkAndUpdateIfNeeded()
         }
     }
     
