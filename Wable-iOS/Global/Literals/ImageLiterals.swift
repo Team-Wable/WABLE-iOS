@@ -58,6 +58,11 @@ enum ImageLiterals {
         static var imgProfileMedium: UIImage { .load(name: "img_profile_medium") }
         static var imgProfileSmall: UIImage { .load(name: "img_profile_small") }
         static var imgProfileXsmall: UIImage { .load(name: "img_profile_xsmall") }
+        static var imgLogin: UIImage { .load(name: "img_login") }
+        static var imgLoginBackground: UIImage { .load(name: "img_login_background") }
+        static var imgProfile1: UIImage { .load(name: "img_profile_1") }
+        static var imgProfile2: UIImage { .load(name: "img_profile_2") }
+        static var imgProfile3: UIImage { .load(name: "img_profile_3") }
     }
     
     enum Logo {
@@ -87,7 +92,19 @@ enum ImageLiterals {
         static var tagEnd: UIImage { .load(name: "tag_end") }
         static var tagProgress: UIImage { .load(name: "tag_progress") }
         static var tagTodo: UIImage { .load(name: "tag_todo") }
-
+    }
+    
+    enum Team {
+        static var Bro: UIImage { .load(name: "bro") }
+        static var Dk: UIImage { .load(name: "dk") }
+        static var Drx: UIImage { .load(name: "drx") }
+        static var Fox: UIImage { .load(name: "fox") }
+        static var Gen: UIImage { .load(name: "gen") }
+        static var Hle: UIImage { .load(name: "hle") }
+        static var Kdf: UIImage { .load(name: "kdf") }
+        static var Kt: UIImage { .load(name: "kt") }
+        static var Ns: UIImage { .load(name: "ns") }
+        static var T1: UIImage { .load(name: "t1") }
     }
 }
 
