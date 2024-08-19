@@ -7,6 +7,8 @@
 
 import UIKit
 
+import KakaoSDKAuth
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
@@ -15,9 +17,31 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         self.window = UIWindow(windowScene: windowScene)
-        let navigationController = UINavigationController(rootViewController: WableTabBarController())
-        self.window?.rootViewController = navigationController
+        self.window?.rootViewController = SplashViewController()
         self.window?.makeKeyAndVisible()
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
+            if loadUserData()?.isSocialLogined == true && loadUserData()?.isJoinedApp == true && loadUserData()?.isOnboardingFinished == true {
+                let navigationController = UINavigationController(rootViewController: WableTabBarController())
+                self.window?.rootViewController = navigationController
+            } else if loadUserData()?.isJoinedApp == false {
+                let navigationController = UINavigationController(rootViewController: LoginViewController(viewModel: LoginViewModel()))
+                self.window?.rootViewController = navigationController
+            } else {
+                let navigationController = UINavigationController(rootViewController: LoginViewController(viewModel: LoginViewModel()))
+                self.window?.rootViewController = navigationController
+            }
+            self.window?.makeKeyAndVisible()
+//            self.checkAndUpdateIfNeeded()
+        }
+    }
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -48,5 +72,43 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
-
+    func checkAndUpdateIfNeeded() {
+        AppStoreCheckManager().latestVersion { marketingVersion in
+            DispatchQueue.main.async {
+                guard let marketingVersion = marketingVersion else {
+                    print("앱스토어 버전을 찾지 못했습니다.")
+                    return
+                }
+                
+                let currentProjectVersion = AppStoreCheckManager.appVersion ?? ""
+                
+                let splitMarketingVersion = marketingVersion.split(separator: ".").map { $0 }
+                
+                let splitCurrentProjectVersion = currentProjectVersion.split(separator: ".").map { $0 }
+                
+                if currentProjectVersion < marketingVersion {
+                    self.showUpdateAlert(version: marketingVersion)
+                } else {
+                    print("현재 최신버전입니다.")
+                }
+            }
+        }
+    }
+    
+    func showUpdateAlert(version: String) {
+        let alert = UIAlertController(
+            title: StringLiterals.VersionUpdate.versionTitle,
+            message: StringLiterals.VersionUpdate.versionMessage,
+            preferredStyle: .alert
+        )
+        
+        let updateAction = UIAlertAction(title: "지금 업데이트", style: .default) { _ in
+            AppStoreCheckManager().openAppStore()
+        }
+        
+        let cancelAction = UIAlertAction(title: "나중에", style: .destructive, handler: nil)
+        
+        [ cancelAction, updateAction ].forEach { alert.addAction($0) }
+        window?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
 }
