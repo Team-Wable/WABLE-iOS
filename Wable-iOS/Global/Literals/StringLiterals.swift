@@ -16,6 +16,13 @@ enum StringLiterals {
 
     }
     
+    enum Home {
+        static let ghostPopupTitle = "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?"
+        static let ghostPopupUndo = "고민할게요"
+        static let ghostPopupDo = "네 맞아요"
+        static let placeholder = "에게 댓글 남기기..."
+    }
+    
     enum Login {
         static let loginTitle = "클린 LCK 팬 커뮤니티\n와블에서 함께 해요"
     }
