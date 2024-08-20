@@ -11,6 +11,7 @@
 		050E0CA62C74B70800326EEA /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CA52C74B70800326EEA /* UIButton+.swift */; };
 		050E0CAA2C74B7A900326EEA /* FeedDetailReplyDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CA92C74B7A900326EEA /* FeedDetailReplyDTO.swift */; };
 		050E0CAC2C74B7BB00326EEA /* HomeFeedListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CAB2C74B7BB00326EEA /* HomeFeedListDTO.swift */; };
+		050E0CAE2C74B7F100326EEA /* WablePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CAD2C74B7F100326EEA /* WablePopupView.swift */; };
 		0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4992C60D968001E3039 /* AppDelegate.swift */; };
 		0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49B2C60D968001E3039 /* SceneDelegate.swift */; };
 		0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A22C60D96B001E3039 /* Assets.xcassets */; };
@@ -89,6 +90,7 @@
 		050E0CA52C74B70800326EEA /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
 		050E0CA92C74B7A900326EEA /* FeedDetailReplyDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailReplyDTO.swift; sourceTree = "<group>"; };
 		050E0CAB2C74B7BB00326EEA /* HomeFeedListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedListDTO.swift; sourceTree = "<group>"; };
+		050E0CAD2C74B7F100326EEA /* WablePopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePopupView.swift; sourceTree = "<group>"; };
 		0547F4962C60D968001E3039 /* Wable-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wable-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0547F4992C60D968001E3039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0547F49B2C60D968001E3039 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -443,6 +445,7 @@
 				3C35319D2C6F222F0015A8FA /* CancelBag.swift */,
 				3CDE2DEC2C6F31D9004A84CB /* BackButton.swift */,
 				3CDE2DF32C6F401F004A84CB /* XButton.swift */,
+				050E0CAD2C74B7F100326EEA /* WablePopupView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -674,6 +677,7 @@
 				0547F4C42C62178C001E3039 /* ImageLiterals.swift in Sources */,
 				0547F4EB2C64C618001E3039 /* WableTabBarItem.swift in Sources */,
 				3CDE2E062C713495004A84CB /* JoinLCKTeamView.swift in Sources */,
+				050E0CAE2C74B7F100326EEA /* WablePopupView.swift in Sources */,
 				3CDE2E082C7137C8004A84CB /* JoinLCKTeamViewModel.swift in Sources */,
 				0547F4FF2C64C954001E3039 /* ExampleViewController.swift in Sources */,
 				0547F4F82C64C778001E3039 /* InfoViewController.swift in Sources */,
