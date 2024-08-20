@@ -37,6 +37,8 @@ final class InfoView: UIView {
         return view
     }()
     
+    private let tabView = InfoTabView()
+    
     let segmentedControl: UISegmentedControl = {
         let segmentedControl = InfoSegmentedControl(items: ["경기", "순위"])
         segmentedControl.backgroundColor = .wableWhite
@@ -93,7 +95,7 @@ extension InfoView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(infoScrollView)
+        self.addSubviews(infoScrollView, tabView)
         infoScrollView.addSubview(infoContentView)
         infoContentView.addSubviews(infoSegmentedView)
         infoSegmentedView.addSubviews(segmentedControl,
@@ -102,8 +104,15 @@ extension InfoView {
     }
     
     private func setLayout() {
+        tabView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(safeAreaLayoutGuide)
+        }
+        
         infoScrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(tabView.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
+//            $0.edges.equalToSuperview()
         }
         
         infoContentView.snp.makeConstraints {
@@ -113,12 +122,15 @@ extension InfoView {
         }
         
         infoSegmentedView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide)
+            $0.top.equalTo(tabView.snp.bottom)
+
+//            $0.top.equalTo(self.safeAreaLayoutGuide)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
         segmentedControl.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
+            $0.top.equalTo(tabView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(54.adjusted)
         }
         
@@ -131,7 +143,7 @@ extension InfoView {
         pageViewController.view.snp.makeConstraints {
             $0.top.equalTo(divisionLine.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(UIScreen.main.bounds.height - 150.adjusted)
+            $0.height.equalTo(UIScreen.main.bounds.height - 230.adjusted)
         }
     }
     
