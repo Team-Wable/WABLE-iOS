@@ -70,4 +70,9 @@ enum StringLiterals {
         static let ghostPopupDo = "네 맞아요"
         static let placeholder = "에게 댓글 남기기..."
     }
+    
+    enum Info {
+        static let lckSummer = "2024 LCK Summer"
+        static let today = "TODAY "
+    }
 }
