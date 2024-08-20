@@ -51,11 +51,9 @@
 		0547F53D2C70C121001E3039 /* HomeFeedDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F53C2C70C121001E3039 /* HomeFeedDTO.swift */; };
 		0547F53F2C70D3CD001E3039 /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F53E2C70D3CD001E3039 /* UIButton+.swift */; };
 		0547F5432C70DE00001E3039 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F5422C70DE00001E3039 /* ViewModelType.swift */; };
-		0547F5462C70DE52001E3039 /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F5452C70DE52001E3039 /* CancelBag.swift */; };
 		0547F5482C70DEE4001E3039 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F5472C70DEE4001E3039 /* HomeViewModel.swift */; };
 		0547F54A2C70F5FA001E3039 /* FeedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F5492C70F5FA001E3039 /* FeedDetailViewController.swift */; };
 		0547F54C2C70F6CC001E3039 /* WablePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F54B2C70F6CC001E3039 /* WablePopupView.swift */; };
-		0547F54E2C711AD8001E3039 /* Publisher+UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F54D2C711AD8001E3039 /* Publisher+UIControl.swift */; };
 		0547F5502C7202B1001E3039 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F54F2C7202B0001E3039 /* UIApplication+.swift */; };
 		0547F5522C732BC7001E3039 /* FeedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F5512C732BC7001E3039 /* FeedDetailView.swift */; };
 		0547F5542C732E66001E3039 /* FeedDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F5532C732E66001E3039 /* FeedDetailTableViewCell.swift */; };
@@ -108,11 +106,9 @@
 		0547F53C2C70C121001E3039 /* HomeFeedDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedDTO.swift; sourceTree = "<group>"; };
 		0547F53E2C70D3CD001E3039 /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
 		0547F5422C70DE00001E3039 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
-		0547F5452C70DE52001E3039 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
 		0547F5472C70DEE4001E3039 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		0547F5492C70F5FA001E3039 /* FeedDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailViewController.swift; sourceTree = "<group>"; };
 		0547F54B2C70F6CC001E3039 /* WablePopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePopupView.swift; sourceTree = "<group>"; };
-		0547F54D2C711AD8001E3039 /* Publisher+UIControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+UIControl.swift"; sourceTree = "<group>"; };
 		0547F54F2C7202B0001E3039 /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
 		0547F5512C732BC7001E3039 /* FeedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailView.swift; sourceTree = "<group>"; };
 		0547F5532C732E66001E3039 /* FeedDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailTableViewCell.swift; sourceTree = "<group>"; };
@@ -219,7 +215,6 @@
 				0547F4BF2C62166C001E3039 /* Adjusted+.swift */,
 				0547F4C12C621719001E3039 /* UIFont+.swift */,
 				0547F53E2C70D3CD001E3039 /* UIButton+.swift */,
-				0547F54D2C711AD8001E3039 /* Publisher+UIControl.swift */,
 				0547F54F2C7202B0001E3039 /* UIApplication+.swift */,
 				0547F55B2C73C464001E3039 /* UIViewController+.swift */,
 			);
@@ -441,7 +436,6 @@
 		0547F5442C70DE45001E3039 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				0547F5452C70DE52001E3039 /* CancelBag.swift */,
 				0547F54B2C70F6CC001E3039 /* WablePopupView.swift */,
 			);
 			path = Helpers;
@@ -562,7 +556,6 @@
 				0547F54A2C70F5FA001E3039 /* FeedDetailViewController.swift in Sources */,
 				0547F5622C7472EE001E3039 /* WriteViewController.swift in Sources */,
 				0547F53D2C70C121001E3039 /* HomeFeedDTO.swift in Sources */,
-				0547F5462C70DE52001E3039 /* CancelBag.swift in Sources */,
 				0547F4DD2C62484E001E3039 /* BaseTargetType.swift in Sources */,
 				0547F4D92C6247CE001E3039 /* MoyaLoggingPlugin.swift in Sources */,
 				0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */,
@@ -577,7 +570,6 @@
 				0547F55A2C73792F001E3039 /* FeedBottomWriteView.swift in Sources */,
 				0547F5362C7093B1001E3039 /* FeedContentView.swift in Sources */,
 				0547F5562C732F34001E3039 /* FeedDetailBottomView.swift in Sources */,
-				0547F54E2C711AD8001E3039 /* Publisher+UIControl.swift in Sources */,
 				0547F4C42C62178C001E3039 /* ImageLiterals.swift in Sources */,
 				0547F4EB2C64C618001E3039 /* WableTabBarItem.swift in Sources */,
 				0547F5392C7096F5001E3039 /* Team.swift in Sources */,
