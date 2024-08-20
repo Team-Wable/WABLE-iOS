@@ -7,6 +7,8 @@
 
 import UIKit
 
+import SnapKit
+
 final class InfoViewController: UIViewController {
     
     // MARK: - Properties
@@ -30,7 +32,7 @@ final class InfoViewController: UIViewController {
     // MARK: - UI Components
     
     let rootView = InfoView()
-    
+
     // MARK: - Life Cycles
     override func loadView() {
         super.loadView()
@@ -50,7 +52,7 @@ final class InfoViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        self.navigationController?.navigationBar.backgroundColor = .wableWhite
+        self.navigationController?.navigationBar.isHidden = true
     }
 }
 
@@ -62,11 +64,10 @@ extension InfoViewController {
     }
     
     private func setHierarchy() {
-        
     }
     
     private func setLayout() {
-        
+
     }
     
     private func setDelegate() {

@@ -27,6 +27,9 @@
 		050E0CCD2C74B95B00326EEA /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CCC2C74B95B00326EEA /* Team.swift */; };
 		050E0CD12C74B9A700326EEA /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CD02C74B9A700326EEA /* WriteViewController.swift */; };
 		050E0CD32C74BA4B00326EEA /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 050E0CD22C74BA4B00326EEA /* Config.xcconfig */; };
+		050E0CD52C74BE6300326EEA /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CD42C74BE6300326EEA /* MatchView.swift */; };
+		050E0CD92C74BFC200326EEA /* InfoTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CD82C74BFC200326EEA /* InfoTabView.swift */; };
+		050E0CDB2C74C3F100326EEA /* wable_tab.json in Resources */ = {isa = PBXBuildFile; fileRef = 050E0CDA2C74C3F000326EEA /* wable_tab.json */; };
 		0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4992C60D968001E3039 /* AppDelegate.swift */; };
 		0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49B2C60D968001E3039 /* SceneDelegate.swift */; };
 		0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A22C60D96B001E3039 /* Assets.xcassets */; };
@@ -121,6 +124,9 @@
 		050E0CCC2C74B95B00326EEA /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		050E0CD02C74B9A700326EEA /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
 		050E0CD22C74BA4B00326EEA /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = ../../Downloads/Config.xcconfig; sourceTree = "<group>"; };
+		050E0CD42C74BE6300326EEA /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
+		050E0CD82C74BFC200326EEA /* InfoTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTabView.swift; sourceTree = "<group>"; };
+		050E0CDA2C74C3F000326EEA /* wable_tab.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = wable_tab.json; path = ../../../../../Downloads/wable_tab.json; sourceTree = "<group>"; };
 		0547F4962C60D968001E3039 /* Wable-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wable-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0547F4992C60D968001E3039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0547F49B2C60D968001E3039 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -289,6 +295,21 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		050E0CD62C74BEE000326EEA /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		050E0CD72C74BEE700326EEA /* SubViews */ = {
+			isa = PBXGroup;
+			children = (
+				050E0CD82C74BFC200326EEA /* InfoTabView.swift */,
+			);
+			path = SubViews;
+			sourceTree = "<group>";
+		};
 		0547F48D2C60D968001E3039 = {
 			isa = PBXGroup;
 			children = (
@@ -396,6 +417,7 @@
 		0547F4B32C60E31C001E3039 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				050E0CDA2C74C3F000326EEA /* wable_tab.json */,
 				3C35317E2C6F13FF0015A8FA /* Font */,
 				0547F4A22C60D96B001E3039 /* Assets.xcassets */,
 				0547F4C72C621ABC001E3039 /* Color.xcassets */,
@@ -637,8 +659,11 @@
 		3CDE2E0C2C71D384004A84CB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				050E0CD72C74BEE700326EEA /* SubViews */,
+				050E0CD62C74BEE000326EEA /* Cells */,
 				3CDE2E0D2C71D393004A84CB /* InfoView.swift */,
 				3CDE2E132C71D665004A84CB /* InfoSegmentedControl.swift */,
+				050E0CD42C74BE6300326EEA /* MatchView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -729,6 +754,7 @@
 				3C35317F2C6F13FF0015A8FA /* Pretendard-Regular.otf in Resources */,
 				3C3531802C6F13FF0015A8FA /* Pretendard-SemiBold.otf in Resources */,
 				0547F4A62C60D96B001E3039 /* Base in Resources */,
+				050E0CDB2C74C3F100326EEA /* wable_tab.json in Resources */,
 				050E0CD32C74BA4B00326EEA /* Config.xcconfig in Resources */,
 				0547F4C82C621ABC001E3039 /* Color.xcassets in Resources */,
 			);
@@ -766,6 +792,7 @@
 				0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */,
 				050E0CC32C74B8B600326EEA /* FeedBottomView.swift in Sources */,
 				0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */,
+				050E0CD92C74BFC200326EEA /* InfoTabView.swift in Sources */,
 				3CDE2E002C711A74004A84CB /* UITextField+.swift in Sources */,
 				0547F5012C64C99D001E3039 /* ExampleView.swift in Sources */,
 				3CDE2DFA2C70F89B004A84CB /* JoinLCKYearViewModel.swift in Sources */,
@@ -807,6 +834,7 @@
 				3C3531822C6F15D30015A8FA /* KeychainWrapper.swift in Sources */,
 				3CDE2E0E2C71D393004A84CB /* InfoView.swift in Sources */,
 				3CDE2DEF2C6F3365004A84CB /* JoinAgreementListCustomView.swift in Sources */,
+				050E0CD52C74BE6300326EEA /* MatchView.swift in Sources */,
 				050E0CD12C74B9A700326EEA /* WriteViewController.swift in Sources */,
 				050E0CAA2C74B7A900326EEA /* FeedDetailReplyDTO.swift in Sources */,
 				3C35319C2C6F22050015A8FA /* ViewModelType.swift in Sources */,
