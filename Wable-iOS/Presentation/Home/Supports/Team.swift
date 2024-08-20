@@ -12,12 +12,13 @@ enum Team: String {
     case GEN = "GEN"
     case BRO = "BRO"
     case DRX = "DRX"
-    case DX = "DX"
+    case DK = "DX"
     case KT = "KT"
     case FOX = "FOX"
     case NS = "NS"
     case KDF = "KDF"
     case HLE = "HLE"
+    case TBD = "TBD"
     
     var tag: UIImage {
         switch self {
@@ -29,7 +30,7 @@ enum Team: String {
             return ImageLiterals.Tag.tagBro
         case .DRX:
             return ImageLiterals.Tag.tagDrx
-        case .DX:
+        case .DK:
             return ImageLiterals.Tag.tagDk
         case .KT:
             return ImageLiterals.Tag.tagKt
@@ -41,7 +42,35 @@ enum Team: String {
             return ImageLiterals.Tag.tagKdf
         case .HLE:
             return ImageLiterals.Tag.tagHle
-
+        case .TBD:
+            return UIImage()
+        }
+    }
+    
+    var logo: UIImage {
+        switch self {
+        case .T1:
+            return ImageLiterals.Team.T1
+        case .GEN:
+            return ImageLiterals.Team.Gen
+        case .BRO:
+            return ImageLiterals.Team.Bro
+        case .DRX:
+            return ImageLiterals.Team.Drx
+        case .DK:
+            return ImageLiterals.Team.Dk
+        case .KT:
+            return ImageLiterals.Team.Kt
+        case .FOX:
+            return ImageLiterals.Team.Fox
+        case .NS:
+            return ImageLiterals.Team.Ns
+        case .KDF:
+            return ImageLiterals.Team.Kdf
+        case .HLE:
+            return ImageLiterals.Team.Hle
+        case .TBD:
+            return ImageLiterals.Team.TBD
         }
     }
 }
