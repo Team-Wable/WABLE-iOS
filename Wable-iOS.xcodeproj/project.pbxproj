@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		050E0CA42C74B35500326EEA /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CA32C74B35500326EEA /* UIApplication+.swift */; };
 		0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4992C60D968001E3039 /* AppDelegate.swift */; };
 		0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49B2C60D968001E3039 /* SceneDelegate.swift */; };
 		0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A22C60D96B001E3039 /* Assets.xcassets */; };
@@ -81,6 +82,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		050E0CA32C74B35500326EEA /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
 		0547F4962C60D968001E3039 /* Wable-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wable-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0547F4992C60D968001E3039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0547F49B2C60D968001E3039 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 				3C3531952C6F1FBF0015A8FA /* UILabel+.swift */,
 				3CDE2E012C711F20004A84CB /* String+.swift */,
 				3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */,
+				050E0CA32C74B35500326EEA /* UIApplication+.swift */,
 			);
 			path = Extention;
 			sourceTree = "<group>";
@@ -665,6 +668,7 @@
 				3C35319C2C6F22050015A8FA /* ViewModelType.swift in Sources */,
 				3CDE2DF42C6F401F004A84CB /* XButton.swift in Sources */,
 				0547F4C62C6217B7001E3039 /* StringLiterals.swift in Sources */,
+				050E0CA42C74B35500326EEA /* UIApplication+.swift in Sources */,
 				3C35318E2C6F1A850015A8FA /* UserInfo.swift in Sources */,
 				0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */,
 				3CDE2DEB2C6F318A004A84CB /* JoinAgreementView.swift in Sources */,
