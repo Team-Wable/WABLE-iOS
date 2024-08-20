@@ -73,5 +73,6 @@ enum StringLiterals {
     
     enum Info {
         static let lckSummer = "2024 LCK Summer"
+        static let today = "TODAY "
     }
 }

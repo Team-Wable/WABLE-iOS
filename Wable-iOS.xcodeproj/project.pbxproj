@@ -30,6 +30,15 @@
 		050E0CD52C74BE6300326EEA /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CD42C74BE6300326EEA /* MatchView.swift */; };
 		050E0CD92C74BFC200326EEA /* InfoTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CD82C74BFC200326EEA /* InfoTabView.swift */; };
 		050E0CDB2C74C3F100326EEA /* wable_tab.json in Resources */ = {isa = PBXBuildFile; fileRef = 050E0CDA2C74C3F000326EEA /* wable_tab.json */; };
+		050E0CDD2C74C87300326EEA /* MatchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CDC2C74C87200326EEA /* MatchTableViewCell.swift */; };
+		050E0CDF2C74C8B400326EEA /* MatchSessionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CDE2C74C8B400326EEA /* MatchSessionTableViewCell.swift */; };
+		050E0CE12C74C98800326EEA /* MatchTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CE02C74C98800326EEA /* MatchTableViewHeaderView.swift */; };
+		050E0CE32C74CBF400326EEA /* MatchProgressStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CE22C74CBF400326EEA /* MatchProgressStatusView.swift */; };
+		050E0CE52C74D06500326EEA /* ATeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CE42C74D06500326EEA /* ATeamView.swift */; };
+		050E0CE72C74D06B00326EEA /* BTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CE62C74D06B00326EEA /* BTeamView.swift */; };
+		050E0CEA2C74DC4B00326EEA /* MatchProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CE92C74DC4B00326EEA /* MatchProgress.swift */; };
+		050E0CEC2C74DDD800326EEA /* TeamScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CEB2C74DDD800326EEA /* TeamScoreView.swift */; };
+		050E0CEF2C74DE3C00326EEA /* TeamMatchDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CEE2C74DE3B00326EEA /* TeamMatchDTO.swift */; };
 		0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4992C60D968001E3039 /* AppDelegate.swift */; };
 		0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49B2C60D968001E3039 /* SceneDelegate.swift */; };
 		0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A22C60D96B001E3039 /* Assets.xcassets */; };
@@ -127,6 +136,15 @@
 		050E0CD42C74BE6300326EEA /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
 		050E0CD82C74BFC200326EEA /* InfoTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTabView.swift; sourceTree = "<group>"; };
 		050E0CDA2C74C3F000326EEA /* wable_tab.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = wable_tab.json; path = ../../../../../Downloads/wable_tab.json; sourceTree = "<group>"; };
+		050E0CDC2C74C87200326EEA /* MatchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchTableViewCell.swift; sourceTree = "<group>"; };
+		050E0CDE2C74C8B400326EEA /* MatchSessionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchSessionTableViewCell.swift; sourceTree = "<group>"; };
+		050E0CE02C74C98800326EEA /* MatchTableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchTableViewHeaderView.swift; sourceTree = "<group>"; };
+		050E0CE22C74CBF400326EEA /* MatchProgressStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchProgressStatusView.swift; sourceTree = "<group>"; };
+		050E0CE42C74D06500326EEA /* ATeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATeamView.swift; sourceTree = "<group>"; };
+		050E0CE62C74D06B00326EEA /* BTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTeamView.swift; sourceTree = "<group>"; };
+		050E0CE92C74DC4B00326EEA /* MatchProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchProgress.swift; sourceTree = "<group>"; };
+		050E0CEB2C74DDD800326EEA /* TeamScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamScoreView.swift; sourceTree = "<group>"; };
+		050E0CEE2C74DE3B00326EEA /* TeamMatchDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamMatchDTO.swift; sourceTree = "<group>"; };
 		0547F4962C60D968001E3039 /* Wable-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wable-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0547F4992C60D968001E3039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0547F49B2C60D968001E3039 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -298,6 +316,9 @@
 		050E0CD62C74BEE000326EEA /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				050E0CDC2C74C87200326EEA /* MatchTableViewCell.swift */,
+				050E0CDE2C74C8B400326EEA /* MatchSessionTableViewCell.swift */,
+				050E0CE02C74C98800326EEA /* MatchTableViewHeaderView.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -306,8 +327,28 @@
 			isa = PBXGroup;
 			children = (
 				050E0CD82C74BFC200326EEA /* InfoTabView.swift */,
+				050E0CE22C74CBF400326EEA /* MatchProgressStatusView.swift */,
+				050E0CE42C74D06500326EEA /* ATeamView.swift */,
+				050E0CE62C74D06B00326EEA /* BTeamView.swift */,
+				050E0CEB2C74DDD800326EEA /* TeamScoreView.swift */,
 			);
 			path = SubViews;
+			sourceTree = "<group>";
+		};
+		050E0CE82C74D81D00326EEA /* Supports */ = {
+			isa = PBXGroup;
+			children = (
+				050E0CE92C74DC4B00326EEA /* MatchProgress.swift */,
+			);
+			path = Supports;
+			sourceTree = "<group>";
+		};
+		050E0CED2C74DE2700326EEA /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				050E0CEE2C74DE3B00326EEA /* TeamMatchDTO.swift */,
+			);
+			path = Info;
 			sourceTree = "<group>";
 		};
 		0547F48D2C60D968001E3039 = {
@@ -364,6 +405,7 @@
 		0547F4AF2C60E240001E3039 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				050E0CED2C74DE2700326EEA /* Info */,
 				050E0CA72C74B79600326EEA /* Home */,
 				0547F4D32C624715001E3039 /* Foundation */,
 			);
@@ -473,6 +515,7 @@
 		0547F4ED2C64C6EF001E3039 /* Info */ = {
 			isa = PBXGroup;
 			children = (
+				050E0CE82C74D81D00326EEA /* Supports */,
 				3CDE2E0C2C71D384004A84CB /* View */,
 				0547F4F12C64C70B001E3039 /* ViewController */,
 			);
@@ -776,6 +819,7 @@
 				0547F4F52C64C76A001E3039 /* HomeViewController.swift in Sources */,
 				0547F4D72C624797001E3039 /* NetworkResult.swift in Sources */,
 				3CDE2E042C713470004A84CB /* JoinLCKTeamViewController.swift in Sources */,
+				050E0CE32C74CBF400326EEA /* MatchProgressStatusView.swift in Sources */,
 				0547F4E62C637F30001E3039 /* WableButton.swift in Sources */,
 				0547F4BE2C621629001E3039 /* UIView+.swift in Sources */,
 				3CDE2DE82C6F30CE004A84CB /* JoinProfileViewController.swift in Sources */,
@@ -787,6 +831,7 @@
 				0547F4D92C6247CE001E3039 /* MoyaLoggingPlugin.swift in Sources */,
 				3CDE2E142C71D665004A84CB /* InfoSegmentedControl.swift in Sources */,
 				050E0CC52C74B8F000326EEA /* HomeFeedTableViewCell.swift in Sources */,
+				050E0CEC2C74DDD800326EEA /* TeamScoreView.swift in Sources */,
 				050E0CC92C74B92A00326EEA /* HomeViewModel.swift in Sources */,
 				3CDE2DED2C6F31D9004A84CB /* BackButton.swift in Sources */,
 				0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */,
@@ -804,8 +849,10 @@
 				3CDE2E1D2C723325004A84CB /* NotificationSegmentedControl.swift in Sources */,
 				050E0CB52C74B85800326EEA /* HomeView.swift in Sources */,
 				3C3531842C6F16D00015A8FA /* Config.swift in Sources */,
+				050E0CDF2C74C8B400326EEA /* MatchSessionTableViewCell.swift in Sources */,
 				0547F4C02C62166C001E3039 /* Adjusted+.swift in Sources */,
 				3CDE2DE62C6F30BA004A84CB /* JoinAgreementViewController.swift in Sources */,
+				050E0CE72C74D06B00326EEA /* BTeamView.swift in Sources */,
 				0547F4C22C621719001E3039 /* UIFont+.swift in Sources */,
 				3CDE2DFC2C70FAB5004A84CB /* JoinProfileViewModel.swift in Sources */,
 				3C3531992C6F21A10015A8FA /* LoginViewModel.swift in Sources */,
@@ -814,6 +861,7 @@
 				3CDE2E062C713495004A84CB /* JoinLCKTeamView.swift in Sources */,
 				050E0CAE2C74B7F100326EEA /* WablePopupView.swift in Sources */,
 				3CDE2E082C7137C8004A84CB /* JoinLCKTeamViewModel.swift in Sources */,
+				050E0CDD2C74C87300326EEA /* MatchTableViewCell.swift in Sources */,
 				0547F4FF2C64C954001E3039 /* ExampleViewController.swift in Sources */,
 				050E0CBB2C74B89300326EEA /* FeedInfoView.swift in Sources */,
 				0547F4F82C64C778001E3039 /* InfoViewController.swift in Sources */,
@@ -835,17 +883,21 @@
 				3CDE2E0E2C71D393004A84CB /* InfoView.swift in Sources */,
 				3CDE2DEF2C6F3365004A84CB /* JoinAgreementListCustomView.swift in Sources */,
 				050E0CD52C74BE6300326EEA /* MatchView.swift in Sources */,
+				050E0CEA2C74DC4B00326EEA /* MatchProgress.swift in Sources */,
 				050E0CD12C74B9A700326EEA /* WriteViewController.swift in Sources */,
 				050E0CAA2C74B7A900326EEA /* FeedDetailReplyDTO.swift in Sources */,
 				3C35319C2C6F22050015A8FA /* ViewModelType.swift in Sources */,
 				3CDE2DF42C6F401F004A84CB /* XButton.swift in Sources */,
 				050E0CC72C74B8FD00326EEA /* FeedDetailTableViewCell.swift in Sources */,
 				0547F4C62C6217B7001E3039 /* StringLiterals.swift in Sources */,
+				050E0CE52C74D06500326EEA /* ATeamView.swift in Sources */,
 				050E0CA42C74B35500326EEA /* UIApplication+.swift in Sources */,
 				050E0CB72C74B87400326EEA /* FeedDetailView.swift in Sources */,
 				3C35318E2C6F1A850015A8FA /* UserInfo.swift in Sources */,
 				0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */,
 				3CDE2DEB2C6F318A004A84CB /* JoinAgreementView.swift in Sources */,
+				050E0CEF2C74DE3C00326EEA /* TeamMatchDTO.swift in Sources */,
+				050E0CE12C74C98800326EEA /* MatchTableViewHeaderView.swift in Sources */,
 				3CDE2DF22C6F3E4E004A84CB /* JoinAgreementViewModel.swift in Sources */,
 				3CDE2E122C71D3DC004A84CB /* InfoRankingViewController.swift in Sources */,
 			);
