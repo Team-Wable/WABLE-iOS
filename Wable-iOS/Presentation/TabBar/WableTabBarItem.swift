@@ -43,7 +43,7 @@ enum WableTabBarItem: CaseIterable {
     
     var targetViewController: UIViewController? {
         switch self {
-        case .home: return HomeViewController()
+        case .home: return HomeViewController(viewModel: HomeViewModel())
         case .info: return InfoViewController()
         case .noti: return NotificationViewController()
         case .my: return MyPageViewController(viewModel: MyPageViewModel())
