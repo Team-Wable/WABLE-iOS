@@ -127,4 +127,16 @@ enum StringLiterals {
         static let versionTitle = "v 1.0.1 업데이트 안내\n와블이 업데이트 되었습니다."
         static let versionMessage = "•푸쉬 알림 기능이 추가되었어요.\n•그 외 자잘한 오류들을 해결했어요."
     }
+    
+    enum Home {
+        static let ghostPopupTitle = "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?"
+        static let ghostPopupUndo = "고민할게요"
+        static let ghostPopupDo = "네 맞아요"
+        static let placeholder = "에게 댓글 남기기..."
+    }
+    
+    enum Info {
+        static let lckSummer = "2024 LCK Summer"
+        static let today = "TODAY "
+    }
 }

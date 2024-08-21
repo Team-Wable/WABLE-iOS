@@ -54,6 +54,8 @@ enum ImageLiterals {
         static var icReport: UIImage { .load(name: "ic_report") }
         static var icRipple: UIImage { .load(name: "ic_ripple") }
         static var icX: UIImage { .load(name: "ic_x") }
+        static var icInfoPurple: UIImage { .load(name: "ic_info") }
+        static var icVersus: UIImage { .load(name: "ic_versus") }
     }
     
     enum Image {
@@ -113,6 +115,7 @@ enum ImageLiterals {
         static var Kt: UIImage { .load(name: "kt") }
         static var Ns: UIImage { .load(name: "ns") }
         static var T1: UIImage { .load(name: "t1") }
+        static var TBD: UIImage { .load(name: "tbd") }
     }
 }
 

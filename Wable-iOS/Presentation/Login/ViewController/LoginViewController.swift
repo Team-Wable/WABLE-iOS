@@ -161,7 +161,7 @@ extension LoginViewController {
                     let viewController = JoinLCKYearViewController(viewModel: JoinLCKYearViewModel())
                     self.navigationController?.pushViewController(viewController, animated: true)
                 } else {
-                    let viewController = HomeViewController()
+                    let viewController = HomeViewController(viewModel: HomeViewModel())
 //                        viewController.originView.isFirstUser = false
                         self.navigationController?.pushViewController(viewController, animated: true)
                 }
