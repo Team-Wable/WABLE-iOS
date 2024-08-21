@@ -1,35 +1,26 @@
 //
-//  JoinProfileView.swift
+//  MyPageEditProfileView.swift
 //  Wable-iOS
 //
-//  Created by 변상우 on 8/18/24.
+//  Created by 변상우 on 8/20/24.
 //
 
 import UIKit
 
 import SnapKit
 
-final class JoinProfileView: UIView {
+final class MyPageEditProfileView: UIView {
 
     // MARK: - UI Components
     
     private let titleLabel: UILabel = {
         let title = UILabel()
-        title.text = StringLiterals.Join.JoinProfileTitle
+        title.text = StringLiterals.MyPage.myPageEditProfileTitle
         title.textColor = .wableBlack
         title.numberOfLines = 2
         title.font = .head0
         title.setTextWithLineHeight(text: title.text, lineHeight: 37.adjusted, alignment: .left)
         return title
-    }()
-    
-    
-    private let subTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = StringLiterals.Join.JoinProfileSubTitle
-        label.textColor = .gray600
-        label.font = .body2
-        return label
     }()
     
     let profileImage: UIImageView = {
@@ -55,7 +46,7 @@ final class JoinProfileView: UIView {
     
     let nickNameTextField: UITextField = {
         let nickNameTextField = UITextField()
-        nickNameTextField.placeholder = StringLiterals.Join.JoinProfilePlaceholder
+        nickNameTextField.placeholder = StringLiterals.MyPage.myPageProfilePlaceholder
         nickNameTextField.textAlignment = .left
         nickNameTextField.textColor = .wableBlack
         nickNameTextField.font = .body2
@@ -69,7 +60,7 @@ final class JoinProfileView: UIView {
     
     let duplicationCheckButton: UIButton = {
         let duplicationCheckButton = UIButton()
-        duplicationCheckButton.setTitle(StringLiterals.Join.JoinProfileCheckButtonTitle, for: .normal)
+        duplicationCheckButton.setTitle(StringLiterals.MyPage.myPageProfileCheckButtonTitle, for: .normal)
         duplicationCheckButton.setTitleColor(.gray600, for: .normal)
         duplicationCheckButton.backgroundColor = .gray200
         duplicationCheckButton.titleLabel?.font = .body3
@@ -81,7 +72,7 @@ final class JoinProfileView: UIView {
     
     let duplicationCheckDescription: UILabel = {
         let duplicationCheckDescription = UILabel()
-        duplicationCheckDescription.text = StringLiterals.Join.JoinProfileNicknameInfo
+        duplicationCheckDescription.text = StringLiterals.MyPage.myPageProfileNicknameInfo
         duplicationCheckDescription.textColor = .gray600
         duplicationCheckDescription.font = .caption2
         return duplicationCheckDescription
@@ -89,7 +80,7 @@ final class JoinProfileView: UIView {
     
     let isNotValidNickname: UILabel = {
         let isNotValidNickname = UILabel()
-        isNotValidNickname.text = StringLiterals.Join.JoinProfileNicknameNotInclude
+        isNotValidNickname.text = StringLiterals.MyPage.myPageProfileNicknameNotInclude
         isNotValidNickname.textColor = .error
         isNotValidNickname.font = .caption2
         isNotValidNickname.isHidden = true
@@ -97,7 +88,7 @@ final class JoinProfileView: UIView {
     }()
     
     let nextButton: UIButton = {
-        let button = WableButton(type: .large, title: StringLiterals.Join.JoinNextButtonTitle, isEnabled: false)
+        let button = WableButton(type: .large, title: StringLiterals.MyPage.myPageCompleteButtonTitle, isEnabled: false)
         return button
     }()
     
@@ -119,10 +110,9 @@ final class JoinProfileView: UIView {
 
 // MARK: - Extensions
 
-extension JoinProfileView {
+extension MyPageEditProfileView {
     private func setHierarchy() {
         self.addSubviews(titleLabel,
-                         subTitleLabel,
                          profileImage,
                          changeButton,
                          plusButton,
@@ -139,13 +129,8 @@ extension JoinProfileView {
             $0.leading.equalToSuperview().inset(16.adjusted)
         }
         
-        subTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(6.adjustedH)
-            $0.leading.equalToSuperview().inset(16.adjusted)
-        }
-        
         profileImage.snp.makeConstraints {
-            $0.top.equalTo(subTitleLabel.snp.bottom).offset(48.adjustedH)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(54.adjustedH)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(166.adjusted)
         }
@@ -198,7 +183,7 @@ extension JoinProfileView {
 
 // MARK: - UITextFieldDelegate
 
-extension JoinProfileView: UITextFieldDelegate {
+extension MyPageEditProfileView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool{
         // 키보드 내리면서 동작
         textField.resignFirstResponder()
