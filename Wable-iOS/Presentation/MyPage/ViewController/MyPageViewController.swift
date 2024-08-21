@@ -217,6 +217,8 @@ extension MyPageViewController {
     @objc
     private func settingAlarmButtonTapped() {
         rootView.myPageBottomsheet.handleDismiss()
+        navigationHambergerButton.isHidden = true
+        
         let vc = MyPageSettingAlarmViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
