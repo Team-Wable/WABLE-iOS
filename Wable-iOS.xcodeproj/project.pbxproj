@@ -114,6 +114,29 @@
 		3CDE2E192C7232DC004A84CB /* NotificationInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E182C7232DC004A84CB /* NotificationInformationViewController.swift */; };
 		3CDE2E1B2C723305004A84CB /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E1A2C723305004A84CB /* NotificationView.swift */; };
 		3CDE2E1D2C723325004A84CB /* NotificationSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E1C2C723325004A84CB /* NotificationSegmentedControl.swift */; };
+		3CDE2E202C72F299004A84CB /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E1F2C72F299004A84CB /* MyPageView.swift */; };
+		3CDE2E232C72F32B004A84CB /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E222C72F32B004A84CB /* MyPageViewModel.swift */; };
+		3CDE2E252C7301A8004A84CB /* MyPageProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E242C7301A7004A84CB /* MyPageProfileView.swift */; };
+		3CDE2E272C7301E0004A84CB /* MyPageSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E262C7301E0004A84CB /* MyPageSegmentedControl.swift */; };
+		3CDE2E292C7302E0004A84CB /* MyPagePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E282C7302E0004A84CB /* MyPagePostViewController.swift */; };
+		3CDE2E2B2C7302EC004A84CB /* MyPageReplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E2A2C7302EC004A84CB /* MyPageReplyViewController.swift */; };
+		3CF344CE2C73CCCA0038BB53 /* HambergerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344CD2C73CCCA0038BB53 /* HambergerButton.swift */; };
+		3CF344D02C749A120038BB53 /* MyPageBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344CF2C749A120038BB53 /* MyPageBottomSheetView.swift */; };
+		3CF344D22C749D010038BB53 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344D12C749D010038BB53 /* UIApplication+.swift */; };
+		3CF344D42C749E310038BB53 /* MyPageAccountInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344D32C749E310038BB53 /* MyPageAccountInfoViewController.swift */; };
+		3CF344D62C749E400038BB53 /* MyPageSettingAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344D52C749E400038BB53 /* MyPageSettingAlarmViewController.swift */; };
+		3CF344D82C74A3E00038BB53 /* MyPageEditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344D72C74A3E00038BB53 /* MyPageEditProfileViewController.swift */; };
+		3CF344DA2C74A3F90038BB53 /* MyPageProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344D92C74A3F90038BB53 /* MyPageProfileViewModel.swift */; };
+		3CF344DC2C74A5820038BB53 /* MyPageEditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344DB2C74A5820038BB53 /* MyPageEditProfileView.swift */; };
+		3CF344DE2C74AB3B0038BB53 /* MyPageAccountInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344DD2C74AB3B0038BB53 /* MyPageAccountInfoViewModel.swift */; };
+		3CF344E12C74AF100038BB53 /* MyPageAccountInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344E02C74AF100038BB53 /* MyPageAccountInfoTableViewCell.swift */; };
+		3CF344E32C750A380038BB53 /* MyPageSignOutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344E22C750A380038BB53 /* MyPageSignOutViewController.swift */; };
+		3CF344E52C750DA90038BB53 /* MyPageSignOutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344E42C750DA90038BB53 /* MyPageSignOutView.swift */; };
+		3CF344E72C750DBD0038BB53 /* MyPageSignOutReasonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344E62C750DBD0038BB53 /* MyPageSignOutReasonViewModel.swift */; };
+		3CF344E92C750ECE0038BB53 /* MyPageReasonListCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344E82C750ECE0038BB53 /* MyPageReasonListCustomView.swift */; };
+		3CF344EB2C75EE410038BB53 /* MyPageSignOutConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344EA2C75EE410038BB53 /* MyPageSignOutConfirmViewController.swift */; };
+		3CF344ED2C75EE620038BB53 /* MyPageSignOutConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344EC2C75EE620038BB53 /* MyPageSignOutConfirmView.swift */; };
+		3CF344EF2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344EE2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -220,6 +243,29 @@
 		3CDE2E182C7232DC004A84CB /* NotificationInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationInformationViewController.swift; sourceTree = "<group>"; };
 		3CDE2E1A2C723305004A84CB /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		3CDE2E1C2C723325004A84CB /* NotificationSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSegmentedControl.swift; sourceTree = "<group>"; };
+		3CDE2E1F2C72F299004A84CB /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
+		3CDE2E222C72F32B004A84CB /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
+		3CDE2E242C7301A7004A84CB /* MyPageProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileView.swift; sourceTree = "<group>"; };
+		3CDE2E262C7301E0004A84CB /* MyPageSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSegmentedControl.swift; sourceTree = "<group>"; };
+		3CDE2E282C7302E0004A84CB /* MyPagePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePostViewController.swift; sourceTree = "<group>"; };
+		3CDE2E2A2C7302EC004A84CB /* MyPageReplyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageReplyViewController.swift; sourceTree = "<group>"; };
+		3CF344CD2C73CCCA0038BB53 /* HambergerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HambergerButton.swift; sourceTree = "<group>"; };
+		3CF344CF2C749A120038BB53 /* MyPageBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBottomSheetView.swift; sourceTree = "<group>"; };
+		3CF344D12C749D010038BB53 /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
+		3CF344D32C749E310038BB53 /* MyPageAccountInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageAccountInfoViewController.swift; sourceTree = "<group>"; };
+		3CF344D52C749E400038BB53 /* MyPageSettingAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSettingAlarmViewController.swift; sourceTree = "<group>"; };
+		3CF344D72C74A3E00038BB53 /* MyPageEditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditProfileViewController.swift; sourceTree = "<group>"; };
+		3CF344D92C74A3F90038BB53 /* MyPageProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileViewModel.swift; sourceTree = "<group>"; };
+		3CF344DB2C74A5820038BB53 /* MyPageEditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditProfileView.swift; sourceTree = "<group>"; };
+		3CF344DD2C74AB3B0038BB53 /* MyPageAccountInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageAccountInfoViewModel.swift; sourceTree = "<group>"; };
+		3CF344E02C74AF100038BB53 /* MyPageAccountInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageAccountInfoTableViewCell.swift; sourceTree = "<group>"; };
+		3CF344E22C750A380038BB53 /* MyPageSignOutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSignOutViewController.swift; sourceTree = "<group>"; };
+		3CF344E42C750DA90038BB53 /* MyPageSignOutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSignOutView.swift; sourceTree = "<group>"; };
+		3CF344E62C750DBD0038BB53 /* MyPageSignOutReasonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSignOutReasonViewModel.swift; sourceTree = "<group>"; };
+		3CF344E82C750ECE0038BB53 /* MyPageReasonListCustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageReasonListCustomView.swift; sourceTree = "<group>"; };
+		3CF344EA2C75EE410038BB53 /* MyPageSignOutConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSignOutConfirmViewController.swift; sourceTree = "<group>"; };
+		3CF344EC2C75EE620038BB53 /* MyPageSignOutConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSignOutConfirmView.swift; sourceTree = "<group>"; };
+		3CF344EE2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSignOutConfirmViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -568,7 +614,11 @@
 		0547F4EF2C64C6FA001E3039 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
+				3CF344D12C749D010038BB53 /* UIApplication+.swift */,
+				3CDE2E1E2C72F28A004A84CB /* View */,
 				0547F4F32C64C75F001E3039 /* ViewController */,
+				3CDE2E212C72F30D004A84CB /* ViewModel */,
+				3CF344DF2C74AEFA0038BB53 /* Cell */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -606,6 +656,13 @@
 			isa = PBXGroup;
 			children = (
 				0547F4FB2C64C797001E3039 /* MyPageViewController.swift */,
+				3CDE2E282C7302E0004A84CB /* MyPagePostViewController.swift */,
+				3CDE2E2A2C7302EC004A84CB /* MyPageReplyViewController.swift */,
+				3CF344D72C74A3E00038BB53 /* MyPageEditProfileViewController.swift */,
+				3CF344D32C749E310038BB53 /* MyPageAccountInfoViewController.swift */,
+				3CF344D52C749E400038BB53 /* MyPageSettingAlarmViewController.swift */,
+				3CF344E22C750A380038BB53 /* MyPageSignOutViewController.swift */,
+				3CF344EA2C75EE410038BB53 /* MyPageSignOutConfirmViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -643,6 +700,7 @@
 				3C35319D2C6F222F0015A8FA /* CancelBag.swift */,
 				3CDE2DEC2C6F31D9004A84CB /* BackButton.swift */,
 				3CDE2DF32C6F401F004A84CB /* XButton.swift */,
+				3CF344CD2C73CCCA0038BB53 /* HambergerButton.swift */,
 				050E0CAD2C74B7F100326EEA /* WablePopupView.swift */,
 			);
 			path = Helpers;
@@ -756,6 +814,41 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		3CDE2E1E2C72F28A004A84CB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3CDE2E1F2C72F299004A84CB /* MyPageView.swift */,
+				3CDE2E242C7301A7004A84CB /* MyPageProfileView.swift */,
+				3CF344DB2C74A5820038BB53 /* MyPageEditProfileView.swift */,
+				3CF344E42C750DA90038BB53 /* MyPageSignOutView.swift */,
+				3CF344EC2C75EE620038BB53 /* MyPageSignOutConfirmView.swift */,
+				3CDE2E262C7301E0004A84CB /* MyPageSegmentedControl.swift */,
+				3CF344CF2C749A120038BB53 /* MyPageBottomSheetView.swift */,
+				3CF344E82C750ECE0038BB53 /* MyPageReasonListCustomView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3CDE2E212C72F30D004A84CB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				3CDE2E222C72F32B004A84CB /* MyPageViewModel.swift */,
+				3CF344D92C74A3F90038BB53 /* MyPageProfileViewModel.swift */,
+				3CF344DD2C74AB3B0038BB53 /* MyPageAccountInfoViewModel.swift */,
+				3CF344E62C750DBD0038BB53 /* MyPageSignOutReasonViewModel.swift */,
+				3CF344EE2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		3CF344DF2C74AEFA0038BB53 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				3CF344E02C74AF100038BB53 /* MyPageAccountInfoTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -851,25 +944,33 @@
 				0547F4DB2C624821001E3039 /* SuccessResponse.swift in Sources */,
 				3CDE2DF62C6F4170004A84CB /* JoinLCKYearView.swift in Sources */,
 				0547F4D52C624739001E3039 /* ErrorResponse.swift in Sources */,
+				3CF344ED2C75EE620038BB53 /* MyPageSignOutConfirmView.swift in Sources */,
 				050E0CCB2C74B94800326EEA /* FeedDetailViewController.swift in Sources */,
 				0547F4F52C64C76A001E3039 /* HomeViewController.swift in Sources */,
 				0547F4D72C624797001E3039 /* NetworkResult.swift in Sources */,
+				3CF344E32C750A380038BB53 /* MyPageSignOutViewController.swift in Sources */,
 				3CDE2E042C713470004A84CB /* JoinLCKTeamViewController.swift in Sources */,
+				3CF344D42C749E310038BB53 /* MyPageAccountInfoViewController.swift in Sources */,
 				050E0CE32C74CBF400326EEA /* MatchProgressStatusView.swift in Sources */,
 				0547F4E62C637F30001E3039 /* WableButton.swift in Sources */,
+				3CDE2E2B2C7302EC004A84CB /* MyPageReplyViewController.swift in Sources */,
 				0547F4BE2C621629001E3039 /* UIView+.swift in Sources */,
 				3CDE2DE82C6F30CE004A84CB /* JoinProfileViewController.swift in Sources */,
 				050E0CBD2C74B89C00326EEA /* FeedDetailBottomView.swift in Sources */,
 				0547F4DD2C62484E001E3039 /* BaseTargetType.swift in Sources */,
+				3CF344EB2C75EE410038BB53 /* MyPageSignOutConfirmViewController.swift in Sources */,
 				050E0CB92C74B88800326EEA /* HomeTabView.swift in Sources */,
 				3CDE2E022C711F20004A84CB /* String+.swift in Sources */,
 				3C35319E2C6F222F0015A8FA /* CancelBag.swift in Sources */,
+				3CF344E92C750ECE0038BB53 /* MyPageReasonListCustomView.swift in Sources */,
 				0547F4D92C6247CE001E3039 /* MoyaLoggingPlugin.swift in Sources */,
+				3CF344E52C750DA90038BB53 /* MyPageSignOutView.swift in Sources */,
 				3CDE2E142C71D665004A84CB /* InfoSegmentedControl.swift in Sources */,
 				050E0CC52C74B8F000326EEA /* HomeFeedTableViewCell.swift in Sources */,
 				050E0CEC2C74DDD800326EEA /* TeamScoreView.swift in Sources */,
 				050E0CC92C74B92A00326EEA /* HomeViewModel.swift in Sources */,
 				3CDE2DED2C6F31D9004A84CB /* BackButton.swift in Sources */,
+				3CF344E12C74AF100038BB53 /* MyPageAccountInfoTableViewCell.swift in Sources */,
 				0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */,
 				050E0CC32C74B8B600326EEA /* FeedBottomView.swift in Sources */,
 				0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */,
@@ -879,22 +980,31 @@
 				0547F5012C64C99D001E3039 /* ExampleView.swift in Sources */,
 				050E0CFC2C751A5C00326EEA /* ActivityNotificationDTO.swift in Sources */,
 				3CDE2DFA2C70F89B004A84CB /* JoinLCKYearViewModel.swift in Sources */,
+				3CF344CE2C73CCCA0038BB53 /* HambergerButton.swift in Sources */,
 				050E0CA62C74B70800326EEA /* UIButton+.swift in Sources */,
 				3C3531962C6F1FBF0015A8FA /* UILabel+.swift in Sources */,
+				3CF344D82C74A3E00038BB53 /* MyPageEditProfileViewController.swift in Sources */,
 				0547F4E12C6248A0001E3039 /* BaseAPI.swift in Sources */,
 				3CDE2E172C7232C5004A84CB /* NotificationActivityViewController.swift in Sources */,
 				3CDE2E1B2C723305004A84CB /* NotificationView.swift in Sources */,
+				3CF344EF2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift in Sources */,
+				3CF344DC2C74A5820038BB53 /* MyPageEditProfileView.swift in Sources */,
+				3CDE2E292C7302E0004A84CB /* MyPagePostViewController.swift in Sources */,
+				3CF344DE2C74AB3B0038BB53 /* MyPageAccountInfoViewModel.swift in Sources */,
 				050E0CF12C750F6300326EEA /* NotificationContentView.swift in Sources */,
 				3CDE2E1D2C723325004A84CB /* NotificationSegmentedControl.swift in Sources */,
 				050E0CB52C74B85800326EEA /* HomeView.swift in Sources */,
 				3C3531842C6F16D00015A8FA /* Config.swift in Sources */,
 				050E0CDF2C74C8B400326EEA /* MatchSessionTableViewCell.swift in Sources */,
 				0547F4C02C62166C001E3039 /* Adjusted+.swift in Sources */,
+				3CF344D62C749E400038BB53 /* MyPageSettingAlarmViewController.swift in Sources */,
 				3CDE2DE62C6F30BA004A84CB /* JoinAgreementViewController.swift in Sources */,
 				050E0CE72C74D06B00326EEA /* BTeamView.swift in Sources */,
 				0547F4C22C621719001E3039 /* UIFont+.swift in Sources */,
 				3CDE2DFC2C70FAB5004A84CB /* JoinProfileViewModel.swift in Sources */,
 				3C3531992C6F21A10015A8FA /* LoginViewModel.swift in Sources */,
+				3CDE2E202C72F299004A84CB /* MyPageView.swift in Sources */,
+				3CDE2E232C72F32B004A84CB /* MyPageViewModel.swift in Sources */,
 				0547F4C42C62178C001E3039 /* ImageLiterals.swift in Sources */,
 				0547F4EB2C64C618001E3039 /* WableTabBarItem.swift in Sources */,
 				3CDE2E062C713495004A84CB /* JoinLCKTeamView.swift in Sources */,
@@ -902,13 +1012,16 @@
 				3CDE2E082C7137C8004A84CB /* JoinLCKTeamViewModel.swift in Sources */,
 				050E0CDD2C74C87300326EEA /* MatchTableViewCell.swift in Sources */,
 				0547F4FF2C64C954001E3039 /* ExampleViewController.swift in Sources */,
+				3CF344D02C749A120038BB53 /* MyPageBottomSheetView.swift in Sources */,
 				050E0CBB2C74B89300326EEA /* FeedInfoView.swift in Sources */,
 				0547F4F82C64C778001E3039 /* InfoViewController.swift in Sources */,
 				3C35318B2C6F1A040015A8FA /* SplashViewController.swift in Sources */,
 				3CDE2E102C71D3CA004A84CB /* InfoMatchViewController.swift in Sources */,
+				3CDE2E252C7301A8004A84CB /* MyPageProfileView.swift in Sources */,
 				3CDE2DE42C6F292B004A84CB /* Publisher+UIControl.swift in Sources */,
 				0547F4FC2C64C797001E3039 /* MyPageViewController.swift in Sources */,
 				0547F4FA2C64C78C001E3039 /* NotificationViewController.swift in Sources */,
+				3CF344E72C750DBD0038BB53 /* MyPageSignOutReasonViewModel.swift in Sources */,
 				050E0CCD2C74B95B00326EEA /* Team.swift in Sources */,
 				0547F4E92C63E1BE001E3039 /* WableTabBarController.swift in Sources */,
 				050E0CC12C74B8AD00326EEA /* FeedBottomWriteView.swift in Sources */,
@@ -921,6 +1034,8 @@
 				3C3531822C6F15D30015A8FA /* KeychainWrapper.swift in Sources */,
 				3CDE2E0E2C71D393004A84CB /* InfoView.swift in Sources */,
 				3CDE2DEF2C6F3365004A84CB /* JoinAgreementListCustomView.swift in Sources */,
+				3CDE2E272C7301E0004A84CB /* MyPageSegmentedControl.swift in Sources */,
+				3CF344D22C749D010038BB53 /* UIApplication+.swift in Sources */,
 				050E0CD52C74BE6300326EEA /* MatchView.swift in Sources */,
 				050E0CEA2C74DC4B00326EEA /* MatchProgress.swift in Sources */,
 				050E0CD12C74B9A700326EEA /* WriteViewController.swift in Sources */,
@@ -939,6 +1054,7 @@
 				050E0CEF2C74DE3C00326EEA /* TeamMatchDTO.swift in Sources */,
 				050E0CE12C74C98800326EEA /* MatchTableViewHeaderView.swift in Sources */,
 				3CDE2DF22C6F3E4E004A84CB /* JoinAgreementViewModel.swift in Sources */,
+				3CF344DA2C74A3F90038BB53 /* MyPageProfileViewModel.swift in Sources */,
 				3CDE2E122C71D3DC004A84CB /* InfoRankingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
