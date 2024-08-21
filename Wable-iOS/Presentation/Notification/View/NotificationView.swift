@@ -131,7 +131,7 @@ extension NotificationView {
         pageViewController.view.snp.makeConstraints {
             $0.top.equalTo(divisionLine.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(UIScreen.main.bounds.height - 150.adjusted)
+            $0.height.equalTo(UIScreen.main.bounds.height - 230.adjusted)
         }
     }
     
