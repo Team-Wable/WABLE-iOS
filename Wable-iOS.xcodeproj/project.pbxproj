@@ -39,6 +39,10 @@
 		050E0CEA2C74DC4B00326EEA /* MatchProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CE92C74DC4B00326EEA /* MatchProgress.swift */; };
 		050E0CEC2C74DDD800326EEA /* TeamScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CEB2C74DDD800326EEA /* TeamScoreView.swift */; };
 		050E0CEF2C74DE3C00326EEA /* TeamMatchDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CEE2C74DE3B00326EEA /* TeamMatchDTO.swift */; };
+		050E0CF12C750F6300326EEA /* NotificationContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CF02C750F6300326EEA /* NotificationContentView.swift */; };
+		050E0CF62C75102A00326EEA /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CF52C75102A00326EEA /* NotificationTableViewCell.swift */; };
+		050E0CF92C7516C900326EEA /* InfoNotificationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CF82C7516C800326EEA /* InfoNotificationDTO.swift */; };
+		050E0CFC2C751A5C00326EEA /* ActivityNotificationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CFB2C751A5C00326EEA /* ActivityNotificationDTO.swift */; };
 		0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4992C60D968001E3039 /* AppDelegate.swift */; };
 		0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49B2C60D968001E3039 /* SceneDelegate.swift */; };
 		0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A22C60D96B001E3039 /* Assets.xcassets */; };
@@ -145,6 +149,10 @@
 		050E0CE92C74DC4B00326EEA /* MatchProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchProgress.swift; sourceTree = "<group>"; };
 		050E0CEB2C74DDD800326EEA /* TeamScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamScoreView.swift; sourceTree = "<group>"; };
 		050E0CEE2C74DE3B00326EEA /* TeamMatchDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamMatchDTO.swift; sourceTree = "<group>"; };
+		050E0CF02C750F6300326EEA /* NotificationContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentView.swift; sourceTree = "<group>"; };
+		050E0CF52C75102A00326EEA /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
+		050E0CF82C7516C800326EEA /* InfoNotificationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNotificationDTO.swift; sourceTree = "<group>"; };
+		050E0CFB2C751A5C00326EEA /* ActivityNotificationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotificationDTO.swift; sourceTree = "<group>"; };
 		0547F4962C60D968001E3039 /* Wable-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wable-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0547F4992C60D968001E3039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0547F49B2C60D968001E3039 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -351,6 +359,31 @@
 			path = Info;
 			sourceTree = "<group>";
 		};
+		050E0CF42C750FB600326EEA /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				050E0CF52C75102A00326EEA /* NotificationTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		050E0CF72C7516BB00326EEA /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				050E0CFA2C7516CC00326EEA /* ResponseDTO */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		050E0CFA2C7516CC00326EEA /* ResponseDTO */ = {
+			isa = PBXGroup;
+			children = (
+				050E0CF82C7516C800326EEA /* InfoNotificationDTO.swift */,
+				050E0CFB2C751A5C00326EEA /* ActivityNotificationDTO.swift */,
+			);
+			path = ResponseDTO;
+			sourceTree = "<group>";
+		};
 		0547F48D2C60D968001E3039 = {
 			isa = PBXGroup;
 			children = (
@@ -405,6 +438,7 @@
 		0547F4AF2C60E240001E3039 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				050E0CF72C7516BB00326EEA /* Notification */,
 				050E0CED2C74DE2700326EEA /* Info */,
 				050E0CA72C74B79600326EEA /* Home */,
 				0547F4D32C624715001E3039 /* Foundation */,
@@ -714,8 +748,10 @@
 		3CDE2E152C723227004A84CB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				050E0CF42C750FB600326EEA /* Cells */,
 				3CDE2E1A2C723305004A84CB /* NotificationView.swift */,
 				3CDE2E1C2C723325004A84CB /* NotificationSegmentedControl.swift */,
+				050E0CF02C750F6300326EEA /* NotificationContentView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -839,13 +875,16 @@
 				0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */,
 				050E0CD92C74BFC200326EEA /* InfoTabView.swift in Sources */,
 				3CDE2E002C711A74004A84CB /* UITextField+.swift in Sources */,
+				050E0CF62C75102A00326EEA /* NotificationTableViewCell.swift in Sources */,
 				0547F5012C64C99D001E3039 /* ExampleView.swift in Sources */,
+				050E0CFC2C751A5C00326EEA /* ActivityNotificationDTO.swift in Sources */,
 				3CDE2DFA2C70F89B004A84CB /* JoinLCKYearViewModel.swift in Sources */,
 				050E0CA62C74B70800326EEA /* UIButton+.swift in Sources */,
 				3C3531962C6F1FBF0015A8FA /* UILabel+.swift in Sources */,
 				0547F4E12C6248A0001E3039 /* BaseAPI.swift in Sources */,
 				3CDE2E172C7232C5004A84CB /* NotificationActivityViewController.swift in Sources */,
 				3CDE2E1B2C723305004A84CB /* NotificationView.swift in Sources */,
+				050E0CF12C750F6300326EEA /* NotificationContentView.swift in Sources */,
 				3CDE2E1D2C723325004A84CB /* NotificationSegmentedControl.swift in Sources */,
 				050E0CB52C74B85800326EEA /* HomeView.swift in Sources */,
 				3C3531842C6F16D00015A8FA /* Config.swift in Sources */,
@@ -893,6 +932,7 @@
 				050E0CE52C74D06500326EEA /* ATeamView.swift in Sources */,
 				050E0CA42C74B35500326EEA /* UIApplication+.swift in Sources */,
 				050E0CB72C74B87400326EEA /* FeedDetailView.swift in Sources */,
+				050E0CF92C7516C900326EEA /* InfoNotificationDTO.swift in Sources */,
 				3C35318E2C6F1A850015A8FA /* UserInfo.swift in Sources */,
 				0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */,
 				3CDE2DEB2C6F318A004A84CB /* JoinAgreementView.swift in Sources */,
