@@ -24,6 +24,7 @@ enum ImageLiterals {
         static var btnRippleDefault: UIImage { .load(name: "btn_ripple_default") }
         static var btnRipplePress: UIImage { .load(name: "btn_ripple_press") }
         static var btnWrite: UIImage { .load(name: "btn_write") }
+        static var btnHamberger: UIImage { .load(name: "btn_hamberger") }
     }
     
     enum Icon {
@@ -33,6 +34,8 @@ enum ImageLiterals {
         static var icEdit: UIImage { .load(name: "ic_edit") }
         static var icGhostDefault: UIImage { .load(name: "ic_ghost_default") }
         static var icGhostDisabled: UIImage { .load(name: "ic_ghost_disabled") }
+        static var icGhostPurple: UIImage { .load(name: "ic_purple_ghost") }
+        static var icGhostSky: UIImage { .load(name: "ic_sky_ghost") }
         static var icHeartDefault: UIImage { .load(name: "ic_heart_default") }
         static var icHeartPress: UIImage { .load(name: "ic_heart_press") }
         static var icHomeDefault: UIImage { .load(name: "ic_home_default") }
@@ -63,6 +66,10 @@ enum ImageLiterals {
         static var imgProfile1: UIImage { .load(name: "img_profile_1") }
         static var imgProfile2: UIImage { .load(name: "img_profile_2") }
         static var imgProfile3: UIImage { .load(name: "img_profile_3") }
+        static var imgEmptyBar: UIImage { .load(name: "img_empty_bar") }
+        static var imgFullBar: UIImage { .load(name: "img_full_bar") }
+        static var imgHalfBar: UIImage { .load(name: "img_half_bar") }
+        static var imgBadge: UIImage { .load(name: "img_badge") }
     }
     
     enum Logo {
@@ -92,6 +99,7 @@ enum ImageLiterals {
         static var tagEnd: UIImage { .load(name: "tag_end") }
         static var tagProgress: UIImage { .load(name: "tag_progress") }
         static var tagTodo: UIImage { .load(name: "tag_todo") }
+        static var tagLevel: UIImage { .load(name: "tag_level") }
     }
     
     enum Team {
