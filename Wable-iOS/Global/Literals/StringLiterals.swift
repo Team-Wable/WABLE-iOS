@@ -75,14 +75,12 @@ enum StringLiterals {
         static let myPageMoreInfoTitle = "이용약관"
         static let myPageMoreInfoButtonTitle = "자세히 보기"
         static let myPageSignOutButtonTitle = "계정삭제"
-        static let myPageLogoutPopupTitleLabel = "로그아웃"
-        static let myPageLogoutPopupContentLabel = "계정에서 로그아웃하시겠어요?"
+        static let myPageLogoutPopupTitleLabel = "로그아웃 하시겠어요?"
         static let myPageLogoutPopupLeftButtonTitle = "취소"
-        static let myPageLogoutPopupRightButtonTitle = "확인"
-        static let myPageSignOutPopupTitleLabel = "계정삭제"
-        static let myPageSignOutPopupContentLabel = "계정을 삭제하시겠어요?"
+        static let myPageLogoutPopupRightButtonTitle = "로그아웃 하기"
+        static let myPageSignOutPopupTitleLabel = "계정을 삭제하시겠어요?"
         static let myPageSignOutPopupLeftButtonTitle = "취소"
-        static let myPageSignOutPopupRightButtonTitle = "확인"
+        static let myPageSignOutPopupRightButtonTitle = "삭제하기"
         
         static let myPageSignOutReason1 = "온화하지 못한 내용이 많이 보여요"
         static let myPageSignOutReason2 = "원하는 콘텐츠가 없어요"
@@ -133,6 +131,21 @@ enum StringLiterals {
         static let ghostPopupUndo = "고민할게요"
         static let ghostPopupDo = "네 맞아요"
         static let placeholder = "에게 댓글 남기기..."
+    }
+    
+    enum Write {
+        static let writeNavigationTitle = "새로운 글"
+        static let writeNavigationBarButtonItemTitle = "취소"
+        static let writeTitlePlaceholder = "어떤 생각을 하고 있나요?"
+        static let writeContentPlaceholder = "본문은 생략이 가능해요"
+        static let writeReplyContentPlaceholder = "님에게 답글 남기기..."
+        static let writePostButtonTitle = "게시"
+        static let writePopupContentLabel = "작성 중인 글을 삭제하시겠어요?"
+        static let writePopupCancleButtonTitle = "취소"
+        static let writePopupConfirmButtonTitle = "삭제"
+        static let writeLinkPlaceholder = "URL"
+        static let writeOnlyOneLink = "링크는 한 개까지만 삽입할 수 있어요."
+        static let writeErrorLink = "아직 링크로 인식되지 않아요. 다시 확인해 주세요."
     }
     
     enum Info {
