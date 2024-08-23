@@ -44,7 +44,8 @@ final class HomeView: UIView {
 
 extension HomeView {
     private func setUI() {
-        self.backgroundColor = .systemBackground
+        self.backgroundColor = .wableWhite
+        self.feedTableView.backgroundColor = .wableWhite
     }
     
     private func setHierarchy() {

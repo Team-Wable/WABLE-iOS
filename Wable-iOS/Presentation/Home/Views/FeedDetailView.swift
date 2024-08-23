@@ -40,6 +40,8 @@ final class FeedDetailView: UIView {
 
 extension FeedDetailView {
     private func setUI() {
+        self.backgroundColor = .wableWhite
+        self.feedDetailTableView.backgroundColor = .wableWhite
         feedDetailTableView.separatorStyle = .none
     }
     

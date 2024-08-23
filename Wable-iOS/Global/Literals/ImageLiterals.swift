@@ -25,6 +25,7 @@ enum ImageLiterals {
         static var btnRipplePress: UIImage { .load(name: "btn_ripple_press") }
         static var btnWrite: UIImage { .load(name: "btn_write") }
         static var btnHamberger: UIImage { .load(name: "btn_hamberger") }
+        static var btnRemovePhoto: UIImage { .load(name: "btn_remove_photo") }
     }
     
     enum Icon {

@@ -48,6 +48,7 @@ final class WableTabBarController: UITabBarController {
     
     private func setUI() {
         self.tabBar.backgroundColor = .wableWhite // 탭바 배경색 설정
+        self.tabBar.barTintColor = .wableWhite
         self.tabBar.isTranslucent = false // 배경이 투명하지 않도록 설정
     }
     
