@@ -88,6 +88,10 @@
 		3C35319E2C6F222F0015A8FA /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C35319D2C6F222F0015A8FA /* CancelBag.swift */; };
 		3C3531A22C6F255D0015A8FA /* JoinLCKYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3531A12C6F255D0015A8FA /* JoinLCKYearViewController.swift */; };
 		3C8B4E052C76247800174943 /* wable_tab.json in Resources */ = {isa = PBXBuildFile; fileRef = 3C8B4E042C76247800174943 /* wable_tab.json */; };
+		3C8B4E092C779C3A00174943 /* WriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E082C779C3A00174943 /* WriteViewModel.swift */; };
+		3C8B4E0B2C779C4600174943 /* WriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E0A2C779C4600174943 /* WriteView.swift */; };
+		3C8B4E0D2C779C4F00174943 /* WriteTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E0C2C779C4F00174943 /* WriteTextView.swift */; };
+		3C8B4E0F2C779EDB00174943 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E0E2C779EDB00174943 /* UITextView+.swift */; };
 		3CDE2DE42C6F292B004A84CB /* Publisher+UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */; };
 		3CDE2DE62C6F30BA004A84CB /* JoinAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE52C6F30BA004A84CB /* JoinAgreementViewController.swift */; };
 		3CDE2DE82C6F30CE004A84CB /* JoinProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE72C6F30CE004A84CB /* JoinProfileViewController.swift */; };
@@ -216,6 +220,10 @@
 		3C35319D2C6F222F0015A8FA /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
 		3C3531A12C6F255D0015A8FA /* JoinLCKYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinLCKYearViewController.swift; sourceTree = "<group>"; };
 		3C8B4E042C76247800174943 /* wable_tab.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = wable_tab.json; sourceTree = "<group>"; };
+		3C8B4E082C779C3A00174943 /* WriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewModel.swift; sourceTree = "<group>"; };
+		3C8B4E0A2C779C4600174943 /* WriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteView.swift; sourceTree = "<group>"; };
+		3C8B4E0C2C779C4F00174943 /* WriteTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteTextView.swift; sourceTree = "<group>"; };
+		3C8B4E0E2C779EDB00174943 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
 		3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+UIControl.swift"; sourceTree = "<group>"; };
 		3CDE2DE52C6F30BA004A84CB /* JoinAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinAgreementViewController.swift; sourceTree = "<group>"; };
 		3CDE2DE72C6F30CE004A84CB /* JoinProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinProfileViewController.swift; sourceTree = "<group>"; };
@@ -352,7 +360,9 @@
 		050E0CCE2C74B99200326EEA /* Write */ = {
 			isa = PBXGroup;
 			children = (
+				3C8B4E062C779C1800174943 /* View */,
 				050E0CCF2C74B99800326EEA /* ViewController */,
+				3C8B4E072C779C1E00174943 /* ViewModel */,
 			);
 			path = Write;
 			sourceTree = "<group>";
@@ -515,6 +525,7 @@
 				0547F4BD2C621629001E3039 /* UIView+.swift */,
 				3C3531932C6F1F2A0015A8FA /* UIViewController+.swift */,
 				3CDE2DFF2C711A74004A84CB /* UITextField+.swift */,
+				3C8B4E0E2C779EDB00174943 /* UITextView+.swift */,
 				0547F4C12C621719001E3039 /* UIFont+.swift */,
 				3C3531952C6F1FBF0015A8FA /* UILabel+.swift */,
 				3CDE2E012C711F20004A84CB /* String+.swift */,
@@ -757,6 +768,23 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		3C8B4E062C779C1800174943 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3C8B4E0A2C779C4600174943 /* WriteView.swift */,
+				3C8B4E0C2C779C4F00174943 /* WriteTextView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3C8B4E072C779C1E00174943 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				3C8B4E082C779C3A00174943 /* WriteViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		3CDE2DE92C6F315C004A84CB /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -954,6 +982,7 @@
 				0547F4BE2C621629001E3039 /* UIView+.swift in Sources */,
 				3CDE2DE82C6F30CE004A84CB /* JoinProfileViewController.swift in Sources */,
 				050E0CBD2C74B89C00326EEA /* FeedDetailBottomView.swift in Sources */,
+				3C8B4E0B2C779C4600174943 /* WriteView.swift in Sources */,
 				0547F4DD2C62484E001E3039 /* BaseTargetType.swift in Sources */,
 				3CF344EB2C75EE410038BB53 /* MyPageSignOutConfirmViewController.swift in Sources */,
 				050E0CB92C74B88800326EEA /* HomeTabView.swift in Sources */,
@@ -1020,6 +1049,8 @@
 				0547F4FA2C64C78C001E3039 /* NotificationViewController.swift in Sources */,
 				3CF344E72C750DBD0038BB53 /* MyPageSignOutReasonViewModel.swift in Sources */,
 				050E0CCD2C74B95B00326EEA /* Team.swift in Sources */,
+				3C8B4E0F2C779EDB00174943 /* UITextView+.swift in Sources */,
+				3C8B4E0D2C779C4F00174943 /* WriteTextView.swift in Sources */,
 				0547F4E92C63E1BE001E3039 /* WableTabBarController.swift in Sources */,
 				050E0CC12C74B8AD00326EEA /* FeedBottomWriteView.swift in Sources */,
 				3C3531942C6F1F2A0015A8FA /* UIViewController+.swift in Sources */,
@@ -1044,6 +1075,7 @@
 				050E0CA42C74B35500326EEA /* UIApplication+.swift in Sources */,
 				050E0CB72C74B87400326EEA /* FeedDetailView.swift in Sources */,
 				050E0CF92C7516C900326EEA /* InfoNotificationDTO.swift in Sources */,
+				3C8B4E092C779C3A00174943 /* WriteViewModel.swift in Sources */,
 				3C35318E2C6F1A850015A8FA /* UserInfo.swift in Sources */,
 				0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */,
 				3CDE2DEB2C6F318A004A84CB /* JoinAgreementView.swift in Sources */,
