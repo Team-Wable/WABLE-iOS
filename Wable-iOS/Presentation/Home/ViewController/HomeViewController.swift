@@ -115,6 +115,7 @@ final class HomeViewController: UIViewController {
 
 extension HomeViewController {
     private func setUI() {
+        self.view.backgroundColor = .wableWhite
         self.navigationController?.navigationBar.isHidden = true
     }
     
@@ -155,7 +156,7 @@ extension HomeViewController {
         
         viewModel.pushToWriteViewControllr
             .sink { [weak self] in
-                let writeViewController = WriteViewController()
+                let writeViewController = WriteViewController(viewModel: WriteViewModel())
                 writeViewController.hidesBottomBarWhenPushed = true
                 self?.navigationController?.pushViewController(writeViewController, animated: true)
             }
