@@ -25,7 +25,6 @@ final class MyPageSignOutReasonViewModel: ViewModelType {
     private var isSeventhReasonChecked = false
     
     struct Input {
-        let backButtonTapped: AnyPublisher<Void, Never>
         let firstReasonButtonTapped: AnyPublisher<Void, Never>?
         let secondReasonButtonTapped: AnyPublisher<Void, Never>?
         let thirdReasonButtonTapped: AnyPublisher<Void, Never>?
@@ -42,13 +41,7 @@ final class MyPageSignOutReasonViewModel: ViewModelType {
         let isEnable: PassthroughSubject<Bool, Never>
     }
     
-    func transform(from input: Input, cancelBag: CancelBag) -> Output {
-        input.backButtonTapped
-            .sink { _ in
-                self.pushOrPopViewController.send(0)
-            }
-            .store(in: cancelBag)
-        
+    func transform(from input: Input, cancelBag: CancelBag) -> Output {        
         input.continueButtonTapped
             .sink { _ in
                 self.pushOrPopViewController.send(1)

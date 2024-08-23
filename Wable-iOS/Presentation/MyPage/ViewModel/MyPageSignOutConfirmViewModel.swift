@@ -18,7 +18,6 @@ final class MyPageSignOutConfirmViewModel: ViewModelType {
     private var checkBoxChecked = false
     
     struct Input {
-        let backButtonTapped: AnyPublisher<Void, Never>
         let checkButtonTapped: AnyPublisher<Void, Never>
     }
     
@@ -28,12 +27,6 @@ final class MyPageSignOutConfirmViewModel: ViewModelType {
     }
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
-        input.backButtonTapped
-            .sink { _ in
-                self.pushOrPopViewController.send(0)
-            }
-            .store(in: cancelBag)
-        
         input.checkButtonTapped
             .sink { [weak self] _ in
                 self?.checkBoxChecked.toggle()

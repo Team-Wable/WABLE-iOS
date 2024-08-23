@@ -16,7 +16,6 @@ final class MyPageProfileViewModel: ViewModelType {
     private let isNotDuplicated = PassthroughSubject<Bool, Never>()
     
     struct Input {
-        let backButtonTapped: AnyPublisher<Void, Never>
         let duplicationCheckButtonTapped: AnyPublisher<String, Never>
         let nextButtonTapped: AnyPublisher<Void, Never>
     }
@@ -27,12 +26,6 @@ final class MyPageProfileViewModel: ViewModelType {
     }
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
-        input.backButtonTapped
-            .sink { _ in
-                self.pushOrPopViewController.send(0)
-            }
-            .store(in: cancelBag)
-        
         input.nextButtonTapped
             .sink { _ in
                 self.pushOrPopViewController.send(1)

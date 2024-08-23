@@ -20,7 +20,6 @@ final class MyPageAccountInfoViewModel: ViewModelType {
     var myPageMemberData: [String] = ["카카오톡 소셜 로그인", "1.0.01", "boogios", "2024-08-20"]
     
     struct Input {
-        let backButtonTapped: AnyPublisher<Void, Never>
         let viewAppear: AnyPublisher<Void, Never>?
         let signOutButtonTapped: AnyPublisher<Void, Never>
     }
@@ -32,12 +31,6 @@ final class MyPageAccountInfoViewModel: ViewModelType {
     }
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
-        input.backButtonTapped
-            .sink { _ in
-                self.pushOrPopViewController.send(0)
-            }
-            .store(in: cancelBag)
-        
         input.viewAppear?
             .sink { _ in
 //                Task {
