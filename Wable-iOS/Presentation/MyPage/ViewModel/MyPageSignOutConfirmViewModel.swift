@@ -14,16 +14,19 @@ final class MyPageSignOutConfirmViewModel: ViewModelType {
     
     private let pushOrPopViewController = PassthroughSubject<Int, Never>()
     private let isEnabled = PassthroughSubject<Bool, Never>()
+    private let isSignOutResult = PassthroughSubject<Int, Never>()
     
     private var checkBoxChecked = false
     
     struct Input {
         let checkButtonTapped: AnyPublisher<Void, Never>
+        let signOutButtonTapped: AnyPublisher<String, Never>?
     }
     
     struct Output {
         let pushOrPopViewController: PassthroughSubject<Int, Never>
         let isEnable: PassthroughSubject<Bool, Never>
+        let isSignOutResult: PassthroughSubject<Int, Never>
     }
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
@@ -34,8 +37,27 @@ final class MyPageSignOutConfirmViewModel: ViewModelType {
             }
             .store(in: cancelBag)
         
+        input.signOutButtonTapped?
+            .sink { deletedReason in
+                self.isSignOutResult.send(200)
+//                Task {
+//                    do {
+//                        if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+//                            if let result = try await self.deleteMemberAPI(accessToken: accessToken, deletedReason: deletedReason) {
+//                                self.isSignOutResult.send(result.status)
+//                                
+//                                Amplitude.instance().logEvent("click_account_delete_done")
+//                            }
+//                        }
+//                    } catch {
+//                        print(error)
+//                    }
+//                }
+            }
+            .store(in: cancelBag)
         return Output(pushOrPopViewController: pushOrPopViewController,
-                      isEnable: isEnabled)
+                      isEnable: isEnabled,
+                      isSignOutResult: isSignOutResult)
     }
     
 //    init(networkProvider: NetworkServiceType) {

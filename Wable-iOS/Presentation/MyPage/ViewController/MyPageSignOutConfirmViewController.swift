@@ -17,10 +17,17 @@ class MyPageSignOutConfirmViewController: UIViewController {
     private let viewModel: MyPageSignOutConfirmViewModel
     
     private lazy var checkButtonTapped = self.myView.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    private lazy var signOutConfirmButtonTapped = self.signOutPopupView.confirmButton.publisher(for: .touchUpInside).map { _ in
+        return self.signOutReason
+    }.eraseToAnyPublisher()
     
     // MARK: - UI Components
     
     private let myView = MyPageSignOutConfirmView()
+    private var signOutPopupView = WablePopupView(popupTitle: StringLiterals.MyPage.myPageSignOutPopupTitleLabel,
+                                          popupContent: "",
+                                          leftButtonTitle: StringLiterals.MyPage.myPageSignOutPopupLeftButtonTitle,
+                                          rightButtonTitle: StringLiterals.MyPage.myPageSignOutPopupRightButtonTitle)
     
     // MARK: - Life Cycles
     
@@ -44,6 +51,7 @@ class MyPageSignOutConfirmViewController: UIViewController {
         
         setDelegate()
         setAddTarget()
+        setNavigationBar()
         bindViewModel()
     }
     
@@ -74,26 +82,50 @@ class MyPageSignOutConfirmViewController: UIViewController {
 extension MyPageSignOutConfirmViewController {
     private func setUI() {
         self.view.backgroundColor = .wableWhite
+        self.signOutPopupView.isHidden = true
     }
     
     private func setHierarchy() {
+        if let window = UIApplication.shared.keyWindowInConnectedScenes {
+            window.addSubviews(self.signOutPopupView)
+        }
     }
     
     private func setLayout() {
+        self.signOutPopupView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
     private func setDelegate() {
-        
+        self.signOutPopupView.delegate = self
     }
     
     private func setAddTarget() {
+        myView.continueButton.addTarget(self, action: #selector(signOutButtonTapped), for: .touchUpInside)
+    }
+    
+    private func setNavigationBar() {
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.wableBlack,
+            NSAttributedString.Key.font: UIFont.body1,
+        ]
         
+        self.title = "계정 삭제"
+        
+        let backButtonImage = ImageLiterals.Icon.icBack.withRenderingMode(.alwaysOriginal)
+        let backButton = UIBarButtonItem(image: backButtonImage, style: .done, target: self, action: #selector(backButtonDidTapped))
+        navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc
+    private func backButtonDidTapped() {
+        navigationController?.popViewController(animated: true)
     }
     
     private func bindViewModel() {
-        let input = MyPageSignOutConfirmViewModel.Input(
-            checkButtonTapped: checkButtonTapped)
+        let input = MyPageSignOutConfirmViewModel.Input(checkButtonTapped: checkButtonTapped,
+                                                        signOutButtonTapped: signOutConfirmButtonTapped)
         
         let output = viewModel.transform(from: input, cancelBag: cancelBag)
         
@@ -102,22 +134,9 @@ extension MyPageSignOutConfirmViewController {
             .sink { value in
                 if value == 0 {
                     self.navigationController?.popViewController(animated: true)
-                } else if value == 1 {
-                    let vc = MyPageSignOutViewController(viewModel: MyPageSignOutReasonViewModel())
-                    self.navigationController?.pushViewController(vc, animated: true)
                 }
             }
             .store(in: self.cancelBag)
-                        
-                        saveUserData(UserInfo(isSocialLogined: false,
-                                              isFirstUser: false,
-                                              isJoinedApp: true,
-                                              isOnboardingFinished: true,
-                                              userNickname: loadUserData()?.userNickname ?? "",
-                                              memberId: loadUserData()?.memberId ?? 0,
-                                              userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
-                                              fcmToken: loadUserData()?.fcmToken ?? "",
-                                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
         
         output.isEnable
             .sink { value in
@@ -130,5 +149,54 @@ extension MyPageSignOutConfirmViewController {
                 }
             }
             .store(in: self.cancelBag)
+        
+        output.isSignOutResult
+            .sink { result in
+                if result == 200 {
+                    DispatchQueue.main.async {
+                        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+                            DispatchQueue.main.async {
+                                let rootViewController = LoginViewController(viewModel: LoginViewModel())
+                                sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: rootViewController)
+                            }
+                        }
+                        
+                        saveUserData(UserInfo(isSocialLogined: false,
+                                              isFirstUser: false,
+                                              isJoinedApp: true,
+                                              isOnboardingFinished: true,
+                                              userNickname: loadUserData()?.userNickname ?? "",
+                                              memberId: loadUserData()?.memberId ?? 0,
+                                              userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
+                                              fcmToken: loadUserData()?.fcmToken ?? "",
+                                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                    }
+                } else if result == 400 {
+                    print("존재하지 않는 요청입니다.")
+                } else {
+                    print("서버 내부에서 오류가 발생했습니다.")
+                }
+            }
+            .store(in: self.cancelBag)
+    }
+    
+    @objc
+    private func signOutButtonTapped() {
+        showSignOutPopupView()
+    }
+    
+    func showSignOutPopupView() {
+        self.signOutPopupView.isHidden = false
     }
 }
+
+extension MyPageSignOutConfirmViewController: WablePopupDelegate {
+    func cancleButtonTapped() {
+        self.signOutPopupView.isHidden = true
+    }
+    
+    func confirmButtonTapped() {
+        self.signOutPopupView.isHidden = true
+    }
+}
+
