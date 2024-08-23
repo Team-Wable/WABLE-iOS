@@ -16,13 +16,11 @@ class MyPageSignOutConfirmViewController: UIViewController {
     private var cancelBag = CancelBag()
     private let viewModel: MyPageSignOutConfirmViewModel
     
-    private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var checkButtonTapped = self.myView.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     
     // MARK: - UI Components
     
     private let myView = MyPageSignOutConfirmView()
-    private var navigationBackButton = BackButton()
     
     // MARK: - Life Cycles
     
@@ -79,13 +77,9 @@ extension MyPageSignOutConfirmViewController {
     }
     
     private func setHierarchy() {
-        self.navigationController?.navigationBar.addSubviews(navigationBackButton)
     }
     
     private func setLayout() {
-        navigationBackButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(12.adjusted)
         }
     }
     
@@ -99,7 +93,6 @@ extension MyPageSignOutConfirmViewController {
     
     private func bindViewModel() {
         let input = MyPageSignOutConfirmViewModel.Input(
-            backButtonTapped: backButtonTapped,
             checkButtonTapped: checkButtonTapped)
         
         let output = viewModel.transform(from: input, cancelBag: cancelBag)

@@ -13,8 +13,6 @@ final class MyPageSettingAlarmViewController: UIViewController {
     
     // MARK: - UI Components
     
-    private var navigationBackButton = BackButton()
-    
     private let pushAlarmSettingView: UIView = {
         let view = UIView()
         return view
@@ -46,6 +44,7 @@ final class MyPageSettingAlarmViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -87,8 +86,6 @@ extension MyPageSettingAlarmViewController {
     }
     
     private func setHierarchy() {
-        self.navigationController?.navigationBar.addSubviews(navigationBackButton)
-        
         self.view.addSubviews(pushAlarmSettingView)
         
         pushAlarmSettingView.addSubviews(pushAlarmTitle,
@@ -97,11 +94,6 @@ extension MyPageSettingAlarmViewController {
     }
     
     private func setLayout() {
-        navigationBackButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(12.adjusted)
-        }
-        
         pushAlarmSettingView.snp.makeConstraints {
             $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(12.adjusted)
             $0.leading.trailing.equalToSuperview()
@@ -126,8 +118,25 @@ extension MyPageSettingAlarmViewController {
     }
     
     private func setAddTarget() {
-        navigationBackButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(backButtonTapped)))
         pushAlarmSettingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pushAlarmSettingButtonTapped)))
+    }
+    
+    private func setNavigationBar() {
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.wableBlack,
+            NSAttributedString.Key.font: UIFont.body1,
+        ]
+        
+        self.title = "알림 설정"
+        
+        let backButtonImage = ImageLiterals.Icon.icBack.withRenderingMode(.alwaysOriginal)
+        let backButton = UIBarButtonItem(image: backButtonImage, style: .done, target: self, action: #selector(backButtonDidTapped))
+        navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc
+    private func backButtonDidTapped() {
+        navigationController?.popViewController(animated: true)
     }
     
     // 알림 설정을 확인하는 함수
@@ -147,10 +156,5 @@ extension MyPageSettingAlarmViewController {
                 UIApplication.shared.open(alarmSettings, options: [:], completionHandler: nil)
             }
         }
-    }
-    
-    @objc
-    private func backButtonTapped() {
-        self.navigationController?.popViewController(animated: true)
     }
 }
