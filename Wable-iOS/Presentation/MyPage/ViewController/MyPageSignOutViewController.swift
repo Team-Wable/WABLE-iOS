@@ -14,7 +14,6 @@ class MyPageSignOutViewController: UIViewController {
     private var cancelBag = CancelBag()
     private let myPageSignOutReasonViewModel: MyPageSignOutReasonViewModel
     
-    private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var firstReason = self.myView.firstReasonView.radioButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var secondReason = self.myView.secondReasonView.radioButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var thirdReason = self.myView.thirdReasonView.radioButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
@@ -29,7 +28,6 @@ class MyPageSignOutViewController: UIViewController {
     // MARK: - UI Components
     
     private let myView = MyPageSignOutView()
-    private var navigationBackButton = BackButton()
     
     // MARK: - Life Cycles
     
@@ -53,6 +51,7 @@ class MyPageSignOutViewController: UIViewController {
         
         setDelegate()
         setAddTarget()
+        setNavigationBar()
         bindViewModel()
     }
     
@@ -86,14 +85,11 @@ extension MyPageSignOutViewController {
     }
     
     private func setHierarchy() {
-        self.navigationController?.navigationBar.addSubviews(navigationBackButton)
+        
     }
     
     private func setLayout() {
-        navigationBackButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(12.adjusted)
-        }
+        
     }
     
     private func setDelegate() {
@@ -104,9 +100,26 @@ extension MyPageSignOutViewController {
         
     }
     
+    private func setNavigationBar() {
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.wableBlack,
+            NSAttributedString.Key.font: UIFont.body1,
+        ]
+        
+        self.title = "계정 삭제"
+        
+        let backButtonImage = ImageLiterals.Icon.icBack.withRenderingMode(.alwaysOriginal)
+        let backButton = UIBarButtonItem(image: backButtonImage, style: .done, target: self, action: #selector(backButtonDidTapped))
+        navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc
+    private func backButtonDidTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     private func bindViewModel() {
         let input = MyPageSignOutReasonViewModel.Input(
-            backButtonTapped: backButtonTapped,
             firstReasonButtonTapped: firstReason,
             secondReasonButtonTapped: secondReason,
             thirdReasonButtonTapped: thirdReason,
