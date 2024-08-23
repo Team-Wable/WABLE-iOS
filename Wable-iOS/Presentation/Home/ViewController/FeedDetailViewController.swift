@@ -108,7 +108,7 @@ final class FeedDetailViewController: UIViewController {
     override func loadView() {
         super.loadView()
         view = feedDetailView
-        self.view.backgroundColor = .systemBackground
+        self.view.backgroundColor = .wableWhite
     }
     
     override func viewDidLoad() {
@@ -141,6 +141,7 @@ final class FeedDetailViewController: UIViewController {
 
 extension FeedDetailViewController {
     private func setUI() {
+        self.view.backgroundColor = .wableWhite
         feedDetailView.feedDetailTableView.rowHeight = UITableView.automaticDimension
         feedDetailView.feedDetailTableView.estimatedRowHeight = 100
     }

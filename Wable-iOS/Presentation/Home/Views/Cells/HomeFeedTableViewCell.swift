@@ -20,7 +20,7 @@ final class HomeFeedTableViewCell: UITableViewCell{
     // MARK: - Components
     
     private var infoView = FeedInfoView()
-    private var feedContentView = FeedContentView()
+    var feedContentView = FeedContentView()
     var bottomView = FeedBottomView()
     
     private var profileImageView: UIImageView = {
@@ -46,6 +46,8 @@ final class HomeFeedTableViewCell: UITableViewCell{
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.backgroundColor = .wableWhite
         setHierarchy()
         setLayout()
         setAddTarget()
