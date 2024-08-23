@@ -29,7 +29,7 @@ final class MyPageViewController: UIViewController {
     var targetMemberId: Int = 0
     var alarmTriggerdId: Int = 0
     var ghostReason: String = ""
-    var reportTargetNickname: String = ""
+    var reportTargetNickname: String = "해당 유저의 닉네임"
     var relateText: String = "마이페이지 유저 신고"
     
 //    var commentDatas: [MyPageMemberCommentResponseDTO] = []
@@ -59,9 +59,9 @@ final class MyPageViewController: UIViewController {
     // MARK: - UI Components
     
     let rootView = MyPageView()
+    private var ghostPopupView: WablePopupView? = nil
+    private var logoutPopupView: WablePopupView? = nil
     let refreshControl = UIRefreshControl()
-    private var navigationBackButton = BackButton()
-    private var navigationHambergerButton = HambergerButton()
 
    // MARK: - Life Cycles
     
@@ -95,12 +95,47 @@ final class MyPageViewController: UIViewController {
         super.viewWillAppear(true)
         
         bindViewModel()
+        setNotification()
         
+        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.tabBar.isTranslucent = true
+        self.tabBarController?.tabBar.backgroundColor = .wableWhite
+        self.tabBarController?.tabBar.barTintColor = .wableWhite
+        
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.wableBlack,
+            NSAttributedString.Key.font: UIFont.body1,
+        ]
+        
+        // 본인 프로필 화면
+        if true {
+//        if memberId == loadUserData()?.memberId ?? 0 {
+            self.navigationItem.title = "loadUserData()?.userNickname"
+            self.tabBarController?.tabBar.isHidden = false
+            
+            let hambergerButtonImage = ImageLiterals.Button.btnHamberger.withRenderingMode(.alwaysOriginal)
+            let hambergerButton = UIBarButtonItem(image: hambergerButtonImage, style: .done, target: self, action: #selector(hambergerButtonDidTapped))
+            navigationItem.rightBarButtonItem = hambergerButton
+        } else {
+            // 타 유저 프로필 화면
+            self.navigationItem.title = "타 유저 닉네임"
+            self.tabBarController?.tabBar.isHidden = true
+            let backButtonImage = ImageLiterals.Icon.icBack.withRenderingMode(.alwaysOriginal)
+            let backButton = UIBarButtonItem(image: backButtonImage, style: .done, target: self, action: #selector(backButtonDidTapped))
+            navigationItem.leftBarButtonItem = backButton
+        }
+        
+        self.navigationController?.navigationBar.backgroundColor = .wableWhite
+        self.navigationController?.navigationBar.barTintColor = .wableWhite
         self.navigationController?.navigationBar.isHidden = false
         self.navigationItem.hidesBackButton = true
-        self.navigationHambergerButton.isHidden = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
         
-        self.navigationController?.navigationBar.addSubviews(navigationBackButton, navigationHambergerButton)
+        removeNotification()
+        self.tabBarController?.tabBar.isTranslucent = false
     }
     
     override func viewDidLayoutSubviews() {
@@ -121,26 +156,10 @@ extension MyPageViewController {
     }
     
     private func setHierarchy() {
-        self.navigationController?.navigationBar.addSubviews(navigationBackButton, navigationHambergerButton)
         
-        // 본인 프로필 화면
-//        if memberId == loadUserData()?.memberId ?? 0 {
-//            navigationHambergerButton.isHidden = false
-//        } else {
-//            navigationBackButton.isHidden = false
-//        }
     }
     
     private func setLayout() {
-        navigationBackButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(12.adjusted)
-        }
-        
-        navigationHambergerButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(12.adjusted)
-        }
         
         rootView.pageViewController.view.snp.makeConstraints {
             $0.top.equalTo(rootView.segmentedControl.snp.bottom).offset(2.adjusted)
@@ -148,20 +167,53 @@ extension MyPageViewController {
         }
     }
     
+    private func setNavigationBar() {
+        
+    }
+    
+    @objc
+    private func hambergerButtonDidTapped() {
+        rootView.myPageBottomsheet.showSettings()
+    }
+    
+    @objc
+    private func backButtonDidTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     private func setDelegate() {
         rootView.myPageScrollView.delegate = self
     }
     
     private func setNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(pushViewController), name: MyPagePostViewController.pushViewController, object: nil)
+//            NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: MyPagePostViewController.reloadData, object: nil)
+//            NotificationCenter.default.addObserver(self, selector: #selector(reloadContentData(_:)), name: MyPagePostViewController.reloadContentData, object: nil)
+//            NotificationCenter.default.addObserver(self, selector: #selector(warnButtonTapped), name: MyPagePostViewController.warnUserButtonTapped, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(contentGhostButtonTapped), name: MyPagePostViewController.ghostButtonTapped, object: nil)
         
+//            NotificationCenter.default.addObserver(self, selector: #selector(reloadCommentData(_:)), name: MyPageReplyViewController.reloadCommentData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(commentGhostButtonTapped), name: MyPageReplyViewController.ghostButtonTapped, object: nil)
+        
+//            NotificationCenter.default.addObserver(self, selector: #selector(showDeleteToast(_:)), name: DeletePopupViewController.showDeletePostToastNotification, object: nil)
+//            NotificationCenter.default.addObserver(self, selector: #selector(showDeleteToast(_:)), name: DeleteReplyPopupViewController.showDeleteReplyToastNotification, object: nil)
     }
     
     private func removeNotification() {
-       
+        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.pushViewController, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadData, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadContentData, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.warnUserButtonTapped, object: nil)
+        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.ghostButtonTapped, object: nil)
+        
+//        NotificationCenter.default.removeObserver(self, name: MyPageReplyViewController.reloadCommentData, object: nil)
+        NotificationCenter.default.removeObserver(self, name: MyPageReplyViewController.ghostButtonTapped, object: nil)
+        
+//        NotificationCenter.default.removeObserver(self, name: DeletePopupViewController.showDeletePostToastNotification, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: DeleteReplyPopupViewController.showDeleteReplyToastNotification, object: nil)
     }
     
     private func setAddTarget() {
-        self.navigationHambergerButton.addTarget(self, action: #selector(myPageHambergerButtonTapped), for: .touchUpInside)
         rootView.segmentedControl.addTarget(self, action: #selector(changeValue(control:)), for: .valueChanged)
         rootView.myPageProfileView.editButton.addTarget(self, action: #selector(profileEditButtonTapped), for: .touchUpInside)
         rootView.myPageBottomsheet.accountInfoButton.addTarget(self, action: #selector(accountInfoButtonTapped), for: .touchUpInside)
@@ -184,11 +236,6 @@ extension MyPageViewController {
     }
     
     @objc
-    private func myPageHambergerButtonTapped() {
-        rootView.myPageBottomsheet.showSettings()
-    }
-    
-    @objc
     private func changeValue(control: UISegmentedControl) {
         self.currentPage = control.selectedSegmentIndex
     }
@@ -196,7 +243,6 @@ extension MyPageViewController {
     @objc
     private func profileEditButtonTapped() {
         rootView.myPageBottomsheet.handleDismiss()
-        navigationHambergerButton.isHidden = true
         
         let vc = MyPageEditProfileViewController(viewModel: MyPageProfileViewModel())
 //        vc.memberId = self.memberId
@@ -208,7 +254,6 @@ extension MyPageViewController {
     @objc
     private func accountInfoButtonTapped() {
         rootView.myPageBottomsheet.handleDismiss()
-        navigationHambergerButton.isHidden = true
         
         let vc = MyPageAccountInfoViewController(viewModel: MyPageAccountInfoViewModel())
         self.navigationController?.pushViewController(vc, animated: true)
@@ -217,7 +262,6 @@ extension MyPageViewController {
     @objc
     private func settingAlarmButtonTapped() {
         rootView.myPageBottomsheet.handleDismiss()
-        navigationHambergerButton.isHidden = true
         
         let vc = MyPageSettingAlarmViewController()
         self.navigationController?.pushViewController(vc, animated: true)
@@ -245,7 +289,124 @@ extension MyPageViewController {
     
     @objc
     private func logoutButtonTapped() {
-//        showLogoutPopupView()
+        self.logoutPopupView = WablePopupView(popupTitle: StringLiterals.MyPage.myPageLogoutPopupTitleLabel,
+                                              popupContent: "",
+                                              leftButtonTitle: StringLiterals.MyPage.myPageLogoutPopupLeftButtonTitle,
+                                              rightButtonTitle: StringLiterals.MyPage.myPageLogoutPopupRightButtonTitle)
+        
+        if let popupView = self.logoutPopupView {
+            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                window.addSubviews(popupView)
+            }
+            
+            popupView.delegate = self
+            
+            popupView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        }
+    }
+    
+    @objc
+    private func pushViewController(_ notification: Notification) {
+        let detailViewController = FeedDetailViewController()
+        detailViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(detailViewController, animated: true)
+        
+//        if let contentId = notification.userInfo?["contentId"] as? Int, let profileImageURL = notification.userInfo?["profileImageURL"] as? String {
+//            let detailViewController = FeedDetailViewController()
+//            detailViewController.hidesBottomBarWhenPushed = true
+//            destinationViewController.contentId = contentId
+//            destinationViewController.userProfileURL = profileImageURL
+//            self.navigationController?.pushViewController(detailViewController, animated: true)
+//        }
+    }
+    
+    @objc
+    private func contentGhostButtonTapped() {
+//        self.alarmTriggerType = rootView.myPageContentViewController.alarmTriggerType
+//        self.targetMemberId = rootView.myPageContentViewController.targetMemberId
+//        self.alarmTriggerdId = rootView.myPageContentViewController.alarmTriggerdId
+        
+        self.ghostPopupView = WablePopupView(popupTitle: StringLiterals.Home.ghostPopupTitle,
+                                             popupContent: "",
+                                             leftButtonTitle: StringLiterals.Home.ghostPopupUndo,
+                                             rightButtonTitle: StringLiterals.Home.ghostPopupDo)
+        
+        if let popupView = self.ghostPopupView {
+            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                window.addSubviews(popupView)
+            }
+            
+            popupView.delegate = self
+            
+            popupView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        }
+        
+//
+//        if let window = UIApplication.shared.keyWindowInConnectedScenes {
+//            window.addSubviews(transparentReasonView)
+//            
+//            transparentReasonView.snp.makeConstraints {
+//                $0.edges.equalToSuperview()
+//            }
+//            
+//            let radioButtonImage = ImageLiterals.TransparencyInfo.btnRadio
+//            
+//            self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//            self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//            self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//            self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//            self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//            self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//            self.transparentReasonView.warnLabel.isHidden = true
+//            self.ghostReason = ""
+//        }
+    }
+    
+    @objc
+    private func commentGhostButtonTapped() {
+        self.alarmTriggerType = rootView.myPageReplyViewController.alarmTriggerType
+        self.targetMemberId = rootView.myPageReplyViewController.targetMemberId
+        self.alarmTriggerdId = rootView.myPageReplyViewController.alarmTriggerdId
+        
+        self.ghostPopupView = WablePopupView(popupTitle: StringLiterals.Home.ghostPopupTitle,
+                                             popupContent: "",
+                                             leftButtonTitle: StringLiterals.Home.ghostPopupUndo,
+                                             rightButtonTitle: StringLiterals.Home.ghostPopupDo)
+        
+        if let popupView = self.ghostPopupView {
+            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                window.addSubviews(popupView)
+            }
+            
+            popupView.delegate = self
+            
+            popupView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        }
+//
+//        if let window = UIApplication.shared.keyWindowInConnectedScenes {
+//            window.addSubviews(transparentReasonView)
+//            
+//            transparentReasonView.snp.makeConstraints {
+//                $0.edges.equalToSuperview()
+//            }
+//            
+//            let radioButtonImage = ImageLiterals.TransparencyInfo.btnRadio
+//            
+//            self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//            self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//            self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//            self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//            self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//            self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//            self.transparentReasonView.warnLabel.isHidden = true
+//            self.ghostReason = ""
+//        }
     }
 }
 
@@ -256,12 +417,12 @@ extension MyPageViewController: UICollectionViewDelegate {
         let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
         
         scrollView.isScrollEnabled = true
-//        rootView.myPageContentViewController.homeCollectionView.isScrollEnabled = false
-//        rootView.myPageCommentViewController.homeCollectionView.isScrollEnabled = false
+        rootView.myPagePostViewController.homeFeedTableView.isScrollEnabled = false
+        rootView.myPageReplyViewController.feedDetailTableView.isScrollEnabled = false
         
         if yOffset <= -(navigationBarHeight + statusBarHeight) {
-//            rootView.myPageContentViewController.homeCollectionView.isScrollEnabled = false
-//            rootView.myPageCommentViewController.homeCollectionView.isScrollEnabled = false
+            rootView.myPagePostViewController.homeFeedTableView.isScrollEnabled = false
+            rootView.myPageReplyViewController.feedDetailTableView.isScrollEnabled = false
             yOffset = -(navigationBarHeight + statusBarHeight)
             rootView.segmentedControl.frame.origin.y = yOffset + statusBarHeight + navigationBarHeight
             rootView.segmentedControl.snp.remakeConstraints {
@@ -295,10 +456,51 @@ extension MyPageViewController: UICollectionViewDelegate {
             
             scrollView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: true)
             
-//            rootView.myPageContentViewController.homeCollectionView.isScrollEnabled = true
-//            rootView.myPageContentViewController.homeCollectionView.isUserInteractionEnabled = true
-//            rootView.myPageCommentViewController.homeCollectionView.isScrollEnabled = true
-//            rootView.myPageCommentViewController.homeCollectionView.isUserInteractionEnabled = true
+            rootView.myPagePostViewController.homeFeedTableView.isScrollEnabled = true
+            rootView.myPagePostViewController.homeFeedTableView.isUserInteractionEnabled = true
+            rootView.myPageReplyViewController.feedDetailTableView.isScrollEnabled = true
+            rootView.myPageReplyViewController.feedDetailTableView.isUserInteractionEnabled = true
+        }
+    }
+}
+
+extension MyPageViewController: WablePopupDelegate {
+    func cancleButtonTapped() {
+        if ghostPopupView != nil {
+            self.ghostPopupView?.removeFromSuperview()
+        }
+        
+        if logoutPopupView != nil {
+            self.logoutPopupView?.removeFromSuperview()
+        }
+    }
+    
+    func confirmButtonTapped() {
+        if ghostPopupView != nil {
+            self.ghostPopupView?.removeFromSuperview()
+            print("투명도 버튼 클릭: 서버통신 이후에 투명도 낮추도록 하기")
+        }
+        
+        if logoutPopupView != nil {
+            self.logoutPopupView?.removeFromSuperview()
+            self.rootView.myPageBottomsheet.handleDismiss()
+            
+            if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+                DispatchQueue.main.async {
+                    let rootViewController = LoginViewController(viewModel: LoginViewModel())
+                    sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: rootViewController)
+                }
+            }
+            
+            saveUserData(UserInfo(isSocialLogined: false,
+                                  isFirstUser: false,
+                                  isJoinedApp: true,
+                                  isOnboardingFinished: true,
+                                  userNickname: loadUserData()?.userNickname ?? "",
+                                  memberId: loadUserData()?.memberId ?? 0,
+                                  userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
+                                  fcmToken: loadUserData()?.fcmToken ?? "",
+                                  isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
         }
     }
 }

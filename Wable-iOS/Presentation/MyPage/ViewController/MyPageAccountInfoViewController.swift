@@ -20,7 +20,6 @@ final class MyPageAccountInfoViewController: UIViewController {
     private var cancelBag = CancelBag()
     private let viewModel: MyPageAccountInfoViewModel
     
-    private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var signOutButtonTapped = self.signOutButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     
     var titleData = [
@@ -32,8 +31,6 @@ final class MyPageAccountInfoViewController: UIViewController {
     ]
     
     // MARK: - UI Components
-    
-    private var navigationBackButton = BackButton()
     
     private let topDivisionLine = UIView().makeDivisionLine()
     
@@ -88,7 +85,7 @@ final class MyPageAccountInfoViewController: UIViewController {
         setDelegate()
         setRegisterCell()
         bindViewModel()
-        
+        setNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -123,8 +120,6 @@ extension MyPageAccountInfoViewController {
     }
     
     private func setHierarchy() {
-        self.navigationController?.navigationBar.addSubviews(navigationBackButton)
-        
         self.view.addSubviews(topDivisionLine,
                               accountInfoTableView,
                               infoTitle,
@@ -133,11 +128,6 @@ extension MyPageAccountInfoViewController {
     }
     
     private func setLayout() {
-        navigationBackButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(12.adjusted)
-        }
-        
         topDivisionLine.snp.makeConstraints {
             $0.top.equalTo(self.view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
@@ -186,7 +176,6 @@ extension MyPageAccountInfoViewController {
     private func bindViewModel() {
         let memberId = loadUserData()?.memberId ?? 0
         let input = MyPageAccountInfoViewModel.Input(
-            backButtonTapped: backButtonTapped,
             viewAppear: Just(()).eraseToAnyPublisher(),
             signOutButtonTapped: signOutButtonTapped)
         
@@ -239,6 +228,24 @@ extension MyPageAccountInfoViewController {
                 }
             }
             .store(in: self.cancelBag)
+    }
+    
+    private func setNavigationBar() {
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.wableBlack,
+            NSAttributedString.Key.font: UIFont.body1,
+        ]
+        
+        self.title = "계정 정보"
+        
+        let backButtonImage = ImageLiterals.Icon.icBack.withRenderingMode(.alwaysOriginal)
+        let backButton = UIBarButtonItem(image: backButtonImage, style: .done, target: self, action: #selector(backButtonDidTapped))
+        navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc
+    private func backButtonDidTapped() {
+        navigationController?.popViewController(animated: true)
     }
     
     func addUnderline(to button: UIButton) {

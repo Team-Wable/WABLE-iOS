@@ -18,7 +18,6 @@ final class MyPageEditProfileViewController: UIViewController {
     private var cancelBag = CancelBag()
     private let viewModel: MyPageProfileViewModel
     
-    private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var duplicationCheckButtonTapped = self.originView.duplicationCheckButton.publisher(for: .touchUpInside).map { _ in
         return self.originView.nickNameTextField.text ?? ""
     }.eraseToAnyPublisher()
@@ -33,7 +32,6 @@ final class MyPageEditProfileViewController: UIViewController {
     
     // MARK: - UI Components
     
-    private var navigationBackButton = BackButton()
     private let originView = MyPageEditProfileView()
     
     // MARK: - Life Cycles
@@ -58,6 +56,7 @@ final class MyPageEditProfileViewController: UIViewController {
         super.viewDidLoad()
         
         bindViewModel()
+        setNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -90,17 +89,17 @@ extension MyPageEditProfileViewController {
         self.view.backgroundColor = .wableWhite
         self.navigationController?.navigationBar.isHidden = false
         self.navigationItem.hidesBackButton = true
+        
+        let randomIndex = Int.random(in: 0..<basicProfileImages.count)
+        self.originView.profileImage.image = basicProfileImages[randomIndex]
     }
     
     private func setHierarchy() {
-        self.navigationController?.navigationBar.addSubviews(navigationBackButton)
+        
     }
     
     private func setLayout() {
-        navigationBackButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(12.adjusted)
-        }
+        
     }
     
     private func setAddTarget() {
@@ -112,9 +111,26 @@ extension MyPageEditProfileViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(textFieldTisChanged), name: UITextField.textDidChangeNotification, object: nil)
     }
     
+    private func setNavigationBar() {
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.wableBlack,
+            NSAttributedString.Key.font: UIFont.body1,
+        ]
+        
+        self.title = "프로필 편집"
+        
+        let backButtonImage = ImageLiterals.Icon.icBack.withRenderingMode(.alwaysOriginal)
+        let backButton = UIBarButtonItem(image: backButtonImage, style: .done, target: self, action: #selector(backButtonDidTapped))
+        navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc
+    private func backButtonDidTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     private func bindViewModel() {
         let input = MyPageProfileViewModel.Input(
-            backButtonTapped: backButtonTapped,
             duplicationCheckButtonTapped: duplicationCheckButtonTapped,
             nextButtonTapped: nextButtonTapped)
         
