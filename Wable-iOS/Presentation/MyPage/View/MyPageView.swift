@@ -66,8 +66,8 @@ final class MyPageView: UIView {
         return vc
     }()
     
-    let myPagePostViewController = MyPagePostViewController(viewModel: HomeViewModel(), myPageViewModel: MyPageViewModel())
-    let myPageReplyViewController = MyPageReplyViewController(myPageViewModel: MyPageViewModel())
+    let myPagePostViewController = MyPagePostViewController(viewModel: HomeViewModel(), myPageViewModel: MyPageViewModel(networkProvider: NetworkService()))
+    let myPageReplyViewController = MyPageReplyViewController(myPageViewModel: MyPageViewModel(networkProvider: NetworkService()))
     
     var myPageBottomsheet = MyPageBottomSheetView()
     

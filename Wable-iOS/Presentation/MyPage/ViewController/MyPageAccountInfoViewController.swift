@@ -206,7 +206,7 @@ extension MyPageAccountInfoViewController {
                     DispatchQueue.main.async {
                         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
                             DispatchQueue.main.async {
-                                let rootViewController = LoginViewController(viewModel: LoginViewModel())
+                                let rootViewController = LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService()))
                                 sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: rootViewController)
                             }
                         }
@@ -214,7 +214,6 @@ extension MyPageAccountInfoViewController {
                         saveUserData(UserInfo(isSocialLogined: false,
                                               isFirstUser: false,
                                               isJoinedApp: true,
-                                              isOnboardingFinished: true,
                                               userNickname: loadUserData()?.userNickname ?? "",
                                               memberId: loadUserData()?.memberId ?? 0,
                                               userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
