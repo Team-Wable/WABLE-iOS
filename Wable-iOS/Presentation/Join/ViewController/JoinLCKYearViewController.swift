@@ -22,6 +22,10 @@ final class JoinLCKYearViewController: UIViewController {
     private lazy var xButtonTapped = self.navigationXButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var nextButtonTapped = self.originView.nextButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     
+    var memberLckYears: Int?
+    var memberFanTeam: String?
+    var memberDefaultProfileImage: String?
+    
     // MARK: - UI Components
     
     private var navigationBackButton = BackButton()
@@ -105,6 +109,7 @@ extension JoinLCKYearViewController {
                     self.navigationController?.popViewController(animated: true)
                 } else {
                     let viewController = JoinLCKTeamViewController(viewModel: JoinLCKTeamViewModel())
+                    viewController.memberLckYears = Int(self.originView.selectedStartYear.text ?? "2024")
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }
             }

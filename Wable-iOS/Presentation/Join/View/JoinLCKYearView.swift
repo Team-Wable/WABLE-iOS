@@ -49,7 +49,7 @@ final class JoinLCKYearView: UIView {
         return button
     }()
     
-    private var selectedStartYear: UILabel = {
+    var selectedStartYear: UILabel = {
         let label = UILabel()
         label.text = StringLiterals.Join.JoinLCKYearDefaultYear
         label.textColor = .wableBlack

@@ -55,7 +55,7 @@ final class JoinLCKTeamView: UIView {
         return gridStackView
     }()
     
-    private var selectedButton: UIButton?
+    var selectedButton: UIButton?
     
     let noLCKTeamButton: UIButton = {
         let button = UIButton()
