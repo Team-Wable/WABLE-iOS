@@ -137,7 +137,7 @@ extension MyPageSignOutViewController {
                 if value == 0 {
                     self.navigationController?.popViewController(animated: true)
                 } else if value == 1 {
-                    let vc = MyPageSignOutConfirmViewController(viewModel: MyPageSignOutConfirmViewModel())
+                    let vc = MyPageSignOutConfirmViewController(viewModel: MyPageSignOutConfirmViewModel(networkProvider: NetworkService()))
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
             }

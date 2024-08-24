@@ -26,11 +26,16 @@ final class JoinProfileViewController: UIViewController {
     private lazy var nextButtonTapped = self.originView.nextButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     
     // 3개의 기본 프로필 사진
-    let basicProfileImages: [UIImage] = [
-        ImageLiterals.Image.imgProfile1,
-        ImageLiterals.Image.imgProfile2,
-        ImageLiterals.Image.imgProfile3
+    let basicProfileImages: [UIImage : String] = [
+        ImageLiterals.Image.imgProfile1 : "PURPLE",
+        ImageLiterals.Image.imgProfile2 : "BLUE",
+        ImageLiterals.Image.imgProfile3 : "GREEN"
     ]
+    
+    var memberLckYears: Int?
+    var memberFanTeam: String?
+    var memberDefaultProfileImage: String?
+    var memberProfileImage: UIImage?
     
     // MARK: - UI Components
     
@@ -75,6 +80,14 @@ final class JoinProfileViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: nil)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        self.originView.profileImage.contentMode = .scaleAspectFill
+        self.originView.profileImage.layer.cornerRadius = self.originView.profileImage.frame.size.width / 2
+        self.originView.profileImage.clipsToBounds = true
     }
 }
 
@@ -126,7 +139,11 @@ extension JoinProfileViewController {
                 if value == 0 {
                     self.navigationController?.popViewController(animated: true)
                 } else {
-                    let viewController = JoinAgreementViewController(viewModel: JoinAgreementViewModel())
+                    let viewController = JoinAgreementViewController(viewModel: JoinAgreementViewModel(networkProvider: NetworkService()))
+                    viewController.memberNickname = self.originView.nickNameTextField.text
+                    viewController.memberLckYears = self.memberLckYears
+                    viewController.memberFanTeam = self.memberFanTeam
+                    viewController.memberDefaultProfileImage = self.memberDefaultProfileImage
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }
             }
@@ -157,11 +174,13 @@ extension JoinProfileViewController {
     
     @objc
     private func changeButtonTapped() {
-        let randomIndex = Int.random(in: 0..<basicProfileImages.count)
-        self.originView.profileImage.image = basicProfileImages[randomIndex]
-        self.originView.profileImage.contentMode = .scaleAspectFill
-        self.originView.profileImage.layer.cornerRadius = self.originView.profileImage.frame.size.width / 2
-        self.originView.profileImage.clipsToBounds = true
+        let randomEntry = basicProfileImages.randomElement()
+        
+        if let selectedImage = randomEntry?.key, let selectedColor = randomEntry?.value {
+            self.originView.profileImage.image = selectedImage
+            self.memberDefaultProfileImage = selectedColor
+            self.memberProfileImage = nil
+        }
     }
     
     @objc
@@ -227,6 +246,9 @@ extension JoinProfileViewController: PHPickerViewControllerDelegate {
                     self.originView.profileImage.contentMode = .scaleAspectFill
                     self.originView.profileImage.layer.cornerRadius = self.originView.profileImage.frame.size.width / 2
                     self.originView.profileImage.clipsToBounds = true
+                    
+                    self.memberProfileImage = image
+                    self.memberDefaultProfileImage = ""
                 } else if let error = error {
                     print(error)
                 }

@@ -21,14 +21,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window?.makeKeyAndVisible()
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
-            if loadUserData()?.isSocialLogined == true && loadUserData()?.isJoinedApp == true && loadUserData()?.isOnboardingFinished == true {
+            if loadUserData()?.isSocialLogined == true && loadUserData()?.isJoinedApp == true {
                 let navigationController = UINavigationController(rootViewController: WableTabBarController())
                 self.window?.rootViewController = navigationController
             } else if loadUserData()?.isJoinedApp == false {
-                let navigationController = UINavigationController(rootViewController: LoginViewController(viewModel: LoginViewModel()))
+                let navigationController = UINavigationController(rootViewController: LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService())))
                 self.window?.rootViewController = navigationController
             } else {
-                let navigationController = UINavigationController(rootViewController: LoginViewController(viewModel: LoginViewModel()))
+                let navigationController = UINavigationController(rootViewController: LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService())))
                 self.window?.rootViewController = navigationController
             }
             self.window?.makeKeyAndVisible()

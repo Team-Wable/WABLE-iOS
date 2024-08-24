@@ -5,13 +5,6 @@
 //  Created by 박윤빈 on 8/8/24.
 //
 
-//
-//  TabBarController.swift
-//  DontBe-iOS
-//
-//  Created by 변희주 on 1/7/24.
-//
-
 import UIKit
 
 final class WableTabBarController: UITabBarController {
