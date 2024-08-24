@@ -157,13 +157,13 @@ extension LoginViewController {
             .receive(on: RunLoop.main)
             .sink { value in
                 if value {
-                    // 신규 회면이면 여기
+                    // 신규 유저
                     let viewController = JoinLCKYearViewController(viewModel: JoinLCKYearViewModel())
                     self.navigationController?.pushViewController(viewController, animated: true)
                 } else {
-                    let viewController = HomeViewController(viewModel: HomeViewModel())
-//                        viewController.originView.isFirstUser = false
-                        self.navigationController?.pushViewController(viewController, animated: true)
+                    // 기존 유저
+                    let viewController = WableTabBarController()
+                    self.navigationController?.pushViewController(viewController, animated: true)
                 }
             }
             .store(in: self.cancelBag)

@@ -17,16 +17,16 @@ final class LoginViewModel: NSObject, ViewModelType {
     
     private let cancelBag = CancelBag()
     
-//    private let networkProvider: NetworkServiceType
+    private let networkProvider: NetworkServiceType
     private let userInfoPublisher = PassthroughSubject<Bool, Never>()
     
-//    init(networkProvider: NetworkServiceType) {
-//        self.networkProvider = networkProvider
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
+    init(networkProvider: NetworkServiceType) {
+        self.networkProvider = networkProvider
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     struct Input {
         let kakaoButtonTapped: AnyPublisher<Void, Never>?
@@ -83,25 +83,82 @@ final class LoginViewModel: NSObject, ViewModelType {
             print("카카오 로그인 에러")
             print(error)
         } else if let accessToken = oauthToken?.accessToken {
-            print("카카오 로그인 accessToken: \(accessToken)")
-            self.userInfoPublisher.send(true)
-            
             // 카카오 로그인 서버통신
-//            Task {
-//                do {
-//                    let result = try await self.postSocialLoginAPI(socialPlatform: "KAKAO", accessToken: accessToken, userName: nil)?.data
-//                    guard let isNewUser = result?.isNewUser else { return }
-//                    let nickname = result?.nickName ?? ""
-//                    if !isNewUser && !nickname.isEmpty {
-//                        self.userInfoPublisher.send(false)
-//                    } else {
-//                        self.userInfoPublisher.send(true)
-//                    }
-//                } catch {
-//                    print(error)
-//                }
-//            }
+            Task {
+                do {
+                    let result = try await self.postSocialLoginAPI(socialPlatform: "KAKAO", accessToken: accessToken, userName: nil)?.data
+                    guard let isNewUser = result?.isNewUser else { return }
+                    let nickname = result?.nickName ?? ""
+                    if isNewUser && nickname.isEmpty {
+                        // 신규 유저인 경우
+                        self.userInfoPublisher.send(true)
+                    } else {
+                        // 기존 유저인 경우
+                        self.userInfoPublisher.send(false)
+                        
+                        saveUserData(UserInfo(isSocialLogined: true,
+                                              isFirstUser: false,
+                                              isJoinedApp: true,
+                                              userNickname: nickname,
+                                              memberId: loadUserData()?.memberId ?? 0,
+                                              userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
+                                              fcmToken: loadUserData()?.fcmToken ?? "",
+                                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                    }
+                } catch {
+                    print(error)
+                }
+            }
         }
+    }
+}
+
+extension LoginViewModel {
+    private func postSocialLoginAPI(socialPlatform: String, accessToken: String, userName: String?) async throws -> BaseResponse<SocialLoginResponseDTO>? {
+        
+        let requestDTO = SocialLoginRequestDTO(socialPlatform: socialPlatform, userName: userName)
+        
+        do {
+            let data: BaseResponse<SocialLoginResponseDTO>? = try await self.networkProvider.donNetwork(
+                type: .post,
+                baseURL: Config.baseURL + "/auth",
+                accessToken: accessToken,
+                body: requestDTO,
+                pathVariables: ["":""])
+            print ("👻👻👻👻👻소셜로그인 서버통신👻👻👻👻👻")
+            
+            if data?.status == 400 {
+                print(NetworkError.badRequestError)
+            } else {
+                // UserInfo 구조체에 유저 정보 저장
+                let userNickname = data?.data?.nickName ?? ""
+                let isNewUser = data?.data?.isNewUser ?? true
+                let memberId = data?.data?.memberId ?? 0
+                let fcmToken = loadUserData()?.fcmToken
+                saveUserData(UserInfo(isSocialLogined: true,
+                                      isFirstUser: isNewUser,
+                                      isJoinedApp: false,
+                                      userNickname: userNickname,
+                                      memberId: memberId,
+                                      userProfileImage: StringLiterals.Network.baseImageURL,
+                                      fcmToken: fcmToken ?? "",
+                                      isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                // KeychainWrapper에 Access Token 저장
+                let accessToken = data?.data?.accessToken ?? ""
+                print(accessToken)
+                KeychainWrapper.saveToken(accessToken, forKey: "accessToken")
+                
+                // KeychainWrasapper에 Refresh Token 저장
+                let refreshToken = data?.data?.refreshToken ?? ""
+                KeychainWrapper.saveToken(refreshToken, forKey: "refreshToken")
+            }
+
+            return data
+        }
+        catch {
+            print(error)
+            return nil
+       }
     }
 }
 
@@ -115,25 +172,22 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
         if let fullName = credential.fullName,
            let identifyToken = credential.identityToken {
             let userName = (fullName.familyName ?? "") + (fullName.givenName ?? "")
-            
             if let accessToken = String(data: identifyToken, encoding: .utf8) {
                 // 애플로그인 서버통신
-                print("애플 로그인 accessToken: \(accessToken)")
-                self.userInfoPublisher.send(true)
-//                Task {
-//                    do {
-//                        let result = try await self.postSocialLoginAPI(socialPlatform: "APPLE", accessToken: accessToken ?? "", userName: userName)?.data
-//                        guard let isNewUser = result?.isNewUser else { return }
-//                        let nickname = result?.nickName ?? ""
-//                        if !isNewUser && !nickname.isEmpty {
-//                            self.userInfoPublisher.send(false)
-//                        } else {
-//                            self.userInfoPublisher.send(true)
-//                        }
-//                    } catch {
-//                        print(error)
-//                    }
-//                }
+                Task {
+                    do {
+                        let result = try await self.postSocialLoginAPI(socialPlatform: "APPLE", accessToken: accessToken ?? "", userName: userName)?.data
+                        guard let isNewUser = result?.isNewUser else { return }
+                        let nickname = result?.nickName ?? ""
+                        if !isNewUser && !nickname.isEmpty {
+                            self.userInfoPublisher.send(false)
+                        } else {
+                            self.userInfoPublisher.send(true)
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
             }
         }
     }
