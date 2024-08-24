@@ -19,6 +19,12 @@ final class JoinAgreementViewController: UIViewController {
     let privacyURL = URL(string: "https://www.notion.so/1681f9cae9de47858ee0997b4cea9c03")
     let advertisementURL = URL(string: "https://www.notion.so/0c70bf474acb487ab2b2ae957d975e51")
     
+    var memberNickname: String?
+    var memberLckYears: Int?
+    var memberFanTeam: String?
+    var memberDefaultProfileImage: String?
+    var memberProfileImage: UIImage?
+    
     private var cancelBag = CancelBag()
     private let viewModel: JoinAgreementViewModel
     
@@ -29,7 +35,20 @@ final class JoinAgreementViewController: UIViewController {
     private lazy var secondCheck = self.originView.secondCheckView.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var thirdCheck = self.originView.thirdCheckView.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var fourtchCheck = self.originView.fourthCheckView.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
-    private lazy var nextButtonTapped = self.originView.JoinCompleteActiveButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    private lazy var nextButtonTapped = self.originView.JoinCompleteActiveButton.publisher(for: .touchUpInside).map { _ in
+        return UserProfileUnionRequestDTO(
+            info: UserProfileRequestDTO(
+                nickname: self.memberNickname,
+                isAlarmAllowed: (self.originView.fourthCheckView.checkButton.currentImage == ImageLiterals.Button.btnCheckboxActive) ? true : false ,
+                memberIntro: "",
+                isPushAlarmAllowed: true,
+                fcmToken: "",
+                memberLckYears: self.memberLckYears,
+                memberFanTeam: self.memberFanTeam,
+                memberDefaultProfileImage: self.memberDefaultProfileImage),
+            file: self.memberProfileImage?.jpegData(compressionQuality: 0.8)!
+        )
+    }.eraseToAnyPublisher()
     
     // MARK: - UI Components
     

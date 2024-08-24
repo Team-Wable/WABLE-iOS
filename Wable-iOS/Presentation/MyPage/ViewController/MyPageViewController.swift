@@ -49,7 +49,7 @@ final class MyPageViewController: UIViewController {
             )
             let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
             rootView.myPageScrollView.setContentOffset(CGPoint(x: 0, y: -rootView.myPageScrollView.contentInset.top - navigationBarHeight - statusBarHeight), animated: true)
-//            rootView.myPagePostViewController.homeCollectionView.isScrollEnabled = true
+//            rootView.myPagePostViewController.homeFeedTableView.isScrollEnabled = true
             rootView.myPageScrollView.isScrollEnabled = true
         }
     }
@@ -88,13 +88,15 @@ final class MyPageViewController: UIViewController {
         setLayout()
         setDelegate()
         setAddTarget()
-        setRefreshControll()
+        bindViewModel()
+//        setRefreshControll()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        bindViewModel()
+//        bindViewModel()
+//        setRefreshControll()
         setNotification()
         
         self.tabBarController?.tabBar.isHidden = false
@@ -108,9 +110,8 @@ final class MyPageViewController: UIViewController {
         ]
         
         // 본인 프로필 화면
-        if true {
-//        if memberId == loadUserData()?.memberId ?? 0 {
-            self.navigationItem.title = "loadUserData()?.userNickname"
+        if memberId == loadUserData()?.memberId ?? 0 {
+            self.navigationItem.title = loadUserData()?.userNickname ?? ""
             self.tabBarController?.tabBar.isHidden = false
             
             let hambergerButtonImage = ImageLiterals.Button.btnHamberger.withRenderingMode(.alwaysOriginal)
@@ -153,6 +154,9 @@ final class MyPageViewController: UIViewController {
 extension MyPageViewController {
     private func setUI() {
         self.view.backgroundColor = .wableWhite
+        
+        self.rootView.myPageProfileView.profileImageView.load(url: loadUserData()?.userProfileImage ?? "")
+        self.rootView.myPageProfileView.userNickname.text = loadUserData()?.userNickname ?? ""
     }
     
     private func setHierarchy() {
@@ -224,7 +228,25 @@ extension MyPageViewController {
     }
     
     private func setRefreshControll() {
-        
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        rootView.myPageScrollView.refreshControl = refreshControl
+        refreshControl.tintColor = .wableWhite
+        refreshControl.backgroundColor = .wableWhite
+    }
+    
+    @objc
+    func refreshData() {
+        DispatchQueue.main.async {
+            self.contentCursor = -1
+            self.commentCursor = -1
+            self.bindViewModel()
+        }
+        self.perform(#selector(self.finishedRefreshing), with: nil, afterDelay: 0.1)
+    }
+    
+    @objc
+    func finishedRefreshing() {
+        refreshControl.endRefreshing()
     }
     
     func bindViewModel() {
@@ -232,7 +254,42 @@ extension MyPageViewController {
         
         let output = viewModel.transform(from: input, cancelBag: cancelBag)
         
+        output.getProfileData
+            .receive(on: RunLoop.main)
+            .sink { data in
+                print("getProfileData: \(data)")
+//                self.rootView.myPagePostViewController.profileData = self.viewModel.myPageProfileData
+//                self.rootView.myPageReplyViewController.profileData = self.viewModel.myPageProfileData
+                self.bindProfileData(data: data)
+            }
+            .store(in: self.cancelBag)
+        
         self.rootView.myPageProfileView.transparencyValue = -15
+    }
+    
+    private func bindProfileData(data: MypageProfileResponseDTO) {
+        print("bindProfileData: \(bindProfileData)")
+        self.rootView.myPageProfileView.profileImageView.load(url: data.memberProfileUrl)
+        self.rootView.myPageProfileView.userNickname.text = data.nickname
+//        self.rootView.myPageProfileView.userIntroduction.text = data.memberIntro
+        self.rootView.myPageProfileView.transparencyValue = data.memberGhost
+        
+        if data.memberId != loadUserData()?.memberId ?? 0 {
+//            self.rootView.myPagePostViewController.noContentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoContentOtherLabel
+//            self.rootView.myPageReplyViewController.noCommentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoCommentOtherLabel
+        } else {
+//            self.rootView.myPagePostViewController.noContentLabel.text = "\(data.nickname)" + StringLiterals.MyPage.myPageNoContentLabel
+//            self.rootView.myPageReplyViewController.noCommentLabel.text = StringLiterals.MyPage.myPageNoCommentLabel
+            
+            saveUserData(UserInfo(isSocialLogined: true,
+                                  isFirstUser: false,
+                                  isJoinedApp: true,
+                                  userNickname: data.nickname,
+                                  memberId: loadUserData()?.memberId ?? 0,
+                                  userProfileImage: data.memberProfileUrl,
+                                  fcmToken: loadUserData()?.fcmToken ?? "",
+                                  isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+        }
     }
     
     @objc
@@ -487,7 +544,7 @@ extension MyPageViewController: WablePopupDelegate {
             
             if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
                 DispatchQueue.main.async {
-                    let rootViewController = LoginViewController(viewModel: LoginViewModel())
+                    let rootViewController = LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService()))
                     sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: rootViewController)
                 }
             }
@@ -495,7 +552,6 @@ extension MyPageViewController: WablePopupDelegate {
             saveUserData(UserInfo(isSocialLogined: false,
                                   isFirstUser: false,
                                   isJoinedApp: true,
-                                  isOnboardingFinished: true,
                                   userNickname: loadUserData()?.userNickname ?? "",
                                   memberId: loadUserData()?.memberId ?? 0,
                                   userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,

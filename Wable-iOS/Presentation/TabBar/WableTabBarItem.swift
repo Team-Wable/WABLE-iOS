@@ -46,7 +46,7 @@ enum WableTabBarItem: CaseIterable {
         case .home: return HomeViewController(viewModel: HomeViewModel())
         case .info: return InfoViewController()
         case .noti: return NotificationViewController()
-        case .my: return MyPageViewController(viewModel: MyPageViewModel())
+        case .my: return MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()))
         }
     }
 }

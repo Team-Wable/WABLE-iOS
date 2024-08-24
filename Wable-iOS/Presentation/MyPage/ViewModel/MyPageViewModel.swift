@@ -11,19 +11,19 @@ import Foundation
 final class MyPageViewModel: ViewModelType {
     
     private let cancelBag = CancelBag()
-//    private let networkProvider: NetworkServiceType
+    private let networkProvider: NetworkServiceType
 //    
-//    private var getProfileData = PassthroughSubject<MypageProfileResponseDTO, Never>()
-//    private var getContentData = PassthroughSubject<[MyPageMemberContentResponseDTO], Never>()
-//    private var getCommentData = PassthroughSubject<[MyPageMemberCommentResponseDTO], Never>()
+    private var getProfileData = PassthroughSubject<MypageProfileResponseDTO, Never>()
+    private var getContentData = PassthroughSubject<[MyPageMemberContentResponseDTO], Never>()
+    private var getCommentData = PassthroughSubject<[MyPageMemberCommentResponseDTO], Never>()
 //    
-//    var myPageProfileData: [MypageProfileResponseDTO] = []
+    var myPageProfileData: [MypageProfileResponseDTO] = []
 //    
-//    var myPageContentData: [MyPageMemberContentResponseDTO] = []
-//    var myPageContentDatas: [MyPageMemberContentResponseDTO] = []
-//    
-//    var myPageCommentData: [MyPageMemberCommentResponseDTO] = []
-//    var myPageCommentDatas: [MyPageMemberCommentResponseDTO] = []
+    var myPageContentData: [MyPageMemberContentResponseDTO] = []
+    var myPageContentDatas: [MyPageMemberContentResponseDTO] = []
+    
+    var myPageCommentData: [MyPageMemberCommentResponseDTO] = []
+    var myPageCommentDatas: [MyPageMemberCommentResponseDTO] = []
     
     private var memberId: Int = 0
     var contentCursor: Int = -1
@@ -34,9 +34,9 @@ final class MyPageViewModel: ViewModelType {
     }
     
     struct Output {
-//        let getProfileData: PassthroughSubject<MypageProfileResponseDTO, Never>
-//        let getContentData: PassthroughSubject<[MyPageMemberContentResponseDTO], Never>
-//        let getCommentData: PassthroughSubject<[MyPageMemberCommentResponseDTO], Never>
+        let getProfileData: PassthroughSubject<MypageProfileResponseDTO, Never>
+        let getContentData: PassthroughSubject<[MyPageMemberContentResponseDTO], Never>
+        let getCommentData: PassthroughSubject<[MyPageMemberCommentResponseDTO], Never>
     }
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
@@ -44,19 +44,20 @@ final class MyPageViewModel: ViewModelType {
             .sink { [self] value in
                 if value.0 == 1 {
                     // 유저 프로필 조회 API
-//                    Task {
-//                        do {
-//                            if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
-//                                let profileResult = try await self.getProfileInfoAPI(accessToken: accessToken, memberId: value.1)
-//                                if let data = profileResult?.data {
-//                                    self.myPageProfileData.append(data)
-//                                    self.getProfileData.send(data)
-//                                }
-//                            }
-//                        } catch {
-//                            print(error)
-//                        }
-//                    }
+                    Task {
+                        do {
+                            if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                                let profileResult = try await self.getProfileInfoAPI(accessToken: accessToken, memberId: value.1)
+                                if let data = profileResult?.data {
+                                    print("data: \(data)")
+                                    self.myPageProfileData.append(data)
+                                    self.getProfileData.send(data)
+                                }
+                            }
+                        } catch {
+                            print(error)
+                        }
+                    }
                     
                     // 유저에 해당하는 게시글 리스트 조회
 //                    Task {
@@ -92,38 +93,37 @@ final class MyPageViewModel: ViewModelType {
             }
             .store(in: self.cancelBag)
         
-        return Output()
-        
-//        return Output(getProfileData: getProfileData,
-//                      getContentData: getContentData,
-//                      getCommentData: getCommentData)
+        return Output(getProfileData: getProfileData,
+                      getContentData: getContentData,
+                      getCommentData: getCommentData)
     }
     
-//    init(networkProvider: NetworkServiceType) {
-//        self.networkProvider = networkProvider
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
+    init(networkProvider: NetworkServiceType) {
+        self.networkProvider = networkProvider
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
-//
-//extension MyPageViewModel {
-//    private func getProfileInfoAPI(accessToken: String, memberId: Int) async throws -> BaseResponse<MypageProfileResponseDTO>? {
-//        do {
-//            let result: BaseResponse<MypageProfileResponseDTO>? = try await self.networkProvider.donNetwork(
-//                type: .get,
-//                baseURL: Config.baseURL + "/viewmember/\(memberId)",
-//                accessToken: accessToken,
-//                body: EmptyBody(),
-//                pathVariables: ["":""])
-//            UserDefaults.standard.set(result?.data?.memberGhost ?? 0, forKey: "memberGhost")
-//            return result
-//        } catch {
-//            return nil
-//        }
-//    }
-//    
+
+extension MyPageViewModel {
+    private func getProfileInfoAPI(accessToken: String, memberId: Int) async throws -> BaseResponse<MypageProfileResponseDTO>? {
+        do {
+            let result: BaseResponse<MypageProfileResponseDTO>? = try await self.networkProvider.donNetwork(
+                type: .get,
+                baseURL: Config.baseURL + "/viewmember/\(memberId)",
+                accessToken: accessToken,
+                body: EmptyBody(),
+                pathVariables: ["":""])
+            print("result: \(result?.data)")
+            UserDefaults.standard.set(result?.data?.memberGhost ?? 0, forKey: "memberGhost")
+            return result
+        } catch {
+            return nil
+        }
+    }
+    
 //    private func getMemberContentAPI(accessToken: String, memberId: Int, contentCursor: Int) async throws -> BaseResponse<[MyPageMemberContentResponseDTO]>? {
 //        do {
 //            let result: BaseResponse<[MyPageMemberContentResponseDTO]>? = try await self.networkProvider.donNetwork(
@@ -197,4 +197,4 @@ final class MyPageViewModel: ViewModelType {
 //            return nil
 //        }
 //    }
-//}
+}
