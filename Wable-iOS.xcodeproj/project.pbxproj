@@ -43,6 +43,9 @@
 		050E0CF62C75102A00326EEA /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CF52C75102A00326EEA /* NotificationTableViewCell.swift */; };
 		050E0CF92C7516C900326EEA /* InfoNotificationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CF82C7516C800326EEA /* InfoNotificationDTO.swift */; };
 		050E0CFC2C751A5C00326EEA /* ActivityNotificationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CFB2C751A5C00326EEA /* ActivityNotificationDTO.swift */; };
+		050E0D002C77341A00326EEA /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CFF2C77341900326EEA /* HomeRouter.swift */; };
+		050E0D022C77372F00326EEA /* HomeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D012C77372F00326EEA /* HomeAPI.swift */; };
+		050E0D042C773D0700326EEA /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D032C773D0700326EEA /* UIImageView+.swift */; };
 		0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4992C60D968001E3039 /* AppDelegate.swift */; };
 		0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49B2C60D968001E3039 /* SceneDelegate.swift */; };
 		0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A22C60D96B001E3039 /* Assets.xcassets */; };
@@ -153,6 +156,9 @@
 		050E0CF52C75102A00326EEA /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		050E0CF82C7516C800326EEA /* InfoNotificationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNotificationDTO.swift; sourceTree = "<group>"; };
 		050E0CFB2C751A5C00326EEA /* ActivityNotificationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotificationDTO.swift; sourceTree = "<group>"; };
+		050E0CFF2C77341900326EEA /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
+		050E0D012C77372F00326EEA /* HomeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAPI.swift; sourceTree = "<group>"; };
+		050E0D032C773D0700326EEA /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
 		0547F4962C60D968001E3039 /* Wable-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wable-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0547F4992C60D968001E3039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0547F49B2C60D968001E3039 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -243,6 +249,8 @@
 			isa = PBXGroup;
 			children = (
 				050E0CA82C74B79E00326EEA /* ResponseDTO */,
+				050E0CFF2C77341900326EEA /* HomeRouter.swift */,
+				050E0D012C77372F00326EEA /* HomeAPI.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -477,6 +485,7 @@
 				3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */,
 				050E0CA32C74B35500326EEA /* UIApplication+.swift */,
 				050E0CA52C74B70800326EEA /* UIButton+.swift */,
+				050E0D032C773D0700326EEA /* UIImageView+.swift */,
 			);
 			path = Extention;
 			sourceTree = "<group>";
@@ -850,7 +859,9 @@
 				3C3531922C6F1AEA0015A8FA /* LoginViewController.swift in Sources */,
 				0547F4DB2C624821001E3039 /* SuccessResponse.swift in Sources */,
 				3CDE2DF62C6F4170004A84CB /* JoinLCKYearView.swift in Sources */,
+				050E0D002C77341A00326EEA /* HomeRouter.swift in Sources */,
 				0547F4D52C624739001E3039 /* ErrorResponse.swift in Sources */,
+				050E0D042C773D0700326EEA /* UIImageView+.swift in Sources */,
 				050E0CCB2C74B94800326EEA /* FeedDetailViewController.swift in Sources */,
 				0547F4F52C64C76A001E3039 /* HomeViewController.swift in Sources */,
 				0547F4D72C624797001E3039 /* NetworkResult.swift in Sources */,
@@ -888,6 +899,7 @@
 				3CDE2E1D2C723325004A84CB /* NotificationSegmentedControl.swift in Sources */,
 				050E0CB52C74B85800326EEA /* HomeView.swift in Sources */,
 				3C3531842C6F16D00015A8FA /* Config.swift in Sources */,
+				050E0D022C77372F00326EEA /* HomeAPI.swift in Sources */,
 				050E0CDF2C74C8B400326EEA /* MatchSessionTableViewCell.swift in Sources */,
 				0547F4C02C62166C001E3039 /* Adjusted+.swift in Sources */,
 				3CDE2DE62C6F30BA004A84CB /* JoinAgreementViewController.swift in Sources */,
@@ -959,6 +971,7 @@
 /* Begin XCBuildConfiguration section */
 		0547F4A82C60D96B001E3039 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 050E0CD22C74BA4B00326EEA /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1022,6 +1035,7 @@
 		};
 		0547F4A92C60D96B001E3039 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 050E0CD22C74BA4B00326EEA /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1078,6 +1092,7 @@
 		};
 		0547F4AB2C60D96B001E3039 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 050E0CD22C74BA4B00326EEA /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1112,6 +1127,7 @@
 		};
 		0547F4AC2C60D96B001E3039 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 050E0CD22C74BA4B00326EEA /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
