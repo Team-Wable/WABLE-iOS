@@ -17,7 +17,7 @@ class BaseAPI {
         guard let decodedData = try? decoder.decode(SuccessResponse<T>.self, from: data)
         else {
             print("👻👻👻 디코딩 실패입니다. 명세서를 다시 보심이 어떠한지? 👻👻👻")
-            return .pathErr
+            return .decodedErr
         }
 
         // 엑세스토큰 만료되면 뜨는 에러코드 따로 분리

@@ -13,63 +13,69 @@ final class HomeViewController: UIViewController {
     // MARK: - Properties
     
     let dummyData: [HomeFeedDTO] = [HomeFeedDTO(memberID: 0,
-                                                        memberProfileURL: "",
-                                                        memberNickname: "냐옹",
-                                                        contentID: 1,
-                                                        contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!)여기서끝인줄 알았다면 아주 만만의 콩떡이시다 나는 여기서 더더더더덛 긴 글을 한번 써볼건데 내 생각으로는 안될 것 같다는 느낌느낌.... 아니 얘는 또 잘 되자나.... ",
-                                                        time: "2024-01-10 11:47:18",
-                                                        isGhost: false,
-                                                        memberGhost: 0,
-                                                        isLiked: false,
-                                                        likedNumber: 10,
-                                                        commentNumber: 22,
-                                                        isDeleted: false,
-                                                        contentImageURL: "",
-                                                        memberFanTeam: "DRX"),
-                                        HomeFeedDTO(memberID: 0,
-                                                        memberProfileURL: "",
-                                                        memberNickname: "먀옹",
-                                                        contentID: 1,
-                                                        contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) ",
-                                                        time: "2024-01-10 11:47:18",
-                                                        isGhost: false,
-                                                        memberGhost: 0,
-                                                        isLiked: false,
-                                                        likedNumber: 9,
-                                                        commentNumber: 8,
-                                                        isDeleted: false,
-                                                        contentImageURL: "",
-                                                        memberFanTeam: "T1"),
-                                        HomeFeedDTO(memberID: 0,
-                                                        memberProfileURL: "",
-                                                        memberNickname: "뭐임마",
-                                                        contentID: 1,
-                                                        contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) 어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) 어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) ",
-                                                        time: "2024-01-10 11:47:18",
-                                                        isGhost: false,
-                                                        memberGhost: 0,
-                                                        isLiked: false,
-                                                        likedNumber: 4,
-                                                        commentNumber: 93,
-                                                        isDeleted: false,
-                                                        contentImageURL: nil,
-                                                        memberFanTeam: "GEN"),
-                                        HomeFeedDTO(memberID: 0,
-                                                        memberProfileURL: "",
-                                                        memberNickname: "냐옹",
-                                                        contentID: 1,
-                                                        contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) ",
-                                                        time: "2024-01-10 11:47:18",
-                                                        isGhost: false,
-                                                        memberGhost: 0,
-                                                        isLiked: false,
-                                                        likedNumber: 10,
-                                                        commentNumber: 22,
-                                                        isDeleted: false,
-                                                        contentImageURL: "",
-                                                        memberFanTeam: "DRX")
-                                        
+                                                memberProfileURL: "",
+                                                memberNickname: "냐옹",
+                                                contentID: 1,
+                                                contentTitle: "이건 타이틀입니다~",
+                                                contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!)여기서끝인줄 알았다면 아주 만만의 콩떡이시다 나는 여기서 더더더더덛 긴 글을 한번 써볼건데 내 생각으로는 안될 것 같다는 느낌느낌.... 아니 얘는 또 잘 되자나.... ",
+                                                time: "2024-01-10 11:47:18",
+                                                isGhost: false,
+                                                memberGhost: 0,
+                                                isLiked: false,
+                                                likedNumber: 10,
+                                                commentNumber: 22,
+                                                isDeleted: false,
+                                                contentImageURL: "",
+                                                memberFanTeam: "DRX"),
+                                    HomeFeedDTO(memberID: 0,
+                                                memberProfileURL: "",
+                                                memberNickname: "먀옹",
+                                                contentID: 1,
+                                                contentTitle: "저건 타이틀입니다~",
+                                                contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) ",
+                                                time: "2024-01-10 11:47:18",
+                                                isGhost: false,
+                                                memberGhost: 0,
+                                                isLiked: false,
+                                                likedNumber: 9,
+                                                commentNumber: 8,
+                                                isDeleted: false,
+                                                contentImageURL: "",
+                                                memberFanTeam: "T1"),
+                                    HomeFeedDTO(memberID: 0,
+                                                memberProfileURL: "",
+                                                memberNickname: "뭐임마",
+                                                contentID: 1,
+                                                contentTitle: "개발하기실타~",
+                                                contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) 어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) 어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) ",
+                                                time: "2024-01-10 11:47:18",
+                                                isGhost: false,
+                                                memberGhost: 0,
+                                                isLiked: false,
+                                                likedNumber: 4,
+                                                commentNumber: 93,
+                                                isDeleted: false,
+                                                contentImageURL: nil,
+                                                memberFanTeam: "GEN"),
+                                    HomeFeedDTO(memberID: 0,
+                                                memberProfileURL: "",
+                                                memberNickname: "냐옹",
+                                                contentID: 1,
+                                                contentTitle: "개발 그만하고싶다~~",
+                                                contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) ",
+                                                time: "2024-01-10 11:47:18",
+                                                isGhost: false,
+                                                memberGhost: 0,
+                                                isLiked: false,
+                                                likedNumber: 10,
+                                                commentNumber: 22,
+                                                isDeleted: false,
+                                                contentImageURL: "",
+                                                memberFanTeam: "DRX")
+                                    
     ]
+    
+    var feedData: [HomeFeedDTO] = []
     
     private let viewModel: HomeViewModel
     private var cancellables = Set<AnyCancellable>()
@@ -106,8 +112,13 @@ final class HomeViewController: UIViewController {
         setLayout()
         setDelegate()
         setRefreshControl()
-
+        
         bindViewModel()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.viewWillAppear.send()
     }
 }
 
@@ -140,7 +151,7 @@ extension HomeViewController {
                 let feedDetailViewController = FeedDetailViewController()
                 feedDetailViewController.hidesBottomBarWhenPushed = true
                 
-                if let data = self?.dummyData[index] {
+                if let data = self?.feedData[index] {
                     feedDetailViewController.getFeedData(data: data)
                 }
                 
@@ -149,16 +160,24 @@ extension HomeViewController {
             .store(in: &cancellables)
         
         writeButtonDidTapped
-                .sink { [weak self] in
-                    self?.viewModel.pushToWriteViewControllr.send()
-                }
-                .store(in: &cancellables)
+            .sink { [weak self] in
+                self?.viewModel.pushToWriteViewControllr.send()
+            }
+            .store(in: &cancellables)
         
         viewModel.pushToWriteViewControllr
             .sink { [weak self] in
                 let writeViewController = WriteViewController(viewModel: WriteViewModel())
                 writeViewController.hidesBottomBarWhenPushed = true
                 self?.navigationController?.pushViewController(writeViewController, animated: true)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.homeFeedDTO
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] data in
+                self?.feedData = data
+                self?.homeView.feedTableView.reloadData()
             }
             .store(in: &cancellables)
     }
@@ -197,18 +216,18 @@ extension HomeViewController {
     private func finishedRefreshing() {
         self.refreshControl.endRefreshing()
     }
-
+    
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dummyData.count
+        return feedData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = homeView.feedTableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.identifier, for: indexPath) as? HomeFeedTableViewCell ?? HomeFeedTableViewCell()
         cell.selectionStyle = .none
-        cell.bind(data: dummyData[indexPath.row])
+        cell.bind(data: feedData[indexPath.row])
         
         cell.bottomView.commentButtonTapped = { [weak self] in
             self?.viewModel.commentButtonTapped.send(indexPath.row)
@@ -232,13 +251,13 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailViewController = FeedDetailViewController()
         detailViewController.hidesBottomBarWhenPushed = true
-        detailViewController.getFeedData(data: dummyData[indexPath.row])
+        detailViewController.getFeedData(data: feedData[indexPath.row])
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
 
 extension HomeViewController: WablePopupDelegate {
-
+    
     func cancleButtonTapped() {
         self.ghostPopupView?.removeFromSuperview()
     }
