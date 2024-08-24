@@ -22,6 +22,10 @@ final class JoinLCKTeamViewController: UIViewController {
     private lazy var noLCKTeamButtonTapped = self.originView.noLCKTeamButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var nextButtonTapped = self.originView.nextButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     
+    var memberLckYears: Int?
+    var memberFanTeam: String?
+    var memberDefaultProfileImage: String?
+    
     // MARK: - UI Components
     
     private var navigationBackButton = BackButton()
@@ -111,11 +115,15 @@ extension JoinLCKTeamViewController {
                     self.navigationController?.popViewController(animated: true)
                 } else if value == 1 {
                     // LCK 팀을 고른 경우
-                    let viewController = JoinProfileViewController(viewModel: JoinProfileViewModel())
+                    let viewController = JoinProfileViewController(viewModel: JoinProfileViewModel(networkProvider: NetworkService()))
+                    viewController.memberLckYears = self.memberLckYears
+                    viewController.memberFanTeam = self.originView.selectedButton?.titleLabel?.text
                     self.navigationController?.pushViewController(viewController, animated: true)
                 } else {
                     // LCK 팀 고르지 않은 경우
-                    let viewController = JoinProfileViewController(viewModel: JoinProfileViewModel())
+                    let viewController = JoinProfileViewController(viewModel: JoinProfileViewModel(networkProvider: NetworkService()))
+                    viewController.memberLckYears = self.memberLckYears
+                    viewController.memberFanTeam = "LCK"
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }
             }

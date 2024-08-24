@@ -34,10 +34,7 @@ final class JoinProfileView: UIView {
     
     let profileImage: UIImageView = {
         let profileImage = UIImageView()
-        profileImage.image = ImageLiterals.Button.btnWrite
-        profileImage.contentMode = .scaleAspectFill
-        profileImage.layer.cornerRadius = profileImage.frame.size.width / 2
-        profileImage.clipsToBounds = true
+        profileImage.image = ImageLiterals.Image.imgProfile1
         return profileImage
     }()
     

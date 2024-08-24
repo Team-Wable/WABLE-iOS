@@ -12,8 +12,17 @@ final class JoinProfileViewModel: ViewModelType {
     
     private let cancelBag = CancelBag()
     
+    private let networkProvider: NetworkServiceType
     private let pushOrPopViewController = PassthroughSubject<Int, Never>()
     private let isNotDuplicated = PassthroughSubject<Bool, Never>()
+    
+    init(networkProvider: NetworkServiceType) {
+        self.networkProvider = networkProvider
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     struct Input {
         let backButtonTapped: AnyPublisher<Void, Never>
@@ -41,20 +50,19 @@ final class JoinProfileViewModel: ViewModelType {
         
         input.duplicationCheckButtonTapped
             .sink { value in
-                self.isNotDuplicated.send(true)
                 // 닉네임 중복체크 서버통신
-//                Task {
-//                    do {
-//                        let statusCode = try await self.getNicknameDuplicationAPI(nickname: value)?.status ?? 200
-//                        if statusCode == 200 {
-//                            self.isNotDuplicated.send(true)
-//                        } else {
-//                            self.isNotDuplicated.send(false)
-//                        }
-//                    } catch {
-//                        print(error)
-//                    }
-//                }
+                Task {
+                    do {
+                        let statusCode = try await self.getNicknameDuplicationAPI(nickname: value)?.status ?? 200
+                        if statusCode == 200 {
+                            self.isNotDuplicated.send(true)
+                        } else {
+                            self.isNotDuplicated.send(false)
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
             }
             .store(in: self.cancelBag)
         
@@ -62,3 +70,24 @@ final class JoinProfileViewModel: ViewModelType {
                       isEnable: isNotDuplicated)
     }
 }
+
+// MARK: - Network
+
+extension JoinProfileViewModel {
+    private func getNicknameDuplicationAPI(nickname: String) async throws -> BaseResponse<EmptyResponse>? {
+        do {
+            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
+            let data: BaseResponse<EmptyResponse>? = try await self.networkProvider.donNetwork(
+                type: .get,
+                baseURL: Config.baseURL + "/nickname-validation",
+                accessToken: accessToken,
+                body: EmptyBody(),
+                pathVariables: ["nickname":nickname])
+            print ("👻👻👻👻👻닉네임 중복 체크👻👻👻👻👻")
+            return data
+        } catch {
+            return nil
+        }
+    }
+}
+
