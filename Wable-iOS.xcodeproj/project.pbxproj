@@ -45,7 +45,6 @@
 		050E0CFC2C751A5C00326EEA /* ActivityNotificationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CFB2C751A5C00326EEA /* ActivityNotificationDTO.swift */; };
 		050E0D002C77341A00326EEA /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CFF2C77341900326EEA /* HomeRouter.swift */; };
 		050E0D022C77372F00326EEA /* HomeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D012C77372F00326EEA /* HomeAPI.swift */; };
-		050E0D042C773D0700326EEA /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D032C773D0700326EEA /* UIImageView+.swift */; };
 		0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4992C60D968001E3039 /* AppDelegate.swift */; };
 		0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49B2C60D968001E3039 /* SceneDelegate.swift */; };
 		0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A22C60D96B001E3039 /* Assets.xcassets */; };
@@ -158,7 +157,6 @@
 		050E0CFB2C751A5C00326EEA /* ActivityNotificationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotificationDTO.swift; sourceTree = "<group>"; };
 		050E0CFF2C77341900326EEA /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		050E0D012C77372F00326EEA /* HomeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAPI.swift; sourceTree = "<group>"; };
-		050E0D032C773D0700326EEA /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
 		0547F4962C60D968001E3039 /* Wable-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wable-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0547F4992C60D968001E3039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0547F49B2C60D968001E3039 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -485,7 +483,6 @@
 				3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */,
 				050E0CA32C74B35500326EEA /* UIApplication+.swift */,
 				050E0CA52C74B70800326EEA /* UIButton+.swift */,
-				050E0D032C773D0700326EEA /* UIImageView+.swift */,
 			);
 			path = Extention;
 			sourceTree = "<group>";
@@ -861,7 +858,6 @@
 				3CDE2DF62C6F4170004A84CB /* JoinLCKYearView.swift in Sources */,
 				050E0D002C77341A00326EEA /* HomeRouter.swift in Sources */,
 				0547F4D52C624739001E3039 /* ErrorResponse.swift in Sources */,
-				050E0D042C773D0700326EEA /* UIImageView+.swift in Sources */,
 				050E0CCB2C74B94800326EEA /* FeedDetailViewController.swift in Sources */,
 				0547F4F52C64C76A001E3039 /* HomeViewController.swift in Sources */,
 				0547F4D72C624797001E3039 /* NetworkResult.swift in Sources */,
