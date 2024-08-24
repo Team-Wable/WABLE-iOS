@@ -10,7 +10,7 @@ import Foundation
 
 final class MyPageSignOutConfirmViewModel: ViewModelType {
     private let cancelBag = CancelBag()
-//    private let networkProvider: NetworkServiceType
+    private let networkProvider: NetworkServiceType
     
     private let pushOrPopViewController = PassthroughSubject<Int, Never>()
     private let isEnabled = PassthroughSubject<Bool, Never>()
@@ -60,11 +60,30 @@ final class MyPageSignOutConfirmViewModel: ViewModelType {
                       isSignOutResult: isSignOutResult)
     }
     
-//    init(networkProvider: NetworkServiceType) {
-//        self.networkProvider = networkProvider
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
+    init(networkProvider: NetworkServiceType) {
+        self.networkProvider = networkProvider
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension MyPageSignOutReasonViewModel {
+//    private func deleteMemberAPI(accessToken: String, deletedReason: String) async throws -> BaseResponse<[EmptyResponse]>? {
+//        
+//        let requestDTO = MyPageMemberDeleteDTO(deleted_reason: deletedReason)
+//        
+//        do {
+//            let result: BaseResponse<[EmptyResponse]>? = try await self.networkProvider.donNetwork(
+//                type: .patch,
+//                baseURL: Config.baseURL + "/withdrawal",
+//                accessToken: accessToken,
+//                body: requestDTO,
+//                pathVariables:["":""])
+//            return result
+//        } catch {
+//            return nil
+//        }
 //    }
 }
