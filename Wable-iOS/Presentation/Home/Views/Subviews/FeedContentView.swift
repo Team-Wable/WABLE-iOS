@@ -31,7 +31,6 @@ final class FeedContentView: UIView {
     
     private var photoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = ImageLiterals.Logo.logoSymbolLarge
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 8
         return imageView
@@ -82,7 +81,9 @@ extension FeedContentView {
     func bind(title: String, content: String, image: String?) {
         titleLabel.text = title
         contentLabel.text = content
-        if let image = image {
+        photoImageView.kfSetImage(url: image)
+        if image != "" {
+            photoImageView.isHidden = false
             photoImageView.snp.remakeConstraints {
                 $0.height.equalTo(192.adjusted)
                 $0.width.equalTo(343.adjusted)

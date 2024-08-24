@@ -55,6 +55,11 @@ final class HomeFeedTableViewCell: UITableViewCell{
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        feedContentView = FeedContentView()
+    }
+    
     // MARK: - Functions
 
     private func setHierarchy() {
@@ -119,7 +124,7 @@ final class HomeFeedTableViewCell: UITableViewCell{
                       ghostPercent: data.memberGhost,
                       time: data.time)
         
-        feedContentView.bind(title: "내가 S면 넌 나의 N이 되어줘",
+        feedContentView.bind(title: data.contentTitle,
                              content: data.contentText,
                              image: data.contentImageURL)
         
