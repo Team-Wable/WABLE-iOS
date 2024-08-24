@@ -9,10 +9,9 @@ import Foundation
 
 struct HomeFeedDTO: Codable {
     let memberID: Int
-    let memberProfileURL: String
-    let memberNickname: String
+    let memberProfileURL, memberNickname: String
     let contentID: Int
-    let contentText, time: String
+    let contentTitle, contentText, time: String
     let isGhost: Bool
     let memberGhost: Int
     let isLiked: Bool
@@ -26,7 +25,7 @@ struct HomeFeedDTO: Codable {
         case memberProfileURL = "memberProfileUrl"
         case memberNickname
         case contentID = "contentId"
-        case contentText, time, isGhost, memberGhost, isLiked, likedNumber, commentNumber, isDeleted
+        case contentTitle, contentText, time, isGhost, memberGhost, isLiked, likedNumber, commentNumber, isDeleted
         case contentImageURL = "contentImageUrl"
         case memberFanTeam
     }
