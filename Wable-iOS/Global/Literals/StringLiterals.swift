@@ -75,4 +75,10 @@ enum StringLiterals {
         static let lckSummer = "2024 LCK Summer"
         static let today = "TODAY "
     }
+    
+    enum Endpoint {
+        enum Home {
+            static let getContent = "api/v2/contents"
+        }
+    }
 }
