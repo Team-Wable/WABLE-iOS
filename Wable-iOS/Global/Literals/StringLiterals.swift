@@ -155,7 +155,7 @@ enum StringLiterals {
     
     enum Endpoint {
         enum Home {
-            static let getContent = "api/v2/contents"
+            static let getContent = "v2/contents"
         }
     }
 }

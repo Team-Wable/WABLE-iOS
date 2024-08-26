@@ -169,7 +169,7 @@ final class JoinAgreementViewModel: ViewModelType {
 
 extension JoinAgreementViewModel {
     func patchUserInfoDataAPI(nickname: String, isAlarmAllowed: Bool, memberLckYears: Int, memberFanTeam: String, memberDefaultProfileImage: String, profileImage: Data?) {
-        guard let url = URL(string: Config.baseURL + "/user-profile2") else { return }
+        guard let url = URL(string: Config.baseURL + "v1/user-profile2") else { return }
         guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
         
         let parameters: [String: Any] = [

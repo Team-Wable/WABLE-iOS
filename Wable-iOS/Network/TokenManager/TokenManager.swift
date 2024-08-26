@@ -11,7 +11,7 @@ final class TokenManager {
     
     func checkToken(accessToken: String, refreshToken: String) -> URLRequest {
         
-        let urlString = Config.baseURL + "/auth/token"
+        let urlString = Config.baseURL + "v1/auth/token"
         
         // URL 생성
         guard let url = URL(string: urlString) else {

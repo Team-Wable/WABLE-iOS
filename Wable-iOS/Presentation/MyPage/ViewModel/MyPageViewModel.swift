@@ -112,7 +112,7 @@ extension MyPageViewModel {
         do {
             let result: BaseResponse<MypageProfileResponseDTO>? = try await self.networkProvider.donNetwork(
                 type: .get,
-                baseURL: Config.baseURL + "/viewmember/\(memberId)",
+                baseURL: Config.baseURL + "v1/viewmember/\(memberId)",
                 accessToken: accessToken,
                 body: EmptyBody(),
                 pathVariables: ["":""])
