@@ -299,7 +299,7 @@ extension FeedDetailViewController: UITableViewDataSource {
             cell.bind(data: feedData ?? HomeFeedDTO(memberID: 0,
                                                     memberProfileURL: "",
                                                     memberNickname: "다시하세요",
-                                                    contentID: 0,
+                                                    contentID: 0, contentTitle: "contentTitle",
                                                     contentText: "",
                                                     time: "다시해",
                                                     isGhost: false,

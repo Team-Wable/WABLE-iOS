@@ -81,7 +81,7 @@ extension FeedContentView {
     func bind(title: String, content: String, image: String?) {
         titleLabel.text = title
         contentLabel.text = content
-        photoImageView.kfSetImage(url: image)
+        photoImageView.load(url: image ?? "")
         if image != "" {
             photoImageView.isHidden = false
             photoImageView.snp.remakeConstraints {
