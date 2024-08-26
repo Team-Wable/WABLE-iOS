@@ -121,7 +121,7 @@ extension LoginViewModel {
         do {
             let data: BaseResponse<SocialLoginResponseDTO>? = try await self.networkProvider.donNetwork(
                 type: .post,
-                baseURL: Config.baseURL + "/auth",
+                baseURL: Config.baseURL + "v1/auth",
                 accessToken: accessToken,
                 body: requestDTO,
                 pathVariables: ["":""])
