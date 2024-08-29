@@ -35,8 +35,12 @@ final class WriteViewModel: ViewModelType {
         input.postButtonTapped
             .sink { value in
                 Task {
-                    self.postWriteContentAPI(contentTitle: value.contentTitle, contentText: value.contentText, photoImage: value.photoImage)
-                    self.pushOrPopViewController.send(1)
+                    do {
+                        try await self.postWriteContentAPI(contentTitle: value.contentTitle, contentText: value.contentText, photoImage: value.photoImage)
+                        self.pushOrPopViewController.send(1)
+                    } catch {
+                        print("Error posting content:", error)
+                    }
                 }
             }
             .store(in: cancelBag)
@@ -54,7 +58,7 @@ final class WriteViewModel: ViewModelType {
 }
 
 extension WriteViewModel {
-    private func postWriteContentAPI(contentTitle: String, contentText: String, photoImage: UIImage?) {
+    private func postWriteContentAPI(contentTitle: String, contentText: String, photoImage: UIImage?) async throws {
         guard let url = URL(string: Config.baseURL + "v2/content") else { return }
         guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
         
