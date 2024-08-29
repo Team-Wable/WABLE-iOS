@@ -22,7 +22,12 @@ final class WriteViewController: UIViewController {
     private var transparency: Int = 0
     
     private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
-    private lazy var postButtonTapped = self.rootView.writeTextView.postButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    private lazy var postButtonTapped = self.rootView.writeTextView.postButton.publisher(for: .touchUpInside).map { _ in
+        return WriteContentImageRequestDTO(
+            contentTitle: self.rootView.writeTextView.titleTextField.text ?? "",
+            contentText: self.rootView.writeTextView.contentTextView.text,
+            photoImage: self.rootView.writeTextView.photoImageView.image)
+    }.eraseToAnyPublisher()
     
     // MARK: - UI Components
     
@@ -126,22 +131,6 @@ extension WriteViewController {
     
     private func WriteCompleted() {
         NotificationCenter.default.post(name: WriteViewController.showWriteToastNotification, object: nil, userInfo: ["showToast": true])
-    }
-    
-    private func popupNavigation() {
-//        self.tabBarController?.selectedIndex = 0
-//        if let selectedViewController = self.tabBarController?.selectedViewController {
-//            self.applyTabBarAttributes(to: selectedViewController.tabBarItem, isSelected: true)
-//        }
-//        let myViewController = self.tabBarController?.viewControllers ?? [UIViewController()]
-//        for (index, controller) in myViewController.enumerated() {
-//            if let tabBarItem = controller.tabBarItem {
-//                if index != self.tabBarController?.selectedIndex {
-//                    self.applyTabBarAttributes(to: tabBarItem, isSelected: false)
-//                }
-//            }
-//        }
-        self.navigationController?.popViewController(animated: false)
     }
     
     @objc private func photoButtonTapped() {
