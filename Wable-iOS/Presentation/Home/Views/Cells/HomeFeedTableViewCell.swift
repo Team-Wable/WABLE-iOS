@@ -57,10 +57,10 @@ final class HomeFeedTableViewCell: UITableViewCell{
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        feedContentView = FeedContentView()
-    }
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        feedContentView = FeedContentView()
+//    }
     
     // MARK: - Functions
 
