@@ -21,19 +21,19 @@ final class FeedContentView: UIView {
         return label
     }()
     
+    private var photoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 8
+        return imageView
+    }()
+    
     private var contentLabel: UILabel = {
         let label = UILabel()
         label.textColor = .gray800
         label.font = .body4
         label.numberOfLines = 0
         return label
-    }()
-    
-    private var photoImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 8
-        return imageView
     }()
     
     // MARK: - Life Cycles
@@ -56,8 +56,8 @@ final class FeedContentView: UIView {
 extension FeedContentView {
     private func setHierarchy() {
         self.addSubviews(titleLabel,
-                         contentLabel,
-                         photoImageView)
+                         photoImageView,
+                         contentLabel)
     }
     
     private func setLayout() {
@@ -65,38 +65,40 @@ extension FeedContentView {
             $0.top.leading.trailing.equalToSuperview()
         }
         
-        contentLabel.snp.makeConstraints {
-            $0.leading.trailing.equalTo(titleLabel)
-            $0.top.equalTo(titleLabel.snp.bottom).offset(4.adjusted)
+        photoImageView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(10.adjusted)
+            $0.height.equalTo(192.adjusted)
+            $0.leading.trailing.equalToSuperview()
         }
         
-        photoImageView.snp.makeConstraints {
-            $0.height.equalTo(192.adjusted)
-            $0.width.equalTo(343.adjusted)
-            $0.leading.trailing.equalToSuperview()
-            $0.top.equalTo(contentLabel.snp.bottom).offset(12.adjusted)
+        contentLabel.snp.makeConstraints {
+            $0.top.equalTo(photoImageView.snp.bottom).offset(10.adjusted)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
     
     func bind(title: String, content: String, image: String?) {
         titleLabel.text = title
         contentLabel.text = content
-        photoImageView.load(url: image ?? "")
+        photoImageView.loadContentImage(url: image ?? "")
         if image != "" {
             photoImageView.isHidden = false
+            
             photoImageView.snp.remakeConstraints {
+                $0.top.equalTo(titleLabel.snp.bottom).offset(10.adjusted)
                 $0.height.equalTo(192.adjusted)
-                $0.width.equalTo(343.adjusted)
                 $0.leading.trailing.equalToSuperview()
-                $0.top.equalTo(contentLabel.snp.bottom).offset(12.adjusted)
-                $0.bottom.equalToSuperview()
+            }
+            
+            contentLabel.snp.remakeConstraints {
+                $0.top.equalTo(photoImageView.snp.bottom).offset(10.adjusted)
+                $0.leading.trailing.bottom.equalToSuperview()
             }
         } else {
             photoImageView.isHidden = true
             contentLabel.snp.remakeConstraints {
-                $0.leading.trailing.equalTo(titleLabel)
                 $0.top.equalTo(titleLabel.snp.bottom).offset(4.adjusted)
-                $0.bottom.equalToSuperview()
+                $0.leading.trailing.bottom.equalToSuperview()
             }
         }
     }
