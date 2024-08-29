@@ -12,74 +12,11 @@ final class HomeViewController: UIViewController {
     
     // MARK: - Properties
     
-    let dummyData: [HomeFeedDTO] = [HomeFeedDTO(memberID: 0,
-                                                memberProfileURL: "",
-                                                memberNickname: "냐옹",
-                                                contentID: 1,
-                                                contentTitle: "이건 타이틀입니다~",
-                                                contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!)여기서끝인줄 알았다면 아주 만만의 콩떡이시다 나는 여기서 더더더더덛 긴 글을 한번 써볼건데 내 생각으로는 안될 것 같다는 느낌느낌.... 아니 얘는 또 잘 되자나.... ",
-                                                time: "2024-01-10 11:47:18",
-                                                isGhost: false,
-                                                memberGhost: 0,
-                                                isLiked: false,
-                                                likedNumber: 10,
-                                                commentNumber: 22,
-                                                isDeleted: false,
-                                                contentImageURL: "",
-                                                memberFanTeam: "DRX"),
-                                    HomeFeedDTO(memberID: 0,
-                                                memberProfileURL: "",
-                                                memberNickname: "먀옹",
-                                                contentID: 1,
-                                                contentTitle: "저건 타이틀입니다~",
-                                                contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) ",
-                                                time: "2024-01-10 11:47:18",
-                                                isGhost: false,
-                                                memberGhost: 0,
-                                                isLiked: false,
-                                                likedNumber: 9,
-                                                commentNumber: 8,
-                                                isDeleted: false,
-                                                contentImageURL: "",
-                                                memberFanTeam: "T1"),
-                                    HomeFeedDTO(memberID: 0,
-                                                memberProfileURL: "",
-                                                memberNickname: "뭐임마",
-                                                contentID: 1,
-                                                contentTitle: "개발하기실타~",
-                                                contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) 어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) 어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) ",
-                                                time: "2024-01-10 11:47:18",
-                                                isGhost: false,
-                                                memberGhost: 0,
-                                                isLiked: false,
-                                                likedNumber: 4,
-                                                commentNumber: 93,
-                                                isDeleted: false,
-                                                contentImageURL: nil,
-                                                memberFanTeam: "GEN"),
-                                    HomeFeedDTO(memberID: 0,
-                                                memberProfileURL: "",
-                                                memberNickname: "냐옹",
-                                                contentID: 1,
-                                                contentTitle: "개발 그만하고싶다~~",
-                                                contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) ",
-                                                time: "2024-01-10 11:47:18",
-                                                isGhost: false,
-                                                memberGhost: 0,
-                                                isLiked: false,
-                                                likedNumber: 10,
-                                                commentNumber: 22,
-                                                isDeleted: false,
-                                                contentImageURL: "",
-                                                memberFanTeam: "DRX")
-                                    
-    ]
-    
-    var feedData: [HomeFeedDTO] = []
-    
     private let viewModel: HomeViewModel
     private var cancellables = Set<AnyCancellable>()
     private lazy var writeButtonDidTapped = self.homeView.writeFeedButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    
+//    var feedData: [HomeFeedDTO] = []
     
     // MARK: - UI Components
     
@@ -118,7 +55,18 @@ final class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("viewWillAppear")
+        
+        self.navigationController?.navigationBar.isHidden = true
+        
+        setNotification()
+        
         viewModel.viewWillAppear.send()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        removeNotification()
     }
 }
 
@@ -127,7 +75,6 @@ final class HomeViewController: UIViewController {
 extension HomeViewController {
     private func setUI() {
         self.view.backgroundColor = .wableWhite
-        self.navigationController?.navigationBar.isHidden = true
     }
     
     private func setHierarchy() {
@@ -143,6 +90,20 @@ extension HomeViewController {
         homeView.feedTableView.delegate = self
     }
     
+    private func setNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showToast(_:)), name: WriteViewController.writeCompletedNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(showDeleteToast(_:)), name: DeletePopupViewController.showDeletePostToastNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(popViewController), name: DeletePopupViewController.popViewController, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.didDismissPopupNotification(_:)), name: NSNotification.Name("DismissDetailView"), object: nil)
+    }
+    
+    private func removeNotification() {
+//        NotificationCenter.default.removeObserver(self, name: WriteViewController.writeCompletedNotification, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: DeletePopupViewController.showDeletePostToastNotification, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: DeletePopupViewController.popViewController, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("DismissDetailView"), object: nil)
+    }
+    
     private func bindViewModel() {
         
         viewModel.pushViewController
@@ -151,7 +112,7 @@ extension HomeViewController {
                 let feedDetailViewController = FeedDetailViewController()
                 feedDetailViewController.hidesBottomBarWhenPushed = true
                 
-                if let data = self?.feedData[index] {
+                if let data = self?.viewModel.feedDatas[index] {
                     feedDetailViewController.getFeedData(data: data)
                 }
                 
@@ -167,7 +128,7 @@ extension HomeViewController {
         
         viewModel.pushToWriteViewControllr
             .sink { [weak self] in
-                let writeViewController = WriteViewController(viewModel: WriteViewModel())
+                let writeViewController = WriteViewController(viewModel: WriteViewModel(networkProvider: NetworkService()))
                 writeViewController.hidesBottomBarWhenPushed = true
                 self?.navigationController?.pushViewController(writeViewController, animated: true)
             }
@@ -176,7 +137,7 @@ extension HomeViewController {
         viewModel.homeFeedDTO
             .receive(on: DispatchQueue.main)
             .sink { [weak self] data in
-                self?.feedData = data
+//                self?.feedData = data
                 self?.homeView.feedTableView.reloadData()
             }
             .store(in: &cancellables)
@@ -208,7 +169,10 @@ extension HomeViewController {
     
     @objc
     private func didPullToRefresh() {
-        print("리프레쉬컨트롤 작동동")
+        print("didPullToRefresh")
+        DispatchQueue.main.async {
+            self.viewModel.viewWillAppear.send()
+        }
         self.perform(#selector(finishedRefreshing), with: nil, afterDelay: 0.1)
     }
     
@@ -217,17 +181,43 @@ extension HomeViewController {
         self.refreshControl.endRefreshing()
     }
     
+    @objc func showToast(_ notification: Notification) {
+        if let showToast = notification.userInfo?["showToast"] as? Bool {
+            print("showToast")
+            viewModel.cursor = -1
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.didPullToRefresh()
+                
+                UIView.animate(withDuration: 0.3) {
+                    self.homeView.feedTableView.contentOffset.y = 0
+                }
+            }
+            NotificationCenter.default.removeObserver(self, name: WriteViewController.writeCompletedNotification, object: nil)
+        }
+    }
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return feedData.count
+        return viewModel.feedDatas.count
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if scrollView == homeView.feedTableView {
+            if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
+                let lastContentID = viewModel.feedDatas.last?.contentID ?? -1
+                viewModel.cursor = lastContentID
+                viewModel.viewWillAppear.send()
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = homeView.feedTableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.identifier, for: indexPath) as? HomeFeedTableViewCell ?? HomeFeedTableViewCell()
         cell.selectionStyle = .none
-        cell.bind(data: feedData[indexPath.row])
+        
+        cell.bind(data: viewModel.feedDatas[indexPath.row])
         
         cell.bottomView.commentButtonTapped = { [weak self] in
             self?.viewModel.commentButtonTapped.send(indexPath.row)
@@ -251,7 +241,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailViewController = FeedDetailViewController()
         detailViewController.hidesBottomBarWhenPushed = true
-        detailViewController.getFeedData(data: feedData[indexPath.row])
+        detailViewController.getFeedData(data: viewModel.feedDatas[indexPath.row])
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

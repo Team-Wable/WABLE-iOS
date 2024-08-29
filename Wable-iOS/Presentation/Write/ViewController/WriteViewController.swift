@@ -15,7 +15,7 @@ final class WriteViewController: UIViewController {
     
     // MARK: - Properties
     
-    static let showWriteToastNotification = Notification.Name("ShowWriteToastNotification")
+    static let writeCompletedNotification = Notification.Name("WriteCompletedNotification")
     
     private var cancelBag = CancelBag()
     private let viewModel: WriteViewModel
@@ -122,15 +122,17 @@ extension WriteViewController {
                 if value == 0 {
                     self.navigationController?.popViewController(animated: true)
                 } else {
-                    self.WriteCompleted()
-                    self.navigationController?.popViewController(animated: true)
+                    DispatchQueue.main.async {
+                        self.WriteCompleted()
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 }
             }
             .store(in: self.cancelBag)
     }
     
     private func WriteCompleted() {
-        NotificationCenter.default.post(name: WriteViewController.showWriteToastNotification, object: nil, userInfo: ["showToast": true])
+        NotificationCenter.default.post(name: WriteViewController.writeCompletedNotification, object: nil, userInfo: ["showToast": true])
     }
     
     @objc private func photoButtonTapped() {
