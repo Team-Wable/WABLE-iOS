@@ -111,6 +111,7 @@
 		3C8B4E3B2C79119700174943 /* MyPageMemberContentResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E3A2C79119700174943 /* MyPageMemberContentResponseDTO.swift */; };
 		3C8B4E3D2C79119F00174943 /* MyPageMemberCommentResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E3C2C79119F00174943 /* MyPageMemberCommentResponseDTO.swift */; };
 		3C8B4E3F2C79135800174943 /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E3E2C79135800174943 /* UIImageView+.swift */; };
+		3C8B4E442C80886800174943 /* WriteContentRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E432C80886700174943 /* WriteContentRequestDTO.swift */; };
 		3CDE2DE42C6F292B004A84CB /* Publisher+UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */; };
 		3CDE2DE62C6F30BA004A84CB /* JoinAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE52C6F30BA004A84CB /* JoinAgreementViewController.swift */; };
 		3CDE2DE82C6F30CE004A84CB /* JoinProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE72C6F30CE004A84CB /* JoinProfileViewController.swift */; };
@@ -263,6 +264,7 @@
 		3C8B4E3A2C79119700174943 /* MyPageMemberContentResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMemberContentResponseDTO.swift; sourceTree = "<group>"; };
 		3C8B4E3C2C79119F00174943 /* MyPageMemberCommentResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMemberCommentResponseDTO.swift; sourceTree = "<group>"; };
 		3C8B4E3E2C79135800174943 /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
+		3C8B4E432C80886700174943 /* WriteContentRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteContentRequestDTO.swift; sourceTree = "<group>"; };
 		3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+UIControl.swift"; sourceTree = "<group>"; };
 		3CDE2DE52C6F30BA004A84CB /* JoinAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinAgreementViewController.swift; sourceTree = "<group>"; };
 		3CDE2DE72C6F30CE004A84CB /* JoinProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinProfileViewController.swift; sourceTree = "<group>"; };
@@ -534,6 +536,7 @@
 		0547F4AF2C60E240001E3039 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				3C8B4E402C80884F00174943 /* Write */,
 				3C8B4E2B2C78ECA200174943 /* UserProfile */,
 				3C8B4E192C78E54600174943 /* TokenManager */,
 				3C8B4E112C78E0AC00174943 /* SocialLogin */,
@@ -948,6 +951,30 @@
 			path = ResponseDTO;
 			sourceTree = "<group>";
 		};
+		3C8B4E402C80884F00174943 /* Write */ = {
+			isa = PBXGroup;
+			children = (
+				3C8B4E412C80885500174943 /* DTO */,
+			);
+			path = Write;
+			sourceTree = "<group>";
+		};
+		3C8B4E412C80885500174943 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				3C8B4E422C80885900174943 /* RequestDTO */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		3C8B4E422C80885900174943 /* RequestDTO */ = {
+			isa = PBXGroup;
+			children = (
+				3C8B4E432C80886700174943 /* WriteContentRequestDTO.swift */,
+			);
+			path = RequestDTO;
+			sourceTree = "<group>";
+		};
 		3CDE2DE92C6F315C004A84CB /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1256,6 +1283,7 @@
 				050E0CA42C74B35500326EEA /* UIApplication+.swift in Sources */,
 				050E0CB72C74B87400326EEA /* FeedDetailView.swift in Sources */,
 				050E0CF92C7516C900326EEA /* InfoNotificationDTO.swift in Sources */,
+				3C8B4E442C80886800174943 /* WriteContentRequestDTO.swift in Sources */,
 				3C8B4E092C779C3A00174943 /* WriteViewModel.swift in Sources */,
 				3C35318E2C6F1A850015A8FA /* UserInfo.swift in Sources */,
 				0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */,

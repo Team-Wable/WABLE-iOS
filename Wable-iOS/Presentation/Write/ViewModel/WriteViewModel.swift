@@ -12,13 +12,13 @@ import UIKit
 final class WriteViewModel: ViewModelType {
     
     private let cancelBag = CancelBag()
-//    private let networkProvider: NetworkServiceType
+    private let networkProvider: NetworkServiceType
     
     private let pushOrPopViewController = PassthroughSubject<Int, Never>()
     
     struct Input {
         let backButtonTapped: AnyPublisher<Void, Never>
-        let postButtonTapped: AnyPublisher<Void, Never>
+        let postButtonTapped: AnyPublisher<WriteContentImageRequestDTO, Never>
     }
     
     struct Output {
@@ -33,98 +33,86 @@ final class WriteViewModel: ViewModelType {
             .store(in: cancelBag)
         
         input.postButtonTapped
-            .sink { _ in
-                self.pushOrPopViewController.send(1)
+            .sink { value in
+                Task {
+                    self.postWriteContentAPI(contentTitle: value.contentTitle, contentText: value.contentText, photoImage: value.photoImage)
+                    self.pushOrPopViewController.send(1)
+                }
             }
             .store(in: cancelBag)
         
         return Output(pushOrPopViewController: pushOrPopViewController)
     }
     
-//    init(networkProvider: NetworkServiceType) {
-//        self.networkProvider = networkProvider
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
+    init(networkProvider: NetworkServiceType) {
+        self.networkProvider = networkProvider
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 extension WriteViewModel {
-//    private func postWriteContentAPI(accessToken: String, contentText: String) async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            let result: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(
-//                type: .post,
-//                baseURL: Config.baseURL + "/content",
-//                accessToken: accessToken,
-//                body: WriteContentRequestDTO(contentText: contentText),
-//                pathVariables: ["":""]
-//            )
-//            return result
-//        } catch {
-//            return nil
-//        }
-//    }
-//    
-//    private func postWriteContentAPI(contentText: String, photoImage: UIImage?) {
-//        guard let url = URL(string: Config.baseURL.dropLast() + "2/content") else { return }
-//        guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
-//        
-//        let parameters: [String: Any] = [
-//            "contentText": contentText
-//        ]
-//        
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//        
-//        // Multipart form data 생성
-//        let boundary = "Boundary-\(UUID().uuidString)"
-//        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-//        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-//        
-//        var requestBodyData = Data()
-//        
-//        // 게시글 본문 데이터 추가
-//        requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
-//        requestBodyData.append("Content-Disposition: form-data; name=\"text\"\r\n\r\n".data(using: .utf8)!)
-//        requestBodyData.append(try! JSONSerialization.data(withJSONObject: parameters, options: []))
-//        requestBodyData.append("\r\n".data(using: .utf8)!)
-//        
-//        if let image = photoImage {
-//            let imageData = image.jpegData(compressionQuality: 0.1)!
-//            
-//            // 게시글 이미지 데이터 추가
-//            requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
-//            requestBodyData.append("Content-Disposition: form-data; name=\"image\"; filename=\"dontbe.jpeg\"\r\n".data(using: .utf8)!)
-//            requestBodyData.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-//            requestBodyData.append(imageData)
-//            requestBodyData.append("\r\n".data(using: .utf8)!)
-//        }
-//        
-//        requestBodyData.append("--\(boundary)--\r\n".data(using: .utf8)!)
-//        
-//        // HTTP body에 데이터 설정
-//        request.httpBody = requestBodyData
-//        
-//        // URLSession으로 요청 보내기
-//        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-//            if let error = error {
-//                print("Error:", error)
-//                return
-//            }
-//            
-//            // 응답 처리
-//            if let response = response as? HTTPURLResponse {
-//                print(response)
-//                print("Response status code:", response.statusCode)
-//            }
-//            
-//            if let data = data {
-//                // 서버 응답 데이터 처리
-//                print("Response data:", String(data: data, encoding: .utf8) ?? "Empty response")
-//            }
-//        }
-//        task.resume()
-//    }
+    private func postWriteContentAPI(contentTitle: String, contentText: String, photoImage: UIImage?) {
+        guard let url = URL(string: Config.baseURL + "v2/content") else { return }
+        guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
+        
+        let parameters: [String: Any] = [
+            "contentTitle": contentTitle,
+            "contentText": contentText
+        ]
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        // Multipart form data 생성
+        let boundary = "Boundary-\(UUID().uuidString)"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        
+        var requestBodyData = Data()
+        
+        // 게시글 본문 데이터 추가
+        requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
+        requestBodyData.append("Content-Disposition: form-data; name=\"text\"\r\n\r\n".data(using: .utf8)!)
+        requestBodyData.append(try! JSONSerialization.data(withJSONObject: parameters, options: []))
+        requestBodyData.append("\r\n".data(using: .utf8)!)
+        
+        if let image = photoImage {
+            let imageData = image.jpegData(compressionQuality: 0.1)!
+            
+            // 게시글 이미지 데이터 추가
+            requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
+            requestBodyData.append("Content-Disposition: form-data; name=\"image\"; filename=\"dontbe.jpeg\"\r\n".data(using: .utf8)!)
+            requestBodyData.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            requestBodyData.append(imageData)
+            requestBodyData.append("\r\n".data(using: .utf8)!)
+        }
+        
+        requestBodyData.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        // HTTP body에 데이터 설정
+        request.httpBody = requestBodyData
+        
+        // URLSession으로 요청 보내기
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let error = error {
+                print("Error:", error)
+                return
+            }
+            
+            // 응답 처리
+            if let response = response as? HTTPURLResponse {
+                print(response)
+                print("Response status code:", response.statusCode)
+            }
+            
+            if let data = data {
+                // 서버 응답 데이터 처리
+                print("Response data:", String(data: data, encoding: .utf8) ?? "Empty response")
+            }
+        }
+        task.resume()
+    }
 }
