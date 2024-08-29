@@ -23,7 +23,7 @@ class MyPageSignOutViewController: UIViewController {
     private lazy var seventhReason = self.myView.seventhReasonView.radioButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var continueButtonTapped = self.myView.continueButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     
-    var signOutReason: String = ""
+    var signOutReason: [String] = []
     
     // MARK: - UI Components
     
@@ -138,6 +138,7 @@ extension MyPageSignOutViewController {
                     self.navigationController?.popViewController(animated: true)
                 } else if value == 1 {
                     let vc = MyPageSignOutConfirmViewController(viewModel: MyPageSignOutConfirmViewModel(networkProvider: NetworkService()))
+                    vc.signOutReason = self.signOutReason
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
             }
@@ -153,18 +154,25 @@ extension MyPageSignOutViewController {
                 switch index {
                 case 1:
                     self.myView.firstReasonView.radioButton.setImage(checkImage, for: .normal)
+                    appendSignOutReasons(title: self.myView.firstReasonView.radioButton.currentTitle ?? "")
                 case 2:
                     self.myView.secondReasonView.radioButton.setImage(checkImage, for: .normal)
+                    appendSignOutReasons(title: self.myView.secondReasonView.radioButton.currentTitle ?? "")
                 case 3:
                     self.myView.thirdReasonView.radioButton.setImage(checkImage, for: .normal)
+                    appendSignOutReasons(title: self.myView.thirdReasonView.radioButton.currentTitle ?? "")
                 case 4:
                     self.myView.fourthReasonView.radioButton.setImage(checkImage, for: .normal)
+                    appendSignOutReasons(title: self.myView.fourthReasonView.radioButton.currentTitle ?? "")
                 case 5:
                     self.myView.fifthReasonView.radioButton.setImage(checkImage, for: .normal)
+                    appendSignOutReasons(title: self.myView.fifthReasonView.radioButton.currentTitle ?? "")
                 case 6:
                     self.myView.sixthReasonView.radioButton.setImage(checkImage, for: .normal)
+                    appendSignOutReasons(title: self.myView.sixthReasonView.radioButton.currentTitle ?? "")
                 case 7:
                     self.myView.seventhReasonView.radioButton.setImage(checkImage, for: .normal)
+                    appendSignOutReasons(title: self.myView.seventhReasonView.radioButton.currentTitle ?? "")
                 default:
                     break
                 }
@@ -180,5 +188,13 @@ extension MyPageSignOutViewController {
                 }
             }
             .store(in: self.cancelBag)
+    }
+    
+    func appendSignOutReasons(title: String) {
+        if let index = signOutReason.firstIndex(of: title) {
+            signOutReason.remove(at: index)
+        } else {
+            signOutReason.append(title)
+        }
     }
 }

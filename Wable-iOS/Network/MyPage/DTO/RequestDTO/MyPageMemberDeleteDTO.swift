@@ -10,5 +10,5 @@ import Foundation
 // MARK: - MyPageMemberDeleteDTO
 
 struct MyPageMemberDeleteDTO: Encodable {
-    let deleted_reason: String
+    let deleted_reason: [String]
 }
