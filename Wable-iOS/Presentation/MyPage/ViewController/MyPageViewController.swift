@@ -366,7 +366,7 @@ extension MyPageViewController {
     
     @objc
     private func pushViewController(_ notification: Notification) {
-        let detailViewController = FeedDetailViewController()
+        let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
         detailViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(detailViewController, animated: true)
         
