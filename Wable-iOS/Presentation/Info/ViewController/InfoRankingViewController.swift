@@ -6,25 +6,69 @@
 //
 
 import UIKit
+import Combine
 
-class InfoRankingViewController: UIViewController {
+final class InfoRankingViewController: UIViewController {
+    
+    // MARK: - Properties
+    
+    
+    // MARK: - UI Components
+    
+    let rankingView = RankingView()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        self.view.backgroundColor = .purple50
-        // Do any additional setup after loading the view.
+    // MARK: - Life Cycles
+    
+    override func loadView() {
+        super.loadView()
+        
+        view = rankingView
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        getAPI()
+        setUI()
+        setHierarchy()
+        setLayout()
+        setDelegate()
+        bindViewModel()
     }
-    */
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+}
 
+// MARK: - Extensions
+
+extension InfoRankingViewController {
+    private func setUI() {
+        
+    }
+    
+    private func setHierarchy() {
+        
+    }
+    
+    private func setLayout() {
+        
+    }
+    
+    private func setDelegate() {
+
+    }
+    
+    private func bindViewModel() {
+
+    }
+}
+
+// MARK: - Network
+
+extension InfoRankingViewController {
+    private func getAPI() {
+        
+    }
 }
