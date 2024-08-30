@@ -157,5 +157,9 @@ enum StringLiterals {
         enum Home {
             static let getContent = "api/v2/contents"
         }
+        
+        enum Info {
+            static let getMatchInfo = "api/v1/information/schedule"
+        }
     }
 }
