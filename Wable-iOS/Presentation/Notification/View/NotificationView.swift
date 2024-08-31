@@ -65,8 +65,8 @@ final class NotificationView: UIView {
         return vc
     }()
     
-    let notificationActivityViewController = NotificationActivityViewController()
-    let notificationInformationViewController = NotificationInformationViewController()
+    let notificationActivityViewController = NotificationActivityViewController(viewModel: NotificationActivityViewModel())
+    let notificationInformationViewController = NotificationInformationViewController(viewModel: NotificationInfoViewModel())
     
     // MARK: - Life Cycles
     
