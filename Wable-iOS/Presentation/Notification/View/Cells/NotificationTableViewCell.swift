@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import Kingfisher
 
 final class NotificationTableViewCell: UITableViewCell{
     
@@ -17,11 +18,15 @@ final class NotificationTableViewCell: UITableViewCell{
     
     // MARK: - Components
     
-    private let notiImageView = UIImageView()
+    private let notiImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 22.adjusted
+        return imageView
+    }()
     private var contentLabel: UILabel = {
         let label = UILabel()
         label.font = .body4
-        label.text = "이제 곧 경기가 시작해요! 얼른 치킨 시키고 같이\n경기 보러 가볼까요?"
         label.textColor = .black
         label.numberOfLines = 2
         label.textAlignment = .left
@@ -32,7 +37,6 @@ final class NotificationTableViewCell: UITableViewCell{
     private var timeLabel: UILabel = {
         let label = UILabel()
         label.font = .caption2
-        label.text = "23분전"
         label.textColor = .gray600
         label.numberOfLines = 1
         return label
@@ -85,17 +89,37 @@ final class NotificationTableViewCell: UITableViewCell{
             $0.centerY.equalToSuperview()
         }
     }
-
-    func bindForActivity(data: InfoNotificationDTO) {
+    
+    func bindForActivity(data: ActivityNotificationDTO) {
         // TODO: - imageURL KingFisher로 변환
-        notiImageView.image = ImageLiterals.Image.imgProfileSmall
-        contentLabel.text = data.infoNotificationType
+        notiImageView.kfSetImage(url: data.triggerMemberProfileURL)
+        contentLabel.text = NotiActivityText(rawValue: data.notificationTriggerType)?.text(from: data.triggerMemberNickname,
+                                                                                           to: data.memberNickname)
+        if data.notificationText != "" {
+            let text = (NotiActivityText(rawValue: data.notificationTriggerType)?.text(from: data.triggerMemberNickname,
+                                                                                       to: data.memberNickname) ?? "") + "\n :\(data.notificationText.truncated(to: 15))"
+            contentLabel.text = text
+        }
+        timeLabel.text = data.time
     }
     
-    func bindForInformation(data: ActivityNotificationDTO) {
-        // TODO: - imageURL KingFisher로 변환
-        notiImageView.image = ImageLiterals.Image.imgProfileSmall
-        contentLabel.text = data.notificationText
-        timeLabel.text = "23분전"
+    func bindForInformation(data: InfoNotificationDTO) {
+        notiImageView.kfSetImage(url: data.imageURL)
+        contentLabel.text = NotiInfoText(rawValue: data.infoNotificationType)?.text
+        timeLabel.text = data.time
+    }
+}
+
+extension UIImageView{
+    func kfSetImage(url : String?){
+        
+        guard let url = url else { return }
+        
+        if let url = URL(string: url) {
+            kf.indicatorType = .activity
+            kf.setImage(with: url,
+                        placeholder: nil,
+                        options: [.transition(.fade(1.0))], progressBlock: nil)
+        }
     }
 }
