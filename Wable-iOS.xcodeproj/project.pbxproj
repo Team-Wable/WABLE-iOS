@@ -48,6 +48,12 @@
 		050E0D0D2C7F635200326EEA /* InfoAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D0C2C7F635200326EEA /* InfoAPI.swift */; };
 		050E0D102C7F64C700326EEA /* InfoMatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D0F2C7F64C700326EEA /* InfoMatchViewModel.swift */; };
 		050E0D122C8070F300326EEA /* RankingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D112C8070F300326EEA /* RankingView.swift */; };
+		050E0D142C8252A500326EEA /* NotificationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D132C8252A500326EEA /* NotificationRouter.swift */; };
+		050E0D162C8252B200326EEA /* NotificationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D152C8252B200326EEA /* NotificationAPI.swift */; };
+		050E0D192C82563600326EEA /* NotificationInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D182C82563600326EEA /* NotificationInfoViewModel.swift */; };
+		050E0D1B2C82642400326EEA /* NotificationActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D1A2C82642400326EEA /* NotificationActivityViewModel.swift */; };
+		050E0D1E2C82E31500326EEA /* NotiInfoText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D1D2C82E31500326EEA /* NotiInfoText.swift */; };
+		050E0D202C82EE6600326EEA /* NotiActivityText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D1F2C82EE6600326EEA /* NotiActivityText.swift */; };
 		0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4992C60D968001E3039 /* AppDelegate.swift */; };
 		0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49B2C60D968001E3039 /* SceneDelegate.swift */; };
 		0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A22C60D96B001E3039 /* Assets.xcassets */; };
@@ -207,6 +213,12 @@
 		050E0D0C2C7F635200326EEA /* InfoAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoAPI.swift; sourceTree = "<group>"; };
 		050E0D0F2C7F64C700326EEA /* InfoMatchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMatchViewModel.swift; sourceTree = "<group>"; };
 		050E0D112C8070F300326EEA /* RankingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingView.swift; sourceTree = "<group>"; };
+		050E0D132C8252A500326EEA /* NotificationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRouter.swift; sourceTree = "<group>"; };
+		050E0D152C8252B200326EEA /* NotificationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAPI.swift; sourceTree = "<group>"; };
+		050E0D182C82563600326EEA /* NotificationInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationInfoViewModel.swift; sourceTree = "<group>"; };
+		050E0D1A2C82642400326EEA /* NotificationActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActivityViewModel.swift; sourceTree = "<group>"; };
+		050E0D1D2C82E31500326EEA /* NotiInfoText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiInfoText.swift; sourceTree = "<group>"; };
+		050E0D1F2C82EE6600326EEA /* NotiActivityText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiActivityText.swift; sourceTree = "<group>"; };
 		0547F4962C60D968001E3039 /* Wable-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wable-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0547F4992C60D968001E3039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0547F49B2C60D968001E3039 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -476,6 +488,8 @@
 			isa = PBXGroup;
 			children = (
 				050E0CFA2C7516CC00326EEA /* ResponseDTO */,
+				050E0D132C8252A500326EEA /* NotificationRouter.swift */,
+				050E0D152C8252B200326EEA /* NotificationAPI.swift */,
 			);
 			path = Notification;
 			sourceTree = "<group>";
@@ -503,6 +517,24 @@
 				050E0D0F2C7F64C700326EEA /* InfoMatchViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		050E0D172C82562000326EEA /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				050E0D182C82563600326EEA /* NotificationInfoViewModel.swift */,
+				050E0D1A2C82642400326EEA /* NotificationActivityViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		050E0D1C2C82E2F700326EEA /* Supports */ = {
+			isa = PBXGroup;
+			children = (
+				050E0D1D2C82E31500326EEA /* NotiInfoText.swift */,
+				050E0D1F2C82EE6600326EEA /* NotiActivityText.swift */,
+			);
+			path = Supports;
 			sourceTree = "<group>";
 		};
 		0547F48D2C60D968001E3039 = {
@@ -689,6 +721,8 @@
 		0547F4EE2C64C6F3001E3039 /* Notification */ = {
 			isa = PBXGroup;
 			children = (
+				050E0D1C2C82E2F700326EEA /* Supports */,
+				050E0D172C82562000326EEA /* ViewModels */,
 				3CDE2E152C723227004A84CB /* View */,
 				0547F4F22C64C759001E3039 /* ViewController */,
 			);
@@ -1201,11 +1235,14 @@
 				050E0D0D2C7F635200326EEA /* InfoAPI.swift in Sources */,
 				3CDE2E002C711A74004A84CB /* UITextField+.swift in Sources */,
 				050E0CF62C75102A00326EEA /* NotificationTableViewCell.swift in Sources */,
+				050E0D202C82EE6600326EEA /* NotiActivityText.swift in Sources */,
 				0547F5012C64C99D001E3039 /* ExampleView.swift in Sources */,
 				050E0CFC2C751A5C00326EEA /* ActivityNotificationDTO.swift in Sources */,
 				3CDE2DFA2C70F89B004A84CB /* JoinLCKYearViewModel.swift in Sources */,
+				050E0D192C82563600326EEA /* NotificationInfoViewModel.swift in Sources */,
 				3CF344CE2C73CCCA0038BB53 /* HambergerButton.swift in Sources */,
 				050E0CA62C74B70800326EEA /* UIButton+.swift in Sources */,
+				050E0D1E2C82E31500326EEA /* NotiInfoText.swift in Sources */,
 				3C3531962C6F1FBF0015A8FA /* UILabel+.swift in Sources */,
 				3CF344D82C74A3E00038BB53 /* MyPageEditProfileViewController.swift in Sources */,
 				0547F4E12C6248A0001E3039 /* BaseAPI.swift in Sources */,
@@ -1222,6 +1259,7 @@
 				050E0CB52C74B85800326EEA /* HomeView.swift in Sources */,
 				3C3531842C6F16D00015A8FA /* Config.swift in Sources */,
 				050E0D022C77372F00326EEA /* HomeAPI.swift in Sources */,
+				050E0D162C8252B200326EEA /* NotificationAPI.swift in Sources */,
 				050E0CDF2C74C8B400326EEA /* MatchSessionTableViewCell.swift in Sources */,
 				3C8B4E3B2C79119700174943 /* MyPageMemberContentResponseDTO.swift in Sources */,
 				3C8B4E352C79117C00174943 /* MyPageMemberDeleteDTO.swift in Sources */,
@@ -1230,6 +1268,7 @@
 				3CDE2DE62C6F30BA004A84CB /* JoinAgreementViewController.swift in Sources */,
 				050E0CE72C74D06B00326EEA /* BTeamView.swift in Sources */,
 				0547F4C22C621719001E3039 /* UIFont+.swift in Sources */,
+				050E0D142C8252A500326EEA /* NotificationRouter.swift in Sources */,
 				3CDE2DFC2C70FAB5004A84CB /* JoinProfileViewModel.swift in Sources */,
 				3C3531992C6F21A10015A8FA /* LoginViewModel.swift in Sources */,
 				3CDE2E202C72F299004A84CB /* MyPageView.swift in Sources */,
@@ -1268,6 +1307,7 @@
 				3CDE2E0B2C71CE30004A84CB /* AppStoreCheckManager.swift in Sources */,
 				3C3531A22C6F255D0015A8FA /* JoinLCKYearViewController.swift in Sources */,
 				050E0CAC2C74B7BB00326EEA /* HomeFeedListDTO.swift in Sources */,
+				050E0D1B2C82642400326EEA /* NotificationActivityViewModel.swift in Sources */,
 				3CDE2DFE2C71167A004A84CB /* JoinProfileView.swift in Sources */,
 				3CDE2E192C7232DC004A84CB /* NotificationInformationViewController.swift in Sources */,
 				3C3531822C6F15D30015A8FA /* KeychainWrapper.swift in Sources */,
