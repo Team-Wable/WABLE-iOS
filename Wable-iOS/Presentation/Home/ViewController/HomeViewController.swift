@@ -55,7 +55,6 @@ final class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWillAppear")
         
         self.navigationController?.navigationBar.isHidden = true
         
@@ -183,11 +182,11 @@ extension HomeViewController {
     
     @objc func showToast(_ notification: Notification) {
         if let showToast = notification.userInfo?["showToast"] as? Bool {
-            print("showToast")
-            viewModel.cursor = -1
+//            print("showToast")
+//            viewModel.cursor = -1
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.didPullToRefresh()
+//                self.didPullToRefresh()
                 
                 UIView.animate(withDuration: 0.3) {
                     self.homeView.feedTableView.contentOffset.y = 0

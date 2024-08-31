@@ -49,7 +49,6 @@ final class MyPageViewModel: ViewModelType {
                             if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
                                 let profileResult = try await self.getProfileInfoAPI(accessToken: accessToken, memberId: value.1)
                                 if let data = profileResult?.data {
-                                    print("data: \(data)")
                                     self.myPageProfileData.append(data)
                                     self.getProfileData.send(data)
                                 }
@@ -116,7 +115,6 @@ extension MyPageViewModel {
                 accessToken: accessToken,
                 body: EmptyBody(),
                 pathVariables: ["":""])
-            print("result: \(result?.data)")
             UserDefaults.standard.set(result?.data?.memberGhost ?? 0, forKey: "memberGhost")
             return result
         } catch {

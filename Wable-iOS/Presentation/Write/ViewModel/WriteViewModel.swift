@@ -36,7 +36,11 @@ final class WriteViewModel: ViewModelType {
             .sink { value in
                 Task {
                     do {
-                        try await self.postWriteContentAPI(contentTitle: value.contentTitle, contentText: value.contentText, photoImage: value.photoImage)
+                        try await self.postWriteContentAPI(
+                            contentTitle: value.contentTitle,
+                            contentText: value.contentText,
+                            photoImage: value.photoImage
+                        )
                         self.pushOrPopViewController.send(1)
                     } catch {
                         print("Error posting content:", error)
@@ -58,7 +62,7 @@ final class WriteViewModel: ViewModelType {
 }
 
 extension WriteViewModel {
-    private func postWriteContentAPI(contentTitle: String, contentText: String, photoImage: UIImage?) async throws {
+    private func postWriteContentAPI(contentTitle: String, contentText: String, photoImage: UIImage?) async throws -> Void {
         guard let url = URL(string: Config.baseURL + "v2/content") else { return }
         guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
         
@@ -99,24 +103,26 @@ extension WriteViewModel {
         // HTTP body에 데이터 설정
         request.httpBody = requestBodyData
         
-        // URLSession으로 요청 보내기
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                print("Error:", error)
-                return
-            }
-            
-            // 응답 처리
-            if let response = response as? HTTPURLResponse {
-                print(response)
-                print("Response status code:", response.statusCode)
-            }
-            
-            if let data = data {
-                // 서버 응답 데이터 처리
-                print("Response data:", String(data: data, encoding: .utf8) ?? "Empty response")
-            }
+        // URLSession으로 비동기 요청 보내기
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        // 응답 처리
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])
         }
-        task.resume()
+        
+        print("Response status code:", httpResponse.statusCode)
+        
+        if httpResponse.statusCode != 201 {
+            throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed with status code \(httpResponse.statusCode)"])
+        }
+        
+        guard let responseString = String(data: data, encoding: .utf8) else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Empty response"])
+        }
+        
+        print("Response data:", responseString)  // 서버 응답 데이터를 처리한 후 출력
+        
+        return
     }
 }

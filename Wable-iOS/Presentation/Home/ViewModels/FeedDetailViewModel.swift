@@ -19,7 +19,7 @@ final class FeedDetailViewModel: ViewModelType {
     private var getPostReplyData = PassthroughSubject<[FeedDetailReplyDTO], Never>()
     private let clickedRadioButtonState = PassthroughSubject<Int, Never>()
     private let toggleCommentLikeButton = PassthroughSubject<Bool, Never>()
-    private let postReplyCompleted = PassthroughSubject<Bool, Never>()
+    private let postReplyCompleted = PassthroughSubject<Int, Never>()
     
     var isCommentLikeButtonClicked: Bool = false
     var cursor: Int = -1
@@ -54,7 +54,7 @@ final class FeedDetailViewModel: ViewModelType {
         let getPostReplyData: PassthroughSubject<[FeedDetailReplyDTO], Never>
         let toggleCommentLikeButton: PassthroughSubject<Bool, Never>
         let clickedButtonState: PassthroughSubject<Int, Never>
-        let postReplyCompleted: PassthroughSubject<Bool, Never>
+        let postReplyCompleted: PassthroughSubject<Int, Never>
     }
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
@@ -107,21 +107,27 @@ final class FeedDetailViewModel: ViewModelType {
                             let postReplyResult = try await
                             self.getPostReplyDataAPI(accessToken: accessToken, contentId: value)
                             if let data = postReplyResult?.data {
-                                if let lastCommentId = data.last?.commentId {
-                                    self.cursor = lastCommentId
-                                }
+//                                if let lastCommentId = data.last?.commentId {
+//                                    self.cursor = lastCommentId
+//                                }
                                 if self.cursor == -1 {
                                     self.feedReplyDatas = []
                                     
-                                    self.feedReplyData = data
-                                    self.getPostReplyData.send(data)
+                                    var tempArray: [FeedDetailReplyDTO] = []
                                     
-                                    feedReplyDatas.append(contentsOf: feedReplyData)
+                                    for content in data {
+                                        tempArray.append(content)
+                                    }
+                                    self.feedReplyDatas.append(contentsOf: tempArray)
+                                    self.getPostReplyData.send(tempArray)
                                 } else {
-                                    self.feedReplyData = data
-                                    self.getPostReplyData.send(data)
+                                    var tempArray: [FeedDetailReplyDTO] = []
                                     
-                                    feedReplyDatas.append(contentsOf: feedReplyData)
+                                    for content in data {
+                                        tempArray.append(content)
+                                    }
+                                    self.feedReplyDatas.append(contentsOf: tempArray)
+                                    self.getPostReplyData.send(tempArray)
                                 }
                             }
                         }
@@ -200,10 +206,11 @@ final class FeedDetailViewModel: ViewModelType {
             .sink { value in
                 Task {
                     do {
-                        try await self.postWriteReplyContentAPI(commentText: value.0.commentText, contentId: value.1)
-                        self.postReplyCompleted.send(true)
-                    } catch {
-                        print("Error posting content:", error)
+                        try await self.postWriteReplyContentAPI(
+                            commentText: value.0.commentText,
+                            contentId: value.1
+                        )
+                        self.postReplyCompleted.send(0)
                     }
                 }
             }
@@ -270,7 +277,7 @@ extension FeedDetailViewModel {
 //        }
 //    }
     
-    private func postWriteReplyContentAPI(commentText: String, contentId: Int) async throws {
+    private func postWriteReplyContentAPI(commentText: String, contentId: Int) async throws -> Void {
         guard let url = URL(string: Config.baseURL + "v2/content/\(contentId)/comment") else { return }
         guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
         
@@ -311,25 +318,27 @@ extension FeedDetailViewModel {
         // HTTP body에 데이터 설정
         request.httpBody = requestBodyData
         
-        // URLSession으로 요청 보내기
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                print("Error:", error)
-                return
-            }
-            
-            // 응답 처리
-            if let response = response as? HTTPURLResponse {
-                print(response)
-                print("Response status code:", response.statusCode)
-            }
-            
-            if let data = data {
-                // 서버 응답 데이터 처리
-                print("Response data:", String(data: data, encoding: .utf8) ?? "Empty response")
-            }
+        // URLSession으로 비동기 요청 보내기
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        // 응답 처리
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])
         }
-        task.resume()
+        
+        print("Response status code:", httpResponse.statusCode)
+        
+        if httpResponse.statusCode != 201 {
+            throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed with status code \(httpResponse.statusCode)"])
+        }
+        
+        guard let responseString = String(data: data, encoding: .utf8) else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Empty response"])
+        }
+        
+        print("Response data:", responseString)  // 서버 응답 데이터를 처리한 후 출력
+        
+        return
     }
     
 //    func postDownTransparency(accessToken: String, alarmTriggerType: String, targetMemberId: Int, alarmTriggerId: Int, ghostReason: String) async throws -> BaseResponse<EmptyResponse>? {

@@ -135,7 +135,7 @@ extension FeedDetailViewController {
         let backButtonImage = ImageLiterals.Icon.icBack.withRenderingMode(.alwaysOriginal)
         let backButton = UIBarButtonItem(image: backButtonImage, style: .done, target: self, action: #selector(backButtonDidTapped))
         navigationItem.leftBarButtonItem = backButton
-        
+        self.navigationItem.hidesBackButton = true
     }
     
     private func setRefreshControl() {
@@ -201,7 +201,7 @@ extension FeedDetailViewController {
                 self.postMemberId = data.memberId
 //                self.feedData = data
                 self.feedDetailView.feedDetailTableView.reloadData()
-                self.perform(#selector(self.finishedRefreshing), with: nil, afterDelay: 0.1)
+//                self.perform(#selector(self.finishedRefreshing), with: nil, afterDelay: 0.1)
             }
             .store(in: self.cancelBag)
         
@@ -214,10 +214,12 @@ extension FeedDetailViewController {
         
         output.postReplyCompleted
             .receive(on: RunLoop.main)
-            .sink { value in
-                DispatchQueue.main.async {
-                    print("postReplyCompleted value: \(value)")
-                    if value == true {
+            .sink { data in
+                if data == 0 {
+                    self.viewModel.cursor = -1
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        self.didPullToRefresh()
+                        
                         self.feedDetailView.bottomWriteView.writeTextView.text = ""
                         self.feedDetailView.bottomWriteView.writeTextView.textColor = .gray700
                         self.feedDetailView.bottomWriteView.writeTextView.text = (self.feedData?.memberNickname ?? "") + self.placeholder
@@ -225,10 +227,14 @@ extension FeedDetailViewController {
                                                                                                             left: 10.adjusted,
                                                                                                             bottom: 10.adjusted,
                                                                                                             right: 10.adjusted)
+                        
+                        UIView.animate(withDuration: 0.3) {
+                            self.feedDetailView.feedDetailTableView.contentOffset.y = 0
+                        }
                     }
                 }
-                self.feedDetailView.feedDetailTableView.reloadData()
             }
+            .store(in: cancelBag)
         
 //        output.clickedButtonState
 //            .sink { [weak self] index in
@@ -373,6 +379,16 @@ extension FeedDetailViewController: UITableViewDataSource {
             return 1
         case .reply:
             return viewModel.feedReplyDatas.count
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if scrollView == feedDetailView.feedDetailTableView {
+            if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
+                let lastCommentID = viewModel.feedReplyDatas.last?.commentId ?? -1
+                viewModel.cursor = lastCommentID
+//                self.didPullToRefresh()
+            }
         }
     }
     
