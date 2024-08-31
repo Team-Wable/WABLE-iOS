@@ -32,14 +32,7 @@ final class InfoMatchViewModel {
                 InfoAPI.shared.getMatchInfo { result in
                     guard let result = self?.validateResult(result) as? [TodayMatchesDTO] else { return }
                     let formatData = self?.processGameSchedules(result)
-                    self?.matchInfoDTO.send(formatData ?? [TodayMatchesDTO(date: "error",
-                                                                           games: [Game(gameDate: "error",
-                                                                                        aTeamName: "error",
-                                                                                        aTeamScore: 0,
-                                                                                        bTeamName: "error",
-                                                                                        bTeamScore: 0,
-                                                                                        gameStatus: "")])])
-                    
+                    self?.matchInfoDTO.send(formatData ?? [])
                 }
             }
             .store(in: cancelBag)
@@ -73,6 +66,6 @@ final class InfoMatchViewModel {
         for i in 0..<formattedSchedules.count {
             formattedSchedules[i].formatDate() // date 및 gameDate 변환
         }
-        print("🐭🐭🐭🐭\(formattedSchedules)")
         return formattedSchedules
-    }}
+    }
+}
