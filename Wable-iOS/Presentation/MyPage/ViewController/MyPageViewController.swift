@@ -10,6 +10,7 @@ import SafariServices
 import UIKit
 
 import SnapKit
+import Kingfisher
 
 final class MyPageViewController: UIViewController {
     
@@ -31,6 +32,12 @@ final class MyPageViewController: UIViewController {
     var ghostReason: String = ""
     var reportTargetNickname: String = "해당 유저의 닉네임"
     var relateText: String = "마이페이지 유저 신고"
+    
+    let basicProfileImages: [UIImage : String] = [
+        ImageLiterals.Image.imgProfile1 : "PURPLE",
+        ImageLiterals.Image.imgProfile2 : "BLUE",
+        ImageLiterals.Image.imgProfile3 : "GREEN"
+    ]
     
 //    var commentDatas: [MyPageMemberCommentResponseDTO] = []
 //    var contentDatas: [MyPageMemberContentResponseDTO] = []
@@ -88,15 +95,13 @@ final class MyPageViewController: UIViewController {
         setLayout()
         setDelegate()
         setAddTarget()
-        bindViewModel()
-//        setRefreshControll()
+        setRefreshControll()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-//        bindViewModel()
-//        setRefreshControll()
+        bindViewModel()
         setNotification()
         
         self.tabBarController?.tabBar.isHidden = false
@@ -257,7 +262,6 @@ extension MyPageViewController {
         output.getProfileData
             .receive(on: RunLoop.main)
             .sink { data in
-                print("getProfileData: \(data)")
 //                self.rootView.myPagePostViewController.profileData = self.viewModel.myPageProfileData
 //                self.rootView.myPageReplyViewController.profileData = self.viewModel.myPageProfileData
                 self.bindProfileData(data: data)
@@ -268,11 +272,10 @@ extension MyPageViewController {
     }
     
     private func bindProfileData(data: MypageProfileResponseDTO) {
-        print("bindProfileData: \(bindProfileData)")
-        self.rootView.myPageProfileView.profileImageView.load(url: data.memberProfileUrl)
         self.rootView.myPageProfileView.userNickname.text = data.nickname
-//        self.rootView.myPageProfileView.userIntroduction.text = data.memberIntro
+        self.rootView.myPageProfileView.profileImageView.load(url: data.memberProfileUrl)
         self.rootView.myPageProfileView.transparencyValue = data.memberGhost
+        self.rootView.myPageProfileView.userIntroductionLabel.text = "\(data.memberFanTeam)을(를) 응원하고 있어요.\n\(data.memberLckYears)년부터 LCK를 보기 시작했어요."
         
         if data.memberId != loadUserData()?.memberId ?? 0 {
 //            self.rootView.myPagePostViewController.noContentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoContentOtherLabel
@@ -301,10 +304,7 @@ extension MyPageViewController {
     private func profileEditButtonTapped() {
         rootView.myPageBottomsheet.handleDismiss()
         
-        let vc = MyPageEditProfileViewController(viewModel: MyPageProfileViewModel())
-//        vc.memberId = self.memberId
-//        vc.nickname = self.rootView.myPageProfileView.userNickname.text ?? ""
-//        vc.introText = self.rootView.myPageProfileView.userIntroduction.text ?? ""
+        let vc = MyPageEditProfileViewController(viewModel: MyPageProfileViewModel(networkProvider: NetworkService()))
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
