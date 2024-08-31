@@ -25,7 +25,6 @@ final class MyPageEditProfileView: UIView {
     
     let profileImage: UIImageView = {
         let profileImage = UIImageView()
-        profileImage.image = ImageLiterals.Button.btnWrite
         profileImage.contentMode = .scaleAspectFill
         profileImage.layer.cornerRadius = profileImage.frame.size.width / 2
         profileImage.clipsToBounds = true
