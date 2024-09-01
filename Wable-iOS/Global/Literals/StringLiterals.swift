@@ -173,12 +173,12 @@ enum StringLiterals {
         }
         
         enum Info {
-            static let getMatchInfo = "api/v1/information/schedule"
+            static let getMatchInfo = "v1/information/schedule"
         }
         
         enum Notification {
-            static let getNotiInfo = "api/v1/notification/info"
-            static let getNotiActivity = "api/v1/notifications"
+            static let getNotiInfo = "v1/notification/info"
+            static let getNotiActivity = "v1/notifications"
         }
     }
 }
