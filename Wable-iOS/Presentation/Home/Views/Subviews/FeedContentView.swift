@@ -13,7 +13,7 @@ final class FeedContentView: UIView {
     
     // MARK: - UI Components
     
-    private var titleLabel: UILabel = {
+    var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .wableBlack
         label.font = .head2
@@ -21,14 +21,14 @@ final class FeedContentView: UIView {
         return label
     }()
     
-    private var photoImageView: UIImageView = {
+    var photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 8
         return imageView
     }()
     
-    private var contentLabel: UILabel = {
+    var contentLabel: UILabel = {
         let label = UILabel()
         label.textColor = .gray800
         label.font = .body4
