@@ -43,5 +43,12 @@ extension String {
         } else {
             return "알 수 없음"
         }
+
+    // 특정 글자수를 넘어가면 ... 처리
+    func truncated(to length: Int) -> String {
+        guard self.count > length else { return self }
+        
+        let endIndex = self.index(self.startIndex, offsetBy: length)
+        return String(self[..<endIndex]) + "..."
     }
 }

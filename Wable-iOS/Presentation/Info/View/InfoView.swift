@@ -67,7 +67,7 @@ final class InfoView: UIView {
         return vc
     }()
     
-    let infoMatchViewController = InfoMatchViewController()
+    let infoMatchViewController = InfoMatchViewController(viewModel: InfoMatchViewModel())
     let infoRankingViewController = InfoRankingViewController()
     
     // MARK: - Life Cycles
