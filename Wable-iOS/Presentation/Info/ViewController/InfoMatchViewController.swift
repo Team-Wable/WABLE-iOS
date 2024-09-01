@@ -6,49 +6,15 @@
 //
 
 import UIKit
+import Combine
 
 final class InfoMatchViewController: UIViewController {
     
     // MARK: - Properties
     
-    let dummyData: [TodayMatchesDTO] = [TodayMatchesDTO(date: "08.20 (목)",
-                                                        games: [Game(gameDate: "17:00",
-                                                                     aTeamName: "T1",
-                                                                     aTeamScore: 2,
-                                                                     bTeamName: "GEN",
-                                                                     bTeamScore: 3,
-                                                                     gameStatus: "TERMINATION"),
-                                                                Game(gameDate: "21:00",
-                                                                     aTeamName: "FOX",
-                                                                     aTeamScore: 4,
-                                                                     bTeamName: "BRO",
-                                                                     bTeamScore: 5,
-                                                                     gameStatus: "PROGRESS"),
-                                                                Game(gameDate: "22:00",
-                                                                     aTeamName: "GEN",
-                                                                     aTeamScore: 3,
-                                                                     bTeamName: "BRO",
-                                                                     bTeamScore: 7,
-                                                                     gameStatus: "SCHEDULED")]),
-                                        TodayMatchesDTO(date: "08.21 (금)",
-                                                        games: [Game(gameDate: "17:00",
-                                                                     aTeamName: "T1",
-                                                                     aTeamScore: 2,
-                                                                     bTeamName: "GEN",
-                                                                     bTeamScore: 3,
-                                                                     gameStatus: "SCHEDULED"),
-                                                                Game(gameDate: "21:00",
-                                                                     aTeamName: "TBD",
-                                                                     aTeamScore: 0,
-                                                                     bTeamName: "TBD",
-                                                                     bTeamScore: 0,
-                                                                     gameStatus: "SCHEDULED"),
-                                                                Game(gameDate: "22:00",
-                                                                     aTeamName: "TBD",
-                                                                     aTeamScore: 0,
-                                                                     bTeamName: "TBD",
-                                                                     bTeamScore: 0,
-                                                                     gameStatus: "SCHEDULED")])]
+    var matchInfoData: [TodayMatchesDTO] = [] 
+    private let viewModel: InfoMatchViewModel
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     
@@ -62,6 +28,15 @@ final class InfoMatchViewController: UIViewController {
         view = matchView
     }
     
+    init(viewModel: InfoMatchViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -70,6 +45,12 @@ final class InfoMatchViewController: UIViewController {
         setHierarchy()
         setLayout()
         setDelegate()
+        bindViewModel()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.viewWillAppear.send()
     }
 }
 
@@ -92,6 +73,16 @@ extension InfoMatchViewController {
         matchView.matchTableView.delegate = self
         matchView.matchTableView.dataSource = self
     }
+    
+    private func bindViewModel() {
+        viewModel.matchInfoDTO
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] data in
+                self?.matchInfoData = data
+                self?.matchView.matchTableView.reloadData()
+            }
+            .store(in: &cancellables)
+    }
 }
 
 // MARK: - TableView Delegate
@@ -100,14 +91,14 @@ extension InfoMatchViewController: UITableViewDelegate { }
 extension InfoMatchViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return dummyData.count + 1
+        return matchInfoData.count + 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
             return 1
         default:
-            return dummyData[section - 1].games.count
+            return matchInfoData[section - 1].games.count
         }
     }
     
@@ -120,7 +111,7 @@ extension InfoMatchViewController: UITableViewDataSource {
 
         default:
             let cell = matchView.matchTableView.dequeueReusableCell(withIdentifier: MatchTableViewCell.identifier, for: indexPath) as? MatchTableViewCell ?? MatchTableViewCell()
-            cell.bind(data: dummyData[indexPath.section - 1].games[indexPath.row])
+            cell.bind(data: matchInfoData[indexPath.section - 1].games[indexPath.row])
             cell.selectionStyle = .none
             return cell
         }
@@ -151,10 +142,10 @@ extension InfoMatchViewController: UITableViewDataSource {
             return nil
         default:
             if section == 1 {
-                headerView.bind(isToday: true, date: dummyData[section - 1].date)
+                headerView.bind(isToday: true, date: matchInfoData[section - 1].date)
                 return headerView
             } else {
-                headerView.bind(isToday: false, date: dummyData[section - 1].date)
+                headerView.bind(isToday: false, date: matchInfoData[section - 1].date)
                 return headerView
             }
         }
