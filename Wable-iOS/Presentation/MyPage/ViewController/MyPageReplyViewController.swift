@@ -14,88 +14,6 @@ final class MyPageReplyViewController: UIViewController {
     
     // MARK: - Properties
     
-    let feedReplyDummy: [FeedDetailReplyDTO] = []
-//    [FeedDetailReplyDTO(commentID: 0,
-//                                                                   memberID: 0,
-//                                                                   memberProfileURL: "",
-//                                                                   memberNickname: "하암",
-//                                                                   isGhost: false,
-//                                                                   memberGhost: 0,
-//                                                                   isLiked: false,
-//                                                                   commentLikedNumber: 11,
-//                                                                   commentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말",
-//                                                                   time: "2024-02-06 23:46:50",
-//                                                                   isDeleted: false,
-//                                                                   commentImageURL: "",
-//                                                                   memberFanTeam: "T1"),
-//                                                FeedDetailReplyDTO(commentID: 0,
-//                                                                   memberID: 0,
-//                                                                   memberProfileURL: "",
-//                                                                   memberNickname: "뭘봐",
-//                                                                   isGhost: false,
-//                                                                   memberGhost: 0,
-//                                                                   isLiked: false,
-//                                                                   commentLikedNumber: 21,
-//                                                                   commentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말",
-//                                                                   time: "2024-02-06 23:46:50",
-//                                                                   isDeleted: false,
-//                                                                   commentImageURL: "",
-//                                                                   memberFanTeam: "DRX"),
-//                                                FeedDetailReplyDTO(commentID: 0,
-//                                                                   memberID: 0,
-//                                                                   memberProfileURL: "",
-//                                                                   memberNickname: "하암",
-//                                                                   isGhost: false,
-//                                                                   memberGhost: 0,
-//                                                                   isLiked: false,
-//                                                                   commentLikedNumber: 11,
-//                                                                   commentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말시발발발발발발바랍라발바라왜안되는데",
-//                                                                   time: "2024-02-06 23:46:50",
-//                                                                   isDeleted: false,
-//                                                                   commentImageURL: "",
-//                                                                   memberFanTeam: "T1"),
-//                                                FeedDetailReplyDTO(commentID: 0,
-//                                                                   memberID: 0,
-//                                                                   memberProfileURL: "",
-//                                                                   memberNickname: "뭘봐",
-//                                                                   isGhost: false,
-//                                                                   memberGhost: 0,
-//                                                                   isLiked: false,
-//                                                                   commentLikedNumber: 21,
-//                                                                   commentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말",
-//                                                                   time: "2024-02-06 23:46:50",
-//                                                                   isDeleted: false,
-//                                                                   commentImageURL: "",
-//                                                                   memberFanTeam: "DRX"),
-//                                                FeedDetailReplyDTO(commentID: 0,
-//                                                                   memberID: 0,
-//                                                                   memberProfileURL: "",
-//                                                                   memberNickname: "하암",
-//                                                                   isGhost: false,
-//                                                                   memberGhost: 0,
-//                                                                   isLiked: false,
-//                                                                   commentLikedNumber: 11,
-//                                                                   commentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말",
-//                                                                   time: "2024-02-06 23:46:50",
-//                                                                   isDeleted: false,
-//                                                                   commentImageURL: "",
-//                                                                   memberFanTeam: "T1"),
-//                                                FeedDetailReplyDTO(commentID: 0,
-//                                                                   memberID: 0,
-//                                                                   memberProfileURL: "",
-//                                                                   memberNickname: "뭘봐",
-//                                                                   isGhost: false,
-//                                                                   memberGhost: 0,
-//                                                                   isLiked: false,
-//                                                                   commentLikedNumber: 21,
-//                                                                   commentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말",
-//                                                                   time: "2024-02-06 23:46:50",
-//                                                                   isDeleted: false,
-//                                                                   commentImageURL: "",
-//                                                                   memberFanTeam: "DRX")]
-    
-    var feedData: HomeFeedDTO? = nil
-    
     static let pushViewController = NSNotification.Name("pushViewController")
     static let reloadData = NSNotification.Name("reloadData")
     static let warnUserButtonTapped = NSNotification.Name("warnUserButtonTapped")
@@ -110,8 +28,8 @@ final class MyPageReplyViewController: UIViewController {
 //    let deleteViewModel = DeleteReplyViewModel(networkProvider: NetworkService())
     private var cancelBag = CancelBag()
     
-//    var profileData: [MypageProfileResponseDTO] = []
-//    var commentDatas: [MyPageMemberCommentResponseDTO] = []
+    var profileData: [MypageProfileResponseDTO] = []
+    var commentDatas: [MyPageMemberCommentResponseDTO] = []
     
     // var commentData = MyPageViewModel(networkProvider: NetworkService()).myPageCommentData
     var contentId: Int = 0
@@ -306,28 +224,95 @@ extension MyPageReplyViewController {
 
 extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return feedReplyDummy.count
+        return self.commentDatas.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = feedDetailTableView.dequeueReusableCell(withIdentifier: FeedDetailTableViewCell.identifier, for: indexPath) as? FeedDetailTableViewCell ?? FeedDetailTableViewCell()
         cell.selectionStyle = .none
-        cell.bind(data: feedReplyDummy[indexPath.row])
         
-//        cell.bottomView.commentButtonTapped = { [weak self] in
-//            self?.viewModel.commentButtonTapped.send(indexPath.row)
-//        }
+        cell.alarmTriggerType = "commentGhost"
+        cell.targetMemberId = commentDatas[indexPath.row].memberId
+        cell.alarmTriggerdId = commentDatas[indexPath.row].commentId
         
-        cell.bottomView.ghostButtonTapped = { [weak self] in
-            print("ghostButtonTapped")
-//            self.alarmTriggerType = cell.alarmTriggerType
-//            self.targetMemberId = cell.targetMemberId
-//            self.alarmTriggerdId = cell.alarmTriggerdId
-            NotificationCenter.default.post(name: MyPageReplyViewController.ghostButtonTapped, object: nil)
+        if commentDatas[indexPath.row].memberId == loadUserData()?.memberId {
+            cell.bottomView.ghostButton.isHidden = true
+            
+            cell.bottomView.heartButton.snp.remakeConstraints {
+                $0.height.equalTo(24.adjusted)
+                $0.width.equalTo(45.adjusted)
+                $0.trailing.equalToSuperview()
+                $0.centerY.equalToSuperview()
+            }
+//            self.deleteBottomsheet.warnButton.removeFromSuperview()
+            
+            cell.menuButtonTapped = {
+//                self.deleteBottomsheet.showSettings()
+//                self.deleteBottomsheet.deleteButton.addTarget(self, action: #selector(self.deleteButtonTapped), for: .touchUpInside)
+//                self.commentId = self.commentDatas[indexPath.row].commentId
+            }
+        } else {
+            cell.bottomView.ghostButton.isHidden = false
+            cell.bottomView.ghostButton.snp.remakeConstraints {
+                $0.height.width.equalTo(32.adjusted)
+                $0.trailing.equalToSuperview()
+                $0.centerY.equalToSuperview()
+            }
+            
+            cell.bottomView.heartButton.snp.remakeConstraints {
+                $0.height.equalTo(24.adjusted)
+                $0.width.equalTo(45.adjusted)
+                $0.trailing.equalTo(cell.bottomView.ghostButton.snp.leading).offset(-16.adjusted)
+                $0.centerY.equalTo(cell.bottomView.ghostButton)
+            }
+//            self.warnBottomsheet.deleteButton.removeFromSuperview()
+            
+            cell.menuButtonTapped = {
+//                self.warnBottomsheet.showSettings()
+//                self.warnBottomsheet.warnButton.addTarget(self, action: #selector(self.warnButtonTapped), for: .touchUpInside)
+//                self.commentId = self.commentDatas[indexPath.row].commentId
+            }
         }
         
-        cell.bottomView.heartButtonTapped = { [weak self] in
+        cell.profileImageView.load(url: "\(commentDatas[indexPath.row].memberProfileUrl)")
+        cell.infoView.nicknameLabel.text = commentDatas[indexPath.row].memberNickname
+        cell.infoView.teamImageView.image = Team(rawValue: commentDatas[indexPath.row].memberFanTeam)?.tag
+        cell.infoView.ghostPercentLabel.text = "투명도 \(commentDatas[indexPath.row].memberGhost)%"
+        cell.infoView.timeLabel.text = "\(commentDatas[indexPath.row].time.formattedTime())"
+        
+        cell.contentLabel.text = commentDatas[indexPath.row].commentText
+        
+        cell.bottomView.heartButton.setTitleWithConfiguration("\(commentDatas[indexPath.row].commentLikedNumber)", font: .caption1, textColor: .wableBlack)
+        
+        cell.profileButtonAction = {
+            let memberId = self.commentDatas[indexPath.row].memberId
+            
+            if memberId == loadUserData()?.memberId ?? 0  {
+                self.tabBarController?.selectedIndex = 3
+            } else {
+                let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()))
+                viewController.memberId = memberId
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
+        }
+        
+        cell.bottomView.heartButtonTapped = {
+            var currentHeartCount = cell.bottomView.heartButton.titleLabel?.text
+            
+            if cell.bottomView.isLiked == true {
+                cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
+            } else {
+                cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
+            }
             cell.bottomView.isLiked.toggle()
+//            self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.commentDatas[indexPath.row].contentId)
+        }
+        
+        cell.bottomView.ghostButtonTapped = { [weak self] in
+            self?.alarmTriggerType = cell.alarmTriggerType
+            self?.targetMemberId = cell.targetMemberId
+            self?.alarmTriggerdId = cell.alarmTriggerdId
+            NotificationCenter.default.post(name: MyPagePostViewController.ghostButtonTapped, object: nil)
         }
         
         return cell
@@ -342,6 +327,19 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
 //        let profileImageURL = commentDatas[indexPath.row].memberProfileUrl
 //        NotificationCenter.default.post(name: MyPageContentViewController.pushViewController, object: nil, userInfo: ["contentId": contentId, "profileImageURL": profileImageURL])
         NotificationCenter.default.post(name: MyPageReplyViewController.pushViewController, object: nil)
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if scrollView == feedDetailTableView {
+            if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
+                let lastCommentId = commentDatas.last?.commentId ?? -1
+                myPageViewModel.commentCursor = lastCommentId
+                NotificationCenter.default.post(name: MyPagePostViewController.reloadContentData, object: nil, userInfo: ["commentCursor": lastCommentId])
+                DispatchQueue.main.async {
+                     self.feedDetailTableView.reloadData()
+                }
+            }
+        }
     }
 }
 
