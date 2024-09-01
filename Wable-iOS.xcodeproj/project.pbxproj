@@ -43,7 +43,6 @@
 		050E0CFC2C751A5C00326EEA /* ActivityNotificationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CFB2C751A5C00326EEA /* ActivityNotificationDTO.swift */; };
 		050E0D002C77341A00326EEA /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CFF2C77341900326EEA /* HomeRouter.swift */; };
 		050E0D022C77372F00326EEA /* HomeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D012C77372F00326EEA /* HomeAPI.swift */; };
-		050E0D082C79A0B900326EEA /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 050E0D072C79A0B900326EEA /* Config.xcconfig */; };
 		050E0D0B2C7F634800326EEA /* InfoRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D0A2C7F634800326EEA /* InfoRouter.swift */; };
 		050E0D0D2C7F635200326EEA /* InfoAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D0C2C7F635200326EEA /* InfoAPI.swift */; };
 		050E0D102C7F64C700326EEA /* InfoMatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D0F2C7F64C700326EEA /* InfoMatchViewModel.swift */; };
@@ -132,6 +131,7 @@
 		3C8B4E552C84081B00174943 /* ReportRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E542C84081B00174943 /* ReportRequestDTO.swift */; };
 		3C8B4E572C84094100174943 /* PostTransparencyRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E562C84094100174943 /* PostTransparencyRequestDTO.swift */; };
 		3C8B4E592C840AD300174943 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E582C840AD300174943 /* Functions.swift */; };
+		3C8B4E5B2C841FF300174943 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3C8B4E5A2C841FF200174943 /* Config.xcconfig */; };
 		3CDE2DE42C6F292B004A84CB /* Publisher+UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */; };
 		3CDE2DE62C6F30BA004A84CB /* JoinAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE52C6F30BA004A84CB /* JoinAgreementViewController.swift */; };
 		3CDE2DE82C6F30CE004A84CB /* JoinProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE72C6F30CE004A84CB /* JoinProfileViewController.swift */; };
@@ -219,7 +219,6 @@
 		050E0CFB2C751A5C00326EEA /* ActivityNotificationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotificationDTO.swift; sourceTree = "<group>"; };
 		050E0CFF2C77341900326EEA /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		050E0D012C77372F00326EEA /* HomeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAPI.swift; sourceTree = "<group>"; };
-		050E0D072C79A0B900326EEA /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = ../../Downloads/Config.xcconfig; sourceTree = "<group>"; };
 		050E0D0A2C7F634800326EEA /* InfoRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRouter.swift; sourceTree = "<group>"; };
 		050E0D0C2C7F635200326EEA /* InfoAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoAPI.swift; sourceTree = "<group>"; };
 		050E0D0F2C7F64C700326EEA /* InfoMatchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMatchViewModel.swift; sourceTree = "<group>"; };
@@ -305,6 +304,7 @@
 		3C8B4E542C84081B00174943 /* ReportRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRequestDTO.swift; sourceTree = "<group>"; };
 		3C8B4E562C84094100174943 /* PostTransparencyRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTransparencyRequestDTO.swift; sourceTree = "<group>"; };
 		3C8B4E582C840AD300174943 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
+		3C8B4E5A2C841FF200174943 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+UIControl.swift"; sourceTree = "<group>"; };
 		3CDE2DE52C6F30BA004A84CB /* JoinAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinAgreementViewController.swift; sourceTree = "<group>"; };
 		3CDE2DE72C6F30CE004A84CB /* JoinProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinProfileViewController.swift; sourceTree = "<group>"; };
@@ -567,7 +567,7 @@
 		0547F48D2C60D968001E3039 = {
 			isa = PBXGroup;
 			children = (
-				050E0D072C79A0B900326EEA /* Config.xcconfig */,
+				3C8B4E5A2C841FF200174943 /* Config.xcconfig */,
 				0547F4982C60D968001E3039 /* Wable-iOS */,
 				0547F4972C60D968001E3039 /* Products */,
 			);
@@ -1241,8 +1241,8 @@
 				3C35317F2C6F13FF0015A8FA /* Pretendard-Regular.otf in Resources */,
 				3C8B4E052C76247800174943 /* wable_tab.json in Resources */,
 				3C3531802C6F13FF0015A8FA /* Pretendard-SemiBold.otf in Resources */,
+				3C8B4E5B2C841FF300174943 /* Config.xcconfig in Resources */,
 				0547F4A62C60D96B001E3039 /* Base in Resources */,
-				050E0D082C79A0B900326EEA /* Config.xcconfig in Resources */,
 				0547F4C82C621ABC001E3039 /* Color.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1433,7 +1433,6 @@
 /* Begin XCBuildConfiguration section */
 		0547F4A82C60D96B001E3039 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 050E0D072C79A0B900326EEA /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1497,7 +1496,6 @@
 		};
 		0547F4A92C60D96B001E3039 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 050E0D072C79A0B900326EEA /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1554,7 +1552,6 @@
 		};
 		0547F4AB2C60D96B001E3039 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 050E0D072C79A0B900326EEA /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1590,7 +1587,6 @@
 		};
 		0547F4AC2C60D96B001E3039 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 050E0D072C79A0B900326EEA /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
