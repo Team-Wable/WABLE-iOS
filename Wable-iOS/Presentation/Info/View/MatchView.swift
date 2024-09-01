@@ -48,7 +48,7 @@ extension MatchView {
     private func setUI() {
         self.backgroundColor = .white
         matchTableView.separatorStyle = .none
-        matchTableView.backgroundColor = .white
+        matchTableView.backgroundColor = .wableWhite
     }
     
     private func setHierarchy() {
