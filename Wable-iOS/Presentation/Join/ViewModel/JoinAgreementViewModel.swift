@@ -120,14 +120,17 @@ final class JoinAgreementViewModel: ViewModelType {
             .sink { value in
                 // 회원가입 서버통신
                 Task {
-                    self.patchUserInfoDataAPI(nickname: value.info?.nickname ?? "",
-                                              isAlarmAllowed: value.info?.isAlarmAllowed ?? false,
-                                              memberLckYears: value.info?.memberLckYears ?? 0,
-                                              memberFanTeam: value.info?.memberFanTeam ?? "",
-                                              memberDefaultProfileImage: value.info?.memberDefaultProfileImage ?? "",
-                                              profileImage: value.file)
-                    
-                    self.pushOrPopViewController.send(1)
+                    do {
+                        try await self.patchUserInfoDataAPI(
+                            nickname: value.info?.nickname ?? "",
+                            isAlarmAllowed: value.info?.isAlarmAllowed ?? false,
+                            memberLckYears: value.info?.memberLckYears ?? 0,
+                            memberFanTeam: value.info?.memberFanTeam ?? "",
+                            memberDefaultProfileImage: value.info?.memberDefaultProfileImage ?? "",
+                            profileImage: value.file
+                        )
+                        self.pushOrPopViewController.send(1)
+                    }
                 }
                 
                 let fcmToken = loadUserData()?.fcmToken
@@ -168,8 +171,8 @@ final class JoinAgreementViewModel: ViewModelType {
 // MARK: - Network
 
 extension JoinAgreementViewModel {
-    func patchUserInfoDataAPI(nickname: String, isAlarmAllowed: Bool, memberLckYears: Int, memberFanTeam: String, memberDefaultProfileImage: String, profileImage: Data?) {
-        guard let url = URL(string: Config.baseURL + "/user-profile2") else { return }
+    func patchUserInfoDataAPI(nickname: String, isAlarmAllowed: Bool, memberLckYears: Int, memberFanTeam: String, memberDefaultProfileImage: String, profileImage: Data?) async throws -> Void {
+        guard let url = URL(string: Config.baseURL + "v1/user-profile2") else { return }
         guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
         
         let parameters: [String: Any] = [
@@ -215,24 +218,26 @@ extension JoinAgreementViewModel {
         // HTTP body에 데이터 설정
         request.httpBody = requestBodyData
         
-        // URLSession으로 요청 보내기
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                print("Error:", error)
-                return
-            }
-            
-            // 응답 처리
-            if let response = response as? HTTPURLResponse {
-                print(response)
-                print("Response status code:", response.statusCode)
-            }
-            
-            if let data = data {
-                // 서버 응답 데이터 처리
-                print("Response data:", String(data: data, encoding: .utf8) ?? "Empty response")
-            }
+        // URLSession으로 비동기 요청 보내기
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        // 응답 처리
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])
         }
-        task.resume()
+        
+        print("Response status code:", httpResponse.statusCode)
+        
+        if httpResponse.statusCode != 200 {
+            throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed with status code \(httpResponse.statusCode)"])
+        }
+        
+        guard let responseString = String(data: data, encoding: .utf8) else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Empty response"])
+        }
+        
+        print("Response data:", responseString)  // 서버 응답 데이터를 처리한 후 출력
+        
+        return
     }
 }

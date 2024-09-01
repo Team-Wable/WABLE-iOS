@@ -11,7 +11,7 @@ class MyPageSignOutConfirmViewController: UIViewController {
 
     // MARK: - Properties
     
-    var signOutReason = ""
+    var signOutReason: [String] = []
     
     private var cancelBag = CancelBag()
     private let viewModel: MyPageSignOutConfirmViewModel
@@ -49,6 +49,7 @@ class MyPageSignOutConfirmViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("signOutReason: \(signOutReason)")
         setDelegate()
         setAddTarget()
         setNavigationBar()

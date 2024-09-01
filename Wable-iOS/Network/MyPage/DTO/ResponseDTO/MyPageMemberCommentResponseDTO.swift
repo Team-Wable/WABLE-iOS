@@ -22,4 +22,5 @@ struct MyPageMemberCommentResponseDTO: Decodable {
     let commentId: Int
     let contentId: Int
     let commentImageUrl: String?
+    let memberFanTeam: String
 }

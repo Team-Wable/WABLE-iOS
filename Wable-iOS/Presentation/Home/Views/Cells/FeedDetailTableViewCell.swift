@@ -15,15 +15,20 @@ final class FeedDetailTableViewCell: UITableViewCell {
     
     static let identifier = "FeedDetailTableViewCell"
     var menuButtonTapped: (() -> Void)?
+    var profileButtonAction: (() -> Void) = {}
     var isMyContent: Bool = Bool()
+    
+    var alarmTriggerType: String = ""
+    var targetMemberId: Int = 0
+    var alarmTriggerdId: Int = 0
     
     // MARK: - Components
     
-    private var infoView = FeedInfoView()
+    var infoView = FeedInfoView()
 
     var bottomView = FeedDetailBottomView()
     
-    private var contentLabel: UILabel = {
+    var contentLabel: UILabel = {
         let label = UILabel()
         label.textColor = .gray800
         label.font = .body4
@@ -33,7 +38,7 @@ final class FeedDetailTableViewCell: UITableViewCell {
         return label
     }()
     
-    private var profileImageView: UIImageView = {
+    var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = ImageLiterals.Image.imgProfileSmall
         return imageView
@@ -118,11 +123,17 @@ final class FeedDetailTableViewCell: UITableViewCell {
     
     private func setAddTarget() {
         self.menuButton.addTarget(self, action: #selector(menuButtonDidTapped), for: .touchUpInside)
+        self.profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileButtonTapped)))
     }
     
     @objc
     private func menuButtonDidTapped() {
         menuButtonTapped?()
+    }
+    
+    @objc
+    private func profileButtonTapped() {
+        profileButtonAction()
     }
     
     func bind(data: FeedDetailReplyDTO) {

@@ -12,6 +12,11 @@ final class HomeViewModel {
     
     private let cancelBag = CancelBag()
     
+    var cursor: Int = -1
+    
+    var feedData: [HomeFeedDTO] = []
+    var feedDatas: [HomeFeedDTO] = []
+    
     // MARK: - Input
     
     let commentButtonTapped = PassthroughSubject<Int, Never>()
@@ -49,12 +54,30 @@ final class HomeViewModel {
     }
     
     private func transform() {
-        print("transform")
         viewWillAppear
             .sink { [weak self] in
-                HomeAPI.shared.getHomeContent(cursor: -1) { result in
+                HomeAPI.shared.getHomeContent(cursor: self!.cursor) { result in
                     guard let result = self?.validateResult(result) as? [HomeFeedDTO] else { return }
-                    self?.homeFeedDTO.send(result)
+                    
+                    if self!.cursor == -1 {
+                        self?.feedDatas = []
+                        
+                        var tempArray: [HomeFeedDTO] = []
+                        
+                        for content in result {
+                            tempArray.append(content)
+                        }
+                        self?.feedDatas.append(contentsOf: tempArray)
+                        self?.homeFeedDTO.send(tempArray)
+                    } else {
+                        var tempArray: [HomeFeedDTO] = []
+                        
+                        for content in result {
+                            tempArray.append(content)
+                        }
+                        self?.feedDatas.append(contentsOf: tempArray)
+                        self?.homeFeedDTO.send(tempArray)
+                    }
                 }
             }
             .store(in: cancelBag)
@@ -63,9 +86,9 @@ final class HomeViewModel {
     func validateResult(_ result: NetworkResult<Any>) -> Any?{
         switch result{
         case .success(let data):
-            print("성공했습니다.")
-            print("⭐️⭐️⭐️⭐️⭐️⭐️")
-            print(data)
+//            print("성공했습니다.")
+//            print("⭐️⭐️⭐️⭐️⭐️⭐️")
+//            print("validateResult :\(data)")
             return data
         case .requestErr(let message):
             print(message)

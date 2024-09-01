@@ -79,7 +79,7 @@ extension JoinProfileViewModel {
             guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
             let data: BaseResponse<EmptyResponse>? = try await self.networkProvider.donNetwork(
                 type: .get,
-                baseURL: Config.baseURL + "/nickname-validation",
+                baseURL: Config.baseURL + "v1/nickname-validation",
                 accessToken: accessToken,
                 body: EmptyBody(),
                 pathVariables: ["nickname":nickname])

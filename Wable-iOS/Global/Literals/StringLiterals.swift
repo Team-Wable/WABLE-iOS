@@ -105,6 +105,8 @@ enum StringLiterals {
     }
     
     enum BottomSheet {
+        static let report = "신고하기"
+        static let delete = "삭제하기"
         static let accountInfo = "계정 정보"
         static let settingAlarm = "알림 설정"
         static let feedback = "피드백 남기기"
@@ -114,6 +116,7 @@ enum StringLiterals {
     
     enum Network {
         static let expired = "access, refreshToken 모두 만료되었습니다. 재로그인이 필요합니다."
+        static let notExpired = "아직 유효한 accessToken 입니다."
         static let baseImageURL = "https://github.com/TeamDon-tBe/SERVER/assets/97835512/fb3ea04c-661e-4221-a837-854d66cdb77e"
         static let notificationImageURL = "https://github.com/TeamDon-tBe/SERVER/assets/128011308/327d416e-ef1f-4c10-961d-4d9b85632d87"
         static let warnUserGoogleFormURL = "https://forms.gle/FTgZKkajwtzFvAk99"
@@ -130,6 +133,14 @@ enum StringLiterals {
     }
     
     enum Home {
+        static let reportPopupTitle = "신고하시겠어요?"
+        static let reportPopupContent = "해당 유저 혹은 게시글을 신고하시려면 신고하기 버튼을 눌러주세요."
+        static let reportPopupUndo = "취소"
+        static let reportPopupDo = "신고하기"
+        static let deletePopupTitle = "게시글을 삭제하시겠어요?"
+        static let deletePopupContent = "게시글이 영구히 삭제됩니다."
+        static let deletePopupUndo = "취소"
+        static let deletePopupDo = "삭제하기"
         static let ghostPopupTitle = "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?"
         static let ghostPopupUndo = "고민할게요"
         static let ghostPopupDo = "네 맞아요"
@@ -158,7 +169,7 @@ enum StringLiterals {
     
     enum Endpoint {
         enum Home {
-            static let getContent = "api/v2/contents"
+            static let getContent = "v2/contents"
         }
         
         enum Info {

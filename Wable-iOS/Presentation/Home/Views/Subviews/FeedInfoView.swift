@@ -13,22 +13,22 @@ final class FeedInfoView: UIView {
     
     // MARK: - UI Components
     
-    private var nicknameLabel: UILabel = {
+    var nicknameLabel: UILabel = {
         let label = UILabel()
         label.font = .body3
         label.textColor = .wableBlack
         return label
     }()
     
-    private var teamImageView = UIImageView()
-    private var ghostPercentLabel: UILabel = {
+    var teamImageView = UIImageView()
+    var ghostPercentLabel: UILabel = {
         let label = UILabel()
         label.font = .caption4
         label.textColor = .gray700
         return label
     }()
     
-    private var timeLabel: UILabel = {
+    var timeLabel: UILabel = {
         let label = UILabel()
         label.font = .caption4
         label.textColor = .gray500
@@ -90,6 +90,6 @@ extension FeedInfoView {
         nicknameLabel.text = nickname
         teamImageView.image = team.tag
         ghostPercentLabel.text = "투명도 \(ghostPercent)%"
-        timeLabel.text = "· \(time)"
+        timeLabel.text = "· \(time.formattedTime())"
     }
 }

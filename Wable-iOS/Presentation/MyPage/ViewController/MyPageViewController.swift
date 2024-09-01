@@ -10,6 +10,7 @@ import SafariServices
 import UIKit
 
 import SnapKit
+import Kingfisher
 
 final class MyPageViewController: UIViewController {
     
@@ -31,6 +32,12 @@ final class MyPageViewController: UIViewController {
     var ghostReason: String = ""
     var reportTargetNickname: String = "해당 유저의 닉네임"
     var relateText: String = "마이페이지 유저 신고"
+    
+    let basicProfileImages: [UIImage : String] = [
+        ImageLiterals.Image.imgProfile1 : "PURPLE",
+        ImageLiterals.Image.imgProfile2 : "BLUE",
+        ImageLiterals.Image.imgProfile3 : "GREEN"
+    ]
     
 //    var commentDatas: [MyPageMemberCommentResponseDTO] = []
 //    var contentDatas: [MyPageMemberContentResponseDTO] = []
@@ -88,15 +95,13 @@ final class MyPageViewController: UIViewController {
         setLayout()
         setDelegate()
         setAddTarget()
-        bindViewModel()
-//        setRefreshControll()
+        setRefreshControll()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-//        bindViewModel()
-//        setRefreshControll()
+        bindViewModel()
         setNotification()
         
         self.tabBarController?.tabBar.isHidden = false
@@ -191,8 +196,8 @@ extension MyPageViewController {
     
     private func setNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(pushViewController), name: MyPagePostViewController.pushViewController, object: nil)
-//            NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: MyPagePostViewController.reloadData, object: nil)
-//            NotificationCenter.default.addObserver(self, selector: #selector(reloadContentData(_:)), name: MyPagePostViewController.reloadContentData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: MyPagePostViewController.reloadData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadContentData(_:)), name: MyPagePostViewController.reloadContentData, object: nil)
 //            NotificationCenter.default.addObserver(self, selector: #selector(warnButtonTapped), name: MyPagePostViewController.warnUserButtonTapped, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(contentGhostButtonTapped), name: MyPagePostViewController.ghostButtonTapped, object: nil)
         
@@ -205,8 +210,8 @@ extension MyPageViewController {
     
     private func removeNotification() {
         NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.pushViewController, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadData, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadContentData, object: nil)
+        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadData, object: nil)
+        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadContentData, object: nil)
 //        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.warnUserButtonTapped, object: nil)
         NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.ghostButtonTapped, object: nil)
         
@@ -257,22 +262,61 @@ extension MyPageViewController {
         output.getProfileData
             .receive(on: RunLoop.main)
             .sink { data in
-                print("getProfileData: \(data)")
-//                self.rootView.myPagePostViewController.profileData = self.viewModel.myPageProfileData
-//                self.rootView.myPageReplyViewController.profileData = self.viewModel.myPageProfileData
+                self.rootView.myPagePostViewController.profileData = self.viewModel.myPageProfileData
+                self.rootView.myPageReplyViewController.profileData = self.viewModel.myPageProfileData
                 self.bindProfileData(data: data)
             }
             .store(in: self.cancelBag)
         
-        self.rootView.myPageProfileView.transparencyValue = -15
+        output.getContentData
+            .receive(on: RunLoop.main)
+            .sink { data in
+                self.rootView.myPagePostViewController.contentDatas = data
+                self.viewModel.contentCursor = self.contentCursor
+                if data.isEmpty {
+                    self.viewModel.contentCursor = -1
+                } else {
+                    self.viewModel.contentCursor = self.contentCursor
+                }
+                if !data.isEmpty {
+                    self.rootView.myPagePostViewController.noContentLabel.isHidden = true
+                    self.rootView.myPagePostViewController.firstContentButton.isHidden = true
+                } else {
+                    if loadUserData()?.memberId != self.memberId {
+                        self.rootView.myPagePostViewController.noContentLabel.isHidden = false
+                        self.rootView.myPagePostViewController.firstContentButton.isHidden = true
+                    } else {
+                        self.rootView.myPagePostViewController.noContentLabel.isHidden = false
+                        self.rootView.myPagePostViewController.firstContentButton.isHidden = false
+                    }
+                }
+                DispatchQueue.main.async {
+                    self.rootView.myPagePostViewController.homeFeedTableView.reloadData()
+                }
+            }
+            .store(in: self.cancelBag)
+        
+        output.getCommentData
+            .receive(on: RunLoop.main)
+            .sink { data in
+                self.rootView.myPageReplyViewController.commentDatas = data
+                if !data.isEmpty {
+                    self.rootView.myPageReplyViewController.noCommentLabel.isHidden = true
+                } else {
+                    self.rootView.myPageReplyViewController.noCommentLabel.isHidden = false
+                }
+                DispatchQueue.main.async {
+                    self.rootView.myPageReplyViewController.feedDetailTableView.reloadData()
+                }
+            }
+            .store(in: self.cancelBag)
     }
     
     private func bindProfileData(data: MypageProfileResponseDTO) {
-        print("bindProfileData: \(bindProfileData)")
-        self.rootView.myPageProfileView.profileImageView.load(url: data.memberProfileUrl)
         self.rootView.myPageProfileView.userNickname.text = data.nickname
-//        self.rootView.myPageProfileView.userIntroduction.text = data.memberIntro
+        self.rootView.myPageProfileView.profileImageView.load(url: data.memberProfileUrl)
         self.rootView.myPageProfileView.transparencyValue = data.memberGhost
+        self.rootView.myPageProfileView.userIntroductionLabel.text = "\(data.memberFanTeam)을(를) 응원하고 있어요.\n\(data.memberLckYears)년부터 LCK를 보기 시작했어요."
         
         if data.memberId != loadUserData()?.memberId ?? 0 {
 //            self.rootView.myPagePostViewController.noContentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoContentOtherLabel
@@ -301,10 +345,7 @@ extension MyPageViewController {
     private func profileEditButtonTapped() {
         rootView.myPageBottomsheet.handleDismiss()
         
-        let vc = MyPageEditProfileViewController(viewModel: MyPageProfileViewModel())
-//        vc.memberId = self.memberId
-//        vc.nickname = self.rootView.myPageProfileView.userNickname.text ?? ""
-//        vc.introText = self.rootView.myPageProfileView.userIntroduction.text ?? ""
+        let vc = MyPageEditProfileViewController(viewModel: MyPageProfileViewModel(networkProvider: NetworkService()))
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -312,7 +353,7 @@ extension MyPageViewController {
     private func accountInfoButtonTapped() {
         rootView.myPageBottomsheet.handleDismiss()
         
-        let vc = MyPageAccountInfoViewController(viewModel: MyPageAccountInfoViewModel())
+        let vc = MyPageAccountInfoViewController(viewModel: MyPageAccountInfoViewModel(networkProvider: NetworkService()))
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -366,7 +407,7 @@ extension MyPageViewController {
     
     @objc
     private func pushViewController(_ notification: Notification) {
-        let detailViewController = FeedDetailViewController()
+        let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
         detailViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(detailViewController, animated: true)
         
@@ -377,6 +418,17 @@ extension MyPageViewController {
 //            destinationViewController.userProfileURL = profileImageURL
 //            self.navigationController?.pushViewController(detailViewController, animated: true)
 //        }
+    }
+    
+    @objc
+    func reloadData(_ notification: Notification) {
+        bindViewModel()
+    }
+    
+    @objc
+    func reloadContentData(_ notification: Notification) {
+        self.contentCursor = notification.userInfo?["contentCursor"] as? Int ?? -1
+        bindViewModel()
     }
     
     @objc

@@ -16,6 +16,6 @@ struct MypageProfileResponseDTO: Decodable {
     let memberIntro: String
     let memberGhost: Int
     let memberFanTeam: String
-    let memberLckYear: Int
+    let memberLckYears: Int
     let memberLevel: Int
 }
