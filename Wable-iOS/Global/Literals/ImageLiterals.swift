@@ -73,6 +73,7 @@ enum ImageLiterals {
         static var imgFullBar: UIImage { .load(name: "img_full_bar") }
         static var imgHalfBar: UIImage { .load(name: "img_half_bar") }
         static var imgBadge: UIImage { .load(name: "img_badge") }
+        static var imgRanking: UIImage { .load(name: "img_ranking") }
     }
     
     enum Logo {
