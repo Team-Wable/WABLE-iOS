@@ -121,6 +121,17 @@
 		3C8B4E3B2C79119700174943 /* MyPageMemberContentResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E3A2C79119700174943 /* MyPageMemberContentResponseDTO.swift */; };
 		3C8B4E3D2C79119F00174943 /* MyPageMemberCommentResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E3C2C79119F00174943 /* MyPageMemberCommentResponseDTO.swift */; };
 		3C8B4E3F2C79135800174943 /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E3E2C79135800174943 /* UIImageView+.swift */; };
+		3C8B4E442C80886800174943 /* WriteContentRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E432C80886700174943 /* WriteContentRequestDTO.swift */; };
+		3C8B4E462C808FA500174943 /* WableToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E452C808FA500174943 /* WableToastView.swift */; };
+		3C8B4E482C80E1C900174943 /* FeedDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E472C80E1C900174943 /* FeedDetailViewModel.swift */; };
+		3C8B4E4A2C80E38600174943 /* FeedDetailResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E492C80E38600174943 /* FeedDetailResponseDTO.swift */; };
+		3C8B4E4D2C80EE7700174943 /* WriteReplyRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E4C2C80EE7700174943 /* WriteReplyRequestDTO.swift */; };
+		3C8B4E4F2C83F01600174943 /* LikeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E4E2C83F01500174943 /* LikeViewModel.swift */; };
+		3C8B4E512C83F11900174943 /* ContentLikeRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E502C83F11900174943 /* ContentLikeRequestDTO.swift */; };
+		3C8B4E532C83FB7C00174943 /* HomeBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E522C83FB7C00174943 /* HomeBottomSheetView.swift */; };
+		3C8B4E552C84081B00174943 /* ReportRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E542C84081B00174943 /* ReportRequestDTO.swift */; };
+		3C8B4E572C84094100174943 /* PostTransparencyRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E562C84094100174943 /* PostTransparencyRequestDTO.swift */; };
+		3C8B4E592C840AD300174943 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E582C840AD300174943 /* Functions.swift */; };
 		3CDE2DE42C6F292B004A84CB /* Publisher+UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */; };
 		3CDE2DE62C6F30BA004A84CB /* JoinAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE52C6F30BA004A84CB /* JoinAgreementViewController.swift */; };
 		3CDE2DE82C6F30CE004A84CB /* JoinProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE72C6F30CE004A84CB /* JoinProfileViewController.swift */; };
@@ -283,6 +294,17 @@
 		3C8B4E3A2C79119700174943 /* MyPageMemberContentResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMemberContentResponseDTO.swift; sourceTree = "<group>"; };
 		3C8B4E3C2C79119F00174943 /* MyPageMemberCommentResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMemberCommentResponseDTO.swift; sourceTree = "<group>"; };
 		3C8B4E3E2C79135800174943 /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
+		3C8B4E432C80886700174943 /* WriteContentRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteContentRequestDTO.swift; sourceTree = "<group>"; };
+		3C8B4E452C808FA500174943 /* WableToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableToastView.swift; sourceTree = "<group>"; };
+		3C8B4E472C80E1C900174943 /* FeedDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailViewModel.swift; sourceTree = "<group>"; };
+		3C8B4E492C80E38600174943 /* FeedDetailResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailResponseDTO.swift; sourceTree = "<group>"; };
+		3C8B4E4C2C80EE7700174943 /* WriteReplyRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteReplyRequestDTO.swift; sourceTree = "<group>"; };
+		3C8B4E4E2C83F01500174943 /* LikeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewModel.swift; sourceTree = "<group>"; };
+		3C8B4E502C83F11900174943 /* ContentLikeRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLikeRequestDTO.swift; sourceTree = "<group>"; };
+		3C8B4E522C83FB7C00174943 /* HomeBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomSheetView.swift; sourceTree = "<group>"; };
+		3C8B4E542C84081B00174943 /* ReportRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRequestDTO.swift; sourceTree = "<group>"; };
+		3C8B4E562C84094100174943 /* PostTransparencyRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTransparencyRequestDTO.swift; sourceTree = "<group>"; };
+		3C8B4E582C840AD300174943 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+UIControl.swift"; sourceTree = "<group>"; };
 		3CDE2DE52C6F30BA004A84CB /* JoinAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinAgreementViewController.swift; sourceTree = "<group>"; };
 		3CDE2DE72C6F30CE004A84CB /* JoinProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinProfileViewController.swift; sourceTree = "<group>"; };
@@ -353,6 +375,7 @@
 		050E0CA72C74B79600326EEA /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				3C8B4E4B2C80EE6700174943 /* RequestDTO */,
 				050E0CA82C74B79E00326EEA /* ResponseDTO */,
 				050E0CFF2C77341900326EEA /* HomeRouter.swift */,
 				050E0D012C77372F00326EEA /* HomeAPI.swift */,
@@ -363,6 +386,7 @@
 		050E0CA82C74B79E00326EEA /* ResponseDTO */ = {
 			isa = PBXGroup;
 			children = (
+				3C8B4E492C80E38600174943 /* FeedDetailResponseDTO.swift */,
 				050E0CA92C74B7A900326EEA /* FeedDetailReplyDTO.swift */,
 				050E0CAB2C74B7BB00326EEA /* HomeFeedListDTO.swift */,
 			);
@@ -376,6 +400,7 @@
 				050E0CB22C74B84500326EEA /* Cells */,
 				050E0CB42C74B85800326EEA /* HomeView.swift */,
 				050E0CB62C74B87400326EEA /* FeedDetailView.swift */,
+				3C8B4E522C83FB7C00174943 /* HomeBottomSheetView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -384,6 +409,8 @@
 			isa = PBXGroup;
 			children = (
 				050E0CC82C74B92A00326EEA /* HomeViewModel.swift */,
+				3C8B4E472C80E1C900174943 /* FeedDetailViewModel.swift */,
+				3C8B4E4E2C83F01500174943 /* LikeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -592,6 +619,7 @@
 		0547F4AF2C60E240001E3039 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				3C8B4E402C80884F00174943 /* Write */,
 				3C8B4E2B2C78ECA200174943 /* UserProfile */,
 				3C8B4E192C78E54600174943 /* TokenManager */,
 				3C8B4E112C78E0AC00174943 /* SocialLogin */,
@@ -819,6 +847,7 @@
 				3CDE2DF32C6F401F004A84CB /* XButton.swift */,
 				3CF344CD2C73CCCA0038BB53 /* HambergerButton.swift */,
 				050E0CAD2C74B7F100326EEA /* WablePopupView.swift */,
+				3C8B4E452C808FA500174943 /* WableToastView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1009,6 +1038,41 @@
 			path = ResponseDTO;
 			sourceTree = "<group>";
 		};
+		3C8B4E402C80884F00174943 /* Write */ = {
+			isa = PBXGroup;
+			children = (
+				3C8B4E412C80885500174943 /* DTO */,
+			);
+			path = Write;
+			sourceTree = "<group>";
+		};
+		3C8B4E412C80885500174943 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				3C8B4E422C80885900174943 /* RequestDTO */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		3C8B4E422C80885900174943 /* RequestDTO */ = {
+			isa = PBXGroup;
+			children = (
+				3C8B4E432C80886700174943 /* WriteContentRequestDTO.swift */,
+			);
+			path = RequestDTO;
+			sourceTree = "<group>";
+		};
+		3C8B4E4B2C80EE6700174943 /* RequestDTO */ = {
+			isa = PBXGroup;
+			children = (
+				3C8B4E4C2C80EE7700174943 /* WriteReplyRequestDTO.swift */,
+				3C8B4E502C83F11900174943 /* ContentLikeRequestDTO.swift */,
+				3C8B4E542C84081B00174943 /* ReportRequestDTO.swift */,
+				3C8B4E562C84094100174943 /* PostTransparencyRequestDTO.swift */,
+			);
+			path = RequestDTO;
+			sourceTree = "<group>";
+		};
 		3CDE2DE92C6F315C004A84CB /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1036,6 +1100,7 @@
 			isa = PBXGroup;
 			children = (
 				3CDE2E0A2C71CE30004A84CB /* AppStoreCheckManager.swift */,
+				3C8B4E582C840AD300174943 /* Functions.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1201,6 +1266,7 @@
 				0547F4F52C64C76A001E3039 /* HomeViewController.swift in Sources */,
 				0547F4D72C624797001E3039 /* NetworkResult.swift in Sources */,
 				3CF344E32C750A380038BB53 /* MyPageSignOutViewController.swift in Sources */,
+				3C8B4E4D2C80EE7700174943 /* WriteReplyRequestDTO.swift in Sources */,
 				3C8B4E392C79118D00174943 /* MypageProfileResponseDTO.swift in Sources */,
 				3CDE2E042C713470004A84CB /* JoinLCKTeamViewController.swift in Sources */,
 				3CF344D42C749E310038BB53 /* MyPageAccountInfoViewController.swift in Sources */,
@@ -1223,6 +1289,7 @@
 				3CDE2E142C71D665004A84CB /* InfoSegmentedControl.swift in Sources */,
 				050E0D122C8070F300326EEA /* RankingView.swift in Sources */,
 				050E0CC52C74B8F000326EEA /* HomeFeedTableViewCell.swift in Sources */,
+				3C8B4E512C83F11900174943 /* ContentLikeRequestDTO.swift in Sources */,
 				050E0CEC2C74DDD800326EEA /* TeamScoreView.swift in Sources */,
 				050E0CC92C74B92A00326EEA /* HomeViewModel.swift in Sources */,
 				3CDE2DED2C6F31D9004A84CB /* BackButton.swift in Sources */,
@@ -1232,12 +1299,14 @@
 				050E0CC32C74B8B600326EEA /* FeedBottomView.swift in Sources */,
 				0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */,
 				050E0CD92C74BFC200326EEA /* InfoTabView.swift in Sources */,
+				3C8B4E532C83FB7C00174943 /* HomeBottomSheetView.swift in Sources */,
 				050E0D0D2C7F635200326EEA /* InfoAPI.swift in Sources */,
 				3CDE2E002C711A74004A84CB /* UITextField+.swift in Sources */,
 				050E0CF62C75102A00326EEA /* NotificationTableViewCell.swift in Sources */,
 				050E0D202C82EE6600326EEA /* NotiActivityText.swift in Sources */,
 				0547F5012C64C99D001E3039 /* ExampleView.swift in Sources */,
 				050E0CFC2C751A5C00326EEA /* ActivityNotificationDTO.swift in Sources */,
+				3C8B4E572C84094100174943 /* PostTransparencyRequestDTO.swift in Sources */,
 				3CDE2DFA2C70F89B004A84CB /* JoinLCKYearViewModel.swift in Sources */,
 				050E0D192C82563600326EEA /* NotificationInfoViewModel.swift in Sources */,
 				3CF344CE2C73CCCA0038BB53 /* HambergerButton.swift in Sources */,
@@ -1259,6 +1328,8 @@
 				050E0CB52C74B85800326EEA /* HomeView.swift in Sources */,
 				3C3531842C6F16D00015A8FA /* Config.swift in Sources */,
 				050E0D022C77372F00326EEA /* HomeAPI.swift in Sources */,
+				3C8B4E4A2C80E38600174943 /* FeedDetailResponseDTO.swift in Sources */,
+				3C8B4E552C84081B00174943 /* ReportRequestDTO.swift in Sources */,
 				050E0D162C8252B200326EEA /* NotificationAPI.swift in Sources */,
 				050E0CDF2C74C8B400326EEA /* MatchSessionTableViewCell.swift in Sources */,
 				3C8B4E3B2C79119700174943 /* MyPageMemberContentResponseDTO.swift in Sources */,
@@ -1304,11 +1375,14 @@
 				0547F4E92C63E1BE001E3039 /* WableTabBarController.swift in Sources */,
 				050E0CC12C74B8AD00326EEA /* FeedBottomWriteView.swift in Sources */,
 				3C3531942C6F1F2A0015A8FA /* UIViewController+.swift in Sources */,
+				3C8B4E592C840AD300174943 /* Functions.swift in Sources */,
 				3CDE2E0B2C71CE30004A84CB /* AppStoreCheckManager.swift in Sources */,
 				3C3531A22C6F255D0015A8FA /* JoinLCKYearViewController.swift in Sources */,
 				050E0CAC2C74B7BB00326EEA /* HomeFeedListDTO.swift in Sources */,
 				050E0D1B2C82642400326EEA /* NotificationActivityViewModel.swift in Sources */,
 				3CDE2DFE2C71167A004A84CB /* JoinProfileView.swift in Sources */,
+				3C8B4E482C80E1C900174943 /* FeedDetailViewModel.swift in Sources */,
+				3C8B4E4F2C83F01600174943 /* LikeViewModel.swift in Sources */,
 				3CDE2E192C7232DC004A84CB /* NotificationInformationViewController.swift in Sources */,
 				3C3531822C6F15D30015A8FA /* KeychainWrapper.swift in Sources */,
 				3CDE2E0E2C71D393004A84CB /* InfoView.swift in Sources */,
@@ -1325,9 +1399,11 @@
 				050E0CC72C74B8FD00326EEA /* FeedDetailTableViewCell.swift in Sources */,
 				0547F4C62C6217B7001E3039 /* StringLiterals.swift in Sources */,
 				050E0CE52C74D06500326EEA /* ATeamView.swift in Sources */,
+				3C8B4E462C808FA500174943 /* WableToastView.swift in Sources */,
 				050E0CA42C74B35500326EEA /* UIApplication+.swift in Sources */,
 				050E0CB72C74B87400326EEA /* FeedDetailView.swift in Sources */,
 				050E0CF92C7516C900326EEA /* InfoNotificationDTO.swift in Sources */,
+				3C8B4E442C80886800174943 /* WriteContentRequestDTO.swift in Sources */,
 				3C8B4E092C779C3A00174943 /* WriteViewModel.swift in Sources */,
 				3C35318E2C6F1A850015A8FA /* UserInfo.swift in Sources */,
 				0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */,

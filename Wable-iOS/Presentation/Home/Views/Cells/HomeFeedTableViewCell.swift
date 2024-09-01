@@ -15,15 +15,28 @@ final class HomeFeedTableViewCell: UITableViewCell{
     
     static let identifier = "HomeFeedTableViewCell"
     var menuButtonTapped: (() -> Void)?
+    var profileButtonAction: (() -> Void) = {}
     var isMyContent: Bool = Bool()
+    
+    var alarmTriggerType: String = ""
+    var targetMemberId: Int = 0
+    var alarmTriggerdId: Int = 0
     
     // MARK: - Components
     
-    private var infoView = FeedInfoView()
+    let grayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .wableWhite
+        view.alpha = 0
+        view.isUserInteractionEnabled = false
+        return view
+    }()
+    
+    var infoView = FeedInfoView()
     var feedContentView = FeedContentView()
     var bottomView = FeedBottomView()
     
-    private var profileImageView: UIImageView = {
+    var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = ImageLiterals.Image.imgProfileSmall
         return imageView
@@ -51,21 +64,31 @@ final class HomeFeedTableViewCell: UITableViewCell{
         setHierarchy()
         setLayout()
         setAddTarget()
+        
+        self.profileImageView.contentMode = .scaleAspectFill
+        self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.width / 2
+        self.profileImageView.clipsToBounds = true
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        feedContentView = FeedContentView()
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        DispatchQueue.main.async {
+            self.profileImageView.contentMode = .scaleAspectFill
+            self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.width / 2
+            self.profileImageView.clipsToBounds = true
+        }
     }
     
     // MARK: - Functions
 
     private func setHierarchy() {
-        self.contentView.addSubviews(profileImageView,
+        self.contentView.addSubviews(grayView,
+                                     profileImageView,
                                      menuButton,
                                      infoView,
                                      feedContentView,
@@ -74,6 +97,10 @@ final class HomeFeedTableViewCell: UITableViewCell{
     }
     
     private func setLayout() {
+        grayView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
         profileImageView.snp.makeConstraints {
             $0.height.width.equalTo(36.adjusted)
             $0.leading.equalToSuperview().inset(16.adjusted)
@@ -113,11 +140,17 @@ final class HomeFeedTableViewCell: UITableViewCell{
     
     private func setAddTarget() {
         self.menuButton.addTarget(self, action: #selector(menuButtonDidTapped), for: .touchUpInside)
+        self.profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileButtonTapped)))
     }
     
     @objc
     private func menuButtonDidTapped() {
         menuButtonTapped?()
+    }
+    
+    @objc
+    private func profileButtonTapped() {
+        profileButtonAction()
     }
     
     func bind(data: HomeFeedDTO) {

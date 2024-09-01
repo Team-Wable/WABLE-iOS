@@ -15,14 +15,19 @@ final class WriteViewController: UIViewController {
     
     // MARK: - Properties
     
-    static let showWriteToastNotification = Notification.Name("ShowWriteToastNotification")
+    static let writeCompletedNotification = Notification.Name("WriteCompletedNotification")
     
     private var cancelBag = CancelBag()
     private let viewModel: WriteViewModel
     private var transparency: Int = 0
     
     private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
-    private lazy var postButtonTapped = self.rootView.writeTextView.postButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    private lazy var postButtonTapped = self.rootView.writeTextView.postButton.publisher(for: .touchUpInside).map { _ in
+        return WriteContentImageRequestDTO(
+            contentTitle: self.rootView.writeTextView.titleTextField.text ?? "",
+            contentText: self.rootView.writeTextView.contentTextView.text,
+            photoImage: self.rootView.writeTextView.photoImageView.image)
+    }.eraseToAnyPublisher()
     
     // MARK: - UI Components
     
@@ -117,31 +122,17 @@ extension WriteViewController {
                 if value == 0 {
                     self.navigationController?.popViewController(animated: true)
                 } else {
-                    self.WriteCompleted()
-                    self.navigationController?.popViewController(animated: true)
+                    DispatchQueue.main.async {
+                        self.WriteCompleted()
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 }
             }
             .store(in: self.cancelBag)
     }
     
     private func WriteCompleted() {
-        NotificationCenter.default.post(name: WriteViewController.showWriteToastNotification, object: nil, userInfo: ["showToast": true])
-    }
-    
-    private func popupNavigation() {
-//        self.tabBarController?.selectedIndex = 0
-//        if let selectedViewController = self.tabBarController?.selectedViewController {
-//            self.applyTabBarAttributes(to: selectedViewController.tabBarItem, isSelected: true)
-//        }
-//        let myViewController = self.tabBarController?.viewControllers ?? [UIViewController()]
-//        for (index, controller) in myViewController.enumerated() {
-//            if let tabBarItem = controller.tabBarItem {
-//                if index != self.tabBarController?.selectedIndex {
-//                    self.applyTabBarAttributes(to: tabBarItem, isSelected: false)
-//                }
-//            }
-//        }
-        self.navigationController?.popViewController(animated: false)
+        NotificationCenter.default.post(name: WriteViewController.writeCompletedNotification, object: nil, userInfo: ["showToast": true])
     }
     
     @objc private func photoButtonTapped() {

@@ -21,14 +21,24 @@ final class MyPageEditProfileViewController: UIViewController {
     private lazy var duplicationCheckButtonTapped = self.originView.duplicationCheckButton.publisher(for: .touchUpInside).map { _ in
         return self.originView.nickNameTextField.text ?? ""
     }.eraseToAnyPublisher()
-    private lazy var nextButtonTapped = self.originView.nextButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    private lazy var nextButtonTapped = self.originView.nextButton.publisher(for: .touchUpInside).map { _ in
+        return UserProfileUnionRequestDTO(
+            info: UserProfileRequestDTO(
+                nickname: self.originView.nickNameTextField.text,
+                memberDefaultProfileImage: self.memberDefaultProfileImage),
+            file: self.memberProfileImage?.jpegData(compressionQuality: 0.8)!
+        )
+    }.eraseToAnyPublisher()
     
     // 3개의 기본 프로필 사진
-    let basicProfileImages: [UIImage] = [
-        ImageLiterals.Image.imgProfile1,
-        ImageLiterals.Image.imgProfile2,
-        ImageLiterals.Image.imgProfile3
+    let basicProfileImages: [UIImage : String] = [
+        ImageLiterals.Image.imgProfile1 : "PURPLE",
+        ImageLiterals.Image.imgProfile2 : "BLUE",
+        ImageLiterals.Image.imgProfile3 : "GREEN"
     ]
+    
+    var memberDefaultProfileImage: String?
+    var memberProfileImage: UIImage?
     
     // MARK: - UI Components
     
@@ -80,6 +90,14 @@ final class MyPageEditProfileViewController: UIViewController {
         
         NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: nil)
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        self.originView.profileImage.contentMode = .scaleAspectFill
+        self.originView.profileImage.layer.cornerRadius = self.originView.profileImage.frame.size.width / 2
+        self.originView.profileImage.clipsToBounds = true
+    }
 }
 
 // MARK: - Extensions
@@ -90,8 +108,8 @@ extension MyPageEditProfileViewController {
         self.navigationController?.navigationBar.isHidden = false
         self.navigationItem.hidesBackButton = true
         
-        let randomIndex = Int.random(in: 0..<basicProfileImages.count)
-        self.originView.profileImage.image = basicProfileImages[randomIndex]
+        self.originView.nickNameTextField.text = loadUserData()?.userNickname
+        self.originView.profileImage.load(url: loadUserData()?.userProfileImage ?? "")
     }
     
     private func setHierarchy() {
@@ -172,11 +190,13 @@ extension MyPageEditProfileViewController {
     
     @objc
     private func changeButtonTapped() {
-        let randomIndex = Int.random(in: 0..<basicProfileImages.count)
-        self.originView.profileImage.image = basicProfileImages[randomIndex]
-        self.originView.profileImage.contentMode = .scaleAspectFill
-        self.originView.profileImage.layer.cornerRadius = self.originView.profileImage.frame.size.width / 2
-        self.originView.profileImage.clipsToBounds = true
+        let randomEntry = basicProfileImages.randomElement()
+        
+        if let selectedImage = randomEntry?.key, let selectedColor = randomEntry?.value {
+            self.originView.profileImage.image = selectedImage
+            self.memberDefaultProfileImage = selectedColor
+            self.memberProfileImage = nil
+        }
     }
     
     @objc
@@ -242,6 +262,9 @@ extension MyPageEditProfileViewController: PHPickerViewControllerDelegate {
                     self.originView.profileImage.contentMode = .scaleAspectFill
                     self.originView.profileImage.layer.cornerRadius = self.originView.profileImage.frame.size.width / 2
                     self.originView.profileImage.clipsToBounds = true
+                    
+                    self.memberProfileImage = image
+                    self.memberDefaultProfileImage = ""
                 } else if let error = error {
                     print(error)
                 }

@@ -5,6 +5,8 @@
 //  Created by 박윤빈 on 8/18/24.
 //
 
+import Combine
+import SafariServices
 import UIKit
 
 import SnapKit
@@ -19,86 +21,37 @@ final class FeedDetailViewController: UIViewController {
     
     // MARK: - Properties
     
-    let feedReplyDummy: [FeedDetailReplyDTO] = [FeedDetailReplyDTO(commentID: 0,
-                                                                   memberID: 0,
-                                                                   memberProfileURL: "",
-                                                                   memberNickname: "하암",
-                                                                   isGhost: false,
-                                                                   memberGhost: 0,
-                                                                   isLiked: false,
-                                                                   commentLikedNumber: 11,
-                                                                   commentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말",
-                                                                   time: "2024-02-06 23:46:50",
-                                                                   isDeleted: false,
-                                                                   commentImageURL: "",
-                                                                   memberFanTeam: "T1"),
-                                                FeedDetailReplyDTO(commentID: 0,
-                                                                   memberID: 0,
-                                                                   memberProfileURL: "",
-                                                                   memberNickname: "뭘봐",
-                                                                   isGhost: false,
-                                                                   memberGhost: 0,
-                                                                   isLiked: false,
-                                                                   commentLikedNumber: 21,
-                                                                   commentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말",
-                                                                   time: "2024-02-06 23:46:50",
-                                                                   isDeleted: false,
-                                                                   commentImageURL: "",
-                                                                   memberFanTeam: "DRX"),
-                                                FeedDetailReplyDTO(commentID: 0,
-                                                                   memberID: 0,
-                                                                   memberProfileURL: "",
-                                                                   memberNickname: "하암",
-                                                                   isGhost: false,
-                                                                   memberGhost: 0,
-                                                                   isLiked: false,
-                                                                   commentLikedNumber: 11,
-                                                                   commentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말시발발발발발발바랍라발바라왜안되는데",
-                                                                   time: "2024-02-06 23:46:50",
-                                                                   isDeleted: false,
-                                                                   commentImageURL: "",
-                                                                   memberFanTeam: "T1"),
-                                                FeedDetailReplyDTO(commentID: 0,
-                                                                   memberID: 0,
-                                                                   memberProfileURL: "",
-                                                                   memberNickname: "뭘봐",
-                                                                   isGhost: false,
-                                                                   memberGhost: 0,
-                                                                   isLiked: false,
-                                                                   commentLikedNumber: 21,
-                                                                   commentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말",
-                                                                   time: "2024-02-06 23:46:50",
-                                                                   isDeleted: false,
-                                                                   commentImageURL: "",
-                                                                   memberFanTeam: "DRX"),
-                                                FeedDetailReplyDTO(commentID: 0,
-                                                                   memberID: 0,
-                                                                   memberProfileURL: "",
-                                                                   memberNickname: "하암",
-                                                                   isGhost: false,
-                                                                   memberGhost: 0,
-                                                                   isLiked: false,
-                                                                   commentLikedNumber: 11,
-                                                                   commentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말",
-                                                                   time: "2024-02-06 23:46:50",
-                                                                   isDeleted: false,
-                                                                   commentImageURL: "",
-                                                                   memberFanTeam: "T1"),
-                                                FeedDetailReplyDTO(commentID: 0,
-                                                                   memberID: 0,
-                                                                   memberProfileURL: "",
-                                                                   memberNickname: "뭘봐",
-                                                                   isGhost: false,
-                                                                   memberGhost: 0,
-                                                                   isLiked: false,
-                                                                   commentLikedNumber: 21,
-                                                                   commentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말",
-                                                                   time: "2024-02-06 23:46:50",
-                                                                   isDeleted: false,
-                                                                   commentImageURL: "",
-                                                                   memberFanTeam: "DRX")]
+    let viewModel: FeedDetailViewModel
+    private var cancelBag = CancelBag()
+    
+    private lazy var postButtonTapped =
+    self.feedDetailView.bottomWriteView.uploadButton.publisher(for: .touchUpInside).map { _ in
+        return (WriteReplyRequestDTO(
+            commentText: self.feedDetailView.bottomWriteView.writeTextView.text,
+            notificationTriggerType: "comment"), self.contentId)
+    }.eraseToAnyPublisher()
+    
+    var contentId: Int = 0
+    var commentId: Int = 0
+    var memberId: Int = 0
+    var postMemberId: Int = 0
+    var alarmTriggerType: String = ""
+    var targetMemberId: Int = 0
+    var alarmTriggerdId: Int = 0
+    var ghostReason: String = ""
+    var postViewHeight = 0
+    var userNickName: String = ""
+    var userProfileURL: String = StringLiterals.Network.baseImageURL
+    var contentText: String = ""
+    var reportTargetNickname: String = ""
+    var relateText: String = ""
+    let warnUserURL = URL(string: StringLiterals.Network.warnUserGoogleFormURL)
+    private let placeholder = StringLiterals.Home.placeholder
+    
+    let refreshControl = UIRefreshControl()
     
     var feedData: HomeFeedDTO? = nil
+    
     // MARK: - UI Components
     
     private let feedDetailView = FeedDetailView()
@@ -114,18 +67,30 @@ final class FeedDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getAPI()
         setUI()
         setHierarchy()
         setLayout()
         setDelegate()
         setNavigationBar()
         dismissKeyboard()
+        setRefreshControl()
+    }
+    
+    init(viewModel: FeedDetailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
         self.navigationItem.title = "게시글"
+        
+        getAPI()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -170,7 +135,21 @@ extension FeedDetailViewController {
         let backButtonImage = ImageLiterals.Icon.icBack.withRenderingMode(.alwaysOriginal)
         let backButton = UIBarButtonItem(image: backButtonImage, style: .done, target: self, action: #selector(backButtonDidTapped))
         navigationItem.leftBarButtonItem = backButton
-        
+        self.navigationItem.hidesBackButton = true
+    }
+    
+    private func setRefreshControl() {
+        self.refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+        feedDetailView.feedDetailTableView.refreshControl = self.refreshControl
+    }
+    
+    @objc
+    private func didPullToRefresh() {
+        print("didPullToRefresh")
+        DispatchQueue.main.async {
+            self.getAPI()
+        }
+        self.perform(#selector(finishedRefreshing), with: nil, afterDelay: 0.1)
     }
     
     @objc
@@ -208,7 +187,121 @@ extension FeedDetailViewController {
 
 extension FeedDetailViewController {
     private func getAPI() {
+        let input = FeedDetailViewModel.Input(viewUpdate: Just((contentId)).eraseToAnyPublisher(),
+                                              likeButtonTapped: nil,
+                                              tableViewUpdata: Just((contentId)).eraseToAnyPublisher(),
+                                              commentLikeButtonTapped: nil,
+                                              postButtonTapped: postButtonTapped)
         
+        let output = viewModel.transform(from: input, cancelBag: cancelBag)
+        
+        output.getPostData
+            .receive(on: RunLoop.main)
+            .sink { data in
+                self.postMemberId = data.memberId
+//                self.feedData = data
+                self.feedDetailView.feedDetailTableView.reloadData()
+//                self.perform(#selector(self.finishedRefreshing), with: nil, afterDelay: 0.1)
+            }
+            .store(in: self.cancelBag)
+        
+        output.getPostReplyData
+            .receive(on: RunLoop.main)
+            .sink { data in
+                self.feedDetailView.feedDetailTableView.reloadData()
+            }
+            .store(in: self.cancelBag)
+        
+        output.postReplyCompleted
+            .receive(on: RunLoop.main)
+            .sink { data in
+                if data == 0 {
+                    self.viewModel.cursor = -1
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        self.didPullToRefresh()
+                        
+                        self.feedDetailView.bottomWriteView.writeTextView.text = ""
+                        self.feedDetailView.bottomWriteView.writeTextView.textColor = .gray700
+                        self.feedDetailView.bottomWriteView.writeTextView.text = (self.feedData?.memberNickname ?? "") + self.placeholder
+                        self.feedDetailView.bottomWriteView.writeTextView.textContainerInset = UIEdgeInsets(top: 10.adjusted,
+                                                                                                            left: 10.adjusted,
+                                                                                                            bottom: 10.adjusted,
+                                                                                                            right: 10.adjusted)
+                        
+                        UIView.animate(withDuration: 0.3) {
+                            self.feedDetailView.feedDetailTableView.contentOffset.y = 0
+                        }
+                    }
+                }
+            }
+            .store(in: cancelBag)
+        
+//        output.clickedButtonState
+//            .sink { [weak self] index in
+//                guard let self = self else { return }
+//                let radioSelectedButtonImage = ImageLiterals.TransparencyInfo.btnRadioSelected
+//                let radioButtonImage = ImageLiterals.TransparencyInfo.btnRadio
+//                self.transparentReasonView.warnLabel.isHidden = true
+//                
+//                switch index {
+//                case 1:
+//                    self.transparentReasonView.firstReasonView.radioButton.setImage(radioSelectedButtonImage, for: .normal)
+//                    self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    ghostReason = self.transparentReasonView.firstReasonView.radioButton.currentTitle ?? ""
+//                case 2:
+//                    self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.secondReasonView.radioButton.setImage(radioSelectedButtonImage, for: .normal)
+//                    self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    ghostReason = self.transparentReasonView.secondReasonView.radioButton.currentTitle ?? ""
+//                case 3:
+//                    self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.thirdReasonView.radioButton.setImage(radioSelectedButtonImage, for: .normal)
+//                    self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    ghostReason = self.transparentReasonView.thirdReasonView.radioButton.currentTitle ?? ""
+//                case 4:
+//                    self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.fourthReasonView.radioButton.setImage(radioSelectedButtonImage, for: .normal)
+//                    self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    ghostReason = self.transparentReasonView.fourthReasonView.radioButton.currentTitle ?? ""
+//                case 5:
+//                    self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.fifthReasonView.radioButton.setImage(radioSelectedButtonImage, for: .normal)
+//                    self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    ghostReason = self.transparentReasonView.fifthReasonView.radioButton.currentTitle ?? ""
+//                case 6:
+//                    self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
+//                    self.transparentReasonView.sixthReasonView.radioButton.setImage(radioSelectedButtonImage, for: .normal)
+//                    ghostReason = self.transparentReasonView.sixthReasonView.radioButton.currentTitle ?? ""
+//                default:
+//                    break
+//                }
+//            }
+//            .store(in: self.cancelBag)
+    }
+    
+    @objc
+    func finishedRefreshing() {
+        refreshControl.endRefreshing()
     }
 }
 
@@ -263,7 +356,7 @@ extension FeedDetailViewController: UITextViewDelegate {
         
         if textView.text.isEmpty {
             textView.text = (feedData?.memberNickname ?? String()) + StringLiterals.Home.placeholder
-            textView.textColor = .placeholderText
+            textView.textColor = .gray700
             feedDetailView.bottomWriteView.uploadButton.isEnabled = false
         }
     }
@@ -285,7 +378,17 @@ extension FeedDetailViewController: UITableViewDataSource {
         case .feed:
             return 1
         case .reply:
-            return feedReplyDummy.count
+            return viewModel.feedReplyDatas.count
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if scrollView == feedDetailView.feedDetailTableView {
+            if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
+                let lastCommentID = viewModel.feedReplyDatas.last?.commentId ?? -1
+                viewModel.cursor = lastCommentID
+//                self.didPullToRefresh()
+            }
         }
     }
     
@@ -314,7 +417,7 @@ extension FeedDetailViewController: UITableViewDataSource {
         case .reply:
             let cell = feedDetailView.feedDetailTableView.dequeueReusableCell(withIdentifier: FeedDetailTableViewCell.identifier, for: indexPath) as? FeedDetailTableViewCell ?? FeedDetailTableViewCell()
             cell.selectionStyle = .none
-            cell.bind(data: feedReplyDummy[indexPath.row])
+            cell.bind(data: viewModel.feedReplyDatas[indexPath.row])
             return cell
         }
     }

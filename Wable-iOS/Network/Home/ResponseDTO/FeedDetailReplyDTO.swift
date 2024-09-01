@@ -7,22 +7,17 @@
 
 // MARK: - Datum
 struct FeedDetailReplyDTO: Codable {
-    let commentID, memberID: Int
-    let memberProfileURL, memberNickname: String
+    let commentId: Int
+    let memberId: Int
+    let memberProfileUrl: String
+    let memberNickname: String
     let isGhost: Bool
     let memberGhost: Int
     let isLiked: Bool
     let commentLikedNumber: Int
-    let commentText, time: String
+    let commentText: String
+    let time: String
     let isDeleted: Bool
-    let commentImageURL, memberFanTeam: String
-
-    enum CodingKeys: String, CodingKey {
-        case commentID = "commentId"
-        case memberID = "memberId"
-        case memberProfileURL = "memberProfileUrl"
-        case memberNickname, isGhost, memberGhost, isLiked, commentLikedNumber, commentText, time, isDeleted
-        case commentImageURL = "commentImageUrl"
-        case memberFanTeam
-    }
+    let commentImageUrl: String?
+    let memberFanTeam: String
 }

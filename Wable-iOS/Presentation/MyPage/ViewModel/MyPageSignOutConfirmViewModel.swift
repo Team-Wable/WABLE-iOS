@@ -20,7 +20,7 @@ final class MyPageSignOutConfirmViewModel: ViewModelType {
     
     struct Input {
         let checkButtonTapped: AnyPublisher<Void, Never>
-        let signOutButtonTapped: AnyPublisher<String, Never>?
+        let signOutButtonTapped: AnyPublisher<[String], Never>?
     }
     
     struct Output {
@@ -39,20 +39,17 @@ final class MyPageSignOutConfirmViewModel: ViewModelType {
         
         input.signOutButtonTapped?
             .sink { deletedReason in
-                self.isSignOutResult.send(200)
-//                Task {
-//                    do {
-//                        if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
-//                            if let result = try await self.deleteMemberAPI(accessToken: accessToken, deletedReason: deletedReason) {
-//                                self.isSignOutResult.send(result.status)
-//                                
-//                                Amplitude.instance().logEvent("click_account_delete_done")
-//                            }
-//                        }
-//                    } catch {
-//                        print(error)
-//                    }
-//                }
+                Task {
+                    do {
+                        if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                            if let result = try await self.deleteMemberAPI(accessToken: accessToken, deletedReason: deletedReason) {
+                                self.isSignOutResult.send(result.status)
+                            }
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
             }
             .store(in: cancelBag)
         return Output(pushOrPopViewController: pushOrPopViewController,
@@ -69,21 +66,21 @@ final class MyPageSignOutConfirmViewModel: ViewModelType {
     }
 }
 
-extension MyPageSignOutReasonViewModel {
-//    private func deleteMemberAPI(accessToken: String, deletedReason: String) async throws -> BaseResponse<[EmptyResponse]>? {
-//        
-//        let requestDTO = MyPageMemberDeleteDTO(deleted_reason: deletedReason)
-//        
-//        do {
-//            let result: BaseResponse<[EmptyResponse]>? = try await self.networkProvider.donNetwork(
-//                type: .patch,
-//                baseURL: Config.baseURL + "/withdrawal",
-//                accessToken: accessToken,
-//                body: requestDTO,
-//                pathVariables:["":""])
-//            return result
-//        } catch {
-//            return nil
-//        }
-//    }
+extension MyPageSignOutConfirmViewModel {
+    private func deleteMemberAPI(accessToken: String, deletedReason: [String]) async throws -> BaseResponse<[EmptyResponse]>? {
+        
+        let requestDTO = MyPageMemberDeleteDTO(deleted_reason: deletedReason)
+        
+        do {
+            let result: BaseResponse<[EmptyResponse]>? = try await self.networkProvider.donNetwork(
+                type: .patch,
+                baseURL: Config.baseURL + "v1/withdrawal",
+                accessToken: accessToken,
+                body: requestDTO,
+                pathVariables:["":""])
+            return result
+        } catch {
+            return nil
+        }
+    }
 }
