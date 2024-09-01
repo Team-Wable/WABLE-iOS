@@ -196,8 +196,8 @@ extension MyPageViewController {
     
     private func setNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(pushViewController), name: MyPagePostViewController.pushViewController, object: nil)
-//            NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: MyPagePostViewController.reloadData, object: nil)
-//            NotificationCenter.default.addObserver(self, selector: #selector(reloadContentData(_:)), name: MyPagePostViewController.reloadContentData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: MyPagePostViewController.reloadData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadContentData(_:)), name: MyPagePostViewController.reloadContentData, object: nil)
 //            NotificationCenter.default.addObserver(self, selector: #selector(warnButtonTapped), name: MyPagePostViewController.warnUserButtonTapped, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(contentGhostButtonTapped), name: MyPagePostViewController.ghostButtonTapped, object: nil)
         
@@ -210,8 +210,8 @@ extension MyPageViewController {
     
     private func removeNotification() {
         NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.pushViewController, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadData, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadContentData, object: nil)
+        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadData, object: nil)
+        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadContentData, object: nil)
 //        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.warnUserButtonTapped, object: nil)
         NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.ghostButtonTapped, object: nil)
         
@@ -262,13 +262,54 @@ extension MyPageViewController {
         output.getProfileData
             .receive(on: RunLoop.main)
             .sink { data in
-//                self.rootView.myPagePostViewController.profileData = self.viewModel.myPageProfileData
-//                self.rootView.myPageReplyViewController.profileData = self.viewModel.myPageProfileData
+                self.rootView.myPagePostViewController.profileData = self.viewModel.myPageProfileData
+                self.rootView.myPageReplyViewController.profileData = self.viewModel.myPageProfileData
                 self.bindProfileData(data: data)
             }
             .store(in: self.cancelBag)
         
-        self.rootView.myPageProfileView.transparencyValue = -15
+        output.getContentData
+            .receive(on: RunLoop.main)
+            .sink { data in
+                self.rootView.myPagePostViewController.contentDatas = data
+                self.viewModel.contentCursor = self.contentCursor
+                if data.isEmpty {
+                    self.viewModel.contentCursor = -1
+                } else {
+                    self.viewModel.contentCursor = self.contentCursor
+                }
+                if !data.isEmpty {
+                    self.rootView.myPagePostViewController.noContentLabel.isHidden = true
+                    self.rootView.myPagePostViewController.firstContentButton.isHidden = true
+                } else {
+                    if loadUserData()?.memberId != self.memberId {
+                        self.rootView.myPagePostViewController.noContentLabel.isHidden = false
+                        self.rootView.myPagePostViewController.firstContentButton.isHidden = true
+                    } else {
+                        self.rootView.myPagePostViewController.noContentLabel.isHidden = false
+                        self.rootView.myPagePostViewController.firstContentButton.isHidden = false
+                    }
+                }
+                DispatchQueue.main.async {
+                    self.rootView.myPagePostViewController.homeFeedTableView.reloadData()
+                }
+            }
+            .store(in: self.cancelBag)
+        
+        output.getCommentData
+            .receive(on: RunLoop.main)
+            .sink { data in
+                self.rootView.myPageReplyViewController.commentDatas = data
+                if !data.isEmpty {
+                    self.rootView.myPageReplyViewController.noCommentLabel.isHidden = true
+                } else {
+                    self.rootView.myPageReplyViewController.noCommentLabel.isHidden = false
+                }
+                DispatchQueue.main.async {
+                    self.rootView.myPageReplyViewController.feedDetailTableView.reloadData()
+                }
+            }
+            .store(in: self.cancelBag)
     }
     
     private func bindProfileData(data: MypageProfileResponseDTO) {
@@ -377,6 +418,17 @@ extension MyPageViewController {
 //            destinationViewController.userProfileURL = profileImageURL
 //            self.navigationController?.pushViewController(detailViewController, animated: true)
 //        }
+    }
+    
+    @objc
+    func reloadData(_ notification: Notification) {
+        bindViewModel()
+    }
+    
+    @objc
+    func reloadContentData(_ notification: Notification) {
+        self.contentCursor = notification.userInfo?["contentCursor"] as? Int ?? -1
+        bindViewModel()
     }
     
     @objc

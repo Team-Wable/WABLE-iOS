@@ -15,64 +15,6 @@ final class MyPagePostViewController: UIViewController {
     
     // MARK: - Properties
     
-    let dummyData: [HomeFeedDTO] = [HomeFeedDTO(memberID: 0,
-                                                        memberProfileURL: "",
-                                                        memberNickname: "냐옹",
-                                                contentID: 1, contentTitle: "",
-                                                        contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!)여기서끝인줄 알았다면 아주 만만의 콩떡이시다 나는 여기서 더더더더덛 긴 글을 한번 써볼건데 내 생각으로는 안될 것 같다는 느낌느낌.... 아니 얘는 또 잘 되자나.... ",
-                                                        time: "2024-01-10 11:47:18",
-                                                        isGhost: false,
-                                                        memberGhost: 0,
-                                                        isLiked: false,
-                                                        likedNumber: 10,
-                                                        commentNumber: 22,
-                                                        isDeleted: false,
-                                                        contentImageURL: "",
-                                                        memberFanTeam: "DRX"),
-                                        HomeFeedDTO(memberID: 0,
-                                                        memberProfileURL: "",
-                                                        memberNickname: "먀옹",
-                                                    contentID: 1, contentTitle: "",
-                                                        contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) ",
-                                                        time: "2024-01-10 11:47:18",
-                                                        isGhost: false,
-                                                        memberGhost: 0,
-                                                        isLiked: false,
-                                                        likedNumber: 9,
-                                                        commentNumber: 8,
-                                                        isDeleted: false,
-                                                        contentImageURL: "",
-                                                        memberFanTeam: "T1"),
-                                        HomeFeedDTO(memberID: 0,
-                                                        memberProfileURL: "",
-                                                        memberNickname: "뭐임마",
-                                                    contentID: 1, contentTitle: "",
-                                                        contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) 어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) 어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) ",
-                                                        time: "2024-01-10 11:47:18",
-                                                        isGhost: false,
-                                                        memberGhost: 0,
-                                                        isLiked: false,
-                                                        likedNumber: 4,
-                                                        commentNumber: 93,
-                                                        isDeleted: false,
-                                                        contentImageURL: nil,
-                                                        memberFanTeam: "GEN"),
-                                        HomeFeedDTO(memberID: 0,
-                                                        memberProfileURL: "",
-                                                        memberNickname: "냐옹",
-                                                    contentID: 1, contentTitle: "",
-                                                        contentText: "어떤 순간에도 너를 찾을 수 있게 반대가 끌리는 천만번째 이유를 내일의 우리는 알지도 몰라 오늘따라 왠지 말이 꼬여 성을 빼고 부르는 건 아직 어색해 (지훈아..!) ",
-                                                        time: "2024-01-10 11:47:18",
-                                                        isGhost: false,
-                                                        memberGhost: 0,
-                                                        isLiked: false,
-                                                        likedNumber: 10,
-                                                        commentNumber: 22,
-                                                        isDeleted: false,
-                                                        contentImageURL: "",
-                                                        memberFanTeam: "DRX")
-    ]
-    
     static let pushViewController = NSNotification.Name("pushViewController")
     static let reloadData = NSNotification.Name("reloadData")
     static let warnUserButtonTapped = NSNotification.Name("warnUserButtonTapped")
@@ -83,19 +25,29 @@ final class MyPagePostViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     
     private let viewModel: HomeViewModel
+    private let likeViewModel: LikeViewModel
     private let myPageViewModel: MyPageViewModel
     private var cancelBag = CancelBag()
     
-//    var profileData: [MypageProfileResponseDTO] = []
-//    var contentDatas: [MyPageMemberContentResponseDTO] = []
+    var profileData: [MypageProfileResponseDTO] = []
+    var contentDatas: [MyPageMemberContentResponseDTO] = []
     // var contentData = MyPageViewModel(networkProvider: NetworkService()).myPageContentDatas
     
     var contentId: Int = 0
     var alarmTriggerType: String = ""
     var targetMemberId: Int = 0
     var alarmTriggerdId: Int = 0
+    var reportTargetNickname = ""
+    var relateText = ""
+    let warnUserURL = URL(string: StringLiterals.Network.warnUserGoogleFormURL)
+    
+    var nowShowingPopup: String = ""
     
     // MARK: - UI Components
+    
+    var homeBottomsheetView = HomeBottomSheetView()
+    private var reportPopupView: WablePopupView? = nil
+    private var deletePopupView: WablePopupView? = nil
     
     lazy var homeFeedTableView = HomeView().feedTableView
     var noContentLabel: UILabel = {
@@ -125,8 +77,9 @@ final class MyPagePostViewController: UIViewController {
     
     // MARK: - Life Cycles
     
-    init(viewModel: HomeViewModel, myPageViewModel: MyPageViewModel) {
+    init(viewModel: HomeViewModel, likeViewModel: LikeViewModel, myPageViewModel: MyPageViewModel) {
         self.viewModel = viewModel
+        self.likeViewModel = likeViewModel
         self.myPageViewModel = myPageViewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -195,7 +148,7 @@ extension MyPagePostViewController {
     }
     
     private func setNotification() {
-//        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: MyPageContentViewController.reloadData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: MyPagePostViewController.reloadData, object: nil)
     }
     
     private func setRefreshControll() {
@@ -220,12 +173,6 @@ extension MyPagePostViewController {
     @objc
     func finishedRefreshing() {
         refreshControl.endRefreshing()
-    }
-    
-    @objc
-    private func deleteButtonTapped() {
-        popDeleteView()
-        presentView()
     }
     
     @objc
@@ -291,31 +238,173 @@ extension MyPagePostViewController {
 //            .sink { _ in }
 //            .store(in: self.cancelBag)
     }
+    
+    @objc
+    func deletePostButtonTapped() {
+        popBottomsheetView()
+        
+        self.deletePopupView = WablePopupView(popupTitle: StringLiterals.Home.deletePopupTitle,
+                                              popupContent: StringLiterals.Home.deletePopupContent,
+                                              leftButtonTitle: StringLiterals.Home.deletePopupUndo,
+                                              rightButtonTitle: StringLiterals.Home.deletePopupDo)
+        
+        if let popupView = self.deletePopupView {
+            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                window.addSubviews(popupView)
+            }
+            
+            popupView.delegate = self
+            
+            popupView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        }
+    }
+    
+    @objc
+    func reportButtonTapped() {
+        popBottomsheetView()
+        
+        self.reportPopupView = WablePopupView(popupTitle: StringLiterals.Home.reportPopupTitle,
+                                              popupContent: StringLiterals.Home.reportPopupContent,
+                                              leftButtonTitle: StringLiterals.Home.reportPopupUndo,
+                                              rightButtonTitle: StringLiterals.Home.reportPopupDo)
+        
+        if let popupView = self.reportPopupView {
+            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                window.addSubviews(popupView)
+            }
+            
+            popupView.delegate = self
+            
+            popupView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        }
+    }
+    
+    func popBottomsheetView() {
+        if UIApplication.shared.keyWindowInConnectedScenes != nil {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.homeBottomsheetView.dimView.alpha = 0
+                if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                    self.homeBottomsheetView.bottomsheetView.frame = CGRect(x: 0, y: window.frame.height, width: self.homeBottomsheetView.frame.width, height: self.homeBottomsheetView.bottomsheetView.frame.height)
+                }
+            })
+            homeBottomsheetView.dimView.removeFromSuperview()
+            homeBottomsheetView.bottomsheetView.removeFromSuperview()
+        }
+    }
 }
 
 extension MyPagePostViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dummyData.count
+        return self.contentDatas.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = homeFeedTableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.identifier, for: indexPath) as? HomeFeedTableViewCell ?? HomeFeedTableViewCell()
         cell.selectionStyle = .none
-        cell.bind(data: dummyData[indexPath.row])
         
-        cell.bottomView.commentButtonTapped = { [weak self] in
-            self?.viewModel.commentButtonTapped.send(indexPath.row)
+        cell.alarmTriggerType = "contentGhost"
+        cell.targetMemberId = contentDatas[indexPath.row].memberId
+        cell.alarmTriggerdId = contentDatas[indexPath.row].contentId
+        
+        if contentDatas[indexPath.row].memberId == loadUserData()?.memberId {
+            cell.bottomView.ghostButton.isHidden = true
+            
+            cell.menuButtonTapped = {
+                self.homeBottomsheetView.showSettings()
+                self.homeBottomsheetView.reportButton.isHidden = true
+                self.homeBottomsheetView.deleteButton.isHidden = false
+                
+                self.reportTargetNickname = self.contentDatas[indexPath.row].memberNickname
+                self.relateText = self.contentDatas[indexPath.row].contentText
+                self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
+                self.contentId = self.contentDatas[indexPath.row].contentId
+                self.nowShowingPopup = "delete"
+            }
+        } else {
+            // 다른 유저인 경우
+            cell.bottomView.ghostButton.isHidden = false
+            
+            cell.menuButtonTapped = {
+                self.homeBottomsheetView.showSettings()
+                self.homeBottomsheetView.reportButton.isHidden = false
+                self.homeBottomsheetView.deleteButton.isHidden = true
+                
+                self.reportTargetNickname = self.contentDatas[indexPath.row].memberNickname
+                self.relateText = self.contentDatas[indexPath.row].contentText
+                self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
+                self.nowShowingPopup = "report"
+            }
+        }
+        
+        cell.profileImageView.load(url: "\(contentDatas[indexPath.row].memberProfileUrl)")
+        cell.infoView.nicknameLabel.text = contentDatas[indexPath.row].memberNickname
+        cell.infoView.teamImageView.image = Team(rawValue: contentDatas[indexPath.row].memberFanTeam)?.tag
+        cell.infoView.ghostPercentLabel.text = "투명도 \(contentDatas[indexPath.row].memberGhost)%"
+        cell.infoView.timeLabel.text = "\(contentDatas[indexPath.row].time.formattedTime())"
+        
+        cell.feedContentView.titleLabel.text = contentDatas[indexPath.row].contentTitle
+        cell.feedContentView.contentLabel.text = contentDatas[indexPath.row].contentText
+        
+        let contentImage = contentDatas[indexPath.row].contentImageUrl
+        
+        if contentImage != "" {
+            cell.feedContentView.photoImageView.loadContentImage(url: contentImage ?? "")
+            cell.feedContentView.photoImageView.isHidden = false
+            
+            cell.feedContentView.photoImageView.snp.remakeConstraints {
+                $0.top.equalTo(cell.feedContentView.titleLabel.snp.bottom).offset(10.adjusted)
+                $0.height.equalTo(192.adjusted)
+                $0.leading.trailing.equalToSuperview()
+            }
+            
+            cell.feedContentView.contentLabel.snp.remakeConstraints {
+                $0.top.equalTo(cell.feedContentView.photoImageView.snp.bottom).offset(10.adjusted)
+                $0.leading.trailing.bottom.equalToSuperview()
+            }
+        } else {
+            cell.feedContentView.photoImageView.isHidden = true
+            cell.feedContentView.contentLabel.snp.remakeConstraints {
+                $0.top.equalTo(cell.feedContentView.titleLabel.snp.bottom).offset(4.adjusted)
+                $0.leading.trailing.bottom.equalToSuperview()
+            }
+        }
+        
+        cell.bottomView.heartButton.setTitleWithConfiguration("\(contentDatas[indexPath.row].likedNumber)", font: .caption1, textColor: .wableBlack)
+        cell.bottomView.commentButton.setTitleWithConfiguration("\(contentDatas[indexPath.row].commentNumber)", font: .caption1, textColor: .wableBlack)
+        
+        cell.profileButtonAction = {
+            let memberId = self.contentDatas[indexPath.row].memberId
+
+            if memberId == loadUserData()?.memberId ?? 0  {
+                self.tabBarController?.selectedIndex = 3
+            } else {
+                let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()))
+                viewController.memberId = memberId
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
         }
         
         cell.bottomView.ghostButtonTapped = { [weak self] in
-//            self.alarmTriggerType = cell.alarmTriggerType
-//            self.targetMemberId = cell.targetMemberId
-//            self.alarmTriggerdId = cell.alarmTriggerdId
+            self?.alarmTriggerType = cell.alarmTriggerType
+            self?.targetMemberId = cell.targetMemberId
+            self?.alarmTriggerdId = cell.alarmTriggerdId
             NotificationCenter.default.post(name: MyPagePostViewController.ghostButtonTapped, object: nil)
         }
         
-        cell.bottomView.heartButtonTapped = { [weak self] in
+        cell.bottomView.heartButtonTapped = {
+            var currentHeartCount = cell.bottomView.heartButton.titleLabel?.text
+            
+            if cell.bottomView.isLiked == true {
+                cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
+            } else {
+                cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
+            }
             cell.bottomView.isLiked.toggle()
+            self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.contentDatas[indexPath.row].contentId)
         }
         
         return cell
@@ -336,6 +425,19 @@ extension MyPagePostViewController: UITableViewDelegate, UITableViewDataSource {
 //        detailViewController.getFeedData(data: dummyData[indexPath.row])
 //        self.navigationController?.pushViewController(detailViewController, animated: true)
     }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if scrollView == homeFeedTableView {
+            if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
+                let lastCommentId = contentDatas.last?.contentId ?? -1
+                myPageViewModel.contentCursor = lastCommentId
+                NotificationCenter.default.post(name: MyPagePostViewController.reloadContentData, object: nil, userInfo: ["contentCursor": lastCommentId])
+                DispatchQueue.main.async {
+                     self.homeFeedTableView.reloadData()
+                }
+            }
+        }
+    }
 }
 
 extension MyPagePostViewController: UIScrollViewDelegate {
@@ -345,6 +447,96 @@ extension MyPagePostViewController: UIScrollViewDelegate {
             scrollView.isScrollEnabled = true
         } else if yOffset < 0 {
             scrollView.isScrollEnabled = false
+        }
+    }
+}
+
+extension MyPagePostViewController: WablePopupDelegate {
+    
+    func cancleButtonTapped() {
+//        if ghostPopupView != nil {
+//            self.ghostPopupView?.removeFromSuperview()
+//        }
+        
+        if reportPopupView != nil {
+            self.reportPopupView?.removeFromSuperview()
+        }
+        
+        if deletePopupView != nil {
+            self.deletePopupView?.removeFromSuperview()
+        }
+    }
+    
+    func confirmButtonTapped() {
+//        if ghostPopupView != nil {
+//            self.ghostPopupView?.removeFromSuperview()
+//            
+//            Task {
+//                do {
+//                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+//                        let result = try await self.likeViewModel.postDownTransparency(
+//                            accessToken: accessToken,
+//                            alarmTriggerType: self.alarmTriggerType,
+//                            targetMemberId: self.targetMemberId,
+//                            alarmTriggerId: self.alarmTriggerdId,
+//                            ghostReason: self.ghostReason
+//                        )
+//                        
+//                        didPullToRefresh()
+//                        
+//                        if result?.status == 400 {
+//                            // 이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기
+////                            showAlreadyTransparencyToast()
+//                            print("이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기")
+//                        }
+//                    }
+//                } catch {
+//                    print(error)
+//                }
+//            }
+//        }
+        
+        if nowShowingPopup == "report" {
+            self.reportPopupView?.removeFromSuperview()
+            
+            let warnView: SFSafariViewController
+            if let warnURL = self.warnUserURL {
+                warnView = SFSafariViewController(url: warnURL)
+                self.present(warnView, animated: true, completion: nil)
+            }
+            
+//            Task {
+//                do {
+//                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+//                        let result = try await self.homeViewModel.postReportButtonAPI(
+//                            reportTargetNickname: self.reportTargetNickname,
+//                            relateText: self.relateText
+//                        )
+//                    }
+//                } catch {
+//                    print(error)
+//                }
+//            }
+        }
+        
+        if nowShowingPopup == "delete" {
+            self.deletePopupView?.removeFromSuperview()
+            
+            Task {
+                do {
+                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                        let result = try await self.likeViewModel.deletePostAPI(accessToken: accessToken, contentId: self.contentId)
+                        
+                        NotificationCenter.default.post(name: MyPagePostViewController.reloadData, object: nil)
+                        
+                        UIView.animate(withDuration: 0.3) {
+                            self.homeFeedTableView.contentOffset.y = 0
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }
         }
     }
 }

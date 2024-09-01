@@ -49,6 +49,7 @@ final class MyPageViewModel: ViewModelType {
                             if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
                                 let profileResult = try await self.getProfileInfoAPI(accessToken: accessToken, memberId: value.1)
                                 if let data = profileResult?.data {
+                                    print("data: \(data)")
                                     self.myPageProfileData.append(data)
                                     self.getProfileData.send(data)
                                 }
@@ -59,35 +60,35 @@ final class MyPageViewModel: ViewModelType {
                     }
                     
                     // 유저에 해당하는 게시글 리스트 조회
-//                    Task {
-//                        do {
-//                            if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
-//                                let contentResult = try await self.getMemberContentAPI(accessToken: accessToken, memberId: value.1, contentCursor: value.3)
-//                                
-//                                if let data = contentResult?.data {
-//                                    self.getContentData.send(self.myPageContentDatas)
-//                                }
-//                            }
-//                        } catch {
-//                            print(error)
-//                        }
-//                    }
+                    Task {
+                        do {
+                            if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                                let contentResult = try await self.getMemberContentAPI(accessToken: accessToken, memberId: value.1, contentCursor: value.3)
+                                
+                                if let data = contentResult?.data {
+                                    self.getContentData.send(self.myPageContentDatas)
+                                }
+                            }
+                        } catch {
+                            print(error)
+                        }
+                    }
                     
                     // 유저에 해당하는 답글 리스트 조회
-//                    Task {
-//                        do {
-//                            if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
-//                                let commentResult = try await self.getMemberCommentAPI(accessToken: accessToken, memberId: value.1, commentCursor: value.2)
-//                                
-//                                if let data = commentResult?.data {
-//                                    self.getCommentData.send(self.myPageCommentDatas)
-//                                }
-//                                
-//                            }
-//                        } catch {
-//                            print(error)
-//                        }
-//                    }
+                    Task {
+                        do {
+                            if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                                let commentResult = try await self.getMemberCommentAPI(accessToken: accessToken, memberId: value.1, commentCursor: value.2)
+                                
+                                if let data = commentResult?.data {
+                                    self.getCommentData.send(self.myPageCommentDatas)
+                                }
+                                
+                            }
+                        } catch {
+                            print(error)
+                        }
+                    }
                 }
             }
             .store(in: self.cancelBag)
@@ -122,77 +123,78 @@ extension MyPageViewModel {
         }
     }
     
-//    private func getMemberContentAPI(accessToken: String, memberId: Int, contentCursor: Int) async throws -> BaseResponse<[MyPageMemberContentResponseDTO]>? {
-//        do {
-//            let result: BaseResponse<[MyPageMemberContentResponseDTO]>? = try await self.networkProvider.donNetwork(
-//                type: .get,
-//                baseURL: Config.baseURL.dropLast() + "2/member/\(memberId)/contents",
-//                accessToken: accessToken,
-//                body: EmptyBody(),
-//                pathVariables:["cursor":"\(contentCursor)"])
-//            if let data = result?.data {
-//                if contentCursor == -1 {
-//                    self.myPageContentDatas = []
-//                    
-//                    var tempArrayData: [MyPageMemberContentResponseDTO] = []
-//                    
-//                    for content in data {
-//                        tempArrayData.append(content)
-//                    }
-//                    self.myPageContentData = tempArrayData
-//                    myPageContentDatas.append(contentsOf: myPageContentData)
-//                } else {
-//                    var tempArrayData: [MyPageMemberContentResponseDTO] = []
-//                    
-//                    if data.isEmpty {
-//                        self.contentCursor = -1
-//                    } else {
-//                        for content in data {
-//                            tempArrayData.append(content)
-//                        }
-//                        self.myPageContentData = tempArrayData
-//                        myPageContentDatas.append(contentsOf: myPageContentData)
-//                    }
-//                }
-//            }
-//            return result
-//        } catch {
-//            return nil
-//        }
-//    }
-//    
-//    private func getMemberCommentAPI(accessToken: String, memberId: Int, commentCursor: Int) async throws -> BaseResponse<[MyPageMemberCommentResponseDTO]>? {
-//        do {
-//            let result: BaseResponse<[MyPageMemberCommentResponseDTO]>? = try await self.networkProvider.donNetwork(
-//                type: .get,
-//                baseURL: Config.baseURL.dropLast() + "2/member/\(memberId)/comments",
-//                accessToken: accessToken,
-//                body: EmptyBody(),
-//                pathVariables:["cursor":"\(commentCursor)"])
-//            if let data = result?.data {
-//                if commentCursor == -1 {
-//                    self.myPageCommentDatas = []
-//                    
-//                    var tempArrayData: [MyPageMemberCommentResponseDTO] = []
-//                    
-//                    for comment in data {
-//                        tempArrayData.append(comment)
-//                    }
-//                    self.myPageCommentData = tempArrayData
-//                    myPageCommentDatas.append(contentsOf: myPageCommentData)
-//                } else {
-//                    var tempArrayData: [MyPageMemberCommentResponseDTO] = []
-//                    
-//                    for comment in data {
-//                        tempArrayData.append(comment)
-//                    }
-//                    self.myPageCommentData = tempArrayData
-//                    myPageCommentDatas.append(contentsOf: myPageCommentData)
-//                }
-//            }
-//            return result
-//        } catch {
-//            return nil
-//        }
-//    }
+    private func getMemberContentAPI(accessToken: String, memberId: Int, contentCursor: Int) async throws -> BaseResponse<[MyPageMemberContentResponseDTO]>? {
+        do {
+            let result: BaseResponse<[MyPageMemberContentResponseDTO]>? = try await self.networkProvider.donNetwork(
+                type: .get,
+                baseURL: Config.baseURL + "v2/member/\(memberId)/contents",
+                accessToken: accessToken,
+                body: EmptyBody(),
+                pathVariables:["cursor":"\(contentCursor)"])
+            if let data = result?.data {
+                if contentCursor == -1 {
+                    self.myPageContentDatas = []
+                    
+                    var tempArrayData: [MyPageMemberContentResponseDTO] = []
+                    
+                    for content in data {
+                        tempArrayData.append(content)
+                    }
+                    self.myPageContentData = tempArrayData
+                    myPageContentDatas.append(contentsOf: myPageContentData)
+                } else {
+                    var tempArrayData: [MyPageMemberContentResponseDTO] = []
+                    
+                    if data.isEmpty {
+                        self.contentCursor = -1
+                    } else {
+                        for content in data {
+                            tempArrayData.append(content)
+                        }
+                        self.myPageContentData = tempArrayData
+                        myPageContentDatas.append(contentsOf: myPageContentData)
+                    }
+                }
+            }
+            print("result: \(result)")
+            return result
+        } catch {
+            return nil
+        }
+    }
+    
+    private func getMemberCommentAPI(accessToken: String, memberId: Int, commentCursor: Int) async throws -> BaseResponse<[MyPageMemberCommentResponseDTO]>? {
+        do {
+            let result: BaseResponse<[MyPageMemberCommentResponseDTO]>? = try await self.networkProvider.donNetwork(
+                type: .get,
+                baseURL: Config.baseURL + "v2/member/\(memberId)/comments",
+                accessToken: accessToken,
+                body: EmptyBody(),
+                pathVariables:["cursor":"\(commentCursor)"])
+            if let data = result?.data {
+                if commentCursor == -1 {
+                    self.myPageCommentDatas = []
+                    
+                    var tempArrayData: [MyPageMemberCommentResponseDTO] = []
+                    
+                    for comment in data {
+                        tempArrayData.append(comment)
+                    }
+                    self.myPageCommentData = tempArrayData
+                    myPageCommentDatas.append(contentsOf: myPageCommentData)
+                } else {
+                    var tempArrayData: [MyPageMemberCommentResponseDTO] = []
+                    
+                    for comment in data {
+                        tempArrayData.append(comment)
+                    }
+                    self.myPageCommentData = tempArrayData
+                    myPageCommentDatas.append(contentsOf: myPageCommentData)
+                }
+            }
+            return result
+        } catch {
+            return nil
+        }
+    }
 }
