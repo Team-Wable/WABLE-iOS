@@ -88,7 +88,6 @@
 		3C3531802C6F13FF0015A8FA /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C35317D2C6F13FF0015A8FA /* Pretendard-SemiBold.otf */; };
 		3C3531822C6F15D30015A8FA /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3531812C6F15D30015A8FA /* KeychainWrapper.swift */; };
 		3C3531842C6F16D00015A8FA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3531832C6F16D00015A8FA /* Config.swift */; };
-		3C3531882C6F18C80015A8FA /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 3C3531872C6F18C80015A8FA /* KakaoSDK */; };
 		3C35318B2C6F1A040015A8FA /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C35318A2C6F1A040015A8FA /* SplashViewController.swift */; };
 		3C35318E2C6F1A850015A8FA /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C35318D2C6F1A850015A8FA /* UserInfo.swift */; };
 		3C3531922C6F1AEA0015A8FA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3531912C6F1AEA0015A8FA /* LoginViewController.swift */; };
@@ -132,6 +131,7 @@
 		3C8B4E572C84094100174943 /* PostTransparencyRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E562C84094100174943 /* PostTransparencyRequestDTO.swift */; };
 		3C8B4E592C840AD300174943 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E582C840AD300174943 /* Functions.swift */; };
 		3C8B4E5B2C841FF300174943 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3C8B4E5A2C841FF200174943 /* Config.xcconfig */; };
+		3C8B4E742C8433E300174943 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 3C8B4E732C8433E300174943 /* KakaoSDK */; };
 		3CDE2DE42C6F292B004A84CB /* Publisher+UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */; };
 		3CDE2DE62C6F30BA004A84CB /* JoinAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE52C6F30BA004A84CB /* JoinAgreementViewController.swift */; };
 		3CDE2DE82C6F30CE004A84CB /* JoinProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE72C6F30CE004A84CB /* JoinProfileViewController.swift */; };
@@ -365,7 +365,7 @@
 				0547F4BC2C6215F1001E3039 /* SnapKit in Frameworks */,
 				0547F4B92C6215D1001E3039 /* Moya in Frameworks */,
 				0547F4B72C6215D1001E3039 /* CombineMoya in Frameworks */,
-				3C3531882C6F18C80015A8FA /* KakaoSDK in Frameworks */,
+				3C8B4E742C8433E300174943 /* KakaoSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1186,7 +1186,7 @@
 				0547F4BB2C6215F1001E3039 /* SnapKit */,
 				0547F4D12C622351001E3039 /* Kingfisher */,
 				0547F5052C65290A001E3039 /* Lottie */,
-				3C3531872C6F18C80015A8FA /* KakaoSDK */,
+				3C8B4E732C8433E300174943 /* KakaoSDK */,
 			);
 			productName = "Wable-iOS";
 			productReference = 0547F4962C60D968001E3039 /* Wable-iOS.app */;
@@ -1221,7 +1221,7 @@
 				0547F4BA2C6215F1001E3039 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				0547F4D02C622351001E3039 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				0547F5042C652909001E3039 /* XCRemoteSwiftPackageReference "lottie-ios" */,
-				3C3531862C6F18C80015A8FA /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				3C8B4E722C8433E300174943 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			productRefGroup = 0547F4972C60D968001E3039 /* Products */;
 			projectDirPath = "";
@@ -1680,12 +1680,12 @@
 				minimumVersion = 4.5.0;
 			};
 		};
-		3C3531862C6F18C80015A8FA /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+		3C8B4E722C8433E300174943 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.22.5;
+				kind = exactVersion;
+				version = 2.22.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1716,9 +1716,9 @@
 			package = 0547F5042C652909001E3039 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
-		3C3531872C6F18C80015A8FA /* KakaoSDK */ = {
+		3C8B4E732C8433E300174943 /* KakaoSDK */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3C3531862C6F18C80015A8FA /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			package = 3C8B4E722C8433E300174943 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDK;
 		};
 /* End XCSwiftPackageProductDependency section */
