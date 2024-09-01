@@ -12,7 +12,7 @@ enum Team: String {
     case GEN = "GEN"
     case BRO = "BRO"
     case DRX = "DRX"
-    case DK = "DX"
+    case DK = "DK"
     case KT = "KT"
     case FOX = "FOX"
     case NS = "NS"
