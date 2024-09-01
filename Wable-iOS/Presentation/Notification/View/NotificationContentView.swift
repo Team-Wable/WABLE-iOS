@@ -41,6 +41,7 @@ extension NotificationContentView {
     private func setUI() {
         self.backgroundColor = .white
         notiTableView.separatorStyle = .none
+        notiTableView.backgroundColor = .wableWhite
     }
     
     private func setHierarchy() {
