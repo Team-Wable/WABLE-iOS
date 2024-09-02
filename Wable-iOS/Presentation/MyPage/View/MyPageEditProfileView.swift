@@ -10,6 +10,10 @@ import UIKit
 import SnapKit
 
 final class MyPageEditProfileView: UIView {
+    
+    // MARK: - Properties
+    
+    var isCheckedNickname: Bool = true
 
     // MARK: - UI Components
     
@@ -207,6 +211,8 @@ extension MyPageEditProfileView: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         let text = textField.text ?? "" // textField에 수정이 반영된 후의 text
+        
+        self.isCheckedNickname = false
         
         let isValid = isValidInput(text)
         if isValid {

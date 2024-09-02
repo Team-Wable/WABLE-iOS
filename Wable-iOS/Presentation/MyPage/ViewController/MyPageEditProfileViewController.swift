@@ -37,6 +37,7 @@ final class MyPageEditProfileViewController: UIViewController {
         ImageLiterals.Image.imgProfile3 : "GREEN"
     ]
     
+    private var previousSelectedImage: String?
     var memberDefaultProfileImage: String?
     var memberProfileImage: UIImage?
     
@@ -169,13 +170,16 @@ extension MyPageEditProfileViewController {
             .receive(on: RunLoop.main)
             .sink { isEnable in
                 self.originView.nickNameTextField.resignFirstResponder()
-                self.originView.nextButton.isEnabled = true
                 if isEnable {
                     self.originView.duplicationCheckDescription.text = StringLiterals.MyPage.myPageProfileNicknameAvailable
                     self.originView.duplicationCheckDescription.textColor = .success
+                    self.originView.nextButton.isEnabled = true
+                    self.originView.isCheckedNickname = true
                 } else {
                     self.originView.duplicationCheckDescription.text = StringLiterals.MyPage.myPageProfileNicknameAlreadyUsed
                     self.originView.duplicationCheckDescription.textColor = .error
+                    self.originView.nextButton.isEnabled = false
+                    self.originView.isCheckedNickname = false
                 }
             }
             .store(in: self.cancelBag)
@@ -190,12 +194,22 @@ extension MyPageEditProfileViewController {
     
     @objc
     private func changeButtonTapped() {
-        let randomEntry = basicProfileImages.randomElement()
-        
-        if let selectedImage = randomEntry?.key, let selectedColor = randomEntry?.value {
+        // 이전에 선택된 이미지를 제외한 무작위 항목 선택
+        if let randomEntry = basicProfileImages.filter({ $0.value != previousSelectedImage }).randomElement() {
+            let selectedImage = randomEntry.key
+            let selectedColor = randomEntry.value
+            
+            // 프로필 이미지 변경
             self.originView.profileImage.image = selectedImage
             self.memberDefaultProfileImage = selectedColor
             self.memberProfileImage = nil
+            
+            // 현재 선택된 이미지를 저장하여 다음에 제외
+            previousSelectedImage = selectedColor
+        }
+        
+        if self.originView.isCheckedNickname == true {
+            self.originView.nextButton.isEnabled = true
         }
     }
     
