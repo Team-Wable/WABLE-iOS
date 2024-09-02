@@ -60,7 +60,7 @@ final class MyPageView: UIView {
         return segmentedControl
     }()
     
-    private let divisionLine = UIView().makeDivisionLine()
+    let divisionLine = UIView().makeDivisionLine()
     
     lazy var pageViewController: UIPageViewController = {
         let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)

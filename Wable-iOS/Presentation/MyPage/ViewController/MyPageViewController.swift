@@ -550,6 +550,12 @@ extension MyPageViewController: UICollectionViewDelegate {
                 $0.height.equalTo(54.adjusted)
             }
             
+            rootView.divisionLine.snp.remakeConstraints {
+                $0.top.equalTo(rootView.segmentedControl.snp.bottom)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(1.adjusted)
+            }
+            
             rootView.pageViewController.view.snp.remakeConstraints {
                 $0.top.equalTo(rootView.segmentedControl.snp.bottom).offset(2.adjusted)
                 $0.leading.trailing.equalToSuperview()
@@ -559,15 +565,20 @@ extension MyPageViewController: UICollectionViewDelegate {
         } else if yOffset >= (rootView.myPageProfileView.frame.height - statusBarHeight - navigationBarHeight) {
             rootView.segmentedControl.frame.origin.y = yOffset - rootView.myPageProfileView.frame.height + statusBarHeight + navigationBarHeight
             rootView.segmentedControl.snp.remakeConstraints {
-                $0.top.equalTo(rootView.myPageProfileView.snp.bottom)
-                $0.leading.trailing.equalToSuperview()
+                $0.top.leading.trailing.equalToSuperview()
                 $0.height.equalTo(54.adjusted)
+            }
+            
+            rootView.divisionLine.snp.remakeConstraints {
+                $0.top.equalTo(rootView.segmentedControl.snp.bottom)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(1.adjusted)
             }
             
             rootView.pageViewController.view.frame.origin.y = yOffset - rootView.myPageProfileView.frame.height + statusBarHeight + navigationBarHeight + rootView.segmentedControl.frame.height
             
             rootView.pageViewController.view.snp.remakeConstraints {
-                $0.top.equalTo(rootView.segmentedControl.snp.bottom).offset(2.adjusted)
+                $0.top.equalTo(rootView.divisionLine.snp.bottom)
                 $0.leading.trailing.equalToSuperview()
                 let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
                 $0.height.equalTo(UIScreen.main.bounds.height - statusBarHeight - navigationBarHeight - self.tabBarHeight)
