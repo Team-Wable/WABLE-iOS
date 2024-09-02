@@ -224,6 +224,7 @@ extension MyPageViewController {
     
     private func setAddTarget() {
         rootView.segmentedControl.addTarget(self, action: #selector(changeValue(control:)), for: .valueChanged)
+        rootView.myPagePostViewController.firstContentButton.addTarget(self, action: #selector(goToWriteViewController), for: .touchUpInside)
         rootView.myPageProfileView.editButton.addTarget(self, action: #selector(profileEditButtonTapped), for: .touchUpInside)
         rootView.myPageBottomsheet.accountInfoButton.addTarget(self, action: #selector(accountInfoButtonTapped), for: .touchUpInside)
         rootView.myPageBottomsheet.settingAlarmButton.addTarget(self, action: #selector(settingAlarmButtonTapped), for: .touchUpInside)
@@ -319,11 +320,11 @@ extension MyPageViewController {
         self.rootView.myPageProfileView.userIntroductionLabel.text = "\(data.memberFanTeam)을(를) 응원하고 있어요.\n\(data.memberLckYears)년부터 LCK를 보기 시작했어요."
         
         if data.memberId != loadUserData()?.memberId ?? 0 {
-//            self.rootView.myPagePostViewController.noContentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoContentOtherLabel
-//            self.rootView.myPageReplyViewController.noCommentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoCommentOtherLabel
+            self.rootView.myPagePostViewController.noContentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoContentOtherLabel
+            self.rootView.myPageReplyViewController.noCommentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoCommentOtherLabel
         } else {
-//            self.rootView.myPagePostViewController.noContentLabel.text = "\(data.nickname)" + StringLiterals.MyPage.myPageNoContentLabel
-//            self.rootView.myPageReplyViewController.noCommentLabel.text = StringLiterals.MyPage.myPageNoCommentLabel
+            self.rootView.myPagePostViewController.noContentLabel.text = "\(data.nickname)" + StringLiterals.MyPage.myPageNoContentLabel
+            self.rootView.myPageReplyViewController.noCommentLabel.text = StringLiterals.MyPage.myPageNoCommentLabel
             
             saveUserData(UserInfo(isSocialLogined: true,
                                   isFirstUser: false,
@@ -339,6 +340,12 @@ extension MyPageViewController {
     @objc
     private func changeValue(control: UISegmentedControl) {
         self.currentPage = control.selectedSegmentIndex
+    }
+    
+    @objc
+    private func goToWriteViewController() {
+        let viewController = WriteViewController(viewModel: WriteViewModel(networkProvider: NetworkService()))
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     @objc
