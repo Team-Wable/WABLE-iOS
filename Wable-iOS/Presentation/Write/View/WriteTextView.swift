@@ -91,7 +91,7 @@ final class WriteTextView: UIView {
     private let textCountLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.caption4
-        label.text = "(0/500)"
+        label.text = "0/500"
         label.textColor = .gray600
         return label
     }()
@@ -274,7 +274,7 @@ extension WriteTextView: UITextFieldDelegate {
             }
         }
         
-        textCountLabel.text = "(\(self.currentTextLength)/\(self.maxLength))"
+        textCountLabel.text = "\(self.currentTextLength)/\(self.maxLength)"
         
         return true
     }
@@ -314,6 +314,6 @@ extension WriteTextView: UITextViewDelegate {
                 impactFeedbackGenerator.impactOccurred()
             }
         }
-        textCountLabel.text = "(\(self.currentTextLength)/\(self.maxLength))"
+        textCountLabel.text = "\(self.currentTextLength)/\(self.maxLength)"
     }
 }
