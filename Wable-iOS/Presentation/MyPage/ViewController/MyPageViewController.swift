@@ -236,7 +236,7 @@ extension MyPageViewController {
     private func setRefreshControll() {
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         rootView.myPageScrollView.refreshControl = refreshControl
-        refreshControl.tintColor = .wableWhite
+        refreshControl.tintColor = .gray300
         refreshControl.backgroundColor = .wableWhite
     }
     
