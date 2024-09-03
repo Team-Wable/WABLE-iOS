@@ -224,6 +224,7 @@ extension MyPageViewController {
     
     private func setAddTarget() {
         rootView.segmentedControl.addTarget(self, action: #selector(changeValue(control:)), for: .valueChanged)
+        rootView.myPagePostViewController.firstContentButton.addTarget(self, action: #selector(goToWriteViewController), for: .touchUpInside)
         rootView.myPageProfileView.editButton.addTarget(self, action: #selector(profileEditButtonTapped), for: .touchUpInside)
         rootView.myPageBottomsheet.accountInfoButton.addTarget(self, action: #selector(accountInfoButtonTapped), for: .touchUpInside)
         rootView.myPageBottomsheet.settingAlarmButton.addTarget(self, action: #selector(settingAlarmButtonTapped), for: .touchUpInside)
@@ -235,7 +236,7 @@ extension MyPageViewController {
     private func setRefreshControll() {
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         rootView.myPageScrollView.refreshControl = refreshControl
-        refreshControl.tintColor = .wableWhite
+        refreshControl.tintColor = .gray300
         refreshControl.backgroundColor = .wableWhite
     }
     
@@ -316,14 +317,17 @@ extension MyPageViewController {
         self.rootView.myPageProfileView.userNickname.text = data.nickname
         self.rootView.myPageProfileView.profileImageView.load(url: data.memberProfileUrl)
         self.rootView.myPageProfileView.transparencyValue = data.memberGhost
-        self.rootView.myPageProfileView.userIntroductionLabel.text = "\(data.memberFanTeam)을(를) 응원하고 있어요.\n\(data.memberLckYears)년부터 LCK를 보기 시작했어요."
+        self.rootView.myPageProfileView.userIntroductionLabel.setTextWithLineHeight(
+            text: "\(data.memberFanTeam)을(를) 응원하고 있어요.\n\(data.memberLckYears)년부터 LCK를 보기 시작했어요.",
+            lineHeight: 25.adjusted, alignment: .left
+        )
         
         if data.memberId != loadUserData()?.memberId ?? 0 {
-//            self.rootView.myPagePostViewController.noContentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoContentOtherLabel
-//            self.rootView.myPageReplyViewController.noCommentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoCommentOtherLabel
+            self.rootView.myPagePostViewController.noContentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoContentOtherLabel
+            self.rootView.myPageReplyViewController.noCommentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoCommentOtherLabel
         } else {
-//            self.rootView.myPagePostViewController.noContentLabel.text = "\(data.nickname)" + StringLiterals.MyPage.myPageNoContentLabel
-//            self.rootView.myPageReplyViewController.noCommentLabel.text = StringLiterals.MyPage.myPageNoCommentLabel
+            self.rootView.myPagePostViewController.noContentLabel.text = "\(data.nickname)" + StringLiterals.MyPage.myPageNoContentLabel
+            self.rootView.myPageReplyViewController.noCommentLabel.text = StringLiterals.MyPage.myPageNoCommentLabel
             
             saveUserData(UserInfo(isSocialLogined: true,
                                   isFirstUser: false,
@@ -339,6 +343,12 @@ extension MyPageViewController {
     @objc
     private func changeValue(control: UISegmentedControl) {
         self.currentPage = control.selectedSegmentIndex
+    }
+    
+    @objc
+    private func goToWriteViewController() {
+        let viewController = WriteViewController(viewModel: WriteViewModel(networkProvider: NetworkService()))
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     @objc
@@ -540,6 +550,12 @@ extension MyPageViewController: UICollectionViewDelegate {
                 $0.height.equalTo(54.adjusted)
             }
             
+            rootView.divisionLine.snp.remakeConstraints {
+                $0.top.equalTo(rootView.segmentedControl.snp.bottom)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(1.adjusted)
+            }
+            
             rootView.pageViewController.view.snp.remakeConstraints {
                 $0.top.equalTo(rootView.segmentedControl.snp.bottom).offset(2.adjusted)
                 $0.leading.trailing.equalToSuperview()
@@ -549,15 +565,20 @@ extension MyPageViewController: UICollectionViewDelegate {
         } else if yOffset >= (rootView.myPageProfileView.frame.height - statusBarHeight - navigationBarHeight) {
             rootView.segmentedControl.frame.origin.y = yOffset - rootView.myPageProfileView.frame.height + statusBarHeight + navigationBarHeight
             rootView.segmentedControl.snp.remakeConstraints {
-                $0.top.equalTo(rootView.myPageProfileView.snp.bottom)
-                $0.leading.trailing.equalToSuperview()
+                $0.top.leading.trailing.equalToSuperview()
                 $0.height.equalTo(54.adjusted)
+            }
+            
+            rootView.divisionLine.snp.remakeConstraints {
+                $0.top.equalTo(rootView.segmentedControl.snp.bottom)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(1.adjusted)
             }
             
             rootView.pageViewController.view.frame.origin.y = yOffset - rootView.myPageProfileView.frame.height + statusBarHeight + navigationBarHeight + rootView.segmentedControl.frame.height
             
             rootView.pageViewController.view.snp.remakeConstraints {
-                $0.top.equalTo(rootView.segmentedControl.snp.bottom).offset(2.adjusted)
+                $0.top.equalTo(rootView.divisionLine.snp.bottom)
                 $0.leading.trailing.equalToSuperview()
                 let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
                 $0.height.equalTo(UIScreen.main.bounds.height - statusBarHeight - navigationBarHeight - self.tabBarHeight)

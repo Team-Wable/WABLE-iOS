@@ -52,7 +52,6 @@ final class MyPagePostViewController: UIViewController {
     lazy var homeFeedTableView = HomeView().feedTableView
     var noContentLabel: UILabel = {
         let label = UILabel()
-        label.text = "StringLiterals.MyPage.myPageNoContentLabel"
         label.textColor = .gray500
         label.font = .body2
         label.numberOfLines = 2
@@ -63,7 +62,7 @@ final class MyPagePostViewController: UIViewController {
     
     let firstContentButton: UIButton = {
         let button = UIButton()
-        button.setTitle("글 작성하러 가기", for: .normal)
+        button.setTitle(StringLiterals.MyPage.myPageNoContentButton, for: .normal)
         button.setTitleColor(.wableWhite, for: .normal)
         button.titleLabel?.font = .body1
         button.backgroundColor = .purple50
@@ -131,14 +130,14 @@ extension MyPagePostViewController {
         }
 
         noContentLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(44.adjusted)
+            $0.top.equalToSuperview().inset(30.adjusted)
             $0.leading.trailing.equalToSuperview().inset(20.adjusted)
         }
         
         firstContentButton.snp.makeConstraints {
-            $0.top.equalTo(noContentLabel.snp.bottom).offset(20.adjusted)
-            $0.leading.trailing.equalToSuperview().inset(112.adjusted)
-            $0.height.equalTo(44.adjusted)
+            $0.top.equalTo(noContentLabel.snp.bottom).offset(36.adjusted)
+            $0.leading.trailing.equalToSuperview().inset(48.adjusted)
+            $0.height.equalTo(48.adjusted)
         }
     }
     
