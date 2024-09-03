@@ -166,5 +166,10 @@ final class HomeFeedTableViewCell: UITableViewCell{
         bottomView.bind(heart: data.likedNumber,
                         comment: data.commentNumber)
         
+        if let profileImage = UserProfile(rawValue: data.memberProfileURL) {
+            profileImageView.image = profileImage.image
+        } else {
+            profileImageView.kfSetImage(url: data.memberProfileURL)
+        }
     }
 }
