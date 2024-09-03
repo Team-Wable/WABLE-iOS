@@ -54,6 +54,7 @@
 		050E0D1E2C82E31500326EEA /* NotiInfoText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D1D2C82E31500326EEA /* NotiInfoText.swift */; };
 		050E0D202C82EE6600326EEA /* NotiActivityText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D1F2C82EE6600326EEA /* NotiActivityText.swift */; };
 		050E0D222C86F52100326EEA /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 050E0D212C86F52100326EEA /* Config.xcconfig */; };
+		050E0D242C877ED800326EEA /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D232C877ED800326EEA /* UserProfile.swift */; };
 		0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4992C60D968001E3039 /* AppDelegate.swift */; };
 		0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49B2C60D968001E3039 /* SceneDelegate.swift */; };
 		0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A22C60D96B001E3039 /* Assets.xcassets */; };
@@ -230,6 +231,7 @@
 		050E0D1D2C82E31500326EEA /* NotiInfoText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiInfoText.swift; sourceTree = "<group>"; };
 		050E0D1F2C82EE6600326EEA /* NotiActivityText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiActivityText.swift; sourceTree = "<group>"; };
 		050E0D212C86F52100326EEA /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = ../../Downloads/Config.xcconfig; sourceTree = "<group>"; };
+		050E0D232C877ED800326EEA /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		0547F4962C60D968001E3039 /* Wable-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wable-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0547F4992C60D968001E3039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0547F49B2C60D968001E3039 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -560,6 +562,7 @@
 			children = (
 				050E0D1D2C82E31500326EEA /* NotiInfoText.swift */,
 				050E0D1F2C82EE6600326EEA /* NotiActivityText.swift */,
+				050E0D232C877ED800326EEA /* UserProfile.swift */,
 			);
 			path = Supports;
 			sourceTree = "<group>";
@@ -1375,6 +1378,7 @@
 				0547F4E92C63E1BE001E3039 /* WableTabBarController.swift in Sources */,
 				050E0CC12C74B8AD00326EEA /* FeedBottomWriteView.swift in Sources */,
 				3C3531942C6F1F2A0015A8FA /* UIViewController+.swift in Sources */,
+				050E0D242C877ED800326EEA /* UserProfile.swift in Sources */,
 				3C8B4E592C840AD300174943 /* Functions.swift in Sources */,
 				3CDE2E0B2C71CE30004A84CB /* AppStoreCheckManager.swift in Sources */,
 				3C3531A22C6F255D0015A8FA /* JoinLCKYearViewController.swift in Sources */,
