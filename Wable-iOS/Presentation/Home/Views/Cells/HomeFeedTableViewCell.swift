@@ -35,6 +35,7 @@ final class HomeFeedTableViewCell: UITableViewCell{
     var infoView = FeedInfoView()
     var feedContentView = FeedContentView()
     var bottomView = FeedBottomView()
+    var divideLine = UIView().makeDivisionLine()
     
     var profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -93,6 +94,7 @@ final class HomeFeedTableViewCell: UITableViewCell{
                                      infoView,
                                      feedContentView,
                                      bottomView,
+                                     divideLine,
                                      seperateLineView)
     }
     
@@ -129,6 +131,11 @@ final class HomeFeedTableViewCell: UITableViewCell{
             $0.height.equalTo(31.adjusted)
             $0.top.equalTo(feedContentView.snp.bottom).offset(20.adjusted)
             $0.bottom.equalToSuperview().inset(20.adjusted)
+        }
+        
+        divideLine.snp.makeConstraints {
+            $0.height.equalTo(1)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
         
         seperateLineView.snp.makeConstraints {
