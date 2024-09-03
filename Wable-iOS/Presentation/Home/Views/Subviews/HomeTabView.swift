@@ -59,13 +59,13 @@ extension HomeTabView {
         }
         
         logoImageView.snp.makeConstraints {
-            $0.height.equalTo(23.adjusted)
-            $0.width.equalTo(79.adjusted)
+            $0.height.equalTo(28.adjusted)
+            $0.width.equalTo(81.adjusted)
             $0.top.leading.equalToSuperview().inset(16.adjusted)
         }
         
         tabLottieAnimationView.snp.makeConstraints {
-            $0.height.equalTo(2)
+            $0.height.equalTo(4)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }

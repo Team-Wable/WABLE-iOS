@@ -31,7 +31,7 @@ final class InfoTabView: UIView {
     }()
     private lazy var tabLottieAnimationView: LottieAnimationView = {
         let animation = LottieAnimationView(name: "wable_tab")
-        animation.contentMode = .scaleAspectFill
+        animation.contentMode = .scaleToFill
         animation.loopMode = .loop
         animation.play()
         return animation
@@ -79,7 +79,7 @@ extension InfoTabView {
         }
         
         tabLottieAnimationView.snp.makeConstraints {
-            $0.height.equalTo(2)
+            $0.height.equalTo(4)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
