@@ -55,6 +55,7 @@ final class FeedDetailViewController: UIViewController {
     // MARK: - UI Components
     
     private let feedDetailView = FeedDetailView()
+    private let divideLine = UIView().makeDivisionLine()
     
     // MARK: - Life Cycles
     
@@ -109,14 +110,20 @@ extension FeedDetailViewController {
         self.view.backgroundColor = .wableWhite
         feedDetailView.feedDetailTableView.rowHeight = UITableView.automaticDimension
         feedDetailView.feedDetailTableView.estimatedRowHeight = 100
+        navigationController?.navigationBar.barTintColor = .wableWhite
     }
     
     private func setHierarchy() {
-        
+        if let navigationBar = navigationController?.navigationBar {
+               navigationBar.addSubview(divideLine)
+            }
     }
     
     private func setLayout() {
-        
+        divideLine.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(1)
+        }
     }
     
     private func setDelegate() {
