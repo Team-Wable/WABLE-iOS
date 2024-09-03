@@ -28,7 +28,7 @@ final class MatchView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .gray400
+        self.backgroundColor = .wableWhite
         setUI()
         setHierarchy()
         setLayout()
