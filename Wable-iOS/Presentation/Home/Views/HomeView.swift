@@ -63,7 +63,7 @@ extension HomeView {
         feedTableView.snp.makeConstraints {
             $0.top.equalTo(homeTabView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalTo(safeAreaLayoutGuide)
         }
         
         writeFeedButton.snp.makeConstraints {

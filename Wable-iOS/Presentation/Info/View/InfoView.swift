@@ -14,7 +14,8 @@ final class InfoView: UIView {
     // MARK: - Properties
     
     var dataViewControllers: [UIViewController] {
-        [self.infoMatchViewController, self.infoRankingViewController]
+        [self.infoMatchViewController,
+         self.infoRankingViewController]
     }
     
     // MARK: - UI Components
@@ -95,12 +96,11 @@ extension InfoView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(infoScrollView, tabView)
+        // segmentedControl을 스크롤 뷰 바깥에 위치시킵니다.
+        self.addSubviews(infoScrollView, tabView, infoSegmentedView)
         infoScrollView.addSubview(infoContentView)
-        infoContentView.addSubviews(infoSegmentedView)
-        infoSegmentedView.addSubviews(segmentedControl,
-                                      divisionLine,
-                                      pageViewController.view)
+        infoContentView.addSubviews(pageViewController.view)
+        infoSegmentedView.addSubviews(segmentedControl, divisionLine)
     }
     
     private func setLayout() {
@@ -129,7 +129,7 @@ extension InfoView {
         }
         
         segmentedControl.snp.makeConstraints {
-            $0.top.equalTo(tabView.snp.bottom)
+            $0.top.equalTo(infoSegmentedView.snp.top)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(54.adjusted)
         }

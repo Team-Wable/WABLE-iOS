@@ -400,6 +400,17 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.viewModel.feedDatas[indexPath.row].contentID)
         }
         
+        cell.bottomView.commentButtonTapped = { [weak self] in
+            guard let self = self else { return }
+            let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
+            detailViewController.hidesBottomBarWhenPushed = true
+            detailViewController.getFeedData(data: self.viewModel.feedDatas[indexPath.row])
+            detailViewController.contentId = viewModel.feedDatas[indexPath.row].contentID
+            detailViewController.memberId = viewModel.feedDatas[indexPath.row].memberID
+            detailViewController.userProfileURL = viewModel.feedDatas[indexPath.row].memberProfileURL
+            self.navigationController?.pushViewController(detailViewController, animated: true)
+        }
+        
         return cell
     }
     
