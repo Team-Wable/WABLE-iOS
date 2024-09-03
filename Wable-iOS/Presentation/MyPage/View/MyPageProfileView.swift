@@ -15,6 +15,12 @@ final class MyPageProfileView: UIView {
     
     var transparencyValue: Int = 0 {
         didSet {
+            UIView.animate(withDuration: 0.5) {
+                self.fullTransparencyPercentage.snp.updateConstraints {
+                    $0.trailing.equalToSuperview().offset(((CGFloat(self.transparencyValue) * (UIScreen.main.bounds.width - 32.adjusted)) / 100) - 16.adjusted)
+                }
+                self.layoutIfNeeded()
+            }
             self.transparencyLabel.text = "\(self.transparencyValue)%"
         }
     }
@@ -51,16 +57,15 @@ final class MyPageProfileView: UIView {
         return button
     }()
     
-    let userIntroductionView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .gray100
-        view.layer.cornerRadius = 8.adjusted
-        return view
+    let userIntroductionView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = ImageLiterals.Image.imgInfoBox
+        imageView.contentMode = .scaleAspectFit
+        return imageView
     }()
     
     let userIntroductionLabel: UILabel = {
         let label = UILabel()
-        label.setTextWithLineHeight(text: "", lineHeight: 20.adjusted, alignment: .left)
         label.text = StringLiterals.MyPage.profileIntroduction
         label.textColor = .gray700
         label.font = .body4
@@ -108,6 +113,7 @@ final class MyPageProfileView: UIView {
         let imageView = UIImageView()
         imageView.image = ImageLiterals.Image.imgHalfBar
         imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = true
         return imageView
     }()
     
@@ -192,14 +198,13 @@ extension MyPageProfileView {
         }
         
         userIntroductionView.snp.makeConstraints {
-            $0.top.equalTo(profileImageView.snp.bottom).offset(17.adjusted)
+            $0.top.equalTo(profileImageView.snp.bottom).offset(7.adjusted)
             $0.leading.trailing.equalToSuperview().inset(16.adjusted)
-            $0.height.equalTo(68.adjusted)
+            $0.height.equalTo(78.adjusted)
         }
         
         userIntroductionLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(12.adjusted)
+            $0.leading.bottom.equalToSuperview().inset(12.adjusted)
         }
         
         transparencyTitleLabel.snp.makeConstraints {

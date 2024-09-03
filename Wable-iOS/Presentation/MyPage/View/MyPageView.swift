@@ -60,6 +60,8 @@ final class MyPageView: UIView {
         return segmentedControl
     }()
     
+    let divisionLine = UIView().makeDivisionLine()
+    
     lazy var pageViewController: UIPageViewController = {
         let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         vc.setViewControllers([self.dataViewControllers[0]], direction: .forward, animated: true)
@@ -102,6 +104,7 @@ extension MyPageView {
         myPageContentView.addSubviews(myPageProfileView,
                                       myPageSegmentedView)
         myPageSegmentedView.addSubviews(segmentedControl,
+                                        divisionLine,
                                         pageViewController.view)
     }
     
@@ -129,6 +132,12 @@ extension MyPageView {
         segmentedControl.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(54.adjusted)
+        }
+        
+        divisionLine.snp.makeConstraints {
+            $0.top.equalTo(segmentedControl.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1.adjusted)
         }
         
         pageViewController.view.snp.makeConstraints {

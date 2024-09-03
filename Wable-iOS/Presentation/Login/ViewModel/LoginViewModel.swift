@@ -89,10 +89,7 @@ final class LoginViewModel: NSObject, ViewModelType {
                     let result = try await self.postSocialLoginAPI(socialPlatform: "KAKAO", accessToken: accessToken, userName: nil)?.data
                     guard let isNewUser = result?.isNewUser else { return }
                     let nickname = result?.nickName ?? ""
-                    if isNewUser && nickname.isEmpty {
-                        // 신규 유저인 경우
-                        self.userInfoPublisher.send(true)
-                    } else {
+                    if !isNewUser && !nickname.isEmpty {
                         // 기존 유저인 경우
                         self.userInfoPublisher.send(false)
                         
@@ -104,6 +101,9 @@ final class LoginViewModel: NSObject, ViewModelType {
                                               userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
                                               fcmToken: loadUserData()?.fcmToken ?? "",
                                               isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                    } else {
+                        // 신규 유저인 경우
+                        self.userInfoPublisher.send(true)
                     }
                 } catch {
                     print(error)

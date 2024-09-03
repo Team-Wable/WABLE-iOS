@@ -121,13 +121,6 @@ extension WablePopupView {
             $0.centerY.equalToSuperview()
         }
         
-        popupTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(32.adjusted)
-            $0.leading.trailing.equalToSuperview().inset(24.adjusted)
-            $0.bottom.equalTo(cancleButton.snp.top).offset(-32.adjusted)
-        }
-        
-        
         buttonStackView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview().inset(18.adjusted)
             $0.height.equalTo(48.adjusted)
@@ -135,11 +128,23 @@ extension WablePopupView {
         
         // 팝업뷰 내용이 없는 경우
         if popupContentLabel.text == "" {
+            popupTitleLabel.snp.makeConstraints {
+                $0.top.equalToSuperview().inset(32.adjusted)
+                $0.leading.trailing.equalToSuperview().inset(24.adjusted)
+                $0.bottom.equalTo(cancleButton.snp.top).offset(-32.adjusted)
+            }
+            
             buttonStackView.snp.makeConstraints {
                 $0.leading.trailing.bottom.equalToSuperview().inset(18.adjusted)
                 $0.height.equalTo(48.adjusted)
             }
         } else {
+            popupTitleLabel.snp.makeConstraints {
+                $0.top.equalToSuperview().inset(32.adjusted)
+                $0.leading.trailing.equalToSuperview().inset(24.adjusted)
+                $0.bottom.equalTo(popupContentLabel.snp.top).offset(-8.adjusted)
+            }
+            
             popupContentLabel.snp.makeConstraints {
                 $0.top.equalTo(popupTitleLabel.snp.bottom).offset(8.adjusted)
                 $0.leading.trailing.equalToSuperview().inset(24.adjusted)
