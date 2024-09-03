@@ -15,6 +15,12 @@ final class MyPageProfileView: UIView {
     
     var transparencyValue: Int = 0 {
         didSet {
+            UIView.animate(withDuration: 0.5) {
+                self.fullTransparencyPercentage.snp.updateConstraints {
+                    $0.trailing.equalToSuperview().offset(((CGFloat(self.transparencyValue) * (UIScreen.main.bounds.width - 32.adjusted)) / 100) - 16.adjusted)
+                }
+                self.layoutIfNeeded()
+            }
             self.transparencyLabel.text = "\(self.transparencyValue)%"
         }
     }
@@ -107,6 +113,7 @@ final class MyPageProfileView: UIView {
         let imageView = UIImageView()
         imageView.image = ImageLiterals.Image.imgHalfBar
         imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = true
         return imageView
     }()
     
