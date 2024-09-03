@@ -406,6 +406,7 @@ extension FeedDetailViewController: UITableViewDataSource {
             let cell = feedDetailView.feedDetailTableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.identifier, for: indexPath) as? HomeFeedTableViewCell ?? HomeFeedTableViewCell()
             cell.selectionStyle = .none
             cell.seperateLineView.isHidden = false
+            cell.divideLine.isHidden = true
             cell.bind(data: feedData ?? HomeFeedDTO(memberID: 0,
                                                     memberProfileURL: "",
                                                     memberNickname: "다시하세요",
