@@ -39,6 +39,7 @@ final class HomeFeedTableViewCell: UITableViewCell{
     var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = ImageLiterals.Image.imgProfileSmall
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
     

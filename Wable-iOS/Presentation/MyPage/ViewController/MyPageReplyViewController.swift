@@ -47,6 +47,7 @@ final class MyPageReplyViewController: UIViewController {
         label.textColor = .gray500
         label.font = .body2
         label.textAlignment = .center
+        label.numberOfLines = 2
         label.isHidden = true
         return label
     }()
