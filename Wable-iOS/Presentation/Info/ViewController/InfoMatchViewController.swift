@@ -12,7 +12,17 @@ final class InfoMatchViewController: UIViewController {
     
     // MARK: - Properties
     
-    var matchInfoData: [TodayMatchesDTO] = [] 
+    var matchInfoData: [TodayMatchesDTO] = [] {
+        didSet {
+            if matchInfoData.count == 0 {
+                matchView.matchTableView.isHidden = true
+                matchView.emptyImageView.isHidden = false
+            } else {
+                matchView.matchTableView.isHidden = false
+                matchView.emptyImageView.isHidden = true
+            }
+        }
+    }
     private let viewModel: InfoMatchViewModel
     private var cancellables = Set<AnyCancellable>()
     
