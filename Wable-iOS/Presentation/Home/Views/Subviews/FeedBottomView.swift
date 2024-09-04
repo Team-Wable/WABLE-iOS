@@ -30,8 +30,6 @@ final class FeedBottomView: UIView {
     
     var ghostButton: UIButton = {
         let button = UIButton()
-        button.setImage(ImageLiterals.Button.btnGhostDefaultLarge, for: .normal)
-        button.setImage(ImageLiterals.Button.btnGhostDisabledLarge, for: .disabled)
         return button
     }()
     
