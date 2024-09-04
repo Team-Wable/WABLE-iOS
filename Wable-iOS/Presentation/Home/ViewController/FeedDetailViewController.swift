@@ -227,7 +227,7 @@ extension FeedDetailViewController {
             .sink { data in
                 if data == 0 {
                     self.viewModel.cursor = -1
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    DispatchQueue.main.async {
                         self.didPullToRefresh()
                         
                         self.feedDetailView.bottomWriteView.writeTextView.text = ""
@@ -237,6 +237,9 @@ extension FeedDetailViewController {
                                                                                                             left: 10.adjusted,
                                                                                                             bottom: 10.adjusted,
                                                                                                             right: 10.adjusted)
+                        
+                        self.feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
+                        self.feedDetailView.bottomWriteView.uploadButton.isEnabled = false
                         
                         UIView.animate(withDuration: 0.3) {
                             self.feedDetailView.feedDetailTableView.contentOffset.y = 0
@@ -292,10 +295,11 @@ extension FeedDetailViewController: UITextViewDelegate {
         }
         
         if (textView.text.count != 0) {
+            feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRipplePress, for: .normal)
             feedDetailView.bottomWriteView.uploadButton.isEnabled = true
         } else {
+            feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
             feedDetailView.bottomWriteView.uploadButton.isEnabled = false
-            
         }
     }
     
@@ -305,6 +309,7 @@ extension FeedDetailViewController: UITextViewDelegate {
         if textView.text.isEmpty {
             textView.text = (feedData?.memberNickname ?? String()) + StringLiterals.Home.placeholder
             textView.textColor = .gray700
+            feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
             feedDetailView.bottomWriteView.uploadButton.isEnabled = false
         }
     }
@@ -402,6 +407,7 @@ extension FeedDetailViewController: UITableViewDataSource {
         case .feed:
             return 1
         case .reply:
+            print("viewModel.feedReplyDatas.count: \(viewModel.feedReplyDatas.count)")
             return viewModel.feedReplyDatas.count
         }
     }
@@ -423,6 +429,10 @@ extension FeedDetailViewController: UITableViewDataSource {
             let cell = feedDetailView.feedDetailTableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.identifier, for: indexPath) as? HomeFeedTableViewCell ?? HomeFeedTableViewCell()
             cell.selectionStyle = .none
             cell.seperateLineView.isHidden = false
+            
+            cell.alarmTriggerType = "contentGhost"
+            cell.targetMemberId = feedData?.memberID ?? 0
+            cell.alarmTriggerdId = feedData?.contentID ?? 0
             
             cell.bind(data: feedData ?? HomeFeedDTO(memberID: 0,
                                                     memberProfileURL: "",
@@ -526,6 +536,13 @@ extension FeedDetailViewController: UITableViewDataSource {
             if viewModel.feedReplyDatas[indexPath.row].memberId == loadUserData()?.memberId {
                 cell.bottomView.ghostButton.isHidden = true
                 
+                cell.bottomView.heartButton.snp.remakeConstraints {
+                    $0.height.equalTo(24.adjusted)
+                    $0.width.equalTo(45.adjusted)
+                    $0.trailing.equalToSuperview()
+                    $0.centerY.equalToSuperview()
+                }
+                
                 cell.menuButtonTapped = {
                     self.homeBottomsheetView.showSettings()
                     self.homeBottomsheetView.deleteButton.isHidden = false
@@ -538,6 +555,13 @@ extension FeedDetailViewController: UITableViewDataSource {
             } else {
                 // 다른 유저인 경우
                 cell.bottomView.ghostButton.isHidden = false
+                
+                cell.bottomView.heartButton.snp.remakeConstraints {
+                    $0.height.equalTo(24.adjusted)
+                    $0.width.equalTo(45.adjusted)
+                    $0.trailing.equalTo(cell.bottomView.ghostButton.snp.leading).offset(-16.adjusted)
+                    $0.centerY.equalTo(cell.bottomView.ghostButton)
+                }
                 
                 cell.menuButtonTapped = {
                     self.homeBottomsheetView.showSettings()
@@ -641,9 +665,9 @@ extension FeedDetailViewController {
 extension FeedDetailViewController: WablePopupDelegate {
     
     func cancleButtonTapped() {
-//        if nowShowingPopup == "ghost" {
-//            self.ghostPopupView?.removeFromSuperview()
-//        }
+        if nowShowingPopup == "ghost" {
+            self.ghostPopupView?.removeFromSuperview()
+        }
         
         if nowShowingPopup == "report" {
             self.reportPopupView?.removeFromSuperview()
@@ -655,33 +679,37 @@ extension FeedDetailViewController: WablePopupDelegate {
     }
     
     func confirmButtonTapped() {
-//        if nowShowingPopup == "ghost" {
-//            self.ghostPopupView?.removeFromSuperview()
-//            
-//            Task {
-//                do {
-//                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
-//                        let result = try await self.likeViewModel.postDownTransparency(
-//                            accessToken: accessToken,
-//                            alarmTriggerType: self.alarmTriggerType,
-//                            targetMemberId: self.targetMemberId,
-//                            alarmTriggerId: self.alarmTriggerdId,
-//                            ghostReason: self.ghostReason
-//                        )
-//                        
-//                        didPullToRefresh()
-//                        
-//                        if result?.status == 400 {
-//                            // 이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기
-////                            showAlreadyTransparencyToast()
-//                            print("이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기")
-//                        }
-//                    }
-//                } catch {
-//                    print(error)
-//                }
-//            }
-//        }
+        if nowShowingPopup == "ghost" {
+            self.ghostPopupView?.removeFromSuperview()
+            
+            print("self.alarmTriggerType: \(self.alarmTriggerType)")
+            print("self.targetMemberId: \(self.targetMemberId)")
+            print("self.alarmTriggerdId: \(self.alarmTriggerdId)")
+            
+            Task {
+                do {
+                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                        let result = try await self.likeViewModel.postDownTransparency(
+                            accessToken: accessToken,
+                            alarmTriggerType: self.alarmTriggerType,
+                            targetMemberId: self.targetMemberId,
+                            alarmTriggerId: self.alarmTriggerdId,
+                            ghostReason: self.ghostReason
+                        )
+                        
+                        didPullToRefresh()
+                        
+                        if result?.status == 400 {
+                            // 이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기
+//                            showAlreadyTransparencyToast()
+                            print("이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기")
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+        }
         
         if nowShowingPopup == "report" {
             self.reportPopupView?.removeFromSuperview()
