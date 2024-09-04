@@ -14,10 +14,26 @@ enum NotiActivityText: String {
     case contentGhost = "contentGhost"
     case commentGhost = "commentGhost"
     case beGhost = "beGhost"
-    case actingContinue = "actingContinue"
-    case userBan = "userBan"
+    case actingContinue = "actingContinue" //게시글 작성 이동
+    case userBan = "userBan" //별도 이동 없으
     case popularWriter = "popularWriter"
     case popularContent = "popularContent"
+    
+    init?(rawValue: String) {
+        switch rawValue {
+        case "contentLiked": self = .contentLiked
+        case "commentLiked": self = .commentLiked
+        case "comment": self = .comment
+        case "contentGhost": self = .contentGhost
+        case "commentGhost": self = .commentGhost
+        case "beGhost": self = .beGhost
+        case "actingContinue": self = .actingContinue
+        case "userBan": self = .userBan
+        case "popularWriter": self = .popularWriter
+        case "popularContent": self = .popularContent
+        default: return nil
+        }
+    }
     
     func text(from triggerNickname: String, to userNickname: String) -> String {
         switch self {

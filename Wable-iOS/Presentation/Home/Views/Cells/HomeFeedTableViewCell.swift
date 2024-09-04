@@ -166,12 +166,12 @@ final class HomeFeedTableViewCell: UITableViewCell{
                       ghostPercent: data.memberGhost,
                       time: data.time)
         
-        feedContentView.bind(title: data.contentTitle,
-                             content: data.contentText,
+        feedContentView.bind(title: data.contentTitle ?? "",
+                             content: data.contentText ?? "",
                              image: data.contentImageURL)
         
         bottomView.bind(heart: data.likedNumber,
-                        comment: data.commentNumber)
+                        comment: data.commentNumber ?? Int())
         
         if let profileImage = UserProfile(rawValue: data.memberProfileURL) {
             profileImageView.image = profileImage.image

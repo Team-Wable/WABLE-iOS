@@ -407,20 +407,23 @@ extension FeedDetailViewController: UITableViewDataSource {
             cell.selectionStyle = .none
             cell.seperateLineView.isHidden = false
             cell.divideLine.isHidden = true
-            cell.bind(data: feedData ?? HomeFeedDTO(memberID: 0,
+            cell.bind(data: feedData ?? HomeFeedDTO(memberID: Int(),
                                                     memberProfileURL: "",
-                                                    memberNickname: "다시하세요",
-                                                    contentID: 0, contentTitle: "contentTitle",
-                                                    contentText: "",
-                                                    time: "다시해",
-                                                    isGhost: false,
-                                                    memberGhost: 0,
-                                                    isLiked: true,
-                                                    likedNumber: 5,
-                                                    commentNumber: 2,
-                                                    isDeleted: false,
-                                                    contentImageURL: "",
-                                                    memberFanTeam: "T1"))
+                                                    memberNickname: "",
+                                                    isGhost: Bool(),
+                                                    memberGhost: Int(),
+                                                    isLiked: Bool(),
+                                                    time: "",
+                                                    likedNumber: Int(),
+                                                    memberFanTeam: "",
+                                                    contentID: nil,
+                                                    contentTitle: nil,
+                                                    contentText: nil,
+                                                    commentNumber: nil,
+                                                    isDeleted: Bool(),
+                                                    message: nil,
+                                                    commnetNumber: nil,
+                                                    contentImageURL: nil))
             return cell
         case .reply:
             let cell = feedDetailView.feedDetailTableView.dequeueReusableCell(withIdentifier: FeedDetailTableViewCell.identifier, for: indexPath) as? FeedDetailTableViewCell ?? FeedDetailTableViewCell()
