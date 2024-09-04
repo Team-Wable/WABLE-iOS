@@ -98,7 +98,8 @@ final class HomeFeedTableViewCell: UITableViewCell{
     
     private func setLayout() {
         grayView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(bottomView.snp.top)
         }
         
         profileImageView.snp.makeConstraints {
@@ -168,5 +169,12 @@ final class HomeFeedTableViewCell: UITableViewCell{
         
         bottomView.isLiked = data.isLiked
         
+        if data.isGhost {
+            bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDisabledLarge, for: .normal)
+            bottomView.ghostButton.isEnabled = false
+        } else {
+            bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDefaultLarge, for: .normal)
+            bottomView.ghostButton.isEnabled = true
+        }
     }
 }
