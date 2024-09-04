@@ -104,11 +104,6 @@ final class MyPageViewController: UIViewController {
         bindViewModel()
         setNotification()
         
-        self.tabBarController?.tabBar.isHidden = false
-        self.tabBarController?.tabBar.isTranslucent = true
-        self.tabBarController?.tabBar.backgroundColor = .wableWhite
-        self.tabBarController?.tabBar.barTintColor = .wableWhite
-        
         navigationController?.navigationBar.titleTextAttributes = [
             .foregroundColor: UIColor.wableBlack,
             NSAttributedString.Key.font: UIFont.body1,
@@ -116,6 +111,11 @@ final class MyPageViewController: UIViewController {
         
         // 본인 프로필 화면
         if memberId == loadUserData()?.memberId ?? 0 {
+            self.tabBarController?.tabBar.isHidden = false
+            self.tabBarController?.tabBar.isTranslucent = true
+            self.tabBarController?.tabBar.backgroundColor = .wableWhite
+            self.tabBarController?.tabBar.barTintColor = .wableWhite
+            
             self.navigationItem.title = loadUserData()?.userNickname ?? ""
             self.tabBarController?.tabBar.isHidden = false
             
@@ -124,7 +124,11 @@ final class MyPageViewController: UIViewController {
             navigationItem.rightBarButtonItem = hambergerButton
         } else {
             // 타 유저 프로필 화면
-            self.navigationItem.title = "타 유저 닉네임"
+            self.tabBarController?.tabBar.isHidden = true
+            self.tabBarController?.tabBar.isTranslucent = true
+            self.tabBarController?.tabBar.backgroundColor = .wableWhite
+            self.tabBarController?.tabBar.barTintColor = .wableWhite
+            
             self.tabBarController?.tabBar.isHidden = true
             let backButtonImage = ImageLiterals.Icon.icBack.withRenderingMode(.alwaysOriginal)
             let backButton = UIBarButtonItem(image: backButtonImage, style: .done, target: self, action: #selector(backButtonDidTapped))
@@ -141,7 +145,16 @@ final class MyPageViewController: UIViewController {
         super.viewWillDisappear(true)
         
         removeNotification()
-        self.tabBarController?.tabBar.isTranslucent = false
+        
+        // 본인 프로필 화면
+        if memberId == loadUserData()?.memberId ?? 0 {
+            self.tabBarController?.tabBar.isTranslucent = false
+        } else {
+            self.tabBarController?.tabBar.isHidden = false
+            self.tabBarController?.tabBar.isTranslucent = true
+            self.tabBarController?.tabBar.backgroundColor = .wableWhite
+            self.tabBarController?.tabBar.barTintColor = .wableWhite
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -151,6 +164,10 @@ final class MyPageViewController: UIViewController {
         let tabBarHeight: CGFloat = 70.0
         
         self.tabBarHeight = tabBarHeight + safeAreaHeight
+        
+        self.rootView.myPageProfileView.profileImageView.contentMode = .scaleAspectFill
+        self.rootView.myPageProfileView.profileImageView.layer.cornerRadius = self.rootView.myPageProfileView.profileImageView.frame.size.width / 2
+        self.rootView.myPageProfileView.profileImageView.clipsToBounds = true
     }
 }
 
@@ -314,6 +331,7 @@ extension MyPageViewController {
     }
     
     private func bindProfileData(data: MypageProfileResponseDTO) {
+        self.title = data.nickname
         self.rootView.myPageProfileView.userNickname.text = data.nickname
         self.rootView.myPageProfileView.profileImageView.load(url: data.memberProfileUrl)
         self.rootView.myPageProfileView.transparencyValue = data.memberGhost
@@ -325,9 +343,11 @@ extension MyPageViewController {
         if data.memberId != loadUserData()?.memberId ?? 0 {
             self.rootView.myPagePostViewController.noContentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoContentOtherLabel
             self.rootView.myPageReplyViewController.noCommentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoCommentOtherLabel
+            self.rootView.myPageProfileView.editButton.isHidden = true
         } else {
             self.rootView.myPagePostViewController.noContentLabel.text = "\(data.nickname)" + StringLiterals.MyPage.myPageNoContentLabel
             self.rootView.myPageReplyViewController.noCommentLabel.text = StringLiterals.MyPage.myPageNoCommentLabel
+            self.rootView.myPageProfileView.editButton.isHidden = false
             
             saveUserData(UserInfo(isSocialLogined: true,
                                   isFirstUser: false,

@@ -349,8 +349,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         memberGhost = adjustGhostValue(memberGhost)
         
         cell.grayView.layer.zPosition = 1
-//        print("isGhost: \(self.viewModel.feedDatas[indexPath.row].isGhost)")
-//        print("memberGhost: \(self.viewModel.feedDatas[indexPath.row].memberGhost)")
         
         // 내가 투명도를 누른 유저인 경우 -85% 적용
         if self.viewModel.feedDatas[indexPath.row].isGhost {
