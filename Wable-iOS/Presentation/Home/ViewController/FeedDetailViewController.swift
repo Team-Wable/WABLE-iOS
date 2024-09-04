@@ -55,6 +55,7 @@ final class FeedDetailViewController: UIViewController {
     // MARK: - UI Components
     
     private let feedDetailView = FeedDetailView()
+    private let divideLine = UIView().makeDivisionLine()
     
     // MARK: - Life Cycles
     
@@ -109,14 +110,20 @@ extension FeedDetailViewController {
         self.view.backgroundColor = .wableWhite
         feedDetailView.feedDetailTableView.rowHeight = UITableView.automaticDimension
         feedDetailView.feedDetailTableView.estimatedRowHeight = 100
+        navigationController?.navigationBar.barTintColor = .wableWhite
     }
     
     private func setHierarchy() {
-        
+        if let navigationBar = navigationController?.navigationBar {
+               navigationBar.addSubview(divideLine)
+            }
     }
     
     private func setLayout() {
-        
+        divideLine.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(1)
+        }
     }
     
     private func setDelegate() {
@@ -399,20 +406,24 @@ extension FeedDetailViewController: UITableViewDataSource {
             let cell = feedDetailView.feedDetailTableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.identifier, for: indexPath) as? HomeFeedTableViewCell ?? HomeFeedTableViewCell()
             cell.selectionStyle = .none
             cell.seperateLineView.isHidden = false
-            cell.bind(data: feedData ?? HomeFeedDTO(memberID: 0,
+            cell.divideLine.isHidden = true
+            cell.bind(data: feedData ?? HomeFeedDTO(memberID: Int(),
                                                     memberProfileURL: "",
-                                                    memberNickname: "다시하세요",
-                                                    contentID: 0, contentTitle: "contentTitle",
-                                                    contentText: "",
-                                                    time: "다시해",
-                                                    isGhost: false,
-                                                    memberGhost: 0,
-                                                    isLiked: true,
-                                                    likedNumber: 5,
-                                                    commentNumber: 2,
-                                                    isDeleted: false,
-                                                    contentImageURL: "",
-                                                    memberFanTeam: "T1"))
+                                                    memberNickname: "",
+                                                    isGhost: Bool(),
+                                                    memberGhost: Int(),
+                                                    isLiked: Bool(),
+                                                    time: "",
+                                                    likedNumber: Int(),
+                                                    memberFanTeam: "",
+                                                    contentID: nil,
+                                                    contentTitle: nil,
+                                                    contentText: nil,
+                                                    commentNumber: nil,
+                                                    isDeleted: Bool(),
+                                                    message: nil,
+                                                    commnetNumber: nil,
+                                                    contentImageURL: nil))
             return cell
         case .reply:
             let cell = feedDetailView.feedDetailTableView.dequeueReusableCell(withIdentifier: FeedDetailTableViewCell.identifier, for: indexPath) as? FeedDetailTableViewCell ?? FeedDetailTableViewCell()

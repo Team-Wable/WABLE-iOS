@@ -15,7 +15,7 @@ struct APIConstants {
     static let multipartFormData = "multipart/form"
     static let auth = "Authorization"
     static let refresh = "RefreshToken"
-    static var accessToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjQyNTg3NjksImV4cCI6NTMyNDI1ODc2OSwibWVtYmVySWQiOjZ9.KcOdy_EaMYB7p4cMFYXMm8bQE2VXyragl79rpn3_zIo"
+    static var accessToken = "Bearer \(KeychainWrapper.loadToken(forKey: "accessToken") ?? "")"
 }
 
 extension APIConstants{
