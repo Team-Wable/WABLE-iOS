@@ -282,7 +282,7 @@ extension HomeViewController {
                 .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
                 .eraseToAnyPublisher()
         
-        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, deleteButtonDidTapped: deleteButtonTapped)
+        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, commentLikeButtonTapped: nil, deleteButtonDidTapped: deleteButtonTapped)
 
         let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
 
@@ -314,7 +314,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         cell.targetMemberId = viewModel.feedDatas[indexPath.row].memberID
         cell.alarmTriggerdId = viewModel.feedDatas[indexPath.row].contentID
         
-        cell.profileImageView.load(url: "\(viewModel.feedDatas[indexPath.row].memberProfileURL)")
         cell.bind(data: viewModel.feedDatas[indexPath.row])
         
         if viewModel.feedDatas[indexPath.row].memberID == loadUserData()?.memberId {

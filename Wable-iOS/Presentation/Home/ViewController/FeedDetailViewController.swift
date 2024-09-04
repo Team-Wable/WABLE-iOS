@@ -423,7 +423,7 @@ extension FeedDetailViewController: UITableViewDataSource {
             let cell = feedDetailView.feedDetailTableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.identifier, for: indexPath) as? HomeFeedTableViewCell ?? HomeFeedTableViewCell()
             cell.selectionStyle = .none
             cell.seperateLineView.isHidden = false
-            print("feedData: \(feedData)")
+            
             cell.bind(data: feedData ?? HomeFeedDTO(memberID: 0,
                                                     memberProfileURL: "",
                                                     memberNickname: "다시하세요",
@@ -513,10 +513,89 @@ extension FeedDetailViewController: UITableViewDataSource {
             }
             
             return cell
+            
         case .reply:
             let cell = feedDetailView.feedDetailTableView.dequeueReusableCell(withIdentifier: FeedDetailTableViewCell.identifier, for: indexPath) as? FeedDetailTableViewCell ?? FeedDetailTableViewCell()
             cell.selectionStyle = .none
+            cell.alarmTriggerType = "commentGhost"
+            cell.targetMemberId = viewModel.feedReplyDatas[indexPath.row].memberId
+            cell.alarmTriggerdId = viewModel.feedReplyDatas[indexPath.row].commentId
+            
             cell.bind(data: viewModel.feedReplyDatas[indexPath.row])
+            
+            if viewModel.feedReplyDatas[indexPath.row].memberId == loadUserData()?.memberId {
+                cell.bottomView.ghostButton.isHidden = true
+                
+                cell.menuButtonTapped = {
+                    self.homeBottomsheetView.showSettings()
+                    self.homeBottomsheetView.deleteButton.isHidden = false
+                    self.homeBottomsheetView.reportButton.isHidden = true
+                    
+                    self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
+                    self.commentId = self.viewModel.feedReplyDatas[indexPath.row].commentId
+                    self.nowShowingPopup = "delete"
+                }
+            } else {
+                // 다른 유저인 경우
+                cell.bottomView.ghostButton.isHidden = false
+                
+                cell.menuButtonTapped = {
+                    self.homeBottomsheetView.showSettings()
+                    self.homeBottomsheetView.reportButton.isHidden = false
+                    self.homeBottomsheetView.deleteButton.isHidden = true
+                    
+                    self.reportTargetNickname = self.viewModel.feedReplyDatas[indexPath.row].memberNickname
+                    self.relateText = self.viewModel.feedReplyDatas[indexPath.row].commentText
+                    self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
+                    self.nowShowingPopup = "report"
+                }
+            }
+            
+            var memberGhost = self.viewModel.feedReplyDatas[indexPath.row].memberGhost
+            memberGhost = adjustGhostValue(memberGhost)
+            
+            cell.grayView.layer.zPosition = 1
+            
+            // 내가 투명도를 누른 유저인 경우 -85% 적용
+            if self.viewModel.feedReplyDatas[indexPath.row].isGhost {
+                cell.grayView.alpha = 0.85
+            } else {
+                cell.grayView.alpha = CGFloat(Double(-memberGhost) / 100)
+            }
+            
+            cell.profileButtonAction = {
+                let memberId = self.viewModel.feedReplyDatas[indexPath.row].memberId
+
+                if memberId == loadUserData()?.memberId ?? 0  {
+                    self.tabBarController?.selectedIndex = 3
+                } else {
+                    let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()))
+                    viewController.memberId = memberId
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                }
+            }
+            
+            cell.bottomView.ghostButtonTapped = { [weak self] in
+                self?.alarmTriggerType = cell.alarmTriggerType
+                self?.targetMemberId = cell.targetMemberId
+                self?.alarmTriggerdId = cell.alarmTriggerdId
+                self?.showGhostPopupView()
+                self?.nowShowingPopup = "ghost"
+            }
+            
+            cell.bottomView.heartButtonTapped = {
+                var currentHeartCount = cell.bottomView.heartButton.titleLabel?.text
+                
+                if cell.bottomView.isLiked == true {
+                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
+                } else {
+                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
+                }
+                self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.viewModel.feedReplyDatas[indexPath.row].commentId, commentText: self.viewModel.feedReplyDatas[indexPath.row].commentText)
+                
+                cell.bottomView.isLiked.toggle()
+            }
+            
             return cell
         }
     }
@@ -532,11 +611,27 @@ extension FeedDetailViewController {
                 .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
                 .eraseToAnyPublisher()
         
-        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, deleteButtonDidTapped: deleteButtonTapped)
+        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, commentLikeButtonTapped: nil, deleteButtonDidTapped: deleteButtonTapped)
 
         let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
 
         output.toggleLikeButton
+            .sink { _ in }
+            .store(in: self.cancelBag)
+    }
+    
+    private func postCommentLikeButtonAPI(isClicked: Bool, commentId: Int, commentText: String) {
+        print("postCommentLikeButtonAPI")
+        // 최초 한 번만 publisher 생성
+        let commentLikedButtonTapped: AnyPublisher<(Bool, Int, String), Never>? = Just(())
+            .map { _ in return (isClicked, commentId, commentText) }
+            .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
+            .eraseToAnyPublisher()
+        
+        let input = LikeViewModel.Input(likeButtonTapped: nil, commentLikeButtonTapped: commentLikedButtonTapped, deleteButtonDidTapped: deleteButtonTapped)
+        let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
+        
+        output.toggleCommentLikeButton
             .sink { _ in }
             .store(in: self.cancelBag)
     }

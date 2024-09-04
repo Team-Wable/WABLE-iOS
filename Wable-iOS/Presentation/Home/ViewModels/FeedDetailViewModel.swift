@@ -107,27 +107,27 @@ final class FeedDetailViewModel: ViewModelType {
                             let postReplyResult = try await
                             self.getPostReplyDataAPI(accessToken: accessToken, contentId: value)
                             if let data = postReplyResult?.data {
-//                                if let lastCommentId = data.last?.commentId {
-//                                    self.cursor = lastCommentId
-//                                }
+                                if let lastCommentId = data.last?.commentId {
+                                    self.cursor = lastCommentId
+                                }
                                 if self.cursor == -1 {
                                     self.feedReplyDatas = []
                                     
-                                    var tempArray: [FeedDetailReplyDTO] = []
-                                    
-                                    for content in data {
-                                        tempArray.append(content)
-                                    }
-                                    self.feedReplyDatas.append(contentsOf: tempArray)
-                                    self.getPostReplyData.send(tempArray)
+//                                    var tempArray: [FeedDetailReplyDTO] = []
+//                                    
+//                                    for content in data {
+//                                        tempArray.append(content)
+//                                    }
+                                    self.feedReplyDatas.append(contentsOf: data)
+                                    self.getPostReplyData.send(data)
                                 } else {
-                                    var tempArray: [FeedDetailReplyDTO] = []
-                                    
-                                    for content in data {
-                                        tempArray.append(content)
-                                    }
-                                    self.feedReplyDatas.append(contentsOf: tempArray)
-                                    self.getPostReplyData.send(tempArray)
+//                                    var tempArray: [FeedDetailReplyDTO] = []
+//                                    
+//                                    for content in data {
+//                                        tempArray.append(content)
+//                                    }
+                                    self.feedReplyDatas.append(contentsOf: data)
+                                    self.getPostReplyData.send(data)
                                 }
                             }
                         }
