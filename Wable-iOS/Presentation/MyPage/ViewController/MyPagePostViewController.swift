@@ -214,28 +214,19 @@ extension MyPagePostViewController {
     }
     
     private func postLikeButtonAPI(isClicked: Bool, contentId: Int) {
-//        // 최초 한 번만 publisher 생성
-//        let likeButtonTapped: AnyPublisher<(Bool, Int), Never>?  = Just(())
-//                .map { _ in return (!isClicked, contentId) }
-//                .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
-//                .eraseToAnyPublisher()
-//
-//        let input = HomeViewModel.Input(
-//            viewUpdate: nil,
-//            likeButtonTapped: likeButtonTapped,
-//            firstReasonButtonTapped: nil,
-//            secondReasonButtonTapped: nil,
-//            thirdReasonButtonTapped: nil,
-//            fourthReasonButtonTapped: nil,
-//            fifthReasonButtonTapped: nil,
-//            sixthReasonButtonTapped: nil,
-//            isPushNotiAllowed: nil)
-//
-//        let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
-//
-//        output.toggleLikeButton
-//            .sink { _ in }
-//            .store(in: self.cancelBag)
+        // 최초 한 번만 publisher 생성
+        let likeButtonTapped: AnyPublisher<(Bool, Int), Never>?  = Just(())
+                .map { _ in return (isClicked, contentId) }
+                .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
+                .eraseToAnyPublisher()
+        
+        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, commentLikeButtonTapped: nil, deleteButtonDidTapped: nil, deleteReplyButtonDidTapped: nil)
+
+        let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
+
+        output.toggleLikeButton
+            .sink { _ in }
+            .store(in: self.cancelBag)
     }
     
     @objc
@@ -374,6 +365,7 @@ extension MyPagePostViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.bottomView.heartButton.setTitleWithConfiguration("\(contentDatas[indexPath.row].likedNumber)", font: .caption1, textColor: .wableBlack)
         cell.bottomView.commentButton.setTitleWithConfiguration("\(contentDatas[indexPath.row].commentNumber)", font: .caption1, textColor: .wableBlack)
+        cell.bottomView.isLiked = contentDatas[indexPath.row].isLiked
         
         cell.profileButtonAction = {
             let memberId = self.contentDatas[indexPath.row].memberId
@@ -402,8 +394,9 @@ extension MyPagePostViewController: UITableViewDelegate, UITableViewDataSource {
             } else {
                 cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
             }
-            cell.bottomView.isLiked.toggle()
             self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.contentDatas[indexPath.row].contentId)
+            
+            cell.bottomView.isLiked.toggle()
         }
         
         return cell
@@ -430,7 +423,7 @@ extension MyPagePostViewController: UITableViewDelegate, UITableViewDataSource {
             if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 let lastCommentId = contentDatas.last?.contentId ?? -1
                 myPageViewModel.contentCursor = lastCommentId
-                NotificationCenter.default.post(name: MyPagePostViewController.reloadContentData, object: nil, userInfo: ["contentCursor": lastCommentId])
+                NotificationCenter.default.post(name: MyPageReplyViewController.reloadCommentData, object: nil, userInfo: ["contentCursor": lastCommentId])
                 DispatchQueue.main.async {
                      self.homeFeedTableView.reloadData()
                 }
