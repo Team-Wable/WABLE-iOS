@@ -87,6 +87,7 @@ final class WriteViewController: UIViewController {
 
 extension WriteViewController {
     private func setUI() {
+        self.title = "새로운 글"
         self.view.backgroundColor = .wableWhite
         self.navigationController?.navigationBar.isHidden = false
         self.navigationItem.hidesBackButton = true

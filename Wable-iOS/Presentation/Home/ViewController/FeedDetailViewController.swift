@@ -144,6 +144,8 @@ extension FeedDetailViewController {
     private func setNavigationBar() {
         
         self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.backgroundColor = .wableWhite
+        self.navigationController?.navigationBar.barTintColor = .wableWhite
         self.navigationItem.title = "게시글"
         
         navigationController?.navigationBar.titleTextAttributes = [
