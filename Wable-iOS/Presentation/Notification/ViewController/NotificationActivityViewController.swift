@@ -14,7 +14,17 @@ final class NotificationActivityViewController: UIViewController {
     // MARK: - Properties
     
     private var paginationNotiActivityData: [ActivityNotificationDTO] = []
-    var notiActivityData: [ActivityNotificationDTO] = []
+    var notiActivityData: [ActivityNotificationDTO] = [] {
+        didSet {
+            if notiActivityData.count == 0 {
+                rootView.notiTableView.isHidden = true
+                rootView.noNotiLabel.isHidden = false
+            } else {
+                rootView.notiTableView.isHidden = false
+                rootView.noNotiLabel.isHidden = true
+            }
+        }
+    }
     private let viewModel: NotificationActivityViewModel
     private var cancellables = Set<AnyCancellable>()
     
