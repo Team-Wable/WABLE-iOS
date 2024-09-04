@@ -6,6 +6,7 @@
 //
 
 import Combine
+import SafariServices
 import UIKit
 
 import SnapKit
@@ -24,6 +25,7 @@ final class MyPageReplyViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     
 //    private let postViewModel: PostDetailViewModel
+    private let likeViewModel: LikeViewModel
     private let myPageViewModel: MyPageViewModel
 //    let deleteViewModel = DeleteReplyViewModel(networkProvider: NetworkService())
     private var cancelBag = CancelBag()
@@ -37,8 +39,17 @@ final class MyPageReplyViewController: UIViewController {
     var alarmTriggerType: String = ""
     var targetMemberId: Int = 0
     var alarmTriggerdId: Int = 0
+    var reportTargetNickname = ""
+    var relateText = ""
+    let warnUserURL = URL(string: StringLiterals.Network.warnUserGoogleFormURL)
+    
+    var nowShowingPopup: String = ""
     
     // MARK: - UI Components
+    
+    var homeBottomsheetView = HomeBottomSheetView()
+    private var reportPopupView: WablePopupView? = nil
+    private var deletePopupView: WablePopupView? = nil
     
     lazy var feedDetailTableView = FeedDetailView().feedDetailTableView
     let noCommentLabel: UILabel = {
@@ -54,8 +65,8 @@ final class MyPageReplyViewController: UIViewController {
     
     // MARK: - Life Cycles
     
-    init(myPageViewModel: MyPageViewModel) {
-//        self.postViewModel = viewModel
+    init(likeViewModel: LikeViewModel, myPageViewModel: MyPageViewModel) {
+        self.likeViewModel = likeViewModel
         self.myPageViewModel = myPageViewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -193,33 +204,80 @@ extension MyPageReplyViewController {
     }
     
     private func postCommentLikeButtonAPI(isClicked: Bool, commentId: Int, commentText: String) {
-//        // 최초 한 번만 publisher 생성
-//        let commentLikedButtonTapped: AnyPublisher<(Bool, Int, String), Never>? = Just(())
-//            .map { _ in return (!isClicked, commentId, commentText) }
-//            .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
-//            .eraseToAnyPublisher()
-//        
-//        let input = PostDetailViewModel.Input(viewUpdate: nil,
-//                                              likeButtonTapped: nil,
-//                                              collectionViewUpdata: nil,
-//                                              commentLikeButtonTapped: commentLikedButtonTapped,
-//                                              firstReasonButtonTapped: nil,
-//                                              secondReasonButtonTapped: nil,
-//                                              thirdReasonButtonTapped: nil,
-//                                              fourthReasonButtonTapped: nil,
-//                                              fifthReasonButtonTapped: nil,
-//                                              sixthReasonButtonTapped: nil)
-//        
-//        let output = self.postViewModel.transform(from: input, cancelBag: self.cancelBag)
-//        
-//        output.toggleLikeButton
-//            .sink { _ in }
-//            .store(in: self.cancelBag)
+        // 최초 한 번만 publisher 생성
+        let commentLikedButtonTapped: AnyPublisher<(Bool, Int, String), Never>? = Just(())
+            .map { _ in return (isClicked, commentId, commentText) }
+            .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
+            .eraseToAnyPublisher()
+        
+        let input = LikeViewModel.Input(likeButtonTapped: nil, commentLikeButtonTapped: commentLikedButtonTapped, deleteButtonDidTapped: nil, deleteReplyButtonDidTapped: nil)
+        let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
+        
+        output.toggleCommentLikeButton
+            .sink { _ in }
+            .store(in: self.cancelBag)
     }
     
     func deleteReplyPopupView() {
 //        deleteReplyPopupVC.commentId = self.commentId
 //        self.present(self.deleteReplyPopupVC, animated: false, completion: nil)
+    }
+    
+    @objc
+    func deleteReplyButtonTapped() {
+        popBottomsheetView()
+        
+        self.deletePopupView = WablePopupView(popupTitle: StringLiterals.Home.deletePopupTitle,
+                                              popupContent: StringLiterals.Home.deletePopupContent,
+                                              leftButtonTitle: StringLiterals.Home.deletePopupUndo,
+                                              rightButtonTitle: StringLiterals.Home.deletePopupDo)
+        
+        if let popupView = self.deletePopupView {
+            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                window.addSubviews(popupView)
+            }
+            
+            popupView.delegate = self
+            
+            popupView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        }
+    }
+    
+    @objc
+    func reportButtonTapped() {
+        popBottomsheetView()
+        
+        self.reportPopupView = WablePopupView(popupTitle: StringLiterals.Home.reportPopupTitle,
+                                              popupContent: StringLiterals.Home.reportPopupContent,
+                                              leftButtonTitle: StringLiterals.Home.reportPopupUndo,
+                                              rightButtonTitle: StringLiterals.Home.reportPopupDo)
+        
+        if let popupView = self.reportPopupView {
+            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                window.addSubviews(popupView)
+            }
+            
+            popupView.delegate = self
+            
+            popupView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        }
+    }
+    
+    func popBottomsheetView() {
+        if UIApplication.shared.keyWindowInConnectedScenes != nil {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.homeBottomsheetView.dimView.alpha = 0
+                if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                    self.homeBottomsheetView.bottomsheetView.frame = CGRect(x: 0, y: window.frame.height, width: self.homeBottomsheetView.frame.width, height: self.homeBottomsheetView.bottomsheetView.frame.height)
+                }
+            })
+            homeBottomsheetView.dimView.removeFromSuperview()
+            homeBottomsheetView.bottomsheetView.removeFromSuperview()
+        }
     }
 }
 
@@ -245,15 +303,21 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
                 $0.trailing.equalToSuperview()
                 $0.centerY.equalToSuperview()
             }
-//            self.deleteBottomsheet.warnButton.removeFromSuperview()
             
             cell.menuButtonTapped = {
-//                self.deleteBottomsheet.showSettings()
-//                self.deleteBottomsheet.deleteButton.addTarget(self, action: #selector(self.deleteButtonTapped), for: .touchUpInside)
-//                self.commentId = self.commentDatas[indexPath.row].commentId
+                self.homeBottomsheetView.showSettings()
+                self.homeBottomsheetView.reportButton.isHidden = true
+                self.homeBottomsheetView.deleteButton.isHidden = false
+                
+                self.reportTargetNickname = self.commentDatas[indexPath.row].memberNickname
+                self.relateText = self.commentDatas[indexPath.row].commentText
+                self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deleteReplyButtonTapped), for: .touchUpInside)
+                self.commentId = self.commentDatas[indexPath.row].commentId
+                self.nowShowingPopup = "delete"
             }
         } else {
             cell.bottomView.ghostButton.isHidden = false
+            
             cell.bottomView.ghostButton.snp.remakeConstraints {
                 $0.height.width.equalTo(32.adjusted)
                 $0.trailing.equalToSuperview()
@@ -266,12 +330,16 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
                 $0.trailing.equalTo(cell.bottomView.ghostButton.snp.leading).offset(-16.adjusted)
                 $0.centerY.equalTo(cell.bottomView.ghostButton)
             }
-//            self.warnBottomsheet.deleteButton.removeFromSuperview()
             
             cell.menuButtonTapped = {
-//                self.warnBottomsheet.showSettings()
-//                self.warnBottomsheet.warnButton.addTarget(self, action: #selector(self.warnButtonTapped), for: .touchUpInside)
-//                self.commentId = self.commentDatas[indexPath.row].commentId
+                self.homeBottomsheetView.showSettings()
+                self.homeBottomsheetView.reportButton.isHidden = false
+                self.homeBottomsheetView.deleteButton.isHidden = true
+                
+                self.reportTargetNickname = self.commentDatas[indexPath.row].memberNickname
+                self.relateText = self.commentDatas[indexPath.row].commentText
+                self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
+                self.nowShowingPopup = "report"
             }
         }
         
@@ -284,6 +352,7 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
         cell.contentLabel.text = commentDatas[indexPath.row].commentText
         
         cell.bottomView.heartButton.setTitleWithConfiguration("\(commentDatas[indexPath.row].commentLikedNumber)", font: .caption1, textColor: .wableBlack)
+        cell.bottomView.isLiked = commentDatas[indexPath.row].isLiked
         
         cell.profileButtonAction = {
             let memberId = self.commentDatas[indexPath.row].memberId
@@ -297,6 +366,13 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
             }
         }
         
+        cell.bottomView.ghostButtonTapped = { [weak self] in
+            self?.alarmTriggerType = cell.alarmTriggerType
+            self?.targetMemberId = cell.targetMemberId
+            self?.alarmTriggerdId = cell.alarmTriggerdId
+            NotificationCenter.default.post(name: MyPagePostViewController.ghostButtonTapped, object: nil)
+        }
+        
         cell.bottomView.heartButtonTapped = {
             var currentHeartCount = cell.bottomView.heartButton.titleLabel?.text
             
@@ -305,15 +381,9 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
             } else {
                 cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
             }
+            self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.commentDatas[indexPath.row].commentId, commentText: self.commentDatas[indexPath.row].commentText)
+            
             cell.bottomView.isLiked.toggle()
-//            self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.commentDatas[indexPath.row].contentId)
-        }
-        
-        cell.bottomView.ghostButtonTapped = { [weak self] in
-            self?.alarmTriggerType = cell.alarmTriggerType
-            self?.targetMemberId = cell.targetMemberId
-            self?.alarmTriggerdId = cell.alarmTriggerdId
-            NotificationCenter.default.post(name: MyPagePostViewController.ghostButtonTapped, object: nil)
         }
         
         return cell
@@ -334,7 +404,7 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
             if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 let lastCommentId = commentDatas.last?.commentId ?? -1
                 myPageViewModel.commentCursor = lastCommentId
-                NotificationCenter.default.post(name: MyPagePostViewController.reloadContentData, object: nil, userInfo: ["commentCursor": lastCommentId])
+                NotificationCenter.default.post(name: MyPageReplyViewController.reloadCommentData, object: nil, userInfo: ["commentCursor": lastCommentId])
                 DispatchQueue.main.async {
                      self.feedDetailTableView.reloadData()
                 }
@@ -350,6 +420,96 @@ extension MyPageReplyViewController: UIScrollViewDelegate {
             scrollView.isScrollEnabled = true
         } else if yOffset < 0 {
             scrollView.isScrollEnabled = false
+        }
+    }
+}
+
+extension MyPageReplyViewController: WablePopupDelegate {
+    
+    func cancleButtonTapped() {
+//        if ghostPopupView != nil {
+//            self.ghostPopupView?.removeFromSuperview()
+//        }
+        
+        if reportPopupView != nil {
+            self.reportPopupView?.removeFromSuperview()
+        }
+        
+        if deletePopupView != nil {
+            self.deletePopupView?.removeFromSuperview()
+        }
+    }
+    
+    func confirmButtonTapped() {
+//        if ghostPopupView != nil {
+//            self.ghostPopupView?.removeFromSuperview()
+//
+//            Task {
+//                do {
+//                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+//                        let result = try await self.likeViewModel.postDownTransparency(
+//                            accessToken: accessToken,
+//                            alarmTriggerType: self.alarmTriggerType,
+//                            targetMemberId: self.targetMemberId,
+//                            alarmTriggerId: self.alarmTriggerdId,
+//                            ghostReason: self.ghostReason
+//                        )
+//
+//                        didPullToRefresh()
+//
+//                        if result?.status == 400 {
+//                            // 이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기
+////                            showAlreadyTransparencyToast()
+//                            print("이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기")
+//                        }
+//                    }
+//                } catch {
+//                    print(error)
+//                }
+//            }
+//        }
+        
+        if nowShowingPopup == "report" {
+            self.reportPopupView?.removeFromSuperview()
+            
+            let warnView: SFSafariViewController
+            if let warnURL = self.warnUserURL {
+                warnView = SFSafariViewController(url: warnURL)
+                self.present(warnView, animated: true, completion: nil)
+            }
+            
+//            Task {
+//                do {
+//                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+//                        let result = try await self.homeViewModel.postReportButtonAPI(
+//                            reportTargetNickname: self.reportTargetNickname,
+//                            relateText: self.relateText
+//                        )
+//                    }
+//                } catch {
+//                    print(error)
+//                }
+//            }
+        }
+        
+        if nowShowingPopup == "delete" {
+            self.deletePopupView?.removeFromSuperview()
+            
+            Task {
+                do {
+                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                        let result = try await self.likeViewModel.deleteReplyAPI(accessToken: accessToken, commentId: self.commentId)
+                        
+                        NotificationCenter.default.post(name: MyPagePostViewController.reloadData, object: nil)
+                        
+                        UIView.animate(withDuration: 0.3) {
+                            self.feedDetailTableView.contentOffset.y = 0
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }
         }
     }
 }
