@@ -80,6 +80,16 @@ final class FeedDetailTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        DispatchQueue.main.async {
+            self.profileImageView.contentMode = .scaleAspectFill
+            self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.width / 2
+            self.profileImageView.clipsToBounds = true
+        }
+    }
+    
     // MARK: - Functions
 
     private func setHierarchy() {
