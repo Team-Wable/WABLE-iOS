@@ -16,6 +16,7 @@ final class LikeViewModel: ViewModelType {
     private let toggleLikeButton = PassthroughSubject<Bool, Never>()
     private let toggleCommentLikeButton = PassthroughSubject<Bool, Never>()
     private let popView = PassthroughSubject<Void, Never>()
+    private let refreshView = PassthroughSubject<Void, Never>()
     
     var isLikeButtonTapped: Bool = false
     
@@ -23,12 +24,14 @@ final class LikeViewModel: ViewModelType {
         let likeButtonTapped: AnyPublisher<(Bool, Int), Never>?
         let commentLikeButtonTapped: AnyPublisher<(Bool, Int, String), Never>?
         let deleteButtonDidTapped: AnyPublisher<Int, Never>?
+        let deleteReplyButtonDidTapped: AnyPublisher<Int, Never>?
     }
 
     struct Output {
         let toggleLikeButton: PassthroughSubject<Bool, Never>
         let toggleCommentLikeButton: PassthroughSubject<Bool, Never>
         let popView: PassthroughSubject<Void, Never>
+        let refreshView: PassthroughSubject<Void, Never>
     }
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
@@ -94,9 +97,27 @@ final class LikeViewModel: ViewModelType {
             }
             .store(in: self.cancelBag)
         
+        input.deleteReplyButtonDidTapped?
+            .sink { value in
+                Task {
+                    do {
+                        if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                            let statusCode = try await self.deleteReplyAPI(accessToken: accessToken, commentId: value)?.status
+                            if statusCode == 200 {
+                                self.refreshView.send()
+                            }
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+            .store(in: self.cancelBag)
+        
         return Output(toggleLikeButton: toggleLikeButton,
                       toggleCommentLikeButton: toggleCommentLikeButton,
-                      popView: popView)
+                      popView: popView,
+                      refreshView: refreshView)
     }
     
     init(networkProvider: NetworkServiceType) {
@@ -150,6 +171,18 @@ extension LikeViewModel {
             let result: BaseResponse<EmptyResponse>? = try
             await self.networkProvider.donNetwork(type: .delete, baseURL: Config.baseURL + "v1/content/\(contentId)", accessToken: accessToken, body: EmptyBody(), pathVariables: ["":""])
             print("deletePostAPI result: \(result)")
+            return result
+        } catch {
+            return nil
+        }
+    }
+    
+    func deleteReplyAPI(accessToken: String, commentId: Int) async throws -> BaseResponse<EmptyResponse>? {
+        let accessToken = accessToken
+        do {
+            let result: BaseResponse<EmptyResponse>? = try
+            await self.networkProvider.donNetwork(type: .delete, baseURL: Config.baseURL + "v1/comment/\(commentId)", accessToken: accessToken, body: EmptyBody(), pathVariables: ["":""])
+            print("deleteReplyAPI result: \(result)")
             return result
         } catch {
             return nil

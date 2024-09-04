@@ -85,11 +85,16 @@ final class FeedDetailViewModel: ViewModelType {
                                 } else {
                                     var tempArray: [FeedDetailReplyDTO] = []
                                     
-                                    for content in data {
-                                        tempArray.append(content)
+                                    if data.isEmpty {
+                                        self.cursor = -1
+                                    } else {
+                                        
+                                        for content in data {
+                                            tempArray.append(content)
+                                        }
+                                        self.feedReplyDatas.append(contentsOf: tempArray)
+                                        self.getPostReplyData.send(data)
                                     }
-                                    self.feedReplyDatas.append(contentsOf: tempArray)
-                                    self.getPostReplyData.send(data)
                                 }
                             }
                         }
