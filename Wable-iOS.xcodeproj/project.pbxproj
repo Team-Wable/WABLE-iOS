@@ -53,7 +53,6 @@
 		050E0D1B2C82642400326EEA /* NotificationActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D1A2C82642400326EEA /* NotificationActivityViewModel.swift */; };
 		050E0D1E2C82E31500326EEA /* NotiInfoText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D1D2C82E31500326EEA /* NotiInfoText.swift */; };
 		050E0D202C82EE6600326EEA /* NotiActivityText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D1F2C82EE6600326EEA /* NotiActivityText.swift */; };
-		050E0D222C86F52100326EEA /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 050E0D212C86F52100326EEA /* Config.xcconfig */; };
 		050E0D242C877ED800326EEA /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D232C877ED800326EEA /* UserProfile.swift */; };
 		0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4992C60D968001E3039 /* AppDelegate.swift */; };
 		0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49B2C60D968001E3039 /* SceneDelegate.swift */; };
@@ -233,7 +232,6 @@
 		050E0D1A2C82642400326EEA /* NotificationActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActivityViewModel.swift; sourceTree = "<group>"; };
 		050E0D1D2C82E31500326EEA /* NotiInfoText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiInfoText.swift; sourceTree = "<group>"; };
 		050E0D1F2C82EE6600326EEA /* NotiActivityText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiActivityText.swift; sourceTree = "<group>"; };
-		050E0D212C86F52100326EEA /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = ../../Downloads/Config.xcconfig; sourceTree = "<group>"; };
 		050E0D232C877ED800326EEA /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		0547F4962C60D968001E3039 /* Wable-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wable-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0547F4992C60D968001E3039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1574,7 +1572,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Wable-iOS/Wable-iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = MAZQ6JDBT4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Global/Resources/Info.plist";
@@ -1589,7 +1587,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1610,7 +1608,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Wable-iOS/Wable-iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = MAZQ6JDBT4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Global/Resources/Info.plist";
@@ -1625,7 +1623,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
