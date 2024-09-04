@@ -26,14 +26,20 @@ final class FeedDetailViewController: UIViewController {
     private var cancelBag = CancelBag()
     
     private lazy var postButtonTapped =
-    self.feedDetailView.bottomWriteView.uploadButton.publisher(for: .touchUpInside).map { _ in
-        return (WriteReplyRequestDTO(
-            commentText: self.feedDetailView.bottomWriteView.writeTextView.text,
-            notificationTriggerType: "comment"), self.contentId)
-    }.eraseToAnyPublisher()
+    self.feedDetailView.bottomWriteView.uploadButton.publisher(for: .touchUpInside)
+        .throttle(for: .seconds(1), scheduler: RunLoop.main, latest: true)
+        .map { _ in
+            return (WriteReplyRequestDTO(
+                commentText: self.feedDetailView.bottomWriteView.writeTextView.text,
+                notificationTriggerType: "comment"), self.contentId)
+        }.eraseToAnyPublisher()
     
     private lazy var deleteButtonTapped = deletePopupView?.confirmButton.publisher(for: .touchUpInside).map { _ in
         return self.contentId
+    }.eraseToAnyPublisher()
+    
+    private lazy var deleteReplyButtonTapped = deletePopupView?.confirmButton.publisher(for: .touchUpInside).map { _ in
+        return self.commentId
     }.eraseToAnyPublisher()
     
     var contentId: Int = 0
@@ -82,6 +88,7 @@ final class FeedDetailViewController: UIViewController {
         setHierarchy()
         setLayout()
         setDelegate()
+        getAPI()
         dismissKeyboard()
         setRefreshControl()
     }
@@ -99,7 +106,6 @@ final class FeedDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         setNavigationBar()
-        getAPI()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -201,6 +207,7 @@ extension FeedDetailViewController {
 
 extension FeedDetailViewController {
     private func getAPI() {
+        print("getAPI")
         let input = FeedDetailViewModel.Input(viewUpdate: Just((contentId)).eraseToAnyPublisher(),
                                               likeButtonTapped: nil,
                                               tableViewUpdata: Just((contentId)).eraseToAnyPublisher(),
@@ -213,14 +220,16 @@ extension FeedDetailViewController {
             .receive(on: RunLoop.main)
             .sink { data in
                 self.postMemberId = data.memberId
-                self.feedDetailView.feedDetailTableView.reloadData()
+//                self.feedDetailView.feedDetailTableView.reloadData()
             }
             .store(in: self.cancelBag)
         
         output.getPostReplyData
             .receive(on: RunLoop.main)
             .sink { data in
-                self.feedDetailView.feedDetailTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.feedDetailView.feedDetailTableView.reloadData()
+                }
             }
             .store(in: self.cancelBag)
         
@@ -242,10 +251,6 @@ extension FeedDetailViewController {
                         
                         self.feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
                         self.feedDetailView.bottomWriteView.uploadButton.isEnabled = false
-                        
-                        UIView.animate(withDuration: 0.3) {
-                            self.feedDetailView.feedDetailTableView.contentOffset.y = 0
-                        }
                     }
                 }
             }
@@ -419,7 +424,9 @@ extension FeedDetailViewController: UITableViewDataSource {
             if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 let lastCommentID = viewModel.feedReplyDatas.last?.commentId ?? -1
                 viewModel.cursor = lastCommentID
-//                self.didPullToRefresh()
+                DispatchQueue.main.async {
+                    self.getAPI()
+                }
             }
         }
     }
@@ -461,7 +468,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                     
                     self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
                     self.contentId = self.feedData?.contentID ?? 0
-                    self.nowShowingPopup = "delete"
+                    self.nowShowingPopup = "deletePost"
                 }
             } else {
                 // 다른 유저인 경우
@@ -552,7 +559,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                     
                     self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
                     self.commentId = self.viewModel.feedReplyDatas[indexPath.row].commentId
-                    self.nowShowingPopup = "delete"
+                    self.nowShowingPopup = "deleteReply"
                 }
             } else {
                 // 다른 유저인 경우
@@ -637,7 +644,7 @@ extension FeedDetailViewController {
                 .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
                 .eraseToAnyPublisher()
         
-        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, commentLikeButtonTapped: nil, deleteButtonDidTapped: deleteButtonTapped)
+        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, commentLikeButtonTapped: nil, deleteButtonDidTapped: deleteButtonTapped, deleteReplyButtonDidTapped: deleteReplyButtonTapped)
 
         let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
 
@@ -654,7 +661,7 @@ extension FeedDetailViewController {
             .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
             .eraseToAnyPublisher()
         
-        let input = LikeViewModel.Input(likeButtonTapped: nil, commentLikeButtonTapped: commentLikedButtonTapped, deleteButtonDidTapped: deleteButtonTapped)
+        let input = LikeViewModel.Input(likeButtonTapped: nil, commentLikeButtonTapped: commentLikedButtonTapped, deleteButtonDidTapped: deleteButtonTapped, deleteReplyButtonDidTapped: deleteReplyButtonTapped)
         let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
         
         output.toggleCommentLikeButton
@@ -675,7 +682,7 @@ extension FeedDetailViewController: WablePopupDelegate {
             self.reportPopupView?.removeFromSuperview()
         }
         
-        if nowShowingPopup == "delete" {
+        if nowShowingPopup == "deletePost" || nowShowingPopup == "deleteReply" {
             self.deletePopupView?.removeFromSuperview()
         }
     }
@@ -736,7 +743,7 @@ extension FeedDetailViewController: WablePopupDelegate {
 //            }
         }
         
-        if nowShowingPopup == "delete" {
+        if nowShowingPopup == "deletePost" {
             self.deletePopupView?.removeFromSuperview()
             
             Task {
@@ -745,6 +752,22 @@ extension FeedDetailViewController: WablePopupDelegate {
                         let result = try await self.likeViewModel.deletePostAPI(accessToken: accessToken, contentId: self.contentId)
                         
                         navigationController?.popViewController(animated: true)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        
+        if nowShowingPopup == "deleteReply" {
+            self.deletePopupView?.removeFromSuperview()
+            
+            Task {
+                do {
+                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                        let result = try await self.likeViewModel.deleteReplyAPI(accessToken: accessToken, commentId: self.commentId)
+                        
+                        didPullToRefresh()
                     }
                 } catch {
                     print(error)

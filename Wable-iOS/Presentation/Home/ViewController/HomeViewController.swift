@@ -19,8 +19,13 @@ final class HomeViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     
     private lazy var writeButtonDidTapped = self.homeView.writeFeedButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    
     private lazy var deleteButtonTapped = deletePopupView?.confirmButton.publisher(for: .touchUpInside).map { _ in
         return self.contentId
+    }.eraseToAnyPublisher()
+    
+    private lazy var deleteReplyButtonTapped = deletePopupView?.confirmButton.publisher(for: .touchUpInside).map { _ in
+        return self.commentId
     }.eraseToAnyPublisher()
     
     var alarmTriggerType: String = ""
@@ -29,6 +34,7 @@ final class HomeViewController: UIViewController {
     var ghostReason: String = ""
     
     var contentId: Int = 0
+    var commentId: Int = 0
     var reportTargetNickname: String = ""
     var relateText: String = ""
     let warnUserURL = URL(string: StringLiterals.Network.warnUserGoogleFormURL)
@@ -282,7 +288,7 @@ extension HomeViewController {
                 .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
                 .eraseToAnyPublisher()
         
-        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, commentLikeButtonTapped: nil, deleteButtonDidTapped: deleteButtonTapped)
+        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, commentLikeButtonTapped: nil, deleteButtonDidTapped: deleteButtonTapped, deleteReplyButtonDidTapped: deleteReplyButtonTapped)
 
         let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
 
@@ -294,6 +300,7 @@ extension HomeViewController {
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("viewModel.feedDatas.count: \(viewModel.feedDatas.count)")
         return viewModel.feedDatas.count
     }
     
