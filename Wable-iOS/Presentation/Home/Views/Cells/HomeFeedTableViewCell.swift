@@ -156,6 +156,8 @@ final class HomeFeedTableViewCell: UITableViewCell{
     }
     
     func bind(data: HomeFeedDTO) {
+        profileImageView.load(url: data.memberProfileURL)
+        
         infoView.bind(nickname: data.memberNickname,
                       team: Team(rawValue: data.memberFanTeam) ?? .T1,
                       ghostPercent: data.memberGhost,

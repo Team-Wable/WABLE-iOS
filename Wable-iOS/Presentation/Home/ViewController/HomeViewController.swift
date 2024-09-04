@@ -132,7 +132,7 @@ extension HomeViewController {
         viewModel.pushViewController
             .sink { [weak self] index in
                 self?.navigationController?.isNavigationBarHidden = false
-                let feedDetailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
+                let feedDetailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
                 feedDetailViewController.hidesBottomBarWhenPushed = true
                 
                 if let data = self?.viewModel.feedDatas[index] {
@@ -399,17 +399,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             cell.bottomView.isLiked.toggle()
         }
         
-        cell.bottomView.commentButtonTapped = { [weak self] in
-            guard let self = self else { return }
-            let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
-            detailViewController.hidesBottomBarWhenPushed = true
-            detailViewController.getFeedData(data: self.viewModel.feedDatas[indexPath.row])
-            detailViewController.contentId = viewModel.feedDatas[indexPath.row].contentID
-            detailViewController.memberId = viewModel.feedDatas[indexPath.row].memberID
-            detailViewController.userProfileURL = viewModel.feedDatas[indexPath.row].memberProfileURL
-            self.navigationController?.pushViewController(detailViewController, animated: true)
-        }
-        
         return cell
     }
     
@@ -418,12 +407,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
+        let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
         detailViewController.hidesBottomBarWhenPushed = true
         detailViewController.getFeedData(data: viewModel.feedDatas[indexPath.row])
         detailViewController.contentId = viewModel.feedDatas[indexPath.row].contentID
         detailViewController.memberId = viewModel.feedDatas[indexPath.row].memberID
-        detailViewController.userProfileURL = viewModel.feedDatas[indexPath.row].memberProfileURL
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
