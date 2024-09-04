@@ -82,7 +82,6 @@ final class FeedDetailViewController: UIViewController {
         setHierarchy()
         setLayout()
         setDelegate()
-        setNavigationBar()
         dismissKeyboard()
         setRefreshControl()
     }
@@ -98,9 +97,8 @@ final class FeedDetailViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = false
-        self.navigationItem.title = "게시글"
         
+        setNavigationBar()
         getAPI()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -139,6 +137,9 @@ extension FeedDetailViewController {
     
     private func setNavigationBar() {
         
+        self.navigationController?.navigationBar.isHidden = false
+        self.navigationItem.title = "게시글"
+        
         navigationController?.navigationBar.titleTextAttributes = [
             .foregroundColor: UIColor.wableBlack,
             NSAttributedString.Key.font: UIFont.body1,
@@ -146,6 +147,7 @@ extension FeedDetailViewController {
         
         let backButtonImage = ImageLiterals.Icon.icBack.withRenderingMode(.alwaysOriginal)
         let backButton = UIBarButtonItem(image: backButtonImage, style: .done, target: self, action: #selector(backButtonDidTapped))
+        
         navigationItem.leftBarButtonItem = backButton
         self.navigationItem.hidesBackButton = true
     }
