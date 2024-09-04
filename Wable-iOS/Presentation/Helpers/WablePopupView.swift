@@ -77,7 +77,7 @@ final class WablePopupView: UIView {
     init(popupTitle: String, popupContent: String, leftButtonTitle: String, rightButtonTitle: String) {
         super.init(frame: .zero)
         
-        popupTitleLabel.text = popupTitle // 팝업 타이틀
+        popupTitleLabel.setTextWithLineHeight(text: popupTitle, lineHeight: 28.8.adjusted, alignment: .center)
         popupContentLabel.text = popupContent // 팝업 내용
         cancleButton.setTitle(leftButtonTitle, for: .normal) // 팝업 왼쪽 버튼 타이틀
         confirmButton.setTitle(rightButtonTitle, for: .normal) // 팝업 오른쪽 버튼 타이틀

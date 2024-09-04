@@ -19,11 +19,15 @@ final class NotificationActivityViewModel {
     
     let viewWillAppear = PassthroughSubject<Void, Never>()
     let paginationDidAction = PassthroughSubject<Void, Never>()
+    let notiCellDidTapped = PassthroughSubject<Int, Never>()
+    let writeFeedCellDidTapped = PassthroughSubject<Void, Never>()
     
     // MARK: - Output
     
     let notiActivityDTO = PassthroughSubject<[ActivityNotificationDTO], Never>()
     let paginationNotiActivityDTO = PassthroughSubject<[ActivityNotificationDTO], Never>()
+    let homeFeedTopInfoDTO = PassthroughSubject<(HomeFeedDTO, Int), Never>()
+    let pushToWriteViewController = PassthroughSubject<Void, Never>()
     
     // MARK: - init
     
@@ -49,6 +53,22 @@ final class NotificationActivityViewModel {
                 }
             }
             .store(in: cancelBag)
+        
+        notiCellDidTapped
+            .sink { [weak self] contentID in
+                NotificationAPI.shared.getFeedTopInfo(contentID: contentID) { result in
+                    guard let result = self?.validateResult(result) as? HomeFeedDTO else { return }
+                    self?.homeFeedTopInfoDTO.send((result,contentID))
+                }
+            }
+            .store(in: cancelBag)
+        
+        writeFeedCellDidTapped
+            .sink { [weak self] in
+                self?.pushToWriteViewController.send()
+            }
+            .store(in: cancelBag)
+        
     }
     
     private func processNotifications(_ notifications: [ActivityNotificationDTO]) -> [ActivityNotificationDTO] {
