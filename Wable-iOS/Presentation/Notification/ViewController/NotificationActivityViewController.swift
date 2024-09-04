@@ -9,20 +9,36 @@
 import UIKit
 import Combine
 
+extension Notification.Name {
+    static let didRequestPushDetailViewController = Notification.Name("didRequestPushDetailViewController")
+    static let didRequestPushWriteFeedViewController = Notification.Name("didRequestPushWriteFeedViewController")
+}
+
 final class NotificationActivityViewController: UIViewController {
     
     // MARK: - Properties
     
     private var paginationNotiActivityData: [ActivityNotificationDTO] = []
-    var notiActivityData: [ActivityNotificationDTO] = []
+    var notiActivityData: [ActivityNotificationDTO] = [] {
+        didSet {
+            if notiActivityData.count == 0 {
+                rootView.notiTableView.isHidden = true
+                rootView.noNotiLabel.isHidden = false
+            } else {
+                rootView.notiTableView.isHidden = false
+                rootView.noNotiLabel.isHidden = true
+            }
+        }
+    }
     private let viewModel: NotificationActivityViewModel
     private var cancellables = Set<AnyCancellable>()
+    private var feedContentData: HomeFeedDTO?
     
     // MARK: - UI Components
     
     private let rootView = NotificationContentView()
     private let refreshControl = UIRefreshControl()
-
+    
     
     // MARK: - Life Cycles
     
@@ -94,6 +110,21 @@ extension NotificationActivityViewController {
                 self?.notiActivityData.append(contentsOf: self?.paginationNotiActivityData ?? [])
             }
             .store(in: &cancellables)
+        
+        viewModel.writeFeedCellDidTapped
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+                NotificationCenter.default.post(name: .didRequestPushWriteFeedViewController, object: nil)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.homeFeedTopInfoDTO
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] (data, contentID) in
+                self?.feedContentData = data
+                NotificationCenter.default.post(name: .didRequestPushDetailViewController, object: nil, userInfo: ["data": data, "contentID": contentID])
+            }
+            .store(in: &cancellables)
     }
     
     private func setRefreshControl() {
@@ -132,6 +163,22 @@ extension NotificationActivityViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 85.adjusted
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if let notiType = NotiActivityText(rawValue: notiActivityData[indexPath.row].notificationTriggerType) {
+            switch notiType {
+            case .actingContinue:
+                viewModel.writeFeedCellDidTapped.send()
+            case .userBan:
+                return
+            default:
+                viewModel.notiCellDidTapped.send(notiActivityData[indexPath.row].notificationTriggerID)
+            }
+        } else {
+            print("알 수 없는 알림 유형입니다.")
+        }
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {

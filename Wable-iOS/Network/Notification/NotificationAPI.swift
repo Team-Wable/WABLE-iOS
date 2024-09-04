@@ -33,4 +33,13 @@ extension NotificationAPI {
             
         }
     }
+    
+    func getFeedTopInfo(contentID: Int, completion: @escaping (NetworkResult<Any>) -> Void) {
+        notiProvider.request(.getFeedTopInfo(param: contentID)) { result in
+            self.disposeNetwork(result,
+                                dataModel: HomeFeedDTO.self,
+                                completion: completion)
+            
+        }
+    }
 }

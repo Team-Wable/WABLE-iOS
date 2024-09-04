@@ -16,6 +16,14 @@ final class NotificationContentView: UIView {
     // MARK: - UI Components
     
     var notiTableView = UITableView()
+    var noNotiLabel: UILabel = {
+        let label = UILabel()
+        label.text = StringLiterals.Notification.noNoti
+        label.isHidden = true
+        label.font = .body2
+        label.textColor = .gray500
+        return label
+    }()
     
     // MARK: - Life Cycles
     
@@ -45,12 +53,16 @@ extension NotificationContentView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(notiTableView)
+        self.addSubviews(notiTableView, noNotiLabel)
     }
     
     private func setLayout() {
         notiTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        noNotiLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
     }
     

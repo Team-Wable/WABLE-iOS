@@ -319,7 +319,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         cell.alarmTriggerType = "contentGhost"
         cell.targetMemberId = viewModel.feedDatas[indexPath.row].memberID
-        cell.alarmTriggerdId = viewModel.feedDatas[indexPath.row].contentID
+        cell.alarmTriggerdId = viewModel.feedDatas[indexPath.row].contentID ?? Int()
         
         cell.bind(data: viewModel.feedDatas[indexPath.row])
         
@@ -332,7 +332,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 self.homeBottomsheetView.reportButton.isHidden = true
                 
                 self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
-                self.contentId = self.viewModel.feedDatas[indexPath.row].contentID
+                self.contentId = self.viewModel.feedDatas[indexPath.row].contentID ?? Int()
                 self.nowShowingPopup = "delete"
             }
         } else {
@@ -345,7 +345,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 self.homeBottomsheetView.deleteButton.isHidden = true
                 
                 self.reportTargetNickname = self.viewModel.feedDatas[indexPath.row].memberNickname
-                self.relateText = self.viewModel.feedDatas[indexPath.row].contentText
+                self.relateText = self.viewModel.feedDatas[indexPath.row].contentText ?? ""
                 self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
                 self.nowShowingPopup = "report"
             }
@@ -404,7 +404,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             
             cell.bottomView.isLiked.toggle()
         }
-        
         return cell
     }
     
@@ -416,7 +415,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
         detailViewController.hidesBottomBarWhenPushed = true
         detailViewController.getFeedData(data: viewModel.feedDatas[indexPath.row])
-        detailViewController.contentId = viewModel.feedDatas[indexPath.row].contentID
+        detailViewController.contentId = viewModel.feedDatas[indexPath.row].contentID ?? Int()
         detailViewController.memberId = viewModel.feedDatas[indexPath.row].memberID
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }

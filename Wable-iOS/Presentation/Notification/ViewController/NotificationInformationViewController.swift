@@ -12,7 +12,17 @@ final class NotificationInformationViewController: UIViewController {
     
     // MARK: - Properties
     
-    var notiInfoData: [InfoNotificationDTO] = []
+    var notiInfoData: [InfoNotificationDTO] = [] {
+        didSet {
+            if notiInfoData.count == 0 {
+                rootView.notiTableView.isHidden = true
+                rootView.noNotiLabel.isHidden = false
+            } else {
+                rootView.notiTableView.isHidden = false
+                rootView.noNotiLabel.isHidden = true
+            }
+        }
+    }
     private var paginationNotiInfoData: [InfoNotificationDTO] = []
     private let viewModel: NotificationInfoViewModel
     private var cancellables = Set<AnyCancellable>()
@@ -137,7 +147,6 @@ extension NotificationInformationViewController: UITableViewDataSource {
             if notiInfoData.count >= 15 && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 let lastNotificationId = notiInfoData.last?.infoNotificationID ?? -1
                 if lastNotificationId != -1 {
-                    print("==========================pagination 작동==========================")
                     viewModel.cursor = lastNotificationId
                     viewModel.paginationDidAction.send()
                     DispatchQueue.main.async {

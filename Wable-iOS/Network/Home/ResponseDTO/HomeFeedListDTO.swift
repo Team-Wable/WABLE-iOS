@@ -8,25 +8,34 @@
 import Foundation
 
 struct HomeFeedDTO: Codable {
+    // 공통 속성
     let memberID: Int
     let memberProfileURL, memberNickname: String
-    let contentID: Int
-    let contentTitle, contentText, time: String
     let isGhost: Bool
     let memberGhost: Int
     let isLiked: Bool
-    let likedNumber, commentNumber: Int
-    let isDeleted: Bool
-    let contentImageURL: String?
+    let time: String
+    let likedNumber: Int
     let memberFanTeam: String
+    
+    // 선택적 속성
+    let contentID: Int?
+    let contentTitle: String?
+    let contentText: String?
+    let commentNumber: Int?
+    let isDeleted: Bool?
+    let message: String?
+    let commnetNumber: Int?
+    let contentImageURL: String?
 
     enum CodingKeys: String, CodingKey {
         case memberID = "memberId"
         case memberProfileURL = "memberProfileUrl"
-        case memberNickname
+        case memberNickname, isGhost, memberGhost, isLiked, time, likedNumber, memberFanTeam
         case contentID = "contentId"
-        case contentTitle, contentText, time, isGhost, memberGhost, isLiked, likedNumber, commentNumber, isDeleted
+        case contentTitle, contentText, commentNumber, isDeleted
+        case message
+        case commnetNumber
         case contentImageURL = "contentImageUrl"
-        case memberFanTeam
     }
 }
