@@ -414,10 +414,10 @@ extension MyPagePostViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let contentId = contentDatas[indexPath.row].contentId
-//        let profileImageURL = contentDatas[indexPath.row].memberProfileUrl
-//        NotificationCenter.default.post(name: MyPagePostViewController.pushViewController, object: nil, userInfo: ["contentId": contentId, "profileImageURL": profileImageURL])
-        NotificationCenter.default.post(name: MyPagePostViewController.pushViewController, object: nil)
+        let contentId = contentDatas[indexPath.row].contentId
+        let profileImageURL = contentDatas[indexPath.row].memberProfileUrl
+        NotificationCenter.default.post(name: MyPagePostViewController.pushViewController, object: nil, userInfo: ["contentId": contentId, "profileImageURL": profileImageURL])
+//        NotificationCenter.default.post(name: MyPagePostViewController.pushViewController, object: nil)
         
 //        let detailViewController = FeedDetailViewController()
 //        detailViewController.hidesBottomBarWhenPushed = true

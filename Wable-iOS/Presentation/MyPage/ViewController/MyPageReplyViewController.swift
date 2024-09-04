@@ -324,10 +324,9 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let contentId = commentDatas[indexPath.row].contentId
-//        let profileImageURL = commentDatas[indexPath.row].memberProfileUrl
-//        NotificationCenter.default.post(name: MyPageContentViewController.pushViewController, object: nil, userInfo: ["contentId": contentId, "profileImageURL": profileImageURL])
-        NotificationCenter.default.post(name: MyPageReplyViewController.pushViewController, object: nil)
+        let contentId = commentDatas[indexPath.row].contentId
+        let profileImageURL = commentDatas[indexPath.row].memberProfileUrl
+        NotificationCenter.default.post(name: MyPagePostViewController.pushViewController, object: nil, userInfo: ["contentId": contentId, "profileImageURL": profileImageURL])
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {

@@ -63,6 +63,7 @@ final class FeedDetailViewController: UIViewController {
     let refreshControl = UIRefreshControl()
     
     var feedData: HomeFeedDTO? = nil
+    var getFeedData: FeedDetailResponseDTO? = nil
     
     // MARK: - UI Components
     
@@ -222,7 +223,8 @@ extension FeedDetailViewController {
             .receive(on: RunLoop.main)
             .sink { data in
                 self.postMemberId = data.memberId
-//                self.feedDetailView.feedDetailTableView.reloadData()
+                self.getFeedData = data
+                self.feedDetailView.feedDetailTableView.reloadData()
             }
             .store(in: self.cancelBag)
         
@@ -445,22 +447,29 @@ extension FeedDetailViewController: UITableViewDataSource {
             cell.targetMemberId = feedData?.memberID ?? 0
             cell.alarmTriggerdId = feedData?.contentID ?? 0
             
-            cell.bind(data: feedData ?? HomeFeedDTO(memberID: 0,
-                                                    memberProfileURL: "",
-                                                    memberNickname: "다시하세요",
-                                                    contentID: 0, contentTitle: "contentTitle",
-                                                    contentText: "",
-                                                    time: "다시해",
-                                                    isGhost: false,
-                                                    memberGhost: 0,
-                                                    isLiked: true,
-                                                    likedNumber: 5,
-                                                    commentNumber: 2,
-                                                    isDeleted: false,
-                                                    contentImageURL: "",
-                                                    memberFanTeam: "T1"))
+            if let feedData = feedData {
+                cell.bind(data: feedData)
+            } else {
+                cell.bind(data: HomeFeedDTO(
+                    memberID: getFeedData?.memberId ?? 0,
+                    memberProfileURL: getFeedData?.memberProfileUrl ?? "",
+                    memberNickname: getFeedData?.memberNickname ?? "",
+                    contentID: self.contentId,
+                    contentTitle: getFeedData?.contentTitle ?? "",
+                    contentText: getFeedData?.contentText ?? "",
+                    time: getFeedData?.time ?? "",
+                    isGhost: getFeedData?.isGhost ?? false,
+                    memberGhost: getFeedData?.memberGhost ?? 0,
+                    isLiked: getFeedData?.isLiked ?? false,
+                    likedNumber: getFeedData?.likedNumber ?? 0,
+                    commentNumber: getFeedData?.commentNumber ?? 0,
+                    isDeleted: false,
+                    contentImageURL: getFeedData?.contentImageUrl ?? "",
+                    memberFanTeam: getFeedData?.memberFanTeam ?? "")
+                )
+            }
             
-            if feedData?.memberID == loadUserData()?.memberId {
+            if feedData?.memberID == loadUserData()?.memberId || getFeedData?.memberId == loadUserData()?.memberId {
                 cell.bottomView.ghostButton.isHidden = true
                 
                 cell.menuButtonTapped = {
@@ -469,7 +478,9 @@ extension FeedDetailViewController: UITableViewDataSource {
                     self.homeBottomsheetView.reportButton.isHidden = true
                     
                     self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
-                    self.contentId = self.feedData?.contentID ?? 0
+                    if let feedData = self.feedData {
+                        self.contentId = feedData.contentID
+                    }
                     self.nowShowingPopup = "deletePost"
                 }
             } else {
@@ -501,14 +512,14 @@ extension FeedDetailViewController: UITableViewDataSource {
             }
             
             cell.profileButtonAction = {
-                let memberId = self.feedData?.memberID
-
-                if memberId == loadUserData()?.memberId ?? 0  {
-                    self.tabBarController?.selectedIndex = 3
-                } else {
-                    let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()))
-                    viewController.memberId = memberId ?? 0
-                    self.navigationController?.pushViewController(viewController, animated: true)
+                if let feedData = self.feedData {
+                    if feedData.memberID == loadUserData()?.memberId ?? 0  {
+                        self.tabBarController?.selectedIndex = 3
+                    } else {
+                        let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()))
+                        viewController.memberId = feedData.memberID
+                        self.navigationController?.pushViewController(viewController, animated: true)
+                    }
                 }
             }
             
@@ -528,7 +539,11 @@ extension FeedDetailViewController: UITableViewDataSource {
                 } else {
                     cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
                 }
-                self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.feedData?.contentID ?? 0)
+                if let feedData = self.feedData {
+                    self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: feedData.contentID)
+                } else {
+                    self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.contentId)
+                }
                 
                 cell.bottomView.isLiked.toggle()
             }

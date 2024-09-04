@@ -17,6 +17,7 @@ struct FeedDetailResponseDTO: Decodable {
     let time: String
     let likedNumber: Int
     let commentNumber: Int
+    let contentTitle: String
     let contentText: String
     let contentImageUrl: String?
     let memberFanTeam: String
