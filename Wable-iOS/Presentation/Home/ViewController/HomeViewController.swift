@@ -312,7 +312,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.alarmTriggerType = "contentGhost"
         cell.targetMemberId = viewModel.feedDatas[indexPath.row].memberID
-        cell.alarmTriggerdId = viewModel.feedDatas[indexPath.row].contentID
+        cell.alarmTriggerdId = viewModel.feedDatas[indexPath.row].contentID ?? Int()
         
         cell.profileImageView.load(url: "\(viewModel.feedDatas[indexPath.row].memberProfileURL)")
         cell.bind(data: viewModel.feedDatas[indexPath.row])
@@ -326,7 +326,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 self.homeBottomsheetView.reportButton.isHidden = true
                 
                 self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
-                self.contentId = self.viewModel.feedDatas[indexPath.row].contentID
+                self.contentId = self.viewModel.feedDatas[indexPath.row].contentID ?? Int()
                 self.nowShowingPopup = "delete"
             }
         } else {
@@ -339,7 +339,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 self.homeBottomsheetView.deleteButton.isHidden = true
                 
                 self.reportTargetNickname = self.viewModel.feedDatas[indexPath.row].memberNickname
-                self.relateText = self.viewModel.feedDatas[indexPath.row].contentText
+                self.relateText = self.viewModel.feedDatas[indexPath.row].contentText ?? ""
                 self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
                 self.nowShowingPopup = "report"
             }
@@ -397,7 +397,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
             }
             cell.bottomView.isLiked.toggle()
-            self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.viewModel.feedDatas[indexPath.row].contentID)
+            self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.viewModel.feedDatas[indexPath.row].contentID ?? Int())
         }
         
         cell.bottomView.commentButtonTapped = { [weak self] in
@@ -405,7 +405,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
             detailViewController.hidesBottomBarWhenPushed = true
             detailViewController.getFeedData(data: self.viewModel.feedDatas[indexPath.row])
-            detailViewController.contentId = viewModel.feedDatas[indexPath.row].contentID
+            detailViewController.contentId = viewModel.feedDatas[indexPath.row].contentID ?? Int()
             detailViewController.memberId = viewModel.feedDatas[indexPath.row].memberID
             detailViewController.userProfileURL = viewModel.feedDatas[indexPath.row].memberProfileURL
             self.navigationController?.pushViewController(detailViewController, animated: true)
@@ -422,7 +422,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
         detailViewController.hidesBottomBarWhenPushed = true
         detailViewController.getFeedData(data: viewModel.feedDatas[indexPath.row])
-        detailViewController.contentId = viewModel.feedDatas[indexPath.row].contentID
+        detailViewController.contentId = viewModel.feedDatas[indexPath.row].contentID ?? Int()
         detailViewController.memberId = viewModel.feedDatas[indexPath.row].memberID
         detailViewController.userProfileURL = viewModel.feedDatas[indexPath.row].memberProfileURL
         self.navigationController?.pushViewController(detailViewController, animated: true)

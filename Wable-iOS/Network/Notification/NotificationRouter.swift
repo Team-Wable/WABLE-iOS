@@ -12,6 +12,7 @@ import Moya
 enum NotificationRouter {
     case getNotiInfo(param: Int)
     case getNotiActivity(param: Int)
+    case getFeedTopInfo(param: Int)
 }
 
 extension NotificationRouter: BaseTargetType {
@@ -21,6 +22,9 @@ extension NotificationRouter: BaseTargetType {
             return StringLiterals.Endpoint.Notification.getNotiInfo
         case .getNotiActivity:
             return StringLiterals.Endpoint.Notification.getNotiActivity
+        case .getFeedTopInfo(let contentID):
+            return StringLiterals.Endpoint.Notification.getFeedInfo + "\(contentID)"
+
         }
     }
     
@@ -29,6 +33,8 @@ extension NotificationRouter: BaseTargetType {
         case .getNotiInfo:
             return .get
         case .getNotiActivity:
+            return .get
+        case .getFeedTopInfo:
             return .get
         }
     }
@@ -39,6 +45,8 @@ extension NotificationRouter: BaseTargetType {
             return .requestParameters(parameters: ["cursor": cursor], encoding: URLEncoding.queryString)
         case .getNotiActivity(let cursor):
             return .requestParameters(parameters: ["cursor": cursor], encoding: URLEncoding.queryString)
+        case .getFeedTopInfo(param: let param):
+            return .requestPlain
         }
     }
 }
