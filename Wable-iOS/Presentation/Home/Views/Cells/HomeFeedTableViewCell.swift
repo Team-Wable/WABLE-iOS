@@ -40,6 +40,7 @@ final class HomeFeedTableViewCell: UITableViewCell{
     var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = ImageLiterals.Image.imgProfileSmall
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
     
@@ -100,7 +101,8 @@ final class HomeFeedTableViewCell: UITableViewCell{
     
     private func setLayout() {
         grayView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(bottomView.snp.top)
         }
         
         profileImageView.snp.makeConstraints {
@@ -161,6 +163,8 @@ final class HomeFeedTableViewCell: UITableViewCell{
     }
     
     func bind(data: HomeFeedDTO) {
+        profileImageView.load(url: data.memberProfileURL)
+        
         infoView.bind(nickname: data.memberNickname,
                       team: Team(rawValue: data.memberFanTeam) ?? .T1,
                       ghostPercent: data.memberGhost,
@@ -173,6 +177,16 @@ final class HomeFeedTableViewCell: UITableViewCell{
         bottomView.bind(heart: data.likedNumber,
                         comment: data.commentNumber ?? Int())
         
+        bottomView.isLiked = data.isLiked
+        
+        if data.isGhost {
+            bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDisabledLarge, for: .normal)
+            bottomView.ghostButton.isEnabled = false
+        } else {
+            bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDefaultLarge, for: .normal)
+            bottomView.ghostButton.isEnabled = true
+        }
+
         if let profileImage = UserProfile(rawValue: data.memberProfileURL) {
             profileImageView.image = profileImage.image
         } else {

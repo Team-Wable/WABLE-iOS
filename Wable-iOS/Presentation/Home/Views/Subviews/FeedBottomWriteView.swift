@@ -41,7 +41,6 @@ final class FeedBottomWriteView: UIView {
     var uploadButton: UIButton = {
         let button = UIButton()
         button.setImage(ImageLiterals.Button.btnRippleDefault, for: .disabled)
-        button.setImage(ImageLiterals.Button.btnRipplePress, for: .normal)
         button.isEnabled = false
         return button
     }()

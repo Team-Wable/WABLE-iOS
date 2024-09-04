@@ -72,11 +72,15 @@ final class HomeViewModel {
                     } else {
                         var tempArray: [HomeFeedDTO] = []
                         
-                        for content in result {
-                            tempArray.append(content)
+                        if result.isEmpty {
+                            self?.cursor = -1
+                        } else {
+                            for content in result {
+                                tempArray.append(content)
+                            }
+                            self?.feedDatas.append(contentsOf: tempArray)
+                            self?.homeFeedDTO.send(tempArray)
                         }
-                        self?.feedDatas.append(contentsOf: tempArray)
-                        self?.homeFeedDTO.send(tempArray)
                     }
                 }
             }

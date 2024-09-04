@@ -15,6 +15,7 @@ final class WriteView: UIView {
     
     // MARK: - UI Components
     
+    private let topDivisionLine = UIView().makeDivisionLine()
     let writeTextView = WriteTextView()
 //    let writeCanclePopupView = DontBePopupView(popupTitle: "",
 //                                               popupContent: StringLiterals.Write.writePopupContentLabel,
@@ -46,7 +47,7 @@ extension WriteView {
     }
     
     func setHierarchy() {
-        self.addSubviews(writeTextView)
+        self.addSubviews(topDivisionLine, writeTextView)
         
 //        if let window = UIApplication.shared.keyWindowInConnectedScenes {
 //            window.addSubviews(writeCanclePopupView)
@@ -54,8 +55,14 @@ extension WriteView {
     }
     
     func setLayout() {
-        writeTextView.snp.makeConstraints {
+        topDivisionLine.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
             $0.top.equalTo(self.safeAreaLayoutGuide)
+            $0.height.equalTo(1.adjusted)
+        }
+        
+        writeTextView.snp.makeConstraints {
+            $0.top.equalTo(topDivisionLine.snp.bottom)
             $0.leading.trailing.equalTo(self.safeAreaLayoutGuide)
             $0.bottom.equalToSuperview()
         }

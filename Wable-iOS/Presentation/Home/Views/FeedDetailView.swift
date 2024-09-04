@@ -15,6 +15,7 @@ final class FeedDetailView: UIView {
     
     // MARK: - UI Components
     
+    private let topDivisionLine = UIView().makeDivisionLine()
     var feedDetailTableView = UITableView(frame: .zero, style: .plain)
     var bottomWriteView = FeedBottomWriteView()
     
@@ -46,12 +47,19 @@ extension FeedDetailView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(feedDetailTableView, bottomWriteView)
+        self.addSubviews(topDivisionLine, feedDetailTableView, bottomWriteView)
     }
     
     private func setLayout() {
+        topDivisionLine.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(self.safeAreaLayoutGuide)
+            $0.height.equalTo(1.adjusted)
+        }
+        
         feedDetailTableView.snp.makeConstraints {
-            $0.leading.trailing.top.equalToSuperview()
+            $0.top.equalTo(topDivisionLine.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(bottomWriteView.snp.top)
         }
         
