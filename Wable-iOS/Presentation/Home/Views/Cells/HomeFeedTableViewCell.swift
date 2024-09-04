@@ -187,10 +187,10 @@ final class HomeFeedTableViewCell: UITableViewCell{
             bottomView.ghostButton.isEnabled = true
         }
 
-        if let profileImage = UserProfile(rawValue: data.memberProfileURL) {
-            profileImageView.image = profileImage.image
-        } else {
-            profileImageView.kfSetImage(url: data.memberProfileURL)
-        }
+//        if let profileImage = UserProfile(rawValue: data.memberProfileURL) {
+//            profileImageView.image = profileImage.image
+//        } else {
+//            profileImageView.kfSetImage(url: data.memberProfileURL)
+//        }
     }
 }

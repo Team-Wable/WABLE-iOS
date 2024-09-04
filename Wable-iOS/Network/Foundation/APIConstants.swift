@@ -25,7 +25,9 @@ extension APIConstants{
     }
 
     static var hasTokenHeader: Dictionary<String,String> {
-        [contentType: applicationJSON,
-               auth : \(accessToken ?? "")"]
+        [
+            contentType: applicationJSON,
+            auth : accessToken
+        ]
     }
 }

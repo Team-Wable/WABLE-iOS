@@ -97,11 +97,11 @@ extension NotificationViewController {
               let data = userInfo["data"] as? HomeFeedDTO,
               let contentID = userInfo["contentID"] as? Int else { return }
         
-        let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
+        let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
         detailViewController.getFeedData(data: data)
         detailViewController.contentId = contentID
         detailViewController.memberId = data.memberID
-        detailViewController.userProfileURL = data.memberProfileURL
+//        detailViewController.userProfileURL = data.memberProfileURL
         
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
