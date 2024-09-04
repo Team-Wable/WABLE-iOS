@@ -27,7 +27,7 @@ class BaseAPI {
                 print("⛔️ \(self)에서 디코딩 오류가 발생했습니다 ⛔️")
                 return .decodedErr
             }
-            print("👻👻👻 디코딩 성공했습니다! 추카추카 👻👻👻")
+//            print("👻👻👻 디코딩 성공했습니다! 추카추카 👻👻👻")
             return .success(decodedData.data as Any)
         case 401:
             return .authorizationFail((decodedData.message, decodedData.status))
@@ -68,7 +68,7 @@ class BaseAPI {
     public func disposeNetwork<T: Codable>(_ result: Result<Response, MoyaError>,
                                            dataModel: T.Type,
                                            completion: @escaping (NetworkResult<Any>) -> Void) {
-        print("📍\(#function) 에서 result \(result)")
+//        print("📍\(#function) 에서 result \(result)")
         switch result{
         case .success(let response):
             let statusCode = response.statusCode

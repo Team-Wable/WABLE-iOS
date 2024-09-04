@@ -66,13 +66,12 @@ final class NetworkService: NetworkServiceType {
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw NetworkError.responseError
             }
-//            let result = try JSONDecoder().decode(T.self, from: data)
-//            print(result)
+            let result = try JSONDecoder().decode(T.self, from: data)
+            print(result)
             switch httpResponse.statusCode {
             case 200..<401:
                 print("200")
                 let result = try JSONDecoder().decode(T.self, from: data)
-                print("resut: \(result)")
                 return result
             case 401:
                 print("401")
