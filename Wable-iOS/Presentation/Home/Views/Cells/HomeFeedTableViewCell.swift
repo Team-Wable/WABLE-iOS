@@ -166,5 +166,7 @@ final class HomeFeedTableViewCell: UITableViewCell{
         bottomView.bind(heart: data.likedNumber,
                         comment: data.commentNumber)
         
+        bottomView.isLiked = data.isLiked
+        
     }
 }

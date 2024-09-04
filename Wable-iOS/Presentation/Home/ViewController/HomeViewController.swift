@@ -160,8 +160,9 @@ extension HomeViewController {
         viewModel.homeFeedDTO
             .receive(on: DispatchQueue.main)
             .sink { [weak self] data in
-//                self?.feedData = data
-                self?.homeView.feedTableView.reloadData()
+                DispatchQueue.main.async {
+                    self?.homeView.feedTableView.reloadData()
+                }
             }
             .store(in: &cancellables)
     }
@@ -277,7 +278,7 @@ extension HomeViewController {
     private func postLikeButtonAPI(isClicked: Bool, contentId: Int) {
         // 최초 한 번만 publisher 생성
         let likeButtonTapped: AnyPublisher<(Bool, Int), Never>?  = Just(())
-                .map { _ in return (!isClicked, contentId) }
+                .map { _ in return (isClicked, contentId) }
                 .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
                 .eraseToAnyPublisher()
         
@@ -309,7 +310,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = homeView.feedTableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.identifier, for: indexPath) as? HomeFeedTableViewCell ?? HomeFeedTableViewCell()
         cell.selectionStyle = .none
-        
         cell.alarmTriggerType = "contentGhost"
         cell.targetMemberId = viewModel.feedDatas[indexPath.row].memberID
         cell.alarmTriggerdId = viewModel.feedDatas[indexPath.row].contentID
@@ -396,8 +396,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             } else {
                 cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
             }
-            cell.bottomView.isLiked.toggle()
             self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.viewModel.feedDatas[indexPath.row].contentID)
+            
+            cell.bottomView.isLiked.toggle()
         }
         
         cell.bottomView.commentButtonTapped = { [weak self] in
@@ -432,15 +433,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 extension HomeViewController: WablePopupDelegate {
     
     func cancleButtonTapped() {
-        if ghostPopupView != nil {
+        if nowShowingPopup == "ghost" {
             self.ghostPopupView?.removeFromSuperview()
         }
         
-        if reportPopupView != nil {
+        if nowShowingPopup == "report" {
             self.reportPopupView?.removeFromSuperview()
         }
         
-        if deletePopupView != nil {
+        if nowShowingPopup == "delete" {
             self.deletePopupView?.removeFromSuperview()
         }
     }
