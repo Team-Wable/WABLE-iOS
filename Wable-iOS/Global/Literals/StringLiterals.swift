@@ -56,6 +56,7 @@ enum StringLiterals {
         static let gameDone = "오늘 경기가 끝났어요. 경기 결과를 확인해 보세요!"
         static let gameStart = "이제 곧 경기가 시작해요! 얼른 치킨 시키고 같이 경기 보러 가볼까요?"
         static let weekDone = "이번 주 경기가 끝났어요. 다음주 경기 일정이 나왔으니 확인해 보세요!"
+        static let noNoti = "아직 표시할 내용이 없습니다."
     }
     
     enum MyPage {
