@@ -13,7 +13,6 @@ final class FeedBottomView: UIView {
     
     // MARK: - Properties
     
-    var commentButtonTapped: (() -> Void)?
     var heartButtonTapped: (() -> Void)?
     var ghostButtonTapped: (() -> Void)?
     var isLiked: Bool = false {
@@ -30,8 +29,6 @@ final class FeedBottomView: UIView {
     
     var ghostButton: UIButton = {
         let button = UIButton()
-        button.setImage(ImageLiterals.Button.btnGhostDefaultLarge, for: .normal)
-        button.setImage(ImageLiterals.Button.btnGhostDisabledLarge, for: .disabled)
         return button
     }()
     
@@ -49,6 +46,7 @@ final class FeedBottomView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(ImageLiterals.Icon.icRipple, for: .normal)
         button.contentHorizontalAlignment = .center
+        button.isEnabled = false
         return button
     }()
     
@@ -103,7 +101,6 @@ extension FeedBottomView {
     private func setAddTarget() {
         ghostButton.addTarget(self, action: #selector(ghostButtonDidTapped), for: .touchUpInside)
         heartButton.addTarget(self, action: #selector(heartButtonDidTapped), for: .touchUpInside)
-        commentButton.addTarget(self, action: #selector(commentButtonDidTapped), for: .touchUpInside)
     }
     
     @objc
@@ -114,11 +111,6 @@ extension FeedBottomView {
     @objc
     private func heartButtonDidTapped() {
         heartButtonTapped?()
-    }
-    
-    @objc
-    private func commentButtonDidTapped() {
-        commentButtonTapped?()
     }
     
     func bind(heart: Int, comment: Int) {

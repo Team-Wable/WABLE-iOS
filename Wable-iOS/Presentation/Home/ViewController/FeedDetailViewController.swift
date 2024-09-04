@@ -22,13 +22,24 @@ final class FeedDetailViewController: UIViewController {
     // MARK: - Properties
     
     let viewModel: FeedDetailViewModel
+    private let likeViewModel: LikeViewModel
     private var cancelBag = CancelBag()
     
     private lazy var postButtonTapped =
-    self.feedDetailView.bottomWriteView.uploadButton.publisher(for: .touchUpInside).map { _ in
-        return (WriteReplyRequestDTO(
-            commentText: self.feedDetailView.bottomWriteView.writeTextView.text,
-            notificationTriggerType: "comment"), self.contentId)
+    self.feedDetailView.bottomWriteView.uploadButton.publisher(for: .touchUpInside)
+        .throttle(for: .seconds(1), scheduler: RunLoop.main, latest: true)
+        .map { _ in
+            return (WriteReplyRequestDTO(
+                commentText: self.feedDetailView.bottomWriteView.writeTextView.text,
+                notificationTriggerType: "comment"), self.contentId)
+        }.eraseToAnyPublisher()
+    
+    private lazy var deleteButtonTapped = deletePopupView?.confirmButton.publisher(for: .touchUpInside).map { _ in
+        return self.contentId
+    }.eraseToAnyPublisher()
+    
+    private lazy var deleteReplyButtonTapped = deletePopupView?.confirmButton.publisher(for: .touchUpInside).map { _ in
+        return self.commentId
     }.eraseToAnyPublisher()
     
     var contentId: Int = 0
@@ -41,21 +52,28 @@ final class FeedDetailViewController: UIViewController {
     var ghostReason: String = ""
     var postViewHeight = 0
     var userNickName: String = ""
-    var userProfileURL: String = StringLiterals.Network.baseImageURL
     var contentText: String = ""
     var reportTargetNickname: String = ""
     var relateText: String = ""
     let warnUserURL = URL(string: StringLiterals.Network.warnUserGoogleFormURL)
     private let placeholder = StringLiterals.Home.placeholder
     
+    var nowShowingPopup: String = ""
+    
     let refreshControl = UIRefreshControl()
     
     var feedData: HomeFeedDTO? = nil
+    var getFeedData: FeedDetailResponseDTO? = nil
     
     // MARK: - UI Components
     
     private let feedDetailView = FeedDetailView()
     private let divideLine = UIView().makeDivisionLine()
+    
+    var homeBottomsheetView = HomeBottomSheetView()
+    private var ghostPopupView: WablePopupView? = nil
+    private var reportPopupView: WablePopupView? = nil
+    private var deletePopupView: WablePopupView? = nil
     
     // MARK: - Life Cycles
     
@@ -72,13 +90,14 @@ final class FeedDetailViewController: UIViewController {
         setHierarchy()
         setLayout()
         setDelegate()
-        setNavigationBar()
+        getAPI()
         dismissKeyboard()
         setRefreshControl()
     }
     
-    init(viewModel: FeedDetailViewModel) {
+    init(viewModel: FeedDetailViewModel, likeViewModel: LikeViewModel) {
         self.viewModel = viewModel
+        self.likeViewModel = likeViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -87,10 +106,8 @@ final class FeedDetailViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = false
-        self.navigationItem.title = "게시글"
         
-        getAPI()
+        setNavigationBar()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -134,6 +151,11 @@ extension FeedDetailViewController {
     
     private func setNavigationBar() {
         
+        self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.backgroundColor = .wableWhite
+        self.navigationController?.navigationBar.barTintColor = .wableWhite
+        self.navigationItem.title = "게시글"
+        
         navigationController?.navigationBar.titleTextAttributes = [
             .foregroundColor: UIColor.wableBlack,
             NSAttributedString.Key.font: UIFont.body1,
@@ -141,6 +163,7 @@ extension FeedDetailViewController {
         
         let backButtonImage = ImageLiterals.Icon.icBack.withRenderingMode(.alwaysOriginal)
         let backButton = UIBarButtonItem(image: backButtonImage, style: .done, target: self, action: #selector(backButtonDidTapped))
+        
         navigationItem.leftBarButtonItem = backButton
         self.navigationItem.hidesBackButton = true
     }
@@ -194,6 +217,7 @@ extension FeedDetailViewController {
 
 extension FeedDetailViewController {
     private func getAPI() {
+        print("getAPI")
         let input = FeedDetailViewModel.Input(viewUpdate: Just((contentId)).eraseToAnyPublisher(),
                                               likeButtonTapped: nil,
                                               tableViewUpdata: Just((contentId)).eraseToAnyPublisher(),
@@ -206,16 +230,17 @@ extension FeedDetailViewController {
             .receive(on: RunLoop.main)
             .sink { data in
                 self.postMemberId = data.memberId
-//                self.feedData = data
+                self.getFeedData = data
                 self.feedDetailView.feedDetailTableView.reloadData()
-//                self.perform(#selector(self.finishedRefreshing), with: nil, afterDelay: 0.1)
             }
             .store(in: self.cancelBag)
         
         output.getPostReplyData
             .receive(on: RunLoop.main)
             .sink { data in
-                self.feedDetailView.feedDetailTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.feedDetailView.feedDetailTableView.reloadData()
+                }
             }
             .store(in: self.cancelBag)
         
@@ -224,7 +249,7 @@ extension FeedDetailViewController {
             .sink { data in
                 if data == 0 {
                     self.viewModel.cursor = -1
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    DispatchQueue.main.async {
                         self.didPullToRefresh()
                         
                         self.feedDetailView.bottomWriteView.writeTextView.text = ""
@@ -235,75 +260,12 @@ extension FeedDetailViewController {
                                                                                                             bottom: 10.adjusted,
                                                                                                             right: 10.adjusted)
                         
-                        UIView.animate(withDuration: 0.3) {
-                            self.feedDetailView.feedDetailTableView.contentOffset.y = 0
-                        }
+                        self.feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
+                        self.feedDetailView.bottomWriteView.uploadButton.isEnabled = false
                     }
                 }
             }
             .store(in: cancelBag)
-        
-//        output.clickedButtonState
-//            .sink { [weak self] index in
-//                guard let self = self else { return }
-//                let radioSelectedButtonImage = ImageLiterals.TransparencyInfo.btnRadioSelected
-//                let radioButtonImage = ImageLiterals.TransparencyInfo.btnRadio
-//                self.transparentReasonView.warnLabel.isHidden = true
-//                
-//                switch index {
-//                case 1:
-//                    self.transparentReasonView.firstReasonView.radioButton.setImage(radioSelectedButtonImage, for: .normal)
-//                    self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    ghostReason = self.transparentReasonView.firstReasonView.radioButton.currentTitle ?? ""
-//                case 2:
-//                    self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.secondReasonView.radioButton.setImage(radioSelectedButtonImage, for: .normal)
-//                    self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    ghostReason = self.transparentReasonView.secondReasonView.radioButton.currentTitle ?? ""
-//                case 3:
-//                    self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.thirdReasonView.radioButton.setImage(radioSelectedButtonImage, for: .normal)
-//                    self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    ghostReason = self.transparentReasonView.thirdReasonView.radioButton.currentTitle ?? ""
-//                case 4:
-//                    self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.fourthReasonView.radioButton.setImage(radioSelectedButtonImage, for: .normal)
-//                    self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    ghostReason = self.transparentReasonView.fourthReasonView.radioButton.currentTitle ?? ""
-//                case 5:
-//                    self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.fifthReasonView.radioButton.setImage(radioSelectedButtonImage, for: .normal)
-//                    self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    ghostReason = self.transparentReasonView.fifthReasonView.radioButton.currentTitle ?? ""
-//                case 6:
-//                    self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//                    self.transparentReasonView.sixthReasonView.radioButton.setImage(radioSelectedButtonImage, for: .normal)
-//                    ghostReason = self.transparentReasonView.sixthReasonView.radioButton.currentTitle ?? ""
-//                default:
-//                    break
-//                }
-//            }
-//            .store(in: self.cancelBag)
     }
     
     @objc
@@ -351,10 +313,11 @@ extension FeedDetailViewController: UITextViewDelegate {
         }
         
         if (textView.text.count != 0) {
+            feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRipplePress, for: .normal)
             feedDetailView.bottomWriteView.uploadButton.isEnabled = true
         } else {
+            feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
             feedDetailView.bottomWriteView.uploadButton.isEnabled = false
-            
         }
     }
     
@@ -364,7 +327,84 @@ extension FeedDetailViewController: UITextViewDelegate {
         if textView.text.isEmpty {
             textView.text = (feedData?.memberNickname ?? String()) + StringLiterals.Home.placeholder
             textView.textColor = .gray700
+            feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
             feedDetailView.bottomWriteView.uploadButton.isEnabled = false
+        }
+    }
+    
+    private func showGhostPopupView() {
+        self.ghostPopupView = WablePopupView(popupTitle: StringLiterals.Home.ghostPopupTitle,
+                                             popupContent: "",
+                                             leftButtonTitle: StringLiterals.Home.ghostPopupUndo,
+                                             rightButtonTitle: StringLiterals.Home.ghostPopupDo)
+        
+        if let popupView = self.ghostPopupView {
+            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                window.addSubviews(popupView)
+            }
+            
+            popupView.delegate = self
+            
+            popupView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        }
+    }
+    
+    @objc
+    func deletePostButtonTapped() {
+        popBottomsheetView()
+        
+        self.deletePopupView = WablePopupView(popupTitle: StringLiterals.Home.deletePopupTitle,
+                                              popupContent: StringLiterals.Home.deletePopupContent,
+                                              leftButtonTitle: StringLiterals.Home.deletePopupUndo,
+                                              rightButtonTitle: StringLiterals.Home.deletePopupDo)
+        
+        if let popupView = self.deletePopupView {
+            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                window.addSubviews(popupView)
+            }
+            
+            popupView.delegate = self
+            
+            popupView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        }
+    }
+    
+    @objc
+    func reportButtonTapped() {
+        popBottomsheetView()
+        
+        self.reportPopupView = WablePopupView(popupTitle: StringLiterals.Home.reportPopupTitle,
+                                              popupContent: StringLiterals.Home.reportPopupContent,
+                                              leftButtonTitle: StringLiterals.Home.reportPopupUndo,
+                                              rightButtonTitle: StringLiterals.Home.reportPopupDo)
+        
+        if let popupView = self.reportPopupView {
+            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                window.addSubviews(popupView)
+            }
+            
+            popupView.delegate = self
+            
+            popupView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        }
+    }
+    
+    func popBottomsheetView() {
+        if UIApplication.shared.keyWindowInConnectedScenes != nil {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.homeBottomsheetView.dimView.alpha = 0
+                if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                    self.homeBottomsheetView.bottomsheetView.frame = CGRect(x: 0, y: window.frame.height, width: self.homeBottomsheetView.frame.width, height: self.homeBottomsheetView.bottomsheetView.frame.height)
+                }
+            })
+            homeBottomsheetView.dimView.removeFromSuperview()
+            homeBottomsheetView.bottomsheetView.removeFromSuperview()
         }
     }
 }
@@ -385,6 +425,7 @@ extension FeedDetailViewController: UITableViewDataSource {
         case .feed:
             return 1
         case .reply:
+            print("viewModel.feedReplyDatas.count: \(viewModel.feedReplyDatas.count)")
             return viewModel.feedReplyDatas.count
         }
     }
@@ -394,7 +435,9 @@ extension FeedDetailViewController: UITableViewDataSource {
             if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 let lastCommentID = viewModel.feedReplyDatas.last?.commentId ?? -1
                 viewModel.cursor = lastCommentID
-//                self.didPullToRefresh()
+                DispatchQueue.main.async {
+                    self.getAPI()
+                }
             }
         }
     }
@@ -406,30 +449,356 @@ extension FeedDetailViewController: UITableViewDataSource {
             let cell = feedDetailView.feedDetailTableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.identifier, for: indexPath) as? HomeFeedTableViewCell ?? HomeFeedTableViewCell()
             cell.selectionStyle = .none
             cell.seperateLineView.isHidden = false
+            
+            cell.alarmTriggerType = "contentGhost"
+            cell.targetMemberId = feedData?.memberID ?? 0
+            cell.alarmTriggerdId = feedData?.contentID ?? 0
+            
+            if let feedData = feedData {
+                cell.bind(data: feedData)
+            } else {
+                cell.bind(data: HomeFeedDTO(
+                    memberID: getFeedData?.memberId ?? 0,
+                    memberProfileURL: getFeedData?.memberProfileUrl ?? "",
+                    memberNickname: getFeedData?.memberNickname ?? "",
+                    contentID: self.contentId,
+                    contentTitle: getFeedData?.contentTitle ?? "",
+                    contentText: getFeedData?.contentText ?? "",
+                    time: getFeedData?.time ?? "",
+                    isGhost: getFeedData?.isGhost ?? false,
+                    memberGhost: getFeedData?.memberGhost ?? 0,
+                    isLiked: getFeedData?.isLiked ?? false,
+                    likedNumber: getFeedData?.likedNumber ?? 0,
+                    commentNumber: getFeedData?.commentNumber ?? 0,
+                    isDeleted: false,
+                    contentImageURL: getFeedData?.contentImageUrl ?? "",
+                    memberFanTeam: getFeedData?.memberFanTeam ?? "")
+                )
+            }
+            
+            if feedData?.memberID == loadUserData()?.memberId || getFeedData?.memberId == loadUserData()?.memberId {
+                cell.bottomView.ghostButton.isHidden = true
+                
+                cell.menuButtonTapped = {
+                    self.homeBottomsheetView.showSettings()
+                    self.homeBottomsheetView.deleteButton.isHidden = false
+                    self.homeBottomsheetView.reportButton.isHidden = true
+                    
+                    self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
+                    if let feedData = self.feedData {
+                        self.contentId = feedData.contentID
+                    }
+                    self.nowShowingPopup = "deletePost"
+                }
+            } else {
+                // 다른 유저인 경우
+                cell.bottomView.ghostButton.isHidden = false
+                
+                cell.menuButtonTapped = {
+                    self.homeBottomsheetView.showSettings()
+                    self.homeBottomsheetView.reportButton.isHidden = false
+                    self.homeBottomsheetView.deleteButton.isHidden = true
+                    
+                    self.reportTargetNickname = self.feedData?.memberNickname ?? ""
+                    self.relateText = self.feedData?.contentText ?? ""
+                    self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
+                    self.nowShowingPopup = "report"
+                }
+            }
+            
+            var memberGhost = feedData?.memberGhost
+            memberGhost = adjustGhostValue(memberGhost ?? 0)
+            
+            cell.grayView.layer.zPosition = 1
+            
+            // 내가 투명도를 누른 유저인 경우 -85% 적용
+            if feedData?.isGhost == true {
+                cell.grayView.alpha = 0.85
+            } else {
+                cell.grayView.alpha = CGFloat(Double(-(memberGhost ?? 0)) / 100)
+            }
+            
+            cell.profileButtonAction = {
+                if let feedData = self.feedData {
+                    if feedData.memberID == loadUserData()?.memberId ?? 0  {
+                        self.tabBarController?.selectedIndex = 3
+                    } else {
+                        let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()))
+                        viewController.memberId = feedData.memberID
+                        self.navigationController?.pushViewController(viewController, animated: true)
+                    }
+                }
+            }
+            
+            cell.bottomView.ghostButtonTapped = { [weak self] in
+                self?.alarmTriggerType = cell.alarmTriggerType
+                self?.targetMemberId = cell.targetMemberId
+                self?.alarmTriggerdId = cell.alarmTriggerdId
+                self?.showGhostPopupView()
+                self?.nowShowingPopup = "ghost"
+            }
+            
+            cell.bottomView.heartButtonTapped = {
+                var currentHeartCount = cell.bottomView.heartButton.titleLabel?.text
+                
+                if cell.bottomView.isLiked == true {
+                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
+                } else {
+                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
+                }
+                if let feedData = self.feedData {
+                    self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: feedData.contentID)
+                } else {
+                    self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.contentId)
+                }
+                
+                cell.bottomView.isLiked.toggle()
+            }
+            
             cell.divideLine.isHidden = true
-            cell.bind(data: feedData ?? HomeFeedDTO(memberID: Int(),
-                                                    memberProfileURL: "",
-                                                    memberNickname: "",
-                                                    isGhost: Bool(),
-                                                    memberGhost: Int(),
-                                                    isLiked: Bool(),
-                                                    time: "",
-                                                    likedNumber: Int(),
-                                                    memberFanTeam: "",
-                                                    contentID: nil,
-                                                    contentTitle: nil,
-                                                    contentText: nil,
-                                                    commentNumber: nil,
-                                                    isDeleted: Bool(),
-                                                    message: nil,
-                                                    commnetNumber: nil,
-                                                    contentImageURL: nil))
+            
             return cell
+            
         case .reply:
             let cell = feedDetailView.feedDetailTableView.dequeueReusableCell(withIdentifier: FeedDetailTableViewCell.identifier, for: indexPath) as? FeedDetailTableViewCell ?? FeedDetailTableViewCell()
             cell.selectionStyle = .none
+            cell.alarmTriggerType = "commentGhost"
+            cell.targetMemberId = viewModel.feedReplyDatas[indexPath.row].memberId
+            cell.alarmTriggerdId = viewModel.feedReplyDatas[indexPath.row].commentId
+            
             cell.bind(data: viewModel.feedReplyDatas[indexPath.row])
+            
+            if viewModel.feedReplyDatas[indexPath.row].memberId == loadUserData()?.memberId {
+                cell.bottomView.ghostButton.isHidden = true
+                
+                cell.bottomView.heartButton.snp.remakeConstraints {
+                    $0.height.equalTo(24.adjusted)
+                    $0.width.equalTo(45.adjusted)
+                    $0.trailing.equalToSuperview()
+                    $0.centerY.equalToSuperview()
+                }
+                
+                cell.menuButtonTapped = {
+                    self.homeBottomsheetView.showSettings()
+                    self.homeBottomsheetView.deleteButton.isHidden = false
+                    self.homeBottomsheetView.reportButton.isHidden = true
+                    
+                    self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
+                    self.commentId = self.viewModel.feedReplyDatas[indexPath.row].commentId
+                    self.nowShowingPopup = "deleteReply"
+                }
+            } else {
+                // 다른 유저인 경우
+                cell.bottomView.ghostButton.isHidden = false
+                
+                cell.bottomView.heartButton.snp.remakeConstraints {
+                    $0.height.equalTo(24.adjusted)
+                    $0.width.equalTo(45.adjusted)
+                    $0.trailing.equalTo(cell.bottomView.ghostButton.snp.leading).offset(-16.adjusted)
+                    $0.centerY.equalTo(cell.bottomView.ghostButton)
+                }
+                
+                cell.menuButtonTapped = {
+                    self.homeBottomsheetView.showSettings()
+                    self.homeBottomsheetView.reportButton.isHidden = false
+                    self.homeBottomsheetView.deleteButton.isHidden = true
+                    
+                    self.reportTargetNickname = self.viewModel.feedReplyDatas[indexPath.row].memberNickname
+                    self.relateText = self.viewModel.feedReplyDatas[indexPath.row].commentText
+                    self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
+                    self.nowShowingPopup = "report"
+                }
+            }
+            
+            var memberGhost = self.viewModel.feedReplyDatas[indexPath.row].memberGhost
+            memberGhost = adjustGhostValue(memberGhost)
+            
+            cell.grayView.layer.zPosition = 1
+            
+            // 내가 투명도를 누른 유저인 경우 -85% 적용
+            if self.viewModel.feedReplyDatas[indexPath.row].isGhost {
+                cell.grayView.alpha = 0.85
+            } else {
+                cell.grayView.alpha = CGFloat(Double(-memberGhost) / 100)
+            }
+            
+            cell.profileButtonAction = {
+                let memberId = self.viewModel.feedReplyDatas[indexPath.row].memberId
+
+                if memberId == loadUserData()?.memberId ?? 0  {
+                    self.tabBarController?.selectedIndex = 3
+                } else {
+                    let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()))
+                    viewController.memberId = memberId
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                }
+            }
+            
+            cell.bottomView.ghostButtonTapped = { [weak self] in
+                self?.alarmTriggerType = cell.alarmTriggerType
+                self?.targetMemberId = cell.targetMemberId
+                self?.alarmTriggerdId = cell.alarmTriggerdId
+                self?.showGhostPopupView()
+                self?.nowShowingPopup = "ghost"
+            }
+            
+            cell.bottomView.heartButtonTapped = {
+                var currentHeartCount = cell.bottomView.heartButton.titleLabel?.text
+                
+                if cell.bottomView.isLiked == true {
+                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
+                } else {
+                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
+                }
+                self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.viewModel.feedReplyDatas[indexPath.row].commentId, commentText: self.viewModel.feedReplyDatas[indexPath.row].commentText)
+                
+                cell.bottomView.isLiked.toggle()
+            }
+            
             return cell
+        }
+    }
+}
+
+// MARK: - Network
+
+extension FeedDetailViewController {
+    private func postLikeButtonAPI(isClicked: Bool, contentId: Int) {
+        // 최초 한 번만 publisher 생성
+        let likeButtonTapped: AnyPublisher<(Bool, Int), Never>?  = Just(())
+                .map { _ in return (isClicked, contentId) }
+                .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
+                .eraseToAnyPublisher()
+        
+        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, commentLikeButtonTapped: nil, deleteButtonDidTapped: deleteButtonTapped, deleteReplyButtonDidTapped: deleteReplyButtonTapped)
+
+        let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
+
+        output.toggleLikeButton
+            .sink { _ in }
+            .store(in: self.cancelBag)
+    }
+    
+    private func postCommentLikeButtonAPI(isClicked: Bool, commentId: Int, commentText: String) {
+        print("postCommentLikeButtonAPI")
+        // 최초 한 번만 publisher 생성
+        let commentLikedButtonTapped: AnyPublisher<(Bool, Int, String), Never>? = Just(())
+            .map { _ in return (isClicked, commentId, commentText) }
+            .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
+            .eraseToAnyPublisher()
+        
+        let input = LikeViewModel.Input(likeButtonTapped: nil, commentLikeButtonTapped: commentLikedButtonTapped, deleteButtonDidTapped: deleteButtonTapped, deleteReplyButtonDidTapped: deleteReplyButtonTapped)
+        let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
+        
+        output.toggleCommentLikeButton
+            .sink { _ in }
+            .store(in: self.cancelBag)
+    }
+}
+
+
+extension FeedDetailViewController: WablePopupDelegate {
+    
+    func cancleButtonTapped() {
+        if nowShowingPopup == "ghost" {
+            self.ghostPopupView?.removeFromSuperview()
+        }
+        
+        if nowShowingPopup == "report" {
+            self.reportPopupView?.removeFromSuperview()
+        }
+        
+        if nowShowingPopup == "deletePost" || nowShowingPopup == "deleteReply" {
+            self.deletePopupView?.removeFromSuperview()
+        }
+    }
+    
+    func confirmButtonTapped() {
+        if nowShowingPopup == "ghost" {
+            self.ghostPopupView?.removeFromSuperview()
+            
+            print("self.alarmTriggerType: \(self.alarmTriggerType)")
+            print("self.targetMemberId: \(self.targetMemberId)")
+            print("self.alarmTriggerdId: \(self.alarmTriggerdId)")
+            
+            Task {
+                do {
+                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                        let result = try await self.likeViewModel.postDownTransparency(
+                            accessToken: accessToken,
+                            alarmTriggerType: self.alarmTriggerType,
+                            targetMemberId: self.targetMemberId,
+                            alarmTriggerId: self.alarmTriggerdId,
+                            ghostReason: self.ghostReason
+                        )
+                        
+                        didPullToRefresh()
+                        
+                        if result?.status == 400 {
+                            // 이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기
+//                            showAlreadyTransparencyToast()
+                            print("이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기")
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        
+        if nowShowingPopup == "report" {
+            self.reportPopupView?.removeFromSuperview()
+            
+            let warnView: SFSafariViewController
+            if let warnURL = self.warnUserURL {
+                warnView = SFSafariViewController(url: warnURL)
+                self.present(warnView, animated: true, completion: nil)
+            }
+            
+//            Task {
+//                do {
+//                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+//                        let result = try await self.homeViewModel.postReportButtonAPI(
+//                            reportTargetNickname: self.reportTargetNickname,
+//                            relateText: self.relateText
+//                        )
+//                    }
+//                } catch {
+//                    print(error)
+//                }
+//            }
+        }
+        
+        if nowShowingPopup == "deletePost" {
+            self.deletePopupView?.removeFromSuperview()
+            
+            Task {
+                do {
+                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                        let result = try await self.likeViewModel.deletePostAPI(accessToken: accessToken, contentId: self.contentId)
+                        
+                        navigationController?.popViewController(animated: true)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        
+        if nowShowingPopup == "deleteReply" {
+            self.deletePopupView?.removeFromSuperview()
+            
+            Task {
+                do {
+                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                        let result = try await self.likeViewModel.deleteReplyAPI(accessToken: accessToken, commentId: self.commentId)
+                        
+                        didPullToRefresh()
+                    }
+                } catch {
+                    print(error)
+                }
+            }
         }
     }
 }

@@ -19,8 +19,13 @@ final class HomeViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     
     private lazy var writeButtonDidTapped = self.homeView.writeFeedButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    
     private lazy var deleteButtonTapped = deletePopupView?.confirmButton.publisher(for: .touchUpInside).map { _ in
         return self.contentId
+    }.eraseToAnyPublisher()
+    
+    private lazy var deleteReplyButtonTapped = deletePopupView?.confirmButton.publisher(for: .touchUpInside).map { _ in
+        return self.commentId
     }.eraseToAnyPublisher()
     
     var alarmTriggerType: String = ""
@@ -29,6 +34,7 @@ final class HomeViewController: UIViewController {
     var ghostReason: String = ""
     
     var contentId: Int = 0
+    var commentId: Int = 0
     var reportTargetNickname: String = ""
     var relateText: String = ""
     let warnUserURL = URL(string: StringLiterals.Network.warnUserGoogleFormURL)
@@ -132,7 +138,7 @@ extension HomeViewController {
         viewModel.pushViewController
             .sink { [weak self] index in
                 self?.navigationController?.isNavigationBarHidden = false
-                let feedDetailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
+                let feedDetailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
                 feedDetailViewController.hidesBottomBarWhenPushed = true
                 
                 if let data = self?.viewModel.feedDatas[index] {
@@ -160,8 +166,9 @@ extension HomeViewController {
         viewModel.homeFeedDTO
             .receive(on: DispatchQueue.main)
             .sink { [weak self] data in
-//                self?.feedData = data
-                self?.homeView.feedTableView.reloadData()
+                DispatchQueue.main.async {
+                    self?.homeView.feedTableView.reloadData()
+                }
             }
             .store(in: &cancellables)
     }
@@ -277,11 +284,11 @@ extension HomeViewController {
     private func postLikeButtonAPI(isClicked: Bool, contentId: Int) {
         // 최초 한 번만 publisher 생성
         let likeButtonTapped: AnyPublisher<(Bool, Int), Never>?  = Just(())
-                .map { _ in return (!isClicked, contentId) }
+                .map { _ in return (isClicked, contentId) }
                 .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
                 .eraseToAnyPublisher()
         
-        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, deleteButtonDidTapped: deleteButtonTapped)
+        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, commentLikeButtonTapped: nil, deleteButtonDidTapped: deleteButtonTapped, deleteReplyButtonDidTapped: deleteReplyButtonTapped)
 
         let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
 
@@ -293,6 +300,7 @@ extension HomeViewController {
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("viewModel.feedDatas.count: \(viewModel.feedDatas.count)")
         return viewModel.feedDatas.count
     }
     
@@ -309,12 +317,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = homeView.feedTableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.identifier, for: indexPath) as? HomeFeedTableViewCell ?? HomeFeedTableViewCell()
         cell.selectionStyle = .none
-        
         cell.alarmTriggerType = "contentGhost"
         cell.targetMemberId = viewModel.feedDatas[indexPath.row].memberID
         cell.alarmTriggerdId = viewModel.feedDatas[indexPath.row].contentID ?? Int()
         
-        cell.profileImageView.load(url: "\(viewModel.feedDatas[indexPath.row].memberProfileURL)")
         cell.bind(data: viewModel.feedDatas[indexPath.row])
         
         if viewModel.feedDatas[indexPath.row].memberID == loadUserData()?.memberId {
@@ -349,8 +355,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         memberGhost = adjustGhostValue(memberGhost)
         
         cell.grayView.layer.zPosition = 1
-//        print("isGhost: \(self.viewModel.feedDatas[indexPath.row].isGhost)")
-//        print("memberGhost: \(self.viewModel.feedDatas[indexPath.row].memberGhost)")
         
         // 내가 투명도를 누른 유저인 경우 -85% 적용
         if self.viewModel.feedDatas[indexPath.row].isGhost {
@@ -396,21 +400,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             } else {
                 cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
             }
+            self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.viewModel.feedDatas[indexPath.row].contentID)
+            
             cell.bottomView.isLiked.toggle()
-            self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.viewModel.feedDatas[indexPath.row].contentID ?? Int())
         }
-        
-        cell.bottomView.commentButtonTapped = { [weak self] in
-            guard let self = self else { return }
-            let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
-            detailViewController.hidesBottomBarWhenPushed = true
-            detailViewController.getFeedData(data: self.viewModel.feedDatas[indexPath.row])
-            detailViewController.contentId = viewModel.feedDatas[indexPath.row].contentID ?? Int()
-            detailViewController.memberId = viewModel.feedDatas[indexPath.row].memberID
-            detailViewController.userProfileURL = viewModel.feedDatas[indexPath.row].memberProfileURL
-            self.navigationController?.pushViewController(detailViewController, animated: true)
-        }
-        
         return cell
     }
     
@@ -419,12 +412,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
+        let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
         detailViewController.hidesBottomBarWhenPushed = true
         detailViewController.getFeedData(data: viewModel.feedDatas[indexPath.row])
         detailViewController.contentId = viewModel.feedDatas[indexPath.row].contentID ?? Int()
         detailViewController.memberId = viewModel.feedDatas[indexPath.row].memberID
-        detailViewController.userProfileURL = viewModel.feedDatas[indexPath.row].memberProfileURL
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
@@ -432,15 +424,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 extension HomeViewController: WablePopupDelegate {
     
     func cancleButtonTapped() {
-        if ghostPopupView != nil {
+        if nowShowingPopup == "ghost" {
             self.ghostPopupView?.removeFromSuperview()
         }
         
-        if reportPopupView != nil {
+        if nowShowingPopup == "report" {
             self.reportPopupView?.removeFromSuperview()
         }
         
-        if deletePopupView != nil {
+        if nowShowingPopup == "delete" {
             self.deletePopupView?.removeFromSuperview()
         }
     }

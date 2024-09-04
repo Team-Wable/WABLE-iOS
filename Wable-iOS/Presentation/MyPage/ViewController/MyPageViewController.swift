@@ -104,11 +104,6 @@ final class MyPageViewController: UIViewController {
         bindViewModel()
         setNotification()
         
-        self.tabBarController?.tabBar.isHidden = false
-        self.tabBarController?.tabBar.isTranslucent = true
-        self.tabBarController?.tabBar.backgroundColor = .wableWhite
-        self.tabBarController?.tabBar.barTintColor = .wableWhite
-        
         navigationController?.navigationBar.titleTextAttributes = [
             .foregroundColor: UIColor.wableBlack,
             NSAttributedString.Key.font: UIFont.body1,
@@ -116,6 +111,11 @@ final class MyPageViewController: UIViewController {
         
         // 본인 프로필 화면
         if memberId == loadUserData()?.memberId ?? 0 {
+            self.tabBarController?.tabBar.isHidden = false
+            self.tabBarController?.tabBar.isTranslucent = true
+            self.tabBarController?.tabBar.backgroundColor = .wableWhite
+            self.tabBarController?.tabBar.barTintColor = .wableWhite
+            
             self.navigationItem.title = loadUserData()?.userNickname ?? ""
             self.tabBarController?.tabBar.isHidden = false
             
@@ -124,7 +124,11 @@ final class MyPageViewController: UIViewController {
             navigationItem.rightBarButtonItem = hambergerButton
         } else {
             // 타 유저 프로필 화면
-            self.navigationItem.title = "타 유저 닉네임"
+            self.tabBarController?.tabBar.isHidden = true
+            self.tabBarController?.tabBar.isTranslucent = true
+            self.tabBarController?.tabBar.backgroundColor = .wableWhite
+            self.tabBarController?.tabBar.barTintColor = .wableWhite
+            
             self.tabBarController?.tabBar.isHidden = true
             let backButtonImage = ImageLiterals.Icon.icBack.withRenderingMode(.alwaysOriginal)
             let backButton = UIBarButtonItem(image: backButtonImage, style: .done, target: self, action: #selector(backButtonDidTapped))
@@ -141,7 +145,16 @@ final class MyPageViewController: UIViewController {
         super.viewWillDisappear(true)
         
         removeNotification()
-        self.tabBarController?.tabBar.isTranslucent = false
+        
+        // 본인 프로필 화면
+        if memberId == loadUserData()?.memberId ?? 0 {
+            self.tabBarController?.tabBar.isTranslucent = false
+        } else {
+            self.tabBarController?.tabBar.isHidden = false
+            self.tabBarController?.tabBar.isTranslucent = true
+            self.tabBarController?.tabBar.backgroundColor = .wableWhite
+            self.tabBarController?.tabBar.barTintColor = .wableWhite
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -151,6 +164,10 @@ final class MyPageViewController: UIViewController {
         let tabBarHeight: CGFloat = 70.0
         
         self.tabBarHeight = tabBarHeight + safeAreaHeight
+        
+        self.rootView.myPageProfileView.profileImageView.contentMode = .scaleAspectFill
+        self.rootView.myPageProfileView.profileImageView.layer.cornerRadius = self.rootView.myPageProfileView.profileImageView.frame.size.width / 2
+        self.rootView.myPageProfileView.profileImageView.clipsToBounds = true
     }
 }
 
@@ -198,10 +215,9 @@ extension MyPageViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(pushViewController), name: MyPagePostViewController.pushViewController, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: MyPagePostViewController.reloadData, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadContentData(_:)), name: MyPagePostViewController.reloadContentData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadCommentData(_:)), name: MyPageReplyViewController.reloadCommentData, object: nil)
 //            NotificationCenter.default.addObserver(self, selector: #selector(warnButtonTapped), name: MyPagePostViewController.warnUserButtonTapped, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(contentGhostButtonTapped), name: MyPagePostViewController.ghostButtonTapped, object: nil)
-        
-//            NotificationCenter.default.addObserver(self, selector: #selector(reloadCommentData(_:)), name: MyPageReplyViewController.reloadCommentData, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(commentGhostButtonTapped), name: MyPageReplyViewController.ghostButtonTapped, object: nil)
         
 //            NotificationCenter.default.addObserver(self, selector: #selector(showDeleteToast(_:)), name: DeletePopupViewController.showDeletePostToastNotification, object: nil)
@@ -314,6 +330,7 @@ extension MyPageViewController {
     }
     
     private func bindProfileData(data: MypageProfileResponseDTO) {
+        self.title = data.nickname
         self.rootView.myPageProfileView.userNickname.text = data.nickname
         self.rootView.myPageProfileView.profileImageView.load(url: data.memberProfileUrl)
         self.rootView.myPageProfileView.transparencyValue = data.memberGhost
@@ -325,9 +342,11 @@ extension MyPageViewController {
         if data.memberId != loadUserData()?.memberId ?? 0 {
             self.rootView.myPagePostViewController.noContentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoContentOtherLabel
             self.rootView.myPageReplyViewController.noCommentLabel.text = "아직 \(data.nickname)" + StringLiterals.MyPage.myPageNoCommentOtherLabel
+            self.rootView.myPageProfileView.editButton.isHidden = true
         } else {
             self.rootView.myPagePostViewController.noContentLabel.text = "\(data.nickname)" + StringLiterals.MyPage.myPageNoContentLabel
             self.rootView.myPageReplyViewController.noCommentLabel.text = StringLiterals.MyPage.myPageNoCommentLabel
+            self.rootView.myPageProfileView.editButton.isHidden = false
             
             saveUserData(UserInfo(isSocialLogined: true,
                                   isFirstUser: false,
@@ -417,17 +436,15 @@ extension MyPageViewController {
     
     @objc
     private func pushViewController(_ notification: Notification) {
-        let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
-        detailViewController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(detailViewController, animated: true)
-        
-//        if let contentId = notification.userInfo?["contentId"] as? Int, let profileImageURL = notification.userInfo?["profileImageURL"] as? String {
-//            let detailViewController = FeedDetailViewController()
-//            detailViewController.hidesBottomBarWhenPushed = true
-//            destinationViewController.contentId = contentId
-//            destinationViewController.userProfileURL = profileImageURL
-//            self.navigationController?.pushViewController(detailViewController, animated: true)
-//        }
+        if let contentId = notification.userInfo?["contentId"] as? Int, let profileImageURL = notification.userInfo?["profileImageURL"] as? String {
+            let destinationViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
+            destinationViewController.hidesBottomBarWhenPushed = true
+            
+            destinationViewController.contentId = contentId
+//            detailViewController.memberId = viewModel.feedDatas[indexPath.row].memberID
+            
+            self.navigationController?.pushViewController(destinationViewController, animated: true)
+        }
     }
     
     @objc
@@ -438,6 +455,12 @@ extension MyPageViewController {
     @objc
     func reloadContentData(_ notification: Notification) {
         self.contentCursor = notification.userInfo?["contentCursor"] as? Int ?? -1
+        bindViewModel()
+    }
+    
+    @objc
+    func reloadCommentData(_ notification: Notification) {
+        self.commentCursor = notification.userInfo?["commentCursor"] as? Int ?? -1
         bindViewModel()
     }
     

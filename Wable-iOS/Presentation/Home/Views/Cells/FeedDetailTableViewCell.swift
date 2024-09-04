@@ -24,6 +24,14 @@ final class FeedDetailTableViewCell: UITableViewCell {
     
     // MARK: - Components
     
+    let grayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .wableWhite
+        view.alpha = 0
+        view.isUserInteractionEnabled = false
+        return view
+    }()
+    
     var infoView = FeedInfoView()
 
     var bottomView = FeedDetailBottomView()
@@ -40,6 +48,8 @@ final class FeedDetailTableViewCell: UITableViewCell {
     
     var profileImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.image = ImageLiterals.Image.imgProfileSmall
+        imageView.isUserInteractionEnabled = true
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 18.adjusted
         return imageView
@@ -72,14 +82,26 @@ final class FeedDetailTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        DispatchQueue.main.async {
+            self.profileImageView.contentMode = .scaleAspectFill
+            self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.width / 2
+            self.profileImageView.clipsToBounds = true
+        }
+    }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         profileImageView.image = UIImage()
     }
+
     // MARK: - Functions
 
     private func setHierarchy() {
-        self.contentView.addSubviews(profileImageView,
+        self.contentView.addSubviews(grayView,
+                                     profileImageView,
                                      menuButton,
                                      infoView,
                                      contentLabel,
@@ -88,6 +110,11 @@ final class FeedDetailTableViewCell: UITableViewCell {
     }
     
     private func setLayout() {
+        grayView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(bottomView.snp.top)
+        }
+        
         profileImageView.snp.makeConstraints {
             $0.height.width.equalTo(36.adjusted)
             $0.leading.equalToSuperview().inset(16.adjusted)
@@ -142,6 +169,8 @@ final class FeedDetailTableViewCell: UITableViewCell {
     }
     
     func bind(data: FeedDetailReplyDTO) {
+        profileImageView.load(url: data.memberProfileUrl)
+        
         infoView.bind(nickname: data.memberNickname,
                       team: Team(rawValue: data.memberFanTeam) ?? .T1,
                       ghostPercent: data.memberGhost,
@@ -154,6 +183,16 @@ final class FeedDetailTableViewCell: UITableViewCell {
             profileImageView.kfSetImage(url: data.memberProfileUrl)
         }
         bottomView.bind(heart: data.commentLikedNumber)
+        
+        bottomView.isLiked = data.isLiked
+        
+        if data.isGhost {
+            bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDisabledSmall, for: .normal)
+            bottomView.ghostButton.isEnabled = false
+        } else {
+            bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDefaultSmall, for: .normal)
+            bottomView.ghostButton.isEnabled = true
+        }
         
     }
 }

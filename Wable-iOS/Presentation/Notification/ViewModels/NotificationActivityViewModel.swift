@@ -100,9 +100,9 @@ extension NotificationActivityViewModel {
     private func validateResult(_ result: NetworkResult<Any>) -> Any?{
         switch result{
         case .success(let data):
-            print("성공했습니다.")
-            print("⭐️⭐️⭐️⭐️⭐️⭐️")
-            print(data)
+//            print("성공했습니다.")
+//            print("⭐️⭐️⭐️⭐️⭐️⭐️")
+//            print(data)
             return data
         case .requestErr(let message):
             print(message)

@@ -49,7 +49,7 @@ final class MyPageViewModel: ViewModelType {
                             if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
                                 let profileResult = try await self.getProfileInfoAPI(accessToken: accessToken, memberId: value.1)
                                 if let data = profileResult?.data {
-                                    print("data: \(data)")
+//                                    print("data: \(data)")
                                     self.myPageProfileData.append(data)
                                     self.getProfileData.send(data)
                                 }
@@ -156,7 +156,7 @@ extension MyPageViewModel {
                     }
                 }
             }
-            print("result: \(result)")
+//            print("result: \(result)")
             return result
         } catch {
             return nil
@@ -172,6 +172,8 @@ extension MyPageViewModel {
                 body: EmptyBody(),
                 pathVariables:["cursor":"\(commentCursor)"])
             if let data = result?.data {
+                print("commentCursor: \(commentCursor)")
+                print("data: \(data)")
                 if commentCursor == -1 {
                     self.myPageCommentDatas = []
                     
