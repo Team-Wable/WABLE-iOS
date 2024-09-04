@@ -45,6 +45,13 @@ final class NotificationViewController: UIViewController {
         setLayout()
         setDelegate()
         setAddTarget()
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePushDetailViewController(_:)), name: .didRequestPushDetailViewController, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleWriteFeedViewController(_:)), name: .didRequestPushWriteFeedViewController, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .didRequestPushDetailViewController, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .didRequestPushWriteFeedViewController, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -84,6 +91,28 @@ extension NotificationViewController {
     private func changeValue(control: UISegmentedControl) {
         self.currentPage = control.selectedSegmentIndex
     }
+    
+    @objc private func handlePushDetailViewController(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let data = userInfo["data"] as? HomeFeedDTO,
+              let contentID = userInfo["contentID"] as? Int else { return }
+        
+        let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()))
+        detailViewController.getFeedData(data: data)
+        detailViewController.contentId = contentID
+        detailViewController.memberId = data.memberID
+        detailViewController.userProfileURL = data.memberProfileURL
+        
+        self.navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
+    @objc private func handleWriteFeedViewController(_ notification: Notification) {
+        let writeViewController = WriteViewController(viewModel: WriteViewModel(networkProvider: NetworkService()))
+        writeViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(writeViewController, animated: true)
+
+    }
+    
 }
 
 extension NotificationViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {

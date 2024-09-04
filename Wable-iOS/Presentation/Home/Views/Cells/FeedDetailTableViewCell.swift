@@ -40,7 +40,8 @@ final class FeedDetailTableViewCell: UITableViewCell {
     
     var profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = ImageLiterals.Image.imgProfileSmall
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 18.adjusted
         return imageView
     }()
     
@@ -71,6 +72,10 @@ final class FeedDetailTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = UIImage()
+    }
     // MARK: - Functions
 
     private func setHierarchy() {
@@ -143,7 +148,11 @@ final class FeedDetailTableViewCell: UITableViewCell {
                       time: data.time)
         
         contentLabel.text = data.commentText
-
+        if let profileImage = UserProfile(rawValue: data.memberProfileUrl) {
+            profileImageView.image = profileImage.image
+        } else {
+            profileImageView.kfSetImage(url: data.memberProfileUrl)
+        }
         bottomView.bind(heart: data.commentLikedNumber)
         
     }

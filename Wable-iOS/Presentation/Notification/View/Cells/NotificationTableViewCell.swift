@@ -93,8 +93,11 @@ final class NotificationTableViewCell: UITableViewCell{
     }
     
     func bindForActivity(data: ActivityNotificationDTO) {
-        // TODO: - imageURL KingFisher로 변환
-        notiImageView.kfSetImage(url: data.triggerMemberProfileURL)
+        if let profileImage = UserProfile(rawValue: data.triggerMemberProfileURL) {
+            notiImageView.image = profileImage.image
+        } else {
+            notiImageView.kfSetImage(url: data.triggerMemberProfileURL)
+        }
         contentLabel.text = NotiActivityText(rawValue: data.notificationTriggerType)?.text(from: data.triggerMemberNickname,
                                                                                            to: data.memberNickname)
         if data.notificationText != "" {

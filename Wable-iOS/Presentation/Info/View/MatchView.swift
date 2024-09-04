@@ -23,6 +23,12 @@ final class MatchView: UIView {
     // MARK: - UI Components
     
     let matchTableView = UITableView(frame: .zero, style: .grouped)
+    var emptyImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = ImageLiterals.Image.imgNotiEmpty
+        imageView.isHidden = true
+        return imageView
+    }()
     
     // MARK: - Life Cycles
     
@@ -52,12 +58,18 @@ extension MatchView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(matchTableView)
+        self.addSubviews(matchTableView, emptyImageView)
     }
     
     private func setLayout() {
         matchTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        emptyImageView.snp.makeConstraints {
+            $0.height.equalTo(186.adjusted)
+            $0.width.equalTo(198.adjusted)
+            $0.center.equalToSuperview()
         }
     }
     
