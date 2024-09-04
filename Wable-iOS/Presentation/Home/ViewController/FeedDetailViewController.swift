@@ -461,18 +461,20 @@ extension FeedDetailViewController: UITableViewDataSource {
                     memberID: getFeedData?.memberId ?? 0,
                     memberProfileURL: getFeedData?.memberProfileUrl ?? "",
                     memberNickname: getFeedData?.memberNickname ?? "",
-                    contentID: self.contentId,
-                    contentTitle: getFeedData?.contentTitle ?? "",
-                    contentText: getFeedData?.contentText ?? "",
-                    time: getFeedData?.time ?? "",
                     isGhost: getFeedData?.isGhost ?? false,
                     memberGhost: getFeedData?.memberGhost ?? 0,
                     isLiked: getFeedData?.isLiked ?? false,
+                    time: getFeedData?.time ?? "",
                     likedNumber: getFeedData?.likedNumber ?? 0,
+                    memberFanTeam: getFeedData?.memberFanTeam ?? "",
+                    contentID: self.contentId,
+                    contentTitle: getFeedData?.contentTitle ?? "",
+                    contentText: getFeedData?.contentText ?? "",
                     commentNumber: getFeedData?.commentNumber ?? 0,
                     isDeleted: false,
-                    contentImageURL: getFeedData?.contentImageUrl ?? "",
-                    memberFanTeam: getFeedData?.memberFanTeam ?? "")
+                    message: getFeedData?.contentImageUrl ?? "",
+                    commnetNumber: 0,
+                    contentImageURL: "")
                 )
             }
             
@@ -486,7 +488,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                     
                     self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
                     if let feedData = self.feedData {
-                        self.contentId = feedData.contentID
+                        self.contentId = feedData.contentID ?? 0
                     }
                     self.nowShowingPopup = "deletePost"
                 }
@@ -547,7 +549,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                     cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
                 }
                 if let feedData = self.feedData {
-                    self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: feedData.contentID)
+                    self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: feedData.contentID ?? 0)
                 } else {
                     self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.contentId)
                 }
