@@ -62,7 +62,7 @@ extension HomeView {
         }
         
         feedTableView.snp.makeConstraints {
-            $0.top.equalTo(homeTabView.snp.bottom)
+            $0.top.equalTo(homeTabView.snp.bottom).offset(-2)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(safeAreaLayoutGuide)
         }
