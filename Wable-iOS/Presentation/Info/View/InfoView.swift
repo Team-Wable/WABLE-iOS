@@ -96,11 +96,9 @@ extension InfoView {
     }
     
     private func setHierarchy() {
-        // segmentedControl을 스크롤 뷰 바깥에 위치시킵니다.
         self.addSubviews(infoScrollView, tabView, infoSegmentedView)
         infoScrollView.addSubview(infoContentView)
-        infoContentView.addSubviews(pageViewController.view)
-        infoSegmentedView.addSubviews(segmentedControl, divisionLine)
+        infoSegmentedView.addSubviews(segmentedControl, divisionLine, pageViewController.view)
     }
     
     private func setLayout() {

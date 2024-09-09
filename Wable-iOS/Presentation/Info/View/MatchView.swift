@@ -58,7 +58,8 @@ extension MatchView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(matchTableView, emptyImageView)
+        self.addSubviews(matchTableView,
+                         emptyImageView)
     }
     
     private func setLayout() {

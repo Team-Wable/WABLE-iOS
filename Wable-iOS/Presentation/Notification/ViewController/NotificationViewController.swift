@@ -56,10 +56,12 @@ final class NotificationViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
+        self.navigationController?.navigationBar.isHidden = false
         self.navigationItem.title = StringLiterals.Notification.notificationNavigationTitle
         self.navigationController?.navigationBar.backgroundColor = .wableWhite
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.wableBlack]
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+
     }
 }
 
@@ -67,7 +69,6 @@ final class NotificationViewController: UIViewController {
 
 extension NotificationViewController {
     private func setUI() {
-        
     }
     
     private func setHierarchy() {
