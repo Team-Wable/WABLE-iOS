@@ -115,6 +115,7 @@ final class FeedDetailViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
+        self.divideLine.isHidden = true
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -139,7 +140,7 @@ extension FeedDetailViewController {
     private func setLayout() {
         divideLine.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(1)
+            $0.height.equalTo(1.adjusted)
         }
     }
     
