@@ -128,6 +128,12 @@ extension FeedDetailViewController {
         self.view.backgroundColor = .wableWhite
         feedDetailView.feedDetailTableView.rowHeight = UITableView.automaticDimension
         feedDetailView.feedDetailTableView.estimatedRowHeight = 100
+        feedDetailView.bottomWriteView.writeTextView.text = (self.feedData?.memberNickname ?? "") + self.placeholder
+        feedDetailView.bottomWriteView.writeTextView.textContainerInset = UIEdgeInsets(top: 10.adjusted,
+                                                                                       left: 10.adjusted,
+                                                                                       bottom: 10.adjusted,
+                                                                                       right: 10.adjusted)
+        
         navigationController?.navigationBar.barTintColor = .wableWhite
     }
     
@@ -253,7 +259,6 @@ extension FeedDetailViewController {
                     DispatchQueue.main.async {
                         self.didPullToRefresh()
                         
-                        self.feedDetailView.bottomWriteView.writeTextView.text = ""
                         self.feedDetailView.bottomWriteView.writeTextView.textColor = .gray700
                         self.feedDetailView.bottomWriteView.writeTextView.text = (self.feedData?.memberNickname ?? "") + self.placeholder
                         self.feedDetailView.bottomWriteView.writeTextView.textContainerInset = UIEdgeInsets(top: 10.adjusted,
