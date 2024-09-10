@@ -15,9 +15,9 @@ final class JoinAgreementViewController: UIViewController {
     
     // MARK: - Properties
     
-    let useAgreementURL = URL(string: "https://www.notion.so/93625ba2f93547ff88984d3bb82a2f32")
-    let privacyURL = URL(string: "https://www.notion.so/1681f9cae9de47858ee0997b4cea9c03")
-    let advertisementURL = URL(string: "https://www.notion.so/0c70bf474acb487ab2b2ae957d975e51")
+    let useAgreementURL = URL(string: "https://joyous-ghost-8c7.notion.site/c6e26919055a4ff98fd73a8f9b29cb36?pvs=4")
+    let privacyURL = URL(string: "https://joyous-ghost-8c7.notion.site/fff08b005ea18052ae0bf9d056c2e830?pvs=4")
+    let advertisementURL = URL(string: "https://joyous-ghost-8c7.notion.site/0498674cf44b447da78c54279b5b0e17?pvs=4")
     
     var memberNickname: String?
     var memberLckYears: Int?

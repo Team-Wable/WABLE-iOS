@@ -68,9 +68,9 @@ enum StringLiterals {
         static let myPageNoContentButton = "글 작성하러 가기"
         static let myPageNoCommentLabel = "아직 작성한 댓글이 없어요."
         static let myPageNoCommentOtherLabel = "님이\n댓글을 작성하지 않았어요."
-        static let myPageCustomerURL = "https://joyous-ghost-8c7.notion.site/Don-t-be-e949f7751de94ba682f4bd6792cbe36e"
-        static let myPageFeedbackURL = "https://forms.gle/DqnypURRBDks7WqJ6"
-        static let myPageUseTermURL = "https://joyous-ghost-8c7.notion.site/4ac9966cf7d944bf9595352edbc1b1b0"
+        static let myPageCustomerURL = "https://forms.gle/WWfbHXvGNgXMxgZr5"
+        static let myPageFeedbackURL = "https://forms.gle/WWfbHXvGNgXMxgZr5"
+        static let myPageUseTermURL = "https://joyous-ghost-8c7.notion.site/c6e26919055a4ff98fd73a8f9b29cb36?pvs=4"
         
         static let myPageEditProfileTitle = "와블에서 멋진 모습으로\n활동해 보세요!"
         static let myPageProfilePlaceholder = "예) 중꺾마"
