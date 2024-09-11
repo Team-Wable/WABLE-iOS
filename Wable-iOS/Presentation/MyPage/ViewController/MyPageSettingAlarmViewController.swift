@@ -38,6 +38,7 @@ final class MyPageSettingAlarmViewController: UIViewController {
     private let pushAlarmSettingButton: UIButton = {
         let button = UIButton()
         button.setImage(ImageLiterals.Button.btnNext, for: .normal)
+        button.isEnabled = false
         return button
     }()
     
