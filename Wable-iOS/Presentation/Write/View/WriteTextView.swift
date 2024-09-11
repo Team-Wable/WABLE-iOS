@@ -102,7 +102,7 @@ final class WriteTextView: UIView {
         button.setTitleColor(.gray600, for: .normal)
         button.titleLabel?.font = UIFont.body3
         button.backgroundColor = .gray200
-        button.layer.cornerRadius = 5.adjusted
+        button.layer.cornerRadius = 18.adjusted
         button.isEnabled = false
         return button
     }()
