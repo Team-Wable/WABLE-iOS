@@ -30,16 +30,19 @@ final class WriteTextView: UIView {
     
     private let contentView = UIView()
     
-    let titleTextField: UITextField = {
-        let textField = UITextField()
-        textField.font = .head1
-        textField.textColor = .wableBlack
-        textField.backgroundColor = .clear
-        textField.placeholder = StringLiterals.Write.writeTitlePlaceholder
-        textField.setPlaceholderColor(.gray700)
-        textField.borderStyle = .none
-        textField.textAlignment = .left
-        return textField
+    let titleTextField: UITextView = {
+        let textView = UITextView()
+        textView.font = .head1
+        textView.textColor = .wableBlack
+        textView.backgroundColor = .clear
+        textView.addPlaceholder(StringLiterals.Write.writeTitlePlaceholder, padding: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
+        textView.tintColor = .gray700
+        textView.textAlignment = .left
+        textView.isScrollEnabled = false // 내용에 따라 높이가 조절되도록 설정
+        textView.textContainer.lineBreakMode = .byWordWrapping
+        textView.textContainerInset = .zero // 여백 제거
+        textView.textContainer.lineFragmentPadding = 0 // 좌우 패딩 제거
+        return textView
     }()
     
     let contentTextView: UITextView = {
