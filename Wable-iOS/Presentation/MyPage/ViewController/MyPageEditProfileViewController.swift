@@ -44,6 +44,7 @@ final class MyPageEditProfileViewController: UIViewController {
     // MARK: - UI Components
     
     private let originView = MyPageEditProfileView()
+    private let topDivisionLine = UIView().makeDivisionLine()
     
     // MARK: - Life Cycles
     
@@ -114,11 +115,15 @@ extension MyPageEditProfileViewController {
     }
     
     private func setHierarchy() {
-        
+        self.view.addSubviews(topDivisionLine)
     }
     
     private func setLayout() {
-        
+        topDivisionLine.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1.adjusted)
+        }
     }
     
     private func setAddTarget() {

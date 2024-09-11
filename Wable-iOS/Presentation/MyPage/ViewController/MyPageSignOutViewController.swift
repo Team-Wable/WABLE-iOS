@@ -28,6 +28,7 @@ class MyPageSignOutViewController: UIViewController {
     // MARK: - UI Components
     
     private let myView = MyPageSignOutView()
+    private let topDivisionLine = UIView().makeDivisionLine()
     
     // MARK: - Life Cycles
     
@@ -85,11 +86,15 @@ extension MyPageSignOutViewController {
     }
     
     private func setHierarchy() {
-        
+        self.view.addSubviews(topDivisionLine)
     }
     
     private func setLayout() {
-        
+        topDivisionLine.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1.adjusted)
+        }
     }
     
     private func setDelegate() {

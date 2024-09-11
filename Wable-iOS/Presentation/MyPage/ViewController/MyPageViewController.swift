@@ -69,6 +69,8 @@ final class MyPageViewController: UIViewController {
     private var ghostPopupView: WablePopupView? = nil
     private var logoutPopupView: WablePopupView? = nil
     let refreshControl = UIRefreshControl()
+    
+    private let topDivisionLine = UIView().makeDivisionLine()
 
    // MARK: - Life Cycles
     
@@ -182,10 +184,15 @@ extension MyPageViewController {
     }
     
     private func setHierarchy() {
-        
+        self.view.addSubview(topDivisionLine)
     }
     
     private func setLayout() {
+        topDivisionLine.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1.adjusted)
+        }
         
         rootView.pageViewController.view.snp.makeConstraints {
             $0.top.equalTo(rootView.segmentedControl.snp.bottom).offset(2.adjusted)
