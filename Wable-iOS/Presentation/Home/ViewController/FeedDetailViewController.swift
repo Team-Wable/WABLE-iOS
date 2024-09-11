@@ -822,4 +822,8 @@ extension FeedDetailViewController: WablePopupDelegate {
             }
         }
     }
+    
+    func singleButtonTapped() {
+        
+    }
 }

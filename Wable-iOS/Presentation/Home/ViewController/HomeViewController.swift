@@ -526,4 +526,8 @@ extension HomeViewController: WablePopupDelegate {
             }
         }
     }
+    
+    func singleButtonTapped() {
+        
+    }
 }

@@ -12,6 +12,7 @@ import SnapKit
 protocol WablePopupDelegate: AnyObject {
     func cancleButtonTapped()
     func confirmButtonTapped()
+    func singleButtonTapped()
 }
 
 final class WablePopupView: UIView {
@@ -72,6 +73,15 @@ final class WablePopupView: UIView {
         return button
     }()
     
+    let singleButton: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.wableWhite, for: .normal)
+        button.titleLabel?.font = .body1
+        button.backgroundColor = .purple50
+        button.layer.cornerRadius = 12.adjusted
+        return button
+    }()
+    
     // MARK: - Life Cycles
     
     init(popupTitle: String, popupContent: String, leftButtonTitle: String, rightButtonTitle: String) {
@@ -86,6 +96,19 @@ final class WablePopupView: UIView {
         setHierarchy()
         setLayout()
         setAddTarget()
+    }
+    
+    init(popupTitle: String, popupContent: String, singleButtonTitle: String) {
+        super.init(frame: .zero)
+        
+        popupTitleLabel.setTextWithLineHeight(text: popupTitle, lineHeight: 28.8.adjusted, alignment: .center)
+        popupContentLabel.text = popupContent // 팝업 내용
+        singleButton.setTitle(singleButtonTitle, for: .normal) // 팝업 싱글 버튼 타이틀
+        
+        setUI()
+        setSingleHierarchy()
+        setSingleLayout()
+        setSingleAddTarget()
     }
     
     @available(*, unavailable)
@@ -158,6 +181,61 @@ extension WablePopupView {
         self.confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
     }
     
+    func setSingleHierarchy() {
+        self.addSubview(container)
+        
+        // 팝업뷰 내용이 없는 경우
+        if popupContentLabel.text == "" {
+            container.addSubviews(popupTitleLabel, buttonStackView)
+        } else {
+            container.addSubviews(popupTitleLabel, popupContentLabel, buttonStackView)
+        }
+        
+        buttonStackView.addArrangedSubview(singleButton)
+    }
+    
+    func setSingleLayout() {
+        container.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(30.adjusted)
+            $0.centerY.equalToSuperview()
+        }
+        
+        buttonStackView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview().inset(18.adjusted)
+            $0.height.equalTo(48.adjusted)
+        }
+        
+        // 팝업뷰 내용이 없는 경우
+        if popupContentLabel.text == "" {
+            popupTitleLabel.snp.makeConstraints {
+                $0.top.equalToSuperview().inset(32.adjusted)
+                $0.leading.trailing.equalToSuperview().inset(24.adjusted)
+                $0.bottom.equalTo(singleButton.snp.top).offset(-32.adjusted)
+            }
+            
+            buttonStackView.snp.makeConstraints {
+                $0.leading.trailing.bottom.equalToSuperview().inset(18.adjusted)
+                $0.height.equalTo(48.adjusted)
+            }
+        } else {
+            popupTitleLabel.snp.makeConstraints {
+                $0.top.equalToSuperview().inset(32.adjusted)
+                $0.leading.trailing.equalToSuperview().inset(24.adjusted)
+                $0.bottom.equalTo(popupContentLabel.snp.top).offset(-8.adjusted)
+            }
+            
+            popupContentLabel.snp.makeConstraints {
+                $0.top.equalTo(popupTitleLabel.snp.bottom).offset(8.adjusted)
+                $0.leading.trailing.equalToSuperview().inset(24.adjusted)
+                $0.bottom.equalTo(singleButton.snp.top).offset(-32.adjusted)
+            }
+        }
+    }
+    
+    func setSingleAddTarget() {
+        self.singleButton.addTarget(self, action: #selector(singleButtonTapped), for: .touchUpInside)
+    }
+    
     @objc
     func cancleButtonTapped() {
         delegate?.cancleButtonTapped()
@@ -166,5 +244,10 @@ extension WablePopupView {
     @objc
     func confirmButtonTapped() {
         delegate?.confirmButtonTapped()
+    }
+    
+    @objc
+    func singleButtonTapped() {
+        delegate?.singleButtonTapped()
     }
 }

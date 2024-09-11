@@ -662,4 +662,8 @@ extension MyPageViewController: WablePopupDelegate {
                                   isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
         }
     }
+    
+    func singleButtonTapped() {
+        
+    }
 }

@@ -18,6 +18,9 @@ enum StringLiterals {
     
     enum Login {
         static let loginTitle = "클린 LCK 팬 커뮤니티\n와블에서 함께 해요"
+        static let loginNewUserPopupTitle = "앗 잠깐!"
+        static let loginNewUserPopupContent = "와블은 온화하면서도 유쾌한 LCK 팬들이 모여 함께 즐기는 공간이에요. 더 건강하고 즐거운 커뮤니티를 만들어 나가는데 함께 노력해주실거죠?"
+        static let loginNewUserPopupButtonTitle = "확인"
     }
     
     enum Join {
