@@ -531,4 +531,8 @@ extension MyPageReplyViewController: WablePopupDelegate {
             }
         }
     }
+    
+    func singleButtonTapped() {
+        
+    }
 }

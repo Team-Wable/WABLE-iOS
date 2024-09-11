@@ -550,4 +550,8 @@ extension MyPagePostViewController: WablePopupDelegate {
             }
         }
     }
+    
+    func singleButtonTapped() {
+        
+    }
 }
