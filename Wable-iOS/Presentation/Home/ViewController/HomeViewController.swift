@@ -52,6 +52,7 @@ final class HomeViewController: UIViewController {
     var homeBottomsheetView = HomeBottomSheetView()
     private var reportPopupView: WablePopupView? = nil
     private var deletePopupView: WablePopupView? = nil
+    private var welcomePopupView: WablePopupView? = nil
     
     private var reportToastView: UIImageView?
     
@@ -106,6 +107,24 @@ final class HomeViewController: UIViewController {
 extension HomeViewController {
     private func setUI() {
         self.view.backgroundColor = .wableWhite
+        
+        if loadUserData()?.isFirstUser == true {
+            self.welcomePopupView = WablePopupView(popupTitle: StringLiterals.Home.homeWelcomePopupTitle,
+                                                   popupContent: "\(loadUserData()?.userNickname ?? "")" + StringLiterals.Home.homeWelcomePopupContent,
+                                                   singleButtonTitle: StringLiterals.Home.homeWelcomePopupButtonTitle)
+            
+            if let popupView = self.welcomePopupView {
+                if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                    window.addSubviews(popupView)
+                }
+                
+                popupView.delegate = self
+                
+                popupView.snp.makeConstraints {
+                    $0.edges.equalToSuperview()
+                }
+            }
+        }
     }
     
     private func setHierarchy() {
@@ -123,16 +142,10 @@ extension HomeViewController {
     
     private func setNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(showToast(_:)), name: WriteViewController.writeCompletedNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(showDeleteToast(_:)), name: DeletePopupViewController.showDeletePostToastNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(popViewController), name: DeletePopupViewController.popViewController, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.didDismissPopupNotification(_:)), name: NSNotification.Name("DismissDetailView"), object: nil)
     }
     
     private func removeNotification() {
-//        NotificationCenter.default.removeObserver(self, name: WriteViewController.writeCompletedNotification, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: DeletePopupViewController.showDeletePostToastNotification, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: DeletePopupViewController.popViewController, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("DismissDetailView"), object: nil)
+        
     }
     
     private func bindViewModel() {
@@ -528,6 +541,15 @@ extension HomeViewController: WablePopupDelegate {
     }
     
     func singleButtonTapped() {
+        self.welcomePopupView?.removeFromSuperview()
         
+        saveUserData(UserInfo(isSocialLogined: loadUserData()?.isPushAlarmAllowed ?? false,
+                              isFirstUser: false,
+                              isJoinedApp: loadUserData()?.isJoinedApp ?? false,
+                              userNickname: loadUserData()?.userNickname ?? "",
+                              memberId: loadUserData()?.memberId ?? 0,
+                              userProfileImage: loadUserData()?.userProfileImage ?? "",
+                              fcmToken: loadUserData()?.fcmToken ?? "",
+                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
     }
 }

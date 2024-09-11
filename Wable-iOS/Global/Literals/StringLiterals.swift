@@ -142,6 +142,9 @@ enum StringLiterals {
     }
     
     enum Home {
+        static let homeWelcomePopupTitle = "와블과 함께해 주셔서 감사합니다!"
+        static let homeWelcomePopupContent = "님,\n와블의 일원이 되신 것을 환영해요.\nLCK 함께 보며 같이 즐겨요 :)"
+        static let homeWelcomePopupButtonTitle = "와블 즐기러 가기"
         static let reportPopupTitle = "신고하시겠어요?"
         static let reportPopupContent = "해당 유저 혹은 게시글을 신고하시려면 신고하기 버튼을 눌러주세요."
         static let reportPopupUndo = "취소"
