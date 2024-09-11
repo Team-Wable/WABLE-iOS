@@ -51,6 +51,8 @@ final class MyPageReplyViewController: UIViewController {
     private var reportPopupView: WablePopupView? = nil
     private var deletePopupView: WablePopupView? = nil
     
+    private var reportToastView: UIImageView?
+    
     lazy var feedDetailTableView = FeedDetailView().feedDetailTableView
     let noCommentLabel: UILabel = {
         let label = UILabel()
@@ -472,24 +474,41 @@ extension MyPageReplyViewController: WablePopupDelegate {
         if nowShowingPopup == "report" {
             self.reportPopupView?.removeFromSuperview()
             
-            let warnView: SFSafariViewController
-            if let warnURL = self.warnUserURL {
-                warnView = SFSafariViewController(url: warnURL)
-                self.present(warnView, animated: true, completion: nil)
+            Task {
+                do {
+                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                        let result = try await self.likeViewModel.postReportButtonAPI(
+                            reportTargetNickname: self.reportTargetNickname,
+                            relateText: self.relateText
+                        )
+                        
+                        self.reportToastView = UIImageView(image: ImageLiterals.Toast.toastReport)
+                        self.reportToastView?.contentMode = .scaleAspectFit
+                        
+                        if let reportToastView = self.reportToastView {
+                            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                                window.addSubviews(reportToastView)
+                            }
+                            
+                            reportToastView.snp.makeConstraints {
+                                $0.top.equalToSuperview().inset(75.adjusted)
+                                $0.centerX.equalToSuperview()
+                                $0.width.equalTo(343.adjusted)
+                            }
+                            
+                            UIView.animate(withDuration: 1, delay: 1, options: .curveEaseIn) {
+                                self.reportToastView?.alpha = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                self.reportToastView?.removeFromSuperview()
+                            }
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
             }
-            
-//            Task {
-//                do {
-//                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
-//                        let result = try await self.homeViewModel.postReportButtonAPI(
-//                            reportTargetNickname: self.reportTargetNickname,
-//                            relateText: self.relateText
-//                        )
-//                    }
-//                } catch {
-//                    print(error)
-//                }
-//            }
         }
         
         if nowShowingPopup == "delete" {
@@ -511,5 +530,9 @@ extension MyPageReplyViewController: WablePopupDelegate {
                 }
             }
         }
+    }
+    
+    func singleButtonTapped() {
+        
     }
 }

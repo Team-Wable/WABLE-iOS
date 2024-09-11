@@ -75,6 +75,8 @@ final class FeedDetailViewController: UIViewController {
     private var reportPopupView: WablePopupView? = nil
     private var deletePopupView: WablePopupView? = nil
     
+    private var reportToastView: UIImageView?
+    
     // MARK: - Life Cycles
     
     override func loadView() {
@@ -128,6 +130,12 @@ extension FeedDetailViewController {
         self.view.backgroundColor = .wableWhite
         feedDetailView.feedDetailTableView.rowHeight = UITableView.automaticDimension
         feedDetailView.feedDetailTableView.estimatedRowHeight = 100
+        feedDetailView.bottomWriteView.writeTextView.text = (self.feedData?.memberNickname ?? "") + self.placeholder
+        feedDetailView.bottomWriteView.writeTextView.textContainerInset = UIEdgeInsets(top: 10.adjusted,
+                                                                                       left: 10.adjusted,
+                                                                                       bottom: 10.adjusted,
+                                                                                       right: 10.adjusted)
+        
         navigationController?.navigationBar.barTintColor = .wableWhite
     }
     
@@ -253,7 +261,6 @@ extension FeedDetailViewController {
                     DispatchQueue.main.async {
                         self.didPullToRefresh()
                         
-                        self.feedDetailView.bottomWriteView.writeTextView.text = ""
                         self.feedDetailView.bottomWriteView.writeTextView.textColor = .gray700
                         self.feedDetailView.bottomWriteView.writeTextView.text = (self.feedData?.memberNickname ?? "") + self.placeholder
                         self.feedDetailView.bottomWriteView.writeTextView.textContainerInset = UIEdgeInsets(top: 10.adjusted,
@@ -720,10 +727,6 @@ extension FeedDetailViewController: WablePopupDelegate {
         if nowShowingPopup == "ghost" {
             self.ghostPopupView?.removeFromSuperview()
             
-            print("self.alarmTriggerType: \(self.alarmTriggerType)")
-            print("self.targetMemberId: \(self.targetMemberId)")
-            print("self.alarmTriggerdId: \(self.alarmTriggerdId)")
-            
             Task {
                 do {
                     if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
@@ -738,8 +741,6 @@ extension FeedDetailViewController: WablePopupDelegate {
                         didPullToRefresh()
                         
                         if result?.status == 400 {
-                            // 이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기
-//                            showAlreadyTransparencyToast()
                             print("이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기")
                         }
                     }
@@ -752,24 +753,41 @@ extension FeedDetailViewController: WablePopupDelegate {
         if nowShowingPopup == "report" {
             self.reportPopupView?.removeFromSuperview()
             
-            let warnView: SFSafariViewController
-            if let warnURL = self.warnUserURL {
-                warnView = SFSafariViewController(url: warnURL)
-                self.present(warnView, animated: true, completion: nil)
+            Task {
+                do {
+                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                        let result = try await self.likeViewModel.postReportButtonAPI(
+                            reportTargetNickname: self.reportTargetNickname,
+                            relateText: self.relateText
+                        )
+                        
+                        self.reportToastView = UIImageView(image: ImageLiterals.Toast.toastReport)
+                        self.reportToastView?.contentMode = .scaleAspectFit
+                        
+                        if let reportToastView = self.reportToastView {
+                            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                                window.addSubviews(reportToastView)
+                            }
+                            
+                            reportToastView.snp.makeConstraints {
+                                $0.top.equalToSuperview().inset(75.adjusted)
+                                $0.centerX.equalToSuperview()
+                                $0.width.equalTo(343.adjusted)
+                            }
+                            
+                            UIView.animate(withDuration: 1, delay: 1, options: .curveEaseIn) {
+                                self.reportToastView?.alpha = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                self.reportToastView?.removeFromSuperview()
+                            }
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
             }
-            
-//            Task {
-//                do {
-//                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
-//                        let result = try await self.homeViewModel.postReportButtonAPI(
-//                            reportTargetNickname: self.reportTargetNickname,
-//                            relateText: self.relateText
-//                        )
-//                    }
-//                } catch {
-//                    print(error)
-//                }
-//            }
         }
         
         if nowShowingPopup == "deletePost" {
@@ -803,5 +821,9 @@ extension FeedDetailViewController: WablePopupDelegate {
                 }
             }
         }
+    }
+    
+    func singleButtonTapped() {
+        
     }
 }

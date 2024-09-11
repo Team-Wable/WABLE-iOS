@@ -24,6 +24,8 @@ class MyPageSignOutConfirmViewController: UIViewController {
     // MARK: - UI Components
     
     private let myView = MyPageSignOutConfirmView()
+    private let topDivisionLine = UIView().makeDivisionLine()
+    
     private var signOutPopupView = WablePopupView(popupTitle: StringLiterals.MyPage.myPageSignOutPopupTitleLabel,
                                           popupContent: "",
                                           leftButtonTitle: StringLiterals.MyPage.myPageSignOutPopupLeftButtonTitle,
@@ -87,12 +89,20 @@ extension MyPageSignOutConfirmViewController {
     }
     
     private func setHierarchy() {
+        self.view.addSubviews(topDivisionLine)
+        
         if let window = UIApplication.shared.keyWindowInConnectedScenes {
             window.addSubviews(self.signOutPopupView)
         }
     }
     
     private func setLayout() {
+        topDivisionLine.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1.adjusted)
+        }
+        
         self.signOutPopupView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -206,6 +216,10 @@ extension MyPageSignOutConfirmViewController: WablePopupDelegate {
     
     func confirmButtonTapped() {
         self.signOutPopupView.isHidden = true
+    }
+    
+    func singleButtonTapped() {
+        
     }
 }
 

@@ -14,9 +14,6 @@ final class FeedBottomWriteView: UIView {
     
     // MARK: - Properties
     
-    private let placeholder = StringLiterals.Home.placeholder
-    private var nickname = "페이커최고"
-    
     // MARK: - UI Components
     
     private lazy var tabLottieAnimationView: LottieAnimationView = {
@@ -65,11 +62,6 @@ final class FeedBottomWriteView: UIView {
 
 extension FeedBottomWriteView {
     private func setUI() {
-        writeTextView.text = nickname + placeholder
-        writeTextView.textContainerInset = UIEdgeInsets(top: 10.adjusted,
-                                                        left: 10.adjusted,
-                                                        bottom: 10.adjusted,
-                                                        right: 10.adjusted)
 
     }
     

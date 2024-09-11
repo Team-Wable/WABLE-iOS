@@ -52,6 +52,9 @@ final class HomeViewController: UIViewController {
     var homeBottomsheetView = HomeBottomSheetView()
     private var reportPopupView: WablePopupView? = nil
     private var deletePopupView: WablePopupView? = nil
+    private var welcomePopupView: WablePopupView? = nil
+    
+    private var reportToastView: UIImageView?
     
     // MARK: - Life Cycles
     
@@ -104,6 +107,24 @@ final class HomeViewController: UIViewController {
 extension HomeViewController {
     private func setUI() {
         self.view.backgroundColor = .wableWhite
+        
+        if loadUserData()?.isFirstUser == true {
+            self.welcomePopupView = WablePopupView(popupTitle: StringLiterals.Home.homeWelcomePopupTitle,
+                                                   popupContent: "\(loadUserData()?.userNickname ?? "")" + StringLiterals.Home.homeWelcomePopupContent,
+                                                   singleButtonTitle: StringLiterals.Home.homeWelcomePopupButtonTitle)
+            
+            if let popupView = self.welcomePopupView {
+                if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                    window.addSubviews(popupView)
+                }
+                
+                popupView.delegate = self
+                
+                popupView.snp.makeConstraints {
+                    $0.edges.equalToSuperview()
+                }
+            }
+        }
     }
     
     private func setHierarchy() {
@@ -121,16 +142,10 @@ extension HomeViewController {
     
     private func setNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(showToast(_:)), name: WriteViewController.writeCompletedNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(showDeleteToast(_:)), name: DeletePopupViewController.showDeletePostToastNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(popViewController), name: DeletePopupViewController.popViewController, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.didDismissPopupNotification(_:)), name: NSNotification.Name("DismissDetailView"), object: nil)
     }
     
     private func removeNotification() {
-//        NotificationCenter.default.removeObserver(self, name: WriteViewController.writeCompletedNotification, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: DeletePopupViewController.showDeletePostToastNotification, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: DeletePopupViewController.popViewController, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("DismissDetailView"), object: nil)
+        
     }
     
     private func bindViewModel() {
@@ -455,8 +470,6 @@ extension HomeViewController: WablePopupDelegate {
                         didPullToRefresh()
                         
                         if result?.status == 400 {
-                            // 이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기
-//                            showAlreadyTransparencyToast()
                             print("이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기")
                         }
                     }
@@ -469,24 +482,41 @@ extension HomeViewController: WablePopupDelegate {
         if nowShowingPopup == "report" {
             self.reportPopupView?.removeFromSuperview()
             
-            let warnView: SFSafariViewController
-            if let warnURL = self.warnUserURL {
-                warnView = SFSafariViewController(url: warnURL)
-                self.present(warnView, animated: true, completion: nil)
+            Task {
+                do {
+                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                        let result = try await self.likeViewModel.postReportButtonAPI(
+                            reportTargetNickname: self.reportTargetNickname,
+                            relateText: self.relateText
+                        )
+                        
+                        self.reportToastView = UIImageView(image: ImageLiterals.Toast.toastReport)
+                        self.reportToastView?.contentMode = .scaleAspectFit
+                        
+                        if let reportToastView = self.reportToastView {
+                            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                                window.addSubviews(reportToastView)
+                            }
+                            
+                            reportToastView.snp.makeConstraints {
+                                $0.top.equalToSuperview().inset(75.adjusted)
+                                $0.centerX.equalToSuperview()
+                                $0.width.equalTo(343.adjusted)
+                            }
+                            
+                            UIView.animate(withDuration: 1, delay: 1, options: .curveEaseIn) {
+                                self.reportToastView?.alpha = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                self.reportToastView?.removeFromSuperview()
+                            }
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
             }
-            
-//            Task {
-//                do {
-//                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
-//                        let result = try await self.homeViewModel.postReportButtonAPI(
-//                            reportTargetNickname: self.reportTargetNickname,
-//                            relateText: self.relateText
-//                        )
-//                    }
-//                } catch {
-//                    print(error)
-//                }
-//            }
         }
         
         if nowShowingPopup == "delete" {
@@ -508,5 +538,18 @@ extension HomeViewController: WablePopupDelegate {
                 }
             }
         }
+    }
+    
+    func singleButtonTapped() {
+        self.welcomePopupView?.removeFromSuperview()
+        
+        saveUserData(UserInfo(isSocialLogined: loadUserData()?.isPushAlarmAllowed ?? false,
+                              isFirstUser: false,
+                              isJoinedApp: loadUserData()?.isJoinedApp ?? false,
+                              userNickname: loadUserData()?.userNickname ?? "",
+                              memberId: loadUserData()?.memberId ?? 0,
+                              userProfileImage: loadUserData()?.userProfileImage ?? "",
+                              fcmToken: loadUserData()?.fcmToken ?? "",
+                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
     }
 }

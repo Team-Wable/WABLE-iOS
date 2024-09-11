@@ -19,6 +19,9 @@ final class LoginViewModel: NSObject, ViewModelType {
     
     private let networkProvider: NetworkServiceType
     private let userInfoPublisher = PassthroughSubject<Bool, Never>()
+    private let showNewUserPopupView = PassthroughSubject<String, Never>()
+    
+    private var selectedLogin: String = ""
     
     init(networkProvider: NetworkServiceType) {
         self.networkProvider = networkProvider
@@ -31,38 +34,60 @@ final class LoginViewModel: NSObject, ViewModelType {
     struct Input {
         let kakaoButtonTapped: AnyPublisher<Void, Never>?
         let appleButtonTapped: AnyPublisher<Void, Never>?
+        let newUserSingleButtonTapped: AnyPublisher<Void, Never>?
     }
     
     struct Output {
         let userInfoPublisher: PassthroughSubject<Bool, Never>
+        let showNewUserPopupView: PassthroughSubject<String, Never>
     }
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
         input.kakaoButtonTapped?
             .sink {
-                self.performKakaoLogin()
+                self.selectedLogin = "KAKAO"
+                
+                if loadUserData()?.isFirstUser == true {
+                    self.showNewUserPopupView.send("KAKAO")
+                } else {
+                    self.performKakaoLogin()
+                }
             }
             .store(in: cancelBag)
         
         input.appleButtonTapped?
             .sink {
-                self.performAppleLogin()
+                self.selectedLogin = "APPLE"
+                
+                if loadUserData()?.isFirstUser == true {
+                    self.showNewUserPopupView.send("APPLE")
+                } else {
+                    self.performAppleLogin()
+                }
             }
             .store(in: cancelBag)
         
-        return Output(userInfoPublisher: userInfoPublisher)
+        input.newUserSingleButtonTapped?
+            .sink {
+                if self.selectedLogin == "KAKAO" {
+                    self.performKakaoLogin()
+                } else if self.selectedLogin == "APPLE" {
+                    self.performAppleLogin()
+                }
+            }
+            .store(in: cancelBag)
+        
+        return Output(userInfoPublisher: userInfoPublisher,
+                      showNewUserPopupView: showNewUserPopupView)
     }
     
     private func performKakaoLogin() {
-        print("performKakaoLogin")
         if UserApi.isKakaoTalkLoginAvailable() {
             UserApi.shared.loginWithKakaoTalk { [weak self] (oauthToken, error) in
-                print("oauthToken1: \(oauthToken)")
                 self?.handleKakaoLoginResult(oauthToken: oauthToken, error: error)
             }
         } else {
             UserApi.shared.loginWithKakaoAccount { [weak self] (oauthToken, error) in
-                print("oauthToken2: \(oauthToken)")
                 self?.handleKakaoLoginResult(oauthToken: oauthToken, error: error)
             }
         }
@@ -180,8 +205,19 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
                         guard let isNewUser = result?.isNewUser else { return }
                         let nickname = result?.nickName ?? ""
                         if !isNewUser && !nickname.isEmpty {
+                            // 기존 유저인 경우
                             self.userInfoPublisher.send(false)
+                            
+                            saveUserData(UserInfo(isSocialLogined: true,
+                                                  isFirstUser: false,
+                                                  isJoinedApp: true,
+                                                  userNickname: nickname,
+                                                  memberId: loadUserData()?.memberId ?? 0,
+                                                  userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
+                                                  fcmToken: loadUserData()?.fcmToken ?? "",
+                                                  isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
                         } else {
+                            // 신규 유저인 경우
                             self.userInfoPublisher.send(true)
                         }
                     } catch {

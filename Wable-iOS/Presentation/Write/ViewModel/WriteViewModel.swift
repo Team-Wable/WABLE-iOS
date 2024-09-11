@@ -17,7 +17,6 @@ final class WriteViewModel: ViewModelType {
     private let pushOrPopViewController = PassthroughSubject<Int, Never>()
     
     struct Input {
-        let backButtonTapped: AnyPublisher<Void, Never>
         let postButtonTapped: AnyPublisher<WriteContentImageRequestDTO, Never>
     }
     
@@ -26,12 +25,6 @@ final class WriteViewModel: ViewModelType {
     }
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
-        input.backButtonTapped
-            .sink { _ in
-                self.pushOrPopViewController.send(0)
-            }
-            .store(in: cancelBag)
-        
         input.postButtonTapped
             .sink { value in
                 Task {

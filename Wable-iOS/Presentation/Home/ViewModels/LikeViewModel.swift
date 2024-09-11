@@ -245,4 +245,24 @@ extension LikeViewModel {
             return nil
         }
     }
+    
+    func postReportButtonAPI(reportTargetNickname: String, relateText: String) async throws -> BaseResponse<EmptyResponse>? {
+        do {
+            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
+            let data: BaseResponse<EmptyResponse>? = try await
+            self.networkProvider.donNetwork(
+                type: .post,
+                baseURL: Config.baseURL + "v1/report/slack",
+                accessToken: accessToken,
+                body: ReportRequestDTO(
+                    reportTargetNickname: reportTargetNickname,
+                    relateText: relateText
+                ),
+                pathVariables: ["":""]
+            )
+            return data
+        } catch {
+            return nil
+        }
+    }
 }
