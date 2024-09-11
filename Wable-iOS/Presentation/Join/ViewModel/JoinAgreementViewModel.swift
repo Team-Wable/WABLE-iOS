@@ -135,7 +135,7 @@ final class JoinAgreementViewModel: ViewModelType {
                 
                 let fcmToken = loadUserData()?.fcmToken
                 saveUserData(UserInfo(isSocialLogined: true,
-                                      isFirstUser: false,
+                                      isFirstUser: true,
                                       isJoinedApp: true,
                                       userNickname: value.info?.nickname ?? "",
                                       memberId: loadUserData()?.memberId ?? 0,
