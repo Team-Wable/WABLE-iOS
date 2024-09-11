@@ -19,7 +19,6 @@ final class JoinProfileViewController: UIViewController {
     private let viewModel: JoinProfileViewModel
     
     private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
-    private lazy var xButtonTapped = self.navigationXButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var duplicationCheckButtonTapped = self.originView.duplicationCheckButton.publisher(for: .touchUpInside).map { _ in
         return self.originView.nickNameTextField.text ?? ""
     }.eraseToAnyPublisher()
@@ -117,6 +116,7 @@ extension JoinProfileViewController {
     }
     
     private func setAddTarget() {
+        navigationXButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
         self.originView.plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         self.originView.changeButton.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
     }
@@ -180,6 +180,13 @@ extension JoinProfileViewController {
             self.originView.profileImage.image = selectedImage
             self.memberDefaultProfileImage = selectedColor
             self.memberProfileImage = nil
+        }
+    }
+    
+    @objc private func xButtonTapped() {
+        if let navigationController = self.navigationController {
+            let viewControllers = [LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService()))]
+            navigationController.setViewControllers(viewControllers, animated: false)
         }
     }
     

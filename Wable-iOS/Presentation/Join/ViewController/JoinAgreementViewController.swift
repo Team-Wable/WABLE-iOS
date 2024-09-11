@@ -29,7 +29,6 @@ final class JoinAgreementViewController: UIViewController {
     private let viewModel: JoinAgreementViewModel
     
     private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
-    private lazy var xButtonTapped = self.navigationXButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var allCheckButtonTapped = self.originView.allCheck.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var firstCheck = self.originView.firstCheckView.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var secondCheck = self.originView.secondCheckView.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
@@ -115,6 +114,7 @@ extension JoinAgreementViewController {
     }
     
     private func setAddTarget() {
+        navigationXButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
         self.originView.firstCheckView.moreButton.addTarget(self, action: #selector(firstMoreButtonTapped), for: .touchUpInside)
         self.originView.secondCheckView.moreButton.addTarget(self, action: #selector(secondMoreButtonTapped), for: .touchUpInside)
         self.originView.fourthCheckView.moreButton.addTarget(self, action: #selector(fourthMoreButtonTapped), for: .touchUpInside)
@@ -234,6 +234,13 @@ extension JoinAgreementViewController {
             self.present(useAgreementView, animated: true, completion: nil)
         } else {
             print("👻👻👻 유효하지 않은 URL 입니다 👻👻👻")
+        }
+    }
+    
+    @objc private func xButtonTapped() {
+        if let navigationController = self.navigationController {
+            let viewControllers = [LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService()))]
+            navigationController.setViewControllers(viewControllers, animated: false)
         }
     }
 }
