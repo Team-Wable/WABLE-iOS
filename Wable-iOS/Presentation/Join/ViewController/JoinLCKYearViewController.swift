@@ -19,7 +19,6 @@ final class JoinLCKYearViewController: UIViewController {
     private let viewModel: JoinLCKYearViewModel
     
     private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
-    private lazy var xButtonTapped = self.navigationXButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var nextButtonTapped = self.originView.nextButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     
     var memberLckYears: Int?
@@ -92,7 +91,7 @@ extension JoinLCKYearViewController {
     }
     
     private func setAddTarget() {
-        
+        navigationXButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
     }
     
     private func bindViewModel() {
@@ -114,5 +113,12 @@ extension JoinLCKYearViewController {
                 }
             }
             .store(in: self.cancelBag)
+    }
+    
+    @objc private func xButtonTapped() {
+        if let navigationController = self.navigationController {
+            let viewControllers = [LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService()))]
+            navigationController.setViewControllers(viewControllers, animated: false)
+        }
     }
 }

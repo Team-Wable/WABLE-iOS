@@ -28,6 +28,7 @@ final class MyPageAccountInfoTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = .body2
         label.textColor = .wableBlack
+        label.numberOfLines = 0
         return label
     }()
     
@@ -68,6 +69,7 @@ extension MyPageAccountInfoTableViewCell {
         infoContent.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(159.adjusted)
+            $0.trailing.equalToSuperview().inset(26.adjusted)
         }
     }
     

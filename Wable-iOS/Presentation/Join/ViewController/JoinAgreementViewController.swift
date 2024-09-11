@@ -15,9 +15,9 @@ final class JoinAgreementViewController: UIViewController {
     
     // MARK: - Properties
     
-    let useAgreementURL = URL(string: "https://www.notion.so/93625ba2f93547ff88984d3bb82a2f32")
-    let privacyURL = URL(string: "https://www.notion.so/1681f9cae9de47858ee0997b4cea9c03")
-    let advertisementURL = URL(string: "https://www.notion.so/0c70bf474acb487ab2b2ae957d975e51")
+    let useAgreementURL = URL(string: "https://joyous-ghost-8c7.notion.site/c6e26919055a4ff98fd73a8f9b29cb36?pvs=4")
+    let privacyURL = URL(string: "https://joyous-ghost-8c7.notion.site/fff08b005ea18052ae0bf9d056c2e830?pvs=4")
+    let advertisementURL = URL(string: "https://joyous-ghost-8c7.notion.site/0498674cf44b447da78c54279b5b0e17?pvs=4")
     
     var memberNickname: String?
     var memberLckYears: Int?
@@ -29,7 +29,6 @@ final class JoinAgreementViewController: UIViewController {
     private let viewModel: JoinAgreementViewModel
     
     private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
-    private lazy var xButtonTapped = self.navigationXButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var allCheckButtonTapped = self.originView.allCheck.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var firstCheck = self.originView.firstCheckView.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var secondCheck = self.originView.secondCheckView.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
@@ -115,6 +114,7 @@ extension JoinAgreementViewController {
     }
     
     private func setAddTarget() {
+        navigationXButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
         self.originView.firstCheckView.moreButton.addTarget(self, action: #selector(firstMoreButtonTapped), for: .touchUpInside)
         self.originView.secondCheckView.moreButton.addTarget(self, action: #selector(secondMoreButtonTapped), for: .touchUpInside)
         self.originView.fourthCheckView.moreButton.addTarget(self, action: #selector(fourthMoreButtonTapped), for: .touchUpInside)
@@ -234,6 +234,13 @@ extension JoinAgreementViewController {
             self.present(useAgreementView, animated: true, completion: nil)
         } else {
             print("👻👻👻 유효하지 않은 URL 입니다 👻👻👻")
+        }
+    }
+    
+    @objc private func xButtonTapped() {
+        if let navigationController = self.navigationController {
+            let viewControllers = [LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService()))]
+            navigationController.setViewControllers(viewControllers, animated: false)
         }
     }
 }

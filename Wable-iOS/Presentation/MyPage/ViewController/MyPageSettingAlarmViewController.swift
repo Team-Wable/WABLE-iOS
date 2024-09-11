@@ -13,6 +13,8 @@ final class MyPageSettingAlarmViewController: UIViewController {
     
     // MARK: - UI Components
     
+    private let topDivisionLine = UIView().makeDivisionLine()
+    
     private let pushAlarmSettingView: UIView = {
         let view = UIView()
         return view
@@ -36,6 +38,7 @@ final class MyPageSettingAlarmViewController: UIViewController {
     private let pushAlarmSettingButton: UIButton = {
         let button = UIButton()
         button.setImage(ImageLiterals.Button.btnNext, for: .normal)
+        button.isEnabled = false
         return button
     }()
     
@@ -86,7 +89,7 @@ extension MyPageSettingAlarmViewController {
     }
     
     private func setHierarchy() {
-        self.view.addSubviews(pushAlarmSettingView)
+        self.view.addSubviews(topDivisionLine, pushAlarmSettingView)
         
         pushAlarmSettingView.addSubviews(pushAlarmTitle,
                                          pushAlarmSettingLabel,
@@ -94,8 +97,14 @@ extension MyPageSettingAlarmViewController {
     }
     
     private func setLayout() {
+        topDivisionLine.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1.adjusted)
+        }
+        
         pushAlarmSettingView.snp.makeConstraints {
-            $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(12.adjusted)
+            $0.top.equalTo(topDivisionLine.snp.bottom).offset(12.adjusted)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(52.adjusted)
         }

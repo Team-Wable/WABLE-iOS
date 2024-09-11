@@ -21,7 +21,6 @@ final class WriteViewController: UIViewController {
     private let viewModel: WriteViewModel
     private var transparency: Int = 0
     
-    private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var postButtonTapped = self.rootView.writeTextView.postButton.publisher(for: .touchUpInside).map { _ in
         return WriteContentImageRequestDTO(
             contentTitle: self.rootView.writeTextView.titleTextField.text ?? "",
@@ -31,8 +30,8 @@ final class WriteViewController: UIViewController {
     
     // MARK: - UI Components
     
-    private var navigationBackButton = BackButton()
     private let rootView = WriteView()
+    private let topDivisionLine = UIView().makeDivisionLine()
 //    private let banView = WriteBanView()
     
     // MARK: - Life Cycles
@@ -57,6 +56,17 @@ final class WriteViewController: UIViewController {
         
         setDelegate()
         setAddTarget()
+        
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.wableBlack,
+            NSAttributedString.Key.font: UIFont.body1,
+        ]
+        
+        self.title = "프로필 편집"
+        
+        let backButtonImage = ImageLiterals.Icon.icBack.withRenderingMode(.alwaysOriginal)
+        let backButton = UIBarButtonItem(image: backButtonImage, style: .done, target: self, action: #selector(backButtonDidTapped))
+        navigationItem.leftBarButtonItem = backButton
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,18 +104,19 @@ extension WriteViewController {
     }
     
     private func setHierarchy() {
-        self.navigationController?.navigationBar.addSubviews(navigationBackButton)
+        self.view.addSubviews(topDivisionLine)
     }
     
     private func setLayout() {
-        navigationBackButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(12.adjusted)
+        topDivisionLine.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1.adjusted)
         }
     }
     
     private func setDelegate() {
-//        self.rootView.writeCanclePopupView.delegate = self
+        
     }
     
     private func setAddTarget() {
@@ -113,8 +124,7 @@ extension WriteViewController {
     }
     
     private func bindViewModel() {
-        let input = WriteViewModel.Input(backButtonTapped: backButtonTapped,
-                                         postButtonTapped: postButtonTapped)
+        let input = WriteViewModel.Input(postButtonTapped: postButtonTapped)
         
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
         output.pushOrPopViewController
@@ -134,6 +144,11 @@ extension WriteViewController {
     
     private func WriteCompleted() {
         NotificationCenter.default.post(name: WriteViewController.writeCompletedNotification, object: nil, userInfo: ["showToast": true])
+    }
+    
+    @objc
+    private func backButtonDidTapped() {
+        navigationController?.popViewController(animated: true)
     }
     
     @objc private func photoButtonTapped() {

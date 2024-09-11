@@ -17,8 +17,13 @@ final class LoginViewController: UIViewController {
     private let viewModel: LoginViewModel
     private lazy var kakaoButtonTapped = self.kakaoLoginButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var appleButtonTapped = self.appleLoginButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    private lazy var newUserSingleButtonTapped = self.newUserPopupView.singleButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     
     // MARK: - UI Components
+    
+    private var newUserPopupView = WablePopupView(popupTitle: StringLiterals.Login.loginNewUserPopupTitle,
+                                           popupContent: StringLiterals.Login.loginNewUserPopupContent,
+                                           singleButtonTitle: StringLiterals.Login.loginNewUserPopupButtonTitle)
     
     private let loginBackgroundImage: UIImageView = {
         let image = UIImageView()
@@ -150,7 +155,10 @@ extension LoginViewController {
     }
     
     private func bindViewModel() {
-        let input = LoginViewModel.Input(kakaoButtonTapped: kakaoButtonTapped, appleButtonTapped: appleButtonTapped)
+        let input = LoginViewModel.Input(kakaoButtonTapped: kakaoButtonTapped,
+                                         appleButtonTapped: appleButtonTapped,
+                                         newUserSingleButtonTapped: newUserSingleButtonTapped)
+        
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
         
         output.userInfoPublisher
@@ -167,5 +175,34 @@ extension LoginViewController {
                 }
             }
             .store(in: self.cancelBag)
+        
+        output.showNewUserPopupView
+            .receive(on: RunLoop.main)
+            .sink { value in
+                if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                    window.addSubviews(self.newUserPopupView)
+                }
+                
+                self.newUserPopupView.delegate = self
+                
+                self.newUserPopupView.snp.makeConstraints {
+                    $0.edges.equalToSuperview()
+                }
+            }
+            .store(in: self.cancelBag)
+    }
+}
+
+extension LoginViewController: WablePopupDelegate {
+    func cancleButtonTapped() {
+        
+    }
+    
+    func confirmButtonTapped() {
+        
+    }
+    
+    func singleButtonTapped() {
+        self.newUserPopupView.removeFromSuperview()
     }
 }

@@ -18,6 +18,9 @@ enum StringLiterals {
     
     enum Login {
         static let loginTitle = "클린 LCK 팬 커뮤니티\n와블에서 함께 해요"
+        static let loginNewUserPopupTitle = "앗 잠깐!"
+        static let loginNewUserPopupContent = "와블은 온화하면서도 유쾌한 LCK 팬들이 모여 함께 즐기는 공간이에요. 더 건강하고 즐거운 커뮤니티를 만들어 나가는데 함께 노력해주실거죠?"
+        static let loginNewUserPopupButtonTitle = "확인"
     }
     
     enum Join {
@@ -68,9 +71,9 @@ enum StringLiterals {
         static let myPageNoContentButton = "글 작성하러 가기"
         static let myPageNoCommentLabel = "아직 작성한 댓글이 없어요."
         static let myPageNoCommentOtherLabel = "님이\n댓글을 작성하지 않았어요."
-        static let myPageCustomerURL = "https://joyous-ghost-8c7.notion.site/Don-t-be-e949f7751de94ba682f4bd6792cbe36e"
-        static let myPageFeedbackURL = "https://forms.gle/DqnypURRBDks7WqJ6"
-        static let myPageUseTermURL = "https://joyous-ghost-8c7.notion.site/4ac9966cf7d944bf9595352edbc1b1b0"
+        static let myPageCustomerURL = "https://forms.gle/WWfbHXvGNgXMxgZr5"
+        static let myPageFeedbackURL = "https://forms.gle/WWfbHXvGNgXMxgZr5"
+        static let myPageUseTermURL = "https://joyous-ghost-8c7.notion.site/c6e26919055a4ff98fd73a8f9b29cb36?pvs=4"
         
         static let myPageEditProfileTitle = "와블에서 멋진 모습으로\n활동해 보세요!"
         static let myPageProfilePlaceholder = "예) 중꺾마"
@@ -139,6 +142,9 @@ enum StringLiterals {
     }
     
     enum Home {
+        static let homeWelcomePopupTitle = "와블과 함께해 주셔서 감사합니다!"
+        static let homeWelcomePopupContent = "님,\n와블의 일원이 되신 것을 환영해요.\nLCK 함께 보며 같이 즐겨요 :)"
+        static let homeWelcomePopupButtonTitle = "와블 즐기러 가기"
         static let reportPopupTitle = "신고하시겠어요?"
         static let reportPopupContent = "해당 유저 혹은 게시글을 신고하시려면 신고하기 버튼을 눌러주세요."
         static let reportPopupUndo = "취소"

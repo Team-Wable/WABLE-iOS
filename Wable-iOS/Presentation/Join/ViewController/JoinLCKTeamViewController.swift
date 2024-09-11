@@ -18,7 +18,6 @@ final class JoinLCKTeamViewController: UIViewController {
     private let viewModel: JoinLCKTeamViewModel
     
     private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
-    private lazy var xButtonTapped = self.navigationXButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var noLCKTeamButtonTapped = self.originView.noLCKTeamButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var nextButtonTapped = self.originView.nextButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     
@@ -97,7 +96,7 @@ extension JoinLCKTeamViewController {
     }
     
     private func setAddTarget() {
-        
+        navigationXButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
     }
     
     private func bindViewModel() {
@@ -128,5 +127,12 @@ extension JoinLCKTeamViewController {
                 }
             }
             .store(in: self.cancelBag)
+    }
+    
+    @objc private func xButtonTapped() {
+        if let navigationController = self.navigationController {
+            let viewControllers = [LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService()))]
+            navigationController.setViewControllers(viewControllers, animated: false)
+        }
     }
 }
