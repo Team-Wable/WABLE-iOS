@@ -15,12 +15,7 @@ final class WriteView: UIView {
     
     // MARK: - UI Components
     
-    private let topDivisionLine = UIView().makeDivisionLine()
     let writeTextView = WriteTextView()
-//    let writeCanclePopupView = DontBePopupView(popupTitle: "",
-//                                               popupContent: StringLiterals.Write.writePopupContentLabel,
-//                                               leftButtonTitle: StringLiterals.Write.writePopupCancleButtonTitle,
-//                                               rightButtonTitle: StringLiterals.Write.writePopupConfirmButtonTitle)
     
     // MARK: - Life Cycles
     
@@ -47,29 +42,15 @@ extension WriteView {
     }
     
     func setHierarchy() {
-        self.addSubviews(topDivisionLine, writeTextView)
-        
-//        if let window = UIApplication.shared.keyWindowInConnectedScenes {
-//            window.addSubviews(writeCanclePopupView)
-//        }
+        self.addSubviews(writeTextView)
     }
     
     func setLayout() {
-        topDivisionLine.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.top.equalTo(self.safeAreaLayoutGuide)
-            $0.height.equalTo(1.adjusted)
-        }
-        
         writeTextView.snp.makeConstraints {
-            $0.top.equalTo(topDivisionLine.snp.bottom)
+            $0.top.equalTo(self.safeAreaLayoutGuide)
             $0.leading.trailing.equalTo(self.safeAreaLayoutGuide)
             $0.bottom.equalToSuperview()
         }
-        
-//        writeCanclePopupView.snp.makeConstraints {
-//            $0.edges.equalToSuperview()
-//        }
     }
     
     func setAddTarget() {
@@ -78,7 +59,7 @@ extension WriteView {
     
     @objc
     private func cancleButtonTapped() {
-//        writeCanclePopupView.alpha = 0
+
     }
     
     @objc
