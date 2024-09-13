@@ -347,7 +347,7 @@ extension MyPageViewController {
         self.rootView.myPageProfileView.transparencyValue = data.memberGhost
         self.rootView.myPageProfileView.userIntroductionLabel.setTextWithLineHeight(
             text: "\(data.memberFanTeam)을(를) 응원하고 있어요.\n\(data.memberLckYears)년부터 LCK를 보기 시작했어요.",
-            lineHeight: 25.adjusted, alignment: .left
+            lineHeight: 23.adjusted, alignment: .left
         )
         
         if data.memberId != loadUserData()?.memberId ?? 0 {
