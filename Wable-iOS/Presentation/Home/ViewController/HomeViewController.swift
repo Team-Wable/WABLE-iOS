@@ -315,7 +315,6 @@ extension HomeViewController {
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("viewModel.feedDatas.count: \(viewModel.feedDatas.count)")
         return viewModel.feedDatas.count
     }
     
@@ -337,6 +336,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         cell.alarmTriggerdId = viewModel.feedDatas[indexPath.row].contentID ?? Int()
         
         cell.bind(data: viewModel.feedDatas[indexPath.row])
+//        print("viewModel.feedDatas[indexPath.row]: \(viewModel.feedDatas[indexPath.row])")
+        let accessToken = KeychainWrapper.loadToken(forKey: "accessToken")
+        print("accesstoken: \(accessToken)")
         
         if viewModel.feedDatas[indexPath.row].memberID == loadUserData()?.memberId {
             cell.bottomView.ghostButton.isHidden = true

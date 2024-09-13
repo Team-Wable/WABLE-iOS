@@ -33,7 +33,7 @@ final class JoinProfileViewController: UIViewController {
     
     var memberLckYears: Int?
     var memberFanTeam: String?
-    var memberDefaultProfileImage: String?
+    var memberDefaultProfileImage: String = "PURPLE"
     var memberProfileImage: UIImage?
     
     // MARK: - UI Components
