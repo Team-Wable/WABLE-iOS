@@ -21,7 +21,7 @@ final class MyPageViewController: UIViewController {
     
     private var cancelBag = CancelBag()
     var viewModel: MyPageViewModel
-//    let homeViewModel = HomeViewModel(networkProvider: NetworkService())
+    private let likeViewModel: LikeViewModel
     
     var memberId: Int = loadUserData()?.memberId ?? 0
     var memberProfileImage: String = loadUserData()?.userProfileImage ?? ""
@@ -68,6 +68,9 @@ final class MyPageViewController: UIViewController {
     let rootView = MyPageView()
     private var ghostPopupView: WablePopupView? = nil
     private var logoutPopupView: WablePopupView? = nil
+    
+    private var ghostToastView: UIImageView?
+    
     let refreshControl = UIRefreshControl()
     
     private let topDivisionLine = UIView().makeDivisionLine()
@@ -80,8 +83,9 @@ final class MyPageViewController: UIViewController {
         view = rootView
     }
     
-    init(viewModel: MyPageViewModel) {
+    init(viewModel: MyPageViewModel, likeViewModel: LikeViewModel) {
         self.viewModel = viewModel
+        self.likeViewModel = likeViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -473,9 +477,9 @@ extension MyPageViewController {
     
     @objc
     private func contentGhostButtonTapped() {
-//        self.alarmTriggerType = rootView.myPageContentViewController.alarmTriggerType
-//        self.targetMemberId = rootView.myPageContentViewController.targetMemberId
-//        self.alarmTriggerdId = rootView.myPageContentViewController.alarmTriggerdId
+        self.alarmTriggerType = rootView.myPagePostViewController.alarmTriggerType
+        self.targetMemberId = rootView.myPagePostViewController.targetMemberId
+        self.alarmTriggerdId = rootView.myPagePostViewController.alarmTriggerdId
         
         self.ghostPopupView = WablePopupView(popupTitle: StringLiterals.Home.ghostPopupTitle,
                                              popupContent: "",
@@ -638,7 +642,51 @@ extension MyPageViewController: WablePopupDelegate {
     func confirmButtonTapped() {
         if ghostPopupView != nil {
             self.ghostPopupView?.removeFromSuperview()
-            print("투명도 버튼 클릭: 서버통신 이후에 투명도 낮추도록 하기")
+            
+            Task {
+                do {
+                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                        let result = try await self.likeViewModel.postDownTransparency(
+                            accessToken: accessToken,
+                            alarmTriggerType: self.alarmTriggerType,
+                            targetMemberId: self.targetMemberId,
+                            alarmTriggerId: self.alarmTriggerdId,
+                            ghostReason: self.ghostReason
+                        )
+                        
+                        self.ghostToastView = UIImageView(image: ImageLiterals.Toast.toastGhost)
+                        self.ghostToastView?.contentMode = .scaleAspectFit
+                        
+                        if let ghostToastView = self.ghostToastView {
+                            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                                window.addSubviews(ghostToastView)
+                            }
+                            
+                            ghostToastView.snp.makeConstraints {
+                                $0.top.equalToSuperview().inset(75.adjusted)
+                                $0.centerX.equalToSuperview()
+                                $0.width.equalTo(343.adjusted)
+                            }
+                            
+                            UIView.animate(withDuration: 1, delay: 1, options: .curveEaseIn) {
+                                self.ghostToastView?.alpha = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                self.ghostToastView?.removeFromSuperview()
+                            }
+                        }
+                        
+                        refreshData()
+                        
+                        if result?.status == 400 {
+                            print("이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기")
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }
         }
         
         if logoutPopupView != nil {
