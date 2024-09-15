@@ -85,7 +85,9 @@
 		0547F4FF2C64C954001E3039 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4FE2C64C954001E3039 /* ExampleViewController.swift */; };
 		0547F5012C64C99D001E3039 /* ExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F5002C64C99D001E3039 /* ExampleView.swift */; };
 		0547F5062C65290A001E3039 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 0547F5052C65290A001E3039 /* Lottie */; };
+		0593F6D62C96D6C100FFAD82 /* WablePhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */; };
 		05FBEED22C886A0200E4BF17 /* HomeFeedContentDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FBEED12C886A0200E4BF17 /* HomeFeedContentDTO.swift */; };
+		05FBEED82C95B32C00E4BF17 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 05FBEED72C95B32C00E4BF17 /* Config.xcconfig */; };
 		3C35317F2C6F13FF0015A8FA /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C35317C2C6F13FF0015A8FA /* Pretendard-Regular.otf */; };
 		3C3531802C6F13FF0015A8FA /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C35317D2C6F13FF0015A8FA /* Pretendard-SemiBold.otf */; };
 		3C3531822C6F15D30015A8FA /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3531812C6F15D30015A8FA /* KeychainWrapper.swift */; };
@@ -133,7 +135,6 @@
 		3C8B4E572C84094100174943 /* PostTransparencyRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E562C84094100174943 /* PostTransparencyRequestDTO.swift */; };
 		3C8B4E592C840AD300174943 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B4E582C840AD300174943 /* Functions.swift */; };
 		3C8B4E742C8433E300174943 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 3C8B4E732C8433E300174943 /* KakaoSDK */; };
-		3C8CA1DE2C90353900BB470F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3C8CA1DD2C90353900BB470F /* Config.xcconfig */; };
 		3CD071782C886A600088DED6 /* CommentLikeRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD071772C886A600088DED6 /* CommentLikeRequestDTO.swift */; };
 		3CDE2DE42C6F292B004A84CB /* Publisher+UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */; };
 		3CDE2DE62C6F30BA004A84CB /* JoinAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2DE52C6F30BA004A84CB /* JoinAgreementViewController.swift */; };
@@ -261,7 +262,9 @@
 		0547F4FB2C64C797001E3039 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		0547F4FE2C64C954001E3039 /* ExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
 		0547F5002C64C99D001E3039 /* ExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleView.swift; sourceTree = "<group>"; };
+		0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePhotoDetailView.swift; sourceTree = "<group>"; };
 		05FBEED12C886A0200E4BF17 /* HomeFeedContentDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedContentDTO.swift; sourceTree = "<group>"; };
+		05FBEED72C95B32C00E4BF17 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = "../Wable Resource/Config.xcconfig"; sourceTree = "<group>"; };
 		3C35317C2C6F13FF0015A8FA /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		3C35317D2C6F13FF0015A8FA /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		3C3531812C6F15D30015A8FA /* KeychainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
@@ -309,7 +312,6 @@
 		3C8B4E542C84081B00174943 /* ReportRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRequestDTO.swift; sourceTree = "<group>"; };
 		3C8B4E562C84094100174943 /* PostTransparencyRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTransparencyRequestDTO.swift; sourceTree = "<group>"; };
 		3C8B4E582C840AD300174943 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
-		3C8CA1DD2C90353900BB470F /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		3CD071772C886A600088DED6 /* CommentLikeRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentLikeRequestDTO.swift; sourceTree = "<group>"; };
 		3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+UIControl.swift"; sourceTree = "<group>"; };
 		3CDE2DE52C6F30BA004A84CB /* JoinAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinAgreementViewController.swift; sourceTree = "<group>"; };
@@ -575,7 +577,7 @@
 		0547F48D2C60D968001E3039 = {
 			isa = PBXGroup;
 			children = (
-				3C8CA1DD2C90353900BB470F /* Config.xcconfig */,
+				05FBEED72C95B32C00E4BF17 /* Config.xcconfig */,
 				0547F4982C60D968001E3039 /* Wable-iOS */,
 				0547F4972C60D968001E3039 /* Products */,
 			);
@@ -856,6 +858,7 @@
 				3CF344CD2C73CCCA0038BB53 /* HambergerButton.swift */,
 				050E0CAD2C74B7F100326EEA /* WablePopupView.swift */,
 				3C8B4E452C808FA500174943 /* WableToastView.swift */,
+				0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1250,8 +1253,8 @@
 				3C35317F2C6F13FF0015A8FA /* Pretendard-Regular.otf in Resources */,
 				3C8B4E052C76247800174943 /* wable_tab.json in Resources */,
 				3C3531802C6F13FF0015A8FA /* Pretendard-SemiBold.otf in Resources */,
-				3C8CA1DE2C90353900BB470F /* Config.xcconfig in Resources */,
 				0547F4A62C60D96B001E3039 /* Base in Resources */,
+				05FBEED82C95B32C00E4BF17 /* Config.xcconfig in Resources */,
 				0547F4C82C621ABC001E3039 /* Color.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1367,6 +1370,7 @@
 				3C8B4E3D2C79119F00174943 /* MyPageMemberCommentResponseDTO.swift in Sources */,
 				050E0CBB2C74B89300326EEA /* FeedInfoView.swift in Sources */,
 				3C8B4E162C78E20F00174943 /* SocialLoginRequestDTO.swift in Sources */,
+				0593F6D62C96D6C100FFAD82 /* WablePhotoDetailView.swift in Sources */,
 				0547F4F82C64C778001E3039 /* InfoViewController.swift in Sources */,
 				3C35318B2C6F1A040015A8FA /* SplashViewController.swift in Sources */,
 				3CDE2E102C71D3CA004A84CB /* InfoMatchViewController.swift in Sources */,
@@ -1445,7 +1449,7 @@
 /* Begin XCBuildConfiguration section */
 		0547F4A82C60D96B001E3039 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C8CA1DD2C90353900BB470F /* Config.xcconfig */;
+			baseConfigurationReference = 05FBEED72C95B32C00E4BF17 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1509,7 +1513,7 @@
 		};
 		0547F4A92C60D96B001E3039 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C8CA1DD2C90353900BB470F /* Config.xcconfig */;
+			baseConfigurationReference = 05FBEED72C95B32C00E4BF17 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1566,7 +1570,7 @@
 		};
 		0547F4AB2C60D96B001E3039 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C8CA1DD2C90353900BB470F /* Config.xcconfig */;
+			baseConfigurationReference = 05FBEED72C95B32C00E4BF17 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1602,7 +1606,7 @@
 		};
 		0547F4AC2C60D96B001E3039 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C8CA1DD2C90353900BB470F /* Config.xcconfig */;
+			baseConfigurationReference = 05FBEED72C95B32C00E4BF17 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

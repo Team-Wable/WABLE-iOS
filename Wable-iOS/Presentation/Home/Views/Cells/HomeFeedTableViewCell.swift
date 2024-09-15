@@ -16,6 +16,7 @@ final class HomeFeedTableViewCell: UITableViewCell{
     static let identifier = "HomeFeedTableViewCell"
     var menuButtonTapped: (() -> Void)?
     var profileButtonAction: (() -> Void) = {}
+    var contentImageViewTapped: (() -> Void)?
     var isMyContent: Bool = Bool()
     
     var alarmTriggerType: String = ""
@@ -150,6 +151,7 @@ final class HomeFeedTableViewCell: UITableViewCell{
     private func setAddTarget() {
         self.menuButton.addTarget(self, action: #selector(menuButtonDidTapped), for: .touchUpInside)
         self.profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileButtonTapped)))
+        self.feedContentView.photoImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(contentImageViewDidTapped)))
     }
     
     @objc
@@ -160,6 +162,11 @@ final class HomeFeedTableViewCell: UITableViewCell{
     @objc
     private func profileButtonTapped() {
         profileButtonAction()
+    }
+    
+    @objc
+    private func contentImageViewDidTapped() {
+        contentImageViewTapped?()
     }
     
     func bind(data: HomeFeedDTO) {
