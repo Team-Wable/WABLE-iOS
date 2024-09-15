@@ -41,7 +41,7 @@ final class HomeViewController: UIViewController {
     
     var nowShowingPopup: String = ""
     
-//    var feedData: [HomeFeedDTO] = []
+    //    var feedData: [HomeFeedDTO] = []
     
     // MARK: - UI Components
     
@@ -53,6 +53,7 @@ final class HomeViewController: UIViewController {
     private var reportPopupView: WablePopupView? = nil
     private var deletePopupView: WablePopupView? = nil
     private var welcomePopupView: WablePopupView? = nil
+    private var photoDetailView: WablePhotoDetailView?
     
     private var reportToastView: UIImageView?
     
@@ -279,6 +280,11 @@ extension HomeViewController {
         }
     }
     
+    @objc
+    func removePhotoButtonTapped() {
+        self.photoDetailView?.removeFromSuperview()
+    }
+    
     func popBottomsheetView() {
         if UIApplication.shared.keyWindowInConnectedScenes != nil {
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
@@ -299,14 +305,14 @@ extension HomeViewController {
     private func postLikeButtonAPI(isClicked: Bool, contentId: Int) {
         // 최초 한 번만 publisher 생성
         let likeButtonTapped: AnyPublisher<(Bool, Int), Never>?  = Just(())
-                .map { _ in return (isClicked, contentId) }
-                .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
-                .eraseToAnyPublisher()
+            .map { _ in return (isClicked, contentId) }
+            .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
+            .eraseToAnyPublisher()
         
         let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, commentLikeButtonTapped: nil, deleteButtonDidTapped: deleteButtonTapped, deleteReplyButtonDidTapped: deleteReplyButtonTapped)
-
+        
         let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
-
+        
         output.toggleLikeButton
             .sink { _ in }
             .store(in: self.cancelBag)
@@ -379,17 +385,17 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         // 탈퇴한 회원 닉네임 텍스트 색상 변경, 프로필로 이동 못하도록 적용
-//        if self.viewModel.feedDatas[indexPath.row].isDeleted {
-//            cell.nicknameLabel.textColor = .donGray12
-//            cell.profileImageView.isUserInteractionEnabled = false
-//        } else {
-//            cell.nicknameLabel.textColor = .donBlack
-//            cell.profileImageView.isUserInteractionEnabled = true
-//        }
+        //        if self.viewModel.feedDatas[indexPath.row].isDeleted {
+        //            cell.nicknameLabel.textColor = .donGray12
+        //            cell.profileImageView.isUserInteractionEnabled = false
+        //        } else {
+        //            cell.nicknameLabel.textColor = .donBlack
+        //            cell.profileImageView.isUserInteractionEnabled = true
+        //        }
         
         cell.profileButtonAction = {
             let memberId = self.viewModel.feedDatas[indexPath.row].memberID
-
+            
             if memberId == loadUserData()?.memberId ?? 0  {
                 self.tabBarController?.selectedIndex = 3
             } else {
@@ -418,6 +424,27 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.viewModel.feedDatas[indexPath.row].contentID ?? 0)
             
             cell.bottomView.isLiked.toggle()
+        }
+        
+        cell.contentImageViewTapped = { [weak self] in
+            DispatchQueue.main.async {
+                self?.photoDetailView = WablePhotoDetailView()
+                
+                if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                    window.addSubview(self?.photoDetailView ?? WablePhotoDetailView())
+                    
+                    self?.photoDetailView?.removePhotoButton.addTarget(self, action: #selector(self?.removePhotoButtonTapped), for: .touchUpInside)
+                    
+                    if let imageURL = self?.viewModel.feedDatas[indexPath.row].contentImageURL {
+                        self?.photoDetailView?.photoImageView.loadContentImage(url: imageURL)
+                    }
+                    
+                    self?.photoDetailView?.snp.makeConstraints {
+                        $0.edges.equalToSuperview()
+                    }
+                }
+            }
+            
         }
         return cell
     }

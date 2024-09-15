@@ -25,6 +25,7 @@ final class FeedContentView: UIView {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 8
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
     
