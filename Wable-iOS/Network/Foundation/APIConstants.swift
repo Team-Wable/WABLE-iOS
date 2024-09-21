@@ -30,4 +30,11 @@ extension APIConstants{
             auth : accessToken
         ]
     }
+    
+    static var multipartHeader: Dictionary<String, String> {
+        [
+            contentType: multipartFormData,
+            auth: accessToken
+        ]
+    }
 }

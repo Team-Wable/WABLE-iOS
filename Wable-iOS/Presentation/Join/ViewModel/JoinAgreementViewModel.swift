@@ -174,13 +174,13 @@ extension JoinAgreementViewModel {
     func patchUserInfoDataAPI(nickname: String, isAlarmAllowed: Bool, memberLckYears: Int, memberFanTeam: String, memberDefaultProfileImage: String, profileImage: Data?) async throws -> Void {
         guard let url = URL(string: Config.baseURL + "v1/user-profile2") else { return }
         guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
-        
+        let userData = loadUserData()
         let parameters: [String: Any] = [
             "nickname": nickname,
             "isAlarmAllowed": isAlarmAllowed,
             "memberIntro": "",
-            "isPushAlarmAllowed": false,
-            "fcmToken": "",
+            "isPushAlarmAllowed": userData?.isPushAlarmAllowed ?? false,
+            "fcmToken": userData?.fcmToken ?? "",
             "memberLckYears": memberLckYears,
             "memberFanTeam": memberFanTeam,
             "memberDefaultProfileImage": memberDefaultProfileImage,
