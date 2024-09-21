@@ -13,6 +13,9 @@ final class WablePhotoDetailView: UIView {
 
     // MARK: - Properties
     
+    var imageHeightConstraint: Constraint?
+    private let maxHeight: CGFloat = 450.0
+    
     // MARK: - UI Components
     
     let dimView: UIView = {
@@ -24,7 +27,6 @@ final class WablePhotoDetailView: UIView {
     let photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
-        imageView.layer.cornerRadius = 4.adjusted
         imageView.clipsToBounds = true
         imageView.isUserInteractionEnabled = true
         return imageView
@@ -49,6 +51,7 @@ final class WablePhotoDetailView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 }
 
 // MARK: - Extensions
@@ -68,13 +71,33 @@ extension WablePhotoDetailView {
         
         photoImageView.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.width.equalTo(327.adjusted)
-            $0.height.equalTo(434.adjusted)
+            $0.width.equalToSuperview()
+            imageHeightConstraint = $0.height.equalTo(0).constraint // 처음엔 높이 0으로 설정
         }
         
         removePhotoButton.snp.makeConstraints {
             $0.top.trailing.equalToSuperview().inset(8.adjusted)
             $0.size.equalTo(44)
         }
+    }
+    
+    func updateImageViewHeight(with image: UIImage) {
+        // 이미지 비율 계산
+        let aspectRatio = image.size.height / image.size.width
+        
+        // 이미지의 너비를 기준으로 높이 계산
+        let imageViewWidth = UIScreen.main.bounds.width
+        var newHeight = imageViewWidth * aspectRatio
+        
+        // 높이가 설정한 최대 높이보다 크면 최대 높이로 설정
+        if newHeight > maxHeight {
+            newHeight = maxHeight
+        }
+        
+        // 이미지 뷰의 높이 제약을 업데이트
+        imageHeightConstraint?.update(offset: newHeight)
+        
+        // 레이아웃 업데이트
+        self.layoutIfNeeded()
     }
 }

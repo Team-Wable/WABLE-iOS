@@ -85,6 +85,8 @@ final class HomeViewController: UIViewController {
         setRefreshControl()
         
         bindViewModel()
+        viewModel.viewDidLoad.send()
+        print("\(KeychainWrapper.loadToken(forKey: "accessToken") ?? "") 🩵🩵🩵")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -436,7 +438,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                     self?.photoDetailView?.removePhotoButton.addTarget(self, action: #selector(self?.removePhotoButtonTapped), for: .touchUpInside)
                     
                     if let imageURL = self?.viewModel.feedDatas[indexPath.row].contentImageURL {
-                        self?.photoDetailView?.photoImageView.loadContentImage(url: imageURL)
+                        self?.photoDetailView?.photoImageView.loadContentImage(url: imageURL) { image in
+                            // 이미지 로드가 완료된 후, 동적으로 높이 변경
+                            self?.photoDetailView?.updateImageViewHeight(with: image)
+                        }
                     }
                     
                     self?.photoDetailView?.snp.makeConstraints {

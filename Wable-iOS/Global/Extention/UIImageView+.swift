@@ -86,4 +86,39 @@ extension UIImageView {
             }
         }
     }
+    
+    func loadContentImage(url: String, completion: @escaping (UIImage) -> Void) {
+        guard let url = URL(string: url) else { return }
+        self.kf.indicatorType = .activity
+        self.kf.setImage(
+            with: url,
+            placeholder: nil,
+            options: [
+                .scaleFactor(UIScreen.main.scale),
+                .cacheOriginalImage
+            ]
+        ) { result in
+            switch result {
+            case .success(let value):
+                DispatchQueue.main.async {
+                    self.image = value.image
+                    self.layer.cornerRadius = 8.adjusted
+                    self.contentMode = .scaleAspectFill
+                    self.clipsToBounds = true
+                    
+                    // 이미지 로드 후 completion 핸들러 호출
+                    completion(value.image)
+                }
+            case .failure(let error):
+                print("Error loading image: \(error)")
+                
+                DispatchQueue.main.async {
+                    self.layer.cornerRadius = 8.adjusted
+                    self.contentMode = .scaleAspectFill
+                    self.clipsToBounds = true
+                }
+            }
+        }
+    }
+
 }
