@@ -87,6 +87,11 @@ final class HomeFeedTableViewCell: UITableViewCell{
         }
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.profileImageView.image = UIImage()
+    }
+    
     // MARK: - Functions
 
     private func setHierarchy() {
@@ -170,7 +175,12 @@ final class HomeFeedTableViewCell: UITableViewCell{
     }
     
     func bind(data: HomeFeedDTO) {
-        profileImageView.load(url: data.memberProfileURL)
+        if data.memberProfileURL == "" {
+            profileImageView.image = ImageLiterals.Image.imgProfile3
+        } else {
+            profileImageView.load(url: data.memberProfileURL)
+
+        }
         
         infoView.bind(nickname: data.memberNickname,
                       team: Team(rawValue: data.memberFanTeam) ?? .T1,
