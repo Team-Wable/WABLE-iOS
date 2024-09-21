@@ -65,6 +65,13 @@ final class NotificationTableViewCell: UITableViewCell{
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        notiImageView.image = UIImage()
+    }
+    
+    
     // MARK: - Functions
 
     private func setHierarchy() {
@@ -96,7 +103,12 @@ final class NotificationTableViewCell: UITableViewCell{
         if let profileImage = UserProfile(rawValue: data.triggerMemberProfileURL) {
             notiImageView.image = profileImage.image
         } else {
-            notiImageView.kfSetImage(url: data.triggerMemberProfileURL)
+            if data.triggerMemberProfileURL == "" {
+                notiImageView.image = ImageLiterals.Image.imgProfile3
+
+            } else {
+                notiImageView.kfSetImage(url: data.triggerMemberProfileURL)
+            }
         }
         contentLabel.text = NotiActivityText(rawValue: data.notificationTriggerType)?.text(from: data.triggerMemberNickname,
                                                                                            to: data.memberNickname)

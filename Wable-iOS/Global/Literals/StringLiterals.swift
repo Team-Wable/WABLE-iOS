@@ -185,6 +185,7 @@ enum StringLiterals {
     enum Endpoint {
         enum Home {
             static let getContent = "v2/contents"
+            static let patchUserProfile = "v1/user-profile2"
         }
         
         enum Info {

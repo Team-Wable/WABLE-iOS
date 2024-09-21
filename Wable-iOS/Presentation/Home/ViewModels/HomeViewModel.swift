@@ -22,6 +22,7 @@ final class HomeViewModel {
     let commentButtonTapped = PassthroughSubject<Int, Never>()
     let writeButtonTapped = PassthroughSubject<Void, Never>()
     let viewWillAppear = PassthroughSubject<Void, Never>()
+    let viewDidLoad = PassthroughSubject<Void, Never>()
     
     // MARK: - Output
     
@@ -54,8 +55,22 @@ final class HomeViewModel {
     }
     
     private func transform() {
+        viewDidLoad
+            .sink { [self] _ in
+                Task {
+                    do {
+                        // 비동기 API 호출
+                        try await patchUserInfoDataAPI()
+                    } catch {
+                        print("Error during patchUserInfoDataAPI: \(error)")
+                    }
+                }
+            }
+            .store(in: cancelBag)
+        
         viewWillAppear
             .sink { [weak self] in
+                let data = loadUserData()
                 HomeAPI.shared.getHomeContent(cursor: self!.cursor) { result in
                     guard let result = self?.validateResult(result) as? [HomeFeedDTO] else { return }
                     
@@ -87,12 +102,65 @@ final class HomeViewModel {
             .store(in: cancelBag)
     }
     
+    func patchUserInfoDataAPI() async throws -> Void {
+        guard let url = URL(string: Config.baseURL + "v1/user-profile2") else { return }
+        guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
+        print("\(loadUserData()?.fcmToken ?? ""), \(loadUserData()?.isPushAlarmAllowed ?? false) <------------------------")
+        let parameters: [String: Any] = [
+            "fcmToken": loadUserData()?.fcmToken ?? "",
+            "isPushAlarmAllowed": loadUserData()?.isPushAlarmAllowed ?? false
+        ]
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        
+        // Multipart form data 생성
+        let boundary = "Boundary-\(UUID().uuidString)"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        
+        var requestBodyData = Data()
+        
+        // 프로필 정보 추가
+        requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
+        requestBodyData.append("Content-Disposition: form-data; name=\"info\"\r\n\r\n".data(using: .utf8)!)
+        requestBodyData.append(try! JSONSerialization.data(withJSONObject: parameters, options: []))
+        requestBodyData.append("\r\n".data(using: .utf8)!)
+    
+        requestBodyData.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        // HTTP body에 데이터 설정
+        request.httpBody = requestBodyData
+        
+        // URLSession으로 비동기 요청 보내기
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        // 응답 처리
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])
+        }
+        
+        print("Response status code:", httpResponse.statusCode)
+        
+        if httpResponse.statusCode != 200 {
+            throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed with status code \(httpResponse.statusCode)"])
+        }
+        
+        guard let responseString = String(data: data, encoding: .utf8) else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Empty response"])
+        }
+        
+        print("Response data:", responseString)  // 서버 응답 데이터를 처리한 후 출력
+        
+        return
+    }
+    
     func validateResult(_ result: NetworkResult<Any>) -> Any?{
         switch result{
         case .success(let data):
-//            print("성공했습니다.")
-//            print("⭐️⭐️⭐️⭐️⭐️⭐️")
-//            print("validateResult :\(data)")
+            //            print("성공했습니다.")
+            //            print("⭐️⭐️⭐️⭐️⭐️⭐️")
+            //            print("validateResult :\(data)")
             return data
         case .requestErr(let message):
             print(message)
