@@ -54,6 +54,7 @@ final class NotificationActivityViewController: UIViewController {
         setUI()
         setHierarchy()
         setLayout()
+        viewModel.viewDidLoad.send()
         setDelegate()
         setRefreshControl()
         bindViewModel()
