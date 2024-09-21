@@ -11,26 +11,45 @@ class AppStoreCheckManager {
     
     static let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     static let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
-    static let appStoreOpenUrlString = "itms-apps://itunes.apple.com/app/apple-store/6475622329"
+    static let appStoreOpenUrlString = "itms-apps://itunes.apple.com/app/apple-store/6670352454"
     
-    func latestVersion(completion: @escaping (String?) -> Void) {
-        let appleID = "6475622329"
-        guard let url = URL(string: "https://itunes.apple.com/lookup?id=\(appleID)") else {
-            completion(nil)
+    func checkAppStoreVersion(completion: @escaping (Bool, String?) -> Void) {
+        let bundleID = "com.wable.Wable-iOS"
+        
+        guard let url = URL(string: "https://itunes.apple.com/kr/lookup?bundleId=\(bundleID)") else {
+            completion(false, nil)
             return
         }
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
-            guard let data = data, error == nil,
-                  let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
-                  let results = json["results"] as? [[String: Any]],
-                  let appStoreVersion = results[0]["version"] as? String else {
-                completion(nil)
+            if let error = error {
+                print("Error fetching App Store data: \(error.localizedDescription)")
+                completion(false, nil)
                 return
             }
             
-            completion(appStoreVersion)
+            guard let data = data,
+                  let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
+                  let results = json["results"] as? [[String: Any]],
+                  let appStoreVersion = results.first?["version"] as? String else {
+                print("Failed to parse App Store data.")
+                completion(false, nil)
+                return
+            }
+            
+            // 현재 앱의 버전과 앱스토어 버전을 비교
+            if let currentVersion = AppStoreCheckManager.appVersion {
+                let isUpdateAvailable = self.isNewVersionAvailable(currentVersion: currentVersion, appStoreVersion: appStoreVersion)
+                completion(isUpdateAvailable, appStoreVersion)
+            } else {
+                completion(false, nil)
+            }
         }.resume()
+    }
+    
+    // 버전 비교 메소드 (문자열 버전을 비교)
+    private func isNewVersionAvailable(currentVersion: String, appStoreVersion: String) -> Bool {
+        return appStoreVersion.compare(currentVersion, options: .numeric) == .orderedDescending
     }
     
     func openAppStore() {

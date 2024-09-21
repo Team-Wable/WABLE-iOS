@@ -172,6 +172,9 @@ enum StringLiterals {
         static let writeLinkPlaceholder = "URL"
         static let writeOnlyOneLink = "링크는 한 개까지만 삽입할 수 있어요."
         static let writeErrorLink = "아직 링크로 인식되지 않아요. 다시 확인해 주세요."
+        static let writeCanclePopupTitleLabel = "작성중인 글에서 나가실건가요?\n작성하셨던 내용은 삭제돼요"
+        static let writeCanclePopupLeftButtonTitle = "취소"
+        static let writeCanclePopupRightButtonTitle = "나가기"
     }
     
     enum Info {
