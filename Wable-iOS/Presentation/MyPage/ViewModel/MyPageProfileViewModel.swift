@@ -99,28 +99,28 @@ extension MyPageProfileViewModel {
         guard let url = URL(string: Config.baseURL + "v1/user-profile2") else { return }
         guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
         
-        let parameters: [String: Any] = [
-            "nickname": nickname,
-            "memberDefaultProfileImage": memberDefaultProfileImage,
-        ]
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "PATCH"
-        
-        // Multipart form data 생성
-        let boundary = "Boundary-\(UUID().uuidString)"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        
-        var requestBodyData = Data()
-        
-        // 프로필 정보 추가
-        requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
-        requestBodyData.append("Content-Disposition: form-data; name=\"info\"\r\n\r\n".data(using: .utf8)!)
-        requestBodyData.append(try! JSONSerialization.data(withJSONObject: parameters, options: []))
-        requestBodyData.append("\r\n".data(using: .utf8)!)
-        
         if memberDefaultProfileImage == "" {
+            print("memberDefaultProfileImage is empty")
+            let parameters: [String: Any] = [
+                "nickname": nickname,
+            ]
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "PATCH"
+            
+            // Multipart form data 생성
+            let boundary = "Boundary-\(UUID().uuidString)"
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            
+            var requestBodyData = Data()
+            
+            // 프로필 정보 추가
+            requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
+            requestBodyData.append("Content-Disposition: form-data; name=\"info\"\r\n\r\n".data(using: .utf8)!)
+            requestBodyData.append(try! JSONSerialization.data(withJSONObject: parameters, options: []))
+            requestBodyData.append("\r\n".data(using: .utf8)!)
+            
             if let image = profileImage {
                 // 프로필 이미지 데이터 추가
                 requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
@@ -129,103 +129,83 @@ extension MyPageProfileViewModel {
                 requestBodyData.append(image)
                 requestBodyData.append("\r\n".data(using: .utf8)!)
             }
+            
+            requestBodyData.append("--\(boundary)--\r\n".data(using: .utf8)!)
+            
+            // HTTP body에 데이터 설정
+            request.httpBody = requestBodyData
+            
+            // URLSession으로 비동기 요청 보내기
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            // 응답 처리
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])
+            }
+            
+            print("Response status code:", httpResponse.statusCode)
+            
+            if httpResponse.statusCode != 200 {
+                throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed with status code \(httpResponse.statusCode)"])
+            }
+            
+            guard let responseString = String(data: data, encoding: .utf8) else {
+                throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Empty response"])
+            }
+            
+            print("Response data:", responseString)  // 서버 응답 데이터를 처리한 후 출력
+            
+            return
+            
+        } else {
+            print("memberDefaultProfileImage is not empty")
+            let parameters: [String: Any] = [
+                "nickname": nickname,
+                "memberDefaultProfileImage": memberDefaultProfileImage,
+            ]
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "PATCH"
+            
+            // Multipart form data 생성
+            let boundary = "Boundary-\(UUID().uuidString)"
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            
+            var requestBodyData = Data()
+            
+            // 프로필 정보 추가
+            requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
+            requestBodyData.append("Content-Disposition: form-data; name=\"info\"\r\n\r\n".data(using: .utf8)!)
+            requestBodyData.append(try! JSONSerialization.data(withJSONObject: parameters, options: []))
+            requestBodyData.append("\r\n".data(using: .utf8)!)
+            
+            requestBodyData.append("--\(boundary)--\r\n".data(using: .utf8)!)
+            
+            // HTTP body에 데이터 설정
+            request.httpBody = requestBodyData
+            
+            // URLSession으로 비동기 요청 보내기
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            // 응답 처리
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])
+            }
+            
+            print("Response status code:", httpResponse.statusCode)
+            
+            if httpResponse.statusCode != 200 {
+                throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed with status code \(httpResponse.statusCode)"])
+            }
+            
+            guard let responseString = String(data: data, encoding: .utf8) else {
+                throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Empty response"])
+            }
+            
+            print("Response data:", responseString)  // 서버 응답 데이터를 처리한 후 출력
+            
+            return
         }
-        
-        requestBodyData.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
-        // HTTP body에 데이터 설정
-        request.httpBody = requestBodyData
-        
-        // URLSession으로 비동기 요청 보내기
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        // 응답 처리
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])
-        }
-        
-        print("Response status code:", httpResponse.statusCode)
-        
-        if httpResponse.statusCode != 200 {
-            throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed with status code \(httpResponse.statusCode)"])
-        }
-        
-        guard let responseString = String(data: data, encoding: .utf8) else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Empty response"])
-        }
-        
-        print("Response data:", responseString)  // 서버 응답 데이터를 처리한 후 출력
-        
-        return
     }
-    
-//    func patchUserInfoDataAPI(nickname: String, isAlarmAllowed: Bool, memberLckYears: Int, memberFanTeam: String, memberDefaultProfileImage: String, profileImage: Data?) async throws -> Void {
-//        guard let url = URL(string: Config.baseURL + "v1/user-profile2") else { return }
-//        guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
-//        
-//        let parameters: [String: Any] = [
-//            "nickname": nickname,
-//            "isAlarmAllowed": isAlarmAllowed,
-//            "memberIntro": "",
-//            "isPushAlarmAllowed": false,
-//            "fcmToken": "",
-//            "memberLckYears": memberLckYears,
-//            "memberFanTeam": memberFanTeam,
-//            "memberDefaultProfileImage": memberDefaultProfileImage,
-//        ]
-//        
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "PATCH"
-//        
-//        // Multipart form data 생성
-//        let boundary = "Boundary-\(UUID().uuidString)"
-//        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-//        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-//        
-//        var requestBodyData = Data()
-//        
-//        // 프로필 정보 추가
-//        requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
-//        requestBodyData.append("Content-Disposition: form-data; name=\"info\"\r\n\r\n".data(using: .utf8)!)
-//        requestBodyData.append(try! JSONSerialization.data(withJSONObject: parameters, options: []))
-//        requestBodyData.append("\r\n".data(using: .utf8)!)
-//        
-//        if memberDefaultProfileImage == "" {
-//            if let image = profileImage {
-//                // 프로필 이미지 데이터 추가
-//                requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
-//                requestBodyData.append("Content-Disposition: form-data; name=\"file\"; filename=\"dontbe.jpeg\"\r\n".data(using: .utf8)!)
-//                requestBodyData.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-//                requestBodyData.append(image)
-//                requestBodyData.append("\r\n".data(using: .utf8)!)
-//            }
-//        }
-//        
-//        requestBodyData.append("--\(boundary)--\r\n".data(using: .utf8)!)
-//        
-//        // HTTP body에 데이터 설정
-//        request.httpBody = requestBodyData
-//        
-//        // URLSession으로 비동기 요청 보내기
-//        let (data, response) = try await URLSession.shared.data(for: request)
-//        
-//        // 응답 처리
-//        guard let httpResponse = response as? HTTPURLResponse else {
-//            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])
-//        }
-//        
-//        print("Response status code:", httpResponse.statusCode)
-//        
-//        if httpResponse.statusCode != 200 {
-//            throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed with status code \(httpResponse.statusCode)"])
-//        }
-//        
-//        guard let responseString = String(data: data, encoding: .utf8) else {
-//            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Empty response"])
-//        }
-//        
-//        print("Response data:", responseString)  // 서버 응답 데이터를 처리한 후 출력
-//        
-//        return
-//    }
 }

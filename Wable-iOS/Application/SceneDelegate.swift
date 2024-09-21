@@ -32,7 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 self.window?.rootViewController = navigationController
             }
             self.window?.makeKeyAndVisible()
-//            self.checkAndUpdateIfNeeded()
+            self.checkAndUpdateIfNeeded()
         }
     }
     
@@ -73,20 +73,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func checkAndUpdateIfNeeded() {
-        AppStoreCheckManager().latestVersion { marketingVersion in
+        AppStoreCheckManager().checkAppStoreVersion { (isUpdateAvailable, marketingVersion) in
             DispatchQueue.main.async {
                 guard let marketingVersion = marketingVersion else {
                     print("앱스토어 버전을 찾지 못했습니다.")
                     return
                 }
                 
-                let currentProjectVersion = AppStoreCheckManager.appVersion ?? ""
-                
-                let splitMarketingVersion = marketingVersion.split(separator: ".").map { $0 }
-                
-                let splitCurrentProjectVersion = currentProjectVersion.split(separator: ".").map { $0 }
-                
-                if currentProjectVersion < marketingVersion {
+                if isUpdateAvailable {
                     self.showUpdateAlert(version: marketingVersion)
                 } else {
                     print("현재 최신버전입니다.")
@@ -97,8 +91,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func showUpdateAlert(version: String) {
         let alert = UIAlertController(
-            title: StringLiterals.VersionUpdate.versionTitle,
-            message: StringLiterals.VersionUpdate.versionMessage,
+            title: "새로운 업데이트가 있습니다.",
+            message: "최신 버전 \(version)으로 업데이트할 수 있습니다.",
             preferredStyle: .alert
         )
         
@@ -106,9 +100,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             AppStoreCheckManager().openAppStore()
         }
         
-        let cancelAction = UIAlertAction(title: "나중에", style: .destructive, handler: nil)
+        // 업데이트 액션만 추가
+        alert.addAction(updateAction)
         
-        [ cancelAction, updateAction ].forEach { alert.addAction($0) }
-        window?.rootViewController?.present(alert, animated: true, completion: nil)
+        // 윈도우의 rootViewController에 알림창을 띄웁니다.
+        if let window = UIApplication.shared.windows.first {
+            window.rootViewController?.present(alert, animated: true, completion: nil)
+        }
+        
+//        let cancelAction = UIAlertAction(title: "나중에", style: .destructive, handler: nil)
+//        
+//        [ cancelAction, updateAction ].forEach { alert.addAction($0) }
+//        
+//        // 윈도우의 rootViewController에 알림창을 띄웁니다.
+//        if let window = UIApplication.shared.windows.first {
+//            window.rootViewController?.present(alert, animated: true, completion: nil)
+//        }
     }
 }

@@ -56,6 +56,7 @@ final class HomeViewController: UIViewController {
     private var photoDetailView: WablePhotoDetailView?
     
     private var reportToastView: UIImageView?
+    private var ghostToastView: UIImageView?
     
     // MARK: - Life Cycles
     
@@ -323,7 +324,6 @@ extension HomeViewController {
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("viewModel.feedDatas.count: \(viewModel.feedDatas.count)")
         return viewModel.feedDatas.count
     }
     
@@ -401,7 +401,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             if memberId == loadUserData()?.memberId ?? 0  {
                 self.tabBarController?.selectedIndex = 3
             } else {
-                let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()))
+                let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
                 viewController.memberId = memberId
                 self.navigationController?.pushViewController(viewController, animated: true)
             }
@@ -498,6 +498,29 @@ extension HomeViewController: WablePopupDelegate {
                             alarmTriggerId: self.alarmTriggerdId,
                             ghostReason: self.ghostReason
                         )
+                        
+                        self.ghostToastView = UIImageView(image: ImageLiterals.Toast.toastGhost)
+                        self.ghostToastView?.contentMode = .scaleAspectFit
+                        
+                        if let ghostToastView = self.ghostToastView {
+                            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                                window.addSubviews(ghostToastView)
+                            }
+                            
+                            ghostToastView.snp.makeConstraints {
+                                $0.top.equalToSuperview().inset(75.adjusted)
+                                $0.centerX.equalToSuperview()
+                                $0.width.equalTo(343.adjusted)
+                            }
+                            
+                            UIView.animate(withDuration: 1, delay: 1, options: .curveEaseIn) {
+                                self.ghostToastView?.alpha = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                self.ghostToastView?.removeFromSuperview()
+                            }
+                        }
                         
                         didPullToRefresh()
                         
