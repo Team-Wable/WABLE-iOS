@@ -356,13 +356,21 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
         cell.bottomView.heartButton.setTitleWithConfiguration("\(commentDatas[indexPath.row].commentLikedNumber)", font: .caption1, textColor: .wableBlack)
         cell.bottomView.isLiked = commentDatas[indexPath.row].isLiked
         
+        if commentDatas[indexPath.row].isGhost {
+            cell.bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDisabledSmall, for: .normal)
+            cell.bottomView.ghostButton.isEnabled = false
+        } else {
+            cell.bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDefaultSmall, for: .normal)
+            cell.bottomView.ghostButton.isEnabled = true
+        }
+        
         cell.profileButtonAction = {
             let memberId = self.commentDatas[indexPath.row].memberId
             
             if memberId == loadUserData()?.memberId ?? 0  {
                 self.tabBarController?.selectedIndex = 3
             } else {
-                let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()))
+                let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
                 viewController.memberId = memberId
                 self.navigationController?.pushViewController(viewController, animated: true)
             }
@@ -386,6 +394,18 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
             self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.commentDatas[indexPath.row].commentId, commentText: self.commentDatas[indexPath.row].commentText)
             
             cell.bottomView.isLiked.toggle()
+        }
+        
+        var memberGhost = self.commentDatas[indexPath.row].memberGhost
+        memberGhost = adjustGhostValue(memberGhost)
+        
+        cell.grayView.layer.zPosition = 1
+        
+        // 내가 투명도를 누른 유저인 경우 -85% 적용
+        if self.commentDatas[indexPath.row].isGhost {
+            cell.grayView.alpha = 0.85
+        } else {
+            cell.grayView.alpha = CGFloat(Double(-memberGhost) / 100)
         }
         
         return cell
@@ -443,34 +463,6 @@ extension MyPageReplyViewController: WablePopupDelegate {
     }
     
     func confirmButtonTapped() {
-//        if ghostPopupView != nil {
-//            self.ghostPopupView?.removeFromSuperview()
-//
-//            Task {
-//                do {
-//                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
-//                        let result = try await self.likeViewModel.postDownTransparency(
-//                            accessToken: accessToken,
-//                            alarmTriggerType: self.alarmTriggerType,
-//                            targetMemberId: self.targetMemberId,
-//                            alarmTriggerId: self.alarmTriggerdId,
-//                            ghostReason: self.ghostReason
-//                        )
-//
-//                        didPullToRefresh()
-//
-//                        if result?.status == 400 {
-//                            // 이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기
-////                            showAlreadyTransparencyToast()
-//                            print("이미 투명도를 누른 대상인 경우, 토스트 메시지 보여주기")
-//                        }
-//                    }
-//                } catch {
-//                    print(error)
-//                }
-//            }
-//        }
-        
         if nowShowingPopup == "report" {
             self.reportPopupView?.removeFromSuperview()
             

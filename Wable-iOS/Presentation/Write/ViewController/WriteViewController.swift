@@ -32,6 +32,8 @@ final class WriteViewController: UIViewController {
     
     private let rootView = WriteView()
     private let topDivisionLine = UIView().makeDivisionLine()
+    
+    private var writeCanclePopupView: WablePopupView? = nil
 //    private let banView = WriteBanView()
     
     // MARK: - Life Cycles
@@ -148,7 +150,30 @@ extension WriteViewController {
     
     @objc
     private func backButtonDidTapped() {
-        navigationController?.popViewController(animated: true)
+        if self.rootView.writeTextView.titleTextField.text != "" || self.rootView.writeTextView.contentTextView.text != "" {
+            
+            self.writeCanclePopupView = WablePopupView(popupTitle: StringLiterals.Write.writeCanclePopupTitleLabel,
+                                                  popupContent: "",
+                                                  leftButtonTitle: StringLiterals.Write.writeCanclePopupLeftButtonTitle,
+                                                  rightButtonTitle: StringLiterals.Write.writeCanclePopupRightButtonTitle)
+            
+            if let popupView = self.writeCanclePopupView {
+                if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                    window.addSubviews(popupView)
+                }
+                
+                popupView.delegate = self
+                
+                popupView.snp.makeConstraints {
+                    $0.edges.equalToSuperview()
+                }
+            }
+            
+            
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+//        navigationController?.popViewController(animated: true)
     }
     
     @objc private func photoButtonTapped() {
@@ -198,21 +223,6 @@ extension WriteViewController {
         
         self.present(alert, animated: true, completion: nil)
     }
-    
-//    @objc
-//    private func cancleNavigationBarButtonTapped() {
-//        if self.rootView.writeTextView.contentTextView.text == "" && self.rootView.writeTextView.linkTextView.text == "" && self.rootView.writeTextView.photoImageView.image == nil {
-//            popupNavigation()
-//        } else {
-//            self.rootView.writeCanclePopupView.alpha = 1
-//        }
-//    }
-//    
-//    @objc
-//    private func promiseButtonTapped() {
-//        self.banView.removeFromSuperview()
-//        self.navigationController?.popViewController(animated: true)
-//    }
 }
 
 // MARK: - Network
@@ -262,5 +272,21 @@ extension WriteViewController: PHPickerViewControllerDelegate {
                 }
             }
         }
+    }
+}
+
+extension WriteViewController: WablePopupDelegate {
+    func cancleButtonTapped() {
+        self.writeCanclePopupView?.removeFromSuperview()
+    }
+    
+    func confirmButtonTapped() {
+        self.writeCanclePopupView?.removeFromSuperview()
+        
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func singleButtonTapped() {
+        
     }
 }

@@ -284,6 +284,10 @@ extension MyPageEditProfileViewController: PHPickerViewControllerDelegate {
                     
                     self.memberProfileImage = image
                     self.memberDefaultProfileImage = ""
+                    
+                    if self.originView.isCheckedNickname == true {
+                        self.originView.nextButton.isEnabled = true
+                    }
                 } else if let error = error {
                     print(error)
                 }

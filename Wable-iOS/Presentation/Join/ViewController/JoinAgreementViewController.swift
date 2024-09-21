@@ -40,7 +40,7 @@ final class JoinAgreementViewController: UIViewController {
                 nickname: self.memberNickname,
                 isAlarmAllowed: (self.originView.fourthCheckView.checkButton.currentImage == ImageLiterals.Button.btnCheckboxActive) ? true : false ,
                 memberIntro: "",
-                isPushAlarmAllowed: true,
+                isPushAlarmAllowed: false,
                 fcmToken: "",
                 memberLckYears: self.memberLckYears,
                 memberFanTeam: self.memberFanTeam,

@@ -76,6 +76,7 @@ final class FeedDetailViewController: UIViewController {
     private var deletePopupView: WablePopupView? = nil
     
     private var reportToastView: UIImageView?
+    private var ghostToastView: UIImageView?
     
     // MARK: - Life Cycles
     
@@ -533,7 +534,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                     if feedData.memberID == loadUserData()?.memberId ?? 0  {
                         self.tabBarController?.selectedIndex = 3
                     } else {
-                        let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()))
+                        let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
                         viewController.memberId = feedData.memberID
                         self.navigationController?.pushViewController(viewController, animated: true)
                     }
@@ -638,7 +639,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                 if memberId == loadUserData()?.memberId ?? 0  {
                     self.tabBarController?.selectedIndex = 3
                 } else {
-                    let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()))
+                    let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
                     viewController.memberId = memberId
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }
@@ -737,6 +738,29 @@ extension FeedDetailViewController: WablePopupDelegate {
                             alarmTriggerId: self.alarmTriggerdId,
                             ghostReason: self.ghostReason
                         )
+                        
+                        self.ghostToastView = UIImageView(image: ImageLiterals.Toast.toastGhost)
+                        self.ghostToastView?.contentMode = .scaleAspectFit
+                        
+                        if let ghostToastView = self.ghostToastView {
+                            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                                window.addSubviews(ghostToastView)
+                            }
+                            
+                            ghostToastView.snp.makeConstraints {
+                                $0.top.equalToSuperview().inset(75.adjusted)
+                                $0.centerX.equalToSuperview()
+                                $0.width.equalTo(343.adjusted)
+                            }
+                            
+                            UIView.animate(withDuration: 1, delay: 1, options: .curveEaseIn) {
+                                self.ghostToastView?.alpha = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                self.ghostToastView?.removeFromSuperview()
+                            }
+                        }
                         
                         didPullToRefresh()
                         
