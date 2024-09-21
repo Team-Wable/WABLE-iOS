@@ -5,8 +5,8 @@
 //  Created by 박윤빈 on 8/31/24.
 //
 
-import Foundation
 import Combine
+import UIKit
 
 final class NotificationActivityViewModel {
     
@@ -14,9 +14,11 @@ final class NotificationActivityViewModel {
     
     private let cancelBag = CancelBag()
     var cursor = -1
+    private let networkProvider: NetworkServiceType
     
     // MARK: - Input
     
+    let viewDidLoad = PassthroughSubject<Void, Never>()
     let viewWillAppear = PassthroughSubject<Void, Never>()
     let paginationDidAction = PassthroughSubject<Void, Never>()
     let notiCellDidTapped = PassthroughSubject<Int, Never>()
@@ -31,17 +33,30 @@ final class NotificationActivityViewModel {
     
     // MARK: - init
     
-    init() {
-        transform()
+    init(networkProvider: NetworkServiceType) {
+        self.networkProvider = networkProvider
+        self.transform()
     }
     
     // MARK: - Functions
     
     private func transform() {
+        viewDidLoad
+            .sink { [self] _ in
+                Task {
+                    let cleanBadgeState = try await self.patchFCMBadgeAPI(badge: 0)
+                }
+            }
+            .store(in: self.cancelBag)
+        
         viewWillAppear
-            .sink { [weak self] in
-                self?.getNotiActivityResponse(cursor: -1) { result in
-                    self?.notiActivityDTO.send(result)
+            .sink { [self] _ in
+                Task {
+                    let cleanBadgeState = try await self.patchFCMBadgeAPI(badge: 0)
+                }
+                
+                self.getNotiActivityResponse(cursor: -1) { result in
+                    self.notiActivityDTO.send(result)
                 }
             }
             .store(in: cancelBag)
@@ -87,6 +102,8 @@ extension NotificationActivityViewModel {
     private func getNotiActivityResponse(cursor: Int, completion: @escaping ([ActivityNotificationDTO]) -> Void) {
         NotificationAPI.shared.getNotiActivity(cursor: cursor) { [weak self] result in
             guard let self = self else { return }
+            print("result: \(result)")
+
             guard let result = self.validateResult(result) as? [ActivityNotificationDTO] else {
                 completion([])
                 return
@@ -97,12 +114,34 @@ extension NotificationActivityViewModel {
         }
     }
     
+    func patchFCMBadgeAPI(badge: Int) async throws -> BaseResponse<EmptyResponse>? {
+        do {
+            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
+            let resquestDTO = FCMBadgeDTO(fcmBadge: badge)
+            let data: BaseResponse<EmptyResponse>? = try await self.networkProvider.donNetwork(
+                type: .patch,
+                baseURL: Config.baseURL + "v1/fcmbadge",
+                accessToken: accessToken,
+                body: resquestDTO,
+                pathVariables: ["": ""])
+            print ("👻👻👻👻👻FCMBadge 개수 수정 완료👻👻👻👻👻")
+            DispatchQueue.main.async {
+                UIApplication.shared.applicationIconBadgeNumber = 0
+                print("여기 돌아가긴 하니?")
+            }
+
+            return data
+        } catch {
+            return nil
+        }
+    }
+    
     private func validateResult(_ result: NetworkResult<Any>) -> Any?{
         switch result{
         case .success(let data):
-//            print("성공했습니다.")
-//            print("⭐️⭐️⭐️⭐️⭐️⭐️")
-//            print(data)
+            print("성공했습니다.")
+            print("⭐️⭐️⭐️⭐️⭐️⭐️")
+            print(data)
             return data
         case .requestErr(let message):
             print(message)
