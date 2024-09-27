@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "toast_success.png",
+      "filename" : "toast.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "toast_success@2x.png",
+      "filename" : "toast@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "toast_success@3x.png",
+      "filename" : "toast@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
