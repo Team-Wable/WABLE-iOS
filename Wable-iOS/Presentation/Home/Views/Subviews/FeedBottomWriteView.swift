@@ -62,7 +62,7 @@ final class FeedBottomWriteView: UIView {
 
 extension FeedBottomWriteView {
     private func setUI() {
-
+        self.backgroundColor = .wableWhite
     }
     
     private func setHierarchy() {

@@ -203,23 +203,33 @@ extension FeedDetailViewController {
     }
     
     @objc
-    private func keyboardUp(notification:NSNotification) {
-        if let keyboardFrame:NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+    private func keyboardUp(notification: NSNotification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            let safeAreaBottomInset = self.view.safeAreaInsets.bottom
             
-            UIView.animate(
-                withDuration: 0.3
-                , animations: {
-                    self.view.transform = CGAffineTransform(translationX: 0, y: -keyboardRectangle.height)
-                }
-            )
+            
+            // 키보드가 올라올 때 테이블뷰의 contentInset을 조정
+            UIView.animate(withDuration: 0.3, animations: {
+                self.feedDetailView.bottomWriteView.transform = CGAffineTransform(translationX: 0, y: -(keyboardHeight - safeAreaBottomInset))
+                
+                self.feedDetailView.feedDetailTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
+                self.feedDetailView.feedDetailTableView.scrollIndicatorInsets = self.feedDetailView.feedDetailTableView.contentInset
+            })
         }
     }
     
-    @objc func keyboardDown() {
-        self.view.transform = .identity
+    @objc
+    private func keyboardDown(notification: NSNotification) {
+        // 키보드가 내려갈 때 contentInset을 원래대로 복구
+        UIView.animate(withDuration: 0.3, animations: {
+            self.feedDetailView.bottomWriteView.transform = .identity
+            
+            self.feedDetailView.feedDetailTableView.contentInset = .zero
+            self.feedDetailView.feedDetailTableView.scrollIndicatorInsets = .zero
+        })
     }
-    
     
 }
 
