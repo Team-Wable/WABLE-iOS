@@ -330,7 +330,7 @@ extension FeedDetailViewController: UITextViewDelegate {
             }
         }
         
-        if (textView.text.count != 0) {
+        if !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRipplePress, for: .normal)
             feedDetailView.bottomWriteView.uploadButton.isEnabled = true
         } else {
@@ -732,6 +732,8 @@ extension FeedDetailViewController: WablePopupDelegate {
             self.deletePopupView?.removeFromSuperview()
         }
     }
+    
+    // MARK: - 투명도 버튼 눌렸을 때 실행되는 코드
     
     func confirmButtonTapped() {
         if nowShowingPopup == "ghost" {
