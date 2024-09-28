@@ -74,6 +74,7 @@ final class FeedDetailViewController: UIViewController {
     private var ghostPopupView: WablePopupView? = nil
     private var reportPopupView: WablePopupView? = nil
     private var deletePopupView: WablePopupView? = nil
+    private var photoDetailView: WablePhotoDetailView?
     
     private var reportToastView: UIImageView?
     private var ghostToastView: UIImageView?
@@ -413,6 +414,12 @@ extension FeedDetailViewController: UITextViewDelegate {
         }
     }
     
+    
+    @objc
+    func removePhotoButtonTapped() {
+        self.photoDetailView?.removeFromSuperview()
+    }
+    
     func popBottomsheetView() {
         if UIApplication.shared.keyWindowInConnectedScenes != nil {
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
@@ -576,6 +583,30 @@ extension FeedDetailViewController: UITableViewDataSource {
             }
             
             cell.divideLine.isHidden = true
+            
+            cell.contentImageViewTapped = { [weak self] in
+                DispatchQueue.main.async {
+                    self?.photoDetailView = WablePhotoDetailView()
+                    
+                    if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                        window.addSubview(self?.photoDetailView ?? WablePhotoDetailView())
+                        
+                        self?.photoDetailView?.removePhotoButton.addTarget(self, action: #selector(self?.removePhotoButtonTapped), for: .touchUpInside)
+                        
+                        if let imageURL = self?.feedData?.contentImageURL {
+                            self?.photoDetailView?.photoImageView.loadContentImage(url: imageURL) { image in
+                                // 이미지 로드가 완료된 후, 동적으로 높이 변경
+                                self?.photoDetailView?.updateImageViewHeight(with: image)
+                            }
+                        }
+                        
+                        self?.photoDetailView?.snp.makeConstraints {
+                            $0.edges.equalToSuperview()
+                        }
+                    }
+                }
+                
+            }
             
             return cell
             
