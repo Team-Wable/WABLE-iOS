@@ -92,6 +92,11 @@ extension FeedBottomWriteView {
     }
     
     private func setAddTarget() {
-
+        uploadButton.addTarget(self, action: #selector(postButtonDidTapped), for: .touchUpInside)
+    }
+    
+    @objc
+    private func postButtonDidTapped() {
+        uploadButton.isEnabled = false
     }
 }

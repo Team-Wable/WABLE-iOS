@@ -271,7 +271,7 @@ extension FeedDetailViewController {
                     self.viewModel.cursor = -1
                     DispatchQueue.main.async {
                         self.didPullToRefresh()
-                        
+                        self.feedDetailView.bottomWriteView.uploadButton.isEnabled = false
                         self.feedDetailView.bottomWriteView.writeTextView.textColor = .gray700
                         self.feedDetailView.bottomWriteView.writeTextView.text = (self.feedData?.memberNickname ?? "") + self.placeholder
                         self.feedDetailView.bottomWriteView.writeTextView.textContainerInset = UIEdgeInsets(top: 10.adjusted,
@@ -280,7 +280,6 @@ extension FeedDetailViewController {
                                                                                                             right: 10.adjusted)
                         
                         self.feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
-                        self.feedDetailView.bottomWriteView.uploadButton.isEnabled = false
                     }
                 }
             }
@@ -451,7 +450,7 @@ extension FeedDetailViewController: UITableViewDataSource {
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView == feedDetailView.feedDetailTableView {
-            if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
+            if viewModel.feedReplyDatas.count >= 15 && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 let lastCommentID = viewModel.feedReplyDatas.last?.commentId ?? -1
                 viewModel.cursor = lastCommentID
                 DispatchQueue.main.async {
