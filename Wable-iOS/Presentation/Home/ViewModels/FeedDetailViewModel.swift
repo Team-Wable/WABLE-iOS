@@ -20,6 +20,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let clickedRadioButtonState = PassthroughSubject<Int, Never>()
     private let toggleCommentLikeButton = PassthroughSubject<Bool, Never>()
     private let postReplyCompleted = PassthroughSubject<Int, Never>()
+    private var isRequestInProgress = false
     
     var isCommentLikeButtonClicked: Bool = false
     var cursor: Int = -1
@@ -164,63 +165,57 @@ extension FeedDetailViewModel {
         }
     }
     
-    private func postWriteReplyAPI(accessToken: String, commentText: String, contentId: Int, notificationTriggerType: String) async throws -> BaseResponse<EmptyResponse>? {
-        do {
-            let result: BaseResponse<EmptyResponse>? = try await
-            self.networkProvider.donNetwork(
-                type: .post,
-                baseURL: Config.baseURL + "v1/content/\(contentId)/comment",
-                accessToken: accessToken,
-                body: WriteReplyRequestDTO(commentText: commentText, notificationTriggerType: notificationTriggerType),
-                pathVariables: ["":""]
-            )
-            return result
-        } catch {
-            return nil
-        }
-    }
+//    private func postWriteReplyAPI(accessToken: String, commentText: String, contentId: Int, notificationTriggerType: String) async throws -> BaseResponse<EmptyResponse>? {
+//        do {
+//            let result: BaseResponse<EmptyResponse>? = try await
+//            self.networkProvider.donNetwork(
+//                type: .post,
+//                baseURL: Config.baseURL + "v1/content/\(contentId)/comment",
+//                accessToken: accessToken,
+//                body: WriteReplyRequestDTO(commentText: commentText, notificationTriggerType: notificationTriggerType),
+//                pathVariables: ["":""]
+//            )
+//            return result
+//        } catch {
+//            return nil
+//        }
+//    }
     
     private func postWriteReplyContentAPI(commentText: String, contentId: Int) async throws -> Void {
-        guard let url = URL(string: Config.baseURL + "v2/content/\(contentId)/comment") else { return }
+        // URL 생성
+        guard let url = URL(string: Config.baseURL + "v1/content/\(contentId)/comment") else { return }
+        // Access Token 로드
         guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
         
+        // 전송할 JSON 데이터
         let parameters: [String: Any] = [
-            "commentText" : commentText,
-            "notificationTriggerType" : "comment"
+            "notificationTriggerType": "comment",
+            "commentText": commentText
         ]
         
+        // URLRequest 생성
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
-        // Multipart form data 생성
-        let boundary = "Boundary-\(UUID().uuidString)"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        // Content-Type을 application/json으로 설정
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         
-        var requestBodyData = Data()
+        // JSON 데이터를 HTTP Body에 추가
+        request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
         
-        // 게시글 본문 데이터 추가
-        requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
-        requestBodyData.append("Content-Disposition: form-data; name=\"text\"\r\n\r\n".data(using: .utf8)!)
-        requestBodyData.append(try! JSONSerialization.data(withJSONObject: parameters, options: []))
-        requestBodyData.append("\r\n".data(using: .utf8)!)
+        // *** 전체 요청 내용 출력 ***
+        print("=== HTTP Request ===")
+        print("URL:", request.url?.absoluteString ?? "No URL")
+        print("HTTP Method:", request.httpMethod ?? "No method")
+        print("Headers:", request.allHTTPHeaderFields ?? "No headers")
         
-//        if let image = photoImage {
-//            let imageData = image.jpegData(compressionQuality: 0.1)!
-//            
-//            // 게시글 이미지 데이터 추가
-//            requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
-//            requestBodyData.append("Content-Disposition: form-data; name=\"image\"; filename=\"dontbe.jpeg\"\r\n".data(using: .utf8)!)
-//            requestBodyData.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-//            requestBodyData.append(imageData)
-//            requestBodyData.append("\r\n".data(using: .utf8)!)
-//        }
-        
-        requestBodyData.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
-        // HTTP body에 데이터 설정
-        request.httpBody = requestBodyData
-        
+        if let httpBody = request.httpBody, let bodyString = String(data: httpBody, encoding: .utf8) {
+            print("Body:\n", bodyString)
+        } else {
+            print("No body data")
+        }
+
         // URLSession으로 비동기 요청 보내기
         let (data, response) = try await URLSession.shared.data(for: request)
         
@@ -229,131 +224,24 @@ extension FeedDetailViewModel {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])
         }
         
+        // *** 전체 응답 내용 출력 ***
+        print("=== HTTP Response ===")
         print("Response status code:", httpResponse.statusCode)
-        
+        print("Response headers:", httpResponse.allHeaderFields)
+
+        // 상태 코드 확인
         if httpResponse.statusCode != 201 {
             throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed with status code \(httpResponse.statusCode)"])
         }
         
+        // 응답 데이터 확인
         guard let responseString = String(data: data, encoding: .utf8) else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Empty response"])
         }
         
-        print("Response data:", responseString)  // 서버 응답 데이터를 처리한 후 출력
+        // 응답 데이터 출력
+        print("Response data:", responseString)
         
         return
     }
-    
-//    func postDownTransparency(accessToken: String, alarmTriggerType: String, targetMemberId: Int, alarmTriggerId: Int, ghostReason: String) async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            let result: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(type: .post,
-//                                            baseURL: Config.baseURL + "v1/ghost2",
-//                                            accessToken: accessToken,
-//                                            body: PostTransparencyRequestDTO(
-//                                                alarmTriggerType: alarmTriggerType,
-//                                                targetMemberId: targetMemberId,
-//                                                alarmTriggerId: alarmTriggerId,
-//                                                ghostReason: ghostReason
-//                                            ),
-//                                            pathVariables: ["":""])
-//            return result
-//        } catch {
-//            return nil
-//        }
-//    }
-//    
-//    private func postLikeButtonAPI(contentId: Int) async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
-//            let requestDTO = ContentLikeRequestDTO(alarmTriggerType: "contentLiked")
-//            let data: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(
-//                type: .post,
-//                baseURL: Config.baseURL + "/content/\(contentId)/liked",
-//                accessToken: accessToken,
-//                body: requestDTO,
-//                pathVariables: ["":""]
-//            )
-//            print ("👻👻👻👻👻게시물 좋아요 버튼 클릭👻👻👻👻👻")
-//            return data
-//        } catch {
-//            return nil
-//        }
-//    }
-//    
-//    private func deleteLikeButtonAPI(contentId: Int) async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
-//            let data: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(
-//                type: .delete,
-//                baseURL: Config.baseURL + "/content/\(contentId)/unliked",
-//                accessToken: accessToken,
-//                body: EmptyBody(),
-//                pathVariables: ["":""]
-//            )
-//            print ("👻👻👻👻👻게시물 좋아요 취소 버튼 클릭👻👻👻👻👻")
-//            return data
-//        } catch {
-//            return nil
-//        }
-//    }
-//    
-//    private func postCommentLikeButtonAPI(commentId: Int, alarmText: String)  async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
-//            let requestDTO = CommentLikeRequestDTO(notificationTriggerType: "commentLiked", notificationText: alarmText)
-//            let data: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(
-//                type: .post,
-//                baseURL: Config.baseURL + "/comment/\(commentId)/liked",
-//                accessToken: accessToken,
-//                body: requestDTO,
-//                pathVariables: ["":""]
-//            )
-//            print ("👻👻👻👻👻답글 좋아요 버튼 클릭👻👻👻👻👻")
-//            return data
-//        } catch {
-//            return nil
-//        }
-//    }
-//    
-//    private func deleteCommentLikeButtonAPI(commentId: Int)  async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
-//            let data: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(
-//                type: .delete,
-//                baseURL: Config.baseURL + "/comment/\(commentId)/unliked",
-//                accessToken: accessToken,
-//                body: EmptyBody(),
-//                pathVariables: ["":""]
-//            )
-//            print ("👻👻👻👻👻답글 좋아요 취소 버튼 클릭👻👻👻👻👻")
-//            return data
-//        } catch {
-//            return nil
-//        }
-//    }
-//    
-//    func postReportButtonAPI(reportTargetNickname: String, relateText: String) async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
-//            let data: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(
-//                type: .post,
-//                baseURL: Config.baseURL + "/report/slack",
-//                accessToken: accessToken,
-//                body: ReportRequestDTO(
-//                    reportTargetNickname: reportTargetNickname,
-//                    relateText: relateText
-//                ),
-//                pathVariables: ["":""]
-//            )
-//            return data
-//        } catch {
-//            return nil
-//        }
-//    }
 }
