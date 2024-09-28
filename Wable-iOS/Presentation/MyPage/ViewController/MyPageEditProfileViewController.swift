@@ -69,6 +69,7 @@ final class MyPageEditProfileViewController: UIViewController {
         
         bindViewModel()
         setNavigationBar()
+        dismissKeyboard()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,6 +83,9 @@ final class MyPageEditProfileViewController: UIViewController {
         setLayout()
         setAddTarget()
         setNotification()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -91,6 +95,8 @@ final class MyPageEditProfileViewController: UIViewController {
         self.tabBarController?.tabBar.isTranslucent = false
         
         NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -152,6 +158,27 @@ extension MyPageEditProfileViewController {
     private func backButtonDidTapped() {
         navigationController?.popViewController(animated: true)
     }
+    
+    @objc
+    private func keyboardUp(notification: NSNotification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            UIView.animate(withDuration: 0.3) {
+                // 뷰 전체를 키보드 높이만큼 위로 이동
+                self.view.transform = CGAffineTransform(translationX: 0, y: -keyboardHeight)
+            }
+        }
+    }
+
+    @objc
+    private func keyboardDown(notification: NSNotification) {
+        UIView.animate(withDuration: 0.3) {
+            // 뷰 전체를 원래 위치로 복원
+            self.view.transform = .identity
+        }
+    }
+
     
     private func bindViewModel() {
         let input = MyPageProfileViewModel.Input(
