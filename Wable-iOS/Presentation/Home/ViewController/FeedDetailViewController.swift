@@ -27,7 +27,7 @@ final class FeedDetailViewController: UIViewController {
     
     private lazy var postButtonTapped =
     self.feedDetailView.bottomWriteView.uploadButton.publisher(for: .touchUpInside)
-        .throttle(for: .seconds(1), scheduler: RunLoop.main, latest: true)
+        .debounce(for: .seconds(1), scheduler: RunLoop.main)
         .map { _ in
             return (WriteReplyRequestDTO(
                 commentText: self.feedDetailView.bottomWriteView.writeTextView.text,
@@ -240,7 +240,6 @@ extension FeedDetailViewController {
             .sink { data in
                 self.postMemberId = data.memberId
                 self.getFeedData = data
-                self.feedDetailView.feedDetailTableView.reloadData()
             }
             .store(in: self.cancelBag)
         
@@ -444,7 +443,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                 let lastCommentID = viewModel.feedReplyDatas.last?.commentId ?? -1
                 viewModel.cursor = lastCommentID
                 DispatchQueue.main.async {
-                    self.getAPI()
+                    self.didPullToRefresh()
                 }
             }
         }
