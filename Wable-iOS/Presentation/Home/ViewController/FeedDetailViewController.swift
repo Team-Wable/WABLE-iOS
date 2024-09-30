@@ -68,7 +68,6 @@ final class FeedDetailViewController: UIViewController {
     // MARK: - UI Components
     
     private let feedDetailView = FeedDetailView()
-    private let divideLine = UIView().makeDivisionLine()
     
     var homeBottomsheetView = HomeBottomSheetView()
     private var ghostPopupView: WablePopupView? = nil
@@ -77,6 +76,8 @@ final class FeedDetailViewController: UIViewController {
     
     private var reportToastView: UIImageView?
     private var ghostToastView: UIImageView?
+    
+    private let topDivisionLine = UIView().makeDivisionLine()
     
     // MARK: - Life Cycles
     
@@ -118,7 +119,6 @@ final class FeedDetailViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
-        self.divideLine.isHidden = true
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -141,14 +141,13 @@ extension FeedDetailViewController {
     }
     
     private func setHierarchy() {
-        if let navigationBar = navigationController?.navigationBar {
-               navigationBar.addSubview(divideLine)
-            }
+        self.view.addSubview(topDivisionLine)
     }
     
     private func setLayout() {
-        divideLine.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview()
+        topDivisionLine.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(1.adjusted)
         }
     }
