@@ -27,7 +27,7 @@ final class FeedDetailViewController: UIViewController {
     
     private lazy var postButtonTapped =
     self.feedDetailView.bottomWriteView.uploadButton.publisher(for: .touchUpInside)
-        .debounce(for: .seconds(1), scheduler: RunLoop.main)
+        .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
         .map { _ in
             return (WriteReplyRequestDTO(
                 commentText: self.feedDetailView.bottomWriteView.writeTextView.text,
