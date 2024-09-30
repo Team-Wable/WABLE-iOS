@@ -63,6 +63,9 @@ final class MyPageSettingAlarmViewController: UIViewController {
         setHierarchy()
         setLayout()
         setAddTarget()
+        
+        // 앱이 다시 활성화될 때 알림 설정 상태를 확인하도록 옵저버 등록
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,6 +73,8 @@ final class MyPageSettingAlarmViewController: UIViewController {
         
         self.tabBarController?.tabBar.isHidden = false
         self.tabBarController?.tabBar.isTranslucent = false
+        
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 }
 
@@ -163,6 +168,18 @@ extension MyPageSettingAlarmViewController {
         if let alarmSettings = URL(string: UIApplication.openSettingsURLString) {
             if UIApplication.shared.canOpenURL(alarmSettings) {
                 UIApplication.shared.open(alarmSettings, options: [:], completionHandler: nil)
+            }
+        }
+    }
+    
+    @objc
+    private func appDidBecomeActive() {
+        // 앱이 다시 활성화될 때 알림 상태 확인 및 UI 업데이트
+        isNotificationEnabled { isEnabled in
+            if isEnabled {
+                self.pushAlarmSettingLabel.text = "on"
+            } else {
+                self.pushAlarmSettingLabel.text = "off"
             }
         }
     }
