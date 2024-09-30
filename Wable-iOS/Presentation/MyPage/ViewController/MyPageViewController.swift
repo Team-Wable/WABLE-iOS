@@ -121,13 +121,14 @@ final class MyPageViewController: UIViewController {
             self.tabBarController?.tabBar.isTranslucent = true
             self.tabBarController?.tabBar.backgroundColor = .wableWhite
             self.tabBarController?.tabBar.barTintColor = .wableWhite
-            
-            self.navigationItem.title = loadUserData()?.userNickname ?? ""
             self.tabBarController?.tabBar.isHidden = false
             
             let hambergerButtonImage = ImageLiterals.Button.btnHamberger.withRenderingMode(.alwaysOriginal)
             let hambergerButton = UIBarButtonItem(image: hambergerButtonImage, style: .done, target: self, action: #selector(hambergerButtonDidTapped))
             navigationItem.rightBarButtonItem = hambergerButton
+            
+            self.navigationItem.title = loadUserData()?.userNickname ?? ""
+            
         } else {
             // 타 유저 프로필 화면
             self.tabBarController?.tabBar.isHidden = true
@@ -341,7 +342,7 @@ extension MyPageViewController {
     }
     
     private func bindProfileData(data: MypageProfileResponseDTO) {
-        self.title = data.nickname
+        self.navigationItem.title = data.nickname
         self.rootView.myPageProfileView.userNickname.text = data.nickname
         self.rootView.myPageProfileView.profileImageView.load(url: data.memberProfileUrl)
         self.rootView.myPageProfileView.transparencyValue = data.memberGhost
