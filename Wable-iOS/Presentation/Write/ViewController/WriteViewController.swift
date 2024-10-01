@@ -179,6 +179,7 @@ extension WriteViewController {
     }
     
     @objc private func photoButtonTapped() {
+        AmplitudeManager.shared.trackEvent(tag: "click_attach_photo")
         let status = PHPhotoLibrary.authorizationStatus(for: .addOnly)
         
         switch status {

@@ -73,6 +73,7 @@ final class FeedDetailViewController: UIViewController {
     private var ghostPopupView: WablePopupView? = nil
     private var reportPopupView: WablePopupView? = nil
     private var deletePopupView: WablePopupView? = nil
+    private var photoDetailView: WablePhotoDetailView?
     
     private var reportToastView: UIImageView?
     private var ghostToastView: UIImageView?
@@ -202,23 +203,33 @@ extension FeedDetailViewController {
     }
     
     @objc
-    private func keyboardUp(notification:NSNotification) {
-        if let keyboardFrame:NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+    private func keyboardUp(notification: NSNotification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            let safeAreaBottomInset = self.view.safeAreaInsets.bottom
             
-            UIView.animate(
-                withDuration: 0.3
-                , animations: {
-                    self.view.transform = CGAffineTransform(translationX: 0, y: -keyboardRectangle.height)
-                }
-            )
+            
+            // 키보드가 올라올 때 테이블뷰의 contentInset을 조정
+            UIView.animate(withDuration: 0.3, animations: {
+                self.feedDetailView.bottomWriteView.transform = CGAffineTransform(translationX: 0, y: -(keyboardHeight - safeAreaBottomInset))
+                
+                self.feedDetailView.feedDetailTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
+                self.feedDetailView.feedDetailTableView.scrollIndicatorInsets = self.feedDetailView.feedDetailTableView.contentInset
+            })
         }
     }
     
-    @objc func keyboardDown() {
-        self.view.transform = .identity
+    @objc
+    private func keyboardDown(notification: NSNotification) {
+        // 키보드가 내려갈 때 contentInset을 원래대로 복구
+        UIView.animate(withDuration: 0.3, animations: {
+            self.feedDetailView.bottomWriteView.transform = .identity
+            
+            self.feedDetailView.feedDetailTableView.contentInset = .zero
+            self.feedDetailView.feedDetailTableView.scrollIndicatorInsets = .zero
+        })
     }
-    
     
 }
 
@@ -259,7 +270,7 @@ extension FeedDetailViewController {
                     self.viewModel.cursor = -1
                     DispatchQueue.main.async {
                         self.didPullToRefresh()
-                        
+                        self.feedDetailView.bottomWriteView.uploadButton.isEnabled = false
                         self.feedDetailView.bottomWriteView.writeTextView.textColor = .gray700
                         self.feedDetailView.bottomWriteView.writeTextView.text = (self.feedData?.memberNickname ?? "") + self.placeholder
                         self.feedDetailView.bottomWriteView.writeTextView.textContainerInset = UIEdgeInsets(top: 10.adjusted,
@@ -268,7 +279,6 @@ extension FeedDetailViewController {
                                                                                                             right: 10.adjusted)
                         
                         self.feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
-                        self.feedDetailView.bottomWriteView.uploadButton.isEnabled = false
                     }
                 }
             }
@@ -319,7 +329,7 @@ extension FeedDetailViewController: UITextViewDelegate {
             }
         }
         
-        if (textView.text.count != 0) {
+        if !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRipplePress, for: .normal)
             feedDetailView.bottomWriteView.uploadButton.isEnabled = true
         } else {
@@ -402,6 +412,12 @@ extension FeedDetailViewController: UITextViewDelegate {
         }
     }
     
+    
+    @objc
+    func removePhotoButtonTapped() {
+        self.photoDetailView?.removeFromSuperview()
+    }
+    
     func popBottomsheetView() {
         if UIApplication.shared.keyWindowInConnectedScenes != nil {
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
@@ -439,7 +455,7 @@ extension FeedDetailViewController: UITableViewDataSource {
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView == feedDetailView.feedDetailTableView {
-            if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
+            if viewModel.feedReplyDatas.count >= 15 && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 let lastCommentID = viewModel.feedReplyDatas.last?.commentId ?? -1
                 viewModel.cursor = lastCommentID
                 DispatchQueue.main.async {
@@ -540,6 +556,7 @@ extension FeedDetailViewController: UITableViewDataSource {
             }
             
             cell.bottomView.ghostButtonTapped = { [weak self] in
+                AmplitudeManager.shared.trackEvent(tag: "click_ghost_post")
                 self?.alarmTriggerType = cell.alarmTriggerType
                 self?.targetMemberId = cell.targetMemberId
                 self?.alarmTriggerdId = cell.alarmTriggerdId
@@ -553,6 +570,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                 if cell.bottomView.isLiked == true {
                     cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
                 } else {
+                    AmplitudeManager.shared.trackEvent(tag: "click_like_post")
                     cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
                 }
                 if let feedData = self.feedData {
@@ -565,6 +583,30 @@ extension FeedDetailViewController: UITableViewDataSource {
             }
             
             cell.divideLine.isHidden = true
+            
+            cell.contentImageViewTapped = { [weak self] in
+                DispatchQueue.main.async {
+                    self?.photoDetailView = WablePhotoDetailView()
+                    
+                    if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                        window.addSubview(self?.photoDetailView ?? WablePhotoDetailView())
+                        
+                        self?.photoDetailView?.removePhotoButton.addTarget(self, action: #selector(self?.removePhotoButtonTapped), for: .touchUpInside)
+                        
+                        if let imageURL = self?.feedData?.contentImageURL {
+                            self?.photoDetailView?.photoImageView.loadContentImage(url: imageURL) { image in
+                                // 이미지 로드가 완료된 후, 동적으로 높이 변경
+                                self?.photoDetailView?.updateImageViewHeight(with: image)
+                            }
+                        }
+                        
+                        self?.photoDetailView?.snp.makeConstraints {
+                            $0.edges.equalToSuperview()
+                        }
+                    }
+                }
+                
+            }
             
             return cell
             
@@ -644,6 +686,7 @@ extension FeedDetailViewController: UITableViewDataSource {
             }
             
             cell.bottomView.ghostButtonTapped = { [weak self] in
+                AmplitudeManager.shared.trackEvent(tag: "click_ghost_comment")
                 self?.alarmTriggerType = cell.alarmTriggerType
                 self?.targetMemberId = cell.targetMemberId
                 self?.alarmTriggerdId = cell.alarmTriggerdId
@@ -657,6 +700,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                 if cell.bottomView.isLiked == true {
                     cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
                 } else {
+                    AmplitudeManager.shared.trackEvent(tag: "click_like_comment")
                     cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
                 }
                 self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.viewModel.feedReplyDatas[indexPath.row].commentId, commentText: self.viewModel.feedReplyDatas[indexPath.row].commentText)
@@ -710,6 +754,7 @@ extension FeedDetailViewController: WablePopupDelegate {
     
     func cancleButtonTapped() {
         if nowShowingPopup == "ghost" {
+            AmplitudeManager.shared.trackEvent(tag: "click_withdrawghost_popup")
             self.ghostPopupView?.removeFromSuperview()
         }
         
@@ -722,10 +767,12 @@ extension FeedDetailViewController: WablePopupDelegate {
         }
     }
     
+    // MARK: - 투명도 버튼 눌렸을 때 실행되는 코드
+    
     func confirmButtonTapped() {
         if nowShowingPopup == "ghost" {
             self.ghostPopupView?.removeFromSuperview()
-            
+            AmplitudeManager.shared.trackEvent(tag: "click_applyghost_popup")
             Task {
                 do {
                     if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
@@ -814,7 +861,7 @@ extension FeedDetailViewController: WablePopupDelegate {
         
         if nowShowingPopup == "deletePost" {
             self.deletePopupView?.removeFromSuperview()
-            
+            AmplitudeManager.shared.trackEvent(tag: "click_delete_post")
             Task {
                 do {
                     if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {

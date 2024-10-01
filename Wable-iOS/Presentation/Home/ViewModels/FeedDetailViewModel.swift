@@ -107,6 +107,7 @@ final class FeedDetailViewModel: ViewModelType {
         
         input.postButtonTapped
             .sink { value in
+                AmplitudeManager.shared.trackEvent(tag: "click_write_comment")
                 Task {
                     do {
                         if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {

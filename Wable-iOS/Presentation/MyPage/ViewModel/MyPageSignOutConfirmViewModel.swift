@@ -39,6 +39,7 @@ final class MyPageSignOutConfirmViewModel: ViewModelType {
         
         input.signOutButtonTapped?
             .sink { deletedReason in
+                AmplitudeManager.shared.trackEvent(tag: "click_next_deleteguide")
                 Task {
                     do {
                         if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
