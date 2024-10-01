@@ -20,7 +20,6 @@ final class FeedDetailViewModel: ViewModelType {
     private let clickedRadioButtonState = PassthroughSubject<Int, Never>()
     private let toggleCommentLikeButton = PassthroughSubject<Bool, Never>()
     private let postReplyCompleted = PassthroughSubject<Int, Never>()
-    private var isRequestInProgress = false
     
     var isCommentLikeButtonClicked: Bool = false
     var cursor: Int = -1
@@ -108,6 +107,7 @@ final class FeedDetailViewModel: ViewModelType {
         
         input.postButtonTapped
             .sink { value in
+                AmplitudeManager.shared.trackEvent(tag: "click_write_comment")
                 Task {
                     do {
                         try await self.postWriteReplyContentAPI(
@@ -164,22 +164,6 @@ extension FeedDetailViewModel {
             return nil
         }
     }
-    
-//    private func postWriteReplyAPI(accessToken: String, commentText: String, contentId: Int, notificationTriggerType: String) async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            let result: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(
-//                type: .post,
-//                baseURL: Config.baseURL + "v1/content/\(contentId)/comment",
-//                accessToken: accessToken,
-//                body: WriteReplyRequestDTO(commentText: commentText, notificationTriggerType: notificationTriggerType),
-//                pathVariables: ["":""]
-//            )
-//            return result
-//        } catch {
-//            return nil
-//        }
-//    }
     
     private func postWriteReplyContentAPI(commentText: String, contentId: Int) async throws -> Void {
         // URL 생성

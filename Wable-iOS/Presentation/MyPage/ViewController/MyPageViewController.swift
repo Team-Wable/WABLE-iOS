@@ -377,6 +377,7 @@ extension MyPageViewController {
     
     @objc
     private func goToWriteViewController() {
+        AmplitudeManager.shared.trackEvent(tag: "click_write_firstpost")
         let viewController = WriteViewController(viewModel: WriteViewModel(networkProvider: NetworkService()))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -690,6 +691,7 @@ extension MyPageViewController: WablePopupDelegate {
         }
         
         if logoutPopupView != nil {
+            AmplitudeManager.shared.trackEvent(tag: "click_complete_logout")
             self.logoutPopupView?.removeFromSuperview()
             self.rootView.myPageBottomsheet.handleDismiss()
             

@@ -44,6 +44,7 @@ final class MyPageSignOutReasonViewModel: ViewModelType {
     func transform(from input: Input, cancelBag: CancelBag) -> Output {        
         input.continueButtonTapped
             .sink { _ in
+                AmplitudeManager.shared.trackEvent(tag: "click_next_deletereason")
                 self.pushOrPopViewController.send(1)
             }
             .store(in: cancelBag)
