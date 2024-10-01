@@ -109,11 +109,13 @@ final class FeedDetailViewModel: ViewModelType {
             .sink { value in
                 Task {
                     do {
-                        try await self.postWriteReplyContentAPI(
-                            commentText: value.0.commentText,
-                            contentId: value.1
-                        )
-                        self.postReplyCompleted.send(0)
+                        if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                            let result = try await self.postWriteReplyAPI(accessToken: accessToken, commentText: value.0.commentText, contentId: value.1, notificationTriggerType: "comment")
+                            
+                            if result?.status == 201 {
+                                self.postReplyCompleted.send(0)
+                            }
+                        }
                     }
                 }
             }
@@ -178,70 +180,6 @@ extension FeedDetailViewModel {
         } catch {
             return nil
         }
-    }
-    
-    private func postWriteReplyContentAPI(commentText: String, contentId: Int) async throws -> Void {
-        guard let url = URL(string: Config.baseURL + "v2/content/\(contentId)/comment") else { return }
-        guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
-        
-        let parameters: [String: Any] = [
-            "commentText" : commentText,
-            "notificationTriggerType" : "comment"
-        ]
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        // Multipart form data 생성
-        let boundary = "Boundary-\(UUID().uuidString)"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        
-        var requestBodyData = Data()
-        
-        // 게시글 본문 데이터 추가
-        requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
-        requestBodyData.append("Content-Disposition: form-data; name=\"text\"\r\n\r\n".data(using: .utf8)!)
-        requestBodyData.append(try! JSONSerialization.data(withJSONObject: parameters, options: []))
-        requestBodyData.append("\r\n".data(using: .utf8)!)
-        
-//        if let image = photoImage {
-//            let imageData = image.jpegData(compressionQuality: 0.1)!
-//            
-//            // 게시글 이미지 데이터 추가
-//            requestBodyData.append("--\(boundary)\r\n".data(using: .utf8)!)
-//            requestBodyData.append("Content-Disposition: form-data; name=\"image\"; filename=\"dontbe.jpeg\"\r\n".data(using: .utf8)!)
-//            requestBodyData.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-//            requestBodyData.append(imageData)
-//            requestBodyData.append("\r\n".data(using: .utf8)!)
-//        }
-        
-        requestBodyData.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
-        // HTTP body에 데이터 설정
-        request.httpBody = requestBodyData
-        
-        // URLSession으로 비동기 요청 보내기
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        // 응답 처리
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])
-        }
-        
-        print("Response status code:", httpResponse.statusCode)
-        
-        if httpResponse.statusCode != 201 {
-            throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed with status code \(httpResponse.statusCode)"])
-        }
-        
-        guard let responseString = String(data: data, encoding: .utf8) else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Empty response"])
-        }
-        
-        print("Response data:", responseString)  // 서버 응답 데이터를 처리한 후 출력
-        
-        return
     }
     
 //    func postDownTransparency(accessToken: String, alarmTriggerType: String, targetMemberId: Int, alarmTriggerId: Int, ghostReason: String) async throws -> BaseResponse<EmptyResponse>? {
