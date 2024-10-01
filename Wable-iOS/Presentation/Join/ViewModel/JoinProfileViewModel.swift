@@ -44,6 +44,7 @@ final class JoinProfileViewModel: ViewModelType {
         
         input.nextButtonTapped
             .sink { _ in
+                AmplitudeManager.shared.trackEvent(tag: "click_next_profile_signup")
                 self.pushOrPopViewController.send(1)
             }
             .store(in: cancelBag)

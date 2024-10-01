@@ -215,6 +215,7 @@ extension MyPageSignOutConfirmViewController: WablePopupDelegate {
     }
     
     func confirmButtonTapped() {
+        AmplitudeManager.shared.trackEvent(tag: "click_done_deleteaccount")
         self.signOutPopupView.isHidden = true
     }
     

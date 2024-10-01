@@ -170,6 +170,7 @@ extension HomeViewController {
         
         writeButtonDidTapped
             .sink { [weak self] in
+                AmplitudeManager.shared.trackEvent(tag: "click_write_post")
                 self?.viewModel.pushToWriteViewControllr.send()
             }
             .store(in: &cancellables)
@@ -408,6 +409,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         cell.bottomView.ghostButtonTapped = { [weak self] in
+            AmplitudeManager.shared.trackEvent(tag: "click_delete_post")
             self?.alarmTriggerType = cell.alarmTriggerType
             self?.targetMemberId = cell.targetMemberId
             self?.alarmTriggerdId = cell.alarmTriggerdId
@@ -421,6 +423,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             if cell.bottomView.isLiked == true {
                 cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
             } else {
+                AmplitudeManager.shared.trackEvent(tag: "click_like_post")
                 cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
             }
             self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.viewModel.feedDatas[indexPath.row].contentID ?? 0)
@@ -472,6 +475,7 @@ extension HomeViewController: WablePopupDelegate {
     
     func cancleButtonTapped() {
         if nowShowingPopup == "ghost" {
+            AmplitudeManager.shared.trackEvent(tag: "click_withdrawghost_popup")
             self.ghostPopupView?.removeFromSuperview()
         }
         
@@ -487,7 +491,7 @@ extension HomeViewController: WablePopupDelegate {
     func confirmButtonTapped() {
         if nowShowingPopup == "ghost" {
             self.ghostPopupView?.removeFromSuperview()
-            
+            AmplitudeManager.shared.trackEvent(tag: "click_applyghost_popup")
             Task {
                 do {
                     if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
@@ -575,6 +579,7 @@ extension HomeViewController: WablePopupDelegate {
         }
         
         if nowShowingPopup == "delete" {
+            AmplitudeManager.shared.trackEvent(tag: "click_delete_post")
             self.deletePopupView?.removeFromSuperview()
             
             Task {
@@ -596,6 +601,7 @@ extension HomeViewController: WablePopupDelegate {
     }
     
     func singleButtonTapped() {
+        AmplitudeManager.shared.trackEvent(tag: "click_join_popup_signup")
         self.welcomePopupView?.removeFromSuperview()
         
         saveUserData(UserInfo(isSocialLogined: loadUserData()?.isPushAlarmAllowed ?? false,

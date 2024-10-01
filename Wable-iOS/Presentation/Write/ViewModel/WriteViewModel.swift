@@ -27,6 +27,7 @@ final class WriteViewModel: ViewModelType {
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
         input.postButtonTapped
             .sink { value in
+                AmplitudeManager.shared.trackEvent(tag: "click_upload_post")
                 Task {
                     do {
                         try await self.postWriteContentAPI(

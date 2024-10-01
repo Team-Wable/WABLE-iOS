@@ -45,6 +45,7 @@ final class LoginViewModel: NSObject, ViewModelType {
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
         input.kakaoButtonTapped?
             .sink {
+                AmplitudeManager.shared.trackEvent(tag: "click_signin_kakao")
                 self.selectedLogin = "KAKAO"
                 
                 if loadUserData()?.isFirstUser == true {
@@ -57,6 +58,8 @@ final class LoginViewModel: NSObject, ViewModelType {
         
         input.appleButtonTapped?
             .sink {
+                AmplitudeManager.shared.trackEvent(tag: "click_signin_apple")
+
                 self.selectedLogin = "APPLE"
                 
                 if loadUserData()?.isFirstUser == true {
@@ -69,6 +72,7 @@ final class LoginViewModel: NSObject, ViewModelType {
         
         input.newUserSingleButtonTapped?
             .sink {
+                AmplitudeManager.shared.trackEvent(tag: "click_agree_popup_signup")
                 if self.selectedLogin == "KAKAO" {
                     self.performKakaoLogin()
                 } else if self.selectedLogin == "APPLE" {

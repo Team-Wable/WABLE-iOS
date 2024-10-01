@@ -122,5 +122,18 @@ extension WableTabBarController: UITabBarControllerDelegate {
                 }
             }
         }
+        
+        switch tabBarController.selectedIndex {
+        case 0:
+            AmplitudeManager.shared.trackEvent(tag: "click_home_botnavi")
+        case 1:
+            AmplitudeManager.shared.trackEvent(tag: "click_news_botnavi")
+        case 2:
+            AmplitudeManager.shared.trackEvent(tag: "click_noti_botnavi")
+        case 3:
+            AmplitudeManager.shared.trackEvent(tag: "click_myprofile_botnavi")
+        default:
+            break
+        }
     }
 }

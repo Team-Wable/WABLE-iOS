@@ -119,6 +119,7 @@ final class JoinAgreementViewModel: ViewModelType {
         input.nextButtonTapped
             .sink { value in
                 // 회원가입 서버통신
+                AmplitudeManager.shared.trackEvent(tag: "click_complete_tnc_signup")
                 Task {
                     do {
                         try await self.patchUserInfoDataAPI(

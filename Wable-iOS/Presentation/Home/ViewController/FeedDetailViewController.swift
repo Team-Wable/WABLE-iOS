@@ -558,6 +558,7 @@ extension FeedDetailViewController: UITableViewDataSource {
             }
             
             cell.bottomView.ghostButtonTapped = { [weak self] in
+                AmplitudeManager.shared.trackEvent(tag: "click_ghost_post")
                 self?.alarmTriggerType = cell.alarmTriggerType
                 self?.targetMemberId = cell.targetMemberId
                 self?.alarmTriggerdId = cell.alarmTriggerdId
@@ -571,6 +572,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                 if cell.bottomView.isLiked == true {
                     cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
                 } else {
+                    AmplitudeManager.shared.trackEvent(tag: "click_like_post")
                     cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
                 }
                 if let feedData = self.feedData {
@@ -686,6 +688,7 @@ extension FeedDetailViewController: UITableViewDataSource {
             }
             
             cell.bottomView.ghostButtonTapped = { [weak self] in
+                AmplitudeManager.shared.trackEvent(tag: "click_ghost_comment")
                 self?.alarmTriggerType = cell.alarmTriggerType
                 self?.targetMemberId = cell.targetMemberId
                 self?.alarmTriggerdId = cell.alarmTriggerdId
@@ -699,6 +702,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                 if cell.bottomView.isLiked == true {
                     cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
                 } else {
+                    AmplitudeManager.shared.trackEvent(tag: "click_like_comment")
                     cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
                 }
                 self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.viewModel.feedReplyDatas[indexPath.row].commentId, commentText: self.viewModel.feedReplyDatas[indexPath.row].commentText)
@@ -752,6 +756,7 @@ extension FeedDetailViewController: WablePopupDelegate {
     
     func cancleButtonTapped() {
         if nowShowingPopup == "ghost" {
+            AmplitudeManager.shared.trackEvent(tag: "click_withdrawghost_popup")
             self.ghostPopupView?.removeFromSuperview()
         }
         
@@ -769,7 +774,7 @@ extension FeedDetailViewController: WablePopupDelegate {
     func confirmButtonTapped() {
         if nowShowingPopup == "ghost" {
             self.ghostPopupView?.removeFromSuperview()
-            
+            AmplitudeManager.shared.trackEvent(tag: "click_applyghost_popup")
             Task {
                 do {
                     if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
@@ -858,7 +863,7 @@ extension FeedDetailViewController: WablePopupDelegate {
         
         if nowShowingPopup == "deletePost" {
             self.deletePopupView?.removeFromSuperview()
-            
+            AmplitudeManager.shared.trackEvent(tag: "click_delete_post")
             Task {
                 do {
                     if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {

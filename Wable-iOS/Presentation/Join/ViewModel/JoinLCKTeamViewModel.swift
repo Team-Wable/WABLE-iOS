@@ -33,12 +33,14 @@ final class JoinLCKTeamViewModel: ViewModelType {
         
         input.noLCKTeamButtonTapped
             .sink { _ in
+                AmplitudeManager.shared.trackEvent(tag: "click_detour_team_signup")
                 self.pushOrPopViewController.send(2)
             }
             .store(in: cancelBag)
         
         input.nextButtonTapped
             .sink { _ in
+                AmplitudeManager.shared.trackEvent(tag: "click_next_team_signup")
                 self.pushOrPopViewController.send(1)
             }
             .store(in: cancelBag)
