@@ -121,13 +121,14 @@ final class MyPageViewController: UIViewController {
             self.tabBarController?.tabBar.isTranslucent = true
             self.tabBarController?.tabBar.backgroundColor = .wableWhite
             self.tabBarController?.tabBar.barTintColor = .wableWhite
-            
-            self.navigationItem.title = loadUserData()?.userNickname ?? ""
             self.tabBarController?.tabBar.isHidden = false
             
             let hambergerButtonImage = ImageLiterals.Button.btnHamberger.withRenderingMode(.alwaysOriginal)
             let hambergerButton = UIBarButtonItem(image: hambergerButtonImage, style: .done, target: self, action: #selector(hambergerButtonDidTapped))
             navigationItem.rightBarButtonItem = hambergerButton
+            
+            self.navigationItem.title = loadUserData()?.userNickname ?? ""
+            
         } else {
             // 타 유저 프로필 화면
             self.tabBarController?.tabBar.isHidden = true
@@ -220,6 +221,10 @@ extension MyPageViewController {
     
     private func setDelegate() {
         rootView.myPageScrollView.delegate = self
+        
+        // 테이블 뷰의 delegate 설정
+        rootView.myPagePostViewController.homeFeedTableView.delegate = self
+        rootView.myPageReplyViewController.feedDetailTableView.delegate = self
     }
     
     private func setNotification() {
@@ -341,7 +346,7 @@ extension MyPageViewController {
     }
     
     private func bindProfileData(data: MypageProfileResponseDTO) {
-        self.title = data.nickname
+        self.navigationItem.title = data.nickname
         self.rootView.myPageProfileView.userNickname.text = data.nickname
         self.rootView.myPageProfileView.profileImageView.load(url: data.memberProfileUrl)
         self.rootView.myPageProfileView.transparencyValue = data.memberGhost
@@ -564,53 +569,77 @@ extension MyPageViewController {
     }
 }
 
-extension MyPageViewController: UICollectionViewDelegate {
+extension MyPageViewController: UICollectionViewDelegate, UITableViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        var yOffset = scrollView.contentOffset.y
-        let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
-        
-        scrollView.isScrollEnabled = true
-        rootView.myPagePostViewController.homeFeedTableView.isScrollEnabled = false
-        rootView.myPageReplyViewController.feedDetailTableView.isScrollEnabled = false
-        
-        if yOffset <= -(navigationBarHeight + statusBarHeight) {
+        if scrollView == rootView.myPageScrollView {
+            var yOffset = scrollView.contentOffset.y
+            let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
+            
+            scrollView.isScrollEnabled = true
             rootView.myPagePostViewController.homeFeedTableView.isScrollEnabled = false
             rootView.myPageReplyViewController.feedDetailTableView.isScrollEnabled = false
-            yOffset = -(navigationBarHeight + statusBarHeight)
-            rootView.segmentedControl.frame.origin.y = yOffset + statusBarHeight + navigationBarHeight
-            rootView.segmentedControl.snp.remakeConstraints {
-                $0.top.equalTo(rootView.myPageProfileView.snp.bottom)
-                $0.leading.trailing.equalToSuperview()
-                $0.height.equalTo(54.adjusted)
-            }
             
-            rootView.divisionLine.snp.remakeConstraints {
-                $0.top.equalTo(rootView.segmentedControl.snp.bottom)
-                $0.leading.trailing.equalToSuperview()
-                $0.height.equalTo(1.adjusted)
+            if yOffset <= -(navigationBarHeight + statusBarHeight) {
+                print("111111")
+                rootView.myPagePostViewController.homeFeedTableView.isScrollEnabled = false
+                rootView.myPageReplyViewController.feedDetailTableView.isScrollEnabled = false
+                yOffset = -(navigationBarHeight + statusBarHeight)
+                rootView.segmentedControl.frame.origin.y = yOffset + statusBarHeight + navigationBarHeight
+                rootView.segmentedControl.snp.remakeConstraints {
+                    $0.top.equalTo(rootView.myPageProfileView.snp.bottom)
+                    $0.leading.trailing.equalToSuperview()
+                    $0.height.equalTo(54.adjusted)
+                }
+                
+                rootView.divisionLine.snp.remakeConstraints {
+                    $0.top.equalTo(rootView.segmentedControl.snp.bottom)
+                    $0.leading.trailing.equalToSuperview()
+                    $0.height.equalTo(1.adjusted)
+                }
+                
+                rootView.pageViewController.view.snp.remakeConstraints {
+                    $0.top.equalTo(rootView.segmentedControl.snp.bottom).offset(2.adjusted)
+                    $0.leading.trailing.equalToSuperview()
+                    let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
+                    $0.height.equalTo(UIScreen.main.bounds.height - statusBarHeight - navigationBarHeight - self.tabBarHeight)
+                }
+            } else if yOffset >= (rootView.myPageProfileView.frame.height - statusBarHeight - navigationBarHeight) {
+                print("222222")
+                rootView.segmentedControl.frame.origin.y = yOffset - rootView.myPageProfileView.frame.height + statusBarHeight + navigationBarHeight
+                rootView.segmentedControl.snp.remakeConstraints {
+                    $0.top.equalTo(view.safeAreaLayoutGuide)
+                    $0.leading.trailing.equalToSuperview()
+                    $0.height.equalTo(54.adjusted)
+                }
+                
+                rootView.divisionLine.snp.remakeConstraints {
+                    $0.top.equalTo(rootView.segmentedControl.snp.bottom)
+                    $0.leading.trailing.equalToSuperview()
+                    $0.height.equalTo(1.adjusted)
+                }
+                
+//                rootView.pageViewController.view.frame.origin.y = yOffset - rootView.myPageProfileView.frame.height + statusBarHeight + navigationBarHeight + rootView.segmentedControl.frame.height
+                
+                rootView.pageViewController.view.snp.remakeConstraints {
+                    $0.top.equalTo(rootView.divisionLine.snp.bottom)
+                    $0.leading.trailing.equalToSuperview()
+                    let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
+                    $0.height.equalTo(UIScreen.main.bounds.height - statusBarHeight - navigationBarHeight - self.tabBarHeight)
+                }
+                
+                scrollView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: true)
+                
+                rootView.myPageScrollView.isScrollEnabled = false
+                rootView.myPagePostViewController.homeFeedTableView.isScrollEnabled = true
+                rootView.myPagePostViewController.homeFeedTableView.isUserInteractionEnabled = true
+                rootView.myPageReplyViewController.feedDetailTableView.isScrollEnabled = true
+                rootView.myPageReplyViewController.feedDetailTableView.isUserInteractionEnabled = true
             }
+        } else if scrollView == rootView.myPagePostViewController.homeFeedTableView || scrollView == rootView.myPageReplyViewController.feedDetailTableView {
             
-            rootView.pageViewController.view.snp.remakeConstraints {
-                $0.top.equalTo(rootView.segmentedControl.snp.bottom).offset(2.adjusted)
-                $0.leading.trailing.equalToSuperview()
-                let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
-                $0.height.equalTo(UIScreen.main.bounds.height - statusBarHeight - navigationBarHeight - self.tabBarHeight)
-            }
-        } else if yOffset >= (rootView.myPageProfileView.frame.height - statusBarHeight - navigationBarHeight) {
-            rootView.segmentedControl.frame.origin.y = yOffset - rootView.myPageProfileView.frame.height + statusBarHeight + navigationBarHeight
-            rootView.segmentedControl.snp.remakeConstraints {
-                $0.top.leading.trailing.equalToSuperview()
-                $0.height.equalTo(54.adjusted)
-            }
-            
-            rootView.divisionLine.snp.remakeConstraints {
-                $0.top.equalTo(rootView.segmentedControl.snp.bottom)
-                $0.leading.trailing.equalToSuperview()
-                $0.height.equalTo(1.adjusted)
-            }
-            
-            rootView.pageViewController.view.frame.origin.y = yOffset - rootView.myPageProfileView.frame.height + statusBarHeight + navigationBarHeight + rootView.segmentedControl.frame.height
+            var yOffset = scrollView.contentOffset.y
+            let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
             
             rootView.pageViewController.view.snp.remakeConstraints {
                 $0.top.equalTo(rootView.divisionLine.snp.bottom)
@@ -619,12 +648,46 @@ extension MyPageViewController: UICollectionViewDelegate {
                 $0.height.equalTo(UIScreen.main.bounds.height - statusBarHeight - navigationBarHeight - self.tabBarHeight)
             }
             
-            scrollView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: true)
-            
-            rootView.myPagePostViewController.homeFeedTableView.isScrollEnabled = true
-            rootView.myPagePostViewController.homeFeedTableView.isUserInteractionEnabled = true
-            rootView.myPageReplyViewController.feedDetailTableView.isScrollEnabled = true
-            rootView.myPageReplyViewController.feedDetailTableView.isUserInteractionEnabled = true
+            if yOffset >= (rootView.myPageProfileView.frame.height - statusBarHeight - navigationBarHeight) {
+                rootView.segmentedControl.snp.remakeConstraints {
+                    $0.top.equalTo(view.safeAreaLayoutGuide)
+                    $0.leading.trailing.equalToSuperview()
+                    $0.height.equalTo(54.adjusted)
+                }
+                
+                rootView.divisionLine.snp.remakeConstraints {
+                    $0.top.equalTo(rootView.segmentedControl.snp.bottom)
+                    $0.leading.trailing.equalToSuperview()
+                    $0.height.equalTo(1.adjusted)
+                }
+                
+                rootView.pageViewController.view.snp.remakeConstraints {
+                    $0.top.equalTo(rootView.divisionLine.snp.bottom)
+                    $0.leading.trailing.equalToSuperview()
+                    let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
+                    $0.height.equalTo(UIScreen.main.bounds.height - statusBarHeight - navigationBarHeight - self.tabBarHeight)
+                }
+            } else {
+                if yOffset <= 0 {
+                    rootView.myPageScrollView.isScrollEnabled = true
+                    rootView.myPagePostViewController.homeFeedTableView.isScrollEnabled = false
+                    rootView.myPagePostViewController.homeFeedTableView.isUserInteractionEnabled = false
+                    rootView.myPageReplyViewController.feedDetailTableView.isScrollEnabled = false
+                    rootView.myPageReplyViewController.feedDetailTableView.isUserInteractionEnabled = false
+                    
+//                    rootView.pageViewController.view.snp.remakeConstraints {
+//                        $0.top.equalTo(rootView.divisionLine.snp.bottom)
+//                        $0.leading.trailing.equalToSuperview()
+//                        let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
+//                        $0.height.equalTo(UIScreen.main.bounds.height - statusBarHeight - navigationBarHeight - self.tabBarHeight)
+//                    }
+                } else {
+                    
+                }
+                print("yOffset: \(yOffset)")
+                print("rootView.myPageProfileView.frame.height - statusBarHeight - navigationBarHeight: \(rootView.myPageProfileView.frame.height - statusBarHeight - navigationBarHeight)")
+                print("44444")
+            }
         }
     }
 }
