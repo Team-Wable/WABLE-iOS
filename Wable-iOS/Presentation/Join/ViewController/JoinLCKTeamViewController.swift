@@ -112,17 +112,17 @@ extension JoinLCKTeamViewController {
             .sink { value in
                 if value == 0 {
                     self.navigationController?.popViewController(animated: true)
-                } else if value == 1 {
-                    // LCK 팀을 고른 경우
-                    let viewController = JoinProfileViewController(viewModel: JoinProfileViewModel(networkProvider: NetworkService()))
-                    viewController.memberLckYears = self.memberLckYears
-                    viewController.memberFanTeam = self.originView.selectedButton?.titleLabel?.text
-                    self.navigationController?.pushViewController(viewController, animated: true)
-                } else {
+                } else if value == 2 {
                     // LCK 팀 고르지 않은 경우
                     let viewController = JoinProfileViewController(viewModel: JoinProfileViewModel(networkProvider: NetworkService()))
                     viewController.memberLckYears = self.memberLckYears
                     viewController.memberFanTeam = "LCK"
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                } else {
+                    // LCK 팀을 고른 경우
+                    let viewController = JoinProfileViewController(viewModel: JoinProfileViewModel(networkProvider: NetworkService()))
+                    viewController.memberLckYears = self.memberLckYears
+                    viewController.memberFanTeam = self.originView.selectedButton?.titleLabel?.text
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }
             }

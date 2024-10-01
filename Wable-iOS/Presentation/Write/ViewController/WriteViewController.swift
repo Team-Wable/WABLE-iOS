@@ -21,7 +21,9 @@ final class WriteViewController: UIViewController {
     private let viewModel: WriteViewModel
     private var transparency: Int = 0
     
-    private lazy var postButtonTapped = self.rootView.writeTextView.postButton.publisher(for: .touchUpInside).map { _ in
+    private lazy var postButtonTapped = self.rootView.writeTextView.postButton.publisher(for: .touchUpInside)
+        .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
+        .map { _ in
         return WriteContentImageRequestDTO(
             contentTitle: self.rootView.writeTextView.titleTextField.text ?? "",
             contentText: self.rootView.writeTextView.contentTextView.text,
