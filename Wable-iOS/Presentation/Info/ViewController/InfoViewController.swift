@@ -82,6 +82,15 @@ extension InfoViewController {
     @objc
     private func changeValue(control: UISegmentedControl) {
         self.currentPage = control.selectedSegmentIndex
+
+        switch self.currentPage {
+        case 0:
+            AmplitudeManager.shared.trackEvent(tag: "click_gameschedule")
+        case 1:
+            AmplitudeManager.shared.trackEvent(tag: "click_ranking")
+        default:
+            break
+        }
     }
 }
 

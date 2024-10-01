@@ -174,6 +174,7 @@ extension JoinProfileViewController {
     
     @objc
     private func changeButtonTapped() {
+        AmplitudeManager.shared.trackEvent(tag: "click_change_picture_profile_signup")
         let randomEntry = basicProfileImages.randomElement()
         
         if let selectedImage = randomEntry?.key, let selectedColor = randomEntry?.value {
@@ -192,6 +193,7 @@ extension JoinProfileViewController {
     
     @objc
     private func plusButtonTapped() {
+        AmplitudeManager.shared.trackEvent(tag: "click_add_picture_profile_signup")
         let status = PHPhotoLibrary.authorizationStatus(for: .addOnly)
         
         switch status {

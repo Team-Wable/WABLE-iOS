@@ -91,6 +91,15 @@ extension NotificationViewController {
     @objc
     private func changeValue(control: UISegmentedControl) {
         self.currentPage = control.selectedSegmentIndex
+        
+        switch self.currentPage {
+        case 0:
+            AmplitudeManager.shared.trackEvent(tag: "click_activitiesnoti")
+        case 1:
+            AmplitudeManager.shared.trackEvent(tag: "click_infonoti")
+        default:
+            break
+        }
     }
     
     @objc private func handlePushDetailViewController(_ notification: Notification) {

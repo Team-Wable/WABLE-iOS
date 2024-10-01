@@ -51,6 +51,7 @@ final class MyPageAccountInfoViewModel: ViewModelType {
         
         input.signOutButtonTapped
             .sink { _ in
+                AmplitudeManager.shared.trackEvent(tag: "click_delete_account")
                 self.pushOrPopViewController.send(1)
             }
             .store(in: cancelBag)

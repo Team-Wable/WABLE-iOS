@@ -183,7 +183,7 @@ final class HomeFeedTableViewCell: UITableViewCell{
         }
         
         infoView.bind(nickname: data.memberNickname,
-                      team: Team(rawValue: data.memberFanTeam) ?? .T1,
+                      team: Team(rawValue: data.memberFanTeam) ?? .TBD,
                       ghostPercent: data.memberGhost,
                       time: data.time)
         

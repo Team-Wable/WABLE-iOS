@@ -62,7 +62,7 @@ final class FeedBottomWriteView: UIView {
 
 extension FeedBottomWriteView {
     private func setUI() {
-
+        self.backgroundColor = .wableWhite
     }
     
     private func setHierarchy() {
@@ -92,6 +92,11 @@ extension FeedBottomWriteView {
     }
     
     private func setAddTarget() {
-
+        uploadButton.addTarget(self, action: #selector(postButtonDidTapped), for: .touchUpInside)
+    }
+    
+    @objc
+    private func postButtonDidTapped() {
+        uploadButton.isEnabled = false
     }
 }
