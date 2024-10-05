@@ -74,11 +74,18 @@ final class JoinProfileViewController: UIViewController {
         setLayout()
         setAddTarget()
         setNotification()
+        dismissKeyboard()
+
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -144,6 +151,7 @@ extension JoinProfileViewController {
                     viewController.memberLckYears = self.memberLckYears
                     viewController.memberFanTeam = self.memberFanTeam
                     viewController.memberDefaultProfileImage = self.memberDefaultProfileImage
+                    viewController.memberProfileImage = self.memberProfileImage
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }
             }
@@ -211,6 +219,26 @@ extension JoinProfileViewController {
             authSettingOpen()
         default:
             break
+        }
+    }
+    
+    @objc
+    private func keyboardUp(notification: NSNotification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            UIView.animate(withDuration: 0.3) {
+                // 뷰 전체를 키보드 높이만큼 위로 이동
+                self.view.transform = CGAffineTransform(translationX: 0, y: -keyboardHeight)
+            }
+        }
+    }
+
+    @objc
+    private func keyboardDown(notification: NSNotification) {
+        UIView.animate(withDuration: 0.3) {
+            // 뷰 전체를 원래 위치로 복원
+            self.view.transform = .identity
         }
     }
     
