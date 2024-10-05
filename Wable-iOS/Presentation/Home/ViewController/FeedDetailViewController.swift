@@ -24,14 +24,15 @@ final class FeedDetailViewController: UIViewController {
     let viewModel: FeedDetailViewModel
     private let likeViewModel: LikeViewModel
     private var cancelBag = CancelBag()
+    private var cancellables = Set<AnyCancellable>()
     
     private lazy var postButtonTapped =
     self.feedDetailView.bottomWriteView.uploadButton.publisher(for: .touchUpInside)
-        .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
+        .debounce(for: .seconds(0.3), scheduler: RunLoop.main)
         .map { _ in
             return (WriteReplyRequestDTO(
                 commentText: self.feedDetailView.bottomWriteView.writeTextView.text,
-                notificationTriggerType: "comment"), self.contentId)
+                notificationTriggerType: "comment"), self.contentId, self.feedData?.memberNickname ?? "")
         }.eraseToAnyPublisher()
     
     private lazy var deleteButtonTapped = deletePopupView?.confirmButton.publisher(for: .touchUpInside).map { _ in
@@ -65,6 +66,13 @@ final class FeedDetailViewController: UIViewController {
     var feedData: HomeFeedDTO? = nil
     var getFeedData: FeedDetailResponseDTO? = nil
     
+    private var paginationReplyData: [FeedDetailReplyDTO] = []
+    private var replyData: [FeedDetailReplyDTO] = [] {
+        didSet {
+            self.feedDetailView.feedDetailTableView.reloadData()
+        }
+    }
+    
     // MARK: - UI Components
     
     private let feedDetailView = FeedDetailView()
@@ -95,6 +103,7 @@ final class FeedDetailViewController: UIViewController {
         setHierarchy()
         setLayout()
         setDelegate()
+        bindViewModel()
         getAPI()
         dismissKeyboard()
         setRefreshControl()
@@ -113,6 +122,7 @@ final class FeedDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         setNavigationBar()
+        viewModel.viewWillAppear.send(contentId)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -178,6 +188,29 @@ extension FeedDetailViewController {
         self.navigationItem.hidesBackButton = true
     }
     
+    private func bindViewModel() {
+        viewModel.replyDatas
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] data in
+                self?.replyData = data
+                self?.feedDetailView.feedDetailTableView.reloadData()
+                print("\(data.count)🍪🍪🍪🍪🍪🍪🍪🍪")
+
+            }
+            .store(in: &cancellables)
+        
+        viewModel.replyPaginationDatas
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] data in
+                print("\(data.count)🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭")
+                self?.replyData.append(contentsOf: data)
+                print("\(self?.replyData.count)🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋")
+
+            }
+            .store(in: &cancellables)
+        
+    }
+    
     private func setRefreshControl() {
         self.refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         feedDetailView.feedDetailTableView.refreshControl = self.refreshControl
@@ -186,8 +219,10 @@ extension FeedDetailViewController {
     @objc
     private func didPullToRefresh() {
         print("didPullToRefresh")
+        self.viewModel.cursor = -1
         DispatchQueue.main.async {
             self.getAPI()
+            self.viewModel.viewWillAppear.send(self.contentId)
         }
         self.perform(#selector(finishedRefreshing), with: nil, afterDelay: 0.1)
     }
@@ -209,6 +244,8 @@ extension FeedDetailViewController {
             let keyboardHeight = keyboardRectangle.height
             let safeAreaBottomInset = self.view.safeAreaInsets.bottom
             
+            feedDetailView.bottomWriteView.uploadButton.isEnabled = false
+
             
             // 키보드가 올라올 때 테이블뷰의 contentInset을 조정
             UIView.animate(withDuration: 0.3, animations: {
@@ -222,15 +259,16 @@ extension FeedDetailViewController {
     
     @objc
     private func keyboardDown(notification: NSNotification) {
-        // 키보드가 내려갈 때 contentInset을 원래대로 복구
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 1, animations: {
             self.feedDetailView.bottomWriteView.transform = .identity
-            
             self.feedDetailView.feedDetailTableView.contentInset = .zero
             self.feedDetailView.feedDetailTableView.scrollIndicatorInsets = .zero
+        }, completion: { _ in
+            // 키보드가 내려가면 버튼 다시 활성화
+            self.feedDetailView.bottomWriteView.uploadButton.isEnabled = true
         })
     }
-    
+
 }
 
 // MARK: - Network
@@ -240,7 +278,6 @@ extension FeedDetailViewController {
         print("getAPI")
         let input = FeedDetailViewModel.Input(viewUpdate: Just((contentId)).eraseToAnyPublisher(),
                                               likeButtonTapped: nil,
-                                              tableViewUpdata: Just((contentId)).eraseToAnyPublisher(),
                                               commentLikeButtonTapped: nil,
                                               postButtonTapped: postButtonTapped)
         
@@ -254,20 +291,13 @@ extension FeedDetailViewController {
             }
             .store(in: self.cancelBag)
         
-        output.getPostReplyData
-            .receive(on: RunLoop.main)
-            .sink { data in
-                DispatchQueue.main.async {
-                    self.feedDetailView.feedDetailTableView.reloadData()
-                }
-            }
-            .store(in: self.cancelBag)
-        
         output.postReplyCompleted
             .receive(on: RunLoop.main)
             .sink { data in
                 if data == 0 {
                     self.viewModel.cursor = -1
+                    self.replyData = []
+                    self.paginationReplyData = []
                     DispatchQueue.main.async {
                         self.didPullToRefresh()
                         self.feedDetailView.bottomWriteView.uploadButton.isEnabled = false
@@ -283,6 +313,15 @@ extension FeedDetailViewController {
                 }
             }
             .store(in: cancelBag)
+        
+        viewModel.isButtonEnabled
+            .receive(on: RunLoop.main)
+            .sink { isEnabled in
+                print("🍣🍣🍣🍣🍣🍣🍣🍣🍣🍣upload Button isEnabled = \(isEnabled)🍣🍣🍣🍣🍣🍣🍣🍣🍣🍣")
+                self.feedDetailView.bottomWriteView.uploadButton.isEnabled = isEnabled
+            }
+            .store(in: cancelBag)
+
     }
     
     @objc
@@ -448,18 +487,21 @@ extension FeedDetailViewController: UITableViewDataSource {
         case .feed:
             return 1
         case .reply:
-            print("viewModel.feedReplyDatas.count: \(viewModel.feedReplyDatas.count)")
-            return viewModel.feedReplyDatas.count
+            print("viewModel.feedReplyDatas.count: \(self.replyData.count)")
+            return self.replyData.count
         }
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView == feedDetailView.feedDetailTableView {
-            if viewModel.feedReplyDatas.count >= 15 && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
-                let lastCommentID = viewModel.feedReplyDatas.last?.commentId ?? -1
+            let lastCommentID = self.replyData.last?.commentId ?? Int()
+
+            if replyData.count % 15 == 0 && viewModel.cursor != lastCommentID && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 viewModel.cursor = lastCommentID
+                viewModel.paginationDidAction.send(contentId)
+                print("===================Pagination 작동===================")
                 DispatchQueue.main.async {
-                    self.didPullToRefresh()
+                    self.feedDetailView.feedDetailTableView.reloadData()
                 }
             }
         }
@@ -614,12 +656,12 @@ extension FeedDetailViewController: UITableViewDataSource {
             let cell = feedDetailView.feedDetailTableView.dequeueReusableCell(withIdentifier: FeedDetailTableViewCell.identifier, for: indexPath) as? FeedDetailTableViewCell ?? FeedDetailTableViewCell()
             cell.selectionStyle = .none
             cell.alarmTriggerType = "commentGhost"
-            cell.targetMemberId = viewModel.feedReplyDatas[indexPath.row].memberId
-            cell.alarmTriggerdId = viewModel.feedReplyDatas[indexPath.row].commentId
+            cell.targetMemberId = self.replyData[indexPath.row].memberId
+            cell.alarmTriggerdId = self.replyData[indexPath.row].commentId
             
-            cell.bind(data: viewModel.feedReplyDatas[indexPath.row])
+            cell.bind(data: self.replyData[indexPath.row])
             
-            if viewModel.feedReplyDatas[indexPath.row].memberId == loadUserData()?.memberId {
+            if self.replyData[indexPath.row].memberId == loadUserData()?.memberId {
                 cell.bottomView.ghostButton.isHidden = true
                 
                 cell.bottomView.heartButton.snp.remakeConstraints {
@@ -635,7 +677,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                     self.homeBottomsheetView.reportButton.isHidden = true
                     
                     self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
-                    self.commentId = self.viewModel.feedReplyDatas[indexPath.row].commentId
+                    self.commentId = self.replyData[indexPath.row].commentId
                     self.nowShowingPopup = "deleteReply"
                 }
             } else {
@@ -654,27 +696,27 @@ extension FeedDetailViewController: UITableViewDataSource {
                     self.homeBottomsheetView.reportButton.isHidden = false
                     self.homeBottomsheetView.deleteButton.isHidden = true
                     
-                    self.reportTargetNickname = self.viewModel.feedReplyDatas[indexPath.row].memberNickname
-                    self.relateText = self.viewModel.feedReplyDatas[indexPath.row].commentText
+                    self.reportTargetNickname = self.replyData[indexPath.row].memberNickname
+                    self.relateText = self.replyData[indexPath.row].commentText
                     self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
                     self.nowShowingPopup = "report"
                 }
             }
             
-            var memberGhost = self.viewModel.feedReplyDatas[indexPath.row].memberGhost
+            var memberGhost = self.replyData[indexPath.row].memberGhost
             memberGhost = adjustGhostValue(memberGhost)
             
             cell.grayView.layer.zPosition = 1
             
             // 내가 투명도를 누른 유저인 경우 -85% 적용
-            if self.viewModel.feedReplyDatas[indexPath.row].isGhost {
+            if self.replyData[indexPath.row].isGhost {
                 cell.grayView.alpha = 0.85
             } else {
                 cell.grayView.alpha = CGFloat(Double(-memberGhost) / 100)
             }
             
             cell.profileButtonAction = {
-                let memberId = self.viewModel.feedReplyDatas[indexPath.row].memberId
+                let memberId = self.replyData[indexPath.row].memberId
 
                 if memberId == loadUserData()?.memberId ?? 0  {
                     self.tabBarController?.selectedIndex = 3
@@ -703,7 +745,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                     AmplitudeManager.shared.trackEvent(tag: "click_like_comment")
                     cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
                 }
-                self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.viewModel.feedReplyDatas[indexPath.row].commentId, commentText: self.viewModel.feedReplyDatas[indexPath.row].commentText)
+                self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.replyData[indexPath.row].commentId, commentText: self.replyData[indexPath.row].commentText)
                 
                 cell.bottomView.isLiked.toggle()
             }

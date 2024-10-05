@@ -330,7 +330,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView == homeView.feedTableView {
-            if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
+            if viewModel.feedDatas.count >= 15 && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 let lastContentID = viewModel.feedDatas.last?.contentID ?? -1
                 viewModel.cursor = lastContentID
                 viewModel.viewWillAppear.send()
