@@ -160,5 +160,14 @@ extension NotificationViewController: UIPageViewControllerDataSource, UIPageView
         else { return }
         self.currentPage = index
         rootView.segmentedControl.selectedSegmentIndex = index
+        
+        switch self.currentPage {
+         case 0:
+             AmplitudeManager.shared.trackEvent(tag: "click_activitiesnoti")
+         case 1:
+             AmplitudeManager.shared.trackEvent(tag: "click_infonoti")
+         default:
+             break
+         }
     }
 }
