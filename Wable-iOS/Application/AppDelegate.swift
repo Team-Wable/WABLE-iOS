@@ -26,26 +26,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
                 
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
-            if let error = error {
-                print("🔴 권한 요청 중 오류 발생: \(error.localizedDescription)")
-            } else {
-                if granted {
-                    print("🟢 사용자가 알림 권한을 허용했습니다.")
-                } else {
-                    print("🔴 사용자가 알림 권한을 거부했습니다.")
-                }
-            }
-            
-            saveUserData(UserInfo(isSocialLogined: loadUserData()?.isSocialLogined ?? false,
-                                  isFirstUser: loadUserData()?.isFirstUser ?? false,
-                                  isJoinedApp: loadUserData()?.isJoinedApp ?? false,
-                                  userNickname: loadUserData()?.userNickname ?? "",
-                                  memberId: loadUserData()?.memberId ?? 0,
-                                  userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
-                                  fcmToken: loadUserData()?.fcmToken ?? "",
-                                  isPushAlarmAllowed: granted))
-        }
+//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+//            if let error = error {
+//                print("🔴 권한 요청 중 오류 발생: \(error.localizedDescription)")
+//            } else {
+//                if granted {
+//                    print("🟢 사용자가 알림 권한을 허용했습니다.")
+//                } else {
+//                    print("🔴 사용자가 알림 권한을 거부했습니다.")
+//                }
+//            }
+//            
+//            saveUserData(UserInfo(isSocialLogined: loadUserData()?.isSocialLogined ?? false,
+//                                  isFirstUser: loadUserData()?.isFirstUser ?? false,
+//                                  isJoinedApp: loadUserData()?.isJoinedApp ?? false,
+//                                  userNickname: loadUserData()?.userNickname ?? "",
+//                                  memberId: loadUserData()?.memberId ?? 0,
+//                                  userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
+//                                  fcmToken: loadUserData()?.fcmToken ?? "",
+//                                  isPushAlarmAllowed: false))
+//        }
     
         return true
     }
@@ -111,7 +111,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                               memberId: loadUserData()?.memberId ?? 0,
                               userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
                               fcmToken: fcmToken ?? "",
-                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                              isPushAlarmAllowed: false))
         print("🟢", #function, fcmToken ?? "")
     }
     
@@ -142,7 +142,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                       memberId: loadUserData()?.memberId ?? 0,
                                       userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
                                       fcmToken: token,
-                                      isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))            }
+                                      isPushAlarmAllowed: false))            }
         }
     }
     
