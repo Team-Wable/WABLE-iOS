@@ -178,7 +178,7 @@ enum StringLiterals {
     }
     
     enum Info {
-        static let lckSummer = "2024 LCK Summer"
+        static let lckSummer = "2024 League of Legends World Championship"
         static let today = "TODAY "
     }
     
