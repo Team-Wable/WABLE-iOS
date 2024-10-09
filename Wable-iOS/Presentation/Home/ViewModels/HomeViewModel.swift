@@ -43,7 +43,6 @@ final class HomeViewModel {
         commentButtonTapped
             .sink { [weak self] index in
                 self?.pushViewController.send(index)
-                print("탭이여~~~")
             }
             .store(in: cancelBag)
         
@@ -108,7 +107,7 @@ final class HomeViewModel {
         print("\(loadUserData()?.fcmToken ?? ""), \(loadUserData()?.isPushAlarmAllowed ?? false) <------------------------")
         let parameters: [String: Any] = [
             "fcmToken": loadUserData()?.fcmToken ?? "",
-            "isPushAlarmAllowed": loadUserData()?.isPushAlarmAllowed ?? false
+            "isPushAlarmAllowed": false
         ]
         
         var request = URLRequest(url: url)

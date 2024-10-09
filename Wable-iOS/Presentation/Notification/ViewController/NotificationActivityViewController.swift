@@ -184,8 +184,12 @@ extension NotificationActivityViewController: UITableViewDataSource {
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView == rootView.notiTableView {
-            if notiActivityData.count >= 15 && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
-                let lastNotificationId = notiActivityData.last?.notificationID ?? -1
+            let lastNotificationId = notiActivityData.last?.notificationID ?? Int()
+
+            /// 페이지네이션을 포함한 토탈 데이터가 15로 나누었을 때 0이고,
+            /// 현재 cursor가 데이터리스트의 마지막 데이터의 notiID와 같지 않을때.
+            /// 현재 커서와 마지막 데이터의 ID가 같으면, 이미 페이지네이션을 작동했다는 뜻이기 때문
+            if notiActivityData.count % 15 == 0 && viewModel.cursor != lastNotificationId && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 if lastNotificationId != -1 {
                     print("==========================pagination 작동==========================")
                     viewModel.cursor = lastNotificationId
