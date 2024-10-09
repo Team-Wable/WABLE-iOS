@@ -20,25 +20,34 @@ final class FeedDetailViewModel: ViewModelType {
     private let clickedRadioButtonState = PassthroughSubject<Int, Never>()
     private let toggleCommentLikeButton = PassthroughSubject<Bool, Never>()
     private let postReplyCompleted = PassthroughSubject<Int, Never>()
+    var isButtonEnabled = PassthroughSubject<Bool, Never>()
+    
+    // MARK: - Input
+    
+    let paginationDidAction = PassthroughSubject<Int, Never>()
+    let viewWillAppear = PassthroughSubject<Int, Never>()
+
+    // MARK: - Output
+    
+    let replyDatas = PassthroughSubject<[FeedDetailReplyDTO], Never>()
+    let replyPaginationDatas = PassthroughSubject<[FeedDetailReplyDTO], Never>()
     
     var isCommentLikeButtonClicked: Bool = false
     var cursor: Int = -1
     
     var feedReplyData: [FeedDetailReplyDTO] = []
-    var feedReplyDatas: [FeedDetailReplyDTO] = []
+    var feedReplyPaginationData: [FeedDetailReplyDTO] = []
     
     struct Input {
         let viewUpdate: AnyPublisher<Int, Never>?
         let likeButtonTapped: AnyPublisher<(Bool, Int), Never>?
-        let tableViewUpdata: AnyPublisher<Int, Never>?
         let commentLikeButtonTapped: AnyPublisher<(Bool, Int, String), Never>?
-        let postButtonTapped: AnyPublisher<(WriteReplyRequestDTO, Int), Never>
+        let postButtonTapped: AnyPublisher<(WriteReplyRequestDTO, Int, String), Never>
     }
     
     struct Output {
         let getPostData: PassthroughSubject<FeedDetailResponseDTO, Never>
         let toggleLikeButton: PassthroughSubject<Bool, Never>
-        let getPostReplyData: PassthroughSubject<[FeedDetailReplyDTO], Never>
         let toggleCommentLikeButton: PassthroughSubject<Bool, Never>
         let clickedButtonState: PassthroughSubject<Int, Never>
         let postReplyCompleted: PassthroughSubject<Int, Never>
@@ -64,58 +73,28 @@ final class FeedDetailViewModel: ViewModelType {
             }
             .store(in: self.cancelBag)
         
-        input.tableViewUpdata?
-            .sink { [self] value in
-                Task {
-                    do {
-                        if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
-                            let postReplyResult = try await
-                            self.getPostReplyDataAPI(accessToken: accessToken, contentId: value)
-                            if let data = postReplyResult?.data {
-                                if self.cursor == -1 {
-                                    self.feedReplyDatas = []
-                                    
-                                    var tempArray: [FeedDetailReplyDTO] = []
-                                    
-                                    for content in data {
-                                        tempArray.append(content)
-                                    }
-                                    self.feedReplyDatas = tempArray
-                                    self.getPostReplyData.send(data)
-                                } else {
-                                    var tempArray: [FeedDetailReplyDTO] = []
-                                    
-                                    if data.isEmpty {
-                                        self.cursor = -1
-                                    } else {
-                                        
-                                        for content in data {
-                                            tempArray.append(content)
-                                        }
-                                        self.feedReplyDatas.append(contentsOf: tempArray)
-                                        self.getPostReplyData.send(data)
-                                    }
-                                }
-                            }
-                        }
-                    } catch {
-                        print(error)
-                    }
-                }
-            }
-            .store(in: self.cancelBag)
-        
         input.postButtonTapped
             .sink { value in
+                
+                let trimmedText = value.0.commentText.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard trimmedText != value.2 + StringLiterals.Home.placeholder else {
+                            print("Placeholder 텍스트는 전송하지 않음")
+                            return
+                        }
+                self.isButtonEnabled.send(false)
+
+                print("💦💦💦💦💦💦💦💦💦💦postButtonTapped💦💦💦💦💦💦💦💦💦💦")
                 AmplitudeManager.shared.trackEvent(tag: "click_write_comment")
                 Task {
                     do {
+
                         if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
                             let result = try await self.postWriteReplyAPI(accessToken: accessToken, commentText: value.0.commentText, contentId: value.1, notificationTriggerType: "comment")
                             
                             if result?.status == 201 {
                                 self.postReplyCompleted.send(0)
                             }
+                            print("\(result)👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻")
                         }
                     }
                 }
@@ -124,15 +103,49 @@ final class FeedDetailViewModel: ViewModelType {
         
         return Output(getPostData: getPostData,
                       toggleLikeButton: toggleLikeButton,
-                      getPostReplyData: getPostReplyData,
                       toggleCommentLikeButton: toggleCommentLikeButton,
                       clickedButtonState: clickedRadioButtonState,
                       postReplyCompleted: postReplyCompleted)
     }
     
+    private func transform() {
+        viewWillAppear
+            .sink { [self] contentID in
+                Task {
+                    do {
+                        if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                            let postReplyResult = try await
+                            self.getPostReplyDataAPI(accessToken: accessToken, contentId: contentID)
+                            if let data = postReplyResult?.data {
+                                self.replyDatas.send(data)
+                            }
+                        }
+                    }
+                }
+            }
+            .store(in: cancelBag)
+        
+        paginationDidAction
+            .sink { [self] contentID in
+                Task {
+                    do {
+                        if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                            let postReplyResult = try await
+                            self.getPostReplyDataAPI(accessToken: accessToken, contentId: contentID)
+                            if let data = postReplyResult?.data {
+                                self.replyPaginationDatas.send(data)
+                            }
+                        }
+                    }
+                }
+            }
+            .store(in: cancelBag)
+    }
+    
     
     init(networkProvider: NetworkServiceType) {
         self.networkProvider = networkProvider
+        transform()
     }
     
     required init?(coder: NSCoder) {
@@ -177,122 +190,12 @@ extension FeedDetailViewModel {
                 body: WriteReplyRequestDTO(commentText: commentText, notificationTriggerType: notificationTriggerType),
                 pathVariables: ["":""]
             )
+            self.isButtonEnabled.send(true)
+
             return result
         } catch {
+            self.isButtonEnabled.send(true)
             return nil
         }
     }
-    
-//    func postDownTransparency(accessToken: String, alarmTriggerType: String, targetMemberId: Int, alarmTriggerId: Int, ghostReason: String) async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            let result: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(type: .post,
-//                                            baseURL: Config.baseURL + "v1/ghost2",
-//                                            accessToken: accessToken,
-//                                            body: PostTransparencyRequestDTO(
-//                                                alarmTriggerType: alarmTriggerType,
-//                                                targetMemberId: targetMemberId,
-//                                                alarmTriggerId: alarmTriggerId,
-//                                                ghostReason: ghostReason
-//                                            ),
-//                                            pathVariables: ["":""])
-//            return result
-//        } catch {
-//            return nil
-//        }
-//    }
-//    
-//    private func postLikeButtonAPI(contentId: Int) async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
-//            let requestDTO = ContentLikeRequestDTO(alarmTriggerType: "contentLiked")
-//            let data: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(
-//                type: .post,
-//                baseURL: Config.baseURL + "/content/\(contentId)/liked",
-//                accessToken: accessToken,
-//                body: requestDTO,
-//                pathVariables: ["":""]
-//            )
-//            print ("👻👻👻👻👻게시물 좋아요 버튼 클릭👻👻👻👻👻")
-//            return data
-//        } catch {
-//            return nil
-//        }
-//    }
-//    
-//    private func deleteLikeButtonAPI(contentId: Int) async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
-//            let data: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(
-//                type: .delete,
-//                baseURL: Config.baseURL + "/content/\(contentId)/unliked",
-//                accessToken: accessToken,
-//                body: EmptyBody(),
-//                pathVariables: ["":""]
-//            )
-//            print ("👻👻👻👻👻게시물 좋아요 취소 버튼 클릭👻👻👻👻👻")
-//            return data
-//        } catch {
-//            return nil
-//        }
-//    }
-//    
-//    private func postCommentLikeButtonAPI(commentId: Int, alarmText: String)  async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
-//            let requestDTO = CommentLikeRequestDTO(notificationTriggerType: "commentLiked", notificationText: alarmText)
-//            let data: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(
-//                type: .post,
-//                baseURL: Config.baseURL + "/comment/\(commentId)/liked",
-//                accessToken: accessToken,
-//                body: requestDTO,
-//                pathVariables: ["":""]
-//            )
-//            print ("👻👻👻👻👻답글 좋아요 버튼 클릭👻👻👻👻👻")
-//            return data
-//        } catch {
-//            return nil
-//        }
-//    }
-//    
-//    private func deleteCommentLikeButtonAPI(commentId: Int)  async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
-//            let data: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(
-//                type: .delete,
-//                baseURL: Config.baseURL + "/comment/\(commentId)/unliked",
-//                accessToken: accessToken,
-//                body: EmptyBody(),
-//                pathVariables: ["":""]
-//            )
-//            print ("👻👻👻👻👻답글 좋아요 취소 버튼 클릭👻👻👻👻👻")
-//            return data
-//        } catch {
-//            return nil
-//        }
-//    }
-//    
-//    func postReportButtonAPI(reportTargetNickname: String, relateText: String) async throws -> BaseResponse<EmptyResponse>? {
-//        do {
-//            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
-//            let data: BaseResponse<EmptyResponse>? = try await
-//            self.networkProvider.donNetwork(
-//                type: .post,
-//                baseURL: Config.baseURL + "/report/slack",
-//                accessToken: accessToken,
-//                body: ReportRequestDTO(
-//                    reportTargetNickname: reportTargetNickname,
-//                    relateText: relateText
-//                ),
-//                pathVariables: ["":""]
-//            )
-//            return data
-//        } catch {
-//            return nil
-//        }
-//    }
 }

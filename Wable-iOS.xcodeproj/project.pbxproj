@@ -87,10 +87,10 @@
 		0547F5062C65290A001E3039 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 0547F5052C65290A001E3039 /* Lottie */; };
 		054A85522CAA944200EFD9A5 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 054A85512CAA944200EFD9A5 /* AmplitudeSwift */; };
 		054A85542CAA98CC00EFD9A5 /* AmplitudeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054A85532CAA98CC00EFD9A5 /* AmplitudeManager.swift */; };
+		054A85582CAC7C2F00EFD9A5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 054A85572CAC7C2F00EFD9A5 /* GoogleService-Info.plist */; };
 		0593F6D62C96D6C100FFAD82 /* WablePhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */; };
 		0593F6DB2C96E75600FFAD82 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0593F6DA2C96E75600FFAD82 /* FirebaseAnalytics */; };
 		0593F6DD2C96E75600FFAD82 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 0593F6DC2C96E75600FFAD82 /* FirebaseMessaging */; };
-		0593F6E22C96FBD100FFAD82 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0593F6E12C96FBD100FFAD82 /* GoogleService-Info.plist */; };
 		0593F6E42C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */; };
 		05FBEED22C886A0200E4BF17 /* HomeFeedContentDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FBEED12C886A0200E4BF17 /* HomeFeedContentDTO.swift */; };
 		05FBEED82C95B32C00E4BF17 /* Dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 05FBEED72C95B32C00E4BF17 /* Dev.xcconfig */; };
@@ -270,8 +270,8 @@
 		0547F5002C64C99D001E3039 /* ExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleView.swift; sourceTree = "<group>"; };
 		054A854F2CA7F64600EFD9A5 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		054A85532CAA98CC00EFD9A5 /* AmplitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeManager.swift; sourceTree = "<group>"; };
+		054A85572CAC7C2F00EFD9A5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../무제 폴더/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePhotoDetailView.swift; sourceTree = "<group>"; };
-		0593F6E12C96FBD100FFAD82 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Wable Resource/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePushAlarmHelper.swift; sourceTree = "<group>"; };
 		05FBEED12C886A0200E4BF17 /* HomeFeedContentDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedContentDTO.swift; sourceTree = "<group>"; };
 		05FBEED72C95B32C00E4BF17 /* Dev.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Dev.xcconfig; path = "../Wable Resource/Dev.xcconfig"; sourceTree = "<group>"; };
@@ -710,7 +710,7 @@
 				0547F4A22C60D96B001E3039 /* Assets.xcassets */,
 				0547F4C72C621ABC001E3039 /* Color.xcassets */,
 				0547F4A72C60D96B001E3039 /* Info.plist */,
-				0593F6E12C96FBD100FFAD82 /* GoogleService-Info.plist */,
+				054A85572CAC7C2F00EFD9A5 /* GoogleService-Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1272,7 +1272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */,
-				0593F6E22C96FBD100FFAD82 /* GoogleService-Info.plist in Resources */,
+				054A85582CAC7C2F00EFD9A5 /* GoogleService-Info.plist in Resources */,
 				3C35317F2C6F13FF0015A8FA /* Pretendard-Regular.otf in Resources */,
 				3C8B4E052C76247800174943 /* wable_tab.json in Resources */,
 				3C3531802C6F13FF0015A8FA /* Pretendard-SemiBold.otf in Resources */,
@@ -1538,7 +1538,7 @@
 		};
 		0547F4A92C60D96B001E3039 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 054A854F2CA7F64600EFD9A5 /* Release.xcconfig */;
+			baseConfigurationReference = 05FBEED72C95B32C00E4BF17 /* Dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1601,7 +1601,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Wable-iOS/Wable-iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Global/Resources/Info.plist";
@@ -1631,13 +1631,13 @@
 		};
 		0547F4AC2C60D96B001E3039 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 054A854F2CA7F64600EFD9A5 /* Release.xcconfig */;
+			baseConfigurationReference = 05FBEED72C95B32C00E4BF17 /* Dev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Wable-iOS/Wable-iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Global/Resources/Info.plist";

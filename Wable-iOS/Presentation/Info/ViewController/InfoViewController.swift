@@ -129,5 +129,14 @@ extension InfoViewController: UIPageViewControllerDataSource, UIPageViewControll
         else { return }
         self.currentPage = index
         rootView.segmentedControl.selectedSegmentIndex = index
+        
+        switch self.currentPage {
+         case 0:
+             AmplitudeManager.shared.trackEvent(tag: "click_gameschedule")
+         case 1:
+             AmplitudeManager.shared.trackEvent(tag: "click_ranking")
+         default:
+             break
+         }
     }
 }
