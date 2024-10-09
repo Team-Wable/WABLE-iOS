@@ -301,6 +301,10 @@ extension HomeViewController {
             homeBottomsheetView.bottomsheetView.removeFromSuperview()
         }
     }
+    
+    func scrollToTop() {
+        self.homeView.feedTableView.setContentOffset(CGPoint(x: 0, y: -self.homeView.feedTableView.contentInset.top), animated: true)
+    }
 }
 
 // MARK: - Network
