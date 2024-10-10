@@ -54,6 +54,7 @@
 		050E0D1E2C82E31500326EEA /* NotiInfoText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D1D2C82E31500326EEA /* NotiInfoText.swift */; };
 		050E0D202C82EE6600326EEA /* NotiActivityText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D1F2C82EE6600326EEA /* NotiActivityText.swift */; };
 		050E0D242C877ED800326EEA /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0D232C877ED800326EEA /* UserProfile.swift */; };
+		054308E82CB7ED70001861F1 /* CopyableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054308E72CB7ED70001861F1 /* CopyableLabel.swift */; };
 		0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F4992C60D968001E3039 /* AppDelegate.swift */; };
 		0547F49C2C60D968001E3039 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547F49B2C60D968001E3039 /* SceneDelegate.swift */; };
 		0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4A22C60D96B001E3039 /* Assets.xcassets */; };
@@ -240,6 +241,7 @@
 		050E0D1D2C82E31500326EEA /* NotiInfoText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiInfoText.swift; sourceTree = "<group>"; };
 		050E0D1F2C82EE6600326EEA /* NotiActivityText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiActivityText.swift; sourceTree = "<group>"; };
 		050E0D232C877ED800326EEA /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		054308E72CB7ED70001861F1 /* CopyableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyableLabel.swift; sourceTree = "<group>"; };
 		0547F4962C60D968001E3039 /* Wable-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wable-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0547F4992C60D968001E3039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0547F49B2C60D968001E3039 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -875,6 +877,7 @@
 				3C8B4E452C808FA500174943 /* WableToastView.swift */,
 				0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */,
 				0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */,
+				054308E72CB7ED70001861F1 /* CopyableLabel.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1315,6 +1318,7 @@
 				050E0CBD2C74B89C00326EEA /* FeedDetailBottomView.swift in Sources */,
 				3C8B4E0B2C779C4600174943 /* WriteView.swift in Sources */,
 				0547F4DD2C62484E001E3039 /* BaseTargetType.swift in Sources */,
+				054308E82CB7ED70001861F1 /* CopyableLabel.swift in Sources */,
 				3CF344EB2C75EE410038BB53 /* MyPageSignOutConfirmViewController.swift in Sources */,
 				050E0CB92C74B88800326EEA /* HomeTabView.swift in Sources */,
 				3CDE2E022C711F20004A84CB /* String+.swift in Sources */,

@@ -29,8 +29,9 @@ final class FeedContentView: UIView {
         return imageView
     }()
     
-    var contentLabel: UILabel = {
-        let label = UILabel()
+    var contentLabel: CopyableLabel = {
+        let label = CopyableLabel()
+        label.lineBreakMode = .byCharWrapping
         label.textColor = .gray800
         label.font = .body4
         label.numberOfLines = 0
@@ -78,6 +79,25 @@ extension FeedContentView {
         }
     }
     
+    
+    // URL을 하이퍼링크로 바꾸는 함수
+    private func attributedString(for text: String) -> NSAttributedString {
+        guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
+            return NSAttributedString(string: text)
+        }
+        
+        let attributedString = NSMutableAttributedString(string: text)
+        let matches = detector.matches(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count))
+        
+        for match in matches {
+            guard let range = Range(match.range, in: text) else { continue }
+            let url = text[range]
+            attributedString.addAttribute(.link, value: url, range: NSRange(range, in: text))
+        }
+        
+        return attributedString
+    }
+    
     func bind(title: String, content: String, image: String?) {
         titleLabel.text = title
         contentLabel.text = content
@@ -100,6 +120,56 @@ extension FeedContentView {
             contentLabel.snp.remakeConstraints {
                 $0.top.equalTo(titleLabel.snp.bottom).offset(4.adjusted)
                 $0.leading.trailing.bottom.equalToSuperview()
+            }
+        }
+        titleLabel.attributedText = attributedString(for: title)
+        contentLabel.attributedText = attributedString(for: content)
+        
+        let tapTitleLabelGesture = UITapGestureRecognizer(target: self, action: #selector(handleTitleLabelTap(_:)))
+        titleLabel.isUserInteractionEnabled = true
+        titleLabel.addGestureRecognizer(tapTitleLabelGesture)
+        
+        let tapContentLabelGesture = UITapGestureRecognizer(target: self, action: #selector(handleContentLabelTap(_:)))
+        contentLabel.isUserInteractionEnabled = true
+        contentLabel.addGestureRecognizer(tapContentLabelGesture)
+
+    }
+    
+    // 탭 제스처 처리 함수
+    @objc func handleTitleLabelTap(_ gesture: UITapGestureRecognizer) {
+        guard let attributedText = titleLabel.attributedText else { return }
+        
+        let location = gesture.location(in: titleLabel)
+        let index = titleLabel.indexOfAttributedTextCharacterAtPoint(point: location)
+        
+        attributedText.enumerateAttribute(.link, in: NSRange(location: 0, length: attributedText.length), options: []) { value, range, _ in
+            if let url = value as? String, NSLocationInRange(index, range) {
+                var urlString = url
+                if !urlString.hasPrefix("http://") && !urlString.hasPrefix("https://") {
+                    urlString = "https://\(urlString)"
+                }
+                if let url = URL(string: urlString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+        }
+    }
+    
+    @objc func handleContentLabelTap(_ gesture: UITapGestureRecognizer) {
+        guard let attributedText = contentLabel.attributedText else { return }
+        
+        let location = gesture.location(in: contentLabel)
+        let index = contentLabel.indexOfAttributedTextCharacterAtPoint(point: location)
+        
+        attributedText.enumerateAttribute(.link, in: NSRange(location: 0, length: attributedText.length), options: []) { value, range, _ in
+            if let url = value as? String, NSLocationInRange(index, range) {
+                var urlString = url
+                if !urlString.hasPrefix("http://") && !urlString.hasPrefix("https://") {
+                    urlString = "https://\(urlString)"
+                }
+                if let url = URL(string: urlString) {
+                    UIApplication.shared.open(url)
+                }
             }
         }
     }

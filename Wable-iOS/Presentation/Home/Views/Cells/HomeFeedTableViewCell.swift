@@ -90,6 +90,12 @@ final class HomeFeedTableViewCell: UITableViewCell{
     override func prepareForReuse() {
         super.prepareForReuse()
         self.profileImageView.image = UIImage()
+        
+        self.feedContentView.titleLabel.attributedText = nil
+        self.feedContentView.titleLabel.textColor = .wableBlack
+        self.feedContentView.contentLabel.attributedText = nil
+        self.feedContentView.contentLabel.textColor = .gray800
+
     }
     
     // MARK: - Functions
