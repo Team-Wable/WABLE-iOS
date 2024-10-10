@@ -111,8 +111,8 @@ extension NotificationViewController {
         detailViewController.getFeedData(data: data)
         detailViewController.contentId = contentID
         detailViewController.memberId = data.memberID
-//        detailViewController.userProfileURL = data.memberProfileURL
-        
+        detailViewController.hidesBottomBarWhenPushed = true
+
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
     
