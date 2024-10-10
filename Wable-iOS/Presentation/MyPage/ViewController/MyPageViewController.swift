@@ -453,15 +453,17 @@ extension MyPageViewController {
     
     @objc
     private func pushViewController(_ notification: Notification) {
-        if let contentId = notification.userInfo?["contentId"] as? Int, let profileImageURL = notification.userInfo?["profileImageURL"] as? String {
-            let destinationViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
-            destinationViewController.hidesBottomBarWhenPushed = true
-            
-            destinationViewController.contentId = contentId
-//            detailViewController.memberId = viewModel.feedDatas[indexPath.row].memberID
-            
-            self.navigationController?.pushViewController(destinationViewController, animated: true)
-        }
+        guard let userInfo = notification.userInfo,
+              let data = userInfo["data"] as? HomeFeedDTO,
+              let contentID = userInfo["contentID"] as? Int else { return }
+        
+        let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
+        detailViewController.getFeedData(data: data)
+        detailViewController.contentId = contentID
+        detailViewController.memberId = data.memberID
+        detailViewController.hidesBottomBarWhenPushed = true
+
+        self.navigationController?.pushViewController(detailViewController, animated: true)
     }
     
     @objc
@@ -571,6 +573,26 @@ extension MyPageViewController {
 
 extension MyPageViewController: UICollectionViewDelegate, UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == rootView.myPagePostViewController.homeFeedTableView {
+             // MyPagePostViewController의 contentDatas에서 데이터를 가져옴
+             guard let selectedContent = rootView.myPagePostViewController.getContentData(at: indexPath.row) else {
+                 return
+             }
+             
+             // 선택된 데이터를 이용해 FeedDetailViewController로 푸시
+             let detailViewController = FeedDetailViewController(
+                 viewModel: FeedDetailViewModel(networkProvider: NetworkService()),
+                 likeViewModel: LikeViewModel(networkProvider: NetworkService())
+             )
+             detailViewController.getFeedData(data: selectedContent)
+             detailViewController.contentId = selectedContent.contentID ?? 0
+             detailViewController.memberId = selectedContent.memberID
+             detailViewController.hidesBottomBarWhenPushed = true
+             self.navigationController?.pushViewController(detailViewController, animated: true)
+         }
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == rootView.myPageScrollView {
             var yOffset = scrollView.contentOffset.y
@@ -671,7 +693,7 @@ extension MyPageViewController: UICollectionViewDelegate, UITableViewDelegate {
                 if yOffset <= 0 {
                     rootView.myPageScrollView.isScrollEnabled = true
                     rootView.myPagePostViewController.homeFeedTableView.isScrollEnabled = false
-                    rootView.myPagePostViewController.homeFeedTableView.isUserInteractionEnabled = false
+                    rootView.myPagePostViewController.homeFeedTableView.isUserInteractionEnabled = true
                     rootView.myPageReplyViewController.feedDetailTableView.isScrollEnabled = false
                     rootView.myPageReplyViewController.feedDetailTableView.isUserInteractionEnabled = false
                     
