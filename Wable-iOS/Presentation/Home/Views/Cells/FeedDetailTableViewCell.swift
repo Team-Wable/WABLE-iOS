@@ -38,11 +38,10 @@ final class FeedDetailTableViewCell: UITableViewCell {
     
     var contentLabel: CopyableLabel = {
         let label = CopyableLabel()
+        label.lineBreakMode = .byCharWrapping
         label.textColor = .gray800
         label.font = .body4
         label.numberOfLines = 0
-        label.setContentCompressionResistancePriority(.required, for: .vertical)
-        label.setContentHuggingPriority(.required, for: .vertical)
         return label
     }()
     
@@ -139,12 +138,12 @@ final class FeedDetailTableViewCell: UITableViewCell {
             $0.top.equalTo(infoView.snp.bottom).offset(12.adjusted)
             $0.leading.equalTo(profileImageView.snp.trailing).offset(6.adjusted)
             $0.trailing.equalTo(menuButton)
+            $0.bottom.lessThanOrEqualTo(bottomView.snp.top).offset(-12.adjusted)
         }
         
         bottomView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16.adjusted)
             $0.height.equalTo(31.adjusted)
-            $0.top.equalTo(contentLabel.snp.bottom).offset(12.adjusted)
             $0.bottom.equalToSuperview().inset(18.adjusted)
         }
         
@@ -217,6 +216,14 @@ final class FeedDetailTableViewCell: UITableViewCell {
                       time: data.time)
         
         contentLabel.text = data.commentText
+
+        contentLabel.snp.remakeConstraints {
+            $0.top.equalTo(infoView.snp.bottom).offset(12.adjusted)
+            $0.leading.equalTo(profileImageView.snp.trailing).offset(6.adjusted)
+            $0.trailing.equalTo(menuButton)
+            $0.bottom.equalTo(bottomView.snp.top).offset(-10.adjusted)
+        }
+
         if let profileImage = UserProfile(rawValue: data.memberProfileUrl) {
             profileImageView.image = profileImage.image
         } else {
