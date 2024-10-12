@@ -107,7 +107,7 @@ final class HomeViewModel {
         print("\(loadUserData()?.fcmToken ?? ""), \(loadUserData()?.isPushAlarmAllowed ?? false) <------------------------")
         let parameters: [String: Any] = [
             "fcmToken": loadUserData()?.fcmToken ?? "",
-            "isPushAlarmAllowed": false
+            "isPushAlarmAllowed": loadUserData()?.isPushAlarmAllowed ?? false
         ]
         
         var request = URLRequest(url: url)

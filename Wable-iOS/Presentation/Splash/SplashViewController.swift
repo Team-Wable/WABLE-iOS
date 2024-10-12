@@ -7,14 +7,23 @@
 
 import UIKit
 
-class SplashViewController: UIViewController {
+import Lottie
+
+final class SplashViewController: UIViewController {
     
-    private let dontBeLogo: UIImageView = {
-       let logo = UIImageView()
-        logo.image = ImageLiterals.Logo.logoSymbolLarge
-        return logo
+    private lazy var lottieAnimationView: LottieAnimationView = {
+        let animation = LottieAnimationView(name: "wable_splash")
+        animation.contentMode = .scaleAspectFill
+        animation.loopMode = .playOnce
+        animation.play(fromProgress: 0, toProgress: 1, loopMode: .playOnce) { finished in
+            if finished {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    animation.stop()
+                }
+            }
+        }
+        return animation
     }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,12 +36,9 @@ class SplashViewController: UIViewController {
     }
     
     private func setLayout() {
-        self.view.addSubview(dontBeLogo)
-        dontBeLogo.snp.makeConstraints {
+        self.view.addSubview(lottieAnimationView)
+        lottieAnimationView.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.width.equalTo(146.adjusted)
-            $0.height.equalTo(146.adjusted)
         }
     }
-
 }

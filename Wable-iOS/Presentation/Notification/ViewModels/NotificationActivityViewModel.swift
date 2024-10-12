@@ -127,7 +127,6 @@ extension NotificationActivityViewModel {
             print ("👻👻👻👻👻FCMBadge 개수 수정 완료👻👻👻👻👻")
             DispatchQueue.main.async {
                 UIApplication.shared.applicationIconBadgeNumber = 0
-                print("여기 돌아가긴 하니?")
             }
 
             return data

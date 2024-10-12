@@ -24,16 +24,13 @@ final class MyPageReplyViewController: UIViewController {
     var showUploadToastView: Bool = false
     private let refreshControl = UIRefreshControl()
     
-//    private let postViewModel: PostDetailViewModel
     private let likeViewModel: LikeViewModel
     private let myPageViewModel: MyPageViewModel
-//    let deleteViewModel = DeleteReplyViewModel(networkProvider: NetworkService())
     private var cancelBag = CancelBag()
     
     var profileData: [MypageProfileResponseDTO] = []
     var commentDatas: [MyPageMemberCommentResponseDTO] = []
     
-    // var commentData = MyPageViewModel(networkProvider: NetworkService()).myPageCommentData
     var contentId: Int = 0
     var commentId: Int = 0
     var alarmTriggerType: String = ""
@@ -85,6 +82,7 @@ final class MyPageReplyViewController: UIViewController {
         setLayout()
         setDelegate()
         setRefreshControll()
+        bindMyPageViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,7 +95,6 @@ final class MyPageReplyViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-//        NotificationCenter.default.removeObserver(self, name: MyPageCommentViewController.reloadData, object: nil)
     }
 }
 
@@ -108,7 +105,6 @@ extension MyPageReplyViewController {
         self.view.backgroundColor = .wableWhite
         self.navigationController?.navigationBar.isHidden = true
         
-//        deleteReplyPopupVC.modalPresentationStyle = .overFullScreen
     }
     
     private func setHierarchy() {
@@ -130,6 +126,16 @@ extension MyPageReplyViewController {
     private func setDelegate() {
         feedDetailTableView.dataSource = self
         feedDetailTableView.delegate = self
+    }
+    
+    private func bindMyPageViewModel() {
+        myPageViewModel.feedDetailTopInfoDTO
+            .receive(on: DispatchQueue.main)
+            .sink { data, contentID in
+                NotificationCenter.default.post(name: MyPagePostViewController.pushViewController, object: nil, userInfo: ["data": data, "contentID": contentID])
+                
+            }
+            .store(in: cancelBag)
     }
     
     private func setRefreshControll() {
@@ -166,12 +172,6 @@ extension MyPageReplyViewController {
         deleteReplyPopupView()
     }
     
-    @objc
-    private func warnButtonTapped() {
-//        popWarnView()
-//        NotificationCenter.default.post(name: MyPageContentViewController.warnUserButtonTapped, object: nil)
-    }
-    
     func popDeleteView() {
 //        if UIApplication.shared.keyWindowInConnectedScenes != nil {
 //            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
@@ -184,25 +184,6 @@ extension MyPageReplyViewController {
 //            deleteBottomsheet.bottomsheetView.removeFromSuperview()
 //        }
 //        refreshPostDidDrag()
-    }
-    
-    func popWarnView() {
-//        if UIApplication.shared.keyWindowInConnectedScenes != nil {
-//            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-//                self.warnBottomsheet.dimView.alpha = 0
-//                if let window = UIApplication.shared.keyWindowInConnectedScenes {
-//                    self.warnBottomsheet.bottomsheetView.frame = CGRect(x: 0, y: window.frame.height, width: self.deleteBottomsheet.frame.width, height: self.warnBottomsheet.bottomsheetView.frame.height)
-//                }
-//            })
-//            warnBottomsheet.dimView.removeFromSuperview()
-//            warnBottomsheet.bottomsheetView.removeFromSuperview()
-//        }
-//        refreshPostDidDrag()
-    }
-    
-    func presentView() {
-//        deleteReplyPopupVC.commentId = self.commentId
-//        self.present(self.deleteReplyPopupVC, animated: false, completion: nil)
     }
     
     private func postCommentLikeButtonAPI(isClicked: Bool, commentId: Int, commentText: String) {
@@ -416,9 +397,7 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let contentId = commentDatas[indexPath.row].contentId
-        let profileImageURL = commentDatas[indexPath.row].memberProfileUrl
-        NotificationCenter.default.post(name: MyPagePostViewController.pushViewController, object: nil, userInfo: ["contentId": contentId, "profileImageURL": profileImageURL])
+        myPageViewModel.replyCellDidTapped.send(commentDatas[indexPath.row].contentId)
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {

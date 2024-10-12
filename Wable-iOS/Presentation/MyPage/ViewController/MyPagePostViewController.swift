@@ -30,7 +30,7 @@ final class MyPagePostViewController: UIViewController {
     private var cancelBag = CancelBag()
     
     var profileData: [MypageProfileResponseDTO] = []
-    var contentDatas: [MyPageMemberContentResponseDTO] = []
+    var contentDatas: [HomeFeedDTO] = []
     // var contentData = MyPageViewModel(networkProvider: NetworkService()).myPageContentDatas
     
     var contentId: Int = 0
@@ -287,6 +287,11 @@ extension MyPagePostViewController {
             homeBottomsheetView.bottomsheetView.removeFromSuperview()
         }
     }
+    
+    func getContentData(at index: Int) -> HomeFeedDTO? {
+        guard index >= 0 && index < contentDatas.count else { return nil }
+        return contentDatas[index]
+    }
 }
 
 extension MyPagePostViewController: UITableViewDelegate, UITableViewDataSource {
@@ -299,10 +304,10 @@ extension MyPagePostViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         
         cell.alarmTriggerType = "contentGhost"
-        cell.targetMemberId = contentDatas[indexPath.row].memberId
-        cell.alarmTriggerdId = contentDatas[indexPath.row].contentId
+        cell.targetMemberId = contentDatas[indexPath.row].memberID
+        cell.alarmTriggerdId = contentDatas[indexPath.row].contentID ?? Int()
         
-        if contentDatas[indexPath.row].memberId == loadUserData()?.memberId {
+        if contentDatas[indexPath.row].memberID == loadUserData()?.memberId {
             print("contentDatas[indexPath.row].memberId == loadUserData()?.memberId")
             cell.bottomView.ghostButton.isHidden = true
             
@@ -312,9 +317,9 @@ extension MyPagePostViewController: UITableViewDelegate, UITableViewDataSource {
                 self.homeBottomsheetView.deleteButton.isHidden = false
                 
                 self.reportTargetNickname = self.contentDatas[indexPath.row].memberNickname
-                self.relateText = self.contentDatas[indexPath.row].contentText
+                self.relateText = self.contentDatas[indexPath.row].contentText ?? ""
                 self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
-                self.contentId = self.contentDatas[indexPath.row].contentId
+                self.contentId = self.contentDatas[indexPath.row].contentID ?? Int()
                 self.nowShowingPopup = "delete"
             }
         } else {
@@ -328,59 +333,16 @@ extension MyPagePostViewController: UITableViewDelegate, UITableViewDataSource {
                 self.homeBottomsheetView.deleteButton.isHidden = true
                 
                 self.reportTargetNickname = self.contentDatas[indexPath.row].memberNickname
-                self.relateText = self.contentDatas[indexPath.row].contentText
+                self.relateText = self.contentDatas[indexPath.row].contentText ?? ""
                 self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
                 self.nowShowingPopup = "report"
             }
         }
         
-        cell.profileImageView.load(url: "\(contentDatas[indexPath.row].memberProfileUrl)")
-        cell.infoView.nicknameLabel.text = contentDatas[indexPath.row].memberNickname
-        cell.infoView.teamImageView.image = Team(rawValue: contentDatas[indexPath.row].memberFanTeam)?.tag
-        cell.infoView.ghostPercentLabel.text = "투명도 \(contentDatas[indexPath.row].memberGhost)%"
-        cell.infoView.timeLabel.text = "\(contentDatas[indexPath.row].time.formattedTime())"
-        
-        cell.feedContentView.titleLabel.text = contentDatas[indexPath.row].contentTitle
-        cell.feedContentView.contentLabel.text = contentDatas[indexPath.row].contentText
-        
-        let contentImage = contentDatas[indexPath.row].contentImageUrl
-        
-        if contentImage != "" {
-            cell.feedContentView.photoImageView.loadContentImage(url: contentImage ?? "")
-            cell.feedContentView.photoImageView.isHidden = false
-            
-            cell.feedContentView.photoImageView.snp.remakeConstraints {
-                $0.top.equalTo(cell.feedContentView.titleLabel.snp.bottom).offset(10.adjusted)
-                $0.height.equalTo(192.adjusted)
-                $0.leading.trailing.equalToSuperview()
-            }
-            
-            cell.feedContentView.contentLabel.snp.remakeConstraints {
-                $0.top.equalTo(cell.feedContentView.photoImageView.snp.bottom).offset(10.adjusted)
-                $0.leading.trailing.bottom.equalToSuperview()
-            }
-        } else {
-            cell.feedContentView.photoImageView.isHidden = true
-            cell.feedContentView.contentLabel.snp.remakeConstraints {
-                $0.top.equalTo(cell.feedContentView.titleLabel.snp.bottom).offset(4.adjusted)
-                $0.leading.trailing.bottom.equalToSuperview()
-            }
-        }
-        
-        cell.bottomView.heartButton.setTitleWithConfiguration("\(contentDatas[indexPath.row].likedNumber)", font: .caption1, textColor: .wableBlack)
-        cell.bottomView.commentButton.setTitleWithConfiguration("\(contentDatas[indexPath.row].commentNumber)", font: .caption1, textColor: .wableBlack)
-        cell.bottomView.isLiked = contentDatas[indexPath.row].isLiked
-        
-        if contentDatas[indexPath.row].isGhost {
-            cell.bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDisabledLarge, for: .normal)
-            cell.bottomView.ghostButton.isEnabled = false
-        } else {
-            cell.bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDefaultLarge, for: .normal)
-            cell.bottomView.ghostButton.isEnabled = true
-        }
+        cell.bind(data: contentDatas[indexPath.row])
         
         cell.profileButtonAction = {
-            let memberId = self.contentDatas[indexPath.row].memberId
+            let memberId = self.contentDatas[indexPath.row].memberID
 
             if memberId == loadUserData()?.memberId ?? 0  {
                 self.tabBarController?.selectedIndex = 3
@@ -406,9 +368,20 @@ extension MyPagePostViewController: UITableViewDelegate, UITableViewDataSource {
             } else {
                 cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
             }
-            self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.contentDatas[indexPath.row].contentId)
+            self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.contentDatas[indexPath.row].contentID ?? Int())
             
             cell.bottomView.isLiked.toggle()
+            
+        }
+        
+        cell.bottomView.commentButton.isEnabled = true
+        
+        cell.bottomView.commentButtonTapped = { [weak self] in
+            guard let self = self else { return }
+
+            let contentId = self.contentDatas[indexPath.row].contentID
+            
+            NotificationCenter.default.post(name: MyPagePostViewController.pushViewController, object: nil, userInfo: ["data": self.contentDatas[indexPath.row], "contentID": contentId])
         }
         
         var memberGhost = self.contentDatas[indexPath.row].memberGhost
@@ -431,21 +404,14 @@ extension MyPagePostViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let contentId = contentDatas[indexPath.row].contentId
-        let profileImageURL = contentDatas[indexPath.row].memberProfileUrl
-        NotificationCenter.default.post(name: MyPagePostViewController.pushViewController, object: nil, userInfo: ["contentId": contentId, "profileImageURL": profileImageURL])
-//        NotificationCenter.default.post(name: MyPagePostViewController.pushViewController, object: nil)
-        
-//        let detailViewController = FeedDetailViewController()
-//        detailViewController.hidesBottomBarWhenPushed = true
-//        detailViewController.getFeedData(data: dummyData[indexPath.row])
-//        self.navigationController?.pushViewController(detailViewController, animated: true)
+        let contentId = contentDatas[indexPath.row].contentID
+        NotificationCenter.default.post(name: MyPagePostViewController.pushViewController, object: nil, userInfo: ["data": self.contentDatas[indexPath.row], "contentID": contentId])
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView == homeFeedTableView {
             if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
-                let lastCommentId = contentDatas.last?.contentId ?? -1
+                let lastCommentId = contentDatas.last?.contentID ?? -1
                 myPageViewModel.contentCursor = lastCommentId
                 NotificationCenter.default.post(name: MyPageReplyViewController.reloadCommentData, object: nil, userInfo: ["contentCursor": lastCommentId])
                 DispatchQueue.main.async {

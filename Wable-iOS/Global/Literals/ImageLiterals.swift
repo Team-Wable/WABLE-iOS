@@ -91,6 +91,7 @@ enum ImageLiterals {
         static var toastWarning: UIImage { .load(name: "toast_warning") }
         static var toastGhost: UIImage { .load(name: "toast_ghost") }
         static var toastReport: UIImage { .load(name: "toast_report") }
+        static var toastAgreementLoading: UIImage { .load(name: "toast_agreement_loading") }
     }
     
     enum Tag {
