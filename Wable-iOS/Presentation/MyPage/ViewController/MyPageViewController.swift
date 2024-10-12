@@ -232,26 +232,16 @@ extension MyPageViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: MyPagePostViewController.reloadData, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadContentData(_:)), name: MyPagePostViewController.reloadContentData, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadCommentData(_:)), name: MyPageReplyViewController.reloadCommentData, object: nil)
-//            NotificationCenter.default.addObserver(self, selector: #selector(warnButtonTapped), name: MyPagePostViewController.warnUserButtonTapped, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(contentGhostButtonTapped), name: MyPagePostViewController.ghostButtonTapped, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(commentGhostButtonTapped), name: MyPageReplyViewController.ghostButtonTapped, object: nil)
-        
-//            NotificationCenter.default.addObserver(self, selector: #selector(showDeleteToast(_:)), name: DeletePopupViewController.showDeletePostToastNotification, object: nil)
-//            NotificationCenter.default.addObserver(self, selector: #selector(showDeleteToast(_:)), name: DeleteReplyPopupViewController.showDeleteReplyToastNotification, object: nil)
     }
     
     private func removeNotification() {
         NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.pushViewController, object: nil)
         NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadData, object: nil)
         NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadContentData, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.warnUserButtonTapped, object: nil)
         NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.ghostButtonTapped, object: nil)
-        
-//        NotificationCenter.default.removeObserver(self, name: MyPageReplyViewController.reloadCommentData, object: nil)
         NotificationCenter.default.removeObserver(self, name: MyPageReplyViewController.ghostButtonTapped, object: nil)
-        
-//        NotificationCenter.default.removeObserver(self, name: DeletePopupViewController.showDeletePostToastNotification, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: DeleteReplyPopupViewController.showDeleteReplyToastNotification, object: nil)
     }
     
     private func setAddTarget() {
@@ -505,26 +495,6 @@ extension MyPageViewController {
                 $0.edges.equalToSuperview()
             }
         }
-        
-//
-//        if let window = UIApplication.shared.keyWindowInConnectedScenes {
-//            window.addSubviews(transparentReasonView)
-//            
-//            transparentReasonView.snp.makeConstraints {
-//                $0.edges.equalToSuperview()
-//            }
-//            
-//            let radioButtonImage = ImageLiterals.TransparencyInfo.btnRadio
-//            
-//            self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.warnLabel.isHidden = true
-//            self.ghostReason = ""
-//        }
     }
     
     @objc
@@ -549,25 +519,6 @@ extension MyPageViewController {
                 $0.edges.equalToSuperview()
             }
         }
-//
-//        if let window = UIApplication.shared.keyWindowInConnectedScenes {
-//            window.addSubviews(transparentReasonView)
-//            
-//            transparentReasonView.snp.makeConstraints {
-//                $0.edges.equalToSuperview()
-//            }
-//            
-//            let radioButtonImage = ImageLiterals.TransparencyInfo.btnRadio
-//            
-//            self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.warnLabel.isHidden = true
-//            self.ghostReason = ""
-//        }
     }
 }
 
