@@ -25,5 +25,9 @@ extension UIView {
         let matches = regex.matches(in: input, options: [], range: NSRange(location: 0, length: input.utf16.count))
         return matches.count > 0
     }
+    
+    func superview<T>(of type: T.Type) -> T? {
+        return superview as? T ?? superview?.superview(of: type)
+    }
 }
 
