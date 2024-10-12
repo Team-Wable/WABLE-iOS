@@ -232,26 +232,16 @@ extension MyPageViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: MyPagePostViewController.reloadData, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadContentData(_:)), name: MyPagePostViewController.reloadContentData, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadCommentData(_:)), name: MyPageReplyViewController.reloadCommentData, object: nil)
-//            NotificationCenter.default.addObserver(self, selector: #selector(warnButtonTapped), name: MyPagePostViewController.warnUserButtonTapped, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(contentGhostButtonTapped), name: MyPagePostViewController.ghostButtonTapped, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(commentGhostButtonTapped), name: MyPageReplyViewController.ghostButtonTapped, object: nil)
-        
-//            NotificationCenter.default.addObserver(self, selector: #selector(showDeleteToast(_:)), name: DeletePopupViewController.showDeletePostToastNotification, object: nil)
-//            NotificationCenter.default.addObserver(self, selector: #selector(showDeleteToast(_:)), name: DeleteReplyPopupViewController.showDeleteReplyToastNotification, object: nil)
     }
     
     private func removeNotification() {
         NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.pushViewController, object: nil)
         NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadData, object: nil)
         NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.reloadContentData, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.warnUserButtonTapped, object: nil)
         NotificationCenter.default.removeObserver(self, name: MyPagePostViewController.ghostButtonTapped, object: nil)
-        
-//        NotificationCenter.default.removeObserver(self, name: MyPageReplyViewController.reloadCommentData, object: nil)
         NotificationCenter.default.removeObserver(self, name: MyPageReplyViewController.ghostButtonTapped, object: nil)
-        
-//        NotificationCenter.default.removeObserver(self, name: DeletePopupViewController.showDeletePostToastNotification, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: DeleteReplyPopupViewController.showDeleteReplyToastNotification, object: nil)
     }
     
     private func setAddTarget() {
@@ -453,15 +443,17 @@ extension MyPageViewController {
     
     @objc
     private func pushViewController(_ notification: Notification) {
-        if let contentId = notification.userInfo?["contentId"] as? Int, let profileImageURL = notification.userInfo?["profileImageURL"] as? String {
-            let destinationViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
-            destinationViewController.hidesBottomBarWhenPushed = true
-            
-            destinationViewController.contentId = contentId
-//            detailViewController.memberId = viewModel.feedDatas[indexPath.row].memberID
-            
-            self.navigationController?.pushViewController(destinationViewController, animated: true)
-        }
+        guard let userInfo = notification.userInfo,
+              let data = userInfo["data"] as? HomeFeedDTO,
+              let contentID = userInfo["contentID"] as? Int else { return }
+        
+        let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
+        detailViewController.getFeedData(data: data)
+        detailViewController.contentId = contentID
+        detailViewController.memberId = data.memberID
+        detailViewController.hidesBottomBarWhenPushed = true
+
+        self.navigationController?.pushViewController(detailViewController, animated: true)
     }
     
     @objc
@@ -503,26 +495,6 @@ extension MyPageViewController {
                 $0.edges.equalToSuperview()
             }
         }
-        
-//
-//        if let window = UIApplication.shared.keyWindowInConnectedScenes {
-//            window.addSubviews(transparentReasonView)
-//            
-//            transparentReasonView.snp.makeConstraints {
-//                $0.edges.equalToSuperview()
-//            }
-//            
-//            let radioButtonImage = ImageLiterals.TransparencyInfo.btnRadio
-//            
-//            self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.warnLabel.isHidden = true
-//            self.ghostReason = ""
-//        }
     }
     
     @objc
@@ -547,29 +519,30 @@ extension MyPageViewController {
                 $0.edges.equalToSuperview()
             }
         }
-//
-//        if let window = UIApplication.shared.keyWindowInConnectedScenes {
-//            window.addSubviews(transparentReasonView)
-//            
-//            transparentReasonView.snp.makeConstraints {
-//                $0.edges.equalToSuperview()
-//            }
-//            
-//            let radioButtonImage = ImageLiterals.TransparencyInfo.btnRadio
-//            
-//            self.transparentReasonView.firstReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.secondReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.thirdReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.fourthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.fifthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.sixthReasonView.radioButton.setImage(radioButtonImage, for: .normal)
-//            self.transparentReasonView.warnLabel.isHidden = true
-//            self.ghostReason = ""
-//        }
     }
 }
 
 extension MyPageViewController: UICollectionViewDelegate, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == rootView.myPagePostViewController.homeFeedTableView {
+             // MyPagePostViewController의 contentDatas에서 데이터를 가져옴
+             guard let selectedContent = rootView.myPagePostViewController.getContentData(at: indexPath.row) else {
+                 return
+             }
+             
+             // 선택된 데이터를 이용해 FeedDetailViewController로 푸시
+             let detailViewController = FeedDetailViewController(
+                 viewModel: FeedDetailViewModel(networkProvider: NetworkService()),
+                 likeViewModel: LikeViewModel(networkProvider: NetworkService())
+             )
+             detailViewController.getFeedData(data: selectedContent)
+             detailViewController.contentId = selectedContent.contentID ?? 0
+             detailViewController.memberId = selectedContent.memberID
+             detailViewController.hidesBottomBarWhenPushed = true
+             self.navigationController?.pushViewController(detailViewController, animated: true)
+         }
+    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == rootView.myPageScrollView {
@@ -671,7 +644,7 @@ extension MyPageViewController: UICollectionViewDelegate, UITableViewDelegate {
                 if yOffset <= 0 {
                     rootView.myPageScrollView.isScrollEnabled = true
                     rootView.myPagePostViewController.homeFeedTableView.isScrollEnabled = false
-                    rootView.myPagePostViewController.homeFeedTableView.isUserInteractionEnabled = false
+                    rootView.myPagePostViewController.homeFeedTableView.isUserInteractionEnabled = true
                     rootView.myPageReplyViewController.feedDetailTableView.isScrollEnabled = false
                     rootView.myPageReplyViewController.feedDetailTableView.isUserInteractionEnabled = false
                     

@@ -15,6 +15,7 @@ final class FeedBottomView: UIView {
     
     var heartButtonTapped: (() -> Void)?
     var ghostButtonTapped: (() -> Void)?
+    var commentButtonTapped: (() -> Void)?
     var isLiked: Bool = false {
         didSet {
             if isLiked {
@@ -101,6 +102,7 @@ extension FeedBottomView {
     private func setAddTarget() {
         ghostButton.addTarget(self, action: #selector(ghostButtonDidTapped), for: .touchUpInside)
         heartButton.addTarget(self, action: #selector(heartButtonDidTapped), for: .touchUpInside)
+        commentButton.addTarget(self, action: #selector(commentButtonDidTapped), for: .touchUpInside)
     }
     
     @objc
@@ -111,6 +113,11 @@ extension FeedBottomView {
     @objc
     private func heartButtonDidTapped() {
         heartButtonTapped?()
+    }
+    
+    @objc
+    private func commentButtonDidTapped() {
+        commentButtonTapped?()
     }
     
     func bind(heart: Int, comment: Int) {

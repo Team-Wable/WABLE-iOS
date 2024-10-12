@@ -19,8 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         self.window?.rootViewController = SplashViewController()
         self.window?.makeKeyAndVisible()
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
             if loadUserData()?.isSocialLogined == true && loadUserData()?.isJoinedApp == true {
                 let navigationController = UINavigationController(rootViewController: WableTabBarController())
                 self.window?.rootViewController = navigationController

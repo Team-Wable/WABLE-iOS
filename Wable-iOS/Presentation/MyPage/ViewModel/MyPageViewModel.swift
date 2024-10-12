@@ -12,15 +12,15 @@ final class MyPageViewModel: ViewModelType {
     
     private let cancelBag = CancelBag()
     private let networkProvider: NetworkServiceType
-//    
     private var getProfileData = PassthroughSubject<MypageProfileResponseDTO, Never>()
-    private var getContentData = PassthroughSubject<[MyPageMemberContentResponseDTO], Never>()
+    private var getContentData = PassthroughSubject<[HomeFeedDTO], Never>()
     private var getCommentData = PassthroughSubject<[MyPageMemberCommentResponseDTO], Never>()
-//    
+    let replyCellDidTapped = PassthroughSubject<Int,Never>()
+    let feedDetailTopInfoDTO = PassthroughSubject<(HomeFeedDTO, Int), Never>()
+    
     var myPageProfileData: [MypageProfileResponseDTO] = []
-//    
-    var myPageContentData: [MyPageMemberContentResponseDTO] = []
-    var myPageContentDatas: [MyPageMemberContentResponseDTO] = []
+    var myPageContentData: [HomeFeedDTO] = []
+    var myPageContentDatas: [HomeFeedDTO] = []
     
     var myPageCommentData: [MyPageMemberCommentResponseDTO] = []
     var myPageCommentDatas: [MyPageMemberCommentResponseDTO] = []
@@ -35,7 +35,7 @@ final class MyPageViewModel: ViewModelType {
     
     struct Output {
         let getProfileData: PassthroughSubject<MypageProfileResponseDTO, Never>
-        let getContentData: PassthroughSubject<[MyPageMemberContentResponseDTO], Never>
+        let getContentData: PassthroughSubject<[HomeFeedDTO], Never>
         let getCommentData: PassthroughSubject<[MyPageMemberCommentResponseDTO], Never>
     }
     
@@ -98,8 +98,19 @@ final class MyPageViewModel: ViewModelType {
                       getCommentData: getCommentData)
     }
     
+    private func transform() {
+        replyCellDidTapped
+            .sink { [weak self] contentID in
+                NotificationAPI.shared.getFeedTopInfo(contentID: contentID) { result in
+                    guard let result = self?.validateResult(result) as? HomeFeedDTO else { return }
+                    self?.feedDetailTopInfoDTO.send((result, contentID))
+                }
+            }
+            .store(in: cancelBag)    }
+    
     init(networkProvider: NetworkServiceType) {
         self.networkProvider = networkProvider
+        transform()
     }
     
     required init?(coder: NSCoder) {
@@ -123,9 +134,9 @@ extension MyPageViewModel {
         }
     }
     
-    private func getMemberContentAPI(accessToken: String, memberId: Int, contentCursor: Int) async throws -> BaseResponse<[MyPageMemberContentResponseDTO]>? {
+    private func getMemberContentAPI(accessToken: String, memberId: Int, contentCursor: Int) async throws -> BaseResponse<[HomeFeedDTO]>? {
         do {
-            let result: BaseResponse<[MyPageMemberContentResponseDTO]>? = try await self.networkProvider.donNetwork(
+            let result: BaseResponse<[HomeFeedDTO]>? = try await self.networkProvider.donNetwork(
                 type: .get,
                 baseURL: Config.baseURL + "v2/member/\(memberId)/contents",
                 accessToken: accessToken,
@@ -135,7 +146,7 @@ extension MyPageViewModel {
                 if contentCursor == -1 {
                     self.myPageContentDatas = []
                     
-                    var tempArrayData: [MyPageMemberContentResponseDTO] = []
+                    var tempArrayData: [HomeFeedDTO] = []
                     
                     for content in data {
                         tempArrayData.append(content)
@@ -143,7 +154,7 @@ extension MyPageViewModel {
                     self.myPageContentData = tempArrayData
                     myPageContentDatas.append(contentsOf: myPageContentData)
                 } else {
-                    var tempArrayData: [MyPageMemberContentResponseDTO] = []
+                    var tempArrayData: [HomeFeedDTO] = []
                     
                     if data.isEmpty {
                         self.contentCursor = -1
@@ -198,5 +209,28 @@ extension MyPageViewModel {
         } catch {
             return nil
         }
+    }
+    
+    private func validateResult(_ result: NetworkResult<Any>) -> Any?{
+        switch result{
+        case .success(let data):
+            print("성공했습니다.")
+            print("⭐️⭐️⭐️⭐️⭐️⭐️")
+            print(data)
+            return data
+        case .requestErr(let message):
+            print(message)
+        case .pathErr:
+            print("path 혹은 method 오류입니다.🤯")
+        case .serverErr:
+            print("서버 내 오류입니다.🎯")
+        case .networkFail:
+            print("네트워크가 불안정합니다.💡")
+        case .decodedErr:
+            print("디코딩 오류가 발생했습니다.🕹️")
+        case .authorizationFail(_):
+            print("인증 오류가 발생했습니다. 다시 로그인해주세요🔐")
+        }
+        return nil
     }
 }

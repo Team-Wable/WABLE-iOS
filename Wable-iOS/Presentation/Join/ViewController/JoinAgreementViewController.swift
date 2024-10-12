@@ -54,6 +54,7 @@ final class JoinAgreementViewController: UIViewController {
     private var navigationBackButton = BackButton()
     private var navigationXButton = XButton()
     private let originView = JoinAgreementView()
+    private var loadingToastView: UIImageView?
     
     // MARK: - Life Cycles
     
@@ -146,9 +147,34 @@ extension JoinAgreementViewController {
                 if value == 0 {
                     self.navigationController?.popViewController(animated: true)
                 } else {
-                    let viewController = WableTabBarController()
-                    self.navigationBackButton.removeFromSuperview()
-                    self.navigationController?.pushViewController(viewController, animated: true)
+                    self.originView.JoinCompleteActiveButton.isEnabled = false
+                    self.loadingToastView = UIImageView(image: ImageLiterals.Toast.toastAgreementLoading)
+                    self.loadingToastView?.contentMode = .scaleAspectFit
+                    
+                    if let loadingToastView = self.loadingToastView {
+                        if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                            window.addSubviews(loadingToastView)
+                        }
+                        
+                        loadingToastView.snp.makeConstraints {
+                            $0.top.equalToSuperview().inset(32.adjusted)
+                            $0.centerX.equalToSuperview()
+                            $0.width.equalTo(343.adjusted)
+                            $0.height.equalTo(60.adjusted)
+                        }
+                        
+                        UIView.animate(withDuration: 1, delay: 1, options: .curveEaseIn) {
+                            self.loadingToastView?.alpha = 0
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            self.loadingToastView?.removeFromSuperview()
+                            let viewController = WableTabBarController()
+                            self.navigationBackButton.removeFromSuperview()
+                            self.originView.JoinCompleteActiveButton.isEnabled = true
+                            self.navigationController?.pushViewController(viewController, animated: true)
+                        }
+                    }
                 }
             }
             .store(in: self.cancelBag)
