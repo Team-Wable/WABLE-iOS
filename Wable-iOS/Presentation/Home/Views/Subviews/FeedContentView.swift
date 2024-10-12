@@ -142,6 +142,8 @@ extension FeedContentView {
         let location = gesture.location(in: titleLabel)
         let index = titleLabel.indexOfAttributedTextCharacterAtPoint(point: location)
         
+        var isLinkTapped = false
+
         attributedText.enumerateAttribute(.link, in: NSRange(location: 0, length: attributedText.length), options: []) { value, range, _ in
             if let url = value as? String, NSLocationInRange(index, range) {
                 var urlString = url
@@ -151,8 +153,15 @@ extension FeedContentView {
                 if let url = URL(string: urlString) {
                     UIApplication.shared.open(url)
                 }
+                isLinkTapped = true
             }
         }
+        
+        // 하이퍼링크가 아닌 부분을 클릭한 경우에만 `didSelectRowAt` 호출
+        if !isLinkTapped, let tableView = self.superview(of: UITableView.self), let cell = self.superview(of: UITableViewCell.self), let indexPath = tableView.indexPath(for: cell) {
+            tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
+        }
+
     }
     
     @objc func handleContentLabelTap(_ gesture: UITapGestureRecognizer) {
@@ -161,6 +170,8 @@ extension FeedContentView {
         let location = gesture.location(in: contentLabel)
         let index = contentLabel.indexOfAttributedTextCharacterAtPoint(point: location)
         
+        var isLinkTapped = false
+
         attributedText.enumerateAttribute(.link, in: NSRange(location: 0, length: attributedText.length), options: []) { value, range, _ in
             if let url = value as? String, NSLocationInRange(index, range) {
                 var urlString = url
@@ -170,7 +181,13 @@ extension FeedContentView {
                 if let url = URL(string: urlString) {
                     UIApplication.shared.open(url)
                 }
+                isLinkTapped = true
             }
+        }
+        
+        // 하이퍼링크가 아닌 부분을 클릭한 경우에만 `didSelectRowAt` 호출
+        if !isLinkTapped, let tableView = self.superview(of: UITableView.self), let cell = self.superview(of: UITableViewCell.self), let indexPath = tableView.indexPath(for: cell) {
+            tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
         }
     }
 }
