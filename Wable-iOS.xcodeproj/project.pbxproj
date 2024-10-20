@@ -1421,6 +1421,9 @@
 				DD2A2F122EA8B6960024076B /* View */,
 				DD2A2F0F2EA8A2AF0024076B /* ViewModel */,
 				DD9F46582EADE03B006074F7 /* Coordinator */,
+				DD2A2F0B2EA6941E0024076B /* NextQuizInfoViewController.swift */,
+				DD2A2F092EA693490024076B /* QuizCoordinator.swift */,
+				DD2A2F072EA693070024076B /* QuizViewController.swift */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
