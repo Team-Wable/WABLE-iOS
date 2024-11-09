@@ -10,13 +10,15 @@ import UIKit
 import SnapKit
 
 final class NotificationContentView: UIView {
-
-    // MARK: - Properties
+    let notiTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .wableWhite
+        tableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: NotificationTableViewCell.identifier)
+        return tableView
+    }()
     
-    // MARK: - UI Components
-    
-    var notiTableView = UITableView()
-    var noNotiLabel: UILabel = {
+    let noNotiLabel: UILabel = {
         let label = UILabel()
         label.text = StringLiterals.Notification.noNoti
         label.isHidden = true
@@ -25,16 +27,13 @@ final class NotificationContentView: UIView {
         return label
     }()
     
-    // MARK: - Life Cycles
+    // MARK: - Initializer
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .gray400
-        setUI()
-        setHierarchy()
-        setLayout()
-        setAddTarget()
-        setRegisterCell()
+        
+        setupView()
+        setupConstraints()
     }
     
     @available(*, unavailable)
@@ -43,20 +42,16 @@ final class NotificationContentView: UIView {
     }
 }
 
-// MARK: - Extensions
+// MARK: - Private Method
 
-extension NotificationContentView {
-    private func setUI() {
-        self.backgroundColor = .white
-        notiTableView.separatorStyle = .none
-        notiTableView.backgroundColor = .wableWhite
+private extension NotificationContentView {
+    func setupView() {
+        backgroundColor = .white
+        
+        addSubviews(notiTableView, noNotiLabel)
     }
     
-    private func setHierarchy() {
-        self.addSubviews(notiTableView, noNotiLabel)
-    }
-    
-    private func setLayout() {
+    func setupConstraints() {
         notiTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -64,17 +59,5 @@ extension NotificationContentView {
         noNotiLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
-    }
-    
-    private func setAddTarget() {
-
-    }
-    
-    private func setRegisterCell() {
-        notiTableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: NotificationTableViewCell.identifier)
-    }
-    
-    private func setDataBind() {
-        
     }
 }
