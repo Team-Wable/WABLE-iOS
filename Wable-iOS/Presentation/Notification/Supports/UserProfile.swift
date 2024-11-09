@@ -11,7 +11,6 @@ enum UserProfile: String {
     case purple = "PURPLE"
     case green = "GREEN"
     case blue = "BLUE"
-
     
     var image: UIImage {
         switch self {
@@ -22,4 +21,5 @@ enum UserProfile: String {
         case .blue:
             return ImageLiterals.Image.imgProfile2
         }
-    }}
+    }
+}
