@@ -45,9 +45,8 @@ extension NotificationRouter: BaseTargetType {
             return .requestParameters(parameters: ["cursor": cursor], encoding: URLEncoding.queryString)
         case .getNotiActivity(let cursor):
             return .requestParameters(parameters: ["cursor": cursor], encoding: URLEncoding.queryString)
-        case .getFeedTopInfo(param: let param):
+        case .getFeedTopInfo(param: _):
             return .requestPlain
         }
     }
 }
-
