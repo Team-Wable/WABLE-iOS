@@ -14,6 +14,7 @@ final class NotificationContentView: UIView {
         let tableView = UITableView()
         tableView.separatorStyle = .none
         tableView.backgroundColor = .wableWhite
+        tableView.refreshControl = UIRefreshControl()
         tableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: NotificationTableViewCell.identifier)
         return tableView
     }()
