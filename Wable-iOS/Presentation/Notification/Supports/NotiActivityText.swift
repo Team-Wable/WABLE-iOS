@@ -50,7 +50,7 @@ enum NotiActivityText: String {
         case .beGhost:
             return "\(userNickname)님, 투명해져서 당분간 글을 작성할 수 없어요."
         case .actingContinue:
-            return "\(userNickname)님, 이제 다시 글을 작성할 수 있어요! 오랜만에 돈비에 인사를 남겨주세요!"
+            return "\(userNickname)님, 이제 다시 글을 작성할 수 있어요! 오랜만에 와블에 인사를 남겨주세요!"
         case .userBan:
             return "\(userNickname)님, 커뮤니티 활동 정책 위반으로 더 이상 와블을 사용할 수 없어요. 자세한 내용은 문의사항으로 남겨주세요"
         case .popularWriter:

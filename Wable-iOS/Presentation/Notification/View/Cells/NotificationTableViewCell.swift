@@ -45,6 +45,10 @@ final class NotificationTableViewCell: UITableViewCell {
         return stackView
     }()
     
+    // MARK: - Property
+
+    var imageViewDidTapAction: (() -> Void)?
+    
     // MARK: - Initializer
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -52,6 +56,7 @@ final class NotificationTableViewCell: UITableViewCell {
         
         setupView()
         setupConstraints()
+        setupAction()
     }
 
     required init?(coder: NSCoder) {
@@ -105,6 +110,12 @@ private extension NotificationTableViewCell {
         }
     }
     
+    func setupAction() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewDidTap))
+        notiImageView.addGestureRecognizer(tapGesture)
+        notiImageView.isUserInteractionEnabled = true
+    }
+    
     func setProfileImage(for urlString: String) {
         guard !urlString.isEmpty else {
             notiImageView.image = ImageLiterals.Image.imgProfile3
@@ -136,11 +147,17 @@ private extension NotificationTableViewCell {
         let truncatedText = data.notificationText.truncated(to: 15)
         contentLabel.text = "\(baseText)\n : \(truncatedText)"
     }
+    
+    @objc
+    func imageViewDidTap() {
+        imageViewDidTapAction?()
+    }
 }
 
-// TODO: 추후 삭제 또는 별도의 파일 선언
-
 extension UIImageView{
+    
+    // TODO: 추후 삭제 또는 별도의 파일 선언
+    
     func kfSetImage(url: String?){
         guard let url = url else { return }
         
