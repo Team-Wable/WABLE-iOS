@@ -10,11 +10,6 @@ import UIKit
 import SnapKit
 
 final class TeamScoreView: UIView {
-    
-    // MARK: - Properties
-    
-    // MARK: - UI Components
-    
     private let aTeamView = ATeamView()
     private let bTeamView = BTeamView()
     private let seperateImageView: UIImageView = {
@@ -23,49 +18,43 @@ final class TeamScoreView: UIView {
         return imageView
     }()
     
-    // MARK: - Life Cycles
+    // MARK: - Initializer
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setUI()
-        setHierarchy()
-        setAddTarget()
-        setRegisterCell()
+        setupView()
+        setupConstraints()
     }
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        setLayout()
+}
+
+extension TeamScoreView {
+    func bind(data: Game) {
+        aTeamView.bind(team: data.aTeamName, score: data.aTeamScore)
+        bTeamView.bind(team: data.bTeamName, score: data.bTeamScore)
     }
 }
 
-// MARK: - Extensions
+// MARK: - Private Method
 
-extension TeamScoreView {
-    private func setUI() {
-        self.clipsToBounds = true
-        self.layer.cornerRadius = 8.adjusted
-        self.layer.borderWidth = 1.adjusted
-        self.layer.borderColor = UIColor.gray200.cgColor
+private extension TeamScoreView {
+    func setupView() {
+        clipsToBounds = true
+        layer.cornerRadius = 8.adjusted
+        layer.borderWidth = 1.adjusted
+        layer.borderColor = UIColor.gray200.cgColor
+        
+        addSubviews(aTeamView, bTeamView, seperateImageView)
     }
     
-    private func setHierarchy() {
-        self.addSubviews(aTeamView,
-                         bTeamView,
-                         seperateImageView)
-    }
-    
-    private func setLayout() {
+    func setupConstraints() {
         self.snp.makeConstraints {
             $0.height.equalTo(72.adjusted)
-            $0.leading.trailing.equalToSuperview().inset(16.adjusted)
-            $0.bottom.equalToSuperview()
         }
         
         aTeamView.snp.makeConstraints {
@@ -87,19 +76,5 @@ extension TeamScoreView {
             $0.height.equalTo(16.adjusted)
             $0.width.equalTo(4.adjusted)
         }
-        
-    }
-    
-    private func setAddTarget() {
-        
-    }
-    
-    private func setRegisterCell() {
-        
-    }
-    
-    func bind(data: Game) {
-        aTeamView.bind(team: data.aTeamName, score: data.aTeamScore)
-        bTeamView.bind(team: data.bTeamName, score: data.bTeamScore)
     }
 }

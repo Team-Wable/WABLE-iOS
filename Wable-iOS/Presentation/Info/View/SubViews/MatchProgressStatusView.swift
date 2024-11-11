@@ -8,29 +8,25 @@
 import UIKit
 
 import SnapKit
-import Lottie
 
 final class MatchProgressStatusView: UIView {
-
-    // MARK: - Properties
+    private let progressTagImageView = UIImageView()
     
-    // MARK: - UI Components
-
-    private var progressTagImageView = UIImageView()
-    private var timeLabel: UILabel = {
+    private let timeLabel: UILabel = {
         let label = UILabel()
         label.text = "17:00"
         label.font = .body3
         label.textColor = .gray900
         return label
     }()
-    // MARK: - Life Cycles
+    
+    // MARK: - Initializer
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setHierarchy()
-        setLayout()
+        setupView()
+        setupConstraints()
     }
     
     @available(*, unavailable)
@@ -39,15 +35,24 @@ final class MatchProgressStatusView: UIView {
     }
 }
 
-// MARK: - Extensions
-
 extension MatchProgressStatusView {
-    private func setHierarchy() {
-        self.addSubviews(progressTagImageView,
-                         timeLabel)
+    func bind(status: String, time: String) {
+        if let matchStatus = MatchProgress(from: status) {
+            progressTagImageView.image = matchStatus.image
+        }
+        
+        timeLabel.text = time
+    }
+}
+
+// MARK: - Private Method
+
+private extension MatchProgressStatusView {
+    func setupView() {
+        addSubviews(progressTagImageView, timeLabel)
     }
     
-    private func setLayout() {
+    func setupConstraints() {
         progressTagImageView.snp.makeConstraints {
             $0.top.leading.equalToSuperview()
         }
@@ -56,14 +61,5 @@ extension MatchProgressStatusView {
             $0.leading.equalTo(progressTagImageView.snp.trailing).offset(8.adjusted)
             $0.centerY.equalTo(progressTagImageView)
         }
-
-    }
-    
-    func bind(status: String, time: String) {
-        if let matchStatus = MatchProgress(from: status) {
-            progressTagImageView.image = matchStatus.image
-        }
-        
-        timeLabel.text = time
     }
 }
