@@ -113,7 +113,10 @@ private extension NotificationTableViewCell {
     func setupAction() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewDidTap))
         notiImageView.addGestureRecognizer(tapGesture)
-        notiImageView.isUserInteractionEnabled = true
+        
+        // TODO: 프로필 이미지 터치 해결 후 주석 제거하기
+        
+//        notiImageView.isUserInteractionEnabled = true
     }
     
     func setProfileImage(for urlString: String) {
