@@ -46,6 +46,7 @@ extension NotificationActivityViewModel: ViewModelType {
             })
             .flatMap { _ -> AnyPublisher<[ActivityNotificationDTO], Never> in
                 Future { [weak self] promise in
+                    self?.cursor = -1
                     self?.getNotiActivityResponse(cursor: -1) { result in
                         promise(.success(result))
                     }
