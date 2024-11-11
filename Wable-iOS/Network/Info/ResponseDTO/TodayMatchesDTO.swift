@@ -7,10 +7,11 @@
 
 import Foundation
 
-// MARK: - Datum
+// MARK: - TodayMatchesDTO
+
 struct TodayMatchesDTO: Codable {
-    var date: String
-    var games: [Game]
+    private(set) var date: String
+    private(set) var games: [Game]
     
     mutating func formatDate() {
         let dateFormatter = DateFormatter()
@@ -34,8 +35,9 @@ struct TodayMatchesDTO: Codable {
 }
 
 // MARK: - Game
-struct Game: Codable {
-    var gameDate: String
+
+struct Game: Codable, Hashable {
+    private(set) var gameDate: String
     let aTeamName: String
     let aTeamScore: Int
     let bTeamName: String
@@ -54,6 +56,5 @@ struct Game: Codable {
         } else {
             print("^^~")
         }
-        
     }
 }

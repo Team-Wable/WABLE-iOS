@@ -10,36 +10,28 @@ import UIKit
 import SnapKit
 
 final class ATeamView: UIView {
-
-    // MARK: - Properties
-    
-    // MARK: - UI Components
-    
     private let teamImageView = UIImageView()
-    private var teamNameLabel: UILabel = {
+    private let teamNameLabel: UILabel = {
         let label = UILabel()
         label.font = .body3
         label.textColor = .gray700
         return label
     }()
     
-    private var scoreLabel: UILabel = {
+    private let scoreLabel: UILabel = {
         let label = UILabel()
         label.font = .head0
         label.textColor = .wableBlack
         return label
     }()
     
-    // MARK: - Life Cycles
+    // MARK: - Initializer
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setUI()
-        setHierarchy()
-        setLayout()
-        setAddTarget()
-        setRegisterCell()
+        setupView()
+        setupConstraints()
     }
     
     @available(*, unavailable)
@@ -48,20 +40,22 @@ final class ATeamView: UIView {
     }
 }
 
-// MARK: - Extensions
+extension ATeamView {
+    func bind(team: String, score: Int) {
+        teamImageView.image = Team(rawValue: team)?.logo
+        teamNameLabel.text = team
+        scoreLabel.text = "\(score)"
+    }
+}
+
+// MARK: - Private Method
 
 extension ATeamView {
-    private func setUI() {
-        
+    func setupView() {
+        addSubviews(teamImageView, teamNameLabel, scoreLabel)
     }
     
-    private func setHierarchy() {
-        self.addSubviews(teamImageView,
-                         teamNameLabel,
-                         scoreLabel)
-    }
-    
-    private func setLayout() {
+    func setupConstraints() {
         teamImageView.snp.makeConstraints {
             $0.height.width.equalTo(44.adjusted)
             $0.leading.centerY.equalToSuperview()
@@ -75,19 +69,5 @@ extension ATeamView {
         scoreLabel.snp.makeConstraints {
             $0.trailing.centerY.equalToSuperview()
         }
-    }
-    
-    private func setAddTarget() {
-
-    }
-    
-    private func setRegisterCell() {
-        
-    }
-    
-    func bind(team: String, score: Int) {
-        teamImageView.image = Team(rawValue: team)?.logo
-        teamNameLabel.text = team
-        scoreLabel.text = "\(score)"
     }
 }
