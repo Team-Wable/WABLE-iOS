@@ -13,10 +13,11 @@ import FirebaseMessaging
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
         
         KakaoSDK.initSDK(appKey: Config.nativeAppKey)
         
@@ -52,24 +53,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: UISceneSession Lifecycle
 
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
+    func application(
+        _ application: UIApplication,
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    ) -> UISceneConfiguration {
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-    }
-
-
+    func application(
+        _ application: UIApplication,
+        didDiscardSceneSessions sceneSessions: Set<UISceneSession>
+    ) {}
 }
 
+// MARK: - UNUserNotificationCenterDelegate
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
-    /// 푸시클릭시
+    /// 푸시 클릭 시
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
         let notiInfomation = response.notification.request.content.userInfo
         print("🍪🍪\(notiInfomation)")
@@ -81,7 +82,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             Task {
                 do {
                     let result = try await pushAlarmHelper.patchFCMBadgeAPI(badge: badge - 1)
-                    print("\(result) <- FCM 뱃지 API 통신 결과")
+                    print("\(String(describing: result)) <- FCM 뱃지 API 통신 결과")
                 } catch {
                     print("Error calling patchFCMBadgeAPI: \(error)")
                 }
@@ -92,7 +93,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     /// 앱화면 보고있는중에 푸시올 때
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (
+            UNNotificationPresentationOptions
+        ) -> Void
+    ) {
         completionHandler([.banner, .sound, .badge])
     }
     
@@ -122,7 +129,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         print("🟢", #function)
     }
     
-    
     /// error발생시
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("🟢", error)
@@ -142,16 +148,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                       memberId: loadUserData()?.memberId ?? 0,
                                       userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
                                       fcmToken: token,
-                                      isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))            }
+                                      isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+            }
         }
     }
     
     func validateResult(_ result: NetworkResult<Any>) -> Any?{
         switch result{
         case .success(let data):
-//            print("성공했습니다.")
-//            print("⭐️⭐️⭐️⭐️⭐️⭐️")
-//            print("validateResult :\(data)")
             return data
         case .requestErr(let message):
             print(message)
@@ -168,9 +172,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         }
         return nil
     }
-    
 }
 
-extension AppDelegate: MessagingDelegate {
-    
-}
+extension AppDelegate: MessagingDelegate {}
