@@ -742,6 +742,8 @@
 		0547F4E42C637F04001E3039 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				3C35318D2C6F1A850015A8FA /* UserInfo.swift */,
+				3C8B4E582C840AD300174943 /* Functions.swift */,
 				DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */,
 				3C35319D2C6F222F0015A8FA /* CancelBag.swift */,
 			);
@@ -1135,8 +1137,6 @@
 			isa = PBXGroup;
 			children = (
 				3CDE2E0A2C71CE30004A84CB /* AppStoreCheckManager.swift */,
-				3C8B4E582C840AD300174943 /* Functions.swift */,
-				3C35318D2C6F1A850015A8FA /* UserInfo.swift */,
 				054A85532CAA98CC00EFD9A5 /* AmplitudeManager.swift */,
 			);
 			path = Shared;
