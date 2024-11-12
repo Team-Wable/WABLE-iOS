@@ -6,17 +6,18 @@
 //
 
 import Combine
-import Foundation
 
 final class CancelBag {
-    var subscriptions = Set<AnyCancellable>()
+    fileprivate var subscriptions = Set<AnyCancellable>()
+    
+    deinit {
+        cancel()
+    }
     
     func cancel() {
         subscriptions.forEach { $0.cancel() }
         subscriptions.removeAll()
     }
-    
-    init() {}
 }
 
 extension AnyCancellable {

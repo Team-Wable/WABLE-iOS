@@ -17,29 +17,39 @@ import UIKit
 import SnapKit
 
 final class MatchView: UIView {
-
-    // MARK: - Properties
+    let matchTableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .wableWhite
+        tableView.register(
+            MatchTableViewHeaderView.self,
+            forHeaderFooterViewReuseIdentifier: MatchTableViewHeaderView.identifier
+        )
+        tableView.register(
+            MatchTableViewCell.self,
+            forCellReuseIdentifier: MatchTableViewCell.identifier
+        )
+        tableView.register(
+            MatchSessionTableViewCell.self,
+            forCellReuseIdentifier: MatchSessionTableViewCell.identifier
+        )
+        return tableView
+    }()
     
-    // MARK: - UI Components
-    
-    let matchTableView = UITableView(frame: .zero, style: .grouped)
-    var emptyImageView: UIImageView = {
+    let emptyImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = ImageLiterals.Image.imgNotiEmpty
         imageView.isHidden = true
         return imageView
     }()
     
-    // MARK: - Life Cycles
+    // MARK: - Initializer
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .wableWhite
-        setUI()
-        setHierarchy()
-        setLayout()
-        setAddTarget()
-        setRegisterCell()
+        
+        setupView()
+        setupConstraints()
     }
     
     @available(*, unavailable)
@@ -48,21 +58,16 @@ final class MatchView: UIView {
     }
 }
 
-// MARK: - Extensions
+// MARK: - Private Method
 
-extension MatchView {
-    private func setUI() {
-        self.backgroundColor = .white
-        matchTableView.separatorStyle = .none
-        matchTableView.backgroundColor = .wableWhite
+private extension MatchView {
+    func setupView() {
+        backgroundColor = .wableWhite
+        
+        addSubviews(matchTableView, emptyImageView)
     }
     
-    private func setHierarchy() {
-        self.addSubviews(matchTableView,
-                         emptyImageView)
-    }
-    
-    private func setLayout() {
+    func setupConstraints() {
         matchTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -72,19 +77,5 @@ extension MatchView {
             $0.width.equalTo(198.adjusted)
             $0.center.equalToSuperview()
         }
-    }
-    
-    private func setAddTarget() {
-
-    }
-    
-    private func setRegisterCell() {
-        matchTableView.register(MatchTableViewHeaderView.self, forHeaderFooterViewReuseIdentifier: MatchTableViewHeaderView.identifier)
-        matchTableView.register(MatchTableViewCell.self, forCellReuseIdentifier: MatchTableViewCell.identifier)
-        matchTableView.register(MatchSessionTableViewCell.self, forCellReuseIdentifier: MatchSessionTableViewCell.identifier)
-    }
-    
-    private func setDataBind() {
-        
     }
 }
