@@ -5,7 +5,6 @@
 //  Created by 변상우 on 8/18/24.
 //
 
-
 import UIKit
 import Combine
 
@@ -16,55 +15,29 @@ extension Notification.Name {
 
 final class NotificationActivityViewController: UIViewController {
     
-    // MARK: - Properties
+    typealias Item = ActivityNotificationDTO
+    typealias DataSource = UITableViewDiffableDataSource<Section, Item>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     
-    private var paginationNotiActivityData: [ActivityNotificationDTO] = []
-    var notiActivityData: [ActivityNotificationDTO] = [] {
-        didSet {
-            if notiActivityData.count == 0 {
-                rootView.notiTableView.isHidden = true
-                rootView.noNotiLabel.isHidden = false
-            } else {
-                rootView.notiTableView.isHidden = false
-                rootView.noNotiLabel.isHidden = true
-            }
-        }
+    enum Section {
+        case main
     }
+    
+    // MARK: - Property
+    
+    private var dataSource: DataSource?
+    
     private let viewModel: NotificationActivityViewModel
-    private var cancellables = Set<AnyCancellable>()
-    private var feedContentData: HomeFeedDTO?
-    
-    // MARK: - UI Components
-    
+    private let viewWillAppearSubject = PassthroughSubject<Void, Never>()
+    private let tableViewDidSelectSubject = PassthroughSubject<Int, Never>()
+    private let tableViewDidEndDragSubject = PassthroughSubject<Void, Never>()
+    private let tableViewDidRefreshSubject = PassthroughSubject<Void, Never>()
+    private let cellImageViewDidTapSubject = PassthroughSubject<Int, Never>()
+    private let cancelBag = CancelBag()
     private let rootView = NotificationContentView()
-    private let refreshControl = UIRefreshControl()
     
-    
-    // MARK: - Life Cycles
-    
-    override func loadView() {
-        super.loadView()
-        
-        view = rootView
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setUI()
-        setHierarchy()
-        setLayout()
-        viewModel.viewDidLoad.send()
-        setDelegate()
-        setRefreshControl()
-        bindViewModel()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.viewWillAppear.send()
-    }
-    
+    // MARK: - Initializer
+
     init(viewModel: NotificationActivityViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -73,132 +46,154 @@ final class NotificationActivityViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Life Cycle
+    
+    override func loadView() {
+        view = rootView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupDelegate()
+        setupAction()
+        setupDataSource()
+        setupBinding()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewWillAppearSubject.send(())
+    }
 }
 
-// MARK: - Extensions
+// MARK: - UITableViewDelegate
 
-extension NotificationActivityViewController {
-    private func setUI() {
-        
-    }
-    
-    private func setHierarchy() {
-        
-    }
-    
-    private func setLayout() {
-        
-    }
-    
-    private func setDelegate() {
-        rootView.notiTableView.delegate = self
-        rootView.notiTableView.dataSource = self
-    }
-    
-    private func bindViewModel() {
-        viewModel.notiActivityDTO
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] data in
-                self?.notiActivityData = data
-                self?.rootView.notiTableView.reloadData()
-            }
-            .store(in: &cancellables)
-        
-        viewModel.paginationNotiActivityDTO
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] data in
-                self?.paginationNotiActivityData = data
-                self?.notiActivityData.append(contentsOf: self?.paginationNotiActivityData ?? [])
-            }
-            .store(in: &cancellables)
-        
-        viewModel.writeFeedCellDidTapped
-            .receive(on: DispatchQueue.main)
-            .sink { _ in
-                NotificationCenter.default.post(name: .didRequestPushWriteFeedViewController, object: nil)
-            }
-            .store(in: &cancellables)
-        
-        viewModel.homeFeedTopInfoDTO
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] (data, contentID) in
-                self?.feedContentData = data
-                NotificationCenter.default.post(name: .didRequestPushDetailViewController, object: nil, userInfo: ["data": data, "contentID": contentID])
-            }
-            .store(in: &cancellables)
-    }
-    
-    private func setRefreshControl() {
-        self.refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
-        rootView.notiTableView.refreshControl = self.refreshControl
-    }
-    
-    @objc
-    private func didPullToRefresh() {
-        viewModel.viewWillAppear.send()
-        self.perform(#selector(finishedRefreshing), with: nil, afterDelay: 0.1)
-    }
-    
-    @objc
-    private func finishedRefreshing() {
-        self.refreshControl.endRefreshing()
-    }
-
-}
-
-// MARK: - TableView Delegate
-
-extension NotificationActivityViewController: UITableViewDelegate { }
-extension NotificationActivityViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return notiActivityData.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = rootView.notiTableView.dequeueReusableCell(withIdentifier: NotificationTableViewCell.identifier, for: indexPath) as? NotificationTableViewCell ?? NotificationTableViewCell()
-        cell.selectionStyle = .none
-        cell.bindForActivity(data: notiActivityData[indexPath.row])
-        return cell
-    }
-    
+extension NotificationActivityViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 85.adjusted
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if let notiType = NotiActivityText(rawValue: notiActivityData[indexPath.row].notificationTriggerType) {
-            switch notiType {
-            case .actingContinue:
-                viewModel.writeFeedCellDidTapped.send()
-            case .userBan:
-                return
-            default:
-                viewModel.notiCellDidTapped.send(notiActivityData[indexPath.row].notificationTriggerID)
-            }
-        } else {
-            print("알 수 없는 알림 유형입니다.")
-        }
+        tableViewDidSelectSubject.send(indexPath.row)
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if scrollView == rootView.notiTableView {
-            let lastNotificationId = notiActivityData.last?.notificationID ?? Int()
-
-            /// 페이지네이션을 포함한 토탈 데이터가 15로 나누었을 때 0이고,
-            /// 현재 cursor가 데이터리스트의 마지막 데이터의 notiID와 같지 않을때.
-            /// 현재 커서와 마지막 데이터의 ID가 같으면, 이미 페이지네이션을 작동했다는 뜻이기 때문
-            if notiActivityData.count % 15 == 0 && viewModel.cursor != lastNotificationId && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
-                if lastNotificationId != -1 {
-                    print("==========================pagination 작동==========================")
-                    viewModel.cursor = lastNotificationId
-                    viewModel.paginationDidAction.send()
-                    DispatchQueue.main.async {
-                        self.rootView.notiTableView.reloadData()
-                    }
-                }
-            }
+        guard scrollView == rootView.notiTableView,
+              (scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height
+        else {
+            return
         }
+        
+        tableViewDidEndDragSubject.send(())
+    }
+}
+
+// MARK: - Private Method
+
+private extension NotificationActivityViewController {
+    func setupDelegate() {
+        rootView.notiTableView.delegate = self
+    }
+    
+    func setupAction() {
+        let refreshAction = UIAction { [weak self] _ in
+            self?.tableViewDidRefreshSubject.send(())
+        }
+        
+        rootView.notiTableView.refreshControl?.addAction(refreshAction, for: .valueChanged)
+    }
+    
+    func setupDataSource() {
+        dataSource = DataSource(tableView: rootView.notiTableView) { tableView, indexPath, item in
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: NotificationTableViewCell.identifier,
+                for: indexPath
+            ) as? NotificationTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            cell.selectionStyle = .none
+            cell.bindForActivity(data: item)
+            cell.imageViewDidTapAction = { [weak self] in
+                self?.cellImageViewDidTapSubject.send(indexPath.row)
+            }
+            
+            return cell
+        }
+    }
+    
+    func applySnapshot(with items: [Item]) {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(items, toSection: .main)
+        dataSource?.apply(snapshot, animatingDifferences: false)
+        
+        guard let refreshControl = rootView.notiTableView.refreshControl,
+              refreshControl.isRefreshing
+        else {
+            return
+        }
+        
+        refreshControl.endRefreshing()
+    }
+    
+    func setupBinding() {
+        let input = NotificationActivityViewModel.Input(
+            viewWillAppear: viewWillAppearSubject.eraseToAnyPublisher(),
+            tableViewDidSelect: tableViewDidSelectSubject.eraseToAnyPublisher(),
+            tableViewDidEndDrag: tableViewDidEndDragSubject.eraseToAnyPublisher(),
+            tableViewDidRefresh: tableViewDidRefreshSubject.eraseToAnyPublisher(),
+            cellImageViewDidTap: cellImageViewDidTapSubject.eraseToAnyPublisher()
+        )
+        
+        let output = viewModel.transform(from: input, cancelBag: cancelBag)
+        
+        output.activityNotifications
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] notifications in
+                self?.applySnapshot(with: notifications)
+                self?.rootView.notiTableView.isHidden = notifications.isEmpty
+                self?.rootView.noNotiLabel.isHidden = !notifications.isEmpty
+            }
+            .store(in: cancelBag)
+        
+        output.pushToWriteView
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+                NotificationCenter.default.post(name: .didRequestPushWriteFeedViewController, object: nil)
+            }
+            .store(in: cancelBag)
+        
+        output.homeFeed
+            .receive(on: DispatchQueue.main)
+            .sink { (homeFeed, id) in
+                NotificationCenter.default.post(
+                    name: .didRequestPushDetailViewController,
+                    object: nil,
+                    userInfo: ["data": homeFeed, "contentID": id]
+                )
+            }
+            .store(in: cancelBag)
+        
+        output.moveToMyProfileView
+            .receive(on: RunLoop.main)
+            .sink { _ in
+
+                // TODO: NotificationViewController의 탭바 컨트롤러의 인덱스를 3으로 조정
+                
+            }
+            .store(in: cancelBag)
+        
+        output.pushToOtherProfileView
+            .receive(on: RunLoop.main)
+            .sink { otherUserID in
+
+                // TODO: 프로필 화면으로 이동할 것
+                
+            }
+            .store(in: cancelBag)
     }
 }

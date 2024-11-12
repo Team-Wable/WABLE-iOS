@@ -11,25 +11,21 @@ import SnapKit
 import Lottie
 
 final class InfoTabView: UIView {
-
-    // MARK: - Properties
-    
-    // MARK: - UI Components
-    
-    private lazy var infoImageView: UIImageView = {
+    private let infoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = ImageLiterals.Icon.icInfoPurple
         return imageView
     }()
     
-    private lazy var infoTitleLabel: UILabel = {
+    private let infoTitleLabel: UILabel = {
         let label = UILabel()
         label.text = StringLiterals.TabBar.info
         label.font = .head1
         label.textColor = .wableBlack
         return label
     }()
-    private lazy var tabLottieAnimationView: LottieAnimationView = {
+    
+    private let tabLottieAnimationView: LottieAnimationView = {
         let animation = LottieAnimationView(name: "wable_tab")
         animation.contentMode = .scaleToFill
         animation.loopMode = .loop
@@ -37,13 +33,13 @@ final class InfoTabView: UIView {
         return animation
     }()
     
-    // MARK: - Life Cycles
+    // MARK: - Initializer
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setHierarchy()
-        setLayout()
+        setupView()
+        setupConstraints()
     }
     
     @available(*, unavailable)
@@ -52,16 +48,14 @@ final class InfoTabView: UIView {
     }
 }
 
-// MARK: - Extensions
+// MARK: - Private Method
 
-extension InfoTabView {
-    private func setHierarchy() {
-        self.addSubviews(infoImageView,
-                         infoTitleLabel,
-                         tabLottieAnimationView)
+private extension InfoTabView {
+    func setupView() {
+        addSubviews(infoImageView, infoTitleLabel, tabLottieAnimationView)
     }
     
-    private func setLayout() {
+    func setupConstraints() {
         self.snp.makeConstraints {
             $0.height.equalTo(58.adjusted)
         }

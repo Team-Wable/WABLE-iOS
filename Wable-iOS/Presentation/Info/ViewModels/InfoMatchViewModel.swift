@@ -8,42 +8,48 @@
 import Foundation
 import Combine
 
-final class InfoMatchViewModel {
-    
-    private let cancelBag = CancelBag()
-    
-    // MARK: - Input
-    
-    let viewWillAppear = PassthroughSubject<Void, Never>()
-    
-    // MARK: - Output
-    
-    let matchInfoDTO = PassthroughSubject<[TodayMatchesDTO], Never>()
-    
-    // MARK: - init
-    
-    init() {
-        transform()
+final class InfoMatchViewModel: ViewModelType {
+    struct Input {
+        let viewWillAppear: AnyPublisher<Void, Never>
     }
     
-    private func transform() {
-        viewWillAppear
-            .sink { [weak self] in
-                InfoAPI.shared.getMatchInfo { result in
+    struct Output {
+        let matchInfo: AnyPublisher<[TodayMatchesDTO], Never>
+    }
+    
+    func transform(from input: Input, cancelBag: CancelBag) -> Output {
+        let matchInfoSubject = CurrentValueSubject<[TodayMatchesDTO], Never>([])
+        
+        input.viewWillAppear
+            .sink { _ in
+                InfoAPI.shared.getMatchInfo { [weak self] result in
                     guard let result = self?.validateResult(result) as? [TodayMatchesDTO] else { return }
-                    let formatData = self?.processGameSchedules(result)
-                    self?.matchInfoDTO.send(formatData ?? [])
+                    let formattedResult = self?.processGameSchedules(result)
+                    matchInfoSubject.send(formattedResult ?? [])
                 }
             }
             .store(in: cancelBag)
+        
+        return Output(matchInfo: matchInfoSubject.eraseToAnyPublisher())
     }
-    
-    private func validateResult(_ result: NetworkResult<Any>) -> Any?{
+}
+
+extension InfoMatchViewModel {
+    func isDateToday(dateString: String) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM.dd (EEE)"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.timeZone = TimeZone.current
+        return dateString == dateFormatter.string(from: Date())
+    }
+}
+
+// MARK: - Private Method
+
+private extension InfoMatchViewModel {
+    func validateResult(_ result: NetworkResult<Any>) -> Any?{
         switch result{
         case .success(let data):
-//            print("성공했습니다.")
-//            print("⭐️⭐️⭐️⭐️⭐️⭐️")
-//            print(data)
             return data
         case .requestErr(let message):
             print(message)
@@ -61,11 +67,12 @@ final class InfoMatchViewModel {
         return nil
     }
     
-    private func processGameSchedules(_ schedules: [TodayMatchesDTO]) -> [TodayMatchesDTO] {
+    func processGameSchedules(_ schedules: [TodayMatchesDTO]) -> [TodayMatchesDTO] {
         var formattedSchedules = schedules
         for i in 0..<formattedSchedules.count {
-            formattedSchedules[i].formatDate() // date 및 gameDate 변환
+            formattedSchedules[i].formatDate()
         }
+        
         return formattedSchedules
     }
 }

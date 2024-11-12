@@ -90,13 +90,11 @@
 		0547F5062C65290A001E3039 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 0547F5052C65290A001E3039 /* Lottie */; };
 		054A85522CAA944200EFD9A5 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 054A85512CAA944200EFD9A5 /* AmplitudeSwift */; };
 		054A85542CAA98CC00EFD9A5 /* AmplitudeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054A85532CAA98CC00EFD9A5 /* AmplitudeManager.swift */; };
-		0560884E2CBA7F0C00D5BC96 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0560884D2CBA7F0C00D5BC96 /* GoogleService-Info.plist */; };
 		0593F6D62C96D6C100FFAD82 /* WablePhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */; };
 		0593F6DB2C96E75600FFAD82 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0593F6DA2C96E75600FFAD82 /* FirebaseAnalytics */; };
 		0593F6DD2C96E75600FFAD82 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 0593F6DC2C96E75600FFAD82 /* FirebaseMessaging */; };
 		0593F6E42C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */; };
 		05FBEED22C886A0200E4BF17 /* HomeFeedContentDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FBEED12C886A0200E4BF17 /* HomeFeedContentDTO.swift */; };
-		05FBEED82C95B32C00E4BF17 /* Dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 05FBEED72C95B32C00E4BF17 /* Dev.xcconfig */; };
 		3C35317F2C6F13FF0015A8FA /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C35317C2C6F13FF0015A8FA /* Pretendard-Regular.otf */; };
 		3C3531802C6F13FF0015A8FA /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C35317D2C6F13FF0015A8FA /* Pretendard-SemiBold.otf */; };
 		3C3531822C6F15D30015A8FA /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3531812C6F15D30015A8FA /* KeychainWrapper.swift */; };
@@ -193,6 +191,9 @@
 		3CF344EB2C75EE410038BB53 /* MyPageSignOutConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344EA2C75EE410038BB53 /* MyPageSignOutConfirmViewController.swift */; };
 		3CF344ED2C75EE620038BB53 /* MyPageSignOutConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344EC2C75EE620038BB53 /* MyPageSignOutConfirmView.swift */; };
 		3CF344EF2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344EE2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift */; };
+		DE1B58152CDDD1E50017C319 /* Dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DE1B58142CDDD1E50017C319 /* Dev.xcconfig */; };
+		DE1B58172CDDD3F90017C319 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DE1B58162CDDD3F90017C319 /* GoogleService-Info.plist */; };
+		DE7FAAA02CDF971300A4D8A2 /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -244,8 +245,8 @@
 		050E0D1F2C82EE6600326EEA /* NotiActivityText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiActivityText.swift; sourceTree = "<group>"; };
 		050E0D232C877ED800326EEA /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		054308E72CB7ED70001861F1 /* CopyableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyableLabel.swift; sourceTree = "<group>"; };
-		054308E92CB7F582001861F1 /* wable_loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = wable_loading.json; path = ../../../../../Downloads/wable_loading.json; sourceTree = "<group>"; };
-		054308EB2CB7F6CE001861F1 /* wable_splash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = wable_splash.json; path = ../../../../../Downloads/wable_splash.json; sourceTree = "<group>"; };
+		054308E92CB7F582001861F1 /* wable_loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = wable_loading.json; sourceTree = "<group>"; };
+		054308EB2CB7F6CE001861F1 /* wable_splash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = wable_splash.json; sourceTree = "<group>"; };
 		0547F4962C60D968001E3039 /* Wable-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wable-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0547F4992C60D968001E3039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0547F49B2C60D968001E3039 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -274,13 +275,10 @@
 		0547F4FB2C64C797001E3039 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		0547F4FE2C64C954001E3039 /* ExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
 		0547F5002C64C99D001E3039 /* ExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleView.swift; sourceTree = "<group>"; };
-		054A854F2CA7F64600EFD9A5 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		054A85532CAA98CC00EFD9A5 /* AmplitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeManager.swift; sourceTree = "<group>"; };
-		0560884D2CBA7F0C00D5BC96 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Wable Resource/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePhotoDetailView.swift; sourceTree = "<group>"; };
 		0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePushAlarmHelper.swift; sourceTree = "<group>"; };
 		05FBEED12C886A0200E4BF17 /* HomeFeedContentDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedContentDTO.swift; sourceTree = "<group>"; };
-		05FBEED72C95B32C00E4BF17 /* Dev.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Dev.xcconfig; path = "../Wable Resource/Dev.xcconfig"; sourceTree = "<group>"; };
 		3C35317C2C6F13FF0015A8FA /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		3C35317D2C6F13FF0015A8FA /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		3C3531812C6F15D30015A8FA /* KeychainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
@@ -377,6 +375,9 @@
 		3CF344EA2C75EE410038BB53 /* MyPageSignOutConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSignOutConfirmViewController.swift; sourceTree = "<group>"; };
 		3CF344EC2C75EE620038BB53 /* MyPageSignOutConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSignOutConfirmView.swift; sourceTree = "<group>"; };
 		3CF344EE2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSignOutConfirmViewModel.swift; sourceTree = "<group>"; };
+		DE1B58142CDDD1E50017C319 /* Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
+		DE1B58162CDDD3F90017C319 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -596,8 +597,7 @@
 		0547F48D2C60D968001E3039 = {
 			isa = PBXGroup;
 			children = (
-				054A854F2CA7F64600EFD9A5 /* Release.xcconfig */,
-				05FBEED72C95B32C00E4BF17 /* Dev.xcconfig */,
+				DE1B58142CDDD1E50017C319 /* Dev.xcconfig */,
 				0547F4982C60D968001E3039 /* Wable-iOS */,
 				0547F4972C60D968001E3039 /* Products */,
 			);
@@ -614,7 +614,7 @@
 		0547F4982C60D968001E3039 /* Wable-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				0560884D2CBA7F0C00D5BC96 /* GoogleService-Info.plist */,
+				DE1B58162CDDD3F90017C319 /* GoogleService-Info.plist */,
 				3C8B4E102C78DE2C00174943 /* Wable-iOS.entitlements */,
 				0547F4B02C60E247001E3039 /* Presentation */,
 				0547F4AF2C60E240001E3039 /* Network */,
@@ -884,6 +884,7 @@
 				0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */,
 				0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */,
 				054308E72CB7ED70001861F1 /* CopyableLabel.swift */,
+				DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1282,13 +1283,13 @@
 			files = (
 				054308EA2CB7F582001861F1 /* wable_loading.json in Resources */,
 				0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */,
+				DE1B58152CDDD1E50017C319 /* Dev.xcconfig in Resources */,
 				054308EC2CB7F6CE001861F1 /* wable_splash.json in Resources */,
 				3C35317F2C6F13FF0015A8FA /* Pretendard-Regular.otf in Resources */,
 				3C8B4E052C76247800174943 /* wable_tab.json in Resources */,
 				3C3531802C6F13FF0015A8FA /* Pretendard-SemiBold.otf in Resources */,
 				0547F4A62C60D96B001E3039 /* Base in Resources */,
-				0560884E2CBA7F0C00D5BC96 /* GoogleService-Info.plist in Resources */,
-				05FBEED82C95B32C00E4BF17 /* Dev.xcconfig in Resources */,
+				DE1B58172CDDD3F90017C319 /* GoogleService-Info.plist in Resources */,
 				0547F4C82C621ABC001E3039 /* Color.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1322,6 +1323,7 @@
 				3C8B4E222C78E5FB00174943 /* NetworkError.swift in Sources */,
 				3CDE2E2B2C7302EC004A84CB /* MyPageReplyViewController.swift in Sources */,
 				0547F4BE2C621629001E3039 /* UIView+.swift in Sources */,
+				DE7FAAA02CDF971300A4D8A2 /* ReuseIdentifiable.swift in Sources */,
 				3CDE2DE82C6F30CE004A84CB /* JoinProfileViewController.swift in Sources */,
 				050E0CBD2C74B89C00326EEA /* FeedDetailBottomView.swift in Sources */,
 				3C8B4E0B2C779C4600174943 /* WriteView.swift in Sources */,
@@ -1486,7 +1488,7 @@
 /* Begin XCBuildConfiguration section */
 		0547F4A82C60D96B001E3039 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 05FBEED72C95B32C00E4BF17 /* Dev.xcconfig */;
+			baseConfigurationReference = DE1B58142CDDD1E50017C319 /* Dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1550,7 +1552,6 @@
 		};
 		0547F4A92C60D96B001E3039 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 05FBEED72C95B32C00E4BF17 /* Dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1607,11 +1608,12 @@
 		};
 		0547F4AB2C60D96B001E3039 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 05FBEED72C95B32C00E4BF17 /* Dev.xcconfig */;
+			baseConfigurationReference = DE1B58142CDDD1E50017C319 /* Dev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Wable-iOS/Wable-iOS.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = HGVD26K7DP;
@@ -1631,6 +1633,7 @@
 				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1643,11 +1646,11 @@
 		};
 		0547F4AC2C60D96B001E3039 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 05FBEED72C95B32C00E4BF17 /* Dev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Wable-iOS/Wable-iOS.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = HGVD26K7DP;
@@ -1667,6 +1670,7 @@
 				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
