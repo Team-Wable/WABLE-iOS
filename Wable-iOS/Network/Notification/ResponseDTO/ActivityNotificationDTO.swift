@@ -5,9 +5,9 @@
 //  Created by 박윤빈 on 8/21/24.
 //
 
-import UIKit
+import Foundation
 
-struct ActivityNotificationDTO: Codable {
+struct ActivityNotificationDTO: Codable, Hashable {
     let memberID: Int
     let memberNickname, triggerMemberNickname, triggerMemberProfileURL, notificationTriggerType: String
     var time: String

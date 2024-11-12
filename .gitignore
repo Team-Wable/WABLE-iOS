@@ -89,3 +89,7 @@ Dependencies/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 *.xcconfig
+
+
+## Google
+GoogleService-Info.plist
