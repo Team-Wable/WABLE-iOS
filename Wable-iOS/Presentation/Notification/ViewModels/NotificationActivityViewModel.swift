@@ -9,114 +9,165 @@ import Combine
 import UIKit
 
 final class NotificationActivityViewModel {
+    private var cursor = -1
     
-    // MARK: - Properties
-    
-    private let cancelBag = CancelBag()
-    var cursor = -1
     private let networkProvider: NetworkServiceType
-    
-    // MARK: - Input
-    
-    let viewDidLoad = PassthroughSubject<Void, Never>()
-    let viewWillAppear = PassthroughSubject<Void, Never>()
-    let paginationDidAction = PassthroughSubject<Void, Never>()
-    let notiCellDidTapped = PassthroughSubject<Int, Never>()
-    let writeFeedCellDidTapped = PassthroughSubject<Void, Never>()
-    
-    // MARK: - Output
-    
-    let notiActivityDTO = PassthroughSubject<[ActivityNotificationDTO], Never>()
-    let paginationNotiActivityDTO = PassthroughSubject<[ActivityNotificationDTO], Never>()
-    let homeFeedTopInfoDTO = PassthroughSubject<(HomeFeedDTO, Int), Never>()
-    let pushToWriteViewController = PassthroughSubject<Void, Never>()
-    
-    // MARK: - init
     
     init(networkProvider: NetworkServiceType) {
         self.networkProvider = networkProvider
-        self.transform()
+    }
+}
+
+// MARK: - ViewModelType
+
+extension NotificationActivityViewModel: ViewModelType {
+    struct Input {
+        let viewWillAppear: AnyPublisher<Void, Never>
+        let tableViewDidSelect: AnyPublisher<Int, Never>
+        let tableViewDidEndDrag: AnyPublisher<Void, Never>
+        let tableViewDidRefresh: AnyPublisher<Void, Never>
+        let cellImageViewDidTap: AnyPublisher<Int, Never>
     }
     
-    // MARK: - Functions
+    struct Output {
+        let activityNotifications: AnyPublisher<[ActivityNotificationDTO], Never>
+        let pushToWriteView: AnyPublisher<Void, Never>
+        let homeFeed: AnyPublisher<(HomeFeedDTO, Int), Never>
+        let moveToMyProfileView: AnyPublisher<Void, Never>
+        let pushToOtherProfileView: AnyPublisher<Int, Never>
+    }
     
-    private func transform() {
-        viewDidLoad
-            .sink { [self] _ in
-                Task {
-                    let cleanBadgeState = try await self.patchFCMBadgeAPI(badge: 0)
-                }
-            }
-            .store(in: self.cancelBag)
+    func transform(from input: Input, cancelBag: CancelBag) -> Output {
+        let activityNotificationsSubject = CurrentValueSubject<[ActivityNotificationDTO], Never>([])
         
-        viewWillAppear
-            .sink { [self] _ in
-                Task {
-                    let cleanBadgeState = try await self.patchFCMBadgeAPI(badge: 0)
+        input.viewWillAppear
+            .handleEvents(receiveOutput: { [weak self] _ in
+                Task { _ = try await self?.patchFCMBadgeAPI(badge: 0) }
+            })
+            .flatMap { _ -> AnyPublisher<[ActivityNotificationDTO], Never> in
+                Future { [weak self] promise in
+                    self?.cursor = -1
+                    self?.getNotiActivityResponse(cursor: -1) { result in
+                        promise(.success(result))
+                    }
+                }
+                .eraseToAnyPublisher()
+            }
+            .subscribe(activityNotificationsSubject)
+            .store(in: cancelBag)
+        
+        let selectedNotification = input.tableViewDidSelect
+            .map { activityNotificationsSubject.value[$0] }
+        
+        let pushToWriteView = selectedNotification
+            .compactMap { NotiActivityText(rawValue: $0.notificationTriggerType) }
+            .filter { $0 == .actingContinue }
+            .map { _ in }
+            .eraseToAnyPublisher()
+        
+        let homeFeed = selectedNotification
+            .compactMap { notification -> Int? in
+                guard let notiText = NotiActivityText(rawValue: notification.notificationTriggerType),
+                      ![.actingContinue, .userBan].contains(notiText)
+                else {
+                    return nil
                 }
                 
-                self.getNotiActivityResponse(cursor: -1) { result in
-                    self.notiActivityDTO.send(result)
+                return notification.notificationTriggerID
+            }
+            .flatMap { id -> AnyPublisher<(HomeFeedDTO, Int), Never> in
+                return Future<(HomeFeedDTO, Int), Never> { promise in
+                    NotificationAPI.shared.getFeedTopInfo(contentID: id) { [weak self] result in
+                        guard let result = self?.validateResult(result) as? HomeFeedDTO else { return }
+                        promise(.success((result, id)))
+                    }
                 }
+                .eraseToAnyPublisher()
             }
-            .store(in: cancelBag)
+            .eraseToAnyPublisher()
         
-        paginationDidAction
-            .sink { [weak self] in
-                self?.getNotiActivityResponse(cursor: self?.cursor ?? -1) { result in
-                    self?.paginationNotiActivityDTO.send(result)
+        input.tableViewDidEndDrag
+            .compactMap { activityNotificationsSubject.value.last?.notificationID }
+            .filter { [weak self] lastNotificationID in
+                activityNotificationsSubject.value.count % 15 == 0 &&
+                lastNotificationID != -1 &&
+                lastNotificationID != self?.cursor ?? .zero
+            }
+            .flatMap { lastNotificationID -> AnyPublisher<[ActivityNotificationDTO], Never> in
+                Future { [weak self] promise in
+                    self?.cursor = lastNotificationID
+                    self?.getNotiActivityResponse(cursor: lastNotificationID) { result in
+                        var notifications = activityNotificationsSubject.value
+                        notifications.append(contentsOf: result)
+                        promise(.success(notifications))
+                    }
                 }
+                .eraseToAnyPublisher()
             }
+            .subscribe(activityNotificationsSubject)
             .store(in: cancelBag)
         
-        notiCellDidTapped
-            .sink { [weak self] contentID in
-                NotificationAPI.shared.getFeedTopInfo(contentID: contentID) { result in
-                    guard let result = self?.validateResult(result) as? HomeFeedDTO else { return }
-                    self?.homeFeedTopInfoDTO.send((result,contentID))
+        input.tableViewDidRefresh
+            .handleEvents(receiveOutput: { [weak self] _ in
+                Task { _ = try await self?.patchFCMBadgeAPI(badge: 0)}
+            })
+            .flatMap { _ -> AnyPublisher<[ActivityNotificationDTO], Never> in
+                Future { [weak self] promise in
+                    self?.cursor = -1
+                    self?.getNotiActivityResponse(cursor: -1) { result in
+                        promise(.success(result))
+                    }
                 }
+                .eraseToAnyPublisher()
             }
+            .subscribe(activityNotificationsSubject)
             .store(in: cancelBag)
         
-        writeFeedCellDidTapped
-            .sink { [weak self] in
-                self?.pushToWriteViewController.send()
-            }
-            .store(in: cancelBag)
+        let moveToMyProfileView = input.cellImageViewDidTap
+            .map { activityNotificationsSubject.value[$0] }
+            .filter { $0.triggerMemberID == loadUserData()?.memberId }
+            .map { _ in }
+            .eraseToAnyPublisher()
         
-    }
-    
-    private func processNotifications(_ notifications: [ActivityNotificationDTO]) -> [ActivityNotificationDTO] {
-        return notifications.map { notification in
-            var modifiedNotification = notification
-            modifiedNotification.time = notification.formattedTime()
-            return modifiedNotification
-        }
+        let pushToOtherProfileView = input.cellImageViewDidTap
+            .map { activityNotificationsSubject.value[$0] }
+            .filter { $0.triggerMemberID != loadUserData()?.memberId }
+            .map { $0.triggerMemberID }
+            .eraseToAnyPublisher()
+        
+        return Output(
+            activityNotifications: activityNotificationsSubject.eraseToAnyPublisher(),
+            pushToWriteView: pushToWriteView,
+            homeFeed: homeFeed,
+            moveToMyProfileView: moveToMyProfileView,
+            pushToOtherProfileView: pushToOtherProfileView
+        )
     }
 }
 
 // MARK: - Network
 
-extension NotificationActivityViewModel {
-    
-    private func getNotiActivityResponse(cursor: Int, completion: @escaping ([ActivityNotificationDTO]) -> Void) {
+private extension NotificationActivityViewModel {
+    func getNotiActivityResponse(cursor: Int, completion: @escaping ([ActivityNotificationDTO]) -> Void) {
         NotificationAPI.shared.getNotiActivity(cursor: cursor) { [weak self] result in
-            guard let self = self else { return }
-            print("result: \(result)")
+            guard let self else { return }
 
-            guard let result = self.validateResult(result) as? [ActivityNotificationDTO] else {
+            guard let result = validateResult(result) as? [ActivityNotificationDTO] else {
                 completion([])
                 return
             }
             
-            let formattedNotifications = self.processNotifications(result)
+            let formattedNotifications = processNotifications(result)
             completion(formattedNotifications)
         }
     }
     
     func patchFCMBadgeAPI(badge: Int) async throws -> BaseResponse<EmptyResponse>? {
         do {
-            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
+            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else {
+                return nil
+            }
+            
             let resquestDTO = FCMBadgeDTO(fcmBadge: badge)
             let data: BaseResponse<EmptyResponse>? = try await self.networkProvider.donNetwork(
                 type: .patch,
@@ -156,5 +207,17 @@ extension NotificationActivityViewModel {
             print("인증 오류가 발생했습니다. 다시 로그인해주세요🔐")
         }
         return nil
+    }
+}
+
+// MARK: - Private Method
+
+private extension NotificationActivityViewModel {
+    func processNotifications(_ notifications: [ActivityNotificationDTO]) -> [ActivityNotificationDTO] {
+        return notifications.map { notification in
+            var modifiedNotification = notification
+            modifiedNotification.time = notification.formattedTime()
+            return modifiedNotification
+        }
     }
 }

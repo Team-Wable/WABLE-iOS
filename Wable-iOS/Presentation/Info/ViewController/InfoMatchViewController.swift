@@ -10,34 +10,28 @@ import Combine
 
 final class InfoMatchViewController: UIViewController {
     
-    // MARK: - Properties
+    typealias DataSource = UITableViewDiffableDataSource<Section, Item>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     
-    var matchInfoData: [TodayMatchesDTO] = [] {
-        didSet {
-            if matchInfoData.count == 0 {
-                matchView.matchTableView.isHidden = true
-                matchView.emptyImageView.isHidden = false
-            } else {
-                matchView.matchTableView.isHidden = false
-                matchView.emptyImageView.isHidden = true
-            }
-        }
+    enum Section: Hashable {
+        case session
+        case match(date: String)
     }
+    
+    enum Item: Hashable {
+        case session
+        case game(Game)
+    }
+    
+    private var dataSource: DataSource?
+    
     private let viewModel: InfoMatchViewModel
-    private var cancellables = Set<AnyCancellable>()
+    private let viewWillAppear = PassthroughSubject<Void, Never>()
+    private let cancelBag = CancelBag()
+    private let rootView = MatchView()
     
-    // MARK: - UI Components
-    
-    private let matchView = MatchView()
-    
-    // MARK: - Life Cycles
-    
-    override func loadView() {
-        super.loadView()
-        
-        view = matchView
-    }
-    
+    // MARK: - Initializer
+
     init(viewModel: InfoMatchViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -47,86 +41,30 @@ final class InfoMatchViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - LifeCycle
+
+    override func loadView() {
+        view = rootView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getAPI()
-        setUI()
-        setHierarchy()
-        setLayout()
-        setDelegate()
-        bindViewModel()
+        setupDelegate()
+        setupBinding()
+        setupDataSource()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.viewWillAppear.send()
+        
+        viewWillAppear.send(())
     }
 }
 
-// MARK: - Extensions
+// MARK: - UITableViewDelegate
 
-extension InfoMatchViewController {
-    private func setUI() {
-        
-    }
-    
-    private func setHierarchy() {
-        
-    }
-    
-    private func setLayout() {
-        
-    }
-    
-    private func setDelegate() {
-        matchView.matchTableView.delegate = self
-        matchView.matchTableView.dataSource = self
-    }
-    
-    private func bindViewModel() {
-        viewModel.matchInfoDTO
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] data in
-                self?.matchInfoData = data
-                self?.matchView.matchTableView.reloadData()
-            }
-            .store(in: &cancellables)
-    }
-}
-
-// MARK: - TableView Delegate
-
-extension InfoMatchViewController: UITableViewDelegate { }
-extension InfoMatchViewController: UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return matchInfoData.count + 1
-    }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 1
-        default:
-            return matchInfoData[section - 1].games.count
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
-            let cell = matchView.matchTableView.dequeueReusableCell(withIdentifier: MatchSessionTableViewCell.identifier, for: indexPath) as? MatchSessionTableViewCell ?? MatchSessionTableViewCell()
-            cell.selectionStyle = .none
-            return cell
-
-        default:
-            let cell = matchView.matchTableView.dequeueReusableCell(withIdentifier: MatchTableViewCell.identifier, for: indexPath) as? MatchTableViewCell ?? MatchTableViewCell()
-            cell.bind(data: matchInfoData[indexPath.section - 1].games[indexPath.row])
-            cell.selectionStyle = .none
-            return cell
-        }
-    }
-    
+extension InfoMatchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
@@ -146,26 +84,93 @@ extension InfoMatchViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: MatchTableViewHeaderView.identifier) as? MatchTableViewHeaderView else { return nil }
-        switch section {
-        case 0:
+        guard let dataSource else {
             return nil
-        default:
-            if section == 1 {
-                headerView.bind(isToday: true, date: matchInfoData[section - 1].date)
-                return headerView
-            } else {
-                headerView.bind(isToday: false, date: matchInfoData[section - 1].date)
-                return headerView
-            }
+        }
+        
+        let headerView = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: MatchTableViewHeaderView.identifier
+        ) as? MatchTableViewHeaderView
+        
+        let sectionIdentifier = dataSource.snapshot().sectionIdentifiers[section]
+    
+        switch sectionIdentifier {
+        case .session:
+            return nil
+        case .match(let date):
+            headerView?.bind(
+                isToday: viewModel.isDateToday(dateString: date),
+                date: date
+            )
+            return headerView
         }
     }
 }
 
-// MARK: - Network
+// MARK: - Private Method
 
-extension InfoMatchViewController {
-    private func getAPI() {
+private extension InfoMatchViewController {
+    func setupDelegate() {
+        rootView.matchTableView.delegate = self
+    }
+    
+    func setupDataSource() {
+        dataSource = DataSource(tableView: rootView.matchTableView) { tableView, indexPath, item in
+            switch item {
+            case .session:
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: MatchSessionTableViewCell.identifier,
+                    for: indexPath
+                ) as? MatchSessionTableViewCell else {
+                    return UITableViewCell()
+                }
+                cell.selectionStyle = .none
+                return cell
+                
+            case .game(let game):
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: MatchTableViewCell.identifier,
+                    for: indexPath
+                ) as? MatchTableViewCell else {
+                    return UITableViewCell()
+                }
+                cell.selectionStyle = .none
+                cell.bind(data: game)
+                return cell
+            }
+        }
+    }
+    
+    func applySnapshot(matches: [TodayMatchesDTO]) {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.session])
+        snapshot.appendItems([.session], toSection: .session)
         
+        for match in matches {
+            let section = Section.match(date: match.date)
+            snapshot.appendSections([section])
+            
+            let items = match.games.map { Item.game($0) }
+            snapshot.appendItems(items, toSection: section)
+        }
+        
+        dataSource?.apply(snapshot)
+    }
+    
+    func setupBinding() {
+        let input = InfoMatchViewModel.Input(viewWillAppear: viewWillAppear.eraseToAnyPublisher())
+        
+        let output = viewModel.transform(from: input, cancelBag: cancelBag)
+        
+        output.matchInfo
+            .receive(on: RunLoop.main)
+            .sink { [weak self] matches in
+                guard let self else { return }
+                
+                applySnapshot(matches: matches)
+                rootView.matchTableView.isHidden = matches.isEmpty
+                rootView.emptyImageView.isHidden = !matches.isEmpty
+            }
+            .store(in: cancelBag)
     }
 }

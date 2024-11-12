@@ -8,11 +8,6 @@
 import UIKit
 
 class NotificationSegmentedControl: UISegmentedControl {
-    
-    // MARK: - Properties
-    
-    // MARK: - UI Components
-    
     private lazy var underlineView: UIView = {
         let width: CGFloat = 28.adjusted
         let height: CGFloat = 2.adjusted
@@ -33,7 +28,7 @@ class NotificationSegmentedControl: UISegmentedControl {
     }
     
     required init?(coder: NSCoder) {
-        fatalError()
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func layoutSubviews() {
@@ -52,11 +47,10 @@ class NotificationSegmentedControl: UISegmentedControl {
     
     private func removeBackgroundAndDivider() {
         let image = UIImage()
-        self.setBackgroundImage(image, for: .normal, barMetrics: .default)
-        self.setBackgroundImage(image, for: .selected, barMetrics: .default)
-        self.setBackgroundImage(image, for: .highlighted, barMetrics: .default)
         
-        self.setDividerImage(image, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
+        setBackgroundImage(image, for: .normal, barMetrics: .default)
+        setBackgroundImage(image, for: .selected, barMetrics: .default)
+        setBackgroundImage(image, for: .highlighted, barMetrics: .default)
+        setDividerImage(image, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
     }
-    
 }
