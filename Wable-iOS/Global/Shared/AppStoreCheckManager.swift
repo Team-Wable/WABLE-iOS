@@ -7,8 +7,7 @@
 
 import UIKit
 
-class AppStoreCheckManager {
-    
+final class AppStoreCheckManager {
     static let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     static let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
     static let appStoreOpenUrlString = "itms-apps://itunes.apple.com/app/apple-store/6670352454"
