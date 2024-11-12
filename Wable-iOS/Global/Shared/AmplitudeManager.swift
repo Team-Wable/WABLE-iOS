@@ -9,21 +9,16 @@ import Foundation
 
 import AmplitudeSwift
 
-class AmplitudeManager {
-    
+final class AmplitudeManager {
     static let shared =  AmplitudeManager()
     
-    let amplitude: Amplitude
+    private let amplitude: Amplitude
 
     private init() {
-        amplitude = Amplitude(configuration: Configuration(
-            apiKey: Config.amplitudeAppKey
-                ))
-        
+        amplitude = Amplitude(configuration: Configuration(apiKey: Config.amplitudeAppKey))
     }
     
     func trackEvent(tag: String) {
         amplitude.track(eventType: tag)
     }
-    
 }
