@@ -8,17 +8,17 @@
 import Combine
 import UIKit
 
-public protocol CombineCompatible { }
+protocol CombineCompatible {}
 
-extension UIControl: CombineCompatible { }
+extension UIControl: CombineCompatible {}
 
-public extension CombineCompatible where Self: UIControl {
+extension CombineCompatible where Self: UIControl {
     func publisher(for events: UIControl.Event) -> UIControlPublisher<Self> {
         return UIControlPublisher(control: self, events: events)
     }
 }
 
-public extension CombineCompatible where Self: UIRefreshControl {
+extension CombineCompatible where Self: UIRefreshControl {
     var refreshControlPublisher: UIControlPublisher<Self> {
         return UIControlPublisher(control: self, events: .valueChanged)
     }
@@ -47,7 +47,7 @@ final class UIControlSubscription<SubscriberType: Subscriber, Control: UIControl
     }
 }
 
-public struct UIControlPublisher<Control: UIControl>: Publisher {
+struct UIControlPublisher<Control: UIControl>: Publisher {
 
     public typealias Output = Control
     public typealias Failure = Never

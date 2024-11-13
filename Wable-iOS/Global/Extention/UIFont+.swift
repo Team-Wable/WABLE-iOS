@@ -13,19 +13,17 @@ enum AppFontName: String {
 }
 
 extension UIFont {
-    
-    class var head0: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 24.adjusted)! }
-    class var head1: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 20.adjusted)! }
-    class var head2: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 18.adjusted)! }
+    static var head0: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 24.adjusted)! }
+    static var head1: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 20.adjusted)! }
+    static var head2: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 18.adjusted)! }
 
-    class var body1: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 16.adjusted)! }
-    class var body2: UIFont { return UIFont(name: AppFontName.regularFont.rawValue, size: 16.adjusted)! }
-    class var body3: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 14.adjusted)! }
-    class var body4: UIFont { return UIFont(name: AppFontName.regularFont.rawValue, size: 14.adjusted)! }
+    static var body1: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 16.adjusted)! }
+    static var body2: UIFont { return UIFont(name: AppFontName.regularFont.rawValue, size: 16.adjusted)! }
+    static var body3: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 14.adjusted)! }
+    static var body4: UIFont { return UIFont(name: AppFontName.regularFont.rawValue, size: 14.adjusted)! }
 
-    class var caption1: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 13.adjusted)! }
-    class var caption2: UIFont { return UIFont(name: AppFontName.regularFont.rawValue, size: 13.adjusted)! }
-    class var caption3: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 12.adjusted)! }
-    class var caption4: UIFont { return UIFont(name: AppFontName.regularFont.rawValue, size: 12.adjusted)! }
-    
+    static var caption1: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 13.adjusted)! }
+    static var caption2: UIFont { return UIFont(name: AppFontName.regularFont.rawValue, size: 13.adjusted)! }
+    static var caption3: UIFont { return UIFont(name: AppFontName.semiBoldFont.rawValue, size: 12.adjusted)! }
+    static var caption4: UIFont { return UIFont(name: AppFontName.regularFont.rawValue, size: 12.adjusted)! }
 }
