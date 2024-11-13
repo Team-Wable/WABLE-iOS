@@ -102,24 +102,69 @@ extension FeedContentView {
         titleLabel.text = title
         contentLabel.text = content
         photoImageView.loadContentImage(url: image ?? "")
+        
         if image != "" {
+            // 이미지 o
             photoImageView.isHidden = false
             
-            photoImageView.snp.remakeConstraints {
-                $0.top.equalTo(titleLabel.snp.bottom).offset(10.adjusted)
-                $0.height.equalTo(192.adjusted)
-                $0.leading.trailing.equalToSuperview()
+            if title == "" {
+                // 제목 + 이미지
+                contentLabel.isHidden = true
+                photoImageView.snp.remakeConstraints {
+                    $0.top.equalTo(titleLabel.snp.bottom).offset(10.adjusted)
+                    $0.height.equalTo(192.adjusted)
+                    $0.leading.trailing.bottom.equalToSuperview()
+                }
+                
+                contentLabel.snp.remakeConstraints {
+                    $0.height.equalTo(0)
+                }
+            } else {
+                // 제목 + 이미지 + 본문
+                contentLabel.isHidden = false
+
+                photoImageView.snp.remakeConstraints {
+                    $0.top.equalTo(titleLabel.snp.bottom).offset(10.adjusted)
+                    $0.height.equalTo(192.adjusted)
+                    $0.leading.trailing.equalToSuperview()
+                }
+                
+                contentLabel.snp.remakeConstraints {
+                    $0.top.equalTo(photoImageView.snp.bottom).offset(10.adjusted)
+                    $0.leading.trailing.bottom.equalToSuperview()
+                }
             }
             
-            contentLabel.snp.remakeConstraints {
-                $0.top.equalTo(photoImageView.snp.bottom).offset(10.adjusted)
-                $0.leading.trailing.bottom.equalToSuperview()
-            }
         } else {
+            // 이미지 x
             photoImageView.isHidden = true
-            contentLabel.snp.remakeConstraints {
-                $0.top.equalTo(titleLabel.snp.bottom).offset(4.adjusted)
-                $0.leading.trailing.bottom.equalToSuperview()
+            
+            if title == "" {
+                // 제목
+                contentLabel.isHidden = true
+                self.snp.remakeConstraints {
+                    $0.bottom.equalTo(titleLabel.snp.bottom)
+                }
+                
+                photoImageView.snp.remakeConstraints {
+                    $0.height.equalTo(0)
+                }
+                
+                contentLabel.snp.remakeConstraints {
+                    $0.height.equalTo(0)
+                }
+                
+            } else {
+                // 제목 + 본문
+                contentLabel.isHidden = false
+
+                photoImageView.snp.remakeConstraints {
+                    $0.height.equalTo(0)
+                }
+                contentLabel.snp.remakeConstraints {
+                    $0.top.equalTo(titleLabel.snp.bottom).offset(4.adjusted)
+                    $0.leading.trailing.bottom.equalToSuperview()
+                }
             }
         }
         titleLabel.attributedText = attributedString(for: title)

@@ -143,7 +143,7 @@ final class HomeFeedTableViewCell: UITableViewCell{
         bottomView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16.adjusted)
             $0.height.equalTo(31.adjusted)
-            $0.top.equalTo(feedContentView.snp.bottom).offset(20.adjusted)
+            $0.top.equalTo(feedContentView.snp.bottom).offset(20.adjusted).priority(.low)
             $0.bottom.equalToSuperview().inset(20.adjusted)
         }
         
