@@ -14,3 +14,5 @@ struct EmptyBody: Encodable {
 struct EmptyResponse: Decodable {
     
 }
+
+struct EmptyDTO: Codable {}
