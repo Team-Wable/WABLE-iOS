@@ -126,4 +126,12 @@ extension FeedDetailBottomView {
     func bind(heart: Int) {
         heartButton.setTitleWithConfiguration("\(heart)", font: .caption1, textColor: .gray600)
     }
+    
+    func setupReplyButtonVisibility(with parentCommnetID: Int) {
+        if parentCommnetID == -1 {
+            replyButton.isHidden = false
+        } else {
+            replyButton.isHidden = true
+        }
+    }
 }

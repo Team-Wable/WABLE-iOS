@@ -66,8 +66,8 @@ final class FeedDetailViewController: UIViewController {
     var feedData: HomeFeedDTO? = nil
     var getFeedData: FeedDetailResponseDTO? = nil
     
-    private var paginationReplyData: [FeedDetailReplyDTO] = []
-    private var replyData: [FeedDetailReplyDTO] = [] {
+    private var paginationReplyData: [FeedReplyListDTO] = []
+    private var replyData: [FeedReplyListDTO] = [] {
         didSet {
             self.feedDetailView.feedDetailTableView.reloadData()
         }
@@ -194,18 +194,13 @@ extension FeedDetailViewController {
             .sink { [weak self] data in
                 self?.replyData = data
                 self?.feedDetailView.feedDetailTableView.reloadData()
-                print("\(data.count)🍪🍪🍪🍪🍪🍪🍪🍪")
-
             }
             .store(in: &cancellables)
         
         viewModel.replyPaginationDatas
             .receive(on: DispatchQueue.main)
             .sink { [weak self] data in
-                print("\(data.count)🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭")
                 self?.replyData.append(contentsOf: data)
-                print("\(self?.replyData.count)🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋")
-
             }
             .store(in: &cancellables)
         
@@ -494,7 +489,7 @@ extension FeedDetailViewController: UITableViewDataSource {
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView == feedDetailView.feedDetailTableView {
-            let lastCommentID = self.replyData.last?.commentId ?? Int()
+            let lastCommentID = self.replyData.last?.commentID ?? Int()
 
             if replyData.count % 15 == 0 && viewModel.cursor != lastCommentID && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 viewModel.cursor = lastCommentID
@@ -656,12 +651,12 @@ extension FeedDetailViewController: UITableViewDataSource {
             let cell = feedDetailView.feedDetailTableView.dequeueReusableCell(withIdentifier: FeedDetailTableViewCell.identifier, for: indexPath) as? FeedDetailTableViewCell ?? FeedDetailTableViewCell()
             cell.selectionStyle = .none
             cell.alarmTriggerType = "commentGhost"
-            cell.targetMemberId = self.replyData[indexPath.row].memberId
-            cell.alarmTriggerdId = self.replyData[indexPath.row].commentId
+            cell.targetMemberId = self.replyData[indexPath.row].memberID
+            cell.alarmTriggerdId = self.replyData[indexPath.row].commentID
             
             cell.bind(data: self.replyData[indexPath.row])
             
-            if self.replyData[indexPath.row].memberId == loadUserData()?.memberId {
+            if self.replyData[indexPath.row].memberID == loadUserData()?.memberId {
                 cell.bottomView.ghostButton.isHidden = true
                 
                 cell.menuButtonTapped = {
@@ -670,7 +665,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                     self.homeBottomsheetView.reportButton.isHidden = true
                     
                     self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
-                    self.commentId = self.replyData[indexPath.row].commentId
+                    self.commentId = self.replyData[indexPath.row].commentID
                     self.nowShowingPopup = "deleteReply"
                 }
             } else {
@@ -702,7 +697,7 @@ extension FeedDetailViewController: UITableViewDataSource {
             }
             
             cell.profileButtonAction = {
-                let memberId = self.replyData[indexPath.row].memberId
+                let memberId = self.replyData[indexPath.row].memberID
 
                 if memberId == loadUserData()?.memberId ?? 0  {
                     self.tabBarController?.selectedIndex = 3
@@ -731,7 +726,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                     AmplitudeManager.shared.trackEvent(tag: "click_like_comment")
                     cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
                 }
-                self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.replyData[indexPath.row].commentId, commentText: self.replyData[indexPath.row].commentText)
+                self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.replyData[indexPath.row].commentID, commentText: self.replyData[indexPath.row].commentText)
                 
                 cell.bottomView.isLiked.toggle()
             }
