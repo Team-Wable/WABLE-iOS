@@ -142,7 +142,8 @@ final class FeedDetailTableViewCell: UITableViewCell {
         }
         
         bottomView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16.adjusted)
+            $0.leading.equalTo(contentLabel)
+            $0.trailing.equalToSuperview().inset(16.adjusted)
             $0.height.equalTo(31.adjusted)
             $0.bottom.equalToSuperview().inset(18.adjusted)
         }

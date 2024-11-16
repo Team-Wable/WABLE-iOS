@@ -57,6 +57,9 @@ enum ImageLiterals {
         static var icX: UIImage { .load(name: "ic_x") }
         static var icInfoPurple: UIImage { .load(name: "ic_info") }
         static var icVersus: UIImage { .load(name: "ic_versus") }
+        static var icHeartGray: UIImage { .load(name: "ic_heart_gray")}
+        static var icRippleRely: UIImage { .load(name: "ic_ripple_reply")}
+        static var icHeartPressSmall: UIImage { .load(name: "ic_heart_press_small")}
     }
     
     enum Image {
