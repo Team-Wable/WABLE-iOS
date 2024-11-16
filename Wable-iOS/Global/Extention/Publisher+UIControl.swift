@@ -67,3 +67,13 @@ struct UIControlPublisher<Control: UIControl>: Publisher {
         subscriber.receive(subscription: subscription)
     }
 }
+
+extension Publisher {
+    /// 네트워크 통신 후 뷰 모델에서 에러를 단순히 출력할 때 사용합니다.
+    func mapWableNetworkError() -> Publishers.MapError<Self, Failure> where Failure == BaseAPI.WableNetworkError {
+        self.mapError { error in
+            Swift.print("\(error)")
+            return error
+        }
+    }
+}

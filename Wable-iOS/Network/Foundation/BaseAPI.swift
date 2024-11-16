@@ -88,3 +88,74 @@ class BaseAPI {
         }
     }
 }
+
+extension BaseAPI {
+    enum WableNetworkError: Error {
+        /// 요청 오류
+        case requestError(String)
+        /// 디코딩 오류
+        case decodedError(String)
+        /// 경로 오류
+        case pathError
+        /// 서버 내부 오류
+        case serverError
+        /// 네트워크 실패
+        case networkFail
+        /// 토큰 인증 오류
+        case authorizationFail(String, Int)
+        /// 알 수 없는 에러
+        case unknownError(String)
+    }
+    
+    // TODO: 프로토콜로 추상화 가능
+    
+    func parseResponse<T: Codable>(statusCode: Int, data: Data) throws -> T? {
+        let baseResponse = try decodeResponse(with: BaseResponse<T>.self, from: data)
+        return try handleStatusCode(statusCode, with: baseResponse)
+    }
+    
+    private func decodeResponse<T:Codable>(with baseResonse: BaseResponse<T>.Type, from data: Data) throws -> BaseResponse<T> {
+        do {
+            let decodedData = try JSONDecoder().decode(baseResonse, from: data)
+            return decodedData
+        } catch {
+            throw WableNetworkError.decodedError("\(error)")
+        }
+    }
+    
+    private func handleStatusCode<T: Codable>(_ statusCode: Int, with baseResponse: BaseResponse<T>) throws -> T? {
+        switch statusCode {
+        case 200..<300:
+            return baseResponse.data
+        case 401:
+            throw WableNetworkError.authorizationFail(baseResponse.message, baseResponse.status)
+        case 400..<500:
+            throw WableNetworkError.requestError(baseResponse.message)
+        case 500...:
+            throw WableNetworkError.serverError
+        default:
+            throw WableNetworkError.networkFail
+        }
+    }
+}
+
+extension BaseAPI.WableNetworkError: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .requestError(let message):
+            return "‼️ 요청 에러 발생: \(message) ‼️"
+        case .decodedError(let message):
+            return "‼️ 디코딩 에러 발생: \(message) ‼️"
+        case .pathError:
+            return "‼️ 경로 에러 발생 ‼️"
+        case .serverError:
+            return "‼️ 서버 내부 에러 발생 ‼️"
+        case .networkFail:
+            return "‼️ 네트워크 실패! ‼️"
+        case .authorizationFail(_, _):
+            return "‼️ 권한이 없네요. ‼️"
+        case .unknownError(let message):
+            return "‼️ 알 수 없는 에러: \(message) ‼️"
+        }
+    }
+}
