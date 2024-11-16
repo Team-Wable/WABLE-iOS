@@ -11,7 +11,7 @@ extension UIButton {
     func setTitleWithConfiguration(_ title: String, font: UIFont, textColor: UIColor) {
         
         var config = self.configuration ?? UIButton.Configuration.plain()
-        
+        config.contentInsets = NSDirectionalEdgeInsets.zero
         config.title = title
         config.imagePadding = 4.adjusted
         

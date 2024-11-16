@@ -664,13 +664,6 @@ extension FeedDetailViewController: UITableViewDataSource {
             if self.replyData[indexPath.row].memberId == loadUserData()?.memberId {
                 cell.bottomView.ghostButton.isHidden = true
                 
-                cell.bottomView.heartButton.snp.remakeConstraints {
-                    $0.height.equalTo(24.adjusted)
-                    $0.width.equalTo(45.adjusted)
-                    $0.trailing.equalToSuperview()
-                    $0.centerY.equalToSuperview()
-                }
-                
                 cell.menuButtonTapped = {
                     self.homeBottomsheetView.showSettings()
                     self.homeBottomsheetView.deleteButton.isHidden = false
@@ -683,13 +676,6 @@ extension FeedDetailViewController: UITableViewDataSource {
             } else {
                 // 다른 유저인 경우
                 cell.bottomView.ghostButton.isHidden = false
-                
-                cell.bottomView.heartButton.snp.remakeConstraints {
-                    $0.height.equalTo(24.adjusted)
-                    $0.width.equalTo(45.adjusted)
-                    $0.trailing.equalTo(cell.bottomView.ghostButton.snp.leading).offset(-16.adjusted)
-                    $0.centerY.equalTo(cell.bottomView.ghostButton)
-                }
                 
                 cell.menuButtonTapped = {
                     self.homeBottomsheetView.showSettings()
