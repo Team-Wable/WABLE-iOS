@@ -16,7 +16,7 @@ final class FeedDetailViewModel: ViewModelType {
     private var getPostData = PassthroughSubject<FeedDetailResponseDTO, Never>()
     private let toggleLikeButton = PassthroughSubject<Bool, Never>()
     var isLikeButtonClicked: Bool = false
-    private var getPostReplyData = PassthroughSubject<[FeedDetailReplyDTO], Never>()
+    private var getPostReplyData = PassthroughSubject<[FeedReplyListDTO], Never>()
     private let clickedRadioButtonState = PassthroughSubject<Int, Never>()
     private let toggleCommentLikeButton = PassthroughSubject<Bool, Never>()
     private let postReplyCompleted = PassthroughSubject<Int, Never>()
@@ -29,14 +29,11 @@ final class FeedDetailViewModel: ViewModelType {
 
     // MARK: - Output
     
-    let replyDatas = PassthroughSubject<[FeedDetailReplyDTO], Never>()
-    let replyPaginationDatas = PassthroughSubject<[FeedDetailReplyDTO], Never>()
+    let replyDatas = PassthroughSubject<[FeedReplyListDTO], Never>()
+    let replyPaginationDatas = PassthroughSubject<[FeedReplyListDTO], Never>()
     
     var isCommentLikeButtonClicked: Bool = false
     var cursor: Int = -1
-    
-    var feedReplyData: [FeedDetailReplyDTO] = []
-    var feedReplyPaginationData: [FeedDetailReplyDTO] = []
     
     struct Input {
         let viewUpdate: AnyPublisher<Int, Never>?
@@ -115,7 +112,8 @@ final class FeedDetailViewModel: ViewModelType {
                     do {
                         if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
                             let postReplyResult = try await
-                            self.getPostReplyDataAPI(accessToken: accessToken, contentId: contentID)
+//                            self.getPostReplyDataAPI(accessToken: accessToken, contentId: contentID)
+                            self.getReplyListAPI(accessToken: accessToken, contentId: contentID)
                             if let data = postReplyResult?.data {
                                 self.replyDatas.send(data)
                             }
@@ -131,7 +129,8 @@ final class FeedDetailViewModel: ViewModelType {
                     do {
                         if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
                             let postReplyResult = try await
-                            self.getPostReplyDataAPI(accessToken: accessToken, contentId: contentID)
+//                            self.getPostReplyDataAPI(accessToken: accessToken, contentId: contentID)
+                            self.getReplyListAPI(accessToken: accessToken, contentId: contentID)
                             if let data = postReplyResult?.data {
                                 self.replyPaginationDatas.send(data)
                             }
@@ -174,6 +173,15 @@ extension FeedDetailViewModel {
                                             accessToken: accessToken,
                                             body: EmptyBody(),
                                             pathVariables: ["cursor":"\(cursor)"])
+            return result
+        } catch {
+            return nil
+        }
+    }
+    
+    private func getReplyListAPI(accessToken: String, contentId: Int) async throws -> BaseResponse<[FeedReplyListDTO]>? {
+        do {
+            let result = BaseResponse(status: 200, success: true, message: "서버통신성공한척~", data: FeedReplyListDTO.dummyData)
             return result
         } catch {
             return nil
