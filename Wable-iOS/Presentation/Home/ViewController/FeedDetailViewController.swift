@@ -605,10 +605,10 @@ extension FeedDetailViewController: UITableViewDataSource {
                 var currentHeartCount = cell.bottomView.heartButton.titleLabel?.text
                 
                 if cell.bottomView.isLiked == true {
-                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
+                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .gray600)
                 } else {
                     AmplitudeManager.shared.trackEvent(tag: "click_like_post")
-                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
+                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .gray600)
                 }
                 if let feedData = self.feedData {
                     self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: feedData.contentID ?? 0)
@@ -721,10 +721,10 @@ extension FeedDetailViewController: UITableViewDataSource {
                 var currentHeartCount = cell.bottomView.heartButton.titleLabel?.text
                 
                 if cell.bottomView.isLiked == true {
-                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
+                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .gray600)
                 } else {
                     AmplitudeManager.shared.trackEvent(tag: "click_like_comment")
-                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
+                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .gray600)
                 }
                 self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.replyData[indexPath.row].commentID, commentText: self.replyData[indexPath.row].commentText)
                 
