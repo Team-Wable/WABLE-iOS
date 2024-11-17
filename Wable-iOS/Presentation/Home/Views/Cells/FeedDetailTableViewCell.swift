@@ -136,7 +136,7 @@ final class FeedDetailTableViewCell: UITableViewCell {
         
         contentLabel.snp.makeConstraints {
             $0.top.equalTo(infoView.snp.bottom).offset(12.adjusted)
-            $0.leading.equalTo(profileImageView.snp.trailing).offset(6.adjusted)
+            $0.leading.equalToSuperview().inset(52.adjusted)
             $0.trailing.equalTo(menuButton)
             $0.bottom.lessThanOrEqualTo(bottomView.snp.top).offset(-12.adjusted)
         }
@@ -209,8 +209,6 @@ final class FeedDetailTableViewCell: UITableViewCell {
 
     
     func bind(data: FeedReplyListDTO) {
-        // TODO: - parentCommentID 값 -1이면 infoView레이아웃 안으로 들어가도록 수정
-
         profileImageView.load(url: data.memberProfileURL)
         
         infoView.bind(nickname: data.memberNickname,
@@ -224,7 +222,7 @@ final class FeedDetailTableViewCell: UITableViewCell {
 
         contentLabel.snp.remakeConstraints {
             $0.top.equalTo(infoView.snp.bottom).offset(12.adjusted)
-            $0.leading.equalTo(profileImageView.snp.trailing).offset(6.adjusted)
+            $0.leading.equalToSuperview().inset(52.adjusted)
             $0.trailing.equalTo(menuButton)
             $0.bottom.equalTo(bottomView.snp.top).offset(-10.adjusted)
         }
@@ -254,6 +252,10 @@ final class FeedDetailTableViewCell: UITableViewCell {
         
     }
     
+    func hideChildReplyForMyPage() {
+        bottomView.hideReplyButton()
+    }
+    
     func updateLayoutForReplyType(with parentCommentID: Int) {
         if parentCommentID == -1 {
             makeReplyLayout()
@@ -264,7 +266,7 @@ final class FeedDetailTableViewCell: UITableViewCell {
         bottomView.setupReplyButtonVisibility(with: parentCommentID)
     }
     
-    func makeChildReplyLayout() {
+    private func makeChildReplyLayout() {
         profileImageView.snp.remakeConstraints {
             $0.height.width.equalTo(30.adjusted)
             $0.leading.equalToSuperview().inset(52.adjusted)
@@ -272,7 +274,7 @@ final class FeedDetailTableViewCell: UITableViewCell {
         }
     }
     
-    func makeReplyLayout() {
+    private func makeReplyLayout() {
         profileImageView.snp.remakeConstraints {
             $0.height.width.equalTo(30.adjusted)
             $0.leading.equalToSuperview().inset(16.adjusted)

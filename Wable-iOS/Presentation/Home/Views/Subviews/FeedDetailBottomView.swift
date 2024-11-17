@@ -134,4 +134,8 @@ extension FeedDetailBottomView {
             replyButton.isHidden = true
         }
     }
+    
+    func hideReplyButton() {
+        replyButton.isHidden = true
+    }
 }

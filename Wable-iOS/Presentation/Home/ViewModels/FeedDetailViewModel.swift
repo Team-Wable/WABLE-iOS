@@ -179,6 +179,7 @@ extension FeedDetailViewModel {
         }
     }
     
+    // MARK: - 대댓글 버전 답글 리스트 불러오기
     private func getReplyListAPI(accessToken: String, contentId: Int) async throws -> BaseResponse<[FeedReplyListDTO]>? {
         do {
             let result = BaseResponse(status: 200, success: true, message: "서버통신성공한척~", data: FeedReplyListDTO.dummyData)
@@ -200,6 +201,18 @@ extension FeedDetailViewModel {
             )
             self.isButtonEnabled.send(true)
 
+            return result
+        } catch {
+            self.isButtonEnabled.send(true)
+            return nil
+        }
+    }
+    
+    // MARK: - 대댓글 버전 댓글쓰기
+    private func postWriteReplyV3API(accessToken: String, commentText: String, parentCommentID: Int, parentCommentWriterID: String) async throws -> BaseResponse<EmptyResponse>? {
+        do {
+            let result = BaseResponse(status: 200, success: true, message: "댓글작성 성공한척~", data: EmptyResponse())
+            self.isButtonEnabled.send(true)
             return result
         } catch {
             self.isButtonEnabled.send(true)

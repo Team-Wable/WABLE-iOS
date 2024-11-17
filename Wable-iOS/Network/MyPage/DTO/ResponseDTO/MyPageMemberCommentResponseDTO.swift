@@ -23,4 +23,5 @@ struct MyPageMemberCommentResponseDTO: Decodable {
     let contentId: Int
     let commentImageUrl: String?
     let memberFanTeam: String
+    let isBlind: Bool?
 }

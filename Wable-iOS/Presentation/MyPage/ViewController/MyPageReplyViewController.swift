@@ -272,20 +272,12 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = feedDetailTableView.dequeueReusableCell(withIdentifier: FeedDetailTableViewCell.identifier, for: indexPath) as? FeedDetailTableViewCell ?? FeedDetailTableViewCell()
         cell.selectionStyle = .none
-        
+        cell.hideChildReplyForMyPage()
         cell.alarmTriggerType = "commentGhost"
         cell.targetMemberId = commentDatas[indexPath.row].memberId
         cell.alarmTriggerdId = commentDatas[indexPath.row].commentId
-        
         if commentDatas[indexPath.row].memberId == loadUserData()?.memberId {
             cell.bottomView.ghostButton.isHidden = true
-            
-            cell.bottomView.heartButton.snp.remakeConstraints {
-                $0.height.equalTo(24.adjusted)
-                $0.width.equalTo(45.adjusted)
-                $0.trailing.equalToSuperview()
-                $0.centerY.equalToSuperview()
-            }
             
             cell.menuButtonTapped = {
                 self.homeBottomsheetView.showSettings()
@@ -305,13 +297,6 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
                 $0.height.width.equalTo(32.adjusted)
                 $0.trailing.equalToSuperview()
                 $0.centerY.equalToSuperview()
-            }
-            
-            cell.bottomView.heartButton.snp.remakeConstraints {
-                $0.height.equalTo(24.adjusted)
-                $0.width.equalTo(45.adjusted)
-                $0.trailing.equalTo(cell.bottomView.ghostButton.snp.leading).offset(-16.adjusted)
-                $0.centerY.equalTo(cell.bottomView.ghostButton)
             }
             
             cell.menuButtonTapped = {
@@ -334,7 +319,7 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
         
         cell.contentLabel.text = commentDatas[indexPath.row].commentText
         
-        cell.bottomView.heartButton.setTitleWithConfiguration("\(commentDatas[indexPath.row].commentLikedNumber)", font: .caption1, textColor: .wableBlack)
+        cell.bottomView.heartButton.setTitleWithConfiguration("\(commentDatas[indexPath.row].commentLikedNumber)", font: .caption1, textColor: .gray600)
         cell.bottomView.isLiked = commentDatas[indexPath.row].isLiked
         
         if commentDatas[indexPath.row].isGhost {
@@ -368,9 +353,9 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
             var currentHeartCount = cell.bottomView.heartButton.titleLabel?.text
             
             if cell.bottomView.isLiked == true {
-                cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
+                cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .gray600)
             } else {
-                cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
+                cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .gray600)
             }
             self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.commentDatas[indexPath.row].commentId, commentText: self.commentDatas[indexPath.row].commentText)
             
