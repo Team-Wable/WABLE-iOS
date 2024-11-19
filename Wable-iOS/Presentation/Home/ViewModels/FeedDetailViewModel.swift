@@ -22,6 +22,8 @@ final class FeedDetailViewModel: ViewModelType {
     private let postReplyCompleted = PassthroughSubject<Int, Never>()
     var isButtonEnabled = PassthroughSubject<Bool, Never>()
     
+    var parentCommentID: Int? // 인덱스 -> 데이터소스 배열 뽑아서 -> 댓글 ID -> 입력된 대댓글 DTO 만들어서 송신
+    
     // MARK: - Input
     
     let paginationDidAction = PassthroughSubject<Int, Never>()
@@ -29,8 +31,8 @@ final class FeedDetailViewModel: ViewModelType {
 
     // MARK: - Output
     
-    let replyDatas = PassthroughSubject<[FeedReplyListDTO], Never>()
-    let replyPaginationDatas = PassthroughSubject<[FeedReplyListDTO], Never>()
+    let replyDatas = PassthroughSubject<[FlattenReplyModel], Never>()
+    let replyPaginationDatas = PassthroughSubject<[FlattenReplyModel], Never>()
     
     var isCommentLikeButtonClicked: Bool = false
     var cursor: Int = -1
@@ -91,7 +93,6 @@ final class FeedDetailViewModel: ViewModelType {
                             if result?.status == 201 {
                                 self.postReplyCompleted.send(0)
                             }
-                            print("\(result)👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻")
                         }
                     }
                 }
@@ -115,7 +116,8 @@ final class FeedDetailViewModel: ViewModelType {
 //                            self.getPostReplyDataAPI(accessToken: accessToken, contentId: contentID)
                             self.getReplyListAPI(accessToken: accessToken, contentId: contentID)
                             if let data = postReplyResult?.data {
-                                self.replyDatas.send(data)
+                                let flattenDatas = data.toFlattenedReplyList()
+                                self.replyDatas.send(flattenDatas)
                             }
                         }
                     }
@@ -132,7 +134,8 @@ final class FeedDetailViewModel: ViewModelType {
 //                            self.getPostReplyDataAPI(accessToken: accessToken, contentId: contentID)
                             self.getReplyListAPI(accessToken: accessToken, contentId: contentID)
                             if let data = postReplyResult?.data {
-                                self.replyPaginationDatas.send(data)
+                                let flattenDatas = data.toFlattenedReplyList()
+                                self.replyPaginationDatas.send(flattenDatas)
                             }
                         }
                     }
@@ -179,16 +182,6 @@ extension FeedDetailViewModel {
         }
     }
     
-    // MARK: - 대댓글 버전 답글 리스트 불러오기
-    private func getReplyListAPI(accessToken: String, contentId: Int) async throws -> BaseResponse<[FeedReplyListDTO]>? {
-        do {
-            let result = BaseResponse(status: 200, success: true, message: "서버통신성공한척~", data: FeedReplyListDTO.dummyData)
-            return result
-        } catch {
-            return nil
-        }
-    }
-    
     private func postWriteReplyAPI(accessToken: String, commentText: String, contentId: Int, notificationTriggerType: String) async throws -> BaseResponse<EmptyResponse>? {
         do {
             let result: BaseResponse<EmptyResponse>? = try await
@@ -204,6 +197,17 @@ extension FeedDetailViewModel {
             return result
         } catch {
             self.isButtonEnabled.send(true)
+            return nil
+        }
+    }
+    
+    // MARK: - 대댓글 버전 답글 리스트 불러오기
+    
+    private func getReplyListAPI(accessToken: String, contentId: Int) async throws -> BaseResponse<[FeedReplyListDTO]>? {
+        do {
+            let result = BaseResponse(status: 200, success: true, message: "서버통신성공한척~", data: FeedReplyListDTO.dummyData)
+            return result
+        } catch {
             return nil
         }
     }
