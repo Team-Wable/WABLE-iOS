@@ -208,7 +208,7 @@ final class FeedDetailTableViewCell: UITableViewCell {
     }
 
     
-    func bind(data: FeedReplyListDTO) {
+    func bind(data: FlattenReplyModel) {
         profileImageView.load(url: data.memberProfileURL)
         
         infoView.bind(nickname: data.memberNickname,
