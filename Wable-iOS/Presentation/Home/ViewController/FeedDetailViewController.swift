@@ -30,9 +30,13 @@ final class FeedDetailViewController: UIViewController {
     self.feedDetailView.bottomWriteView.uploadButton.publisher(for: .touchUpInside)
         .debounce(for: .seconds(0.3), scheduler: RunLoop.main)
         .map { _ in
+            
+            self.feedDetailView.bottomWriteView.writeTextView.resignFirstResponder()
+            
             return (WriteReplyRequestDTO(
                 commentText: self.feedDetailView.bottomWriteView.writeTextView.text,
                 notificationTriggerType: "comment"), self.contentId, self.feedData?.memberNickname ?? "")
+            
         }.eraseToAnyPublisher()
     
     private lazy var deleteButtonTapped = deletePopupView?.confirmButton.publisher(for: .touchUpInside).map { _ in
@@ -66,12 +70,14 @@ final class FeedDetailViewController: UIViewController {
     var feedData: HomeFeedDTO? = nil
     var getFeedData: FeedDetailResponseDTO? = nil
     
-    private var paginationReplyData: [FeedReplyListDTO] = []
-    private var replyData: [FeedReplyListDTO] = [] {
+    private var paginationReplyData: [FlattenReplyModel] = []
+    private var replyData: [FlattenReplyModel] = [] {
         didSet {
             self.feedDetailView.feedDetailTableView.reloadData()
         }
     }
+    
+    private let replyButtonDidTapSubject = PassthroughSubject<Int?, Never>()
     
     // MARK: - UI Components
     
@@ -91,7 +97,7 @@ final class FeedDetailViewController: UIViewController {
     // MARK: - Life Cycles
     
     override func loadView() {
-        super.loadView()
+
         view = feedDetailView
         self.view.backgroundColor = .wableWhite
     }
@@ -123,15 +129,10 @@ final class FeedDetailViewController: UIViewController {
         
         setNavigationBar()
         viewModel.viewWillAppear.send(contentId)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 }
 
@@ -231,39 +232,6 @@ extension FeedDetailViewController {
     func getFeedData(data: HomeFeedDTO) {
         self.feedData = data
     }
-    
-    @objc
-    private func keyboardUp(notification: NSNotification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
-            let safeAreaBottomInset = self.view.safeAreaInsets.bottom
-            
-            feedDetailView.bottomWriteView.uploadButton.isEnabled = false
-
-            
-            // 키보드가 올라올 때 테이블뷰의 contentInset을 조정
-            UIView.animate(withDuration: 0.3, animations: {
-                self.feedDetailView.bottomWriteView.transform = CGAffineTransform(translationX: 0, y: -(keyboardHeight - safeAreaBottomInset))
-                
-                self.feedDetailView.feedDetailTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
-                self.feedDetailView.feedDetailTableView.scrollIndicatorInsets = self.feedDetailView.feedDetailTableView.contentInset
-            })
-        }
-    }
-    
-    @objc
-    private func keyboardDown(notification: NSNotification) {
-        UIView.animate(withDuration: 1, animations: {
-            self.feedDetailView.bottomWriteView.transform = .identity
-            self.feedDetailView.feedDetailTableView.contentInset = .zero
-            self.feedDetailView.feedDetailTableView.scrollIndicatorInsets = .zero
-        }, completion: { _ in
-            // 키보드가 내려가면 버튼 다시 활성화
-            self.feedDetailView.bottomWriteView.uploadButton.isEnabled = true
-        })
-    }
-
 }
 
 // MARK: - Network
@@ -358,7 +326,6 @@ extension FeedDetailViewController: UITextViewDelegate {
             
             feedDetailView.bottomWriteView.snp.remakeConstraints {
                 $0.leading.trailing.equalToSuperview()
-                $0.bottom.equalTo(self.view.safeAreaLayoutGuide)
                 $0.height.equalTo(estimatedSize.height + 20)
             }
         }
@@ -642,7 +609,6 @@ extension FeedDetailViewController: UITableViewDataSource {
                         }
                     }
                 }
-                
             }
             
             return cell
@@ -729,6 +695,11 @@ extension FeedDetailViewController: UITableViewDataSource {
                 self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.replyData[indexPath.row].commentID, commentText: self.replyData[indexPath.row].commentText)
                 
                 cell.bottomView.isLiked.toggle()
+            }
+            
+            cell.bottomView.replyButtonTapped = { [weak self] in
+                self?.feedDetailView.bottomWriteView.writeTextView.becomeFirstResponder()
+                self?.replyButtonDidTapSubject.send(indexPath.row)
             }
             
             return cell
@@ -919,3 +890,4 @@ extension FeedDetailViewController: WablePopupDelegate {
         
     }
 }
+
