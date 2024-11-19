@@ -65,9 +65,10 @@ extension FeedDetailView {
         
         bottomWriteView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(safeAreaLayoutGuide)
             $0.height.equalTo(62.adjusted)
         }
+        
+        keyboardLayoutGuide.topAnchor.constraint(equalToSystemSpacingBelow: bottomWriteView.bottomAnchor, multiplier: 1.0).isActive = true
     }
     
     private func setAddTarget() {
