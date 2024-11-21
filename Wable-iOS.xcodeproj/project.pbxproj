@@ -163,7 +163,6 @@
 		3CDE2E0E2C71D393004A84CB /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E0D2C71D393004A84CB /* InfoView.swift */; };
 		3CDE2E102C71D3CA004A84CB /* InfoMatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E0F2C71D3CA004A84CB /* InfoMatchViewController.swift */; };
 		3CDE2E122C71D3DC004A84CB /* InfoRankingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E112C71D3DC004A84CB /* InfoRankingViewController.swift */; };
-		3CDE2E142C71D665004A84CB /* InfoSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E132C71D665004A84CB /* InfoSegmentedControl.swift */; };
 		3CDE2E172C7232C5004A84CB /* NotificationActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E162C7232C5004A84CB /* NotificationActivityViewController.swift */; };
 		3CDE2E192C7232DC004A84CB /* NotificationInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E182C7232DC004A84CB /* NotificationInformationViewController.swift */; };
 		3CDE2E1B2C723305004A84CB /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2E1A2C723305004A84CB /* NotificationView.swift */; };
@@ -347,7 +346,6 @@
 		3CDE2E0D2C71D393004A84CB /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		3CDE2E0F2C71D3CA004A84CB /* InfoMatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMatchViewController.swift; sourceTree = "<group>"; };
 		3CDE2E112C71D3DC004A84CB /* InfoRankingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRankingViewController.swift; sourceTree = "<group>"; };
-		3CDE2E132C71D665004A84CB /* InfoSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSegmentedControl.swift; sourceTree = "<group>"; };
 		3CDE2E162C7232C5004A84CB /* NotificationActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActivityViewController.swift; sourceTree = "<group>"; };
 		3CDE2E182C7232DC004A84CB /* NotificationInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationInformationViewController.swift; sourceTree = "<group>"; };
 		3CDE2E1A2C723305004A84CB /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
@@ -1151,7 +1149,6 @@
 				050E0CD72C74BEE700326EEA /* SubViews */,
 				050E0CD62C74BEE000326EEA /* Cells */,
 				3CDE2E0D2C71D393004A84CB /* InfoView.swift */,
-				3CDE2E132C71D665004A84CB /* InfoSegmentedControl.swift */,
 				050E0CD42C74BE6300326EEA /* MatchView.swift */,
 				050E0D112C8070F300326EEA /* RankingView.swift */,
 			);
@@ -1339,7 +1336,6 @@
 				3CF344E92C750ECE0038BB53 /* MyPageReasonListCustomView.swift in Sources */,
 				0547F4D92C6247CE001E3039 /* MoyaLoggingPlugin.swift in Sources */,
 				3CF344E52C750DA90038BB53 /* MyPageSignOutView.swift in Sources */,
-				3CDE2E142C71D665004A84CB /* InfoSegmentedControl.swift in Sources */,
 				050E0D122C8070F300326EEA /* RankingView.swift in Sources */,
 				050E0CC52C74B8F000326EEA /* HomeFeedTableViewCell.swift in Sources */,
 				3C8B4E512C83F11900174943 /* ContentLikeRequestDTO.swift in Sources */,
