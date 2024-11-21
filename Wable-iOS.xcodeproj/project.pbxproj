@@ -27,7 +27,7 @@
 		050E0CCD2C74B95B00326EEA /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CCC2C74B95B00326EEA /* Team.swift */; };
 		050E0CD12C74B9A700326EEA /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CD02C74B9A700326EEA /* WriteViewController.swift */; };
 		050E0CD52C74BE6300326EEA /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CD42C74BE6300326EEA /* MatchView.swift */; };
-		050E0CD92C74BFC200326EEA /* InfoTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CD82C74BFC200326EEA /* InfoTabView.swift */; };
+		050E0CD92C74BFC200326EEA /* InfoLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CD82C74BFC200326EEA /* InfoLogoView.swift */; };
 		050E0CDD2C74C87300326EEA /* MatchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CDC2C74C87200326EEA /* MatchTableViewCell.swift */; };
 		050E0CDF2C74C8B400326EEA /* MatchSessionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CDE2C74C8B400326EEA /* MatchSessionTableViewCell.swift */; };
 		050E0CE12C74C98800326EEA /* MatchTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050E0CE02C74C98800326EEA /* MatchTableViewHeaderView.swift */; };
@@ -193,6 +193,7 @@
 		DE1B58172CDDD3F90017C319 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DE1B58162CDDD3F90017C319 /* GoogleService-Info.plist */; };
 		DE7FAAA02CDF971300A4D8A2 /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */; };
 		DEB5793A2CE3541300BEE54D /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DEB579392CE3541300BEE54D /* CombineCocoa */; };
+		DEF0D39F2CED68DE002FA608 /* WableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0D39E2CED68DE002FA608 /* WableSegmentedControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -216,7 +217,7 @@
 		050E0CCC2C74B95B00326EEA /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		050E0CD02C74B9A700326EEA /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
 		050E0CD42C74BE6300326EEA /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
-		050E0CD82C74BFC200326EEA /* InfoTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTabView.swift; sourceTree = "<group>"; };
+		050E0CD82C74BFC200326EEA /* InfoLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoLogoView.swift; sourceTree = "<group>"; };
 		050E0CDC2C74C87200326EEA /* MatchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchTableViewCell.swift; sourceTree = "<group>"; };
 		050E0CDE2C74C8B400326EEA /* MatchSessionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchSessionTableViewCell.swift; sourceTree = "<group>"; };
 		050E0CE02C74C98800326EEA /* MatchTableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchTableViewHeaderView.swift; sourceTree = "<group>"; };
@@ -376,6 +377,7 @@
 		DE1B58142CDDD1E50017C319 /* Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
 		DE1B58162CDDD3F90017C319 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
+		DEF0D39E2CED68DE002FA608 /* WableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSegmentedControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -503,7 +505,7 @@
 		050E0CD72C74BEE700326EEA /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
-				050E0CD82C74BFC200326EEA /* InfoTabView.swift */,
+				050E0CD82C74BFC200326EEA /* InfoLogoView.swift */,
 				050E0CE22C74CBF400326EEA /* MatchProgressStatusView.swift */,
 				050E0CE42C74D06500326EEA /* ATeamView.swift */,
 				050E0CE62C74D06B00326EEA /* BTeamView.swift */,
@@ -884,6 +886,7 @@
 				0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */,
 				0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */,
 				054308E72CB7ED70001861F1 /* CopyableLabel.swift */,
+				DEF0D39E2CED68DE002FA608 /* WableSegmentedControl.swift */,
 			);
 			path = UIComponents;
 			sourceTree = "<group>";
@@ -1314,6 +1317,7 @@
 				0547F4D72C624797001E3039 /* NetworkResult.swift in Sources */,
 				3CF344E32C750A380038BB53 /* MyPageSignOutViewController.swift in Sources */,
 				3C8B4E4D2C80EE7700174943 /* WriteReplyRequestDTO.swift in Sources */,
+				DEF0D39F2CED68DE002FA608 /* WableSegmentedControl.swift in Sources */,
 				3C8B4E392C79118D00174943 /* MypageProfileResponseDTO.swift in Sources */,
 				3CDE2E042C713470004A84CB /* JoinLCKTeamViewController.swift in Sources */,
 				3CF344D42C749E310038BB53 /* MyPageAccountInfoViewController.swift in Sources */,
@@ -1348,7 +1352,7 @@
 				0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */,
 				050E0CC32C74B8B600326EEA /* FeedBottomView.swift in Sources */,
 				0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */,
-				050E0CD92C74BFC200326EEA /* InfoTabView.swift in Sources */,
+				050E0CD92C74BFC200326EEA /* InfoLogoView.swift in Sources */,
 				3C8B4E532C83FB7C00174943 /* HomeBottomSheetView.swift in Sources */,
 				050E0D0D2C7F635200326EEA /* InfoAPI.swift in Sources */,
 				3CDE2E002C711A74004A84CB /* UITextField+.swift in Sources */,
