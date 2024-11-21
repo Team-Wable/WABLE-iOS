@@ -10,13 +10,13 @@ import UIKit
 import SnapKit
 
 final class InfoLogoView: UIView {
-    private let infoImageView: UIImageView = {
+    private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = ImageLiterals.Icon.icInfoPurple
         return imageView
     }()
     
-    private let infoTitleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = StringLiterals.TabBar.info
         label.font = .head2
@@ -44,7 +44,7 @@ private extension InfoLogoView {
     func setupView() {
         backgroundColor = .wableBlack
         
-        addSubviews(infoImageView, infoTitleLabel)
+        addSubviews(imageView, titleLabel)
     }
     
     func setupConstraints() {
@@ -53,15 +53,15 @@ private extension InfoLogoView {
             make.height.equalTo(44.adjustedH)
         }
         
-        infoImageView.snp.makeConstraints { make in
+        imageView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
             make.size.equalTo(32.adjusted)
         }
         
-        infoTitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(infoImageView.snp.trailing).offset(6)
-            make.centerY.equalTo(infoImageView)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(imageView.snp.trailing).offset(6)
+            make.centerY.equalTo(imageView)
         }
     }
 }
