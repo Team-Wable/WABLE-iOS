@@ -62,7 +62,7 @@ final class FeedDetailViewController: UIViewController {
     var relateText: String = ""
     let warnUserURL = URL(string: StringLiterals.Network.warnUserGoogleFormURL)
     private let placeholder = StringLiterals.Home.placeholder
-    
+
     var nowShowingPopup: String = ""
     
     let refreshControl = UIRefreshControl()
@@ -77,6 +77,7 @@ final class FeedDetailViewController: UIViewController {
         }
     }
     
+    // TODO: - 이놈의 아웃풋 = textField placeholder??(닉네임)
     private let replyButtonDidTapSubject = PassthroughSubject<Int?, Never>()
     
     // MARK: - UI Components
@@ -143,7 +144,7 @@ extension FeedDetailViewController {
         self.view.backgroundColor = .wableWhite
         feedDetailView.feedDetailTableView.rowHeight = UITableView.automaticDimension
         feedDetailView.feedDetailTableView.estimatedRowHeight = 100
-        feedDetailView.bottomWriteView.writeTextView.text = (self.feedData?.memberNickname ?? "") + self.placeholder
+        feedDetailView.bottomWriteView.setPlaceholder(nickname: self.feedData?.memberNickname ?? "")
         feedDetailView.bottomWriteView.writeTextView.textContainerInset = UIEdgeInsets(top: 10.adjusted,
                                                                                        left: 10.adjusted,
                                                                                        bottom: 10.adjusted,
@@ -264,8 +265,8 @@ extension FeedDetailViewController {
                     DispatchQueue.main.async {
                         self.didPullToRefresh()
                         self.feedDetailView.bottomWriteView.uploadButton.isEnabled = false
-                        self.feedDetailView.bottomWriteView.writeTextView.textColor = .gray700
-                        self.feedDetailView.bottomWriteView.writeTextView.text = (self.feedData?.memberNickname ?? "") + self.placeholder
+                        self.feedDetailView.bottomWriteView.writeTextView.text = nil
+                        self.feedDetailView.bottomWriteView.setPlaceholder(nickname: self.feedData?.memberNickname ?? "")
                         self.feedDetailView.bottomWriteView.writeTextView.textContainerInset = UIEdgeInsets(top: 10.adjusted,
                                                                                                             left: 10.adjusted,
                                                                                                             bottom: 10.adjusted,
@@ -297,45 +298,34 @@ extension FeedDetailViewController {
 
 extension FeedDetailViewController: UITextViewDelegate {
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        guard textView.textColor == .gray700 else { return }
-        textView.textColor = .wableBlack
-        textView.text = nil
-        print("textViewDidBeginEditing")
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        // 전체 텍스트 삭제를 확인
+        let isDeletingAllText = range == NSRange(location: 0, length: textView.text.count) && text.isEmpty
+        
+        if isDeletingAllText {
+            setTextViewHeight(textView, isDeletingAllText: isDeletingAllText)
+        }
+    
+        return true
     }
     
     func textViewDidChange(_ textView: UITextView) {
         
-        let size = CGSize(width: view.frame.width, height: .infinity)
-        let estimatedSize = textView.sizeThatFits(size)
+        // 텍스트뷰 크기 조정 로직
+        setTextViewHeight(textView, isDeletingAllText: false)
         
-        if estimatedSize.height > 86 {
-            textView.isScrollEnabled = true
+        guard !textView.text.isEmpty else {
+            // TODO: - 여기 닉네임 받는 부분 변경. vc 프로퍼티 아니도록
+            feedDetailView.bottomWriteView.setPlaceholder(nickname: feedData?.memberNickname ?? String())
             return
-        } else {
-            //                textView.isScrollEnabled = false
-            textView.isScrollEnabled = true
-            
-            // 레이아웃 중 height 수정
-            textView.snp.remakeConstraints {
-                $0.height.equalTo(estimatedSize)
-                $0.leading.equalToSuperview().inset(16.adjusted)
-                $0.trailing.equalTo(feedDetailView.bottomWriteView.uploadButton.snp.leading).offset(-6.adjusted)
-                $0.centerY.equalToSuperview()
-            }
-            
-            feedDetailView.bottomWriteView.snp.remakeConstraints {
-                $0.leading.trailing.equalToSuperview()
-                $0.height.equalTo(estimatedSize.height + 20)
-            }
         }
         
+        feedDetailView.bottomWriteView.placeholderLabel.isHidden = true
+        
         if !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRipplePress, for: .normal)
-            feedDetailView.bottomWriteView.uploadButton.isEnabled = true
+            makeUploadButtonActivate()
         } else {
-            feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
-            feedDetailView.bottomWriteView.uploadButton.isEnabled = false
+            makeUploadButtonDeactivate()
         }
     }
     
@@ -343,12 +333,43 @@ extension FeedDetailViewController: UITextViewDelegate {
         print("textViewDidEndEditing")
         
         if textView.text.isEmpty {
-            textView.text = (feedData?.memberNickname ?? String()) + StringLiterals.Home.placeholder
-            textView.textColor = .gray700
-            feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
-            feedDetailView.bottomWriteView.uploadButton.isEnabled = false
+            feedDetailView.bottomWriteView.setPlaceholder(nickname: feedData?.memberNickname ?? String())
+            makeUploadButtonDeactivate()
         }
     }
+    
+    // 댓글 작성 중 텍스트뷰 높이 조정
+    func setTextViewHeight(_ textView: UITextView, isDeletingAllText: Bool) {
+        let size = CGSize(width: textView.frame.width, height: .infinity)
+        let estimatedSize = textView.sizeThatFits(size)
+        
+        textView.isScrollEnabled = !isDeletingAllText && estimatedSize.height >= 95.adjusted
+        
+        feedDetailView.bottomWriteView.writeTextView.snp.updateConstraints {
+            $0.height.lessThanOrEqualTo(100.adjusted)
+        }
+        
+        feedDetailView.bottomWriteView.snp.updateConstraints {
+            $0.height.lessThanOrEqualTo(120.adjusted)
+        }
+        
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    // 댓글 업로드 버튼 활성화
+    private func makeUploadButtonActivate() {
+        feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRipplePress, for: .normal)
+        feedDetailView.bottomWriteView.uploadButton.isEnabled = true
+    }
+    
+    // 댓글 업로드 버튼 비활성화
+    private func makeUploadButtonDeactivate() {
+        feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
+        feedDetailView.bottomWriteView.uploadButton.isEnabled = false
+    }
+    
     
     private func showGhostPopupView() {
         self.ghostPopupView = WablePopupView(popupTitle: StringLiterals.Home.ghostPopupTitle,
@@ -611,6 +632,14 @@ extension FeedDetailViewController: UITableViewDataSource {
                 }
             }
             
+            // 게시글에 대한 댓글 달기 버튼이 눌렸을 때는 nil로 보내기
+            // 기존에 있었던 댓글 삭제해야함
+            cell.bottomView.commentButtonTapped = { [weak self] in
+                self?.feedDetailView.bottomWriteView.writeTextView.becomeFirstResponder()
+                self?.replyButtonDidTapSubject.send(nil)
+                
+            }
+            
             return cell
             
         case .reply:
@@ -698,8 +727,13 @@ extension FeedDetailViewController: UITableViewDataSource {
             }
             
             cell.bottomView.replyButtonTapped = { [weak self] in
-                self?.feedDetailView.bottomWriteView.writeTextView.becomeFirstResponder()
+                self?.feedDetailView.bottomWriteView.writeTextView.resignFirstResponder()
+                
+                // MARK: - 여기서 인덱스로 유저 닉네임, 댓글작성자 ID, 댓글ID 찾아서 다시 VC로 전달
                 self?.replyButtonDidTapSubject.send(indexPath.row)
+                
+                self?.feedDetailView.bottomWriteView.writeTextView.becomeFirstResponder()
+
             }
             
             return cell
