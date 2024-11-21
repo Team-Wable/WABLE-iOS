@@ -31,8 +31,16 @@ final class FeedBottomWriteView: UIView {
         textView.layer.cornerRadius = 16.adjusted
         textView.backgroundColor = .gray100
         textView.font = .body4
-        textView.textColor = .gray700
+        textView.textColor = .wableBlack
         return textView
+    }()
+    
+    var placeholderLabel: UILabel = {
+       let label = UILabel()
+        label.font = .body4
+        label.textColor = .gray700
+        label.backgroundColor = .clear
+        return label
     }()
     
     var uploadButton: UIButton = {
@@ -68,6 +76,7 @@ extension FeedBottomWriteView {
     private func setHierarchy() {
         self.addSubviews(tabLottieAnimationView,
                          writeTextView,
+                         placeholderLabel,
                          uploadButton)
     }
     
@@ -78,10 +87,15 @@ extension FeedBottomWriteView {
         }
         
         writeTextView.snp.makeConstraints {
-            $0.height.equalTo(42.adjusted)
+            $0.height.lessThanOrEqualTo(100.adjusted)
             $0.leading.equalToSuperview().inset(16.adjusted)
             $0.trailing.equalTo(uploadButton.snp.leading).offset(-6.adjusted)
-            $0.centerY.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(10.adjusted)
+        }
+        
+        placeholderLabel.snp.makeConstraints {
+            $0.top.equalTo(writeTextView).inset(10.adjusted)
+            $0.leading.equalTo(writeTextView).inset(14.adjusted)
         }
         
         uploadButton.snp.makeConstraints {
@@ -89,6 +103,11 @@ extension FeedBottomWriteView {
             $0.trailing.equalToSuperview().inset(16.adjusted)
             $0.centerY.equalTo(writeTextView)
         }
+    }
+    
+    func setPlaceholder(nickname: String) {
+        placeholderLabel.isHidden = false
+        placeholderLabel.text = nickname + StringLiterals.Home.placeholder
     }
     
     private func setAddTarget() {
