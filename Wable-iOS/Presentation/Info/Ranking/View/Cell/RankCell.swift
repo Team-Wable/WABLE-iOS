@@ -95,7 +95,7 @@ private extension RankCell {
     
     func setupConstraints() {
         rankLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(14)
             make.centerY.equalToSuperview()
             make.size.equalTo(22.adjusted)
         }
@@ -131,7 +131,7 @@ private extension RankCell {
         }
         
         scoreDiffLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-16)
+            make.trailing.equalToSuperview().offset(-14)
             make.centerY.equalTo(rankLabel)
             make.width.equalTo(24.adjusted)
             make.height.equalTo(22.adjustedH)
