@@ -1204,7 +1204,7 @@
 		DE9D0E3A2CF08C520024BB1F /* Match */ = {
 			isa = PBXGroup;
 			children = (
-				DE9D0E542CF0F27B0024BB1F /* Model */,
+				DE9D0E542CF0F27B0024BB1F /* Support */,
 				DE9D0E3D2CF08C680024BB1F /* ViewModel */,
 				DE9D0E3C2CF08C620024BB1F /* ViewController */,
 				DE9D0E3B2CF08C5E0024BB1F /* View */,
@@ -1249,7 +1249,7 @@
 		DE9D0E3F2CF08D020024BB1F /* Ranking */ = {
 			isa = PBXGroup;
 			children = (
-				DE9D0E4B2CF0C8FF0024BB1F /* Model */,
+				DE9D0E4B2CF0C8FF0024BB1F /* Support */,
 				DE9D0E422CF090560024BB1F /* ViewModel */,
 				DE9D0E412CF08D110024BB1F /* ViewController */,
 				DE9D0E402CF08D0D0024BB1F /* View */,
@@ -1299,20 +1299,20 @@
 			path = Subview;
 			sourceTree = "<group>";
 		};
-		DE9D0E4B2CF0C8FF0024BB1F /* Model */ = {
+		DE9D0E4B2CF0C8FF0024BB1F /* Support */ = {
 			isa = PBXGroup;
 			children = (
 				DE9D0E4C2CF0C9250024BB1F /* TeamImageMapper.swift */,
 			);
-			path = Model;
+			path = Support;
 			sourceTree = "<group>";
 		};
-		DE9D0E542CF0F27B0024BB1F /* Model */ = {
+		DE9D0E542CF0F27B0024BB1F /* Support */ = {
 			isa = PBXGroup;
 			children = (
 				050E0CE92C74DC4B00326EEA /* MatchProgress.swift */,
 			);
-			path = Model;
+			path = Support;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
