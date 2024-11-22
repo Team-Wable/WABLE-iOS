@@ -29,9 +29,9 @@ extension InfoAPI {
             .eraseToAnyPublisher()
     }
     
-    func getGameType() -> AnyPublisher<[LCKGameTypeDTO]?, WableNetworkError> {
+    func getGameType() -> AnyPublisher<LCKGameTypeDTO?, WableNetworkError> {
         infoProvider.requestPublisher(.getGameType)
-            .tryMap { [weak self] response -> [LCKGameTypeDTO]? in
+            .tryMap { [weak self] response -> LCKGameTypeDTO? in
                 return try self?.parseResponse(statusCode: response.statusCode, data: response.data)
             }
             .mapError { $0 as? WableNetworkError ?? .unknownError($0.localizedDescription) }
