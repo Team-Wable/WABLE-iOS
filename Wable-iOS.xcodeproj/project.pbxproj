@@ -191,6 +191,8 @@
 		3CF344EF2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344EE2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift */; };
 		DE1B58172CDDD3F90017C319 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DE1B58162CDDD3F90017C319 /* GoogleService-Info.plist */; };
 		DE7FAAA02CDF971300A4D8A2 /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */; };
+		DE9D0E342CF087B30024BB1F /* LCKGameTypeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E332CF087B30024BB1F /* LCKGameTypeDTO.swift */; };
+		DE9D0E362CF088D10024BB1F /* LCKTeamRankDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */; };
 		DEB5793A2CE3541300BEE54D /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DEB579392CE3541300BEE54D /* CombineCocoa */; };
 		DEF0D39F2CED68DE002FA608 /* WableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0D39E2CED68DE002FA608 /* WableSegmentedControl.swift */; };
 /* End PBXBuildFile section */
@@ -375,6 +377,8 @@
 		DE1B58142CDDD1E50017C319 /* Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
 		DE1B58162CDDD3F90017C319 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
+		DE9D0E332CF087B30024BB1F /* LCKGameTypeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKGameTypeDTO.swift; sourceTree = "<group>"; };
+		DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamRankDTO.swift; sourceTree = "<group>"; };
 		DEF0D39E2CED68DE002FA608 /* WableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSegmentedControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -562,6 +566,8 @@
 			isa = PBXGroup;
 			children = (
 				050E0CEE2C74DE3B00326EEA /* TodayMatchesDTO.swift */,
+				DE9D0E332CF087B30024BB1F /* LCKGameTypeDTO.swift */,
+				DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */,
 			);
 			path = ResponseDTO;
 			sourceTree = "<group>";
@@ -1300,6 +1306,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE9D0E362CF088D10024BB1F /* LCKTeamRankDTO.swift in Sources */,
 				050E0CBF2C74B8A400326EEA /* FeedContentView.swift in Sources */,
 				0593F6E42C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift in Sources */,
 				3C3531922C6F1AEA0015A8FA /* LoginViewController.swift in Sources */,
@@ -1376,6 +1383,7 @@
 				3C8B4E1B2C78E55200174943 /* TokenManager.swift in Sources */,
 				3CDE2E1D2C723325004A84CB /* NotificationSegmentedControl.swift in Sources */,
 				050E0CB52C74B85800326EEA /* HomeView.swift in Sources */,
+				DE9D0E342CF087B30024BB1F /* LCKGameTypeDTO.swift in Sources */,
 				3C3531842C6F16D00015A8FA /* Config.swift in Sources */,
 				050E0D022C77372F00326EEA /* HomeAPI.swift in Sources */,
 				3C8B4E4A2C80E38600174943 /* FeedDetailResponseDTO.swift in Sources */,
