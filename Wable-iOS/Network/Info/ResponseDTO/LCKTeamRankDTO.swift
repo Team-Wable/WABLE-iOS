@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LCKTeamRankDTO: Codable {
+struct LCKTeamRankDTO: Codable, Hashable {
     let teamRankNumber: Int
     let teamName: String
     let teamWinCount: Int

@@ -193,6 +193,10 @@
 		DE7FAAA02CDF971300A4D8A2 /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */; };
 		DE9D0E342CF087B30024BB1F /* LCKGameTypeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E332CF087B30024BB1F /* LCKGameTypeDTO.swift */; };
 		DE9D0E362CF088D10024BB1F /* LCKTeamRankDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */; };
+		DE9D0E442CF090630024BB1F /* InfoRankingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E432CF090630024BB1F /* InfoRankingViewModel.swift */; };
+		DE9D0E472CF0AA640024BB1F /* RankCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E462CF0AA640024BB1F /* RankCell.swift */; };
+		DE9D0E4A2CF0AFFA0024BB1F /* RankDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E492CF0AFFA0024BB1F /* RankDescriptionView.swift */; };
+		DE9D0E4D2CF0C9250024BB1F /* TeamImageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E4C2CF0C9250024BB1F /* TeamImageMapper.swift */; };
 		DEB5793A2CE3541300BEE54D /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DEB579392CE3541300BEE54D /* CombineCocoa */; };
 		DEF0D39F2CED68DE002FA608 /* WableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0D39E2CED68DE002FA608 /* WableSegmentedControl.swift */; };
 /* End PBXBuildFile section */
@@ -379,6 +383,10 @@
 		DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
 		DE9D0E332CF087B30024BB1F /* LCKGameTypeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKGameTypeDTO.swift; sourceTree = "<group>"; };
 		DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamRankDTO.swift; sourceTree = "<group>"; };
+		DE9D0E432CF090630024BB1F /* InfoRankingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRankingViewModel.swift; sourceTree = "<group>"; };
+		DE9D0E462CF0AA640024BB1F /* RankCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankCell.swift; sourceTree = "<group>"; };
+		DE9D0E492CF0AFFA0024BB1F /* RankDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankDescriptionView.swift; sourceTree = "<group>"; };
+		DE9D0E4C2CF0C9250024BB1F /* TeamImageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamImageMapper.swift; sourceTree = "<group>"; };
 		DEF0D39E2CED68DE002FA608 /* WableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSegmentedControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -513,14 +521,6 @@
 				050E0CEB2C74DDD800326EEA /* TeamScoreView.swift */,
 			);
 			path = SubView;
-			sourceTree = "<group>";
-		};
-		050E0CE82C74D81D00326EEA /* Supports */ = {
-			isa = PBXGroup;
-			children = (
-				050E0CE92C74DC4B00326EEA /* MatchProgress.swift */,
-			);
-			path = Supports;
 			sourceTree = "<group>";
 		};
 		050E0CED2C74DE2700326EEA /* Info */ = {
@@ -770,7 +770,6 @@
 		0547F4ED2C64C6EF001E3039 /* Info */ = {
 			isa = PBXGroup;
 			children = (
-				050E0CE82C74D81D00326EEA /* Supports */,
 				DE9D0E372CF08C240024BB1F /* Page */,
 				DE9D0E3A2CF08C520024BB1F /* Match */,
 				DE9D0E3F2CF08D020024BB1F /* Ranking */,
@@ -1205,6 +1204,7 @@
 		DE9D0E3A2CF08C520024BB1F /* Match */ = {
 			isa = PBXGroup;
 			children = (
+				DE9D0E542CF0F27B0024BB1F /* Model */,
 				DE9D0E3D2CF08C680024BB1F /* ViewModel */,
 				DE9D0E3C2CF08C620024BB1F /* ViewController */,
 				DE9D0E3B2CF08C5E0024BB1F /* View */,
@@ -1249,6 +1249,8 @@
 		DE9D0E3F2CF08D020024BB1F /* Ranking */ = {
 			isa = PBXGroup;
 			children = (
+				DE9D0E4B2CF0C8FF0024BB1F /* Model */,
+				DE9D0E422CF090560024BB1F /* ViewModel */,
 				DE9D0E412CF08D110024BB1F /* ViewController */,
 				DE9D0E402CF08D0D0024BB1F /* View */,
 			);
@@ -1258,6 +1260,8 @@
 		DE9D0E402CF08D0D0024BB1F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DE9D0E482CF0AFE00024BB1F /* Subview */,
+				DE9D0E452CF0AA5D0024BB1F /* Cell */,
 				050E0D112C8070F300326EEA /* RankingView.swift */,
 			);
 			path = View;
@@ -1269,6 +1273,46 @@
 				3CDE2E112C71D3DC004A84CB /* InfoRankingViewController.swift */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		DE9D0E422CF090560024BB1F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DE9D0E432CF090630024BB1F /* InfoRankingViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DE9D0E452CF0AA5D0024BB1F /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DE9D0E462CF0AA640024BB1F /* RankCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		DE9D0E482CF0AFE00024BB1F /* Subview */ = {
+			isa = PBXGroup;
+			children = (
+				DE9D0E492CF0AFFA0024BB1F /* RankDescriptionView.swift */,
+			);
+			path = Subview;
+			sourceTree = "<group>";
+		};
+		DE9D0E4B2CF0C8FF0024BB1F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DE9D0E4C2CF0C9250024BB1F /* TeamImageMapper.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DE9D0E542CF0F27B0024BB1F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				050E0CE92C74DC4B00326EEA /* MatchProgress.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1417,6 +1461,7 @@
 				3CF344E12C74AF100038BB53 /* MyPageAccountInfoTableViewCell.swift in Sources */,
 				3C8B4E182C78E21900174943 /* SocialLoginResponseDTO.swift in Sources */,
 				0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */,
+				DE9D0E4A2CF0AFFA0024BB1F /* RankDescriptionView.swift in Sources */,
 				050E0CC32C74B8B600326EEA /* FeedBottomView.swift in Sources */,
 				0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */,
 				050E0CD92C74BFC200326EEA /* InfoLogoView.swift in Sources */,
@@ -1450,6 +1495,7 @@
 				DE9D0E342CF087B30024BB1F /* LCKGameTypeDTO.swift in Sources */,
 				3C3531842C6F16D00015A8FA /* Config.swift in Sources */,
 				050E0D022C77372F00326EEA /* HomeAPI.swift in Sources */,
+				DE9D0E4D2CF0C9250024BB1F /* TeamImageMapper.swift in Sources */,
 				3C8B4E4A2C80E38600174943 /* FeedDetailResponseDTO.swift in Sources */,
 				3C8B4E552C84081B00174943 /* ReportRequestDTO.swift in Sources */,
 				050E0D162C8252B200326EEA /* NotificationAPI.swift in Sources */,
@@ -1501,6 +1547,7 @@
 				3C3531942C6F1F2A0015A8FA /* UIViewController+.swift in Sources */,
 				050E0D242C877ED800326EEA /* UserProfile.swift in Sources */,
 				3C8B4E592C840AD300174943 /* Functions.swift in Sources */,
+				DE9D0E442CF090630024BB1F /* InfoRankingViewModel.swift in Sources */,
 				3CDE2E0B2C71CE30004A84CB /* AppStoreCheckManager.swift in Sources */,
 				3C3531A22C6F255D0015A8FA /* JoinLCKYearViewController.swift in Sources */,
 				050E0CAC2C74B7BB00326EEA /* HomeFeedListDTO.swift in Sources */,
@@ -1512,6 +1559,7 @@
 				3C3531822C6F15D30015A8FA /* KeychainWrapper.swift in Sources */,
 				3CDE2E0E2C71D393004A84CB /* InfoView.swift in Sources */,
 				3CDE2DEF2C6F3365004A84CB /* JoinAgreementListCustomView.swift in Sources */,
+				DE9D0E472CF0AA640024BB1F /* RankCell.swift in Sources */,
 				3CDE2E272C7301E0004A84CB /* MyPageSegmentedControl.swift in Sources */,
 				050E0CD52C74BE6300326EEA /* MatchView.swift in Sources */,
 				050E0CEA2C74DC4B00326EEA /* MatchProgress.swift in Sources */,
