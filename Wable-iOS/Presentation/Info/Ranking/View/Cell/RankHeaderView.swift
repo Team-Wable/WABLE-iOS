@@ -1,15 +1,15 @@
 //
-//  RankDescriptionView.swift
+//  RankHeaderView.swift
 //  Wable-iOS
 //
-//  Created by 김진웅 on 11/22/24.
+//  Created by 김진웅 on 11/24/24.
 //
 
 import UIKit
 
 import SnapKit
 
-final class RankDescriptionView: UIView {
+final class RankHeaderView: UICollectionReusableView {
     private let rankLabel: UILabel = {
         let label = UILabel()
         label.text = "순위"
@@ -80,7 +80,7 @@ final class RankDescriptionView: UIView {
 
 // MARK: - Private Method
 
-private extension RankDescriptionView {
+private extension RankHeaderView {
     func setupView() {
         backgroundColor = .gray200
         layer.cornerRadius = 8.adjusted

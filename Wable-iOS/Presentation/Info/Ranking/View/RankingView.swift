@@ -10,32 +10,40 @@ import UIKit
 import SnapKit
 
 final class RankingView: UIView {
-
+    
     // MARK: - UI Component
     
-    let sessionView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .purple10
-        view.layer.cornerRadius = 8.adjusted
-        view.clipsToBounds = true
-        return view
+    let collectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: UICollectionViewLayout()
+        )
+        
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        return collectionView
     }()
     
-    let sessionLabel: UILabel = {
-       let label = UILabel()
-        label.text = StringLiterals.Info.lckSummer
-        label.font = .body3
-        label.textColor = .purple100
-        label.textAlignment = .center
-        return label
+    let submitOpinionButton: UIButton = {
+        let button = UIButton()
+        
+        let fullText = StringLiterals.Info.submitOpinionButtonLongTitle
+        let attributedString = NSMutableAttributedString(
+            string: fullText,
+            attributes: [.font: UIFont.body3, .foregroundColor: UIColor.white]
+        )
+        
+        let targetText = StringLiterals.Info.submitOpinionButtonLongTitle
+        if let range = fullText.range(of: targetText) {
+            let nsRange = NSRange(range, in: fullText)
+            attributedString.addAttributes([.foregroundColor: UIColor.sky50], range: nsRange)
+        }
+        
+        button.setAttributedTitle(attributedString, for: .normal)
+        button.backgroundColor = .wableBlack
+        button.layer.cornerRadius = 12.adjusted
+        return button
     }()
-    
-    let descriptionView = RankDescriptionView()
-    
-    private(set) lazy var collectionView = UICollectionView(
-        frame: .zero,
-        collectionViewLayout: collectionViewLayout
-    )
     
     // MARK: - Initializer
     
@@ -54,61 +62,26 @@ final class RankingView: UIView {
 // MARK: - Private Method
 
 private extension RankingView {
-    var collectionViewLayout: UICollectionViewCompositionalLayout {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(40.adjusted)
-        )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(40.adjusted)
-        )
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitems: [item]
-        )
-        
-        let section = NSCollectionLayoutSection(group: group)
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        
-        return layout
-    }
-    
     func setupView() {
         backgroundColor = .wableWhite
-        
-        sessionView.addSubviews(sessionLabel)
+    
         addSubviews(
-            sessionView,
-            descriptionView,
-            collectionView
+            collectionView,
+            submitOpinionButton
         )
     }
     
     func setupConstraints() {
-        sessionView.snp.makeConstraints { make in
+        collectionView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(20)
             make.horizontalEdges.equalToSuperview().inset(16)
-            make.height.equalTo(40.adjustedH)
         }
         
-        sessionLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
-        
-        descriptionView.snp.makeConstraints { make in
-            make.top.equalTo(sessionView.snp.bottom).offset(10)
+        submitOpinionButton.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom).offset(20)
             make.horizontalEdges.equalToSuperview().inset(16)
-            make.height.equalTo(36.adjustedH)
-        }
-        
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(descriptionView.snp.bottom)
-            make.horizontalEdges.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview()
+            make.height.equalTo(48.adjustedH)
+            make.bottom.equalToSuperview().offset(-12)
         }
     }
 }
