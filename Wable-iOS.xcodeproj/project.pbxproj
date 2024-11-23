@@ -195,8 +195,9 @@
 		DE9D0E362CF088D10024BB1F /* LCKTeamRankDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */; };
 		DE9D0E442CF090630024BB1F /* InfoRankingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E432CF090630024BB1F /* InfoRankingViewModel.swift */; };
 		DE9D0E472CF0AA640024BB1F /* RankCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E462CF0AA640024BB1F /* RankCell.swift */; };
-		DE9D0E4A2CF0AFFA0024BB1F /* RankDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E492CF0AFFA0024BB1F /* RankDescriptionView.swift */; };
 		DE9D0E4D2CF0C9250024BB1F /* TeamImageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E4C2CF0C9250024BB1F /* TeamImageMapper.swift */; };
+		DEAD9CBD2CF2618F00D5CD11 /* SessionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAD9CBC2CF2618F00D5CD11 /* SessionCell.swift */; };
+		DEAD9CBF2CF2644600D5CD11 /* RankHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAD9CBE2CF2644600D5CD11 /* RankHeaderView.swift */; };
 		DEB5793A2CE3541300BEE54D /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DEB579392CE3541300BEE54D /* CombineCocoa */; };
 		DEF0D39F2CED68DE002FA608 /* WableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0D39E2CED68DE002FA608 /* WableSegmentedControl.swift */; };
 /* End PBXBuildFile section */
@@ -385,8 +386,9 @@
 		DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamRankDTO.swift; sourceTree = "<group>"; };
 		DE9D0E432CF090630024BB1F /* InfoRankingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRankingViewModel.swift; sourceTree = "<group>"; };
 		DE9D0E462CF0AA640024BB1F /* RankCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankCell.swift; sourceTree = "<group>"; };
-		DE9D0E492CF0AFFA0024BB1F /* RankDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankDescriptionView.swift; sourceTree = "<group>"; };
 		DE9D0E4C2CF0C9250024BB1F /* TeamImageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamImageMapper.swift; sourceTree = "<group>"; };
+		DEAD9CBC2CF2618F00D5CD11 /* SessionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCell.swift; sourceTree = "<group>"; };
+		DEAD9CBE2CF2644600D5CD11 /* RankHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankHeaderView.swift; sourceTree = "<group>"; };
 		DEF0D39E2CED68DE002FA608 /* WableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSegmentedControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1260,7 +1262,6 @@
 		DE9D0E402CF08D0D0024BB1F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				DE9D0E482CF0AFE00024BB1F /* Subview */,
 				DE9D0E452CF0AA5D0024BB1F /* Cell */,
 				050E0D112C8070F300326EEA /* RankingView.swift */,
 			);
@@ -1287,16 +1288,10 @@
 			isa = PBXGroup;
 			children = (
 				DE9D0E462CF0AA640024BB1F /* RankCell.swift */,
+				DEAD9CBE2CF2644600D5CD11 /* RankHeaderView.swift */,
+				DEAD9CBC2CF2618F00D5CD11 /* SessionCell.swift */,
 			);
 			path = Cell;
-			sourceTree = "<group>";
-		};
-		DE9D0E482CF0AFE00024BB1F /* Subview */ = {
-			isa = PBXGroup;
-			children = (
-				DE9D0E492CF0AFFA0024BB1F /* RankDescriptionView.swift */,
-			);
-			path = Subview;
 			sourceTree = "<group>";
 		};
 		DE9D0E4B2CF0C8FF0024BB1F /* Support */ = {
@@ -1461,7 +1456,6 @@
 				3CF344E12C74AF100038BB53 /* MyPageAccountInfoTableViewCell.swift in Sources */,
 				3C8B4E182C78E21900174943 /* SocialLoginResponseDTO.swift in Sources */,
 				0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */,
-				DE9D0E4A2CF0AFFA0024BB1F /* RankDescriptionView.swift in Sources */,
 				050E0CC32C74B8B600326EEA /* FeedBottomView.swift in Sources */,
 				0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */,
 				050E0CD92C74BFC200326EEA /* InfoLogoView.swift in Sources */,
@@ -1520,6 +1514,7 @@
 				050E0CAE2C74B7F100326EEA /* WablePopupView.swift in Sources */,
 				3CDE2E082C7137C8004A84CB /* JoinLCKTeamViewModel.swift in Sources */,
 				050E0CDD2C74C87300326EEA /* MatchTableViewCell.swift in Sources */,
+				DEAD9CBF2CF2644600D5CD11 /* RankHeaderView.swift in Sources */,
 				0547F4FF2C64C954001E3039 /* ExampleViewController.swift in Sources */,
 				3CF344D02C749A120038BB53 /* MyPageBottomSheetView.swift in Sources */,
 				3C8B4E3D2C79119F00174943 /* MyPageMemberCommentResponseDTO.swift in Sources */,
@@ -1572,6 +1567,7 @@
 				050E0CC72C74B8FD00326EEA /* FeedDetailTableViewCell.swift in Sources */,
 				0547F4C62C6217B7001E3039 /* StringLiterals.swift in Sources */,
 				050E0CE52C74D06500326EEA /* ATeamView.swift in Sources */,
+				DEAD9CBD2CF2618F00D5CD11 /* SessionCell.swift in Sources */,
 				050E0CA42C74B35500326EEA /* UIApplication+.swift in Sources */,
 				050E0CB72C74B87400326EEA /* FeedDetailView.swift in Sources */,
 				050E0CF92C7516C900326EEA /* InfoNotificationDTO.swift in Sources */,
