@@ -6,7 +6,7 @@
 //
 
 import Combine
-import SafariServices
+import CombineCocoa
 import UIKit
 
 import SnapKit
@@ -26,21 +26,19 @@ final class FeedDetailViewController: UIViewController {
     private var cancelBag = CancelBag()
     private var cancellables = Set<AnyCancellable>()
     
-    private lazy var postButtonTapped =
-    self.feedDetailView.bottomWriteView.uploadButton.publisher(for: .touchUpInside)
-        .debounce(for: .seconds(0.3), scheduler: RunLoop.main)
-        .map { _ in
-            
-            self.feedDetailView.bottomWriteView.writeTextView.resignFirstResponder()
-            
-            return (WriteReplyRequestDTO(
-                commentText: self.feedDetailView.bottomWriteView.writeTextView.text,
-                notificationTriggerType: "comment"), self.contentId, self.feedData?.memberNickname ?? "")
-            
-        }.eraseToAnyPublisher()
+    private lazy var postButtonTapped: AnyPublisher<(String, Int), Never> = {
+        self.feedDetailView.bottomWriteView.uploadButton
+            .tapPublisher
+            .debounce(for: .seconds(0.3), scheduler: RunLoop.main)
+            .map { _ in
+                self.feedDetailView.bottomWriteView.writeTextView.resignFirstResponder()
+                return (self.feedDetailView.bottomWriteView.writeTextView.text ?? "", self.viewModel.contentIDSubject.value ?? Int())
+            }
+            .eraseToAnyPublisher()
+    }()
     
     private lazy var deleteButtonTapped = deletePopupView?.confirmButton.publisher(for: .touchUpInside).map { _ in
-        return self.contentId
+        return self.viewModel.contentIDSubject.value
     }.eraseToAnyPublisher()
     
     private lazy var deleteReplyButtonTapped = deletePopupView?.confirmButton.publisher(for: .touchUpInside).map { _ in
@@ -62,12 +60,11 @@ final class FeedDetailViewController: UIViewController {
     var relateText: String = ""
     let warnUserURL = URL(string: StringLiterals.Network.warnUserGoogleFormURL)
     private let placeholder = StringLiterals.Home.placeholder
-
+    
     var nowShowingPopup: String = ""
     
     let refreshControl = UIRefreshControl()
     
-    var feedData: HomeFeedDTO? = nil
     var getFeedData: FeedDetailResponseDTO? = nil
     
     private var paginationReplyData: [FlattenReplyModel] = []
@@ -77,8 +74,8 @@ final class FeedDetailViewController: UIViewController {
         }
     }
     
-    // TODO: - 이놈의 아웃풋 = textField placeholder??(닉네임)
     private let replyButtonDidTapSubject = PassthroughSubject<Int?, Never>()
+    private let viewWillAppear = PassthroughSubject<Int?, Never>()
     
     // MARK: - UI Components
     
@@ -98,7 +95,7 @@ final class FeedDetailViewController: UIViewController {
     // MARK: - Life Cycles
     
     override func loadView() {
-
+        
         view = feedDetailView
         self.view.backgroundColor = .wableWhite
     }
@@ -129,7 +126,10 @@ final class FeedDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         setNavigationBar()
-        viewModel.viewWillAppear.send(contentId)
+        
+        // TODO: - ViewModel 형태 통일하기
+        viewWillAppear.send(viewModel.contentIDSubject.value)
+        self.viewModel.viewWillAppear.send(self.viewModel.contentIDSubject.value ?? Int())
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -144,7 +144,7 @@ extension FeedDetailViewController {
         self.view.backgroundColor = .wableWhite
         feedDetailView.feedDetailTableView.rowHeight = UITableView.automaticDimension
         feedDetailView.feedDetailTableView.estimatedRowHeight = 100
-        feedDetailView.bottomWriteView.setPlaceholder(nickname: self.feedData?.memberNickname ?? "")
+        feedDetailView.bottomWriteView.setPlaceholder(nickname: self.getFeedData?.memberNickname ?? "")
         feedDetailView.bottomWriteView.writeTextView.textContainerInset = UIEdgeInsets(top: 10.adjusted,
                                                                                        left: 10.adjusted,
                                                                                        bottom: 10.adjusted,
@@ -194,6 +194,7 @@ extension FeedDetailViewController {
         viewModel.replyDatas
             .receive(on: DispatchQueue.main)
             .sink { [weak self] data in
+                print("replyDatas🥳🥳🥳")
                 self?.replyData = data
                 self?.feedDetailView.feedDetailTableView.reloadData()
             }
@@ -219,7 +220,7 @@ extension FeedDetailViewController {
         self.viewModel.cursor = -1
         DispatchQueue.main.async {
             self.getAPI()
-            self.viewModel.viewWillAppear.send(self.contentId)
+            self.viewModel.viewWillAppear.send(self.viewModel.contentIDSubject.value ?? Int())
         }
         self.perform(#selector(finishedRefreshing), with: nil, afterDelay: 0.1)
     }
@@ -231,7 +232,20 @@ extension FeedDetailViewController {
     }
     
     func getFeedData(data: HomeFeedDTO) {
-        self.feedData = data
+        viewModel.contentIDSubject.send(data.contentID ?? Int())
+        self.getFeedData = FeedDetailResponseDTO(memberId: data.memberID,
+                                                 memberProfileUrl: data.memberProfileURL,
+                                                 memberNickname: data.memberNickname,
+                                                 isGhost: data.isGhost,
+                                                 memberGhost: data.memberGhost,
+                                                 isLiked: data.isLiked,
+                                                 time: data.time,
+                                                 likedNumber: data.likedNumber,
+                                                 commentNumber: data.commentNumber ?? -1,
+                                                 contentTitle: data.contentTitle ?? "",
+                                                 contentText: data.contentText ?? "",
+                                                 contentImageUrl: data.contentImageURL,
+                                                 memberFanTeam: data.memberFanTeam)
     }
 }
 
@@ -240,10 +254,11 @@ extension FeedDetailViewController {
 extension FeedDetailViewController {
     private func getAPI() {
         print("getAPI")
-        let input = FeedDetailViewModel.Input(viewUpdate: Just((contentId)).eraseToAnyPublisher(),
+        let input = FeedDetailViewModel.Input(viewUpdate: viewWillAppear.eraseToAnyPublisher(),
                                               likeButtonTapped: nil,
                                               commentLikeButtonTapped: nil,
-                                              postButtonTapped: postButtonTapped)
+                                              postButtonTapped: postButtonTapped,
+                                              replyButtonDidTapped: replyButtonDidTapSubject.eraseToAnyPublisher())
         
         let output = viewModel.transform(from: input, cancelBag: cancelBag)
         
@@ -252,6 +267,8 @@ extension FeedDetailViewController {
             .sink { data in
                 self.postMemberId = data.memberId
                 self.getFeedData = data
+                self.makeTextViewEmpty()
+                self.feedDetailView.feedDetailTableView.reloadData()
             }
             .store(in: self.cancelBag)
         
@@ -263,29 +280,22 @@ extension FeedDetailViewController {
                     self.replyData = []
                     self.paginationReplyData = []
                     DispatchQueue.main.async {
-                        self.didPullToRefresh()
-                        self.feedDetailView.bottomWriteView.uploadButton.isEnabled = false
-                        self.feedDetailView.bottomWriteView.writeTextView.text = nil
-                        self.feedDetailView.bottomWriteView.setPlaceholder(nickname: self.feedData?.memberNickname ?? "")
-                        self.feedDetailView.bottomWriteView.writeTextView.textContainerInset = UIEdgeInsets(top: 10.adjusted,
-                                                                                                            left: 10.adjusted,
-                                                                                                            bottom: 10.adjusted,
-                                                                                                            right: 10.adjusted)
-                        
+                        self.viewModel.cursor = -1
+                        self.viewModel.viewWillAppear.send(self.viewModel.contentIDSubject.value ?? Int())
+                        self.makeTextViewEmpty()
                         self.feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
                     }
+                    self.feedDetailView.feedDetailTableView.reloadData()
                 }
             }
             .store(in: cancelBag)
         
-        viewModel.isButtonEnabled
+        output.replyTargetNickname
             .receive(on: RunLoop.main)
-            .sink { isEnabled in
-                print("🍣🍣🍣🍣🍣🍣🍣🍣🍣🍣upload Button isEnabled = \(isEnabled)🍣🍣🍣🍣🍣🍣🍣🍣🍣🍣")
-                self.feedDetailView.bottomWriteView.uploadButton.isEnabled = isEnabled
+            .sink { placeholder in
+                self.feedDetailView.bottomWriteView.placeholderLabel.text = placeholder
             }
             .store(in: cancelBag)
-
     }
     
     @objc
@@ -305,40 +315,25 @@ extension FeedDetailViewController: UITextViewDelegate {
         if isDeletingAllText {
             setTextViewHeight(textView, isDeletingAllText: isDeletingAllText)
         }
-    
+        
         return true
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        
-        // 텍스트뷰 크기 조정 로직
         setTextViewHeight(textView, isDeletingAllText: false)
         
-        guard !textView.text.isEmpty else {
-            // TODO: - 여기 닉네임 받는 부분 변경. vc 프로퍼티 아니도록
-            feedDetailView.bottomWriteView.setPlaceholder(nickname: feedData?.memberNickname ?? String())
-            return
-        }
+        let trimmedText = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        feedDetailView.bottomWriteView.placeholderLabel.isHidden = true
-        
-        if !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            makeUploadButtonActivate()
-        } else {
-            makeUploadButtonDeactivate()
-        }
+        feedDetailView.bottomWriteView.placeholderLabel.isHidden = !textView.text.isEmpty
+        trimmedText.isEmpty ? makeUploadButtonDeactivate() : makeUploadButtonActivate()
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        print("textViewDidEndEditing")
-        
         if textView.text.isEmpty {
-            feedDetailView.bottomWriteView.setPlaceholder(nickname: feedData?.memberNickname ?? String())
-            makeUploadButtonDeactivate()
+            feedDetailView.bottomWriteView.placeholderLabel.isHidden = false
         }
     }
     
-    // 댓글 작성 중 텍스트뷰 높이 조정
     func setTextViewHeight(_ textView: UITextView, isDeletingAllText: Bool) {
         let size = CGSize(width: textView.frame.width, height: .infinity)
         let estimatedSize = textView.sizeThatFits(size)
@@ -370,6 +365,10 @@ extension FeedDetailViewController: UITextViewDelegate {
         feedDetailView.bottomWriteView.uploadButton.isEnabled = false
     }
     
+    private func makeTextViewEmpty() {
+        self.feedDetailView.bottomWriteView.writeTextView.text = nil
+        self.feedDetailView.bottomWriteView.placeholderLabel.isHidden = false
+    }
     
     private func showGhostPopupView() {
         self.ghostPopupView = WablePopupView(popupTitle: StringLiterals.Home.ghostPopupTitle,
@@ -478,7 +477,7 @@ extension FeedDetailViewController: UITableViewDataSource {
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView == feedDetailView.feedDetailTableView {
             let lastCommentID = self.replyData.last?.commentID ?? Int()
-
+            
             if replyData.count % 15 == 0 && viewModel.cursor != lastCommentID && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 viewModel.cursor = lastCommentID
                 viewModel.paginationDidAction.send(contentId)
@@ -499,34 +498,30 @@ extension FeedDetailViewController: UITableViewDataSource {
             cell.seperateLineView.isHidden = false
             
             cell.alarmTriggerType = "contentGhost"
-            cell.targetMemberId = feedData?.memberID ?? 0
-            cell.alarmTriggerdId = feedData?.contentID ?? 0
+            cell.targetMemberId = getFeedData?.memberId ?? 0
+            cell.alarmTriggerdId = viewModel.contentIDSubject.value ?? Int()
+            cell.bind(data: HomeFeedDTO(
+                memberID: getFeedData?.memberId ?? 0,
+                memberProfileURL: getFeedData?.memberProfileUrl ?? "",
+                memberNickname: getFeedData?.memberNickname ?? "",
+                isGhost: getFeedData?.isGhost ?? false,
+                memberGhost: getFeedData?.memberGhost ?? 0,
+                isLiked: getFeedData?.isLiked ?? false,
+                time: getFeedData?.time ?? "",
+                likedNumber: getFeedData?.likedNumber ?? 0,
+                memberFanTeam: getFeedData?.memberFanTeam ?? "",
+                contentID: self.contentId,
+                contentTitle: getFeedData?.contentTitle ?? "",
+                contentText: getFeedData?.contentText ?? "",
+                commentNumber: getFeedData?.commentNumber ?? 0,
+                isDeleted: false,
+                message: getFeedData?.contentImageUrl ?? "",
+                commnetNumber: 0,
+                contentImageURL: "")
+            )
             
-            if let feedData = feedData {
-                cell.bind(data: feedData)
-            } else {
-                cell.bind(data: HomeFeedDTO(
-                    memberID: getFeedData?.memberId ?? 0,
-                    memberProfileURL: getFeedData?.memberProfileUrl ?? "",
-                    memberNickname: getFeedData?.memberNickname ?? "",
-                    isGhost: getFeedData?.isGhost ?? false,
-                    memberGhost: getFeedData?.memberGhost ?? 0,
-                    isLiked: getFeedData?.isLiked ?? false,
-                    time: getFeedData?.time ?? "",
-                    likedNumber: getFeedData?.likedNumber ?? 0,
-                    memberFanTeam: getFeedData?.memberFanTeam ?? "",
-                    contentID: self.contentId,
-                    contentTitle: getFeedData?.contentTitle ?? "",
-                    contentText: getFeedData?.contentText ?? "",
-                    commentNumber: getFeedData?.commentNumber ?? 0,
-                    isDeleted: false,
-                    message: getFeedData?.contentImageUrl ?? "",
-                    commnetNumber: 0,
-                    contentImageURL: "")
-                )
-            }
-            
-            if feedData?.memberID == loadUserData()?.memberId || getFeedData?.memberId == loadUserData()?.memberId {
+            if getFeedData?.memberId == loadUserData()?.memberId {
+                
                 cell.bottomView.ghostButton.isHidden = true
                 
                 cell.menuButtonTapped = {
@@ -535,9 +530,6 @@ extension FeedDetailViewController: UITableViewDataSource {
                     self.homeBottomsheetView.reportButton.isHidden = true
                     
                     self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
-                    if let feedData = self.feedData {
-                        self.contentId = feedData.contentID ?? 0
-                    }
                     self.nowShowingPopup = "deletePost"
                 }
             } else {
@@ -549,34 +541,33 @@ extension FeedDetailViewController: UITableViewDataSource {
                     self.homeBottomsheetView.reportButton.isHidden = false
                     self.homeBottomsheetView.deleteButton.isHidden = true
                     
-                    self.reportTargetNickname = self.feedData?.memberNickname ?? ""
-                    self.relateText = self.feedData?.contentText ?? ""
+                    self.reportTargetNickname = self.getFeedData?.memberNickname ?? ""
+                    self.relateText = self.getFeedData?.contentText ?? ""
                     self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
                     self.nowShowingPopup = "report"
                 }
             }
             
-            var memberGhost = feedData?.memberGhost
+            var memberGhost = getFeedData?.memberGhost
             memberGhost = adjustGhostValue(memberGhost ?? 0)
             
             cell.grayView.layer.zPosition = 1
             
             // 내가 투명도를 누른 유저인 경우 -85% 적용
-            if feedData?.isGhost == true {
+            if getFeedData?.isGhost == true {
                 cell.grayView.alpha = 0.85
             } else {
                 cell.grayView.alpha = CGFloat(Double(-(memberGhost ?? 0)) / 100)
             }
             
-            cell.profileButtonAction = {
-                if let feedData = self.feedData {
-                    if feedData.memberID == loadUserData()?.memberId ?? 0  {
-                        self.tabBarController?.selectedIndex = 3
-                    } else {
-                        let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
-                        viewController.memberId = feedData.memberID
-                        self.navigationController?.pushViewController(viewController, animated: true)
-                    }
+            cell.profileButtonAction = { [weak self] in
+                guard let self = self else { return }
+                if getFeedData?.memberId == loadUserData()?.memberId ?? 0  {
+                    self.tabBarController?.selectedIndex = 3
+                } else {
+                    let viewController = MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
+                    viewController.memberId = getFeedData?.memberId ?? Int()
+                    self.navigationController?.pushViewController(viewController, animated: true)
                 }
             }
             
@@ -593,16 +584,14 @@ extension FeedDetailViewController: UITableViewDataSource {
                 var currentHeartCount = cell.bottomView.heartButton.titleLabel?.text
                 
                 if cell.bottomView.isLiked == true {
-                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .gray600)
+                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .wableBlack)
                 } else {
                     AmplitudeManager.shared.trackEvent(tag: "click_like_post")
-                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .gray600)
+                    cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .wableBlack)
                 }
-                if let feedData = self.feedData {
-                    self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: feedData.contentID ?? 0)
-                } else {
-                    self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.contentId)
-                }
+                
+                self.postLikeButtonAPI(isClicked: cell.bottomView.isLiked, contentId: self.viewModel.contentIDSubject.value ?? 0)
+                
                 
                 cell.bottomView.isLiked.toggle()
             }
@@ -618,7 +607,7 @@ extension FeedDetailViewController: UITableViewDataSource {
                         
                         self?.photoDetailView?.removePhotoButton.addTarget(self, action: #selector(self?.removePhotoButtonTapped), for: .touchUpInside)
                         
-                        if let imageURL = self?.feedData?.contentImageURL {
+                        if let imageURL = self?.getFeedData?.contentImageUrl {
                             self?.photoDetailView?.photoImageView.loadContentImage(url: imageURL) { image in
                                 // 이미지 로드가 완료된 후, 동적으로 높이 변경
                                 self?.photoDetailView?.updateImageViewHeight(with: image)
@@ -632,12 +621,11 @@ extension FeedDetailViewController: UITableViewDataSource {
                 }
             }
             
-            // 게시글에 대한 댓글 달기 버튼이 눌렸을 때는 nil로 보내기
-            // 기존에 있었던 댓글 삭제해야함
             cell.bottomView.commentButtonTapped = { [weak self] in
+                self?.feedDetailView.bottomWriteView.writeTextView.resignFirstResponder()
                 self?.feedDetailView.bottomWriteView.writeTextView.becomeFirstResponder()
                 self?.replyButtonDidTapSubject.send(nil)
-                
+                self?.makeTextViewEmpty()
             }
             
             return cell
@@ -693,7 +681,7 @@ extension FeedDetailViewController: UITableViewDataSource {
             
             cell.profileButtonAction = {
                 let memberId = self.replyData[indexPath.row].memberID
-
+                
                 if memberId == loadUserData()?.memberId ?? 0  {
                     self.tabBarController?.selectedIndex = 3
                 } else {
@@ -728,12 +716,9 @@ extension FeedDetailViewController: UITableViewDataSource {
             
             cell.bottomView.replyButtonTapped = { [weak self] in
                 self?.feedDetailView.bottomWriteView.writeTextView.resignFirstResponder()
-                
-                // MARK: - 여기서 인덱스로 유저 닉네임, 댓글작성자 ID, 댓글ID 찾아서 다시 VC로 전달
-                self?.replyButtonDidTapSubject.send(indexPath.row)
-                
                 self?.feedDetailView.bottomWriteView.writeTextView.becomeFirstResponder()
-
+                self?.replyButtonDidTapSubject.send(indexPath.row)
+                self?.makeTextViewEmpty()
             }
             
             return cell
@@ -747,14 +732,17 @@ extension FeedDetailViewController {
     private func postLikeButtonAPI(isClicked: Bool, contentId: Int) {
         // 최초 한 번만 publisher 생성
         let likeButtonTapped: AnyPublisher<(Bool, Int), Never>?  = Just(())
-                .map { _ in return (isClicked, contentId) }
-                .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
-                .eraseToAnyPublisher()
+            .map { _ in return (isClicked, contentId) }
+            .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
+            .eraseToAnyPublisher()
         
-        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, commentLikeButtonTapped: nil, deleteButtonDidTapped: deleteButtonTapped, deleteReplyButtonDidTapped: deleteReplyButtonTapped)
-
+        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped,
+                                        commentLikeButtonTapped: nil,
+                                        deleteButtonDidTapped: deleteButtonTapped?.compactMap { $0 }.eraseToAnyPublisher(),
+                                        deleteReplyButtonDidTapped: deleteReplyButtonTapped)
+        
         let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
-
+        
         output.toggleLikeButton
             .sink { _ in }
             .store(in: self.cancelBag)
@@ -768,7 +756,10 @@ extension FeedDetailViewController {
             .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
             .eraseToAnyPublisher()
         
-        let input = LikeViewModel.Input(likeButtonTapped: nil, commentLikeButtonTapped: commentLikedButtonTapped, deleteButtonDidTapped: deleteButtonTapped, deleteReplyButtonDidTapped: deleteReplyButtonTapped)
+        let input = LikeViewModel.Input(likeButtonTapped: nil,
+                                        commentLikeButtonTapped: commentLikedButtonTapped,
+                                        deleteButtonDidTapped: deleteButtonTapped?.compactMap { $0 }.eraseToAnyPublisher(),
+                                        deleteReplyButtonDidTapped: deleteReplyButtonTapped)
         let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
         
         output.toggleCommentLikeButton
