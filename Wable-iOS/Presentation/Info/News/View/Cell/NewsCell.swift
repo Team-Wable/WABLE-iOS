@@ -99,7 +99,7 @@ private extension NewsCell {
     
     func setupConstraints() {
         imageView.snp.makeConstraints { make in
-            make.width.equalTo(70.adjusted)
+            make.width.equalTo(100.adjusted)
         }
         
         contentStackView.snp.makeConstraints { make in

@@ -96,7 +96,14 @@ extension InfoNewsViewController: UICollectionViewDelegate {
 private extension InfoNewsViewController {
     func setupCollectionView() {
         rootView.collectionView.setCollectionViewLayout(collectionViewLayout, animated: false)
+        
         rootView.collectionView.delegate = self
+        
+        rootView.collectionView.register(
+            NewsHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: NewsHeaderView.identifier
+        )
     }
     
     func setupDataSource() {
@@ -116,6 +123,16 @@ private extension InfoNewsViewController {
                 for: indexPath,
                 item: item
             )
+        }
+        
+        dataSource?.supplementaryViewProvider = { collectionView, kind, indexPath in
+            guard kind == UICollectionView.elementKindSectionHeader else { return nil }
+            
+            return collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: NewsHeaderView.identifier,
+                for: indexPath
+            ) as? NewsHeaderView
         }
     }
     
@@ -201,6 +218,18 @@ private extension InfoNewsViewController {
             )
             
             let section = NSCollectionLayoutSection(group: group)
+            
+            let headerSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(75.adjustedH)
+            )
+            let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: headerSize,
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top
+            )
+            
+            section.boundarySupplementaryItems = [headerItem]
             
             return section
         }
