@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NewsDTO: Codable, Hashable {
+struct NewsDTO: Codable {
     let id: Int
     let title: String
     let text: String
@@ -20,5 +20,11 @@ struct NewsDTO: Codable, Hashable {
         case text = "newsText"
         case imageURLString = "newsImage"
         case time
+    }
+}
+
+extension NewsDTO: Hashable {
+    static func == (lhs: NewsDTO, rhs: NewsDTO) -> Bool {
+        lhs.id == rhs.id
     }
 }
