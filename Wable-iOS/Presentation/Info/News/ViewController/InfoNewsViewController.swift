@@ -32,7 +32,7 @@ final class InfoNewsViewController: UIViewController {
     private var dataSource: DataSource?
     
     private let viewModel: InfoNewsViewModel
-    private let viewWillAppearSubject = PassthroughSubject<Void, Never>()
+    private let viewDidLoadSubject = PassthroughSubject<Void, Never>()
     private let collectionViewDidRefreshSubject = PassthroughSubject<Void, Never>()
     private let collectionViewDidSelectSubject = PassthroughSubject<Int, Never>()
     private let collectionViewDidEndDragSubject = PassthroughSubject<Void, Never>()
@@ -64,12 +64,8 @@ final class InfoNewsViewController: UIViewController {
         setupDataSource()
         setupAction()
         setupBinding()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
-        viewWillAppearSubject.send(())
+        viewDidLoadSubject.send(())
     }
 }
 
@@ -137,14 +133,10 @@ private extension InfoNewsViewController {
     }
     
     func applySnapshot(items: [Item], to section: Section) {
-        var snapshot = dataSource?.snapshot() ?? Snapshot()
-        
-        if snapshot.sectionIdentifiers.isEmpty {
-            snapshot.appendSections(Section.allCases)
-        }
-        
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: section)
-        dataSource?.apply(snapshot, animatingDifferences: false)
+        dataSource?.apply(snapshot)
     }
     
     func setupAction() {
@@ -157,7 +149,7 @@ private extension InfoNewsViewController {
     
     func setupBinding() {
         let input = InfoNewsViewModel.Input(
-            viewWillAppear: viewWillAppearSubject.eraseToAnyPublisher(),
+            viewDidLoad: viewDidLoadSubject.eraseToAnyPublisher(),
             collectionViewDidRefresh: collectionViewDidRefreshSubject.eraseToAnyPublisher(),
             collectionViewDidSelect: collectionViewDidSelectSubject.eraseToAnyPublisher(),
             collectionViewDidEndDrag: collectionViewDidEndDragSubject.eraseToAnyPublisher()
@@ -178,11 +170,9 @@ private extension InfoNewsViewController {
             }
             .store(in: cancelBag)
         
-        output.navigateToDetail
+        output.selectedNews
             .receive(on: RunLoop.main)
             .sink { [weak self] news in
-                print(">>> \(news) : \(#function) : \(Self.self)")
-                
                 self?.delegate?.pushToNewsDetailView(with: news)
             }
             .store(in: cancelBag)
