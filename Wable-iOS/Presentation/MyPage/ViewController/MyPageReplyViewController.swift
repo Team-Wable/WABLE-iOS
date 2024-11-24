@@ -350,14 +350,16 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
         }
         
         cell.bottomView.heartButtonTapped = {
-            var currentHeartCount = cell.bottomView.heartButton.titleLabel?.text
-            
-            if cell.bottomView.isLiked == true {
-                cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) - 1)", font: .caption1, textColor: .gray600)
-            } else {
-                cell.bottomView.heartButton.setTitleWithConfiguration("\((Int(currentHeartCount ?? "") ?? 0) + 1)", font: .caption1, textColor: .gray600)
-            }
-            self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked, commentId: self.commentDatas[indexPath.row].commentId, commentText: self.commentDatas[indexPath.row].commentText)
+            let currentHeartCount = cell.bottomView.heartButton.titleLabel?.text
+            cell.bottomView.heartButton.setTitleWithConfiguration(
+                "\((Int(currentHeartCount ?? "") ?? 0) + (cell.bottomView.isLiked ? -1 : 1))",
+                font: .caption1,
+                textColor: .gray600
+            )
+
+            self.postCommentLikeButtonAPI(isClicked: cell.bottomView.isLiked,
+                                          commentId: self.commentDatas[indexPath.row].commentId,
+                                          commentText: self.commentDatas[indexPath.row].commentText)
             
             cell.bottomView.isLiked.toggle()
         }
