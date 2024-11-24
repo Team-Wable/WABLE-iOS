@@ -9,16 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class InfoNewsView: UIView {
-    private let bannerImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = ImageLiterals.Image.imgNewsBanner
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 8.adjusted
-        imageView.clipsToBounds = true
-        return imageView
-    }()
-    
+final class InfoNewsView: UIView {    
     let collectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
@@ -56,19 +47,12 @@ final class InfoNewsView: UIView {
 
 private extension InfoNewsView {
     func setupView() {
-        addSubviews(bannerImageView, collectionView, emptyLabel)
+        addSubviews(collectionView, emptyLabel)
     }
     
     func setupConstraints() {
-        bannerImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(10)
-            make.horizontalEdges.equalToSuperview().inset(16)
-            make.height.equalTo(65.adjustedH)
-        }
-        
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(bannerImageView.snp.bottom).offset(10)
-            make.horizontalEdges.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
         
         emptyLabel.snp.makeConstraints { make in
