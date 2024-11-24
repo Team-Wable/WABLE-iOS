@@ -12,6 +12,7 @@ import Moya
 enum HomeRouter {
     case getContent(param: Int)
     case patchFCMToken(param: UserProfileRequestDTO)
+    case postReply(param: Int, requestBody: WriteReplyRequestV3DTO)
 }
 
 extension HomeRouter: BaseTargetType {
@@ -21,6 +22,8 @@ extension HomeRouter: BaseTargetType {
             return StringLiterals.Endpoint.Home.getContent
         case .patchFCMToken:
             return StringLiterals.Endpoint.Home.patchUserProfile
+        case .postReply(let contentID, _ ):
+            return StringLiterals.Endpoint.Home.postReply(contentID: contentID)
         }
     }
     
@@ -30,6 +33,8 @@ extension HomeRouter: BaseTargetType {
             return .get
         case .patchFCMToken:
             return .patch
+        case .postReply:
+            return .post
         }
     }
     
@@ -53,13 +58,16 @@ extension HomeRouter: BaseTargetType {
             formData.append(pushAlarmPart)
             
             return .uploadMultipart(formData)
+            
+        case .postReply(_, let requestBody):
+            return .requestJSONEncodable(requestBody)
 
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        case .getContent:
+        case .getContent, .postReply:
             return APIConstants.hasTokenHeader
         case .patchFCMToken:
             return APIConstants.multipartHeader
