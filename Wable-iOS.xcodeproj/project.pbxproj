@@ -191,6 +191,7 @@
 		3CF344EF2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344EE2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift */; };
 		DE1B58172CDDD3F90017C319 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DE1B58162CDDD3F90017C319 /* GoogleService-Info.plist */; };
 		DE7FAAA02CDF971300A4D8A2 /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */; };
+		DE8001A42CF31B6E00D9DAD9 /* NewsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8001A32CF31B6E00D9DAD9 /* NewsDTO.swift */; };
 		DE9D0E342CF087B30024BB1F /* LCKGameTypeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E332CF087B30024BB1F /* LCKGameTypeDTO.swift */; };
 		DE9D0E362CF088D10024BB1F /* LCKTeamRankDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */; };
 		DE9D0E442CF090630024BB1F /* InfoRankingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E432CF090630024BB1F /* InfoRankingViewModel.swift */; };
@@ -382,6 +383,7 @@
 		DE1B58142CDDD1E50017C319 /* Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
 		DE1B58162CDDD3F90017C319 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
+		DE8001A32CF31B6E00D9DAD9 /* NewsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDTO.swift; sourceTree = "<group>"; };
 		DE9D0E332CF087B30024BB1F /* LCKGameTypeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKGameTypeDTO.swift; sourceTree = "<group>"; };
 		DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamRankDTO.swift; sourceTree = "<group>"; };
 		DE9D0E432CF090630024BB1F /* InfoRankingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRankingViewModel.swift; sourceTree = "<group>"; };
@@ -569,6 +571,7 @@
 				050E0CEE2C74DE3B00326EEA /* TodayMatchesDTO.swift */,
 				DE9D0E332CF087B30024BB1F /* LCKGameTypeDTO.swift */,
 				DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */,
+				DE8001A32CF31B6E00D9DAD9 /* NewsDTO.swift */,
 			);
 			path = ResponseDTO;
 			sourceTree = "<group>";
@@ -775,6 +778,7 @@
 				DE9D0E372CF08C240024BB1F /* Page */,
 				DE9D0E3A2CF08C520024BB1F /* Match */,
 				DE9D0E3F2CF08D020024BB1F /* Ranking */,
+				DE8001A52CF31D6E00D9DAD9 /* News */,
 			);
 			path = Info;
 			sourceTree = "<group>";
@@ -1177,6 +1181,13 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		DE8001A52CF31D6E00D9DAD9 /* News */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = News;
+			sourceTree = "<group>";
+		};
 		DE9D0E372CF08C240024BB1F /* Page */ = {
 			isa = PBXGroup;
 			children = (
@@ -1422,6 +1433,7 @@
 				050E0CCB2C74B94800326EEA /* FeedDetailViewController.swift in Sources */,
 				0547F4F52C64C76A001E3039 /* HomeViewController.swift in Sources */,
 				0547F4D72C624797001E3039 /* NetworkResult.swift in Sources */,
+				DE8001A42CF31B6E00D9DAD9 /* NewsDTO.swift in Sources */,
 				3CF344E32C750A380038BB53 /* MyPageSignOutViewController.swift in Sources */,
 				3C8B4E4D2C80EE7700174943 /* WriteReplyRequestDTO.swift in Sources */,
 				DEF0D39F2CED68DE002FA608 /* WableSegmentedControl.swift in Sources */,
