@@ -192,6 +192,11 @@
 		DE1B58172CDDD3F90017C319 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DE1B58162CDDD3F90017C319 /* GoogleService-Info.plist */; };
 		DE7FAAA02CDF971300A4D8A2 /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */; };
 		DE8001A42CF31B6E00D9DAD9 /* NewsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8001A32CF31B6E00D9DAD9 /* NewsDTO.swift */; };
+		DE8001A82CF31ECE00D9DAD9 /* InfoNewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8001A72CF31ECE00D9DAD9 /* InfoNewsViewModel.swift */; };
+		DE8001AB2CF31FFE00D9DAD9 /* NewsTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8001AA2CF31FFE00D9DAD9 /* NewsTimeFormatter.swift */; };
+		DE8001B12CF323A800D9DAD9 /* InfoNewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8001B02CF323A800D9DAD9 /* InfoNewsView.swift */; };
+		DE8001B32CF323B100D9DAD9 /* InfoNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8001B22CF323B100D9DAD9 /* InfoNewsViewController.swift */; };
+		DE8001B62CF3250800D9DAD9 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8001B52CF3250800D9DAD9 /* NewsCell.swift */; };
 		DE9D0E342CF087B30024BB1F /* LCKGameTypeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E332CF087B30024BB1F /* LCKGameTypeDTO.swift */; };
 		DE9D0E362CF088D10024BB1F /* LCKTeamRankDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */; };
 		DE9D0E442CF090630024BB1F /* InfoRankingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E432CF090630024BB1F /* InfoRankingViewModel.swift */; };
@@ -384,6 +389,11 @@
 		DE1B58162CDDD3F90017C319 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
 		DE8001A32CF31B6E00D9DAD9 /* NewsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDTO.swift; sourceTree = "<group>"; };
+		DE8001A72CF31ECE00D9DAD9 /* InfoNewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNewsViewModel.swift; sourceTree = "<group>"; };
+		DE8001AA2CF31FFE00D9DAD9 /* NewsTimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTimeFormatter.swift; sourceTree = "<group>"; };
+		DE8001B02CF323A800D9DAD9 /* InfoNewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNewsView.swift; sourceTree = "<group>"; };
+		DE8001B22CF323B100D9DAD9 /* InfoNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNewsViewController.swift; sourceTree = "<group>"; };
+		DE8001B52CF3250800D9DAD9 /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		DE9D0E332CF087B30024BB1F /* LCKGameTypeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKGameTypeDTO.swift; sourceTree = "<group>"; };
 		DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamRankDTO.swift; sourceTree = "<group>"; };
 		DE9D0E432CF090630024BB1F /* InfoRankingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRankingViewModel.swift; sourceTree = "<group>"; };
@@ -1184,8 +1194,53 @@
 		DE8001A52CF31D6E00D9DAD9 /* News */ = {
 			isa = PBXGroup;
 			children = (
+				DE8001A92CF31FF300D9DAD9 /* Support */,
+				DE8001A62CF31EC400D9DAD9 /* ViewModel */,
+				DE8001AE2CF3238100D9DAD9 /* ViewController */,
+				DE8001AF2CF3238700D9DAD9 /* View */,
 			);
 			path = News;
+			sourceTree = "<group>";
+		};
+		DE8001A62CF31EC400D9DAD9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DE8001A72CF31ECE00D9DAD9 /* InfoNewsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DE8001A92CF31FF300D9DAD9 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				DE8001AA2CF31FFE00D9DAD9 /* NewsTimeFormatter.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		DE8001AE2CF3238100D9DAD9 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DE8001B22CF323B100D9DAD9 /* InfoNewsViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		DE8001AF2CF3238700D9DAD9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DE8001B42CF3250200D9DAD9 /* Cell */,
+				DE8001B02CF323A800D9DAD9 /* InfoNewsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DE8001B42CF3250200D9DAD9 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DE8001B52CF3250800D9DAD9 /* NewsCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		DE9D0E372CF08C240024BB1F /* Page */ = {
@@ -1465,6 +1520,7 @@
 				3CD071782C886A600088DED6 /* CommentLikeRequestDTO.swift in Sources */,
 				050E0CC92C74B92A00326EEA /* HomeViewModel.swift in Sources */,
 				3CDE2DED2C6F31D9004A84CB /* BackButton.swift in Sources */,
+				DE8001B12CF323A800D9DAD9 /* InfoNewsView.swift in Sources */,
 				3CF344E12C74AF100038BB53 /* MyPageAccountInfoTableViewCell.swift in Sources */,
 				3C8B4E182C78E21900174943 /* SocialLoginResponseDTO.swift in Sources */,
 				0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */,
@@ -1517,6 +1573,7 @@
 				050E0D142C8252A500326EEA /* NotificationRouter.swift in Sources */,
 				3CDE2DFC2C70FAB5004A84CB /* JoinProfileViewModel.swift in Sources */,
 				3C3531992C6F21A10015A8FA /* LoginViewModel.swift in Sources */,
+				DE8001AB2CF31FFE00D9DAD9 /* NewsTimeFormatter.swift in Sources */,
 				3CDE2E202C72F299004A84CB /* MyPageView.swift in Sources */,
 				050E0D0B2C7F634800326EEA /* InfoRouter.swift in Sources */,
 				3CDE2E232C72F32B004A84CB /* MyPageViewModel.swift in Sources */,
@@ -1571,6 +1628,9 @@
 				050E0CD52C74BE6300326EEA /* MatchView.swift in Sources */,
 				050E0CEA2C74DC4B00326EEA /* MatchProgress.swift in Sources */,
 				3C8B4E262C78E61B00174943 /* HttpMethod.swift in Sources */,
+				DE8001B32CF323B100D9DAD9 /* InfoNewsViewController.swift in Sources */,
+				DE8001B62CF3250800D9DAD9 /* NewsCell.swift in Sources */,
+				DE8001A82CF31ECE00D9DAD9 /* InfoNewsViewModel.swift in Sources */,
 				050E0CD12C74B9A700326EEA /* WriteViewController.swift in Sources */,
 				050E0CAA2C74B7A900326EEA /* FeedDetailReplyDTO.swift in Sources */,
 				3C35319C2C6F22050015A8FA /* ViewModelType.swift in Sources */,
