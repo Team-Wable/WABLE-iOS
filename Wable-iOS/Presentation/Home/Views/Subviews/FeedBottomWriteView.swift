@@ -11,9 +11,7 @@ import SnapKit
 import Lottie
 
 final class FeedBottomWriteView: UIView {
-    
-    // MARK: - Properties
-    
+        
     // MARK: - UI Components
     
     private lazy var tabLottieAnimationView: LottieAnimationView = {
@@ -57,7 +55,6 @@ final class FeedBottomWriteView: UIView {
         setUI()
         setHierarchy()
         setLayout()
-        setAddTarget()
     }
     
     @available(*, unavailable)
@@ -105,17 +102,8 @@ extension FeedBottomWriteView {
         }
     }
     
-    func setPlaceholder(nickname: String) {
+    func setPlaceholder(nickname: String?) {
         placeholderLabel.isHidden = false
-        placeholderLabel.text = nickname + StringLiterals.Home.placeholder
-    }
-    
-    private func setAddTarget() {
-        uploadButton.addTarget(self, action: #selector(postButtonDidTapped), for: .touchUpInside)
-    }
-    
-    @objc
-    private func postButtonDidTapped() {
-        uploadButton.isEnabled = false
+        placeholderLabel.text = nickname ?? "" + StringLiterals.Home.placeholder
     }
 }
