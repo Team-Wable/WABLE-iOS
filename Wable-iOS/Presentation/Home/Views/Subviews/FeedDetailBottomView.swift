@@ -18,21 +18,18 @@ final class FeedDetailBottomView: UIView {
     var replyButtonTapped: (() -> Void)?
     var isLiked: Bool = false {
         didSet {
-            if isLiked {
-                heartButton.setImage(ImageLiterals.Icon.icHeartPressSmall, for: .normal)
-            } else {
-                heartButton.setImage(ImageLiterals.Icon.icHeartGray, for: .normal)
-            }
+            heartButton.setImage(
+                isLiked ? ImageLiterals.Icon.icHeartPressSmall : ImageLiterals.Icon.icHeartGray,
+                for: .normal
+            )
         }
     }
     
     // MARK: - UI Components
     
     var heartButton: UIButton = {
-        let button = UIButton()
-        var config = UIButton.Configuration.plain()
+        let button = UIButton(configuration: .plain())
         button.translatesAutoresizingMaskIntoConstraints = false
-        config.contentInsets = NSDirectionalEdgeInsets.zero
         button.setImage(ImageLiterals.Icon.icHeartGray, for: .normal)
         button.contentHorizontalAlignment = .leading
         return button
@@ -45,8 +42,7 @@ final class FeedDetailBottomView: UIView {
     }()
     
     var replyButton: UIButton = {
-        let button = UIButton()
-        var config = UIButton.Configuration.plain()
+        let button = UIButton(configuration: .plain())
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(ImageLiterals.Icon.icRippleRely, for: .normal)
         button.contentHorizontalAlignment = .center
@@ -128,11 +124,7 @@ extension FeedDetailBottomView {
     }
     
     func setupReplyButtonVisibility(with parentCommnetID: Int) {
-        if parentCommnetID == -1 {
-            replyButton.isHidden = false
-        } else {
-            replyButton.isHidden = true
-        }
+        replyButton.isHidden = parentCommnetID != -1
     }
     
     func hideReplyButton() {

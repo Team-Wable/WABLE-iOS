@@ -72,12 +72,12 @@ final class FeedDetailViewModel: ViewModelType {
                             // 상단 게시글 정보 불러오기
                             let postResult = try await
                             self.getPostDetailDataAPI(accessToken: accessToken, contentId: value ?? Int())
-                            if let data = postResult?.data {
-                                self.isLikeButtonClicked = data.isLiked
-                                self.getPostData.send(data)
-                                self.feedWriterNickname = data.memberNickname
-                                self.replyTargetNickname.send(self.feedWriterNickname + StringLiterals.Home.placeholder)
-                            }
+                            
+                            guard let data = postResult?.data else { return }
+                            self.isLikeButtonClicked = data.isLiked
+                            self.getPostData.send(data)
+                            self.feedWriterNickname = data.memberNickname
+                            self.replyTargetNickname.send(self.feedWriterNickname + StringLiterals.Home.placeholder)
                         }
                     } catch {
                         print(error)
@@ -88,8 +88,8 @@ final class FeedDetailViewModel: ViewModelType {
         
         input.postButtonTapped
             .sink { [weak self] value in
-                guard let self = self else { return }
-                guard !self.isProcessingPostButton else { return }
+                guard let self = self, !self.isProcessingPostButton else { return }
+                
                 self.isProcessingPostButton = true
                 
                 AmplitudeManager.shared.trackEvent(tag: "click_write_comment")
@@ -103,15 +103,7 @@ final class FeedDetailViewModel: ViewModelType {
                                                                             parentCommentWriterID: self.parentCommentAndWriterID.value.1)
                             
                             if result?.status == 201 {
-                                self.postReplyCompleted.send(0)
-                                self.replyTargetNickname.send(self.feedWriterNickname + StringLiterals.Home.placeholder)
-                                let postResult = try await
-                                self.getPostDetailDataAPI(accessToken: accessToken, contentId: self.contentIDSubject.value ?? Int())
-                                if let data = postResult?.data {
-                                    self.isLikeButtonClicked = data.isLiked
-                                    self.getPostData.send(data)
-                                    self.feedWriterNickname = data.memberNickname
-                                }
+                                try await self.handlePostReplySuccess(accessToken: accessToken, contentId: value.1)
                             }
                         }
                     } catch {
@@ -125,19 +117,19 @@ final class FeedDetailViewModel: ViewModelType {
         
         input.replyButtonDidTapped
             .sink { [weak self] index in
-                guard let self = self else { return }
-                let replyDatas = self.replyDatasSubject.value
+                guard let self else { return }
+                let replyDatas = replyDatasSubject.value
                 
                 if let index  = index {
                     let parentCommentID = replyDatas[index].commentID
                     let parentWriterID = replyDatas[index].memberID
                     let parentNickname = replyDatas[index].memberNickname
                     
-                    self.parentCommentAndWriterID.send((parentCommentID,parentWriterID))
-                    self.replyTargetNickname.send(parentNickname + StringLiterals.Home.placeholderForChildReply)
+                    parentCommentAndWriterID.send((parentCommentID,parentWriterID))
+                    replyTargetNickname.send(parentNickname + StringLiterals.Home.placeholderForChildReply)
                 } else {
-                    self.parentCommentAndWriterID.send((-1, -1))
-                    self.replyTargetNickname.send(feedWriterNickname + StringLiterals.Home.placeholder)
+                    parentCommentAndWriterID.send((-1, -1))
+                    replyTargetNickname.send(feedWriterNickname + StringLiterals.Home.placeholder)
                 }
             }
             .store(in: self.cancelBag)
@@ -157,13 +149,11 @@ final class FeedDetailViewModel: ViewModelType {
                     do {
                         if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
                             let postReplyResult = try await
-//                            self.getPostReplyDataAPI(accessToken: accessToken, contentId: contentID)
                             self.getReplyListAPI(accessToken: accessToken, contentId: contentID)
-                            if let data = postReplyResult?.data {
-                                let flattenDatas = data.toFlattenedReplyList()
-                                self.replyDatas.send(flattenDatas)
-                                self.replyDatasSubject.send(flattenDatas)
-                            }
+                            guard let data = postReplyResult?.data else { return }
+                            let flattenDatas = data.toFlattenedReplyList()
+                            self.replyDatas.send(flattenDatas)
+                            self.replyDatasSubject.send(flattenDatas)
                         }
                     }
                 }
@@ -176,18 +166,27 @@ final class FeedDetailViewModel: ViewModelType {
                     do {
                         if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
                             let postReplyResult = try await
-//                            self.getPostReplyDataAPI(accessToken: accessToken, contentId: contentID)
                             self.getReplyListAPI(accessToken: accessToken, contentId: contentID)
-                            if let data = postReplyResult?.data {
-                                let flattenDatas = data.toFlattenedReplyList()
-                                self.replyPaginationDatas.send(flattenDatas)
-//                                self.replyDatasSubject.send(flattenDatas)
-                            }
+                            guard let data = postReplyResult?.data else { return }
+                            let flattenDatas = data.toFlattenedReplyList()
+                            self.replyPaginationDatas.send(flattenDatas)
                         }
                     }
                 }
             }
             .store(in: cancelBag)
+    }
+    
+    private func handlePostReplySuccess(accessToken: String, contentId: Int) async throws {
+        self.postReplyCompleted.send(0)
+        self.replyTargetNickname.send(self.feedWriterNickname + StringLiterals.Home.placeholder)
+        
+        let postResult = try await self.getPostDetailDataAPI(accessToken: accessToken, contentId: contentId)
+        
+        guard let data = postResult?.data else { return }
+        self.isLikeButtonClicked = data.isLiked
+        self.getPostData.send(data)
+        self.feedWriterNickname = data.memberNickname
     }
     
     
