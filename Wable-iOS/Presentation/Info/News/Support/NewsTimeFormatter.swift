@@ -8,7 +8,6 @@
 import Foundation
 
 struct NewsTimeFormatter {
-    private let news: [NewsDTO]
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -17,20 +16,18 @@ struct NewsTimeFormatter {
         return formatter
     }()
     
-    init(news: [NewsDTO]) {
-        self.news = news
+    func formattedNews(news: [NewsDTO]) -> [NewsDTO] {
+        return news.map { formattedNews(news: $0) }
     }
     
-    func formattedNews() -> [NewsDTO] {
-        return news.map { news in
-            return NewsDTO(
-                id: news.id,
-                title: news.title,
-                text: news.text,
-                imageURLString: news.imageURLString,
-                time: timeElapsedString(from: news.time)
-            )
-        }
+    func formattedNews(news: NewsDTO) -> NewsDTO {
+        return NewsDTO(
+            id: news.id,
+            title: news.title,
+            text: news.text,
+            imageURLString: news.imageURLString,
+            time: timeElapsedString(from: news.time)
+        )
     }
     
     private func timeElapsedString(from time: String) -> String {

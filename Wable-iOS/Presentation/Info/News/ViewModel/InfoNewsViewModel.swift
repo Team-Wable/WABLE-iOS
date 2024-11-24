@@ -20,7 +20,7 @@ final class InfoNewsViewModel {
 
 extension InfoNewsViewModel: ViewModelType {
     struct Input {
-        let viewWillAppear: AnyPublisher<Void, Never>
+        let viewDidLoad: AnyPublisher<Void, Never>
         let collectionViewDidRefresh: AnyPublisher<Void, Never>
         let collectionViewDidSelect: AnyPublisher<Int, Never>
         let collectionViewDidEndDrag: AnyPublisher<Void, Never>
@@ -28,55 +28,74 @@ extension InfoNewsViewModel: ViewModelType {
     
     struct Output {
         let news: AnyPublisher<[NewsDTO], Never>
-        let navigateToDetail: AnyPublisher<NewsDTO, Never>
+        let selectedNews: AnyPublisher<NewsDTO, Never>
     }
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
-        let news = CurrentValueSubject<[NewsDTO], Never>([])
+        let newsSubject = CurrentValueSubject<[NewsDTO], Never>([])
         
-        input.viewWillAppear
+        input.viewDidLoad
+            .merge(with: input.collectionViewDidRefresh)
             .flatMap { [weak self] _ -> AnyPublisher<[NewsDTO], Never> in
                 guard let self else {
                     return Just([]).eraseToAnyPublisher()
                 }
-                
-                return service.getNews(cursor: -1)
-                    .mapWableNetworkError()
-                    .replaceError(with: [])
-                    .compactMap { $0 }
-                    .eraseToAnyPublisher()
+                return resetCursorAndFetchNews()
             }
-            .map { NewsTimeFormatter(news: $0).formattedNews() }
-            .subscribe(news)
+            .subscribe(newsSubject)
             .store(in: cancelBag)
         
-        input.collectionViewDidRefresh
-            .handleEvents(receiveRequest: { [weak self] _ in
-                self?.cursor = -1
-            })
-            .flatMap { [weak self] _ -> AnyPublisher<[NewsDTO], Never> in
+        input.collectionViewDidEndDrag
+            .compactMap { newsSubject.value.last?.id }
+            .filter { [weak self] lastNewsID in
+                newsSubject.value.count % 15 == 0 &&
+                lastNewsID != -1 &&
+                lastNewsID != self?.cursor ?? .zero
+            }
+            .flatMap { [weak self] lastNewsID -> AnyPublisher<[NewsDTO], Never> in
                 guard let self else {
                     return Just([]).eraseToAnyPublisher()
                 }
                 
-                return service.getNews(cursor: -1)
-                    .mapWableNetworkError()
-                    .replaceError(with: [])
-                    .compactMap { $0 }
-                    .eraseToAnyPublisher()
+                cursor = lastNewsID
+                return fetchNews(cursor: lastNewsID)
             }
-            .map { NewsTimeFormatter(news: $0).formattedNews() }
-            .subscribe(news)
+            .map { news in
+                var previousNews = newsSubject.value
+                previousNews.append(contentsOf: news)
+                return previousNews
+            }
+            .subscribe(newsSubject)
             .store(in: cancelBag)
         
-        let navigateToDetail = input.collectionViewDidSelect
-            .filter { $0 < news.value.count }
-            .map { news.value[$0] }
+        let news = newsSubject
+            .map { NewsTimeFormatter().formattedNews(news: $0) }
+            .eraseToAnyPublisher()
+        
+        let selectedNews = input.collectionViewDidSelect
+            .filter { $0 < newsSubject.value.count }
+            .map { newsSubject.value[$0] }
+            .map { NewsTimeFormatter().formattedNews(news: $0) }
             .eraseToAnyPublisher()
         
         return Output(
-            news: news.eraseToAnyPublisher(),
-            navigateToDetail: navigateToDetail
+            news: news,
+            selectedNews: selectedNews
         )
+    }
+}
+
+private extension InfoNewsViewModel {
+    func fetchNews(cursor: Int) -> AnyPublisher<[NewsDTO], Never> {
+        service.getNews(cursor: cursor)
+            .mapWableNetworkError()
+            .replaceError(with: [])
+            .compactMap { $0 }
+            .eraseToAnyPublisher()
+    }
+    
+    func resetCursorAndFetchNews() -> AnyPublisher<[NewsDTO], Never> {
+        cursor = -1
+        return fetchNews(cursor: cursor)
     }
 }
