@@ -17,7 +17,8 @@ final class InfoViewController: UIViewController {
     
     private let viewControllers: [UIViewController] = [
         InfoMatchViewController(viewModel: InfoMatchViewModel()),
-        InfoRankingViewController(viewModel: InfoRankingViewModel())
+        InfoRankingViewController(viewModel: InfoRankingViewModel()),
+        InfoNewsViewController(viewModel: InfoNewsViewModel())
     ]
     
     private let pageViewController = UIPageViewController(

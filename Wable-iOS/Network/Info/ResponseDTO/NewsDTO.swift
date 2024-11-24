@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct NewsDTO: Codable {
+struct NewsDTO: Codable, Hashable {
     let id: Int
     let title: String
     let text: String
-    let imageURLString: String
+    let imageURLString: String?
     let time: String
     
     enum CodingKeys: String, CodingKey {
