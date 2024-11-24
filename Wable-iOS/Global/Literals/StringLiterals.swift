@@ -196,6 +196,7 @@ enum StringLiterals {
             static let getMatchInfo = "v1/information/schedule"
             static let getGameType = "v1/information/gametype"
             static let getTeamRank = "v1/information/rank"
+            static let getNews = "v1/information/news"
         }
         
         enum Notification {
