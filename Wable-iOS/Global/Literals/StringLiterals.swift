@@ -180,6 +180,10 @@ enum StringLiterals {
     enum Info {
         static let lckSummer = "2024 League of Legends World Championship"
         static let today = "TODAY "
+        static let submitOpinionURL = "https://docs.google.com/forms/d/e/1FAIpQLSf3JlBkVRPaPFSreQHaEv-u5pqZWZzk7Y4Qll9lRP0htBZs-Q/viewform"
+        static let submitOpinionButtonLongTitle = "더 알고 싶은 정보가 있다면? 의견 남기러 가기"
+        static let submitOpinionButtonMediumTitle = "와블에 대한 의견 남기러 가기"
+        static let submitOpinionButtonShortTitle = "의견 남기러 가기"
     }
     
     enum Endpoint {
@@ -190,6 +194,8 @@ enum StringLiterals {
         
         enum Info {
             static let getMatchInfo = "v1/information/schedule"
+            static let getGameType = "v1/information/gametype"
+            static let getTeamRank = "v1/information/rank"
         }
         
         enum Notification {
