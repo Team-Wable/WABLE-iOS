@@ -11,6 +11,10 @@ import Combine
 import CombineCocoa
 import Kingfisher
 
+protocol InfoNewsViewControllerDelegate: AnyObject {
+    func pushToNewsDetailView(with news: NewsDTO)
+}
+
 final class InfoNewsViewController: UIViewController {
     
     typealias Item = NewsDTO
@@ -22,6 +26,8 @@ final class InfoNewsViewController: UIViewController {
     }
     
     // MARK: - Property
+    
+    weak var delegate: InfoNewsViewControllerDelegate?
     
     private var dataSource: DataSource?
     
@@ -67,6 +73,8 @@ final class InfoNewsViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDelegate
+
 extension InfoNewsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionViewDidSelectSubject.send(indexPath.item)
@@ -88,6 +96,7 @@ extension InfoNewsViewController: UICollectionViewDelegate {
 private extension InfoNewsViewController {
     func setupCollectionView() {
         rootView.collectionView.setCollectionViewLayout(collectionViewLayout, animated: false)
+        rootView.collectionView.delegate = self
     }
     
     func setupDataSource() {
@@ -131,18 +140,33 @@ private extension InfoNewsViewController {
     
     func setupBinding() {
         let input = InfoNewsViewModel.Input(
-            viewWillAppear: viewWillAppearSubject.eraseToAnyPublisher()
+            viewWillAppear: viewWillAppearSubject.eraseToAnyPublisher(),
+            collectionViewDidRefresh: collectionViewDidRefreshSubject.eraseToAnyPublisher(),
+            collectionViewDidSelect: collectionViewDidSelectSubject.eraseToAnyPublisher(),
+            collectionViewDidEndDrag: collectionViewDidEndDragSubject.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(from: input, cancelBag: cancelBag)
         
         output.news
             .receive(on: RunLoop.main)
+            .handleEvents(receiveOutput: { [weak self] _ in
+                self?.endRefreshing()
+            })
+            .removeDuplicates()
             .sink { [weak self] news in
                 self?.applySnapshot(items: news, to: .main)
-                self?.endRefreshing()
                 self?.rootView.collectionView.isHidden = news.isEmpty
                 self?.rootView.emptyLabel.isHidden = !news.isEmpty
+            }
+            .store(in: cancelBag)
+        
+        output.navigateToDetail
+            .receive(on: RunLoop.main)
+            .sink { [weak self] news in
+                print(">>> \(news) : \(#function) : \(Self.self)")
+                
+                self?.delegate?.pushToNewsDetailView(with: news)
             }
             .store(in: cancelBag)
     }

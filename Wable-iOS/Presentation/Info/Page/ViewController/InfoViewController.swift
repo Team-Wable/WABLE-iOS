@@ -15,11 +15,7 @@ final class InfoViewController: UIViewController {
     
     private var currentIndex = 0
     
-    private let viewControllers: [UIViewController] = [
-        InfoMatchViewController(viewModel: InfoMatchViewModel()),
-        InfoRankingViewController(viewModel: InfoRankingViewModel()),
-        InfoNewsViewController(viewModel: InfoNewsViewModel())
-    ]
+    private var viewControllers = [UIViewController]()
     
     private let pageViewController = UIPageViewController(
         transitionStyle: .scroll,
@@ -37,6 +33,7 @@ final class InfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupViewControllers()
         setupPageViewController()
         setupNavigationBar()
         setupAction()
@@ -101,9 +98,26 @@ extension InfoViewController: UIPageViewControllerDataSource {
     }
 }
 
+extension InfoViewController: InfoNewsViewControllerDelegate {
+    func pushToNewsDetailView(with news: NewsDTO) {
+        let detailViewController = InfoDetailViewController(detailType: .news(news))
+        detailViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
+}
+
 // MARK: - Private Method
 
 private extension InfoViewController {
+    func setupViewControllers() {
+        viewControllers.append(InfoMatchViewController(viewModel: InfoMatchViewModel()))
+        viewControllers.append(InfoRankingViewController(viewModel: InfoRankingViewModel()))
+        
+        let newsViewController = InfoNewsViewController(viewModel: InfoNewsViewModel())
+        newsViewController.delegate = self
+        viewControllers.append(newsViewController)
+    }
+    
     func setupPageViewController() {
         addChild(pageViewController)
         
@@ -135,6 +149,8 @@ private extension InfoViewController {
     
     @objc
     func segmentedControlDidChange(_ sender: WableSegmentedControl) {
+        guard !viewControllers.isEmpty else { return }
+        
         let selectedIndex = sender.selectedSegmentIndex
         let direction: UIPageViewController.NavigationDirection = selectedIndex > currentIndex ? .forward : .reverse
         

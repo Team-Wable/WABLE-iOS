@@ -24,7 +24,6 @@ final class InfoNewsView: UIView {
             frame: .zero,
             collectionViewLayout: UICollectionViewLayout()
         )
-        collectionView.showsVerticalScrollIndicator = false
         collectionView.refreshControl = UIRefreshControl()
         return collectionView
     }()
