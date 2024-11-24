@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import Combine
 
+import CombineMoya
 import Moya
 
 final class HomeAPI: BaseAPI {
@@ -23,5 +25,15 @@ extension HomeAPI {
                                 completion: completion)
             
         }
+    }
+    
+    func postReply(contentID: Int, requestBody: WriteReplyRequestV3DTO) -> AnyPublisher<EmptyDTO?, WableNetworkError> {
+        homeProvider.requestPublisher(.postReply(param: contentID, requestBody: requestBody))
+            .tryMap { [weak self] response -> EmptyDTO? in
+                return try self?.parseResponse(statusCode: response.statusCode, data: response.data)
+            }
+            .mapError { $0 as? WableNetworkError ??
+                .unknownError($0.localizedDescription) }
+            .eraseToAnyPublisher()
     }
 }
