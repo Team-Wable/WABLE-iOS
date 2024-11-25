@@ -14,6 +14,7 @@ enum InfoRouter {
     case getGameType
     case getTeamRank
     case getNews(param: Int)
+    case getNotice(param: Int)
 }
 
 extension InfoRouter: BaseTargetType {
@@ -27,12 +28,14 @@ extension InfoRouter: BaseTargetType {
             return StringLiterals.Endpoint.Info.getTeamRank
         case .getNews:
             return StringLiterals.Endpoint.Info.getNews
+        case .getNotice:
+            return StringLiterals.Endpoint.Info.getNotice
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getMatchInfo, .getGameType, .getTeamRank, .getNews:
+        case .getMatchInfo, .getGameType, .getTeamRank, .getNews, .getNotice:
             return .get
         }
     }
@@ -41,7 +44,7 @@ extension InfoRouter: BaseTargetType {
         switch self {
         case .getMatchInfo, .getGameType, .getTeamRank:
             return .requestPlain
-        case .getNews(let cursor):
+        case .getNews(let cursor), .getNotice(let cursor):
             return .requestParameters(parameters: ["cursor": cursor], encoding: URLEncoding.queryString)
         }
     }
