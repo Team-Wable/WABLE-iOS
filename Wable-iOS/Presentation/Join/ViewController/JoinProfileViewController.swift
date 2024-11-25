@@ -74,7 +74,7 @@ final class JoinProfileViewController: UIViewController {
         setLayout()
         setAddTarget()
         setNotification()
-        dismissKeyboard()
+        dismissKeyboardTouchOutside()
 
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)

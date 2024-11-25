@@ -14,13 +14,13 @@ final class InfoView: UIView {
     
     // MARK: - UI Component
 
-    let statusBarBackgroundView: UIView = {
+    private let statusBarBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .wableBlack
         return view
     }()
     
-    let tabLottieAnimationView: LottieAnimationView = {
+    private let tabLottieAnimationView: LottieAnimationView = {
         let animation = LottieAnimationView(name: "wable_tab")
         animation.contentMode = .scaleToFill
         animation.loopMode = .loop
@@ -29,7 +29,7 @@ final class InfoView: UIView {
     }()
   
     let segmentedControl: WableSegmentedControl = {
-        let segmentedControl = WableSegmentedControl(items: ["경기", "순위"])
+        let segmentedControl = WableSegmentedControl(items: ["경기", "순위", "뉴스"])
         segmentedControl.selectedSegmentIndex = 0
         return segmentedControl
     }()
@@ -83,7 +83,7 @@ private extension InfoView {
         
         statusBarBackgroundView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalToSuperview()
-            make.height.equalTo(20)
+            make.bottom.equalTo(safeArea.snp.top)
         }
         
         tabLottieAnimationView.snp.makeConstraints { make in

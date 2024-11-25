@@ -69,7 +69,7 @@ final class MyPageEditProfileViewController: UIViewController {
         
         bindViewModel()
         setNavigationBar()
-        dismissKeyboard()
+        dismissKeyboardTouchOutside()
     }
     
     override func viewWillAppear(_ animated: Bool) {

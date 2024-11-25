@@ -33,7 +33,7 @@ final class RankingView: UIView {
             attributes: [.font: UIFont.body3, .foregroundColor: UIColor.white]
         )
         
-        let targetText = StringLiterals.Info.submitOpinionButtonLongTitle
+        let targetText = StringLiterals.Info.submitOpinionButtonShortTitle
         if let range = fullText.range(of: targetText) {
             let nsRange = NSRange(range, in: fullText)
             attributedString.addAttributes([.foregroundColor: UIColor.sky50], range: nsRange)
