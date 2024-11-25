@@ -38,12 +38,6 @@ final class InfoViewController: UIViewController {
         setupNavigationBar()
         setupAction()
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        updateStatusBarHeightConstraint()
-    }
 }
 
 // MARK: - UIPageViewControllerDelegate
@@ -161,14 +155,6 @@ private extension InfoViewController {
     
     func updateSegmentedControl() {
         rootView.segmentedControl.selectedSegmentIndex = currentIndex
-    }
-    
-    func updateStatusBarHeightConstraint() {
-        let statusBarHeight = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-
-        rootView.statusBarBackgroundView.snp.updateConstraints { make in
-            make.height.equalTo(statusBarHeight)
-        }
     }
     
     func trackPageChangeEvent(for index: Int) {
