@@ -92,11 +92,33 @@ extension InfoViewController: UIPageViewControllerDataSource {
     }
 }
 
+// MARK: - InfoNewsViewControllerDelegate
+
 extension InfoViewController: InfoNewsViewControllerDelegate {
     func pushToNewsDetailView(with news: NewsDTO) {
-        let detailViewController = InfoDetailViewController(detailType: .news(news))
-        detailViewController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(detailViewController, animated: true)
+        pushToDetailView(
+            navigationTitle: "뉴스",
+            title: news.title,
+            text: news.text,
+            time: news.time,
+            imageURLString: news.imageURLString,
+            isButtonHidden: true
+        )
+    }
+}
+
+// MARK: - InfoNoticeViewControllerDelegate
+
+extension InfoViewController: InfoNoticeViewControllerDelegate {
+    func pushToNoticeDetailView(with notice: NoticeDTO) {
+        pushToDetailView(
+            navigationTitle: "공지사항",
+            title: notice.title,
+            text: notice.text,
+            time: notice.time,
+            imageURLString: notice.imageURLString,
+            isButtonHidden: false
+        )
     }
 }
 
@@ -110,6 +132,10 @@ private extension InfoViewController {
         let newsViewController = InfoNewsViewController(viewModel: InfoNewsViewModel())
         newsViewController.delegate = self
         viewControllers.append(newsViewController)
+        
+        let noticeViewController = InfoNoticeViewController(viewModel: InfoNoticeViewModel())
+        noticeViewController.delegate = self
+        viewControllers.append(noticeViewController)
     }
     
     func setupPageViewController() {
@@ -166,5 +192,27 @@ private extension InfoViewController {
         default:
             break
         }
+    }
+    
+    func pushToDetailView(
+        navigationTitle: String,
+        title: String,
+        text: String,
+        time: String,
+        imageURLString: String?,
+        isButtonHidden: Bool
+    ) {
+        let detailViewController = InfoDetailViewController(
+            configuration: .init(
+                navigationTitle: navigationTitle,
+                title: title,
+                text: text,
+                time: time,
+                imageURLString: imageURLString,
+                isButtonHidden: isButtonHidden
+            )
+        )
+        detailViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

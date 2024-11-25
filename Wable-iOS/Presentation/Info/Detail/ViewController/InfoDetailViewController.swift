@@ -6,25 +6,30 @@
 //
 
 import UIKit
+import SafariServices
 
 import Kingfisher
 
 final class InfoDetailViewController: UIViewController {
     
-    enum DetailType {
-        case news(NewsDTO)
-        case notice
+    struct Configuration {
+        let navigationTitle: String
+        let title: String
+        let text: String
+        let time: String
+        let imageURLString: String?
+        let isButtonHidden: Bool
     }
     
     // MARK: - Property
     
-    private let detailType: DetailType
+    private let configuration: Configuration
     private let rootView = InfoDetailView()
     
     // MARK: - Initializer
 
-    init(detailType: DetailType) {
-        self.detailType = detailType
+    init(configuration: Configuration) {
+        self.configuration = configuration
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -61,17 +66,27 @@ extension InfoDetailViewController: UIGestureRecognizerDelegate {
 
 private extension InfoDetailViewController {
     func setupView() {
-        switch detailType {
-        case .news(let news):
-            setupFor(news: news)
-        case .notice:
-            break
-        }
+        rootView.titleLabel.text = configuration.title
+        rootView.timeLabel.text = configuration.time
+        rootView.bodyLabel.text = configuration.text
+        rootView.submitOpinionButtonContainer.isHidden = configuration.isButtonHidden
+        
+        guard let imageURLString = configuration.imageURLString else { return }
+        rootView.imageView.isHidden = false
+        rootView.imageView.kf.setImage(with: URL(string: imageURLString))
     }
     
     func setupAction() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewDidTap))
         rootView.imageView.addGestureRecognizer(tapGesture)
+        
+        let submitOpinionAction = UIAction { [weak self] _ in
+            guard let url = URL(string: StringLiterals.Info.submitOpinionURL) else { return }
+            let safariViewController = SFSafariViewController(url: url)
+            self?.present(safariViewController, animated: true)
+        }
+        
+        rootView.submitOpinionButton.addAction(submitOpinionAction, for: .touchUpInside)
     }
     
     @objc
@@ -88,18 +103,8 @@ private extension InfoDetailViewController {
         navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
-    func setupFor(news: NewsDTO) {
-        rootView.titleLabel.text = news.title
-        rootView.timeLabel.text = news.time
-        rootView.bodyLabel.text = news.text
-        
-        guard let imageURLString = news.imageURLString else { return }
-        rootView.imageView.isHidden = false
-        rootView.imageView.kf.setImage(with: URL(string: imageURLString))
-    }
-    
     func setupNavigationBar() {
-        navigationItem.title = detailType.title
+        navigationItem.title = configuration.navigationTitle
         
         let backButton = UIBarButtonItem(
             image: .icBack.withTintColor(.white, renderingMode: .alwaysOriginal),
@@ -118,16 +123,5 @@ private extension InfoDetailViewController {
     @objc
     func backButtonDidTap() {
         navigationController?.popViewController(animated: true)
-    }
-}
-
-extension InfoDetailViewController.DetailType {
-    var title: String {
-        switch self {
-        case .news:
-            return "뉴스"
-        case .notice:
-            return "공지사항"
-        }
     }
 }

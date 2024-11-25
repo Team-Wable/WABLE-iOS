@@ -16,9 +16,21 @@ final class InfoDetailView: UIView {
         return view
     }()
     
-    private let scrollView = UIScrollView()
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.showsHorizontalScrollIndicator = false
+        return scrollView
+    }()
     
     private let contentView = UIView()
+    
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        stackView.alignment = .fill
+        return stackView
+    }()
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -66,6 +78,22 @@ final class InfoDetailView: UIView {
         return view
     }()
     
+    let submitOpinionButton: UIButton = {
+        let button = UIButton()
+        button.setTitle(StringLiterals.Info.submitOpinionButtonMediumTitle, for: .normal)
+        button.setTitleColor(.sky50, for: .normal)
+        button.titleLabel?.font = .body3
+        button.backgroundColor = .wableBlack
+        button.layer.cornerRadius = 12.adjusted
+        return button
+    }()
+    
+    let submitOpinionButtonContainer: UIView = {
+        let view = UIView()
+        view.isHidden = true
+        return view
+    }()
+    
     // MARK: - Initializer
     
     override init(frame: CGRect) {
@@ -90,7 +118,11 @@ private extension InfoDetailView {
         
         contentView.addSubviews(titleLabel, timeLabel, bodyStackView, bottomBorder)
         
-        addSubviews(statusBarBackgroundView, scrollView)
+        submitOpinionButtonContainer.addSubview(submitOpinionButton)
+        
+        [scrollView, submitOpinionButtonContainer].forEach { stackView.addArrangedSubview($0) }
+        
+        addSubviews(statusBarBackgroundView, stackView)
     }
     
     func setupConstraints() {
@@ -101,9 +133,13 @@ private extension InfoDetailView {
             make.bottom.equalTo(safeArea.snp.top)
         }
         
-        scrollView.snp.makeConstraints { make in
+        stackView.snp.makeConstraints { make in
             make.edges.equalTo(safeArea)
         }
+        
+//        scrollView.snp.makeConstraints { make in
+//            make.top.horizontalEdges.equalTo(safeArea)
+//        }
         
         contentView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalToSuperview()
@@ -135,6 +171,19 @@ private extension InfoDetailView {
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalToSuperview()
             make.height.equalTo(8)
+        }
+        
+//        submitOpinionButtonContainer.snp.makeConstraints { make in
+//            make.top.equalTo(scrollView.snp.bottom).offset(20)
+//            make.horizontalEdges.equalToSuperview()
+//            make.bottom.equalTo(safeArea)
+//        }
+        
+        submitOpinionButton.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.horizontalEdges.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview().offset(-12)
+            make.height.equalTo(48.adjustedH)
         }
     }
 }
