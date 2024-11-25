@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 final class InfoDetailView: UIView {
-    let statusBarBackgroundView: UIView = {
+    private let statusBarBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .wableBlack
         return view
@@ -95,10 +95,10 @@ private extension InfoDetailView {
     
     func setupConstraints() {
         let safeArea = safeAreaLayoutGuide
-        
+
         statusBarBackgroundView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalToSuperview()
-            make.height.equalTo(20)
+            make.bottom.equalTo(safeArea.snp.top)
         }
         
         scrollView.snp.makeConstraints { make in

@@ -47,21 +47,15 @@ final class InfoDetailViewController: UIViewController {
         setupDelegate()
         setupNavigationBar()
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        updateStatusBarHeightConstraint()
-    }
 }
 
-// MARK: - UIGestureRecognizerDelegate
-
-extension InfoDetailViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return navigationController?.viewControllers.count ?? 0 > 1
-    }
-}
+//// MARK: - UIGestureRecognizerDelegate
+//
+//extension InfoDetailViewController: UIGestureRecognizerDelegate {
+//    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        return navigationController?.viewControllers.count ?? 0 > 1
+//    }
+//}
 
 // MARK: - Private Method
 
@@ -91,7 +85,7 @@ private extension InfoDetailViewController {
     }
     
     func setupDelegate() {
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
+//        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     func setupFor(news: NewsDTO) {
@@ -124,14 +118,6 @@ private extension InfoDetailViewController {
     @objc
     func backButtonDidTap() {
         navigationController?.popViewController(animated: true)
-    }
-    
-    func updateStatusBarHeightConstraint() {
-        let statusBarHeight = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-        
-        rootView.statusBarBackgroundView.snp.updateConstraints { make in
-            make.height.equalTo(statusBarHeight)
-        }
     }
 }
 
