@@ -23,7 +23,7 @@ final class InfoNoticeViewController: UIViewController {
     }
     
     // MARK: - Property
-    var overscrollLabel: UILabel!
+    
     weak var delegate: InfoNoticeViewControllerDelegate?
     
     private var dataSource: DataSource?
