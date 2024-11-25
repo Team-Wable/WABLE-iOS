@@ -15,30 +15,38 @@ final class FeedDetailBottomView: UIView {
     
     var ghostButtonTapped: (() -> Void)?
     var heartButtonTapped: (() -> Void)?
+    var replyButtonTapped: (() -> Void)?
     var isLiked: Bool = false {
         didSet {
-            if isLiked {
-                heartButton.setImage(ImageLiterals.Icon.icHeartPress, for: .normal)
-            } else {
-                heartButton.setImage(ImageLiterals.Icon.icHeartDefault, for: .normal)
-            }
+            heartButton.setImage(
+                isLiked ? ImageLiterals.Icon.icHeartPressSmall : ImageLiterals.Icon.icHeartGray,
+                for: .normal
+            )
         }
     }
     
     // MARK: - UI Components
     
     var heartButton: UIButton = {
-        let button = UIButton()
-        var config = UIButton.Configuration.plain()
+        let button = UIButton(configuration: .plain())
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(ImageLiterals.Icon.icHeartDefault, for: .normal)
-        button.contentHorizontalAlignment = .center
+        button.setImage(ImageLiterals.Icon.icHeartGray, for: .normal)
+        button.contentHorizontalAlignment = .leading
         return button
     }()
     
     var ghostButton: UIButton = {
         let button = UIButton()
         button.setImage(ImageLiterals.Button.btnGhostDefaultSmall, for: .normal)
+        return button
+    }()
+    
+    var replyButton: UIButton = {
+        let button = UIButton(configuration: .plain())
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(ImageLiterals.Icon.icRippleRely, for: .normal)
+        button.contentHorizontalAlignment = .center
+        button.setTitleWithConfiguration("답글쓰기", font: .caption3, textColor: .gray600)
         return button
     }()
     
@@ -63,27 +71,37 @@ final class FeedDetailBottomView: UIView {
 extension FeedDetailBottomView {
     private func setHierarchy() {
         self.addSubviews(heartButton,
-                         ghostButton)
+                         replyButton,
+                         ghostButton
+        )
     }
     
     private func setLayout() {
+        heartButton.snp.makeConstraints {
+            $0.height.equalTo(21.adjusted)
+            $0.width.equalTo(53.adjusted)
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview()
+        }
+        
+        replyButton.snp.makeConstraints {
+            $0.height.equalTo(20.adjusted)
+            $0.width.equalTo(66.adjusted)
+            $0.centerY.equalTo(heartButton)
+            $0.leading.equalTo(heartButton.snp.trailing).offset(8.adjusted)
+        }
+        
         ghostButton.snp.makeConstraints {
             $0.height.width.equalTo(32.adjusted)
             $0.trailing.equalToSuperview()
             $0.centerY.equalToSuperview()
-        }
-        
-        heartButton.snp.makeConstraints {
-            $0.height.equalTo(24.adjusted)
-            $0.width.equalTo(45.adjusted)
-            $0.trailing.equalTo(ghostButton.snp.leading).offset(-16.adjusted)
-            $0.centerY.equalTo(ghostButton)
         }
     }
     
     private func setAddTarget() {
         heartButton.addTarget(self, action: #selector(heartButtonDidTapped), for: .touchUpInside)
         ghostButton.addTarget(self, action: #selector(ghostButtonDidTapped), for: .touchUpInside)
+        replyButton.addTarget(self, action: #selector(replyButtonDidTapped), for: .touchUpInside)
     }
     
     @objc
@@ -96,7 +114,20 @@ extension FeedDetailBottomView {
         ghostButtonTapped?()
     }
     
+    @objc
+    private func replyButtonDidTapped() {
+        replyButtonTapped?()
+    }
+    
     func bind(heart: Int) {
-        heartButton.setTitleWithConfiguration("\(heart)", font: .caption1, textColor: .wableBlack)
+        heartButton.setTitleWithConfiguration("\(heart)", font: .caption1, textColor: .gray600)
+    }
+    
+    func setupReplyButtonVisibility(with parentCommnetID: Int) {
+        replyButton.isHidden = parentCommnetID != -1
+    }
+    
+    func hideReplyButton() {
+        replyButton.isHidden = true
     }
 }

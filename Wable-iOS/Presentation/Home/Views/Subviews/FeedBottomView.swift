@@ -47,7 +47,6 @@ final class FeedBottomView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(ImageLiterals.Icon.icRipple, for: .normal)
         button.contentHorizontalAlignment = .center
-        button.isEnabled = false
         return button
     }()
     
