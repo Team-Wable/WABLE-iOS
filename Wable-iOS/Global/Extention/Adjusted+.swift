@@ -25,7 +25,7 @@ extension CGFloat {
     }
 
     private var adjustedHRatio: CGFloat {
-        return UIScreen.main.bounds.height / 667
+        return UIScreen.main.bounds.height / 812
     }
 }
 
