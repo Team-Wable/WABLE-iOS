@@ -157,6 +157,7 @@ enum StringLiterals {
         static let ghostPopupUndo = "고민할게요"
         static let ghostPopupDo = "네 맞아요"
         static let placeholder = "에게 댓글 남기기..."
+        static let placeholderForChildReply = "에게 답글 남기기..."
     }
     
     enum Write {
@@ -191,6 +192,9 @@ enum StringLiterals {
         enum Home {
             static let getContent = "v2/contents"
             static let patchUserProfile = "v1/user-profile2"
+            static func postReply(contentID: Int) -> String {
+                        return "v3/content/\(contentID)/comment"
+                    }
         }
         
         enum Info {

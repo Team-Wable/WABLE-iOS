@@ -117,14 +117,14 @@ final class FeedDetailTableViewCell: UITableViewCell {
         }
         
         profileImageView.snp.makeConstraints {
-            $0.height.width.equalTo(36.adjusted)
+            $0.height.width.equalTo(30.adjusted)
             $0.leading.equalToSuperview().inset(16.adjusted)
             $0.centerY.equalTo(infoView)
         }
         
         infoView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(18.adjusted)
-            $0.leading.equalTo(profileImageView.snp.trailing).offset(10.adjusted)
+            $0.leading.equalTo(profileImageView.snp.trailing).offset(8.adjusted)
             $0.height.equalTo(43.adjusted)
         }
         
@@ -136,13 +136,14 @@ final class FeedDetailTableViewCell: UITableViewCell {
         
         contentLabel.snp.makeConstraints {
             $0.top.equalTo(infoView.snp.bottom).offset(12.adjusted)
-            $0.leading.equalTo(profileImageView.snp.trailing).offset(6.adjusted)
+            $0.leading.equalToSuperview().inset(52.adjusted)
             $0.trailing.equalTo(menuButton)
             $0.bottom.lessThanOrEqualTo(bottomView.snp.top).offset(-12.adjusted)
         }
         
         bottomView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16.adjusted)
+            $0.leading.equalTo(contentLabel)
+            $0.trailing.equalToSuperview().inset(16.adjusted)
             $0.height.equalTo(31.adjusted)
             $0.bottom.equalToSuperview().inset(18.adjusted)
         }
@@ -207,27 +208,29 @@ final class FeedDetailTableViewCell: UITableViewCell {
     }
 
     
-    func bind(data: FeedDetailReplyDTO) {
-        profileImageView.load(url: data.memberProfileUrl)
+    func bind(data: FlattenReplyModel) {
+        profileImageView.load(url: data.memberProfileURL)
         
         infoView.bind(nickname: data.memberNickname,
                       team: Team(rawValue: data.memberFanTeam) ?? .TBD,
                       ghostPercent: data.memberGhost,
                       time: data.time)
         
+        updateLayoutForReplyType(with: data.parentCommentID)
+
         contentLabel.text = data.commentText
 
         contentLabel.snp.remakeConstraints {
             $0.top.equalTo(infoView.snp.bottom).offset(12.adjusted)
-            $0.leading.equalTo(profileImageView.snp.trailing).offset(6.adjusted)
+            $0.leading.equalToSuperview().inset(52.adjusted)
             $0.trailing.equalTo(menuButton)
             $0.bottom.equalTo(bottomView.snp.top).offset(-10.adjusted)
         }
 
-        if let profileImage = UserProfile(rawValue: data.memberProfileUrl) {
+        if let profileImage = UserProfile(rawValue: data.memberProfileURL) {
             profileImageView.image = profileImage.image
         } else {
-            profileImageView.kfSetImage(url: data.memberProfileUrl)
+            profileImageView.kfSetImage(url: data.memberProfileURL)
         }
         bottomView.bind(heart: data.commentLikedNumber)
         
@@ -247,5 +250,35 @@ final class FeedDetailTableViewCell: UITableViewCell {
         contentLabel.isUserInteractionEnabled = true
         contentLabel.addGestureRecognizer(tapContentLabelGesture)
         
+    }
+    
+    func hideChildReplyForMyPage() {
+        bottomView.hideReplyButton()
+    }
+    
+    func updateLayoutForReplyType(with parentCommentID: Int) {
+        if parentCommentID == -1 {
+            makeReplyLayout()
+        } else {
+            makeChildReplyLayout()
+        }
+        
+        bottomView.setupReplyButtonVisibility(with: parentCommentID)
+    }
+    
+    private func makeChildReplyLayout() {
+        profileImageView.snp.remakeConstraints {
+            $0.height.width.equalTo(30.adjusted)
+            $0.leading.equalToSuperview().inset(52.adjusted)
+            $0.centerY.equalTo(infoView)
+        }
+    }
+    
+    private func makeReplyLayout() {
+        profileImageView.snp.remakeConstraints {
+            $0.height.width.equalTo(30.adjusted)
+            $0.leading.equalToSuperview().inset(16.adjusted)
+            $0.centerY.equalTo(infoView)
+        }
     }
 }
