@@ -193,7 +193,11 @@
 		3CF344ED2C75EE620038BB53 /* MyPageSignOutConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344EC2C75EE620038BB53 /* MyPageSignOutConfirmView.swift */; };
 		3CF344EF2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344EE2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift */; };
 		DE1535C72CF390B2008DBE9A /* NewsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1535C62CF390B2008DBE9A /* NewsHeaderView.swift */; };
-		DE1B58172CDDD3F90017C319 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DE1B58162CDDD3F90017C319 /* GoogleService-Info.plist */; };
+		DE54C3D92CF4E56300753129 /* InfoNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54C3D82CF4E56300753129 /* InfoNoticeView.swift */; };
+		DE54C3DB2CF4E56C00753129 /* InfoNoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54C3DA2CF4E56C00753129 /* InfoNoticeViewController.swift */; };
+		DE54C3DD2CF4E57400753129 /* InfoNoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54C3DC2CF4E57400753129 /* InfoNoticeViewModel.swift */; };
+		DE54C3DF2CF4E78600753129 /* NoticeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54C3DE2CF4E78600753129 /* NoticeDTO.swift */; };
+		DE54C3E12CF4E92900753129 /* NoticeTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54C3E02CF4E92900753129 /* NoticeTimeFormatter.swift */; };
 		DE7FAAA02CDF971300A4D8A2 /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */; };
 		DE8001A42CF31B6E00D9DAD9 /* NewsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8001A32CF31B6E00D9DAD9 /* NewsDTO.swift */; };
 		DE8001A82CF31ECE00D9DAD9 /* InfoNewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8001A72CF31ECE00D9DAD9 /* InfoNewsViewModel.swift */; };
@@ -396,8 +400,11 @@
 		3CF344EC2C75EE620038BB53 /* MyPageSignOutConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSignOutConfirmView.swift; sourceTree = "<group>"; };
 		3CF344EE2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSignOutConfirmViewModel.swift; sourceTree = "<group>"; };
 		DE1535C62CF390B2008DBE9A /* NewsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsHeaderView.swift; sourceTree = "<group>"; };
-		DE1B58142CDDD1E50017C319 /* Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
-		DE1B58162CDDD3F90017C319 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DE54C3D82CF4E56300753129 /* InfoNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNoticeView.swift; sourceTree = "<group>"; };
+		DE54C3DA2CF4E56C00753129 /* InfoNoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNoticeViewController.swift; sourceTree = "<group>"; };
+		DE54C3DC2CF4E57400753129 /* InfoNoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNoticeViewModel.swift; sourceTree = "<group>"; };
+		DE54C3DE2CF4E78600753129 /* NoticeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeDTO.swift; sourceTree = "<group>"; };
+		DE54C3E02CF4E92900753129 /* NoticeTimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeTimeFormatter.swift; sourceTree = "<group>"; };
 		DE7FAA9F2CDF971300A4D8A2 /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
 		DE8001A32CF31B6E00D9DAD9 /* NewsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDTO.swift; sourceTree = "<group>"; };
 		DE8001A72CF31ECE00D9DAD9 /* InfoNewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNewsViewModel.swift; sourceTree = "<group>"; };
@@ -596,6 +603,7 @@
 				DE9D0E332CF087B30024BB1F /* LCKGameTypeDTO.swift */,
 				DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */,
 				DE8001A32CF31B6E00D9DAD9 /* NewsDTO.swift */,
+				DE54C3DE2CF4E78600753129 /* NoticeDTO.swift */,
 			);
 			path = ResponseDTO;
 			sourceTree = "<group>";
@@ -804,6 +812,7 @@
 				DE9D0E3A2CF08C520024BB1F /* Match */,
 				DE9D0E3F2CF08D020024BB1F /* Ranking */,
 				DE8001A52CF31D6E00D9DAD9 /* News */,
+				DED893662CF4BBBE0094C5EB /* Notice */,
 				DE8001B72CF3547C00D9DAD9 /* Detail */,
 			);
 			path = Info;
@@ -1427,6 +1436,49 @@
 			path = Support;
 			sourceTree = "<group>";
 		};
+		DED893662CF4BBBE0094C5EB /* Notice */ = {
+			isa = PBXGroup;
+			children = (
+				DED893672CF4BBDA0094C5EB /* Support */,
+				DED8936A2CF4BBEC0094C5EB /* ViewModel */,
+				DED893692CF4BBE60094C5EB /* ViewController */,
+				DED893682CF4BBE20094C5EB /* View */,
+			);
+			path = Notice;
+			sourceTree = "<group>";
+		};
+		DED893672CF4BBDA0094C5EB /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				DE54C3E02CF4E92900753129 /* NoticeTimeFormatter.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		DED893682CF4BBE20094C5EB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DE54C3D82CF4E56300753129 /* InfoNoticeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DED893692CF4BBE60094C5EB /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DE54C3DA2CF4E56C00753129 /* InfoNoticeViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		DED8936A2CF4BBEC0094C5EB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DE54C3DC2CF4E57400753129 /* InfoNoticeViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1535,6 +1587,7 @@
 				3CDE2DF62C6F4170004A84CB /* JoinLCKYearView.swift in Sources */,
 				050E0D002C77341A00326EEA /* HomeRouter.swift in Sources */,
 				0547F4D52C624739001E3039 /* ErrorResponse.swift in Sources */,
+				DE54C3D92CF4E56300753129 /* InfoNoticeView.swift in Sources */,
 				DE1535C72CF390B2008DBE9A /* NewsHeaderView.swift in Sources */,
 				3C8B4E202C78E5EA00174943 /* NetworkService.swift in Sources */,
 				3CF344ED2C75EE620038BB53 /* MyPageSignOutConfirmView.swift in Sources */,
@@ -1581,6 +1634,7 @@
 				0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */,
 				050E0CD92C74BFC200326EEA /* InfoLogoView.swift in Sources */,
 				3C8B4E532C83FB7C00174943 /* HomeBottomSheetView.swift in Sources */,
+				DE54C3DF2CF4E78600753129 /* NoticeDTO.swift in Sources */,
 				050E0D0D2C7F635200326EEA /* InfoAPI.swift in Sources */,
 				3CDE2E002C711A74004A84CB /* UITextField+.swift in Sources */,
 				050E0CF62C75102A00326EEA /* NotificationTableViewCell.swift in Sources */,
@@ -1596,6 +1650,7 @@
 				DE8001BD2CF35A0300D9DAD9 /* InfoDetailView.swift in Sources */,
 				3C3531962C6F1FBF0015A8FA /* UILabel+.swift in Sources */,
 				3CF344D82C74A3E00038BB53 /* MyPageEditProfileViewController.swift in Sources */,
+				DE54C3DD2CF4E57400753129 /* InfoNoticeViewModel.swift in Sources */,
 				0547F4E12C6248A0001E3039 /* BaseAPI.swift in Sources */,
 				3CDE2E172C7232C5004A84CB /* NotificationActivityViewController.swift in Sources */,
 				3C8B4E2F2C78ECBC00174943 /* UserProfileUnionRequestDTO.swift in Sources */,
@@ -1626,6 +1681,7 @@
 				0547F4C22C621719001E3039 /* UIFont+.swift in Sources */,
 				050E0D142C8252A500326EEA /* NotificationRouter.swift in Sources */,
 				3CDE2DFC2C70FAB5004A84CB /* JoinProfileViewModel.swift in Sources */,
+				DE54C3DB2CF4E56C00753129 /* InfoNoticeViewController.swift in Sources */,
 				3C3531992C6F21A10015A8FA /* LoginViewModel.swift in Sources */,
 				DE8001AB2CF31FFE00D9DAD9 /* NewsTimeFormatter.swift in Sources */,
 				3CDE2E202C72F299004A84CB /* MyPageView.swift in Sources */,
@@ -1650,6 +1706,7 @@
 				3C8B4E3F2C79135800174943 /* UIImageView+.swift in Sources */,
 				3CDE2E252C7301A8004A84CB /* MyPageProfileView.swift in Sources */,
 				3C8B4E242C78E60600174943 /* BaseResponse.swift in Sources */,
+				DE54C3E12CF4E92900753129 /* NoticeTimeFormatter.swift in Sources */,
 				3CDE2DE42C6F292B004A84CB /* Publisher+UIControl.swift in Sources */,
 				3C8B4E2A2C78EBC800174943 /* Empty.swift in Sources */,
 				0547F4FC2C64C797001E3039 /* MyPageViewController.swift in Sources */,
