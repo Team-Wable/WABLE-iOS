@@ -49,13 +49,13 @@ final class InfoDetailViewController: UIViewController {
     }
 }
 
-//// MARK: - UIGestureRecognizerDelegate
-//
-//extension InfoDetailViewController: UIGestureRecognizerDelegate {
-//    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-//        return navigationController?.viewControllers.count ?? 0 > 1
-//    }
-//}
+// MARK: - UIGestureRecognizerDelegate
+
+extension InfoDetailViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return navigationController?.viewControllers.count ?? 0 > 1
+    }
+}
 
 // MARK: - Private Method
 
@@ -85,7 +85,7 @@ private extension InfoDetailViewController {
     }
     
     func setupDelegate() {
-//        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     func setupFor(news: NewsDTO) {
