@@ -18,6 +18,8 @@ enum NotiActivityText: String {
     case userBan = "userBan"
     case popularWriter = "popularWriter"
     case popularContent = "popularContent"
+    case childComment = "childComment"
+    case childCommentLiked = "childCommentLiked"
     
     init?(rawValue: String) {
         switch rawValue {
@@ -31,6 +33,8 @@ enum NotiActivityText: String {
         case "userBan": self = .userBan
         case "popularWriter": self = .popularWriter
         case "popularContent": self = .popularContent
+        case "childComment": self = .childComment
+        case "childCommentLiked": self = .childCommentLiked
         default: return nil
         }
     }
@@ -57,6 +61,11 @@ enum NotiActivityText: String {
             return "\(userNickname)님이 작성하신 글이 인기글로 선정 되었어요🥳🥳"
         case .popularContent:
             return "어제 가장 인기있던 글이에요."
+        case .childComment:
+            return "\(triggerNickname)님이 \(userNickname)에게 대댓글을 작성했습니다"
+        case .childCommentLiked:
+            return "\(triggerNickname)님이 \(userNickname)님의 대댓글을 좋아합니다"
+            
         }
     }
 }

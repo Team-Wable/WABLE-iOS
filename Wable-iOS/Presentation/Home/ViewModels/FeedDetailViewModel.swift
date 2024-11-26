@@ -96,7 +96,7 @@ final class FeedDetailViewModel: ViewModelType {
                 Task {
                     do {
                         if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
-                            let result = try await self.postWriteReplyV3API(accessToken: accessToken,
+                            let result = try await self.postWriteReplyAPI(accessToken: accessToken,
                                                                             commentText: value.0,
                                                                             contentId: value.1,
                                                                             parentCommentID: self.parentCommentAndWriterID.value.0,
@@ -206,44 +206,12 @@ extension FeedDetailViewModel {
     private func getPostDetailDataAPI(accessToken: String, contentId: Int) async throws -> BaseResponse<FeedDetailResponseDTO>? {
         do {
             let result: BaseResponse<FeedDetailResponseDTO>? = try
-            await self.networkProvider.donNetwork(type: .get, baseURL: Config.baseURL + "v2/content/\(contentId)", accessToken: accessToken, body: EmptyBody(), pathVariables: ["":""])
+            await self.networkProvider.donNetwork(type: .get, baseURL: Config.baseURL + "v3/content/\(contentId)", accessToken: accessToken, body: EmptyBody(), pathVariables: ["":""])
             return result
         } catch {
             return nil
         }
     }
-    
-    private func getPostReplyDataAPI(accessToken: String, contentId: Int) async throws -> BaseResponse<[FeedDetailReplyDTO]>? {
-        do {
-            let result: BaseResponse<[FeedDetailReplyDTO]>? = try await
-            self.networkProvider.donNetwork(type: .get,
-                                            baseURL: Config.baseURL + "v2/content/\(contentId)/comments",
-                                            accessToken: accessToken,
-                                            body: EmptyBody(),
-                                            pathVariables: ["cursor":"\(cursor)"])
-            return result
-        } catch {
-            return nil
-        }
-    }
-    
-    private func postWriteReplyAPI(accessToken: String, commentText: String, contentId: Int, notificationTriggerType: String) async throws -> BaseResponse<EmptyResponse>? {
-        do {
-            let result: BaseResponse<EmptyResponse>? = try await
-            self.networkProvider.donNetwork(
-                type: .post,
-                baseURL: Config.baseURL + "v1/content/\(contentId)/comment",
-                accessToken: accessToken,
-                body: WriteReplyRequestDTO(commentText: commentText, notificationTriggerType: notificationTriggerType),
-                pathVariables: ["":""]
-            )
-            return result
-        } catch {
-            return nil
-        }
-    }
-    
-    // MARK: - 대댓글 버전 답글 리스트 불러오기
     
     private func getReplyListAPI(accessToken: String, contentId: Int) async throws -> BaseResponse<[FeedReplyListDTO]>? {
         do {
@@ -259,9 +227,7 @@ extension FeedDetailViewModel {
         }
     }
     
-    // MARK: - 대댓글 버전 댓글쓰기
-    
-    private func postWriteReplyV3API(accessToken: String, commentText: String, contentId: Int, parentCommentID: Int, parentCommentWriterID: Int) async throws -> BaseResponse<EmptyResponse>? {
+    private func postWriteReplyAPI(accessToken: String, commentText: String, contentId: Int, parentCommentID: Int, parentCommentWriterID: Int) async throws -> BaseResponse<EmptyResponse>? {
         do {
             let result: BaseResponse<EmptyResponse>? = try await
             self.networkProvider.donNetwork(

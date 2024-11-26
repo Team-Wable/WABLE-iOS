@@ -34,7 +34,7 @@ final class WablePushAlarmHelper {
                     let targetViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
                     // 데이터 전달
                     targetViewController.getFeedData(data: result)
-                    targetViewController.contentId = Int(self.contentID)
+                    targetViewController.viewModel.contentIDSubject.send(Int(self.contentID))
                     rootViewController.pushViewController(targetViewController, animated: true)
                 }
             }
