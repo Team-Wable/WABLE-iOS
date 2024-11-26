@@ -15,9 +15,10 @@ final class HomeView: UIView {
     
     // MARK: - UI Components
     
-    private var homeTabView = HomeTabView()
-    var feedTableView = UITableView()
-    var writeFeedButton: UIButton = {
+    private let homeTabView = HomeTabView()
+    let loadingView = HomeLoadingView()
+    let feedTableView = UITableView()
+    let writeFeedButton: UIButton = {
         let button = UIButton()
         button.setImage(ImageLiterals.Button.btnWrite, for: .normal)
         return button
@@ -44,18 +45,26 @@ final class HomeView: UIView {
 
 extension HomeView {
     private func setUI() {
-        self.backgroundColor = .wableWhite
-        self.feedTableView.backgroundColor = .wableWhite
-        self.feedTableView.separatorStyle = .none
+        backgroundColor = .wableWhite
+        feedTableView.backgroundColor = .wableWhite
+        feedTableView.separatorStyle = .none
+        loadingView.isHidden = true
     }
     
     private func setHierarchy() {
         self.addSubviews(homeTabView,
                          feedTableView,
-                         writeFeedButton)
+                         writeFeedButton,
+                         loadingView)
     }
     
     private func setLayout() {
+        loadingView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.height.equalTo(UIScreen.main.bounds.height)
+        }
+        
         homeTabView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.top.equalTo(safeAreaLayoutGuide)
@@ -75,9 +84,5 @@ extension HomeView {
     
     private func setRegisterCell() {
         feedTableView.register(HomeFeedTableViewCell.self, forCellReuseIdentifier: HomeFeedTableViewCell.identifier)
-    }
-    
-    private func setDataBind() {
-        
     }
 }

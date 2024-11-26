@@ -97,6 +97,7 @@
 		0593F6E42C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */; };
 		05AD1EB52CE4C1D900F36D6B /* Dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 05AD1EB42CE4C1D900F36D6B /* Dev.xcconfig */; };
 		05AD1EB72CE4C1F400F36D6B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 05AD1EB62CE4C1F400F36D6B /* GoogleService-Info.plist */; };
+		05B4F47B2CF483010033FF67 /* HomeLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4F47A2CF483010033FF67 /* HomeLoadingView.swift */; };
 		05FBEED22C886A0200E4BF17 /* HomeFeedContentDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FBEED12C886A0200E4BF17 /* HomeFeedContentDTO.swift */; };
 		3C35317F2C6F13FF0015A8FA /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C35317C2C6F13FF0015A8FA /* Pretendard-Regular.otf */; };
 		3C3531802C6F13FF0015A8FA /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C35317D2C6F13FF0015A8FA /* Pretendard-SemiBold.otf */; };
@@ -305,6 +306,7 @@
 		0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePushAlarmHelper.swift; sourceTree = "<group>"; };
 		05AD1EB42CE4C1D900F36D6B /* Dev.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
 		05AD1EB62CE4C1F400F36D6B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		05B4F47A2CF483010033FF67 /* HomeLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLoadingView.swift; sourceTree = "<group>"; };
 		05FBEED12C886A0200E4BF17 /* HomeFeedContentDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedContentDTO.swift; sourceTree = "<group>"; };
 		3C35317C2C6F13FF0015A8FA /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		3C35317D2C6F13FF0015A8FA /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
@@ -517,6 +519,7 @@
 				050E0CBE2C74B8A400326EEA /* FeedContentView.swift */,
 				050E0CC02C74B8AD00326EEA /* FeedBottomWriteView.swift */,
 				050E0CC22C74B8B600326EEA /* FeedBottomView.swift */,
+				05B4F47A2CF483010033FF67 /* HomeLoadingView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1698,6 +1701,7 @@
 				DE8001AB2CF31FFE00D9DAD9 /* NewsTimeFormatter.swift in Sources */,
 				3CDE2E202C72F299004A84CB /* MyPageView.swift in Sources */,
 				050E0D0B2C7F634800326EEA /* InfoRouter.swift in Sources */,
+				05B4F47B2CF483010033FF67 /* HomeLoadingView.swift in Sources */,
 				3CDE2E232C72F32B004A84CB /* MyPageViewModel.swift in Sources */,
 				0547F4C42C62178C001E3039 /* ImageLiterals.swift in Sources */,
 				0547F4EB2C64C618001E3039 /* WableTabBarItem.swift in Sources */,
