@@ -95,6 +95,8 @@ final class HomeViewController: UIViewController {
         
         self.navigationController?.navigationBar.isHidden = true
         
+        showLoadView()
+        
         setNotification()
         
         viewModel.viewWillAppear.send()
@@ -287,6 +289,29 @@ extension HomeViewController {
     @objc
     func removePhotoButtonTapped() {
         self.photoDetailView?.removeFromSuperview()
+    }
+    
+    private func showLoadView() {
+        guard Int.random(in: 1...3) == 1 else { return }
+        displayLoadingView()
+    }
+    
+    private func displayLoadingView() {
+        tabBarController?.tabBar.isHidden = true
+        self.homeView.loadingView.alpha = 1.0
+        self.homeView.loadingView.isHidden = false
+        self.homeView.loadingView.loadingLabel.text = homeView.loadingView.loadingText.randomElement()
+        self.homeView.loadingView.lottieLoadingView.play(fromProgress: 0, toProgress: 0.6, loopMode: .playOnce) { [weak self] _ in
+            guard let self else { return }
+            self.fadeLoadingView()
+        }
+    }
+    
+    private func fadeLoadingView() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.tabBarController?.tabBar.isHidden = false
+            self.homeView.loadingView.alpha = 0.0
+        })
     }
     
     func popBottomsheetView() {
