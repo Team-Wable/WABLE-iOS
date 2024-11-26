@@ -300,8 +300,10 @@ extension HomeViewController {
         tabBarController?.tabBar.isHidden = true
         self.homeView.loadingView.alpha = 1.0
         self.homeView.loadingView.isHidden = false
-        self.homeView.loadingView.loadingLabel.text = homeView.loadingView.loadingText.randomElement()
-        self.homeView.loadingView.lottieLoadingView.play(fromProgress: 0, toProgress: 0.6, loopMode: .playOnce) { [weak self] _ in
+        self.homeView.loadingView.loadingLabel.setTextWithLineHeight(text: self.homeView.loadingView.loadingText.randomElement(),
+                                                                     lineHeight: 32.adjusted,
+                                                                     alignment: .center)
+        self.homeView.loadingView.lottieLoadingView.play(fromProgress: 0, toProgress: 0.7, loopMode: .playOnce) { [weak self] _ in
             guard let self else { return }
             self.fadeLoadingView()
         }
