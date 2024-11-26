@@ -191,7 +191,7 @@ enum StringLiterals {
     
     enum Endpoint {
         enum Home {
-            static let getContent = "v2/contents"
+            static let getContent = "v3/contents"
             static let patchUserProfile = "v1/user-profile2"
             static func postReply(contentID: Int) -> String {
                         return "v3/content/\(contentID)/comment"
