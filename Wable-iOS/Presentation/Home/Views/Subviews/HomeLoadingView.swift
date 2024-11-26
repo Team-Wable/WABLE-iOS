@@ -47,7 +47,6 @@ final class HomeLoadingView: UIView {
         label.font = .head1
         label.textColor = .wableBlack
         label.numberOfLines = 0
-        label.textAlignment = .center
         return label
     }()
     
@@ -68,7 +67,6 @@ final class HomeLoadingView: UIView {
     
     private func setUI() {
         self.backgroundColor = .white
-        loadingLabel.text = loadingText.randomElement()
     }
     
     private func setHierarchy() {
