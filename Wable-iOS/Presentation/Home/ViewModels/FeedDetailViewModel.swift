@@ -213,6 +213,8 @@ extension FeedDetailViewModel {
         }
     }
     
+    // TODO: - 엔드포인트 리터럴화
+    
     private func getReplyListAPI(accessToken: String, contentId: Int) async throws -> BaseResponse<[FeedReplyListDTO]>? {
         do {
             let result: BaseResponse<[FeedReplyListDTO]>? = try await
