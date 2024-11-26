@@ -185,6 +185,7 @@ enum StringLiterals {
         static let submitOpinionButtonLongTitle = "더 알고 싶은 정보가 있다면? 의견 남기러 가기"
         static let submitOpinionButtonMediumTitle = "와블에 대한 의견 남기러 가기"
         static let submitOpinionButtonShortTitle = "의견 남기러 가기"
+        static let noNewsText = "아직 작성된 뉴스가 없어요."
     }
     
     enum Endpoint {
@@ -200,6 +201,7 @@ enum StringLiterals {
             static let getMatchInfo = "v1/information/schedule"
             static let getGameType = "v1/information/gametype"
             static let getTeamRank = "v1/information/rank"
+            static let getNews = "v1/information/news"
         }
         
         enum Notification {

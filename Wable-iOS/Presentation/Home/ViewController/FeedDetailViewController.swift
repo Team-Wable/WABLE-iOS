@@ -109,7 +109,7 @@ final class FeedDetailViewController: UIViewController {
         setDelegate()
         bindViewModel()
         getAPI()
-        dismissKeyboard()
+        dismissKeyboardTouchOutside(delegate: self)
         setRefreshControl()
     }
     
@@ -134,6 +134,14 @@ final class FeedDetailViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+extension FeedDetailViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        !(touch.view is UIButton)
     }
 }
 
