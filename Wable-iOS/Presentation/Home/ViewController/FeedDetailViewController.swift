@@ -253,7 +253,8 @@ extension FeedDetailViewController {
                                                  contentTitle: data.contentTitle ?? "",
                                                  contentText: data.contentText ?? "",
                                                  contentImageUrl: data.contentImageURL,
-                                                 memberFanTeam: data.memberFanTeam)
+                                                 memberFanTeam: data.memberFanTeam,
+                                                 isBlind: data.isBlind)
     }
 }
 
@@ -525,7 +526,8 @@ extension FeedDetailViewController: UITableViewDataSource {
                 isDeleted: false,
                 message: getFeedData?.contentImageUrl ?? "",
                 commnetNumber: 0,
-                contentImageURL: "")
+                contentImageURL: "",
+                isBlind: getFeedData?.isBlind)
             )
             
             if getFeedData?.memberId == loadUserData()?.memberId {

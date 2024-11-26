@@ -21,4 +21,5 @@ struct FeedDetailResponseDTO: Decodable {
     let contentText: String
     let contentImageUrl: String?
     let memberFanTeam: String
+    let isBlind: Bool?
 }

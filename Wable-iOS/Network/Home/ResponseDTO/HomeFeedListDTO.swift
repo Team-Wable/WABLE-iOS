@@ -27,6 +27,7 @@ struct HomeFeedDTO: Codable {
     let message: String?
     let commnetNumber: Int?
     let contentImageURL: String?
+    let isBlind: Bool?
 
     enum CodingKeys: String, CodingKey {
         case memberID = "memberId"
@@ -37,5 +38,6 @@ struct HomeFeedDTO: Codable {
         case message
         case commnetNumber
         case contentImageURL = "contentImageUrl"
+        case isBlind
     }
 }
