@@ -137,10 +137,6 @@ private extension InfoDetailView {
             make.edges.equalTo(safeArea)
         }
         
-//        scrollView.snp.makeConstraints { make in
-//            make.top.horizontalEdges.equalTo(safeArea)
-//        }
-        
         contentView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalToSuperview()
             make.bottom.equalToSuperview()
@@ -172,12 +168,6 @@ private extension InfoDetailView {
             make.bottom.equalToSuperview()
             make.height.equalTo(8)
         }
-        
-//        submitOpinionButtonContainer.snp.makeConstraints { make in
-//            make.top.equalTo(scrollView.snp.bottom).offset(20)
-//            make.horizontalEdges.equalToSuperview()
-//            make.bottom.equalTo(safeArea)
-//        }
         
         submitOpinionButton.snp.makeConstraints { make in
             make.top.equalToSuperview()
