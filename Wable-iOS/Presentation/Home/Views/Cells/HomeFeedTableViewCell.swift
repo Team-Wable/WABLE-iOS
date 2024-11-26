@@ -90,7 +90,10 @@ final class HomeFeedTableViewCell: UITableViewCell{
     override func prepareForReuse() {
         super.prepareForReuse()
         self.profileImageView.image = UIImage()
-        
+        self.feedContentView.blindImageView.isHidden = true
+        self.feedContentView.titleLabel.isHidden = false
+        self.feedContentView.contentLabel.isHidden = false
+        self.feedContentView.photoImageView.isHidden = false
         self.feedContentView.titleLabel.attributedText = nil
         self.feedContentView.titleLabel.textColor = .wableBlack
         self.feedContentView.contentLabel.attributedText = nil
@@ -195,7 +198,8 @@ final class HomeFeedTableViewCell: UITableViewCell{
         
         feedContentView.bind(title: data.contentTitle ?? "",
                              content: data.contentText ?? "",
-                             image: data.contentImageURL)
+                             image: data.contentImageURL,
+                             isBlind: data.isBlind)
         
         bottomView.bind(heart: data.likedNumber,
                         comment: data.commentNumber ?? Int())
@@ -209,11 +213,5 @@ final class HomeFeedTableViewCell: UITableViewCell{
             bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDefaultLarge, for: .normal)
             bottomView.ghostButton.isEnabled = true
         }
-
-//        if let profileImage = UserProfile(rawValue: data.memberProfileURL) {
-//            profileImageView.image = profileImage.image
-//        } else {
-//            profileImageView.kfSetImage(url: data.memberProfileURL)
-//        }
     }
 }
