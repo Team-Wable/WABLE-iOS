@@ -29,7 +29,7 @@ final class InfoView: UIView {
     }()
   
     let segmentedControl: WableSegmentedControl = {
-        let segmentedControl = WableSegmentedControl(items: ["경기", "순위", "뉴스"])
+        let segmentedControl = WableSegmentedControl(items: ["경기", "순위", "뉴스", "공지사항"])
         segmentedControl.selectedSegmentIndex = 0
         return segmentedControl
     }()
