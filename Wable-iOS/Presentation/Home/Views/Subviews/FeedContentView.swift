@@ -38,6 +38,13 @@ final class FeedContentView: UIView {
         return label
     }()
     
+    let blindImageView: UIImageView = {
+        let imageView = UIImageView(image: ImageLiterals.Image.imgFeedIsBlind)
+        imageView.contentMode = .scaleAspectFill
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     // MARK: - Life Cycles
     
     override init(frame: CGRect) {
@@ -59,7 +66,8 @@ extension FeedContentView {
     private func setHierarchy() {
         self.addSubviews(titleLabel,
                          photoImageView,
-                         contentLabel)
+                         contentLabel,
+                         blindImageView)
     }
     
     private func setLayout() {
@@ -98,7 +106,10 @@ extension FeedContentView {
         return attributedString
     }
     
-    func bind(title: String, content: String, image: String?) {
+    func bind(title: String, content: String, image: String?, isBlind: Bool?) {
+        isFeedBlind(isBlind: isBlind ?? false)
+        guard isBlind == false else { return }
+        
         titleLabel.text = title
         contentLabel.text = content
         photoImageView.loadContentImage(url: image ?? "")
@@ -167,6 +178,7 @@ extension FeedContentView {
                 }
             }
         }
+        
         titleLabel.attributedText = attributedString(for: title)
         contentLabel.attributedText = attributedString(for: content)
         
@@ -178,6 +190,43 @@ extension FeedContentView {
         contentLabel.isUserInteractionEnabled = true
         contentLabel.addGestureRecognizer(tapContentLabelGesture)
 
+    }
+    
+    private func isFeedBlind(isBlind: Bool) {
+        contentLabel.isHidden = isBlind
+        titleLabel.isHidden = isBlind
+        photoImageView.isHidden = isBlind
+        blindImageView.isHidden = !isBlind
+        if isBlind {
+            
+            titleLabel.removeConstraints(blindImageView.constraints)
+            photoImageView.removeConstraints(blindImageView.constraints)
+            contentLabel.removeConstraints(blindImageView.constraints)
+            
+            blindImageView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+                $0.height.equalTo(98.adjustedH)
+            }
+            
+        } else {
+            
+            blindImageView.removeConstraints(blindImageView.constraints)
+            
+            titleLabel.snp.makeConstraints {
+                $0.top.leading.trailing.equalToSuperview()
+            }
+            
+            photoImageView.snp.makeConstraints {
+                $0.top.equalTo(titleLabel.snp.bottom).offset(10.adjusted)
+                $0.height.equalTo(192.adjusted)
+                $0.leading.trailing.equalToSuperview()
+            }
+            
+            contentLabel.snp.makeConstraints {
+                $0.top.equalTo(photoImageView.snp.bottom).offset(10.adjusted)
+                $0.leading.trailing.bottom.equalToSuperview()
+            }
+        }
     }
     
     // 탭 제스처 처리 함수

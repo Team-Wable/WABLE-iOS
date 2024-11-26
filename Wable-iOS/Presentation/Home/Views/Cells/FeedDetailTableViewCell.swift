@@ -32,11 +32,11 @@ final class FeedDetailTableViewCell: UITableViewCell {
         return view
     }()
     
-    var infoView = FeedInfoView()
+    let infoView = FeedInfoView()
     
-    var bottomView = FeedDetailBottomView()
+    let bottomView = FeedDetailBottomView()
     
-    var contentLabel: CopyableLabel = {
+    let contentLabel: CopyableLabel = {
         let label = CopyableLabel()
         label.lineBreakMode = .byCharWrapping
         label.textColor = .gray800
@@ -45,7 +45,7 @@ final class FeedDetailTableViewCell: UITableViewCell {
         return label
     }()
     
-    var profileImageView: UIImageView = {
+    let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = ImageLiterals.Image.imgProfileSmall
         imageView.isUserInteractionEnabled = true
@@ -54,16 +54,23 @@ final class FeedDetailTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    private var menuButton: UIButton = {
+    private let menuButton: UIButton = {
         let button = UIButton()
         button.setImage(ImageLiterals.Icon.icMeatball, for: .normal)
         return button
     }()
     
-    private var seperateLineView: UIView = {
+    private let seperateLineView: UIView = {
         let view = UIView()
         view.backgroundColor = .gray200
         return view
+    }()
+    
+    private let blindImageView: UIImageView = {
+        let imageView = UIImageView(image: ImageLiterals.Image.imgRelplyIsBlind)
+        imageView.contentMode = .scaleAspectFill
+        imageView.isHidden = true
+        return imageView
     }()
     
     // MARK: - inits
@@ -106,6 +113,7 @@ final class FeedDetailTableViewCell: UITableViewCell {
                                      menuButton,
                                      infoView,
                                      contentLabel,
+                                     blindImageView,
                                      bottomView,
                                      seperateLineView)
     }
@@ -218,15 +226,6 @@ final class FeedDetailTableViewCell: UITableViewCell {
         
         updateLayoutForReplyType(with: data.parentCommentID)
 
-        contentLabel.text = data.commentText
-
-        contentLabel.snp.remakeConstraints {
-            $0.top.equalTo(infoView.snp.bottom).offset(12.adjusted)
-            $0.leading.equalToSuperview().inset(52.adjusted)
-            $0.trailing.equalTo(menuButton)
-            $0.bottom.equalTo(bottomView.snp.top).offset(-10.adjusted)
-        }
-
         if let profileImage = UserProfile(rawValue: data.memberProfileURL) {
             profileImageView.image = profileImage.image
         } else {
@@ -244,12 +243,48 @@ final class FeedDetailTableViewCell: UITableViewCell {
             bottomView.ghostButton.isEnabled = true
         }
         
+        isReplyBlind(isBlind: data.isBlind ?? false)
+        guard data.isBlind == false else { return }
+        
+        contentLabel.text = data.commentText
+
         contentLabel.attributedText = attributedString(for: data.commentText)
+        
+        contentLabel.snp.remakeConstraints {
+            $0.top.equalTo(infoView.snp.bottom).offset(12.adjusted)
+            $0.leading.equalToSuperview().inset(52.adjusted)
+            $0.trailing.equalTo(menuButton)
+            $0.bottom.equalTo(bottomView.snp.top).offset(-10.adjusted)
+        }
 
         let tapContentLabelGesture = UITapGestureRecognizer(target: self, action: #selector(handleContentLabelTap(_:)))
         contentLabel.isUserInteractionEnabled = true
         contentLabel.addGestureRecognizer(tapContentLabelGesture)
         
+    }
+    
+    func isReplyBlind(isBlind: Bool) {
+        contentLabel.isHidden = isBlind
+        blindImageView.isHidden = !isBlind
+        
+        if isBlind {
+            contentLabel.removeConstraints(contentLabel.constraints)
+            blindImageView.snp.makeConstraints {
+                $0.height.equalTo(50.adjustedH).priority(.high)
+                $0.top.equalTo(infoView.snp.bottom).offset(12.adjusted)
+                $0.leading.equalToSuperview().inset(54.adjusted).priority(.high)
+                $0.trailing.equalTo(menuButton).priority(.high)
+                $0.bottom.equalTo(bottomView.snp.top).offset(-10.adjusted)
+            }
+        } else {
+            blindImageView.removeConstraints(blindImageView.constraints)
+            contentLabel.snp.makeConstraints {
+                $0.top.equalTo(infoView.snp.bottom).offset(12.adjusted)
+                $0.leading.equalToSuperview().inset(52.adjusted)
+                $0.trailing.equalTo(menuButton)
+                $0.bottom.lessThanOrEqualTo(bottomView.snp.top).offset(-12.adjusted)
+            }
+        }
     }
     
     func hideChildReplyForMyPage() {

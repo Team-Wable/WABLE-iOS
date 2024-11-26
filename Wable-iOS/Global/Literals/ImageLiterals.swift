@@ -80,6 +80,8 @@ enum ImageLiterals {
         static var imgInfoBox: UIImage { .load(name: "img_info_box") }
         static var imgNotiEmpty: UIImage { .load(name: "img_noti_empty") }
         static var imgNewsBanner: UIImage { .load(name: "img_newsbanner") }
+        static var imgFeedIsBlind: UIImage { .load(name: "img_feed_is_blind") }
+        static var imgRelplyIsBlind: UIImage { .load(name: "img_reply_is_blind") }
     }
     
     enum Logo {
