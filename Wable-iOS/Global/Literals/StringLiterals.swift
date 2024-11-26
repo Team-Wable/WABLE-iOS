@@ -209,7 +209,7 @@ enum StringLiterals {
         enum Notification {
             static let getNotiInfo = "v1/notification/info"
             static let getNotiActivity = "v1/notifications"
-            static let getFeedInfo = "v2/content/"
+            static let getFeedInfo = "v3/content/"
         }
     }
 }
