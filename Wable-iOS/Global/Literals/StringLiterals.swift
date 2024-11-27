@@ -163,8 +163,8 @@ enum StringLiterals {
     enum Write {
         static let writeNavigationTitle = "새로운 글"
         static let writeNavigationBarButtonItemTitle = "취소"
-        static let writeTitlePlaceholder = "어떤 생각을 하고 있나요?"
-        static let writeContentPlaceholder = "본문은 생략이 가능해요"
+        static let writeTitlePlaceholder = "자유롭게 이야기해요"
+        static let writeContentPlaceholder = "지금 머릿속에 떠오른 생각들을 남겨보세요\n본문은 생략이 가능해요"
         static let writeReplyContentPlaceholder = "님에게 답글 남기기..."
         static let writePostButtonTitle = "게시"
         static let writePopupContentLabel = "작성 중인 글을 삭제하시겠어요?"
