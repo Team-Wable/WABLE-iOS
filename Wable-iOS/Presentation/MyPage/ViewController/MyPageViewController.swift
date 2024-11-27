@@ -449,7 +449,7 @@ extension MyPageViewController {
         
         let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
         detailViewController.getFeedData(data: data)
-        detailViewController.contentId = contentID
+        detailViewController.viewModel.contentIDSubject.send(contentID)
         detailViewController.memberId = data.memberID
         detailViewController.hidesBottomBarWhenPushed = true
 
