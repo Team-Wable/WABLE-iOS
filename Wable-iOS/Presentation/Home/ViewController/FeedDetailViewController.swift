@@ -143,6 +143,10 @@ extension FeedDetailViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         !(touch.view is UIButton)
     }
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return navigationController?.viewControllers.count ?? 0 > 1
+    }
 }
 
 // MARK: - Extensions
@@ -177,6 +181,7 @@ extension FeedDetailViewController {
         feedDetailView.feedDetailTableView.delegate = self
         feedDetailView.feedDetailTableView.dataSource = self
         feedDetailView.bottomWriteView.writeTextView.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     private func setNavigationBar() {
