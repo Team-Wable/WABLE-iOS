@@ -174,9 +174,16 @@ private extension InfoViewController {
         let selectedIndex = sender.selectedSegmentIndex
         let direction: UIPageViewController.NavigationDirection = selectedIndex > currentIndex ? .forward : .reverse
         
-        pageViewController.setViewControllers([viewControllers[selectedIndex]], direction: direction, animated: true)
-        currentIndex = selectedIndex
-        trackPageChangeEvent(for: currentIndex)
+        pageViewController.setViewControllers(
+            [viewControllers[selectedIndex]],
+            direction: direction,
+            animated: true
+        ) { [weak self] isCompleted in
+            guard isCompleted else { return }
+            
+            self?.currentIndex = selectedIndex
+            self?.trackPageChangeEvent(for: selectedIndex)
+        }
     }
     
     func updateSegmentedControl() {
