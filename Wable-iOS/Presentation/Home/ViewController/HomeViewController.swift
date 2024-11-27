@@ -483,6 +483,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                     }
                 }
             }
+        }
+        
+        cell.bottomView.commentButtonTapped = { [weak self] in
+            guard let self else { return }
+            let detailViewController = FeedDetailViewController(viewModel: FeedDetailViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
+            detailViewController.hidesBottomBarWhenPushed = true
+            detailViewController.getFeedData(data: viewModel.feedDatas[indexPath.row])
+            detailViewController.memberId = viewModel.feedDatas[indexPath.row].memberID
+            self.navigationController?.pushViewController(detailViewController, animated: true)
             
         }
         return cell
