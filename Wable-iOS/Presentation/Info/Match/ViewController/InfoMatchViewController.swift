@@ -19,7 +19,7 @@ final class InfoMatchViewController: UIViewController {
     }
     
     enum Item: Hashable {
-        case session
+        case session(String)
         case game(Game)
     }
     
@@ -31,7 +31,7 @@ final class InfoMatchViewController: UIViewController {
     private let rootView = MatchView()
     
     // MARK: - Initializer
-
+    
     init(viewModel: InfoMatchViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -42,7 +42,7 @@ final class InfoMatchViewController: UIViewController {
     }
     
     // MARK: - LifeCycle
-
+    
     override func loadView() {
         view = rootView
     }
@@ -93,7 +93,7 @@ extension InfoMatchViewController: UITableViewDelegate {
         ) as? MatchTableViewHeaderView
         
         let sectionIdentifier = dataSource.snapshot().sectionIdentifiers[section]
-    
+        
         switch sectionIdentifier {
         case .session:
             return nil
@@ -117,7 +117,7 @@ private extension InfoMatchViewController {
     func setupDataSource() {
         dataSource = DataSource(tableView: rootView.matchTableView) { tableView, indexPath, item in
             switch item {
-            case .session:
+            case .session(let text):
                 guard let cell = tableView.dequeueReusableCell(
                     withIdentifier: MatchSessionTableViewCell.identifier,
                     for: indexPath
@@ -125,6 +125,7 @@ private extension InfoMatchViewController {
                     return UITableViewCell()
                 }
                 cell.selectionStyle = .none
+                cell.sessionLabel.text = text
                 return cell
                 
             case .game(let game):
@@ -141,36 +142,68 @@ private extension InfoMatchViewController {
         }
     }
     
-    func applySnapshot(matches: [TodayMatchesDTO]) {
-        var snapshot = Snapshot()
-        snapshot.appendSections([.session])
-        snapshot.appendItems([.session], toSection: .session)
-        
-        for match in matches {
-            let section = Section.match(date: match.date)
-            snapshot.appendSections([section])
-            
-            let items = match.games.map { Item.game($0) }
-            snapshot.appendItems(items, toSection: section)
-        }
-        
-        dataSource?.apply(snapshot)
-    }
-    
     func setupBinding() {
         let input = InfoMatchViewModel.Input(viewWillAppear: viewWillAppear.eraseToAnyPublisher())
         
         let output = viewModel.transform(from: input, cancelBag: cancelBag)
+        
+        output.gameType
+            .receive(on: RunLoop.main)
+            .sink { [weak self] gameType in
+                self?.applySessionSection(gameType: gameType.lckGameType)
+            }
+            .store(in: cancelBag)
         
         output.matchInfo
             .receive(on: RunLoop.main)
             .sink { [weak self] matches in
                 guard let self else { return }
                 
-                applySnapshot(matches: matches)
+                applyMatchSections(matches: matches)
+                
                 rootView.matchTableView.isHidden = matches.isEmpty
                 rootView.emptyImageView.isHidden = !matches.isEmpty
             }
             .store(in: cancelBag)
+    }
+    
+    func applySessionSection(gameType: String) {
+        var snapshot = dataSource?.snapshot() ?? Snapshot()
+        
+        if !snapshot.sectionIdentifiers.contains(.session) {
+            snapshot.appendSections([.session])
+        }
+        
+        snapshot.deleteSections([.session])
+        snapshot.appendSections([.session])
+        snapshot.appendItems([.session(gameType)], toSection: .session)
+        
+        if let sessionIndex = snapshot.indexOfSection(.session),
+           sessionIndex != 0,
+           let firstMatchSection = snapshot.sectionIdentifiers.first {
+            snapshot.moveSection(.session, beforeSection: firstMatchSection)
+        }
+        
+        dataSource?.apply(snapshot, animatingDifferences: false)
+    }
+    
+    func applyMatchSections(matches: [TodayMatchesDTO]) {
+        var snapshot = dataSource?.snapshot() ?? Snapshot()
+        
+        let matchSections = snapshot.sectionIdentifiers.filter {
+            if case .match = $0 { return true }
+            return false
+        }
+        snapshot.deleteSections(matchSections)
+        
+        for match in matches {
+            let section: Section = .match(date: match.date)
+            snapshot.appendSections([section])
+            
+            let items: [Item] = match.games.map { .game($0) }
+            snapshot.appendItems(items, toSection: section)
+        }
+        
+        dataSource?.apply(snapshot, animatingDifferences: false)
     }
 }
