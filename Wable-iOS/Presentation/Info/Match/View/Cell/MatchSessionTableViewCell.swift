@@ -18,8 +18,8 @@ final class MatchSessionTableViewCell: UITableViewCell {
         return view
     }()
     
-    private let sessionLabel: UILabel = {
-       let label = UILabel()
+    let sessionLabel: UILabel = {
+        let label = UILabel()
         label.text = StringLiterals.Info.lckSummer
         label.font = .body3
         label.textColor = .purple100
@@ -36,7 +36,7 @@ final class MatchSessionTableViewCell: UITableViewCell {
         setupView()
         setupConstraints()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -52,7 +52,7 @@ private extension MatchSessionTableViewCell {
     
     func setupConstraints() {
         sessionView.snp.makeConstraints {
-            $0.height.equalTo(39.adjusted)
+            $0.height.equalTo(40.adjustedH)
             $0.leading.trailing.equalToSuperview().inset(16.adjusted)
             $0.centerY.equalToSuperview()
         }

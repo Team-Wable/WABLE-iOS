@@ -63,7 +63,7 @@ private extension ImagePopupViewController {
         
         var height = UIScreen.main.bounds.width * aspectRatio
         
-        let maxHeight: CGFloat = 450
+        let maxHeight: CGFloat = 812
         
         if height > maxHeight {
             height = maxHeight
@@ -76,8 +76,9 @@ private extension ImagePopupViewController {
         }
         
         dismissButton.snp.makeConstraints { make in
-            make.top.trailing.equalTo(imageView).inset(8)
-            make.size.equalTo(44.adjusted)
+            make.size.equalTo(60.adjusted)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-100)
         }
     }
     
