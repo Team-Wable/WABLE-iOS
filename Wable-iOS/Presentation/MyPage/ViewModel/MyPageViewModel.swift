@@ -138,7 +138,7 @@ extension MyPageViewModel {
         do {
             let result: BaseResponse<[HomeFeedDTO]>? = try await self.networkProvider.donNetwork(
                 type: .get,
-                baseURL: Config.baseURL + "v2/member/\(memberId)/contents",
+                baseURL: Config.baseURL + "v3/member/\(memberId)/contents",
                 accessToken: accessToken,
                 body: EmptyBody(),
                 pathVariables:["cursor":"\(contentCursor)"])
@@ -167,7 +167,6 @@ extension MyPageViewModel {
                     }
                 }
             }
-//            print("result: \(result)")
             return result
         } catch {
             return nil
@@ -178,7 +177,7 @@ extension MyPageViewModel {
         do {
             let result: BaseResponse<[MyPageMemberCommentResponseDTO]>? = try await self.networkProvider.donNetwork(
                 type: .get,
-                baseURL: Config.baseURL + "v2/member/\(memberId)/comments",
+                baseURL: Config.baseURL + "v3/member/\(memberId)/comments",
                 accessToken: accessToken,
                 body: EmptyBody(),
                 pathVariables:["cursor":"\(commentCursor)"])
