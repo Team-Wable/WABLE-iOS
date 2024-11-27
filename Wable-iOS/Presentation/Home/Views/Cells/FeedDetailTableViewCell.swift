@@ -235,7 +235,7 @@ final class FeedDetailTableViewCell: UITableViewCell {
         
         bottomView.isLiked = data.isLiked
         
-        if data.isGhost {
+        if data.isGhost || data.isBlind ?? false {
             bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDisabledSmall, for: .normal)
             bottomView.ghostButton.isEnabled = false
         } else {
