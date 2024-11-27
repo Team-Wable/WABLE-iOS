@@ -179,7 +179,7 @@ private extension NotificationViewController {
             likeViewModel: LikeViewModel(networkProvider: NetworkService())
         )
         detailViewController.getFeedData(data: data)
-        detailViewController.contentId = contentID
+        detailViewController.viewModel.contentIDSubject.send(contentID)
         detailViewController.memberId = data.memberID
         detailViewController.hidesBottomBarWhenPushed = true
         
