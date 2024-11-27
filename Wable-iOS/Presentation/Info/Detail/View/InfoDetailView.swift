@@ -36,6 +36,7 @@ final class InfoDetailView: UIView {
         let label = UILabel()
         label.textColor = .wableBlack
         label.font = .head1
+        label.numberOfLines = 0
         return label
     }()
     
@@ -108,6 +109,8 @@ final class InfoDetailView: UIView {
     }
 }
 
+// MARK: - Private Method
+
 private extension InfoDetailView {
     func setupView() {
         backgroundColor = .wableWhite
@@ -146,11 +149,15 @@ private extension InfoDetailView {
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(18)
             make.leading.equalToSuperview().offset(16)
+            make.trailing.equalTo(timeLabel.snp.leading).offset(-4)
         }
         
+        titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        
         timeLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel).offset(4)
             make.trailing.equalToSuperview().offset(-16)
-            make.centerY.equalTo(titleLabel)
+            make.width.equalTo(52.adjusted)
         }
         
         imageView.snp.makeConstraints { make in
