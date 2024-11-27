@@ -218,6 +218,7 @@
 		DEAD9CBD2CF2618F00D5CD11 /* SessionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAD9CBC2CF2618F00D5CD11 /* SessionCell.swift */; };
 		DEAD9CBF2CF2644600D5CD11 /* RankHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAD9CBE2CF2644600D5CD11 /* RankHeaderView.swift */; };
 		DEB5793A2CE3541300BEE54D /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DEB579392CE3541300BEE54D /* CombineCocoa */; };
+		DECF4CDB2CF6DE5F00EE78B4 /* TodayMatchesDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECF4CDA2CF6DE5F00EE78B4 /* TodayMatchesDateFormatter.swift */; };
 		DEF0D39F2CED68DE002FA608 /* WableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0D39E2CED68DE002FA608 /* WableSegmentedControl.swift */; };
 /* End PBXBuildFile section */
 
@@ -426,6 +427,7 @@
 		DE9D0E4C2CF0C9250024BB1F /* TeamImageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamImageMapper.swift; sourceTree = "<group>"; };
 		DEAD9CBC2CF2618F00D5CD11 /* SessionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCell.swift; sourceTree = "<group>"; };
 		DEAD9CBE2CF2644600D5CD11 /* RankHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankHeaderView.swift; sourceTree = "<group>"; };
+		DECF4CDA2CF6DE5F00EE78B4 /* TodayMatchesDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMatchesDateFormatter.swift; sourceTree = "<group>"; };
 		DEF0D39E2CED68DE002FA608 /* WableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSegmentedControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1445,6 +1447,7 @@
 			isa = PBXGroup;
 			children = (
 				050E0CE92C74DC4B00326EEA /* MatchProgress.swift */,
+				DECF4CDA2CF6DE5F00EE78B4 /* TodayMatchesDateFormatter.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -1713,6 +1716,7 @@
 				0547F4FF2C64C954001E3039 /* ExampleViewController.swift in Sources */,
 				3CF344D02C749A120038BB53 /* MyPageBottomSheetView.swift in Sources */,
 				3C8B4E3D2C79119F00174943 /* MyPageMemberCommentResponseDTO.swift in Sources */,
+				DECF4CDB2CF6DE5F00EE78B4 /* TodayMatchesDateFormatter.swift in Sources */,
 				050E0CBB2C74B89300326EEA /* FeedInfoView.swift in Sources */,
 				3C8B4E162C78E20F00174943 /* SocialLoginRequestDTO.swift in Sources */,
 				0593F6D62C96D6C100FFAD82 /* WablePhotoDetailView.swift in Sources */,
