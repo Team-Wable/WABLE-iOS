@@ -370,6 +370,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let isAdmin = loadUserData()?.isAdmin
         let cell = homeView.feedTableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.identifier, for: indexPath) as? HomeFeedTableViewCell ?? HomeFeedTableViewCell()
         cell.selectionStyle = .none
         cell.alarmTriggerType = "contentGhost"
@@ -378,32 +379,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.bind(data: viewModel.feedDatas[indexPath.row])
         
-        if viewModel.feedDatas[indexPath.row].memberID == loadUserData()?.memberId {
-            cell.bottomView.ghostButton.isHidden = true
-            
-            cell.menuButtonTapped = {
-                self.homeBottomsheetView.showSettings()
-                self.homeBottomsheetView.deleteButton.isHidden = false
-                self.homeBottomsheetView.reportButton.isHidden = true
-                
-                self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
-                self.contentId = self.viewModel.feedDatas[indexPath.row].contentID ?? Int()
-                self.nowShowingPopup = "delete"
-            }
-        } else {
-            // 다른 유저인 경우
-            cell.bottomView.ghostButton.isHidden = false
-            
-            cell.menuButtonTapped = {
-                self.homeBottomsheetView.showSettings()
-                self.homeBottomsheetView.reportButton.isHidden = false
-                self.homeBottomsheetView.deleteButton.isHidden = true
-                
-                self.reportTargetNickname = self.viewModel.feedDatas[indexPath.row].memberNickname
-                self.relateText = self.viewModel.feedDatas[indexPath.row].contentText ?? ""
-                self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
-                self.nowShowingPopup = "report"
-            }
+        let isMine = viewModel.feedDatas[indexPath.row].memberID == loadUserData()?.memberId
+        cell.bottomView.ghostButton.isHidden = isMine
+        cell.menuButtonTapped = { [weak self] in
+            guard let self else { return }
+            setBottomSheetButton(isMine: isMine, isAdmin: isAdmin ?? false, index: indexPath.row)
         }
         
         var memberGhost = self.viewModel.feedDatas[indexPath.row].memberGhost
@@ -509,6 +489,42 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         detailViewController.memberId = viewModel.feedDatas[indexPath.row].memberID
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
+    
+    private func setBottomSheetButton(isMine: Bool, isAdmin: Bool, index: Int) {
+        let bottomSheetHeight = isAdmin ? 178.adjusted : 122.adjusted
+        homeBottomsheetView.bottomsheetView.snp.remakeConstraints {
+            $0.height.equalTo(bottomSheetHeight)
+        }
+        homeBottomsheetView.showSettings()
+        homeBottomsheetView.deleteButton.isHidden = !isMine
+        homeBottomsheetView.reportButton.isHidden = isMine
+        homeBottomsheetView.banButton.isHidden = !isAdmin
+
+        configureButtonActions(isMine: isMine, index: index)
+    }
+
+    private func configureButtonActions(isMine: Bool, index: Int) {
+        if isMine {
+            setupDeleteButtonAction(index: index)
+        } else {
+            setupReportButtonAction(index: index)
+        }
+    }
+
+    private func setupDeleteButtonAction(index: Int) {
+        self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
+        self.contentId = self.viewModel.feedDatas[index].contentID ?? Int()
+        self.nowShowingPopup = "delete"
+
+    }
+
+    private func setupReportButtonAction(index: Int) {
+        self.reportTargetNickname = self.viewModel.feedDatas[index].memberNickname
+        self.relateText = self.viewModel.feedDatas[index].contentText ?? ""
+        self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
+        self.nowShowingPopup = "report"
+    }
+
 }
 
 extension HomeViewController: WablePopupDelegate {
@@ -651,6 +667,7 @@ extension HomeViewController: WablePopupDelegate {
                               memberId: loadUserData()?.memberId ?? 0,
                               userProfileImage: loadUserData()?.userProfileImage ?? "",
                               fcmToken: loadUserData()?.fcmToken ?? "",
-                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false,
+                              isAdmin: loadUserData()?.isAdmin ?? false))
     }
 }

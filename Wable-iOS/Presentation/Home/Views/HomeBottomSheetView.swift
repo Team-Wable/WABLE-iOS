@@ -24,7 +24,7 @@ final class HomeBottomSheetView: UIView {
         return view
     }()
     
-    let bottomsheetView: UIView = {
+    lazy var bottomsheetView: UIView = {
         let view = UIView()
         view.backgroundColor = .wableWhite
         view.layer.cornerRadius = 16.adjusted
@@ -54,6 +54,22 @@ final class HomeBottomSheetView: UIView {
         return button
     }()
     
+    let banButton: UIButton = {
+        let button = UIButton()
+        button.setTitle(StringLiterals.BottomSheet.ban, for: .normal)
+        button.setTitleColor(.wableBlack, for: .normal)
+        button.titleLabel?.font = .body1
+        button.titleLabel?.textAlignment = .center
+        return button
+    }()
+    
+    let buttonStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .top
+        return stackView
+    }()
+    
     // MARK: - Life Cycles
     
     init() {
@@ -77,13 +93,18 @@ extension HomeBottomSheetView {
         self.addSubviews(dimView,
                          bottomsheetView)
         bottomsheetView.addSubviews(dragIndicatorView,
-                                    reportButton,
-                                    deleteButton)
+                                    buttonStackView)
+        
+        [reportButton,
+         deleteButton,
+         banButton].forEach {
+            buttonStackView.addArrangedSubview($0)
+        }
     }
     
     private func setLayout() {
         bottomsheetView.snp.makeConstraints {
-            $0.height.equalTo(122.adjusted)
+            $0.height.equalTo(178.adjusted)
         }
         
         dragIndicatorView.snp.makeConstraints {
@@ -94,13 +115,21 @@ extension HomeBottomSheetView {
         }
         
         reportButton.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalTo(dragIndicatorView).offset(28.adjusted)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         deleteButton.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalTo(dragIndicatorView).offset(28.adjusted)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
+        banButton.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
+        buttonStackView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.top.equalTo(dragIndicatorView.snp.bottom).offset(14)
+            $0.bottom.equalToSuperview().inset(34.adjusted)
         }
     }
     
