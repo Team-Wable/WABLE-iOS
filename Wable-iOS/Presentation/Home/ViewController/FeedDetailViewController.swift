@@ -297,6 +297,7 @@ extension FeedDetailViewController {
                     DispatchQueue.main.async {
                         self.viewModel.cursor = -1
                         self.viewModel.viewWillAppear.send(self.viewModel.contentIDSubject.value ?? Int())
+                        self.replyButtonDidTapSubject.send(nil)
                         self.makeTextViewEmpty()
                         self.feedDetailView.bottomWriteView.uploadButton.setImage(ImageLiterals.Button.btnRippleDefault, for: .normal)
                     }
