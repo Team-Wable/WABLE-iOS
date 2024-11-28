@@ -58,7 +58,6 @@ extension InfoViewController: UIPageViewControllerDelegate {
         
         currentIndex = index
         updateSegmentedControl()
-        trackPageChangeEvent(for: currentIndex)
     }
 }
 
@@ -196,6 +195,10 @@ private extension InfoViewController {
             AmplitudeManager.shared.trackEvent(tag: "click_gameschedule")
         case 1:
             AmplitudeManager.shared.trackEvent(tag: "click_ranking")
+        case 2:
+            AmplitudeManager.shared.trackEvent(tag: "click_news")
+        case 3:
+            AmplitudeManager.shared.trackEvent(tag: "click_announcement")
         default:
             break
         }
