@@ -558,9 +558,8 @@ extension FeedDetailViewController: UITableViewDataSource {
                 contentText: getFeedData?.contentText ?? "",
                 commentNumber: getFeedData?.commentNumber ?? 0,
                 isDeleted: false,
-                message: getFeedData?.contentImageUrl ?? "",
                 commnetNumber: 0,
-                contentImageURL: "",
+                contentImageURL: getFeedData?.contentImageUrl ?? "",
                 isBlind: getFeedData?.isBlind)
             )
             
