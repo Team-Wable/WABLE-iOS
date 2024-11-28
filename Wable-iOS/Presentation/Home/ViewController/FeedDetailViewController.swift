@@ -208,7 +208,6 @@ extension FeedDetailViewController {
         viewModel.replyDatas
             .receive(on: DispatchQueue.main)
             .sink { [weak self] data in
-                print("replyDatas🥳🥳🥳")
                 self?.replyData = data
                 self?.feedDetailView.feedDetailTableView.reloadData()
             }
@@ -232,9 +231,13 @@ extension FeedDetailViewController {
     private func didPullToRefresh() {
         print("didPullToRefresh")
         self.viewModel.cursor = -1
+        self.viewModel.unFlattenReplyDatas.send([])
+        self.replyData = []
+        self.paginationReplyData = []
+        
         DispatchQueue.main.async {
-            self.getAPI()
             self.viewModel.viewWillAppear.send(self.viewModel.contentIDSubject.value ?? Int())
+            self.viewWillAppear.send(self.viewModel.contentIDSubject.value)
         }
         self.perform(#selector(finishedRefreshing), with: nil, afterDelay: 0.1)
     }
@@ -430,8 +433,6 @@ extension FeedDetailViewController: UITextViewDelegate {
     
     @objc
     func deletePostButtonTapped() {
-        nowShowingPopup = "deletePost"
-
         popBottomsheetView()
         
         self.deletePopupView = WablePopupView(popupTitle: StringLiterals.Home.deletePopupTitle,
@@ -519,9 +520,10 @@ extension FeedDetailViewController: UITableViewDataSource {
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView == feedDetailView.feedDetailTableView {
-            let lastCommentID = self.replyData.last?.commentID ?? Int()
+            let unFlattenDatas = viewModel.unFlattenReplyDatas.value
+            let lastCommentID = unFlattenDatas.last?.commentID ?? -1
             
-            if replyData.count % 15 == 0 && viewModel.cursor != lastCommentID && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
+            if unFlattenDatas.count % 10 == 0 && viewModel.cursor != lastCommentID && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 viewModel.cursor = lastCommentID
                 viewModel.paginationDidAction.send(contentId)
                 print("===================Pagination 작동===================")
@@ -568,7 +570,7 @@ extension FeedDetailViewController: UITableViewDataSource {
             cell.bottomView.ghostButton.isHidden = isMine
             cell.menuButtonTapped = { [weak self] in
                 guard let self else { return }
-                setBottomSheetButton(isMine: isMine, isAdmin: isAdmin ?? false)
+                setBottomSheetButton(index: indexPath.row, isMine: isMine, isAdmin: isAdmin ?? false, isReply: false)
             }
             
             var memberGhost = getFeedData?.memberGhost
@@ -666,7 +668,7 @@ extension FeedDetailViewController: UITableViewDataSource {
             cell.bottomView.ghostButton.isHidden = isMine
             cell.menuButtonTapped = { [weak self] in
                 guard let self else { return }
-                setBottomSheetButton(isMine: isMine, isAdmin: isAdmin ?? false)
+                setBottomSheetButton(index: indexPath.row, isMine: isMine, isAdmin: isAdmin ?? false, isReply: true)
             }
             
             var memberGhost = self.replyData[indexPath.row].memberGhost
@@ -728,7 +730,8 @@ extension FeedDetailViewController: UITableViewDataSource {
         }
     }
     
-    private func setBottomSheetButton(isMine: Bool, isAdmin: Bool) {
+    private func setBottomSheetButton(index: Int, isMine: Bool, isAdmin: Bool, isReply: Bool) {
+        self.commentId = isReply ? self.replyData[index].commentID : commentId
         let bottomSheetHeight = isAdmin ? 178.adjusted : 122.adjusted
         homeBottomsheetView.bottomsheetView.snp.remakeConstraints {
             $0.height.equalTo(bottomSheetHeight)
@@ -737,22 +740,23 @@ extension FeedDetailViewController: UITableViewDataSource {
         homeBottomsheetView.deleteButton.isHidden = !isMine
         homeBottomsheetView.reportButton.isHidden = isMine
         homeBottomsheetView.banButton.isHidden = !isAdmin
-
-        configureButtonActions(isMine: isMine)
+        
+        configureButtonActions(isMine: isMine, isReply: isReply)
         if isAdmin {
             self.homeBottomsheetView.banButton.addTarget(self, action: #selector(banButtonTapped), for: .touchUpInside)
         }
     }
 
-    private func configureButtonActions(isMine: Bool) {
+    private func configureButtonActions(isMine: Bool, isReply: Bool) {
         if isMine {
-            setupDeleteButtonAction()
+            setupDeleteButtonAction(isReply: isReply)
         } else {
             setupReportButtonAction()
         }
     }
 
-    private func setupDeleteButtonAction() {
+    private func setupDeleteButtonAction(isReply: Bool) {
+        nowShowingPopup = isReply ? "deleteReply" : "deletePost"
         homeBottomsheetView.deleteButton.addTarget(self, action: #selector(deletePostButtonTapped), for: .touchUpInside)
     }
 
