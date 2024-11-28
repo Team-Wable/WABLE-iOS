@@ -27,6 +27,7 @@ final class FeedDetailViewModel: ViewModelType {
     private var feedWriterNickname = String()
     var isProcessingPostButton = false
     let contentIDSubject = CurrentValueSubject<Int?, Never>(nil)
+    let unFlattenReplyDatas = CurrentValueSubject<[FeedReplyListDTO], Never>([])
     
     // MARK: - Input
     
@@ -153,6 +154,8 @@ final class FeedDetailViewModel: ViewModelType {
                             let postReplyResult = try await
                             self.getReplyListAPI(accessToken: accessToken, contentId: contentID)
                             guard let data = postReplyResult?.data else { return }
+                            self.unFlattenReplyDatas.send(data)
+                            
                             let flattenDatas = data.toFlattenedReplyList()
                             self.replyDatas.send(flattenDatas)
                             self.replyDatasSubject.send(flattenDatas)
@@ -170,8 +173,15 @@ final class FeedDetailViewModel: ViewModelType {
                             let postReplyResult = try await
                             self.getReplyListAPI(accessToken: accessToken, contentId: contentID)
                             guard let data = postReplyResult?.data else { return }
+                            var updatedData = self.unFlattenReplyDatas.value
+                            updatedData.append(contentsOf: data)
+                            self.unFlattenReplyDatas.send(updatedData)
+
                             let flattenDatas = data.toFlattenedReplyList()
                             self.replyPaginationDatas.send(flattenDatas)
+                            var replyDatas = replyDatasSubject.value
+                            replyDatas.append(contentsOf: flattenDatas)
+                            self.replyDatasSubject.send(replyDatas)
                         }
                     }
                 }

@@ -424,15 +424,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             cell.grayView.alpha = CGFloat(Double(-memberGhost) / 100)
         }
         
-        // 탈퇴한 회원 닉네임 텍스트 색상 변경, 프로필로 이동 못하도록 적용
-        //        if self.viewModel.feedDatas[indexPath.row].isDeleted {
-        //            cell.nicknameLabel.textColor = .donGray12
-        //            cell.profileImageView.isUserInteractionEnabled = false
-        //        } else {
-        //            cell.nicknameLabel.textColor = .donBlack
-        //            cell.profileImageView.isUserInteractionEnabled = true
-        //        }
-        
         cell.profileButtonAction = {
             let memberId = self.viewModel.feedDatas[indexPath.row].memberID
             
