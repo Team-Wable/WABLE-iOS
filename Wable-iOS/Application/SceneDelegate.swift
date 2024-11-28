@@ -80,13 +80,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     return
                 }
                 
-                if isUpdateAvailable {
+                if self.shouldShowUpdateAlert(currentVersion: AppStoreCheckManager.appVersion ?? "0.0.0", marketingVersion: marketingVersion) {
+
                     self.showUpdateAlert(version: marketingVersion)
                 } else {
-                    print("현재 최신버전입니다.")
+                    print("현재 최신 버전입니다.")
                 }
             }
         }
+    }
+
+    private func shouldShowUpdateAlert(currentVersion: String, marketingVersion: String) -> Bool {
+        let currentComponents = currentVersion.split(separator: ".").map { Int($0) ?? 0 }
+        let marketingComponents = marketingVersion.split(separator: ".").map { Int($0) ?? 0 }
+        
+        let currentMajor = currentComponents[safe: 0] ?? 0
+        let currentMinor = currentComponents[safe: 1] ?? 0
+        let currentPatch = currentComponents[safe: 2] ?? 0
+        
+        let marketingMajor = marketingComponents[safe: 0] ?? 0
+        let marketingMinor = marketingComponents[safe: 1] ?? 0
+        let marketingPatch = marketingComponents[safe: 2] ?? 0
+        
+        return currentMajor != marketingMajor || currentMinor != marketingMinor
     }
     
     func showUpdateAlert(version: String) {
@@ -100,21 +116,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             AppStoreCheckManager().openAppStore()
         }
         
-        // 업데이트 액션만 추가
         alert.addAction(updateAction)
         
-        // 윈도우의 rootViewController에 알림창을 띄웁니다.
         if let window = UIApplication.shared.windows.first {
             window.rootViewController?.present(alert, animated: true, completion: nil)
         }
-        
-//        let cancelAction = UIAlertAction(title: "나중에", style: .destructive, handler: nil)
-//        
-//        [ cancelAction, updateAction ].forEach { alert.addAction($0) }
-//        
-//        // 윈도우의 rootViewController에 알림창을 띄웁니다.
-//        if let window = UIApplication.shared.windows.first {
-//            window.rootViewController?.present(alert, animated: true, completion: nil)
-//        }
     }
 }

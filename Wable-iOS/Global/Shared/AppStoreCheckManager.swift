@@ -48,8 +48,23 @@ final class AppStoreCheckManager {
     
     // 버전 비교 메소드 (문자열 버전을 비교)
     private func isNewVersionAvailable(currentVersion: String, appStoreVersion: String) -> Bool {
-        return appStoreVersion.compare(currentVersion, options: .numeric) == .orderedDescending
+        // 버전 문자열을 각 자릿수로 분리하여 비교
+        let currentComponents = currentVersion.split(separator: ".").map { Int($0) ?? 0 }
+        let appStoreComponents = appStoreVersion.split(separator: ".").map { Int($0) ?? 0 }
+        
+        // 각 자릿수 비교
+        for (current, appStore) in zip(currentComponents, appStoreComponents) {
+            if current < appStore {
+                return true
+            } else if current > appStore {
+                return false
+            }
+        }
+        
+        // 길이가 다르면 긴 버전이 더 최신
+        return currentComponents.count < appStoreComponents.count
     }
+
     
     func openAppStore() {
         guard let url = URL(string: AppStoreCheckManager.appStoreOpenUrlString) else { return }
