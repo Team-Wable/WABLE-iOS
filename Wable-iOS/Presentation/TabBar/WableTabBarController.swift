@@ -8,6 +8,8 @@
 import UIKit
 
 final class WableTabBarController: UITabBarController {
+    
+    private var previousTabIndex: Int = 0
 
     // MARK: - Life Cycle
     
@@ -125,10 +127,15 @@ extension WableTabBarController: UITabBarControllerDelegate {
         
         switch tabBarController.selectedIndex {
         case 0:
+
             if let navController = viewController as? UINavigationController,
                let homeVC = navController.viewControllers.first as? HomeViewController {
                 homeVC.scrollToTop()
+                if previousTabIndex == 3 {
+                    homeVC.showLoadView()
+                }
             }
+            
             AmplitudeManager.shared.trackEvent(tag: "click_home_botnavi")
         case 1:
             AmplitudeManager.shared.trackEvent(tag: "click_news_botnavi")
@@ -139,5 +146,6 @@ extension WableTabBarController: UITabBarControllerDelegate {
         default:
             break
         }
+        previousTabIndex = tabBarController.selectedIndex
     }
 }
