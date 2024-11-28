@@ -197,6 +197,7 @@ enum StringLiterals {
             static func postReply(contentID: Int) -> String {
                         return "v3/content/\(contentID)/comment"
                     }
+            static let postBan = "v1/report/ban"
         }
         
         enum Info {
