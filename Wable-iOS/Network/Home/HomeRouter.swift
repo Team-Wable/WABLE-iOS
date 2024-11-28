@@ -13,6 +13,7 @@ enum HomeRouter {
     case getContent(param: Int)
     case patchFCMToken(param: UserProfileRequestDTO)
     case postReply(param: Int, requestBody: WriteReplyRequestV3DTO)
+    case postBan(requestBody: BanRequestDTO)
 }
 
 extension HomeRouter: BaseTargetType {
@@ -24,6 +25,8 @@ extension HomeRouter: BaseTargetType {
             return StringLiterals.Endpoint.Home.patchUserProfile
         case .postReply(let contentID, _ ):
             return StringLiterals.Endpoint.Home.postReply(contentID: contentID)
+        case .postBan:
+            return StringLiterals.Endpoint.Home.postBan
         }
     }
     
@@ -34,6 +37,8 @@ extension HomeRouter: BaseTargetType {
         case .patchFCMToken:
             return .patch
         case .postReply:
+            return .post
+        case .postBan:
             return .post
         }
     }
@@ -62,12 +67,14 @@ extension HomeRouter: BaseTargetType {
         case .postReply(_, let requestBody):
             return .requestJSONEncodable(requestBody)
 
+        case .postBan(let requestBody):
+            return .requestJSONEncodable(requestBody)
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        case .getContent, .postReply:
+        case .getContent, .postReply, .postBan:
             return APIConstants.hasTokenHeader
         case .patchFCMToken:
             return APIConstants.multipartHeader
