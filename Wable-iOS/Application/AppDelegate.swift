@@ -45,7 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                   memberId: loadUserData()?.memberId ?? 0,
                                   userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
                                   fcmToken: loadUserData()?.fcmToken ?? "",
-                                  isPushAlarmAllowed: granted))
+                                  isPushAlarmAllowed: granted,
+                                  isAdmin: loadUserData()?.isAdmin ?? false))
         }
     
         return true
@@ -118,7 +119,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                               memberId: loadUserData()?.memberId ?? 0,
                               userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
                               fcmToken: fcmToken ?? "",
-                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false,
+                              isAdmin: loadUserData()?.isAdmin ?? false))
         print("🟢", #function, fcmToken ?? "")
     }
     
@@ -148,7 +150,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                       memberId: loadUserData()?.memberId ?? 0,
                                       userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
                                       fcmToken: token,
-                                      isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                                      isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false,
+                                      isAdmin: loadUserData()?.isAdmin ?? false))
             }
         }
     }

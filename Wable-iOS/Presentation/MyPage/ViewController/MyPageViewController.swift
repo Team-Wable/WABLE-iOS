@@ -361,7 +361,8 @@ extension MyPageViewController {
                                   memberId: loadUserData()?.memberId ?? 0,
                                   userProfileImage: data.memberProfileUrl,
                                   fcmToken: loadUserData()?.fcmToken ?? "",
-                                  isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                                  isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false,
+                                  isAdmin: loadUserData()?.isAdmin ?? false))
         }
     }
     
@@ -745,7 +746,8 @@ extension MyPageViewController: WablePopupDelegate {
                                   memberId: loadUserData()?.memberId ?? 0,
                                   userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
                                   fcmToken: loadUserData()?.fcmToken ?? "",
-                                  isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                                  isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false,
+                                  isAdmin: loadUserData()?.isAdmin ?? false))
         }
     }
     

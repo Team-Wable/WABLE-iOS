@@ -179,16 +179,8 @@ extension MyPageSignOutConfirmViewController {
                                               memberId: loadUserData()?.memberId ?? 0,
                                               userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
                                               fcmToken: loadUserData()?.fcmToken ?? "",
-                                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
-                        
-//                        saveUserData(UserInfo(isSocialLogined: false,
-//                                              isFirstUser: false,
-//                                              isJoinedApp: true,
-//                                              userNickname: loadUserData()?.userNickname ?? "",
-//                                              memberId: loadUserData()?.memberId ?? 0,
-//                                              userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
-//                                              fcmToken: loadUserData()?.fcmToken ?? "",
-//                                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false,
+                                              isAdmin: loadUserData()?.isAdmin ?? false))
                     }
                 } else if result == 400 {
                     print("존재하지 않는 요청입니다.")
