@@ -88,6 +88,7 @@ final class HomeViewController: UIViewController {
         
         bindViewModel()
         viewModel.viewDidLoad.send()
+        showLoadView()
         print("\(KeychainWrapper.loadToken(forKey: "accessToken") ?? "") 🩵🩵🩵")
     }
     
@@ -95,9 +96,7 @@ final class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.navigationController?.navigationBar.isHidden = true
-        
-        showLoadView()
-        
+                
         setNotification()
         
         viewModel.viewWillAppear.send()
@@ -319,8 +318,7 @@ extension HomeViewController {
         self.photoDetailView?.removeFromSuperview()
     }
     
-    private func showLoadView() {
-        guard Int.random(in: 1...3) == 1 else { return }
+    func showLoadView() {
         displayLoadingView()
     }
     
