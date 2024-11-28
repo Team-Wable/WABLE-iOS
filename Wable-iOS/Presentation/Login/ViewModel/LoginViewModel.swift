@@ -129,7 +129,8 @@ final class LoginViewModel: NSObject, ViewModelType {
                                               memberId: loadUserData()?.memberId ?? 0,
                                               userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
                                               fcmToken: loadUserData()?.fcmToken ?? "",
-                                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                                              isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false,
+                                              isAdmin: loadUserData()?.isAdmin ?? false))
                     } else {
                         // 신규 유저인 경우
                         self.userInfoPublisher.send(true)
@@ -150,7 +151,7 @@ extension LoginViewModel {
         do {
             let data: BaseResponse<SocialLoginResponseDTO>? = try await self.networkProvider.donNetwork(
                 type: .post,
-                baseURL: Config.baseURL + "v1/auth",
+                baseURL: Config.baseURL + "v2/auth",
                 accessToken: accessToken,
                 body: requestDTO,
                 pathVariables: ["":""])
@@ -171,7 +172,8 @@ extension LoginViewModel {
                                       memberId: memberId,
                                       userProfileImage: StringLiterals.Network.baseImageURL,
                                       fcmToken: fcmToken ?? "",
-                                      isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                                      isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false,
+                                      isAdmin: data?.data?.isAdmin ?? false))
                 // KeychainWrapper에 Access Token 저장
                 let accessToken = data?.data?.accessToken ?? ""
                 print(accessToken)
@@ -219,7 +221,8 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
                                                   memberId: loadUserData()?.memberId ?? 0,
                                                   userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
                                                   fcmToken: loadUserData()?.fcmToken ?? "",
-                                                  isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                                                  isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false,
+                                                  isAdmin: loadUserData()?.isAdmin ?? false))
                         } else {
                             // 신규 유저인 경우
                             self.userInfoPublisher.send(true)

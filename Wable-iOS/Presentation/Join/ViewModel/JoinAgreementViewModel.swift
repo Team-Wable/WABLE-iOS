@@ -142,7 +142,8 @@ final class JoinAgreementViewModel: ViewModelType {
                                       memberId: loadUserData()?.memberId ?? 0,
                                       userProfileImage: loadUserData()?.userProfileImage ?? StringLiterals.Network.baseImageURL,
                                       fcmToken: fcmToken ?? "",
-                                      isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false))
+                                      isPushAlarmAllowed: loadUserData()?.isPushAlarmAllowed ?? false,
+                                      isAdmin: loadUserData()?.isAdmin ?? false))
             }
             .store(in: cancelBag)
         

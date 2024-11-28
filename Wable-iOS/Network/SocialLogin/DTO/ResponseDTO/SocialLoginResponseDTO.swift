@@ -19,4 +19,5 @@ struct SocialLoginResponseDTO: Decodable {
     let memberFanTeam: String
     let memberLckYears: Int
     let memberLevel: Int
+    let isAdmin: Bool
 }
