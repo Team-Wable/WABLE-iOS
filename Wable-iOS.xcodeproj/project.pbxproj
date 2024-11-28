@@ -98,6 +98,7 @@
 		05AD1EB52CE4C1D900F36D6B /* Dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 05AD1EB42CE4C1D900F36D6B /* Dev.xcconfig */; };
 		05AD1EB72CE4C1F400F36D6B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 05AD1EB62CE4C1F400F36D6B /* GoogleService-Info.plist */; };
 		05B4F47B2CF483010033FF67 /* HomeLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4F47A2CF483010033FF67 /* HomeLoadingView.swift */; };
+		05B4F47D2CF8BE360033FF67 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4F47C2CF8BE360033FF67 /* Array+.swift */; };
 		05FBEED22C886A0200E4BF17 /* HomeFeedContentDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FBEED12C886A0200E4BF17 /* HomeFeedContentDTO.swift */; };
 		3C35317F2C6F13FF0015A8FA /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C35317C2C6F13FF0015A8FA /* Pretendard-Regular.otf */; };
 		3C3531802C6F13FF0015A8FA /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C35317D2C6F13FF0015A8FA /* Pretendard-SemiBold.otf */; };
@@ -308,6 +309,7 @@
 		05AD1EB42CE4C1D900F36D6B /* Dev.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
 		05AD1EB62CE4C1F400F36D6B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		05B4F47A2CF483010033FF67 /* HomeLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLoadingView.swift; sourceTree = "<group>"; };
+		05B4F47C2CF8BE360033FF67 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		05FBEED12C886A0200E4BF17 /* HomeFeedContentDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedContentDTO.swift; sourceTree = "<group>"; };
 		3C35317C2C6F13FF0015A8FA /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		3C35317D2C6F13FF0015A8FA /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
@@ -736,6 +738,7 @@
 				3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */,
 				050E0CA32C74B35500326EEA /* UIApplication+.swift */,
 				050E0CA52C74B70800326EEA /* UIButton+.swift */,
+				05B4F47C2CF8BE360033FF67 /* Array+.swift */,
 			);
 			path = Extention;
 			sourceTree = "<group>";
@@ -1761,6 +1764,7 @@
 				050E0CEA2C74DC4B00326EEA /* MatchProgress.swift in Sources */,
 				3C8B4E262C78E61B00174943 /* HttpMethod.swift in Sources */,
 				DE8001B32CF323B100D9DAD9 /* InfoNewsViewController.swift in Sources */,
+				05B4F47D2CF8BE360033FF67 /* Array+.swift in Sources */,
 				DE8001B62CF3250800D9DAD9 /* NewsCell.swift in Sources */,
 				DE8001A82CF31ECE00D9DAD9 /* InfoNewsViewModel.swift in Sources */,
 				050E0CD12C74B9A700326EEA /* WriteViewController.swift in Sources */,
@@ -1936,7 +1940,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Wable-iOS/Wable-iOS.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Global/Resources/Info.plist";
@@ -1974,7 +1978,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Wable-iOS/Wable-iOS.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Global/Resources/Info.plist";
