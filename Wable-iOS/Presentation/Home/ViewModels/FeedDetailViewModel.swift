@@ -92,7 +92,7 @@ final class FeedDetailViewModel: ViewModelType {
                 
                 self.isProcessingPostButton = true
                 
-                AmplitudeManager.shared.trackEvent(tag: "click_write_comment")
+                AmplitudeManager.shared.trackEvent(tag: "click_upload_comment")
                 Task {
                     do {
                         if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
@@ -118,6 +118,8 @@ final class FeedDetailViewModel: ViewModelType {
         input.replyButtonDidTapped
             .sink { [weak self] index in
                 guard let self else { return }
+                AmplitudeManager.shared.trackEvent(tag: "click_write_recomment")
+
                 let replyDatas = replyDatasSubject.value
                 
                 if let index  = index {
