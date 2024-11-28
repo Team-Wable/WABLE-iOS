@@ -85,6 +85,7 @@ final class FeedDetailViewController: UIViewController {
     private var ghostPopupView: WablePopupView? = nil
     private var reportPopupView: WablePopupView? = nil
     private var deletePopupView: WablePopupView? = nil
+    private var banPopupView: WablePopupView? = nil
     private var photoDetailView: WablePhotoDetailView?
     
     private var reportToastView: UIImageView?
@@ -404,7 +405,32 @@ extension FeedDetailViewController: UITextViewDelegate {
     }
     
     @objc
+    func banButtonTapped() {
+        self.nowShowingPopup = "ban"
+
+        popBottomsheetView()
+        self.banPopupView = WablePopupView(popupTitle: "밴하기",
+                                           popupContent: "이노무자식! 밴머거랏!",
+                                           leftButtonTitle: "함봐줌",
+                                           rightButtonTitle: "밴고고")
+        
+        if let popupView = self.banPopupView {
+            if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                window.addSubviews(popupView)
+            }
+            
+            popupView.delegate = self
+            
+            popupView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        }
+    }
+    
+    @objc
     func deletePostButtonTapped() {
+        nowShowingPopup = "deletePost"
+
         popBottomsheetView()
         
         self.deletePopupView = WablePopupView(popupTitle: StringLiterals.Home.deletePopupTitle,
@@ -427,6 +453,8 @@ extension FeedDetailViewController: UITextViewDelegate {
     
     @objc
     func reportButtonTapped() {
+        nowShowingPopup = "report"
+
         popBottomsheetView()
         
         self.reportPopupView = WablePopupView(popupTitle: StringLiterals.Home.reportPopupTitle,
@@ -710,6 +738,9 @@ extension FeedDetailViewController: UITableViewDataSource {
         homeBottomsheetView.banButton.isHidden = !isAdmin
 
         configureButtonActions(isMine: isMine)
+        if isAdmin {
+            self.homeBottomsheetView.banButton.addTarget(self, action: #selector(banButtonTapped), for: .touchUpInside)
+        }
     }
 
     private func configureButtonActions(isMine: Bool) {
@@ -722,7 +753,6 @@ extension FeedDetailViewController: UITableViewDataSource {
 
     private func setupDeleteButtonAction() {
         homeBottomsheetView.deleteButton.addTarget(self, action: #selector(deletePostButtonTapped), for: .touchUpInside)
-        nowShowingPopup = "deletePost"
     }
 
     private func setupReportButtonAction() {
@@ -791,6 +821,10 @@ extension FeedDetailViewController: WablePopupDelegate {
         
         if nowShowingPopup == "deletePost" || nowShowingPopup == "deleteReply" {
             self.deletePopupView?.removeFromSuperview()
+        }
+        
+        if nowShowingPopup == "ban" {
+            self.banPopupView?.removeFromSuperview()
         }
     }
     
