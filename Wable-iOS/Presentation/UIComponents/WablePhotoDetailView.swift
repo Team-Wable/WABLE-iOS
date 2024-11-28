@@ -10,11 +10,11 @@ import UIKit
 import SnapKit
 
 final class WablePhotoDetailView: UIView {
-
+    
     // MARK: - Properties
     
     var imageHeightConstraint: Constraint?
-    private let maxHeight: CGFloat = 450.0
+    private let maxHeight: CGFloat = UIScreen.main.bounds.height
     
     // MARK: - UI Components
     
@@ -26,8 +26,7 @@ final class WablePhotoDetailView: UIView {
     
     let photoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
-        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
         return imageView
     }()
@@ -60,8 +59,8 @@ extension WablePhotoDetailView {
     
     private func setHierarchy() {
         self.addSubview(dimView)
-        dimView.addSubview(photoImageView)
-        photoImageView.addSubview(removePhotoButton)
+        dimView.addSubviews(photoImageView,
+                            removePhotoButton)
     }
     
     private func setLayout() {
@@ -76,8 +75,9 @@ extension WablePhotoDetailView {
         }
         
         removePhotoButton.snp.makeConstraints {
-            $0.top.trailing.equalToSuperview().inset(8.adjusted)
             $0.size.equalTo(44)
+            $0.bottom.equalToSuperview().inset(101)
+            $0.centerX.equalToSuperview()
         }
     }
     

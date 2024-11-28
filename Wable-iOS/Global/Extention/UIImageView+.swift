@@ -102,7 +102,6 @@ extension UIImageView {
             case .success(let value):
                 DispatchQueue.main.async {
                     self.image = value.image
-                    self.layer.cornerRadius = 8.adjusted
                     self.contentMode = .scaleAspectFill
                     self.clipsToBounds = true
                     
