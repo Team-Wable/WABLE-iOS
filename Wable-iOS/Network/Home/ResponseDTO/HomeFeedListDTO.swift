@@ -24,7 +24,6 @@ struct HomeFeedDTO: Codable {
     let contentText: String?
     let commentNumber: Int?
     let isDeleted: Bool?
-    let message: String?
     let commnetNumber: Int?
     let contentImageURL: String?
     let isBlind: Bool?
@@ -35,7 +34,6 @@ struct HomeFeedDTO: Codable {
         case memberNickname, isGhost, memberGhost, isLiked, time, likedNumber, memberFanTeam
         case contentID = "contentId"
         case contentTitle, contentText, commentNumber, isDeleted
-        case message
         case commnetNumber
         case contentImageURL = "contentImageUrl"
         case isBlind
