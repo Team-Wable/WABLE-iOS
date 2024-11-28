@@ -505,6 +505,7 @@ extension FeedDetailViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let sectionType = FeedDetailSection(rawValue: indexPath.section) else { return UITableViewCell() }
+        let isAdmin = loadUserData()?.isAdmin
         switch sectionType {
         case .feed:
             let cell = feedDetailView.feedDetailTableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.identifier, for: indexPath) as? HomeFeedTableViewCell ?? HomeFeedTableViewCell()
@@ -535,32 +536,11 @@ extension FeedDetailViewController: UITableViewDataSource {
                 isBlind: getFeedData?.isBlind)
             )
             
-            if getFeedData?.memberId == loadUserData()?.memberId {
-                
-                cell.bottomView.ghostButton.isHidden = true
-                
-                cell.menuButtonTapped = {
-                    self.homeBottomsheetView.showSettings()
-                    self.homeBottomsheetView.deleteButton.isHidden = false
-                    self.homeBottomsheetView.reportButton.isHidden = true
-                    
-                    self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
-                    self.nowShowingPopup = "deletePost"
-                }
-            } else {
-                // 다른 유저인 경우
-                cell.bottomView.ghostButton.isHidden = false
-                
-                cell.menuButtonTapped = {
-                    self.homeBottomsheetView.showSettings()
-                    self.homeBottomsheetView.reportButton.isHidden = false
-                    self.homeBottomsheetView.deleteButton.isHidden = true
-                    
-                    self.reportTargetNickname = self.getFeedData?.memberNickname ?? ""
-                    self.relateText = self.getFeedData?.contentText ?? ""
-                    self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
-                    self.nowShowingPopup = "report"
-                }
+            let isMine = getFeedData?.memberId == loadUserData()?.memberId
+            cell.bottomView.ghostButton.isHidden = isMine
+            cell.menuButtonTapped = { [weak self] in
+                guard let self else { return }
+                setBottomSheetButton(isMine: isMine, isAdmin: isAdmin ?? false)
             }
             
             var memberGhost = getFeedData?.memberGhost
@@ -654,32 +634,11 @@ extension FeedDetailViewController: UITableViewDataSource {
             
             cell.bind(data: self.replyData[indexPath.row])
             
-            if self.replyData[indexPath.row].memberID == loadUserData()?.memberId {
-                cell.bottomView.ghostButton.isHidden = true
-                
-                cell.menuButtonTapped = {
-                    self.homeBottomsheetView.showSettings()
-                    self.homeBottomsheetView.deleteButton.isHidden = false
-                    self.homeBottomsheetView.reportButton.isHidden = true
-                    
-                    self.homeBottomsheetView.deleteButton.addTarget(self, action: #selector(self.deletePostButtonTapped), for: .touchUpInside)
-                    self.commentId = self.replyData[indexPath.row].commentID
-                    self.nowShowingPopup = "deleteReply"
-                }
-            } else {
-                // 다른 유저인 경우
-                cell.bottomView.ghostButton.isHidden = false
-                
-                cell.menuButtonTapped = {
-                    self.homeBottomsheetView.showSettings()
-                    self.homeBottomsheetView.reportButton.isHidden = false
-                    self.homeBottomsheetView.deleteButton.isHidden = true
-                    
-                    self.reportTargetNickname = self.replyData[indexPath.row].memberNickname
-                    self.relateText = self.replyData[indexPath.row].commentText
-                    self.homeBottomsheetView.reportButton.addTarget(self, action: #selector(self.reportButtonTapped), for: .touchUpInside)
-                    self.nowShowingPopup = "report"
-                }
+            let isMine = self.replyData[indexPath.row].memberID == loadUserData()?.memberId
+            cell.bottomView.ghostButton.isHidden = isMine
+            cell.menuButtonTapped = { [weak self] in
+                guard let self else { return }
+                setBottomSheetButton(isMine: isMine, isAdmin: isAdmin ?? false)
             }
             
             var memberGhost = self.replyData[indexPath.row].memberGhost
@@ -739,6 +698,40 @@ extension FeedDetailViewController: UITableViewDataSource {
             return cell
         }
     }
+    
+    private func setBottomSheetButton(isMine: Bool, isAdmin: Bool) {
+        let bottomSheetHeight = isAdmin ? 178.adjusted : 122.adjusted
+        homeBottomsheetView.bottomsheetView.snp.remakeConstraints {
+            $0.height.equalTo(bottomSheetHeight)
+        }
+        homeBottomsheetView.showSettings()
+        homeBottomsheetView.deleteButton.isHidden = !isMine
+        homeBottomsheetView.reportButton.isHidden = isMine
+        homeBottomsheetView.banButton.isHidden = !isAdmin
+
+        configureButtonActions(isMine: isMine)
+    }
+
+    private func configureButtonActions(isMine: Bool) {
+        if isMine {
+            setupDeleteButtonAction()
+        } else {
+            setupReportButtonAction()
+        }
+    }
+
+    private func setupDeleteButtonAction() {
+        homeBottomsheetView.deleteButton.addTarget(self, action: #selector(deletePostButtonTapped), for: .touchUpInside)
+        nowShowingPopup = "deletePost"
+    }
+
+    private func setupReportButtonAction() {
+        reportTargetNickname = getFeedData?.memberNickname ?? ""
+        relateText = getFeedData?.contentText ?? ""
+        homeBottomsheetView.reportButton.addTarget(self, action: #selector(reportButtonTapped), for: .touchUpInside)
+        nowShowingPopup = "report"
+    }
+
 }
 
 // MARK: - Network

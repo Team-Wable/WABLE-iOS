@@ -116,6 +116,7 @@ enum StringLiterals {
     enum BottomSheet {
         static let report = "신고하기"
         static let delete = "삭제하기"
+        static let ban = "밴하기"
         static let accountInfo = "계정 정보"
         static let settingAlarm = "알림 설정"
         static let feedback = "피드백 남기기"
