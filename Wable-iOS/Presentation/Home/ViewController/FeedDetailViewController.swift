@@ -716,6 +716,7 @@ extension FeedDetailViewController: UITableViewDataSource {
             }
             
             cell.bottomView.replyButtonTapped = { [weak self] in
+                AmplitudeManager.shared.trackEvent(tag: "click_write_comment")
                 self?.feedDetailView.bottomWriteView.writeTextView.resignFirstResponder()
                 self?.feedDetailView.bottomWriteView.writeTextView.becomeFirstResponder()
                 self?.replyButtonDidTapSubject.send(indexPath.row)

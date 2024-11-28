@@ -446,7 +446,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         cell.bottomView.ghostButtonTapped = { [weak self] in
-            AmplitudeManager.shared.trackEvent(tag: "click_delete_post")
+            AmplitudeManager.shared.trackEvent(tag: "click_ghost_post")
             self?.alarmTriggerType = cell.alarmTriggerType
             self?.targetMemberId = cell.targetMemberId
             self?.alarmTriggerdId = cell.alarmTriggerdId
