@@ -36,4 +36,16 @@ extension HomeAPI {
                 .unknownError($0.localizedDescription) }
             .eraseToAnyPublisher()
     }
+    
+    func postBan(memberID: Int, triggerType: String, triggerID: Int) -> AnyPublisher<EmptyDTO?, WableNetworkError> {
+        homeProvider.requestPublisher(.postBan(requestBody: BanRequestDTO(memberID: memberID,
+                                                                          triggerType: triggerType,
+                                                                          triggerID: triggerID)))
+        .tryMap { [weak self] response -> EmptyDTO? in
+            return try self?.parseResponse(statusCode: response.statusCode, data: response.data)
+        }
+        .mapError { $0 as? WableNetworkError ??
+            .unknownError($0.localizedDescription)}
+        .eraseToAnyPublisher()
+    }
 }
