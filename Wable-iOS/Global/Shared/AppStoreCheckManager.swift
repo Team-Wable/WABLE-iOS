@@ -15,7 +15,7 @@ final class AppStoreCheckManager {
     func checkAppStoreVersion(completion: @escaping (Bool, String?) -> Void) {
         let bundleID = "com.wable.Wable-iOS"
         
-        guard let url = URL(string: "https://itunes.apple.com/kr/lookup?bundleId=\(bundleID)") else {
+        guard let url = URL(string: "https://itunes.apple.com/kr/lookup?bundleId=\(bundleID)&country=kr") else {
             completion(false, nil)
             return
         }
