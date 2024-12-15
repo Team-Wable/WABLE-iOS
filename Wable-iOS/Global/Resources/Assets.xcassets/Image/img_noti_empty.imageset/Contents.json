@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "Frame 1000013614.png",
+      "filename" : "img_noti_empty.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Frame 1000013614@2x.png",
+      "filename" : "img_noti_empty@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
