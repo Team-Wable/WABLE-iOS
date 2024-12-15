@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CombineCocoa
 import SafariServices
 import UIKit
 
@@ -28,6 +29,8 @@ final class HomeViewController: UIViewController {
         return self.commentId
     }.eraseToAnyPublisher()
     
+    private let banButtonDidTappedSubject = PassthroughSubject<(Int, String, Int), Never>()
+    
     var alarmTriggerType: String = ""
     var targetMemberId: Int = 0
     var alarmTriggerdId: Int = 0
@@ -37,7 +40,6 @@ final class HomeViewController: UIViewController {
     var commentId: Int = 0
     var reportTargetNickname: String = ""
     var relateText: String = ""
-    let warnUserURL = URL(string: StringLiterals.Network.warnUserGoogleFormURL)
     
     var nowShowingPopup: String = ""
     
@@ -155,6 +157,18 @@ extension HomeViewController {
     }
     
     private func bindViewModel() {
+        let banButtonDidTapped = banButtonDidTappedSubject.eraseToAnyPublisher()
+        
+        let input = HomeViewModel.Input(banButtonDidTapped: banButtonDidTapped)
+        let output = viewModel.transform(from: input, cancelBag: cancelBag)
+        
+        output.reloadData
+            .receive(on: RunLoop.main)
+            .sink { [weak self] in
+                guard let self else { return }
+                didPullToRefresh()
+            }
+            .store(in: cancelBag)
         
         viewModel.pushViewController
             .sink { [weak self] index in
@@ -262,6 +276,16 @@ extension HomeViewController {
             popupView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
+            
+            popupView.confirmButton.tapPublisher
+                .compactMap { [weak self] _ -> (Int, String, Int)? in
+                    guard let self else { return nil }
+                    return self.viewModel.banTargetInfo.value
+                }
+                .sink { [weak self] event in
+                    self?.banButtonDidTappedSubject.send(event)
+                }
+                .store(in: cancelBag)
         }
     }
     
@@ -370,7 +394,10 @@ extension HomeViewController {
             .throttle(for: .seconds(2), scheduler: DispatchQueue.main, latest: false)
             .eraseToAnyPublisher()
         
-        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped, commentLikeButtonTapped: nil, deleteButtonDidTapped: deleteButtonTapped, deleteReplyButtonDidTapped: deleteReplyButtonTapped)
+        let input = LikeViewModel.Input(likeButtonTapped: likeButtonTapped,
+                                        commentLikeButtonTapped: nil,
+                                        deleteButtonDidTapped: deleteButtonTapped,
+                                        deleteReplyButtonDidTapped: deleteReplyButtonTapped)
         
         let output = self.likeViewModel.transform(from: input, cancelBag: self.cancelBag)
         
@@ -409,6 +436,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         cell.bottomView.ghostButton.isHidden = isMine
         cell.menuButtonTapped = { [weak self] in
             guard let self else { return }
+            viewModel.banTargetInfo.send((viewModel.feedDatas[indexPath.row].memberID,
+                                          "content",
+                                          viewModel.feedDatas[indexPath.row].contentID ?? -1))
             setBottomSheetButton(isMine: isMine, isAdmin: isAdmin ?? false, index: indexPath.row)
         }
         
@@ -674,6 +704,10 @@ extension HomeViewController: WablePopupDelegate {
                     print(error)
                 }
             }
+        }
+        
+        if nowShowingPopup == "ban" {
+            self.banPopupView?.removeFromSuperview()
         }
     }
     

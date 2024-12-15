@@ -28,6 +28,7 @@ final class FeedDetailViewModel: ViewModelType {
     var isProcessingPostButton = false
     let contentIDSubject = CurrentValueSubject<Int?, Never>(nil)
     let unFlattenReplyDatas = CurrentValueSubject<[FeedReplyListDTO], Never>([])
+    let banTargetInfo = CurrentValueSubject<(Int, String, Int), Never>((-1, "", -1))
     
     // MARK: - Input
     
@@ -51,6 +52,7 @@ final class FeedDetailViewModel: ViewModelType {
         let commentLikeButtonTapped: AnyPublisher<(Bool, Int, String), Never>?
         let postButtonTapped: AnyPublisher<(String, Int), Never>
         let replyButtonDidTapped: AnyPublisher<Int?,Never>
+        let banButtonDidTapped: AnyPublisher<(Int, String, Int), Never>?
     }
     
     struct Output {
@@ -134,6 +136,28 @@ final class FeedDetailViewModel: ViewModelType {
                     parentCommentAndWriterID.send((-1, -1))
                     replyTargetNickname.send(feedWriterNickname + StringLiterals.Home.placeholder)
                 }
+            }
+            .store(in: self.cancelBag)
+        
+        input.banButtonDidTapped?
+            .flatMap { [weak self] memberID, triggerType, triggerID -> AnyPublisher<EmptyDTO?, Never> in
+                guard let self else {
+                    return Just(nil).eraseToAnyPublisher()
+                }
+                
+                return self.homeAPI.postBan(memberID: memberID, triggerType: triggerType, triggerID: triggerID)
+                    .replaceError(with: nil)
+                    .eraseToAnyPublisher()
+            }
+            .sink { [weak self] _ in
+                guard let self else { return }
+                Task {
+                    if let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") {
+                        try await self.handlePostReplySuccess(accessToken: accessToken, contentId: self.contentIDSubject.value ?? -1)
+                    }
+                }
+                viewWillAppear.send(self.contentIDSubject.value ?? -1)
+                
             }
             .store(in: self.cancelBag)
         
