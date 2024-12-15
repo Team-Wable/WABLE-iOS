@@ -8,14 +8,17 @@
 import Foundation
 import Combine
 
-final class HomeViewModel {
+final class HomeViewModel: ViewModelType {
     
     private let cancelBag = CancelBag()
-    
+    private let service: HomeAPI
+    private let networkProvider: NetworkServiceType
+
     var cursor: Int = -1
     
     var feedData: [HomeFeedDTO] = []
     var feedDatas: [HomeFeedDTO] = []
+    let banTargetInfo = CurrentValueSubject<(Int, String, Int), Never>((-1, "", -1))
     
     // MARK: - Input
     
@@ -24,20 +27,50 @@ final class HomeViewModel {
     let viewWillAppear = PassthroughSubject<Void, Never>()
     let viewDidLoad = PassthroughSubject<Void, Never>()
     
+    struct Input {
+        let banButtonDidTapped: AnyPublisher<(Int, String, Int), Never>?
+    }
+
     // MARK: - Output
     
     let pushViewController = PassthroughSubject<Int, Never>()
     let pushToWriteViewControllr = PassthroughSubject<Void, Never>()
     let homeFeedDTO = PassthroughSubject<[HomeFeedDTO], Never>()
     
+    struct Output {
+        let reloadData: PassthroughSubject<Void, Never>
+    }
+    
     // MARK: - init
     
-    init() {
+    init(networkProvider: NetworkServiceType, service: HomeAPI = HomeAPI.shared) {
+        self.service = service
+        self.networkProvider = networkProvider
         buttonDidTapped()
         transform()
     }
     
     // MARK: - Functions
+    
+    func transform(from input: Input, cancelBag: CancelBag) -> Output {
+        input.banButtonDidTapped?
+            .flatMap { [weak self] memberID, triggerType, triggerID -> AnyPublisher<EmptyDTO?, Never> in
+                guard let self else {
+                    return Just(nil).eraseToAnyPublisher()
+                }
+                
+                return self.service.postBan(memberID: memberID, triggerType: triggerType, triggerID: triggerID)
+                    .replaceError(with: nil)
+                    .eraseToAnyPublisher()
+            }
+            .sink { [weak self] _ in
+                guard let self else { return }
+                viewDidLoad.send()
+            }
+            .store(in: self.cancelBag)
+        
+        return Output(reloadData: viewDidLoad)
+    }
     
     private func buttonDidTapped() {
         commentButtonTapped

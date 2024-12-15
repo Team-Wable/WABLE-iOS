@@ -45,6 +45,8 @@ final class FeedDetailViewController: UIViewController {
         return self.commentId
     }.eraseToAnyPublisher()
     
+    private let banButtonDidTappedSubject = PassthroughSubject<(Int, String, Int), Never>()
+    
     var contentId: Int = 0
     var commentId: Int = 0
     var memberId: Int = 0
@@ -272,11 +274,13 @@ extension FeedDetailViewController {
 extension FeedDetailViewController {
     private func getAPI() {
         print("getAPI")
+        let banButtonDidTapped = banButtonDidTappedSubject.eraseToAnyPublisher()
         let input = FeedDetailViewModel.Input(viewUpdate: viewWillAppear.eraseToAnyPublisher(),
                                               likeButtonTapped: nil,
                                               commentLikeButtonTapped: nil,
                                               postButtonTapped: postButtonTapped,
-                                              replyButtonDidTapped: replyButtonDidTapSubject.eraseToAnyPublisher())
+                                              replyButtonDidTapped: replyButtonDidTapSubject.eraseToAnyPublisher(),
+                                              banButtonDidTapped: banButtonDidTapped)
         
         let output = viewModel.transform(from: input, cancelBag: cancelBag)
         
@@ -428,6 +432,16 @@ extension FeedDetailViewController: UITextViewDelegate {
             popupView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
+            
+            popupView.confirmButton.tapPublisher
+                .compactMap { [weak self] _ -> (Int, String, Int)? in
+                    guard let self else { return nil }
+                    return self.viewModel.banTargetInfo.value
+                }
+                .sink { [weak self] event in
+                    self?.banButtonDidTappedSubject.send(event)
+                }
+                .store(in: cancelBag)
         }
     }
     
@@ -570,6 +584,9 @@ extension FeedDetailViewController: UITableViewDataSource {
             cell.bottomView.ghostButton.isHidden = isMine
             cell.menuButtonTapped = { [weak self] in
                 guard let self else { return }
+                viewModel.banTargetInfo.send((getFeedData?.memberId ?? -1,
+                                              "content",
+                                              viewModel.contentIDSubject.value ?? -1))
                 setBottomSheetButton(index: indexPath.row, isMine: isMine, isAdmin: isAdmin ?? false, isReply: false)
             }
             
@@ -668,6 +685,9 @@ extension FeedDetailViewController: UITableViewDataSource {
             cell.bottomView.ghostButton.isHidden = isMine
             cell.menuButtonTapped = { [weak self] in
                 guard let self else { return }
+                viewModel.banTargetInfo.send((replyData[indexPath.row].memberID,
+                                              "comment",
+                                              replyData[indexPath.row].commentID))
                 setBottomSheetButton(index: indexPath.row, isMine: isMine, isAdmin: isAdmin ?? false, isReply: true)
             }
             
@@ -955,6 +975,10 @@ extension FeedDetailViewController: WablePopupDelegate {
                     print(error)
                 }
             }
+        }
+        
+        if nowShowingPopup == "ban" {
+            self.banPopupView?.removeFromSuperview()
         }
     }
     
