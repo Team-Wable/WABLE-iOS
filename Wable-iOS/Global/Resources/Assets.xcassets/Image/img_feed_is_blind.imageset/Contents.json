@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "Frame 1000012945.png",
+      "filename" : "img_feed_is_blind.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Frame 1000012945@2x.png",
+      "filename" : "img_feed_is_blind@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -19,5 +19,8 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "localizable" : true
   }
 }
