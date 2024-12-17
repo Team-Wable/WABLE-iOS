@@ -10,12 +10,10 @@ import UIKit
 final class AppStoreCheckManager {
     static let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     static let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
-    static let appStoreOpenUrlString = "itms-apps://itunes.apple.com/app/apple-store/6670352454"
+    static let appStoreOpenUrlString = StringLiterals.AppStore.appStoreURL
     
     func checkAppStoreVersion(completion: @escaping (Bool, String?) -> Void) {
-        let bundleID = "com.wable.Wable-iOS"
-        
-        guard let url = URL(string: "https://itunes.apple.com/kr/lookup?bundleId=\(bundleID)&country=kr") else {
+        guard let url = URL(string: StringLiterals.AppStore.itunesLookupURL) else {
             completion(false, nil)
             return
         }

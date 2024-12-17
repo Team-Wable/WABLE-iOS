@@ -190,6 +190,11 @@ enum StringLiterals {
         static let noNoticeText = "아직 작성된 공지사항이 없어요."
     }
     
+    enum AppStore {
+        static let appStoreURL = "itms-apps://itunes.apple.com/app/apple-store/6670352454"
+        static let itunesLookupURL = "https://itunes.apple.com/kr/lookup?bundleId=com.wable.Wable-iOS&country=kr"
+    }
+    
     enum Endpoint {
         enum Home {
             static let getContent = "v3/contents"
