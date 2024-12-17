@@ -92,16 +92,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     private func shouldShowUpdateAlert(currentVersion: String, marketingVersion: String) -> Bool {
-        let currentComponents = currentVersion.split(separator: ".").map { Int($0) ?? 0 }
-        let marketingComponents = marketingVersion.split(separator: ".").map { Int($0) ?? 0 }
+        let currentComponents = currentVersion.split(separator: ".").compactMap { Int($0) }
+        let marketingComponents = marketingVersion.split(separator: ".").compactMap { Int($0) }
         
-        let currentMajor = currentComponents[safe: 0] ?? 0
-        let currentMinor = currentComponents[safe: 1] ?? 0
-        let currentPatch = currentComponents[safe: 2] ?? 0
-        
-        let marketingMajor = marketingComponents[safe: 0] ?? 0
-        let marketingMinor = marketingComponents[safe: 1] ?? 0
-        let marketingPatch = marketingComponents[safe: 2] ?? 0
+        guard
+            let currentMajor = currentComponents[safe: 0],
+            let currentMinor = currentComponents[safe: 1],
+            let currentPatch = currentComponents[safe: 2],
+            let marketingMajor = marketingComponents[safe: 0],
+            let marketingMinor = marketingComponents[safe: 1],
+            let marketingPatch = marketingComponents[safe: 2]
+        else {
+            return false
+        }
         
         return currentMajor != marketingMajor || currentMinor != marketingMinor
     }
