@@ -434,10 +434,7 @@ extension FeedDetailViewController: UITextViewDelegate {
             }
             
             popupView.confirmButton.tapPublisher
-                .compactMap { [weak self] _ -> (Int, String, Int)? in
-                    guard let self else { return nil }
-                    return self.viewModel.banTargetInfo.value
-                }
+                .compactMap { [weak self] _ in self?.viewModel.banTargetInfo.value }
                 .sink { [weak self] event in
                     self?.banButtonDidTappedSubject.send(event)
                 }
