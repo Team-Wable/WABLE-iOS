@@ -583,9 +583,11 @@ extension FeedDetailViewController: UITableViewDataSource {
             cell.bottomView.ghostButton.isHidden = isMine
             cell.menuButtonTapped = { [weak self] in
                 guard let self else { return }
-                let info = BanTargetInfo(memberID: getFeedData?.memberId ?? -1,
-                                         triggerType: .content,
-                                         triggerID: viewModel.contentIDSubject.value ?? -1)
+                let info = BanTargetInfo(
+                    memberID: getFeedData?.memberId ?? -1,
+                    triggerType: .content,
+                    triggerID: viewModel.contentIDSubject.value ?? -1
+                )
                 viewModel.banTargetInfo.send(info)
                 setBottomSheetButton(index: indexPath.row, isMine: isMine, isAdmin: isAdmin ?? false, isReply: false)
             }

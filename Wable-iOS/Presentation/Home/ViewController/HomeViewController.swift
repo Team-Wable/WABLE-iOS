@@ -278,8 +278,7 @@ extension HomeViewController {
             
             popupView.confirmButton.tapPublisher
                 .compactMap { [weak self] _ -> BanTargetInfo? in
-                    guard let self else { return nil }
-                    return self.viewModel.banTargetInfo.value
+                    return self?.viewModel.banTargetInfo.value
                 }
                 .sink { [weak self] event in
                     self?.banButtonDidTappedSubject.send(event)
@@ -435,7 +434,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         cell.bottomView.ghostButton.isHidden = isMine
         cell.menuButtonTapped = { [weak self] in
             guard let self else { return }
-            let info = BanTargetInfo(memberID: viewModel.feedDatas[indexPath.row].memberID, triggerType: .content, triggerID: viewModel.feedDatas[indexPath.row].contentID ?? -1)
+            let info = BanTargetInfo(
+                memberID: viewModel.feedDatas[indexPath.row].memberID,
+                triggerType: .content,
+                triggerID: viewModel.feedDatas[indexPath.row].contentID ?? -1
+            )
             viewModel.banTargetInfo.send(info)
             setBottomSheetButton(isMine: isMine, isAdmin: isAdmin ?? false, index: indexPath.row)
         }

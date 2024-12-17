@@ -28,7 +28,7 @@ final class HomeViewModel: ViewModelType {
     let viewDidLoad = PassthroughSubject<Void, Never>()
     
     struct Input {
-        let banButtonDidTapped: AnyPublisher<BanTargetInfo, Never>?
+        let banButtonDidTapped: AnyPublisher<BanTargetInfo, Never>
     }
 
     // MARK: - Output
@@ -53,21 +53,17 @@ final class HomeViewModel: ViewModelType {
     // MARK: - Functions
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
-        input.banButtonDidTapped?
-            .flatMap { [weak self] targetInfo -> AnyPublisher<EmptyDTO?, Never> in
-                guard let self else {
-                    return Just(nil).eraseToAnyPublisher()
-                }
-                
+        input.banButtonDidTapped
+            .flatMap { targetInfo -> AnyPublisher<EmptyDTO?, Never> in
                 return self.service.postBan(memberID: targetInfo.memberID,
                                             triggerType: targetInfo.triggerType.rawValue,
                                             triggerID: targetInfo.triggerID)
-                    .replaceError(with: nil)
-                    .eraseToAnyPublisher()
+                .mapWableNetworkError()
+                .replaceError(with: nil)
+                .eraseToAnyPublisher()
             }
-            .sink { [weak self] _ in
-                guard let self else { return }
-                viewDidLoad.send()
+            .sink { _ in
+                self.viewDidLoad.send()
             }
             .store(in: self.cancelBag)
         
