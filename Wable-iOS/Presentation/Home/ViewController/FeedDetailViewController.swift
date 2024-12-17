@@ -537,7 +537,9 @@ extension FeedDetailViewController: UITableViewDataSource {
             let unFlattenDatas = viewModel.unFlattenReplyDatas.value
             let lastCommentID = unFlattenDatas.last?.commentID ?? -1
             
-            if unFlattenDatas.count % 10 == 0 && viewModel.cursor != lastCommentID && (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
+            if unFlattenDatas.count % 10 == 0 &&
+                viewModel.cursor != lastCommentID &&
+                (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
                 viewModel.cursor = lastCommentID
                 viewModel.paginationDidAction.send(contentId)
                 print("===================Pagination 작동===================")
