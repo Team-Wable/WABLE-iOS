@@ -29,7 +29,7 @@ final class HomeViewController: UIViewController {
         return self.commentId
     }.eraseToAnyPublisher()
     
-    private let banButtonDidTappedSubject = PassthroughSubject<(Int, String, Int), Never>()
+    private let banButtonDidTappedSubject = PassthroughSubject<BanTargetInfo, Never>()
     
     var alarmTriggerType: String = ""
     var targetMemberId: Int = 0
@@ -277,7 +277,7 @@ extension HomeViewController {
             }
             
             popupView.confirmButton.tapPublisher
-                .compactMap { [weak self] _ -> (Int, String, Int)? in
+                .compactMap { [weak self] _ -> BanTargetInfo? in
                     guard let self else { return nil }
                     return self.viewModel.banTargetInfo.value
                 }
@@ -435,9 +435,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         cell.bottomView.ghostButton.isHidden = isMine
         cell.menuButtonTapped = { [weak self] in
             guard let self else { return }
-            viewModel.banTargetInfo.send((viewModel.feedDatas[indexPath.row].memberID,
-                                          "content",
-                                          viewModel.feedDatas[indexPath.row].contentID ?? -1))
+            let info = BanTargetInfo(memberID: viewModel.feedDatas[indexPath.row].memberID, triggerType: .content, triggerID: viewModel.feedDatas[indexPath.row].contentID ?? -1)
+            viewModel.banTargetInfo.send(info)
             setBottomSheetButton(isMine: isMine, isAdmin: isAdmin ?? false, index: indexPath.row)
         }
         

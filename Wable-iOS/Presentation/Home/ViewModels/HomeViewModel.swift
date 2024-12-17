@@ -18,7 +18,7 @@ final class HomeViewModel: ViewModelType {
     
     var feedData: [HomeFeedDTO] = []
     var feedDatas: [HomeFeedDTO] = []
-    let banTargetInfo = CurrentValueSubject<(Int, String, Int), Never>((-1, "", -1))
+    let banTargetInfo = CurrentValueSubject<BanTargetInfo, Never>(BanTargetInfo(memberID: -1, triggerType: .comment, triggerID: -1))
     
     // MARK: - Input
     
@@ -28,7 +28,7 @@ final class HomeViewModel: ViewModelType {
     let viewDidLoad = PassthroughSubject<Void, Never>()
     
     struct Input {
-        let banButtonDidTapped: AnyPublisher<(Int, String, Int), Never>?
+        let banButtonDidTapped: AnyPublisher<BanTargetInfo, Never>?
     }
 
     // MARK: - Output
@@ -54,12 +54,14 @@ final class HomeViewModel: ViewModelType {
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
         input.banButtonDidTapped?
-            .flatMap { [weak self] memberID, triggerType, triggerID -> AnyPublisher<EmptyDTO?, Never> in
+            .flatMap { [weak self] targetInfo -> AnyPublisher<EmptyDTO?, Never> in
                 guard let self else {
                     return Just(nil).eraseToAnyPublisher()
                 }
                 
-                return self.service.postBan(memberID: memberID, triggerType: triggerType, triggerID: triggerID)
+                return self.service.postBan(memberID: targetInfo.memberID,
+                                            triggerType: targetInfo.triggerType.rawValue,
+                                            triggerID: targetInfo.triggerID)
                     .replaceError(with: nil)
                     .eraseToAnyPublisher()
             }
