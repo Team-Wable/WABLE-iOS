@@ -6,9 +6,9 @@
 //
 
 import Combine
-import CombineCocoa
-import SafariServices
 import UIKit
+
+import CombineCocoa
 
 final class HomeViewController: UIViewController {
     
@@ -165,8 +165,7 @@ extension HomeViewController {
         output.reloadData
             .receive(on: RunLoop.main)
             .sink { [weak self] in
-                guard let self else { return }
-                didPullToRefresh()
+                self?.didPullToRefresh()
             }
             .store(in: cancelBag)
         
