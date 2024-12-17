@@ -13,7 +13,7 @@ enum TriggerType: String {
 }
 
 struct BanTargetInfo {
-    var memberID: Int
-    var triggerType: TriggerType
-    var triggerID: Int
+    let memberID: Int
+    let triggerType: TriggerType
+    let triggerID: Int
 }
