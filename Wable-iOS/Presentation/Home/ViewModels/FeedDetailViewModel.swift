@@ -28,8 +28,8 @@ final class FeedDetailViewModel: ViewModelType {
     var isProcessingPostButton = false
     let contentIDSubject = CurrentValueSubject<Int?, Never>(nil)
     let unFlattenReplyDatas = CurrentValueSubject<[FeedReplyListDTO], Never>([])
-    let banTargetInfo = CurrentValueSubject<(Int, String, Int), Never>((-1, "", -1))
-    
+    let banTargetInfo = CurrentValueSubject<BanTargetInfo, Never>(BanTargetInfo(memberID: -1, triggerType: .comment, triggerID: -1))
+
     // MARK: - Input
     
     let paginationDidAction = PassthroughSubject<Int, Never>()
@@ -52,7 +52,7 @@ final class FeedDetailViewModel: ViewModelType {
         let commentLikeButtonTapped: AnyPublisher<(Bool, Int, String), Never>?
         let postButtonTapped: AnyPublisher<(String, Int), Never>
         let replyButtonDidTapped: AnyPublisher<Int?,Never>
-        let banButtonDidTapped: AnyPublisher<(Int, String, Int), Never>?
+        let banButtonDidTapped: AnyPublisher<BanTargetInfo, Never>
     }
     
     struct Output {
@@ -139,13 +139,15 @@ final class FeedDetailViewModel: ViewModelType {
             }
             .store(in: self.cancelBag)
         
-        input.banButtonDidTapped?
-            .flatMap { [weak self] memberID, triggerType, triggerID -> AnyPublisher<EmptyDTO?, Never> in
+        input.banButtonDidTapped
+            .flatMap { [weak self] targetInfo -> AnyPublisher<EmptyDTO?, Never> in
                 guard let self else {
                     return Just(nil).eraseToAnyPublisher()
                 }
                 
-                return self.homeAPI.postBan(memberID: memberID, triggerType: triggerType, triggerID: triggerID)
+                return self.homeAPI.postBan(memberID: targetInfo.memberID,
+                                            triggerType: targetInfo.triggerType.rawValue,
+                                            triggerID: targetInfo.triggerID)
                     .replaceError(with: nil)
                     .eraseToAnyPublisher()
             }
