@@ -45,7 +45,7 @@ final class FeedDetailViewController: UIViewController {
         return self.commentId
     }.eraseToAnyPublisher()
     
-    private let banButtonDidTappedSubject = PassthroughSubject<(Int, String, Int), Never>()
+    private let banButtonDidTappedSubject = PassthroughSubject<BanTargetInfo, Never>()
     
     var contentId: Int = 0
     var commentId: Int = 0
@@ -583,9 +583,10 @@ extension FeedDetailViewController: UITableViewDataSource {
             cell.bottomView.ghostButton.isHidden = isMine
             cell.menuButtonTapped = { [weak self] in
                 guard let self else { return }
-                viewModel.banTargetInfo.send((getFeedData?.memberId ?? -1,
-                                              "content",
-                                              viewModel.contentIDSubject.value ?? -1))
+                let info = BanTargetInfo(memberID: getFeedData?.memberId ?? -1,
+                                         triggerType: .content,
+                                         triggerID: viewModel.contentIDSubject.value ?? -1)
+                viewModel.banTargetInfo.send(info)
                 setBottomSheetButton(index: indexPath.row, isMine: isMine, isAdmin: isAdmin ?? false, isReply: false)
             }
             
@@ -684,9 +685,10 @@ extension FeedDetailViewController: UITableViewDataSource {
             cell.bottomView.ghostButton.isHidden = isMine
             cell.menuButtonTapped = { [weak self] in
                 guard let self else { return }
-                viewModel.banTargetInfo.send((replyData[indexPath.row].memberID,
-                                              "comment",
-                                              replyData[indexPath.row].commentID))
+                let info = BanTargetInfo(memberID: replyData[indexPath.row].memberID,
+                                         triggerType: .comment,
+                                         triggerID: replyData[indexPath.row].commentID)
+                viewModel.banTargetInfo.send(info)
                 setBottomSheetButton(index: indexPath.row, isMine: isMine, isAdmin: isAdmin ?? false, isReply: true)
             }
             
