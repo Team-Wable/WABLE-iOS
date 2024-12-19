@@ -223,6 +223,7 @@
 		DEB5793A2CE3541300BEE54D /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DEB579392CE3541300BEE54D /* CombineCocoa */; };
 		DECF4CDB2CF6DE5F00EE78B4 /* TodayMatchesDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECF4CDA2CF6DE5F00EE78B4 /* TodayMatchesDateFormatter.swift */; };
 		DEF0D39F2CED68DE002FA608 /* WableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0D39E2CED68DE002FA608 /* WableSegmentedControl.swift */; };
+		DEFF2F7E2D13052500DC1A16 /* AnyPublisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFF2F7D2D13052500DC1A16 /* AnyPublisher+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -435,6 +436,7 @@
 		DEAD9CBE2CF2644600D5CD11 /* RankHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankHeaderView.swift; sourceTree = "<group>"; };
 		DECF4CDA2CF6DE5F00EE78B4 /* TodayMatchesDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMatchesDateFormatter.swift; sourceTree = "<group>"; };
 		DEF0D39E2CED68DE002FA608 /* WableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSegmentedControl.swift; sourceTree = "<group>"; };
+		DEFF2F7D2D13052500DC1A16 /* AnyPublisher+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnyPublisher+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -740,6 +742,7 @@
 				3C8B4E3E2C79135800174943 /* UIImageView+.swift */,
 				3CDE2E012C711F20004A84CB /* String+.swift */,
 				3CDE2DE32C6F292B004A84CB /* Publisher+UIControl.swift */,
+				DEFF2F7D2D13052500DC1A16 /* AnyPublisher+.swift */,
 				050E0CA32C74B35500326EEA /* UIApplication+.swift */,
 				050E0CA52C74B70800326EEA /* UIButton+.swift */,
 				05B4F47C2CF8BE360033FF67 /* Array+.swift */,
@@ -1786,6 +1789,7 @@
 				DEAD9CBD2CF2618F00D5CD11 /* SessionCell.swift in Sources */,
 				050E0CA42C74B35500326EEA /* UIApplication+.swift in Sources */,
 				050E0CB72C74B87400326EEA /* FeedDetailView.swift in Sources */,
+				DEFF2F7E2D13052500DC1A16 /* AnyPublisher+.swift in Sources */,
 				050E0CF92C7516C900326EEA /* InfoNotificationDTO.swift in Sources */,
 				3C8B4E442C80886800174943 /* WriteContentRequestDTO.swift in Sources */,
 				3C8B4E092C779C3A00174943 /* WriteViewModel.swift in Sources */,
