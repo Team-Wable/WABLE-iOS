@@ -269,5 +269,4 @@ private extension InfoPageViewController {
         static let newsIndexNumber = 2
         static let noticeIndexNumber = 3
     }
-
 }
