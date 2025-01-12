@@ -236,11 +236,11 @@ private extension InfoPageViewController {
             .receive(on: RunLoop.main)
             .sink { [weak self] isNewsBadgeShown, isNoticeBadgeShown in
                 if isNewsBadgeShown {
-                    self?.rootView.segmentedControl.showBadge(at: 2)
+                    self?.rootView.segmentedControl.showBadge(at: Constants.newsIndexNumber)
                 }
                 
                 if isNoticeBadgeShown {
-                    self?.rootView.segmentedControl.showBadge(at: 3)
+                    self?.rootView.segmentedControl.showBadge(at: Constants.noticeIndexNumber)
                 }
             }
             .store(in: cancelBag)
@@ -248,15 +248,26 @@ private extension InfoPageViewController {
         output.hideNewsBadge
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                self?.rootView.segmentedControl.hideBadge(at: 2)
+                self?.rootView.segmentedControl.hideBadge(at: Constants.newsIndexNumber)
             }
             .store(in: cancelBag)
         
         output.hideNoticeBadge
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
-                self?.rootView.segmentedControl.hideBadge(at: 3)
+                self?.rootView.segmentedControl.hideBadge(at: Constants.noticeIndexNumber)
             }
             .store(in: cancelBag)
     }
+}
+
+private extension InfoPageViewController {
+    
+    // MARK: - Constants
+    
+    enum Constants {
+        static let newsIndexNumber = 2
+        static let noticeIndexNumber = 3
+    }
+
 }

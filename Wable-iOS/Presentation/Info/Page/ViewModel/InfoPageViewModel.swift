@@ -55,7 +55,7 @@ extension InfoPageViewModel: ViewModelType {
             .eraseToAnyPublisher()
         
         let hideNewsBadge = input.currentIndex
-            .filter { $0 == 2 }
+            .filter { $0 == Constants.newsIndexNumber }
             .combineLatest(infoCount)
             .map { $1 }
             .filter { $0.newsCount > existingNewsCount }
@@ -67,7 +67,7 @@ extension InfoPageViewModel: ViewModelType {
             .eraseToAnyPublisher()
         
         let hideNoticeBadge = input.currentIndex
-            .filter { $0 == 3 }
+            .filter { $0 == Constants.noticeIndexNumber }
             .combineLatest(infoCount)
             .map { $1 }
             .filter { $0.noticeCount > existingNoticeCount }
@@ -104,9 +104,10 @@ extension InfoPageViewModel: ViewModelType {
     }
 }
 
-// MARK: - UserDefaultsKey
-
 extension InfoPageViewModel {
+    
+    // MARK: - UserDefaultsKey
+    
     enum UserDefaultsKeys: UserDefaultsKey {
         case newsCount
         case noticeCount
@@ -117,5 +118,12 @@ extension InfoPageViewModel {
             case .noticeCount: "noticeCount"
             }
         }
+    }
+    
+    // MARK: - Constants
+    
+    enum Constants {
+        static let newsIndexNumber = 2
+        static let noticeIndexNumber = 3
     }
 }
