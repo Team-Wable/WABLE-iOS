@@ -103,6 +103,12 @@
 		05B4F47D2CF8BE360033FF67 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4F47C2CF8BE360033FF67 /* Array+.swift */; };
 		05B4F47F2CF8C2450033FF67 /* BanRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4F47E2CF8C2450033FF67 /* BanRequestDTO.swift */; };
 		05F1FF422D11C95F00982033 /* BanTargetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1FF412D11C95F00982033 /* BanTargetInfo.swift */; };
+		05F1FF442D17EA1D00982033 /* MigratedHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1FF432D17EA1D00982033 /* MigratedHomeViewController.swift */; };
+		05F1FF462D1AAAE300982033 /* MigratedHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1FF452D1AAAE300982033 /* MigratedHomeViewModel.swift */; };
+		05F1FF482D1AB39000982033 /* MigratedHomeFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1FF472D1AB39000982033 /* MigratedHomeFeedCell.swift */; };
+		05F1FF4A2D1AB42A00982033 /* MigratedHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1FF492D1AB42A00982033 /* MigratedHomeView.swift */; };
+		05F1FF4C2D32685A00982033 /* PopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1FF4B2D32685A00982033 /* PopupViewModel.swift */; };
+		05F1FF502D33DF9600982033 /* HomePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1FF4F2D33DF9600982033 /* HomePopupViewController.swift */; };
 		05FBEED22C886A0200E4BF17 /* HomeFeedContentDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FBEED12C886A0200E4BF17 /* HomeFeedContentDTO.swift */; };
 		3C3531822C6F15D30015A8FA /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3531812C6F15D30015A8FA /* KeychainWrapper.swift */; };
 		3C3531842C6F16D00015A8FA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3531832C6F16D00015A8FA /* Config.swift */; };
@@ -317,6 +323,12 @@
 		05B4F47C2CF8BE360033FF67 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		05B4F47E2CF8C2450033FF67 /* BanRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanRequestDTO.swift; sourceTree = "<group>"; };
 		05F1FF412D11C95F00982033 /* BanTargetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanTargetInfo.swift; sourceTree = "<group>"; };
+		05F1FF432D17EA1D00982033 /* MigratedHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedHomeViewController.swift; sourceTree = "<group>"; };
+		05F1FF452D1AAAE300982033 /* MigratedHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedHomeViewModel.swift; sourceTree = "<group>"; };
+		05F1FF472D1AB39000982033 /* MigratedHomeFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedHomeFeedCell.swift; sourceTree = "<group>"; };
+		05F1FF492D1AB42A00982033 /* MigratedHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedHomeView.swift; sourceTree = "<group>"; };
+		05F1FF4B2D32685A00982033 /* PopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewModel.swift; sourceTree = "<group>"; };
+		05F1FF4F2D33DF9600982033 /* HomePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePopupViewController.swift; sourceTree = "<group>"; };
 		05FBEED12C886A0200E4BF17 /* HomeFeedContentDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedContentDTO.swift; sourceTree = "<group>"; };
 		3C3531812C6F15D30015A8FA /* KeychainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
 		3C3531832C6F16D00015A8FA /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
@@ -489,6 +501,7 @@
 				050E0CB42C74B85800326EEA /* HomeView.swift */,
 				050E0CB62C74B87400326EEA /* FeedDetailView.swift */,
 				3C8B4E522C83FB7C00174943 /* HomeBottomSheetView.swift */,
+				05F1FF492D1AB42A00982033 /* MigratedHomeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -499,6 +512,8 @@
 				050E0CC82C74B92A00326EEA /* HomeViewModel.swift */,
 				3C8B4E472C80E1C900174943 /* FeedDetailViewModel.swift */,
 				3C8B4E4E2C83F01500174943 /* LikeViewModel.swift */,
+				05F1FF452D1AAAE300982033 /* MigratedHomeViewModel.swift */,
+				05F1FF4B2D32685A00982033 /* PopupViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -516,6 +531,7 @@
 			children = (
 				050E0CC42C74B8F000326EEA /* HomeFeedTableViewCell.swift */,
 				050E0CC62C74B8FD00326EEA /* FeedDetailTableViewCell.swift */,
+				05F1FF472D1AB39000982033 /* MigratedHomeFeedCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -862,6 +878,8 @@
 			children = (
 				0547F4F42C64C76A001E3039 /* HomeViewController.swift */,
 				050E0CCA2C74B94800326EEA /* FeedDetailViewController.swift */,
+				05F1FF432D17EA1D00982033 /* MigratedHomeViewController.swift */,
+				05F1FF4F2D33DF9600982033 /* HomePopupViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1691,6 +1709,7 @@
 				3CF344DE2C74AB3B0038BB53 /* MyPageAccountInfoViewModel.swift in Sources */,
 				050E0CF12C750F6300326EEA /* NotificationContentView.swift in Sources */,
 				3C8B4E1B2C78E55200174943 /* TokenManager.swift in Sources */,
+				05F1FF4C2D32685A00982033 /* PopupViewModel.swift in Sources */,
 				3CDE2E1D2C723325004A84CB /* NotificationSegmentedControl.swift in Sources */,
 				050E0CB52C74B85800326EEA /* HomeView.swift in Sources */,
 				DE9D0E342CF087B30024BB1F /* LCKGameTypeDTO.swift in Sources */,
@@ -1702,6 +1721,7 @@
 				050E0D162C8252B200326EEA /* NotificationAPI.swift in Sources */,
 				050E0CDF2C74C8B400326EEA /* MatchSessionTableViewCell.swift in Sources */,
 				3C8B4E3B2C79119700174943 /* MyPageMemberContentResponseDTO.swift in Sources */,
+				05F1FF442D17EA1D00982033 /* MigratedHomeViewController.swift in Sources */,
 				3C8B4E352C79117C00174943 /* MyPageMemberDeleteDTO.swift in Sources */,
 				05FBEED22C886A0200E4BF17 /* HomeFeedContentDTO.swift in Sources */,
 				0547F4C02C62166C001E3039 /* Adjusted+.swift in Sources */,
@@ -1744,6 +1764,7 @@
 				0547F4FC2C64C797001E3039 /* MyPageViewController.swift in Sources */,
 				0547F4FA2C64C78C001E3039 /* NotificationViewController.swift in Sources */,
 				3CF344E72C750DBD0038BB53 /* MyPageSignOutReasonViewModel.swift in Sources */,
+				05F1FF502D33DF9600982033 /* HomePopupViewController.swift in Sources */,
 				3C8B4E1D2C78E55C00174943 /* TokenReissueResponseDTO.swift in Sources */,
 				3C8B4E372C79118500174943 /* MyPageAccountInfoResponseDTO.swift in Sources */,
 				050E0CCD2C74B95B00326EEA /* Team.swift in Sources */,
@@ -1773,10 +1794,12 @@
 				050E0CEA2C74DC4B00326EEA /* MatchProgress.swift in Sources */,
 				3C8B4E262C78E61B00174943 /* HttpMethod.swift in Sources */,
 				DE8001B32CF323B100D9DAD9 /* InfoNewsViewController.swift in Sources */,
+				05F1FF4A2D1AB42A00982033 /* MigratedHomeView.swift in Sources */,
 				05B4F47D2CF8BE360033FF67 /* Array+.swift in Sources */,
 				05B4F47F2CF8C2450033FF67 /* BanRequestDTO.swift in Sources */,
 				DE8001B62CF3250800D9DAD9 /* NewsCell.swift in Sources */,
 				DE8001A82CF31ECE00D9DAD9 /* InfoNewsViewModel.swift in Sources */,
+				05F1FF462D1AAAE300982033 /* MigratedHomeViewModel.swift in Sources */,
 				050E0CD12C74B9A700326EEA /* WriteViewController.swift in Sources */,
 				050E0CAA2C74B7A900326EEA /* FeedDetailReplyDTO.swift in Sources */,
 				3C35319C2C6F22050015A8FA /* ViewModelType.swift in Sources */,
@@ -1789,6 +1812,7 @@
 				DEAD9CBD2CF2618F00D5CD11 /* SessionCell.swift in Sources */,
 				050E0CA42C74B35500326EEA /* UIApplication+.swift in Sources */,
 				050E0CB72C74B87400326EEA /* FeedDetailView.swift in Sources */,
+				05F1FF482D1AB39000982033 /* MigratedHomeFeedCell.swift in Sources */,
 				DEFF2F7E2D13052500DC1A16 /* AnyPublisher+.swift in Sources */,
 				050E0CF92C7516C900326EEA /* InfoNotificationDTO.swift in Sources */,
 				3C8B4E442C80886800174943 /* WriteContentRequestDTO.swift in Sources */,
