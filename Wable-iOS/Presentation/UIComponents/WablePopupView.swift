@@ -9,6 +9,13 @@ import UIKit
 
 import SnapKit
 
+enum PopupViewType {
+    case delete
+    case report
+    case ghost
+    case ban
+}
+
 protocol WablePopupDelegate: AnyObject {
     func cancleButtonTapped()
     func confirmButtonTapped()
@@ -20,6 +27,8 @@ final class WablePopupView: UIView {
     // MARK: - Properties
     
     weak var delegate: WablePopupDelegate?
+    var cancelBag: CancelBag?
+    var popupType: PopupViewType
     
     // MARK: - UI Components
     
@@ -85,6 +94,8 @@ final class WablePopupView: UIView {
     // MARK: - Life Cycles
     
     init(popupTitle: String, popupContent: String, leftButtonTitle: String, rightButtonTitle: String) {
+        self.popupType = .ban
+
         super.init(frame: .zero)
         
         popupTitleLabel.setTextWithLineHeight(text: popupTitle, lineHeight: 28.8.adjusted, alignment: .center)
@@ -99,6 +110,8 @@ final class WablePopupView: UIView {
     }
     
     init(popupTitle: String, popupContent: String, singleButtonTitle: String) {
+        self.popupType = .ban
+
         super.init(frame: .zero)
         
         popupTitleLabel.setTextWithLineHeight(text: popupTitle, lineHeight: 28.8.adjusted, alignment: .center)
@@ -109,6 +122,17 @@ final class WablePopupView: UIView {
         setSingleHierarchy()
         setSingleLayout()
         setSingleAddTarget()
+    }
+    
+    init(popupType: PopupViewType) {
+        self.popupType = popupType
+        
+        super.init(frame: .zero)
+        setInitialPopup(type: popupType)
+        setUI()
+        setHierarchy()
+        setLayout()
+        setAddTarget()
     }
     
     @available(*, unavailable)
@@ -179,6 +203,49 @@ extension WablePopupView {
     func setAddTarget() {
         self.cancleButton.addTarget(self, action: #selector(cancleButtonTapped), for: .touchUpInside)
         self.confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
+    }
+    
+    func setInitialPopup(type: PopupViewType) {
+        switch type {
+        case .delete:
+            popupTitleLabel.setTextWithLineHeight(
+                text: StringLiterals.Home.deletePopupTitle,
+                lineHeight: 28.8.adjusted,
+                alignment: .center
+            )
+            popupContentLabel.text = StringLiterals.Home.deletePopupContent
+            cancleButton.setTitle(StringLiterals.Home.deletePopupUndo, for: .normal)
+            confirmButton.setTitle(StringLiterals.Home.deletePopupDo, for: .normal)
+            
+        case .report:
+            popupTitleLabel.setTextWithLineHeight(
+                text: StringLiterals.Home.reportPopupTitle,
+                lineHeight: 28.8.adjusted,
+                alignment: .center
+            )
+            popupContentLabel.text = StringLiterals.Home.reportPopupContent
+            cancleButton.setTitle(StringLiterals.Home.reportPopupUndo, for: .normal)
+            confirmButton.setTitle(StringLiterals.Home.reportPopupDo, for: .normal)
+            
+        case .ghost:
+            popupTitleLabel.setTextWithLineHeight(
+                text: StringLiterals.Home.ghostPopupTitle,
+                lineHeight: 28.8.adjusted,
+                alignment: .center
+            )
+            popupContentLabel.text = ""
+            cancleButton.setTitle(StringLiterals.Home.ghostPopupUndo, for: .normal)
+            confirmButton.setTitle(StringLiterals.Home.ghostPopupDo, for: .normal)
+        case .ban:
+            popupTitleLabel.setTextWithLineHeight(
+                text: "밴하기 ㅋㅋ",
+                lineHeight: 28.8.adjusted,
+                alignment: .center
+            )
+            popupContentLabel.text = "너이놈밴머거랏!!!"
+            cancleButton.setTitle("함봐줌", for: .normal)
+            confirmButton.setTitle("밴ㄱㄱ", for: .normal)
+        }
     }
     
     func setSingleHierarchy() {
