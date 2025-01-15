@@ -202,7 +202,9 @@ final class HomeFeedTableViewCell: UITableViewCell{
                              isBlind: data.isBlind)
         
         bottomView.bind(heart: data.likedNumber,
-                        comment: data.commentNumber ?? Int())
+                        comment: data.commentNumber ?? Int(),
+                        memberID: data.memberID
+        )
         
         bottomView.isLiked = data.isLiked
         
