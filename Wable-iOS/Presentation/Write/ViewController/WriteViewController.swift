@@ -20,6 +20,7 @@ final class WriteViewController: UIViewController {
     private var cancelBag = CancelBag()
     private let viewModel: WriteViewModel
     private var transparency: Int = 0
+    var writeViewDidDisappear: (() -> Void)?
     
     private lazy var postButtonTapped = self.rootView.writeTextView.postButton.publisher(for: .touchUpInside)
         .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
@@ -93,7 +94,7 @@ final class WriteViewController: UIViewController {
         self.tabBarController?.tabBar.isTranslucent = false
         
         NotificationCenter.default.removeObserver(self, name: UITextView.textDidChangeNotification, object: nil)
-
+        writeViewDidDisappear?()
     }
 }
 
