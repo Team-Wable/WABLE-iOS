@@ -10,6 +10,7 @@ import Combine
 
 final class MigratedHomeViewModel {
     private var cursor: Int = -1
+    private var deletedFeedCount: Int = 0
     let feedSubject = CurrentValueSubject<[HomeFeedDTO], Never>([])
     
     private let service: HomeAPI
@@ -62,9 +63,11 @@ extension MigratedHomeViewModel: ViewModelType {
         
         let feedPublisher = lastContentIDPublisher
             .filter { [weak self] lastContentID in // 페이지네이션 조건 필터링
-                (self?.feedSubject.value.count ?? 0) % 20 == 0 &&
+                guard let self else { return false }
+                let count = feedSubject.value.count + deletedFeedCount
+                return count % 20 == 0 &&
                 lastContentID != -1 &&
-                lastContentID != self?.cursor ?? .zero
+                lastContentID != cursor
             }
             .flatMap { [weak self] lastContentID -> AnyPublisher<[HomeFeedDTO], Never> in
                 guard let self else {
@@ -78,7 +81,6 @@ extension MigratedHomeViewModel: ViewModelType {
                 previousFeeds.append(contentsOf: feeds)
                 return previousFeeds
             }
-
 
         // feedPublisher를 feedSubject에 구독
         feedPublisher
@@ -162,6 +164,7 @@ extension MigratedHomeViewModel: ViewModelType {
     
     func deleteFeed(at contentID: Int) {
         feedSubject.value.removeAll { $0.contentID == contentID }
+        deletedFeedCount += 1
     }
     
     func updateGhostState(for memberID: Int) -> [HomeFeedDTO] {
@@ -263,6 +266,7 @@ private extension MigratedHomeViewModel {
     
     func resetCursorAndGetHomeFeed() -> AnyPublisher<[HomeFeedDTO], Never> {
         cursor = -1
+        deletedFeedCount = 0
         return getHomeFeed(cursor: cursor)
     }
 }
