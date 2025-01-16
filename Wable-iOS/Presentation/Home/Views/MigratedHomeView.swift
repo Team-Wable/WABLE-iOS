@@ -52,20 +52,22 @@ final class MigratedHomeView: UIView {
 
 // MARK: - Extensions
 
-extension MigratedHomeView {
-    private func setUI() {
+private extension MigratedHomeView {
+    func setUI() {
         backgroundColor = .wableWhite
         loadingView.isHidden = true
     }
     
-    private func setHierarchy() {
-        self.addSubviews(homeTabView,
-                         collectionView,
-                         writeFeedButton,
-                         loadingView)
+    func setHierarchy() {
+        self.addSubviews(
+            homeTabView,
+            collectionView,
+            writeFeedButton,
+            loadingView
+        )
     }
     
-    private func setLayout() {
+    func setLayout() {
         loadingView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
             $0.top.equalToSuperview()

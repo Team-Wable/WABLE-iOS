@@ -93,6 +93,7 @@
 		0573B8C42CEC63EC00B5A434 /* FlattenReplyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0573B8C32CEC63EC00B5A434 /* FlattenReplyModel.swift */; };
 		0586D89B2D09A68200436080 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0586D8992D09A68200436080 /* Pretendard-Regular.otf */; };
 		0586D89C2D09A68200436080 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */; };
+		0589AECF2D38311A004F531E /* PopupType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0589AECE2D383119004F531E /* PopupType.swift */; };
 		0593F6D62C96D6C100FFAD82 /* WablePhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */; };
 		0593F6DB2C96E75600FFAD82 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0593F6DA2C96E75600FFAD82 /* FirebaseAnalytics */; };
 		0593F6DD2C96E75600FFAD82 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 0593F6DC2C96E75600FFAD82 /* FirebaseMessaging */; };
@@ -315,6 +316,7 @@
 		0573B8C32CEC63EC00B5A434 /* FlattenReplyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlattenReplyModel.swift; sourceTree = "<group>"; };
 		0586D8992D09A68200436080 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
+		0589AECE2D383119004F531E /* PopupType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupType.swift; sourceTree = "<group>"; };
 		0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePhotoDetailView.swift; sourceTree = "<group>"; };
 		0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePushAlarmHelper.swift; sourceTree = "<group>"; };
 		05AD1EB42CE4C1D900F36D6B /* Dev.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
@@ -522,6 +524,7 @@
 			isa = PBXGroup;
 			children = (
 				050E0CCC2C74B95B00326EEA /* Team.swift */,
+				0589AECE2D383119004F531E /* PopupType.swift */,
 			);
 			path = Supports;
 			sourceTree = "<group>";
@@ -1678,6 +1681,7 @@
 				3C8B4E182C78E21900174943 /* SocialLoginResponseDTO.swift in Sources */,
 				0547F49A2C60D968001E3039 /* AppDelegate.swift in Sources */,
 				050E0CC32C74B8B600326EEA /* FeedBottomView.swift in Sources */,
+				0589AECF2D38311A004F531E /* PopupType.swift in Sources */,
 				0547F4DF2C62486C001E3039 /* APIConstants.swift in Sources */,
 				050E0CD92C74BFC200326EEA /* InfoLogoView.swift in Sources */,
 				DE54C3E42CF4EB6B00753129 /* NoticeCell.swift in Sources */,
