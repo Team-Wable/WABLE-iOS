@@ -19,10 +19,10 @@ final class PopupViewModel {
 
 extension PopupViewModel: ViewModelType {
     struct Input {
-        let deleteButtonDidTapSubject: AnyPublisher<Void, Never>
-        let reportButtonDidTapSubject: AnyPublisher<Void, Never>
-        let banButtonDidTapSubject: AnyPublisher<Void, Never>
-        let ghostButtonDidTapSubject: AnyPublisher<Void, Never>
+        let deleteButtonDidTap: AnyPublisher<Void, Never>
+        let reportButtonDidTap: AnyPublisher<Void, Never>
+        let banButtonDidTap: AnyPublisher<Void, Never>
+        let ghostButtonDidTap: AnyPublisher<Void, Never>
     }
     
     struct Output {
@@ -31,7 +31,7 @@ extension PopupViewModel: ViewModelType {
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
         let dismissViewSubject = PassthroughSubject<(HomeFeedDTO, PopupViewType), Never>()
-        input.deleteButtonDidTapSubject
+        input.deleteButtonDidTap
             .flatMap { [weak self] _ -> AnyPublisher<EmptyDTO?, Never> in
                 guard let self else {
                     return Just(EmptyDTO()).eraseToAnyPublisher()
@@ -49,7 +49,7 @@ extension PopupViewModel: ViewModelType {
             }
             .store(in: cancelBag)
         
-        input.banButtonDidTapSubject
+        input.banButtonDidTap
             .flatMap { [weak self] _ -> AnyPublisher<EmptyDTO?, Never> in
                 guard let self else {
                     return Just(EmptyDTO()).eraseToAnyPublisher()
@@ -72,7 +72,7 @@ extension PopupViewModel: ViewModelType {
             }
             .store(in: cancelBag)
         
-        input.reportButtonDidTapSubject
+        input.reportButtonDidTap
             .flatMap { [weak self] _ -> AnyPublisher<EmptyDTO?, Never> in
                 guard let self else {
                     return Just(EmptyDTO()).eraseToAnyPublisher()
@@ -91,7 +91,7 @@ extension PopupViewModel: ViewModelType {
             }
             .store(in: cancelBag)
         
-        input.ghostButtonDidTapSubject
+        input.ghostButtonDidTap
             .flatMap { [weak self] _ -> AnyPublisher<EmptyDTO?, Never> in
                 guard let self else {
                     return Just(EmptyDTO()).eraseToAnyPublisher()

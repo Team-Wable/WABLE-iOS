@@ -414,7 +414,7 @@ extension MyPageReplyViewController: UIScrollViewDelegate {
 
 extension MyPageReplyViewController: WablePopupDelegate {
     
-    func cancleButtonTapped() {
+    func cancelButtonTapped() {
 //        if ghostPopupView != nil {
 //            self.ghostPopupView?.removeFromSuperview()
 //        }

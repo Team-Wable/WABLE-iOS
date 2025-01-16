@@ -280,7 +280,7 @@ extension WriteViewController: PHPickerViewControllerDelegate {
 }
 
 extension WriteViewController: WablePopupDelegate {
-    func cancleButtonTapped() {
+    func cancelButtonTapped() {
         self.writeCanclePopupView?.removeFromSuperview()
     }
     

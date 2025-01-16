@@ -837,7 +837,7 @@ extension FeedDetailViewController {
 
 extension FeedDetailViewController: WablePopupDelegate {
     
-    func cancleButtonTapped() {
+    func cancelButtonTapped() {
         if nowShowingPopup == "ghost" {
             AmplitudeManager.shared.trackEvent(tag: "click_withdrawghost_popup")
             self.ghostPopupView?.removeFromSuperview()

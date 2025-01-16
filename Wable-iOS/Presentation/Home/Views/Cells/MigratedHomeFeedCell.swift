@@ -26,6 +26,10 @@ final class MigratedHomeFeedCell: UICollectionViewCell{
     
     // MARK: - Components
     
+    let infoView = FeedInfoView()
+    let feedContentView = FeedContentView()
+    let bottomView = FeedBottomView()
+    let divideLine = UIView().makeDivisionLine()
     let grayView: UIView = {
         let view = UIView()
         view.backgroundColor = .wableWhite
@@ -34,29 +38,24 @@ final class MigratedHomeFeedCell: UICollectionViewCell{
         return view
     }()
     
-    var infoView = FeedInfoView()
-    var feedContentView = FeedContentView()
-    var bottomView = FeedBottomView()
-    var divideLine = UIView().makeDivisionLine()
-    
-    var profileImageView: UIImageView = {
+    let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = ImageLiterals.Image.imgProfileSmall
         imageView.isUserInteractionEnabled = true
         return imageView
     }()
     
-    private var menuButton: UIButton = {
-        let button = UIButton()
-        button.setImage(ImageLiterals.Icon.icMeatball, for: .normal)
-        return button
-    }()
-    
-    var seperateLineView: UIView = {
+    let seperateLineView: UIView = {
        let view = UIView()
         view.backgroundColor = .gray200
         view.isHidden = true
         return view
+    }()
+    
+    private let menuButton: UIButton = {
+        let button = UIButton()
+        button.setImage(ImageLiterals.Icon.icMeatball, for: .normal)
+        return button
     }()
     
     // MARK: - inits
@@ -202,12 +201,8 @@ final class MigratedHomeFeedCell: UICollectionViewCell{
         
         let memberGhost = adjustGhostValue(data.memberGhost)
         
-        if data.isGhost {
-            print("\(data.memberNickname)\n\(data.isGhost)")
-            grayView.alpha = 0.85
-        } else {
-            grayView.alpha = CGFloat(Double(-memberGhost) / 100)
-        }
+        grayView.alpha = data.isGhost ? 0.85 : CGFloat(Double(-memberGhost) / 100)
+
     }
     
     func changeButtonState(isLiked: Bool) {

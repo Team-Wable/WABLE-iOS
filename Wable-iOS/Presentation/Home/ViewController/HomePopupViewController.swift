@@ -6,14 +6,19 @@
 //
 
 import Combine
-import CombineCocoa
 import UIKit
 
+import CombineCocoa
 import SnapKit
 
 final class HomePopupViewController: UIViewController {
     
     // MARK: - Properties
+    
+    var deleteButtonDidTapAction: ((Int) -> Void)?
+    var ghostButtonDidTapAction: ((Int) -> Void)?
+    var banButtonDidTapAction: ((Int) -> Void)?
+    var reportButtonDidTapAction: (() -> Void)?
     
     private let viewModel: PopupViewModel
     private let rootView: WablePopupView
@@ -23,11 +28,6 @@ final class HomePopupViewController: UIViewController {
     private let reportButtonDidTapSubject = PassthroughSubject<Void, Never>()
     private let banButtonDidTapSubject = PassthroughSubject<Void, Never>()
     private let ghostButtonDidTapSubject = PassthroughSubject<Void, Never>()
-    
-    var deleteButtonDidTapAction: ((Int) -> Void)?
-    var ghostButtonDidTapAction: ((Int) -> Void)?
-    var banButtonDidTapAction: ((Int) -> Void)?
-    var reportButtonDidTapAction: (() -> Void)?
     
     // MARK: - Initializer
     
@@ -43,26 +43,25 @@ final class HomePopupViewController: UIViewController {
     
     // MARK: - Life Cycles
     
+    override func loadView() {
+        super.loadView()
+        view = rootView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view = rootView
         setupBinding()
         rootView.delegate = self
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-
 }
 
 private extension HomePopupViewController {
     func setupBinding() {
         let input = PopupViewModel.Input(
-            deleteButtonDidTapSubject: deleteButtonTapSubject.eraseToAnyPublisher(),
-            reportButtonDidTapSubject: reportButtonDidTapSubject.eraseToAnyPublisher(),
-            banButtonDidTapSubject: banButtonDidTapSubject.eraseToAnyPublisher(),
-            ghostButtonDidTapSubject: ghostButtonDidTapSubject.eraseToAnyPublisher()
+            deleteButtonDidTap: deleteButtonTapSubject.eraseToAnyPublisher(),
+            reportButtonDidTap: reportButtonDidTapSubject.eraseToAnyPublisher(),
+            banButtonDidTap: banButtonDidTapSubject.eraseToAnyPublisher(),
+            ghostButtonDidTap: ghostButtonDidTapSubject.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(from: input, cancelBag: cancelBag)
@@ -106,8 +105,10 @@ extension HomePopupViewController {
     }
 }
 
+// MARK: - WablePopupDelegate
+
 extension HomePopupViewController: WablePopupDelegate {
-    func cancleButtonTapped() {
+    func cancelButtonTapped() {
         self.dismiss(animated: true)
     }
     
