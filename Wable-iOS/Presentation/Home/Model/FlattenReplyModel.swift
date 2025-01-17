@@ -20,3 +20,9 @@ struct FlattenReplyModel {
     let parentCommentID: Int
     let isBlind: Bool?
 }
+
+extension FlattenReplyModel: Hashable {
+    static func == (lhs: FlattenReplyModel, rhs: FlattenReplyModel) -> Bool {
+        lhs.commentID == rhs.commentID
+    }
+}
