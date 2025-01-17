@@ -44,7 +44,6 @@ final class HomePopupViewController: UIViewController {
     // MARK: - Life Cycles
     
     override func loadView() {
-        super.loadView()
         view = rootView
     }
     

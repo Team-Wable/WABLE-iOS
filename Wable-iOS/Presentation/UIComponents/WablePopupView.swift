@@ -20,7 +20,7 @@ final class WablePopupView: UIView {
     // MARK: - Properties
     
     weak var delegate: WablePopupDelegate?
-    var cancelBag = CancelBag()
+    private var cancelBag = CancelBag()
     var popupType: PopupViewType
     
     // MARK: - UI Components
@@ -136,7 +136,7 @@ final class WablePopupView: UIView {
 
 // MARK: - Extensions
 
-extension WablePopupView {
+private extension WablePopupView {
     func setUI() {
         self.backgroundColor = .wableBlack.withAlphaComponent(0.5)
     }
@@ -196,7 +196,7 @@ extension WablePopupView {
         self.confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
     }
     
-    private func configurePopup(type: PopupViewType) {
+    func configurePopup(type: PopupViewType) {
         popupTitleLabel.setTextWithLineHeight(
             text: type.title,
             lineHeight: 28.8.adjusted,
