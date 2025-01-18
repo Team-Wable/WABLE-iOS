@@ -1,5 +1,5 @@
 //
-//  InfoLogoView.swift
+//  InfoPageLogoView.swift
 //  Wable-iOS
 //
 //  Created by 박윤빈 on 8/20/24.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class InfoLogoView: UIView {
+final class InfoPageLogoView: UIView {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = ImageLiterals.Icon.icInfoPurple
@@ -40,7 +40,7 @@ final class InfoLogoView: UIView {
 
 // MARK: - Private Method
 
-private extension InfoLogoView {
+private extension InfoPageLogoView {
     func setupView() {
         backgroundColor = .wableBlack
         

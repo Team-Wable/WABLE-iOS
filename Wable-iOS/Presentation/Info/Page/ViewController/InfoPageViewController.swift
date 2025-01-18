@@ -1,28 +1,44 @@
 //
-//  InfoViewController.swift
+//  InfoPageViewController.swift
 //  Wable-iOS
 //
 //  Created by 박윤빈 on 8/8/24.
 //
 
 import UIKit
+import Combine
 
 import SnapKit
 
-final class InfoViewController: UIViewController {
+final class InfoPageViewController: UIViewController {
 
     // MARK: - Property
     
-    private var currentIndex = 0
-    
     private var viewControllers = [UIViewController]()
+
+    private let infoPageViewModel: InfoPageViewModel
     
     private let pageViewController = UIPageViewController(
         transitionStyle: .scroll,
         navigationOrientation: .horizontal
     )
+
+    private let currentIndexSubject = CurrentValueSubject<Int, Never>(0)
+    private let viewDidLoadSubject = PassthroughSubject<Void, Never>()
+    private let cancelBag = CancelBag()
+    private let rootView = InfoPageView()
     
-    private let rootView = InfoView()
+    // MARK: - Initializer
+    
+    init(infoPageViewModel: InfoPageViewModel) {
+        self.infoPageViewModel = infoPageViewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Life Cycle
     
@@ -37,12 +53,15 @@ final class InfoViewController: UIViewController {
         setupPageViewController()
         setupNavigationBar()
         setupAction()
+        setupBinding()
+        
+        viewDidLoadSubject.send(())
     }
 }
 
 // MARK: - UIPageViewControllerDelegate
 
-extension InfoViewController: UIPageViewControllerDelegate {
+extension InfoPageViewController: UIPageViewControllerDelegate {
     func pageViewController(
         _ pageViewController: UIPageViewController,
         didFinishAnimating finished: Bool,
@@ -56,14 +75,14 @@ extension InfoViewController: UIPageViewControllerDelegate {
             return
         }
         
-        currentIndex = index
-        updateSegmentedControl()
+        currentIndexSubject.send(index)
+        rootView.segmentedControl.selectedSegmentIndex = index
     }
 }
 
 // MARK: - UIPageViewControllerDataSource
 
-extension InfoViewController: UIPageViewControllerDataSource {
+extension InfoPageViewController: UIPageViewControllerDataSource {
     func pageViewController(
         _ pageViewController: UIPageViewController,
         viewControllerBefore viewController: UIViewController
@@ -93,7 +112,7 @@ extension InfoViewController: UIPageViewControllerDataSource {
 
 // MARK: - InfoNewsViewControllerDelegate
 
-extension InfoViewController: InfoNewsViewControllerDelegate {
+extension InfoPageViewController: InfoNewsViewControllerDelegate {
     func pushToNewsDetailView(with news: NewsDTO) {
         pushToDetailView(
             navigationTitle: "뉴스",
@@ -108,7 +127,7 @@ extension InfoViewController: InfoNewsViewControllerDelegate {
 
 // MARK: - InfoNoticeViewControllerDelegate
 
-extension InfoViewController: InfoNoticeViewControllerDelegate {
+extension InfoPageViewController: InfoNoticeViewControllerDelegate {
     func pushToNoticeDetailView(with notice: NoticeDTO) {
         pushToDetailView(
             navigationTitle: "공지사항",
@@ -123,7 +142,7 @@ extension InfoViewController: InfoNoticeViewControllerDelegate {
 
 // MARK: - Private Method
 
-private extension InfoViewController {
+private extension InfoPageViewController {
     func setupViewControllers() {
         viewControllers.append(InfoMatchViewController(viewModel: InfoMatchViewModel()))
         viewControllers.append(InfoRankingViewController(viewModel: InfoRankingViewModel()))
@@ -155,7 +174,7 @@ private extension InfoViewController {
     }
     
     func setupNavigationBar() {
-        let logoView = InfoLogoView()
+        let logoView = InfoPageLogoView()
         let logoContainer = UIBarButtonItem(customView: logoView)
         
         navigationItem.leftBarButtonItem = logoContainer
@@ -168,8 +187,7 @@ private extension InfoViewController {
     
     @objc
     func segmentedControlDidChange(_ sender: WableSegmentedControl) {
-        guard !viewControllers.isEmpty else { return }
-        
+        let currentIndex = currentIndexSubject.value
         let selectedIndex = sender.selectedSegmentIndex
         let direction: UIPageViewController.NavigationDirection = selectedIndex > currentIndex ? .forward : .reverse
         
@@ -180,27 +198,7 @@ private extension InfoViewController {
         ) { [weak self] isCompleted in
             guard isCompleted else { return }
             
-            self?.currentIndex = selectedIndex
-            self?.trackPageChangeEvent(for: selectedIndex)
-        }
-    }
-    
-    func updateSegmentedControl() {
-        rootView.segmentedControl.selectedSegmentIndex = currentIndex
-    }
-    
-    func trackPageChangeEvent(for index: Int) {
-        switch index {
-        case 0:
-            AmplitudeManager.shared.trackEvent(tag: "click_gameschedule")
-        case 1:
-            AmplitudeManager.shared.trackEvent(tag: "click_ranking")
-        case 2:
-            AmplitudeManager.shared.trackEvent(tag: "click_news")
-        case 3:
-            AmplitudeManager.shared.trackEvent(tag: "click_announcement")
-        default:
-            break
+            self?.currentIndexSubject.send(selectedIndex)
         }
     }
     
@@ -224,5 +222,51 @@ private extension InfoViewController {
         )
         detailViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
+    func setupBinding() {
+        let input = InfoPageViewModel.Input(
+            viewDidLoad: viewDidLoadSubject.eraseToAnyPublisher(),
+            currentIndex: currentIndexSubject.eraseToAnyPublisher()
+        )
+        
+        let output = infoPageViewModel.transform(from: input, cancelBag: cancelBag)
+        
+        output.showBadges
+            .receive(on: RunLoop.main)
+            .sink { [weak self] isNewsBadgeShown, isNoticeBadgeShown in
+                if isNewsBadgeShown {
+                    self?.rootView.segmentedControl.showBadge(at: Constants.newsIndexNumber)
+                }
+                
+                if isNoticeBadgeShown {
+                    self?.rootView.segmentedControl.showBadge(at: Constants.noticeIndexNumber)
+                }
+            }
+            .store(in: cancelBag)
+        
+        output.hideNewsBadge
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.rootView.segmentedControl.hideBadge(at: Constants.newsIndexNumber)
+            }
+            .store(in: cancelBag)
+        
+        output.hideNoticeBadge
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.rootView.segmentedControl.hideBadge(at: Constants.noticeIndexNumber)
+            }
+            .store(in: cancelBag)
+    }
+}
+
+private extension InfoPageViewController {
+    
+    // MARK: - Constants
+    
+    enum Constants {
+        static let newsIndexNumber = 2
+        static let noticeIndexNumber = 3
     }
 }
