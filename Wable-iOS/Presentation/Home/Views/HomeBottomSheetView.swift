@@ -15,6 +15,7 @@ final class HomeBottomSheetView: UIView {
     
     var initialPosition: CGPoint = CGPoint(x: 0, y: 0)
     var isUser: Bool = true
+    var cancelBag: CancelBag?
     
     // MARK: - UI Components
     

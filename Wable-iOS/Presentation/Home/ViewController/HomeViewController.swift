@@ -577,7 +577,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension HomeViewController: WablePopupDelegate {
     
-    func cancleButtonTapped() {
+    func cancelButtonTapped() {
         if nowShowingPopup == "ghost" {
             AmplitudeManager.shared.trackEvent(tag: "click_withdrawghost_popup")
             self.ghostPopupView?.removeFromSuperview()

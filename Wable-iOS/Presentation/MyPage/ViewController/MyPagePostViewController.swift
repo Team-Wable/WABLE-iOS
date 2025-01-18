@@ -435,7 +435,7 @@ extension MyPagePostViewController: UIScrollViewDelegate {
 
 extension MyPagePostViewController: WablePopupDelegate {
     
-    func cancleButtonTapped() {
+    func cancelButtonTapped() {
 //        if ghostPopupView != nil {
 //            self.ghostPopupView?.removeFromSuperview()
 //        }
