@@ -203,6 +203,17 @@ enum StringLiterals {
                         return "v3/content/\(contentID)/comment"
                     }
             static let postBan = "v1/report/ban"
+            static func postFeedLike(contentID: Int) -> String {
+                return "v1/content/\(contentID)/liked"
+            }
+            static func deleteFeedLike(contentID: Int) -> String {
+                return "v1/content/\(contentID)/unliked"
+            }
+            static func deleteFeed(contentID: Int) -> String {
+                return "v1/content/\(contentID)"
+            }
+            static let postOpacityDown = "v1/ghost2"
+            static let postReport = "v1/report/slack"
         }
         
         enum Info {
