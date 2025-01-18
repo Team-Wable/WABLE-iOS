@@ -194,7 +194,7 @@ extension LoginViewController {
 }
 
 extension LoginViewController: WablePopupDelegate {
-    func cancleButtonTapped() {
+    func cancelButtonTapped() {
         
     }
     

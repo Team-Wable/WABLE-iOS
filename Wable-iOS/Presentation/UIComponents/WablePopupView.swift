@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 protocol WablePopupDelegate: AnyObject {
-    func cancleButtonTapped()
+    func cancelButtonTapped()
     func confirmButtonTapped()
     func singleButtonTapped()
 }
@@ -20,6 +20,8 @@ final class WablePopupView: UIView {
     // MARK: - Properties
     
     weak var delegate: WablePopupDelegate?
+    private var cancelBag = CancelBag()
+    var popupType: PopupViewType
     
     // MARK: - UI Components
     
@@ -85,6 +87,8 @@ final class WablePopupView: UIView {
     // MARK: - Life Cycles
     
     init(popupTitle: String, popupContent: String, leftButtonTitle: String, rightButtonTitle: String) {
+        self.popupType = .ban
+
         super.init(frame: .zero)
         
         popupTitleLabel.setTextWithLineHeight(text: popupTitle, lineHeight: 28.8.adjusted, alignment: .center)
@@ -99,6 +103,8 @@ final class WablePopupView: UIView {
     }
     
     init(popupTitle: String, popupContent: String, singleButtonTitle: String) {
+        self.popupType = .ban
+
         super.init(frame: .zero)
         
         popupTitleLabel.setTextWithLineHeight(text: popupTitle, lineHeight: 28.8.adjusted, alignment: .center)
@@ -111,6 +117,17 @@ final class WablePopupView: UIView {
         setSingleAddTarget()
     }
     
+    init(popupType: PopupViewType) {
+        self.popupType = popupType
+        
+        super.init(frame: .zero)
+        configurePopup(type: popupType)
+        setUI()
+        setHierarchy()
+        setLayout()
+        setAddTarget()
+    }
+    
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -119,7 +136,7 @@ final class WablePopupView: UIView {
 
 // MARK: - Extensions
 
-extension WablePopupView {
+private extension WablePopupView {
     func setUI() {
         self.backgroundColor = .wableBlack.withAlphaComponent(0.5)
     }
@@ -127,7 +144,6 @@ extension WablePopupView {
     func setHierarchy() {
         self.addSubview(container)
         
-        // 팝업뷰 내용이 없는 경우
         if popupContentLabel.text == "" {
             container.addSubviews(popupTitleLabel, buttonStackView)
         } else {
@@ -149,7 +165,6 @@ extension WablePopupView {
             $0.height.equalTo(48.adjusted)
         }
         
-        // 팝업뷰 내용이 없는 경우
         if popupContentLabel.text == "" {
             popupTitleLabel.snp.makeConstraints {
                 $0.top.equalToSuperview().inset(32.adjusted)
@@ -177,14 +192,24 @@ extension WablePopupView {
     }
     
     func setAddTarget() {
-        self.cancleButton.addTarget(self, action: #selector(cancleButtonTapped), for: .touchUpInside)
+        self.cancleButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         self.confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
+    }
+    
+    func configurePopup(type: PopupViewType) {
+        popupTitleLabel.setTextWithLineHeight(
+            text: type.title,
+            lineHeight: 28.8.adjusted,
+            alignment: .center
+        )
+        popupContentLabel.text = type.content
+        cancleButton.setTitle(type.leftButtonTitle, for: .normal)
+        confirmButton.setTitle(type.rightButtonTitle, for: .normal)
     }
     
     func setSingleHierarchy() {
         self.addSubview(container)
         
-        // 팝업뷰 내용이 없는 경우
         if popupContentLabel.text == "" {
             container.addSubviews(popupTitleLabel, buttonStackView)
         } else {
@@ -237,8 +262,8 @@ extension WablePopupView {
     }
     
     @objc
-    func cancleButtonTapped() {
-        delegate?.cancleButtonTapped()
+    func cancelButtonTapped() {
+        delegate?.cancelButtonTapped()
     }
     
     @objc

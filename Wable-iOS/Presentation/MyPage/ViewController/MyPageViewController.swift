@@ -667,7 +667,7 @@ extension MyPageViewController: UICollectionViewDelegate, UITableViewDelegate {
 }
 
 extension MyPageViewController: WablePopupDelegate {
-    func cancleButtonTapped() {
+    func cancelButtonTapped() {
         if ghostPopupView != nil {
             self.ghostPopupView?.removeFromSuperview()
         }

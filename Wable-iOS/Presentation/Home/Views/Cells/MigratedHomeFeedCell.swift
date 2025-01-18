@@ -1,30 +1,35 @@
 //
-//  HomeFeedTableViewCell.swift
+//  MigratedHomeFeedCell.swift
 //  Wable-iOS
 //
-//  Created by 박윤빈 on 8/17/24.
+//  Created by 박윤빈 on 12/24/24.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
+import CombineCocoa
 
-final class HomeFeedTableViewCell: UITableViewCell{
+final class MigratedHomeFeedCell: UICollectionViewCell{
     
     // MARK: - Properties
     
-    static let identifier = "HomeFeedTableViewCell"
-    var menuButtonTapped: (() -> Void)?
-    var profileButtonAction: (() -> Void) = {}
-    var contentImageViewTapped: (() -> Void)?
-    var isMyContent: Bool = Bool()
+    var cancelBag = CancelBag()
     
-    var alarmTriggerType: String = ""
-    var targetMemberId: Int = 0
-    var alarmTriggerdId: Int = 0
+    var onMenuButtonTap: (() -> Void)?
+    var onProfileImageTap: (() -> Void)?
+    var onFeedImageTap: (() -> Void)?
+    var onHeartButtonTap: (() -> Void)?
+    var onCommentButtonTap: (() -> Void)?
+    var onGhostButtonTap: (() -> Void)?
     
     // MARK: - Components
     
+    let infoView = FeedInfoView()
+    let feedContentView = FeedContentView()
+    let bottomView = FeedBottomView()
+    let divideLine = UIView().makeDivisionLine()
     let grayView: UIView = {
         let view = UIView()
         view.backgroundColor = .wableWhite
@@ -33,44 +38,34 @@ final class HomeFeedTableViewCell: UITableViewCell{
         return view
     }()
     
-    var infoView = FeedInfoView()
-    var feedContentView = FeedContentView()
-    var bottomView = FeedBottomView()
-    var divideLine = UIView().makeDivisionLine()
-    
-    var profileImageView: UIImageView = {
+    let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = ImageLiterals.Image.imgProfileSmall
         imageView.isUserInteractionEnabled = true
         return imageView
     }()
     
-    private var menuButton: UIButton = {
-        let button = UIButton()
-        button.setImage(ImageLiterals.Icon.icMeatball, for: .normal)
-        return button
-    }()
-    
-    var seperateLineView: UIView = {
+    let seperateLineView: UIView = {
        let view = UIView()
         view.backgroundColor = .gray200
         view.isHidden = true
         return view
     }()
     
+    private let menuButton: UIButton = {
+        let button = UIButton()
+        button.setImage(ImageLiterals.Icon.icMeatball, for: .normal)
+        return button
+    }()
+    
     // MARK: - inits
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        self.backgroundColor = .wableWhite
-        setHierarchy()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    
+        setupView()
         setLayout()
-        setAddTarget()
-        
-        self.profileImageView.contentMode = .scaleAspectFill
-        self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.width / 2
-        self.profileImageView.clipsToBounds = true
+        setEventPublisher()
     }
 
     required init?(coder: NSCoder) {
@@ -98,20 +93,27 @@ final class HomeFeedTableViewCell: UITableViewCell{
         self.feedContentView.titleLabel.textColor = .wableBlack
         self.feedContentView.contentLabel.attributedText = nil
         self.feedContentView.contentLabel.textColor = .gray800
-
+        self.grayView.alpha = 0
     }
     
     // MARK: - Functions
 
-    private func setHierarchy() {
-        self.contentView.addSubviews(grayView,
-                                     profileImageView,
-                                     menuButton,
-                                     infoView,
-                                     feedContentView,
-                                     bottomView,
-                                     divideLine,
-                                     seperateLineView)
+    private func setupView() {
+        self.backgroundColor = .wableWhite
+        self.contentView.addSubviews(
+            profileImageView,
+            menuButton,
+            infoView,
+            feedContentView,
+            bottomView,
+            divideLine,
+            seperateLineView,
+            grayView
+        )
+        
+        self.profileImageView.contentMode = .scaleAspectFill
+        self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.width / 2
+        self.profileImageView.clipsToBounds = true
     }
     
     private func setLayout() {
@@ -162,48 +164,29 @@ final class HomeFeedTableViewCell: UITableViewCell{
         }
     }
     
-    private func setAddTarget() {
-        self.menuButton.addTarget(self, action: #selector(menuButtonDidTapped), for: .touchUpInside)
-        self.profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileButtonTapped)))
-        self.feedContentView.photoImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(contentImageViewDidTapped)))
-    }
-    
-    @objc
-    private func menuButtonDidTapped() {
-        menuButtonTapped?()
-    }
-    
-    @objc
-    private func profileButtonTapped() {
-        profileButtonAction()
-    }
-    
-    @objc
-    private func contentImageViewDidTapped() {
-        contentImageViewTapped?()
-    }
-    
     func bind(data: HomeFeedDTO) {
-        if data.memberProfileURL == "" {
-            profileImageView.image = ImageLiterals.Image.imgProfile3
-        } else {
-            profileImageView.load(url: data.memberProfileURL)
-
-        }
+        data.memberProfileURL.isEmpty ?
+        (profileImageView.image = ImageLiterals.Image.imgProfile3) :
+        profileImageView.load(url: data.memberProfileURL)
         
-        infoView.bind(nickname: data.memberNickname,
-                      team: Team(rawValue: data.memberFanTeam) ?? .TBD,
-                      ghostPercent: data.memberGhost,
-                      time: data.time)
+        infoView.bind(
+            nickname: data.memberNickname,
+            team: Team(rawValue: data.memberFanTeam) ?? .TBD,
+            ghostPercent: data.memberGhost,
+            time: data.time
+        )
         
-        feedContentView.bind(title: data.contentTitle ?? "",
-                             content: data.contentText ?? "",
-                             image: data.contentImageURL,
-                             isBlind: data.isBlind)
+        feedContentView.bind(
+            title: data.contentTitle ?? "",
+            content: data.contentText ?? "",
+            image: data.contentImageURL,
+            isBlind: data.isBlind
+        )
         
-        bottomView.bind(heart: data.likedNumber,
-                        comment: data.commentNumber ?? Int(),
-                        memberID: data.memberID
+        bottomView.bind(
+            heart: data.likedNumber,
+            comment: data.commentNumber ?? Int(),
+            memberID: data.memberID
         )
         
         bottomView.isLiked = data.isLiked
@@ -215,5 +198,55 @@ final class HomeFeedTableViewCell: UITableViewCell{
             bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDefaultLarge, for: .normal)
             bottomView.ghostButton.isEnabled = true
         }
+        
+        let memberGhost = adjustGhostValue(data.memberGhost)
+        
+        grayView.alpha = data.isGhost ? 0.85 : CGFloat(Double(-memberGhost) / 100)
+
+    }
+    
+    func changeButtonState(isLiked: Bool) {
+        bottomView.isLiked = isLiked
+    }
+    
+    private func setEventPublisher() {
+        let profileImageTapGesture = UITapGestureRecognizer()
+        let feedImageTapGesture = UITapGestureRecognizer()
+        
+        menuButton.tapPublisher
+            .sink { [weak self] in
+                self?.onMenuButtonTap?()
+            }
+            .store(in: cancelBag)
+        
+        profileImageView.gesturePublisher(profileImageTapGesture)
+            .sink { [weak self] _ in
+                self?.onProfileImageTap?()
+            }
+            .store(in: cancelBag)
+
+        feedContentView.photoImageView.gesturePublisher(feedImageTapGesture)
+            .sink { [weak self] _ in
+                self?.onFeedImageTap?()
+            }
+            .store(in: cancelBag)
+        
+        bottomView.heartButton.tapPublisher
+            .sink { [weak self] in
+                self?.onHeartButtonTap?()
+            }
+            .store(in: cancelBag)
+        
+        bottomView.commentButton.tapPublisher
+            .sink { [weak self] in
+                self?.onCommentButtonTap?()
+            }
+            .store(in: cancelBag)
+        
+        bottomView.ghostButton.tapPublisher
+            .sink { [weak self] in
+                self?.onGhostButtonTap?()
+            }
+            .store(in: cancelBag)
     }
 }

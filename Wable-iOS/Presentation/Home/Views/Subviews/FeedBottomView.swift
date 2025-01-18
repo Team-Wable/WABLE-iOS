@@ -119,8 +119,10 @@ extension FeedBottomView {
         commentButtonTapped?()
     }
     
-    func bind(heart: Int, comment: Int) {
+    func bind(heart: Int, comment: Int, memberID: Int) {
         heartButton.setTitleWithConfiguration("\(heart)", font: .caption1, textColor: .wableBlack)
         commentButton.setTitleWithConfiguration("\(comment)", font: .caption1, textColor: .wableBlack)
+        let isMine = memberID == loadUserData()?.memberId
+        ghostButton.isHidden = isMine
     }
 }
