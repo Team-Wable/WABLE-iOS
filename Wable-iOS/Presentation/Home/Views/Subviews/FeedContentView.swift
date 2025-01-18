@@ -229,7 +229,6 @@ extension FeedContentView {
         }
     }
     
-    // 탭 제스처 처리 함수
     @objc func handleTitleLabelTap(_ gesture: UITapGestureRecognizer) {
         guard let attributedText = titleLabel.attributedText else { return }
         
@@ -251,11 +250,13 @@ extension FeedContentView {
             }
         }
         
-        // 하이퍼링크가 아닌 부분을 클릭한 경우에만 `didSelectRowAt` 호출
-        if !isLinkTapped, let tableView = self.superview(of: UITableView.self), let cell = self.superview(of: UITableViewCell.self), let indexPath = tableView.indexPath(for: cell) {
-            tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
+        if !isLinkTapped,
+           let collectionView = self.superview(of: UICollectionView.self),
+           let cell = self.superview(of: UICollectionViewCell.self),
+           let indexPath = collectionView.indexPath(for: cell) {
+            
+            collectionView.delegate?.collectionView?(collectionView, didSelectItemAt: indexPath)
         }
-
     }
     
     @objc func handleContentLabelTap(_ gesture: UITapGestureRecognizer) {
@@ -279,9 +280,12 @@ extension FeedContentView {
             }
         }
         
-        // 하이퍼링크가 아닌 부분을 클릭한 경우에만 `didSelectRowAt` 호출
-        if !isLinkTapped, let tableView = self.superview(of: UITableView.self), let cell = self.superview(of: UITableViewCell.self), let indexPath = tableView.indexPath(for: cell) {
-            tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
+        if !isLinkTapped,
+           let collectionView = self.superview(of: UICollectionView.self),
+           let cell = self.superview(of: UICollectionViewCell.self),
+           let indexPath = collectionView.indexPath(for: cell) {
+            
+            collectionView.delegate?.collectionView?(collectionView, didSelectItemAt: indexPath)
         }
     }
 }

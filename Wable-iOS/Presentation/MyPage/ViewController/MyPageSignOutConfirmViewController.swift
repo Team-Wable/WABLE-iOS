@@ -202,7 +202,7 @@ extension MyPageSignOutConfirmViewController {
 }
 
 extension MyPageSignOutConfirmViewController: WablePopupDelegate {
-    func cancleButtonTapped() {
+    func cancelButtonTapped() {
         self.signOutPopupView.isHidden = true
     }
     

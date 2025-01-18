@@ -8,7 +8,6 @@
 import Foundation
 
 struct HomeFeedDTO: Codable {
-    // 공통 속성
     let memberID: Int
     let memberProfileURL, memberNickname: String
     let isGhost: Bool
@@ -17,8 +16,6 @@ struct HomeFeedDTO: Codable {
     let time: String
     let likedNumber: Int
     let memberFanTeam: String
-    
-    // 선택적 속성
     let contentID: Int?
     let contentTitle: String?
     let contentText: String?
@@ -37,5 +34,11 @@ struct HomeFeedDTO: Codable {
         case commnetNumber
         case contentImageURL = "contentImageUrl"
         case isBlind
+    }
+}
+
+extension HomeFeedDTO: Hashable {
+    static func == (lhs: HomeFeedDTO, rhs: HomeFeedDTO) -> Bool {
+        lhs.contentID == rhs.contentID
     }
 }
