@@ -23,7 +23,6 @@ final class NotificationPageViewController: UIViewController {
         navigationOrientation: .horizontal
     )
     private let currentIndexSubject = CurrentValueSubject<Int, Never>(0)
-    private let viewDidLoadSubject = PassthroughSubject<Void, Never>()
     private let cancelBag = CancelBag()
     private let rootView = NotificationPageView()
     
@@ -52,8 +51,6 @@ final class NotificationPageViewController: UIViewController {
         setupPageViewController()
         setupNavigationBar()
         setupAction()
-        
-        viewDidLoadSubject.send(())
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -214,7 +211,6 @@ private extension NotificationPageViewController {
     
     func setupBinding() {
         let input = NotificationPageViewModel.Input(
-            viewDidLoad: viewDidLoadSubject.eraseToAnyPublisher(),
             currentIndex: currentIndexSubject.eraseToAnyPublisher()
         )
         

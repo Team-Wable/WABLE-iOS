@@ -8,13 +8,8 @@
 import Foundation
 import Combine
 
-final class NotificationPageViewModel {
-    
-}
-
-extension NotificationPageViewModel: ViewModelType {
+final class NotificationPageViewModel: ViewModelType {
     struct Input {
-        let viewDidLoad: AnyPublisher<Void, Never>
         let currentIndex: AnyPublisher<Int, Never>
     }
     
