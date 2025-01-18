@@ -381,13 +381,8 @@ extension MigratedHomeViewController {
     }
     
     func pushToDetailView(feed: HomeFeedDTO) {
-        let detailViewController = FeedDetailViewController(
-            viewModel: FeedDetailViewModel(networkProvider: NetworkService()),
-            likeViewModel: LikeViewModel(networkProvider: NetworkService())
-        )
+        let detailViewController = MigratedDetailViewController(viewModel: MigratedDetailViewModel(contentID: feed.contentID ?? -1))
         detailViewController.hidesBottomBarWhenPushed = true
-        detailViewController.getFeedData(data: feed)
-        detailViewController.memberId = feed.memberID
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
     

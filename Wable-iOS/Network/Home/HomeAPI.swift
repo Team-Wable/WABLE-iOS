@@ -113,4 +113,24 @@ extension HomeAPI {
             .unknownError($0.localizedDescription)}
         .eraseToAnyPublisher()
     }
+    
+    func getReply(cursor: Int, contentID: Int) -> AnyPublisher<[FeedReplyListDTO]?, WableNetworkError> {
+        homeProvider.requestPublisher(.getReply(cursor: cursor, contentID: contentID))
+            .tryMap { [weak self] response -> [FeedReplyListDTO]? in
+                return try self?.parseResponse(statusCode: response.statusCode, data: response.data)
+            }
+            .mapError { $0 as? WableNetworkError ?? .unknownError($0.localizedDescription) }
+            .eraseToAnyPublisher()
+    }
+    
+    func getSpecificFeed(contentID: Int) -> AnyPublisher<HomeFeedDTO?, WableNetworkError> {
+        homeProvider.requestPublisher(.getSpecificFeed(contentID: contentID))
+            .tryMap { [weak self] response -> HomeFeedDTO? in
+                return try self?.parseResponse(statusCode: response.statusCode, data: response.data)
+            }
+            .mapError { $0 as? WableNetworkError ??
+                    .unknownError($0.localizedDescription)
+            }
+            .eraseToAnyPublisher()
+    }
 }
