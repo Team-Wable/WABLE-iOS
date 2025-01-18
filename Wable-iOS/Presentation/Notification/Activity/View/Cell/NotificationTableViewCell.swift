@@ -67,6 +67,7 @@ final class NotificationTableViewCell: UITableViewCell {
         super.prepareForReuse()
         
         notiImageView.image = nil
+        notiImageView.isUserInteractionEnabled = false
     }
 }
 
@@ -113,10 +114,6 @@ private extension NotificationTableViewCell {
     func setupAction() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewDidTap))
         notiImageView.addGestureRecognizer(tapGesture)
-        
-        // TODO: 프로필 이미지 터치 해결 후 주석 제거하기
-        
-//        notiImageView.isUserInteractionEnabled = true
     }
     
     func setProfileImage(for urlString: String) {
@@ -137,10 +134,7 @@ private extension NotificationTableViewCell {
     }
     
     func setContentLabel(for data: ActivityNotificationDTO) {
-        let baseText = NotiActivityText(rawValue: data.notificationTriggerType)?.text(
-            trigger: data.triggerMemberNickname,
-            user: data.memberNickname
-        ) ?? ""
+        let baseText = configureNotiActivityText(from: data)
         
         guard !data.notificationText.isEmpty else {
             contentLabel.text = baseText
@@ -149,6 +143,20 @@ private extension NotificationTableViewCell {
         
         let truncatedText = data.notificationText.truncated(to: 15)
         contentLabel.text = "\(baseText)\n : \(truncatedText)"
+    }
+    
+    func configureNotiActivityText(from data: ActivityNotificationDTO) -> String {
+        let noneInteractionItems: Set<NotiActivityText> = [.popularContent, .popularWriter]
+        
+        guard let item = NotiActivityText(rawValue: data.notificationTriggerType) else {
+            return ""
+        }
+        
+        if !noneInteractionItems.contains(item) {
+            notiImageView.isUserInteractionEnabled = true
+        }
+        
+        return item.text(trigger: data.triggerMemberNickname, user: data.memberNickname)
     }
     
     @objc

@@ -45,7 +45,7 @@ enum WableTabBarItem: CaseIterable {
         switch self {
         case .home: return HomeViewController(viewModel: HomeViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
         case .info: return InfoPageViewController(infoPageViewModel: InfoPageViewModel())
-        case .noti: return NotificationViewController()
+        case .noti: return NotificationPageViewController(viewModel: NotificationPageViewModel())
         case .my: return MyPageViewController(viewModel: MyPageViewModel(networkProvider: NetworkService()), likeViewModel: LikeViewModel(networkProvider: NetworkService()))
         }
     }
