@@ -214,6 +214,12 @@ enum StringLiterals {
             }
             static let postOpacityDown = "v1/ghost2"
             static let postReport = "v1/report/slack"
+            static func getReply(contentID: Int) -> String {
+                return "v3/content/\(contentID)/comments"
+            }
+            static func getSpecificFeed(contentID: Int) -> String {
+                return "v3/content/\(contentID)"
+            }
         }
         
         enum Info {
