@@ -23,6 +23,7 @@ final class NoticeCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .caption4
         label.textColor = .gray500
+        label.textAlignment = .right
         return label
     }()
     
@@ -71,12 +72,16 @@ private extension NoticeCell {
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(12)
             make.leading.equalToSuperview().offset(20)
+            make.trailing.equalTo(timeLabel.snp.leading).offset(-4)
         }
+        
+        titleLabel.setContentHuggingPriority(.defaultLow, for: .vertical)
         
         timeLabel.snp.makeConstraints { make in
             make.centerY.equalTo(titleLabel)
             make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(10)
             make.trailing.equalToSuperview().offset(-20)
+            make.width.equalTo(52.adjusted)
         }
         
         bodyLabel.snp.makeConstraints { make in

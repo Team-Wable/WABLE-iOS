@@ -123,15 +123,18 @@ extension NotificationActivityViewModel: ViewModelType {
             .subscribe(activityNotificationsSubject)
             .store(in: cancelBag)
         
-        let moveToMyProfileView = input.cellImageViewDidTap
+        let cellImageViewDidTap = input.cellImageViewDidTap
+            .share()
+        
+        let moveToMyProfileView = cellImageViewDidTap
             .map { activityNotificationsSubject.value[$0] }
-            .filter { $0.triggerMemberID == loadUserData()?.memberId }
+            .filter { $0.triggerMemberID == loadUserData()?.memberId || $0.triggerMemberID == -1 }
             .map { _ in }
             .eraseToAnyPublisher()
         
-        let pushToOtherProfileView = input.cellImageViewDidTap
+        let pushToOtherProfileView = cellImageViewDidTap
             .map { activityNotificationsSubject.value[$0] }
-            .filter { $0.triggerMemberID != loadUserData()?.memberId }
+            .filter { $0.triggerMemberID != loadUserData()?.memberId && $0.triggerMemberID != -1}
             .map { $0.triggerMemberID }
             .eraseToAnyPublisher()
         
