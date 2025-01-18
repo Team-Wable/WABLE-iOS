@@ -89,6 +89,7 @@ private extension NotificationPageView {
         bottomDivisionLine.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(safeArea)
+            make.height.equalTo(1)
         }
     }
 }
