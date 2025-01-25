@@ -39,6 +39,22 @@ struct HomeFeedDTO: Codable {
 
 extension HomeFeedDTO: Hashable {
     static func == (lhs: HomeFeedDTO, rhs: HomeFeedDTO) -> Bool {
-        lhs.contentID == rhs.contentID
+        return lhs.memberID == rhs.memberID &&
+               lhs.memberProfileURL == rhs.memberProfileURL &&
+               lhs.memberNickname == rhs.memberNickname &&
+               lhs.isGhost == rhs.isGhost &&
+               lhs.memberGhost == rhs.memberGhost &&
+               lhs.isLiked == rhs.isLiked &&
+               lhs.time == rhs.time &&
+               lhs.likedNumber == rhs.likedNumber &&
+               lhs.memberFanTeam == rhs.memberFanTeam &&
+               lhs.contentID == rhs.contentID &&
+               lhs.contentTitle == rhs.contentTitle &&
+               lhs.contentText == rhs.contentText &&
+               lhs.commentNumber == rhs.commentNumber &&
+               lhs.isDeleted == rhs.isDeleted &&
+               lhs.commnetNumber == rhs.commnetNumber &&
+               lhs.contentImageURL == rhs.contentImageURL &&
+               lhs.isBlind == rhs.isBlind
     }
 }

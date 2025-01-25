@@ -220,6 +220,18 @@ enum StringLiterals {
             static func getSpecificFeed(contentID: Int) -> String {
                 return "v3/content/\(contentID)"
             }
+            
+            static func deleteReply(commentID: Int) -> String {
+                return "v1/comment/\(commentID)"
+            }
+            
+            static func postReplyLike(commentID: Int) -> String {
+                return "v1/comment/\(commentID)/liked"
+            }
+            
+            static func deleteReplyLike(commentID: Int) -> String {
+                return "v1/comment/\(commentID)/unliked"
+            }
         }
         
         enum Info {
