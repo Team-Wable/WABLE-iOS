@@ -9,9 +9,12 @@ import Foundation
 import Combine
 
 final class PopupViewModel {
+    
+    let data: PopupModel
+    
     private let service: HomeAPI
-    let data: HomeFeedDTO
-    init(service: HomeAPI = HomeAPI.shared, data: HomeFeedDTO) {
+
+    init(service: HomeAPI = HomeAPI.shared, data: PopupModel) {
         self.service = service
         self.data = data
     }
@@ -26,26 +29,35 @@ extension PopupViewModel: ViewModelType {
     }
     
     struct Output {
-        let dismissView: AnyPublisher<(HomeFeedDTO, PopupViewType), Never>
+        let dismissView: AnyPublisher<PopupViewType, Never>
     }
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
-        let dismissViewSubject = PassthroughSubject<(HomeFeedDTO, PopupViewType), Never>()
+        let dismissViewSubject = PassthroughSubject<PopupViewType, Never>()
         input.deleteButtonDidTap
             .flatMap { [weak self] _ -> AnyPublisher<EmptyDTO?, Never> in
                 guard let self else {
                     return Just(EmptyDTO()).eraseToAnyPublisher()
                 }
                 
-                return service.deleteFeed(contentID: data.contentID ?? -1)
-                    .mapWableNetworkError()
-                    .replaceError(with: nil)
-                    .compactMap { $0 }
-                    .eraseToAnyPublisher()
+                switch data.contentType {
+                case .comment:
+                    return service.deleteReply(commentID: data.triggerID)
+                        .mapWableNetworkError()
+                        .replaceError(with: nil)
+                        .compactMap { $0 }
+                        .eraseToAnyPublisher()
+                case .content:
+                    return service.deleteFeed(contentID: data.triggerID)
+                        .mapWableNetworkError()
+                        .replaceError(with: nil)
+                        .compactMap { $0 }
+                        .eraseToAnyPublisher()
+                }
             }
             .sink { _ in
                 let popupViewType = PopupViewType.delete
-                dismissViewSubject.send((self.data, popupViewType))
+                dismissViewSubject.send(popupViewType)
             }
             .store(in: cancelBag)
         
@@ -55,10 +67,10 @@ extension PopupViewModel: ViewModelType {
                     return Just(EmptyDTO()).eraseToAnyPublisher()
                 }
                 let memberID = data.memberID
-                let triggerID = data.contentID ?? -1
+                let triggerID = data.triggerID
                 return service.postBan(
                     memberID: memberID,
-                    triggerType: "content",
+                    triggerType: data.contentType.rawValue,
                     triggerID: triggerID
                 )
                 .mapWableNetworkError()
@@ -68,7 +80,7 @@ extension PopupViewModel: ViewModelType {
             }
             .sink { _ in
                 let popupViewType = PopupViewType.ban
-                dismissViewSubject.send((self.data, popupViewType))
+                dismissViewSubject.send(popupViewType)
             }
             .store(in: cancelBag)
         
@@ -77,9 +89,12 @@ extension PopupViewModel: ViewModelType {
                 guard let self else {
                     return Just(EmptyDTO()).eraseToAnyPublisher()
                 }
-                let nickname = data.memberNickname
-                let titleText = data.contentTitle ?? ""
-                return service.postReport(nickname: nickname, relateText: titleText)
+                let nickname = data.nickname
+                let titleText = data.relatedText
+                return service.postReport(
+                    nickname: nickname,
+                    relateText: titleText
+                )
                 .mapWableNetworkError()
                 .replaceError(with: nil)
                 .compactMap { $0 }
@@ -87,7 +102,7 @@ extension PopupViewModel: ViewModelType {
             }
             .sink { _ in
                 let popupViewType = PopupViewType.report
-                dismissViewSubject.send((self.data, popupViewType))
+                dismissViewSubject.send(popupViewType)
             }
             .store(in: cancelBag)
         
@@ -97,20 +112,34 @@ extension PopupViewModel: ViewModelType {
                     return Just(EmptyDTO()).eraseToAnyPublisher()
                 }
                 let memberID = data.memberID
-                let triggerID = data.contentID ?? -1
-                return service.postBeGhost(
-                    triggerType: "contentGhost",
-                    memberID: memberID,
-                    triggerID: triggerID
-                )
-                .mapWableNetworkError()
-                .replaceError(with: nil)
-                .compactMap { $0 }
-                .eraseToAnyPublisher()
+                let triggerID = data.triggerID
+                
+                switch data.contentType {
+                case .comment:
+                    return service.postBeGhost(
+                        triggerType: "commentGhost",
+                        memberID: memberID,
+                        triggerID: triggerID
+                    )
+                    .mapWableNetworkError()
+                    .replaceError(with: nil)
+                    .compactMap { $0 }
+                    .eraseToAnyPublisher()
+                case .content:
+                    return service.postBeGhost(
+                        triggerType: "contentGhost",
+                        memberID: memberID,
+                        triggerID: triggerID
+                    )
+                    .mapWableNetworkError()
+                    .replaceError(with: nil)
+                    .compactMap { $0 }
+                    .eraseToAnyPublisher()
+                }
             }
             .sink { _ in
                 let popupViewType = PopupViewType.ghost
-                dismissViewSubject.send((self.data, popupViewType))
+                dismissViewSubject.send(popupViewType)
             }
             .store(in: cancelBag)
         
