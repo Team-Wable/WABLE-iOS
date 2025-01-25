@@ -98,6 +98,7 @@
 		0589AED32D393C97004F531E /* MigratedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0589AED22D393C96004F531E /* MigratedDetailView.swift */; };
 		0589AED52D393D3A004F531E /* MigratedDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0589AED42D393D3A004F531E /* MigratedDetailCell.swift */; };
 		0589AED72D393F7D004F531E /* MigratedDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0589AED62D393F7D004F531E /* MigratedDetailViewModel.swift */; };
+		0589AED92D3BDD3E004F531E /* PopupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0589AED82D3BDD3E004F531E /* PopupModel.swift */; };
 		0593F6D62C96D6C100FFAD82 /* WablePhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */; };
 		0593F6DB2C96E75600FFAD82 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0593F6DA2C96E75600FFAD82 /* FirebaseAnalytics */; };
 		0593F6DD2C96E75600FFAD82 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 0593F6DC2C96E75600FFAD82 /* FirebaseMessaging */; };
@@ -325,6 +326,7 @@
 		0589AED22D393C96004F531E /* MigratedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedDetailView.swift; sourceTree = "<group>"; };
 		0589AED42D393D3A004F531E /* MigratedDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedDetailCell.swift; sourceTree = "<group>"; };
 		0589AED62D393F7D004F531E /* MigratedDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedDetailViewModel.swift; sourceTree = "<group>"; };
+		0589AED82D3BDD3E004F531E /* PopupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupModel.swift; sourceTree = "<group>"; };
 		0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePhotoDetailView.swift; sourceTree = "<group>"; };
 		0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePushAlarmHelper.swift; sourceTree = "<group>"; };
 		05AD1EB42CE4C1D900F36D6B /* Dev.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
@@ -938,6 +940,7 @@
 			children = (
 				0573B8C32CEC63EC00B5A434 /* FlattenReplyModel.swift */,
 				05F1FF412D11C95F00982033 /* BanTargetInfo.swift */,
+				0589AED82D3BDD3E004F531E /* PopupModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1784,6 +1787,7 @@
 				0547F4FA2C64C78C001E3039 /* NotificationViewController.swift in Sources */,
 				3CF344E72C750DBD0038BB53 /* MyPageSignOutReasonViewModel.swift in Sources */,
 				05F1FF502D33DF9600982033 /* HomePopupViewController.swift in Sources */,
+				0589AED92D3BDD3E004F531E /* PopupModel.swift in Sources */,
 				3C8B4E1D2C78E55C00174943 /* TokenReissueResponseDTO.swift in Sources */,
 				3C8B4E372C79118500174943 /* MyPageAccountInfoResponseDTO.swift in Sources */,
 				050E0CCD2C74B95B00326EEA /* Team.swift in Sources */,
