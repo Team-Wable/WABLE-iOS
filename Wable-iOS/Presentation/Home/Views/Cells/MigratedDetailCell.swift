@@ -228,7 +228,7 @@ final class MigratedDetailCell: UICollectionViewCell {
         bottomView.bind(heart: data.commentLikedNumber)
         
         bottomView.isLiked = data.isLiked
-        
+
         if data.isGhost || data.isBlind ?? false {
             bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDisabledSmall, for: .normal)
             bottomView.ghostButton.isEnabled = false
@@ -236,6 +236,9 @@ final class MigratedDetailCell: UICollectionViewCell {
             bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDefaultSmall, for: .normal)
             bottomView.ghostButton.isEnabled = true
         }
+        
+        let isMine = (loadUserData()?.memberId == data.memberID)
+        bottomView.ghostButton.isHidden = isMine
         
         isReplyBlind(isBlind: data.isBlind ?? false)
         guard data.isBlind == false else { return }
