@@ -14,9 +14,9 @@ enum Team: String {
     case DRX = "DRX"
     case DK = "DK"
     case KT = "KT"
-    case FOX = "FOX"
+    case BFX = "BFX"
     case NS = "NS"
-    case KDF = "KDF"
+    case DNF = "DNF"
     case HLE = "HLE"
     case TBD = "TBD"
     
@@ -34,11 +34,11 @@ enum Team: String {
             return ImageLiterals.Tag.tagDk
         case .KT:
             return ImageLiterals.Tag.tagKt
-        case .FOX:
+        case .BFX:
             return ImageLiterals.Tag.tagFox
         case .NS:
             return ImageLiterals.Tag.tagNs
-        case .KDF:
+        case .DNF:
             return ImageLiterals.Tag.tagKdf
         case .HLE:
             return ImageLiterals.Tag.tagHle
@@ -61,12 +61,12 @@ enum Team: String {
             return ImageLiterals.Team.Dk
         case .KT:
             return ImageLiterals.Team.Kt
-        case .FOX:
-            return ImageLiterals.Team.Fox
+        case .BFX:
+            return ImageLiterals.Team.BFX
         case .NS:
             return ImageLiterals.Team.Ns
-        case .KDF:
-            return ImageLiterals.Team.Kdf
+        case .DNF:
+            return ImageLiterals.Team.DNF
         case .HLE:
             return ImageLiterals.Team.Hle
         case .TBD:

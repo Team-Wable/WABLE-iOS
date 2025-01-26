@@ -128,6 +128,8 @@ enum ImageLiterals {
         static var Kt: UIImage { .load(name: "kt") }
         static var Ns: UIImage { .load(name: "ns") }
         static var T1: UIImage { .load(name: "t1") }
+        static var BFX: UIImage { .load(name: "bfx") }
+        static var DNF: UIImage { .load(name: "dnf") }
         static var TBD: UIImage { .load(name: "tbd") }
     }
 }

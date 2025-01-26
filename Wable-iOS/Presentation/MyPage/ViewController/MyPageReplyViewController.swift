@@ -313,7 +313,6 @@ extension MyPageReplyViewController: UITableViewDelegate, UITableViewDataSource 
         
         cell.profileImageView.load(url: "\(commentDatas[indexPath.row].memberProfileUrl)")
         cell.infoView.nicknameLabel.text = commentDatas[indexPath.row].memberNickname
-        cell.infoView.teamImageView.image = Team(rawValue: commentDatas[indexPath.row].memberFanTeam)?.tag
         cell.infoView.ghostPercentLabel.text = "투명도 \(commentDatas[indexPath.row].memberGhost)%"
         cell.infoView.timeLabel.text = "\(commentDatas[indexPath.row].time.formattedTime())"
         

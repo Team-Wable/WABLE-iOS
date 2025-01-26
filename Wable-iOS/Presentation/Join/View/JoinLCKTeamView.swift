@@ -20,9 +20,9 @@ final class JoinLCKTeamView: UIView {
         ("DRX", "drx"),
         ("DK", "dk"),
         ("KT", "kt"),
-        ("FOX","fox"),
+        ("BFX","bfx"),
         ("NS", "ns"),
-        ("KDF","kdf"),
+        ("DNF","dnf"),
         ("HLE","hle"),
     ]
 
