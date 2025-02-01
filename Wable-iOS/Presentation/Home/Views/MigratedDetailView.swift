@@ -26,7 +26,7 @@ final class MigratedDetailView: UIView {
         collectionView.refreshControl = UIRefreshControl()
         return collectionView
     }()
-    var bottomWriteView = FeedBottomWriteView()
+    let bottomWriteView = FeedBottomWriteView()
     
     // MARK: - Life Cycles
     
@@ -49,10 +49,12 @@ final class MigratedDetailView: UIView {
 extension MigratedDetailView {
     private func setUI() {
         self.backgroundColor = .wableWhite
-        bottomWriteView.writeTextView.textContainerInset = UIEdgeInsets(top: 10.adjusted,
-                                                                        left: 10.adjusted,
-                                                                        bottom: 10.adjusted,
-                                                                        right: 10.adjusted)
+        bottomWriteView.writeTextView.textContainerInset = UIEdgeInsets(
+            top: 10.adjusted,
+            left: 10.adjusted,
+            bottom: 10.adjusted,
+            right: 10.adjusted
+        )
     }
     
     private func setHierarchy() {

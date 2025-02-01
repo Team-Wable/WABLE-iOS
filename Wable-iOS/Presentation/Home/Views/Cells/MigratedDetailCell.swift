@@ -14,7 +14,7 @@ final class MigratedDetailCell: UICollectionViewCell {
     // MARK: - Properties
     
     var menuButtonTapped: (() -> Void)?
-    var profileButtonAction: (() -> Void) = {}
+    var profileButtonAction: (() -> Void)?
     
     // MARK: - Components
     
@@ -76,7 +76,7 @@ final class MigratedDetailCell: UICollectionViewCell {
         setLayout()
         setAddTarget()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -93,14 +93,17 @@ final class MigratedDetailCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        profileImageView.image = UIImage()
+        profileImageView.image = nil
         self.contentLabel.attributedText = nil
         self.contentLabel.textColor = .gray800
     }
+    
+}
 
-    // MARK: - Functions
+// MARK: - Private Method
 
-    private func setHierarchy() {
+private extension MigratedDetailCell {
+    func setHierarchy() {
         self.contentView.addSubviews(
             profileImageView,
             menuButton,
@@ -113,7 +116,7 @@ final class MigratedDetailCell: UICollectionViewCell {
         )
     }
     
-    private func setLayout() {
+    func setLayout() {
         grayView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(bottomView.snp.top)
@@ -158,22 +161,23 @@ final class MigratedDetailCell: UICollectionViewCell {
         }
     }
     
-    private func setAddTarget() {
+    func setAddTarget() {
         self.menuButton.addTarget(self, action: #selector(menuButtonDidTapped), for: .touchUpInside)
         self.profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileButtonTapped)))
     }
     
     @objc
-    private func menuButtonDidTapped() {
+    func menuButtonDidTapped() {
         menuButtonTapped?()
     }
     
     @objc
-    private func profileButtonTapped() {
-        profileButtonAction()
+    func profileButtonTapped() {
+        profileButtonAction?()
     }
     
-    @objc func handleContentLabelTap(_ gesture: UITapGestureRecognizer) {
+    @objc
+    func handleContentLabelTap(_ gesture: UITapGestureRecognizer) {
         guard let attributedText = contentLabel.attributedText else { return }
         
         let location = gesture.location(in: contentLabel)
@@ -192,8 +196,7 @@ final class MigratedDetailCell: UICollectionViewCell {
         }
     }
     
-    // URL을 하이퍼링크로 바꾸는 함수
-    private func attributedString(for text: String) -> NSAttributedString {
+    func attributedString(for text: String) -> NSAttributedString {
         guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
             return NSAttributedString(string: text)
         }
@@ -209,60 +212,7 @@ final class MigratedDetailCell: UICollectionViewCell {
         
         return attributedString
     }
-
-    func bind(data: FlattenReplyModel) {
-        profileImageView.load(url: data.memberProfileURL)
-        
-        infoView.bind(nickname: data.memberNickname,
-                      team: Team(rawValue: data.memberFanTeam) ?? .TBD,
-                      ghostPercent: data.memberGhost,
-                      time: data.time)
-        
-        updateLayoutForReplyType(with: data.parentCommentID)
-
-        if let profileImage = UserProfile(rawValue: data.memberProfileURL) {
-            profileImageView.image = profileImage.image
-        } else {
-            profileImageView.kfSetImage(url: data.memberProfileURL)
-        }
-        bottomView.bind(heart: data.commentLikedNumber)
-        
-        bottomView.isLiked = data.isLiked
-
-        if data.isGhost || data.isBlind ?? false {
-            bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDisabledSmall, for: .normal)
-            bottomView.ghostButton.isEnabled = false
-        } else {
-            bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDefaultSmall, for: .normal)
-            bottomView.ghostButton.isEnabled = true
-        }
-        
-        let isMine = (loadUserData()?.memberId == data.memberID)
-        bottomView.ghostButton.isHidden = isMine
-        
-        isReplyBlind(isBlind: data.isBlind ?? false)
-        guard data.isBlind == false else { return }
-        
-        contentLabel.text = data.commentText
-
-        contentLabel.attributedText = attributedString(for: data.commentText)
-        
-        let memberGhost = adjustGhostValue(data.memberGhost)
-        
-        grayView.alpha = data.isGhost ? 0.85 : CGFloat(Double(-memberGhost) / 100)
-        
-        contentLabel.snp.remakeConstraints {
-            $0.top.equalTo(infoView.snp.bottom).offset(12.adjusted)
-            $0.leading.equalToSuperview().inset(52.adjusted)
-            $0.trailing.equalTo(menuButton)
-            $0.bottom.equalTo(bottomView.snp.top).offset(-10.adjusted)
-        }
-
-        let tapContentLabelGesture = UITapGestureRecognizer(target: self, action: #selector(handleContentLabelTap(_:)))
-        contentLabel.isUserInteractionEnabled = true
-        contentLabel.addGestureRecognizer(tapContentLabelGesture)
-        
-    }
+    
     
     func isReplyBlind(isBlind: Bool) {
         contentLabel.isHidden = isBlind
@@ -288,10 +238,6 @@ final class MigratedDetailCell: UICollectionViewCell {
         }
     }
     
-    func hideChildReplyForMyPage() {
-        bottomView.hideReplyButton()
-    }
-    
     func updateLayoutForReplyType(with parentCommentID: Int) {
         if parentCommentID == -1 {
             makeReplyLayout()
@@ -302,7 +248,7 @@ final class MigratedDetailCell: UICollectionViewCell {
         bottomView.setupReplyButtonVisibility(with: parentCommentID)
     }
     
-    private func makeChildReplyLayout() {
+    func makeChildReplyLayout() {
         profileImageView.snp.remakeConstraints {
             $0.height.width.equalTo(30.adjusted)
             $0.leading.equalToSuperview().inset(52.adjusted)
@@ -310,11 +256,73 @@ final class MigratedDetailCell: UICollectionViewCell {
         }
     }
     
-    private func makeReplyLayout() {
+    func makeReplyLayout() {
         profileImageView.snp.remakeConstraints {
             $0.height.width.equalTo(30.adjusted)
             $0.leading.equalToSuperview().inset(16.adjusted)
             $0.centerY.equalTo(infoView)
         }
+    }
+}
+
+// MARK: - internal Method
+
+extension MigratedDetailCell {
+    func bind(data: FlattenReplyModel) {
+        profileImageView.load(url: data.memberProfileURL)
+        
+        infoView.bind(nickname: data.memberNickname,
+                      team: Team(rawValue: data.memberFanTeam) ?? .TBD,
+                      ghostPercent: data.memberGhost,
+                      time: data.time)
+        
+        updateLayoutForReplyType(with: data.parentCommentID)
+        
+        if let profileImage = UserProfile(rawValue: data.memberProfileURL) {
+            profileImageView.image = profileImage.image
+        } else {
+            profileImageView.kfSetImage(url: data.memberProfileURL)
+        }
+        bottomView.bind(heart: data.commentLikedNumber)
+        
+        bottomView.isLiked = data.isLiked
+        
+        if data.isGhost || data.isBlind ?? false {
+            bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDisabledSmall, for: .normal)
+            bottomView.ghostButton.isEnabled = false
+        } else {
+            bottomView.ghostButton.setImage(ImageLiterals.Button.btnGhostDefaultSmall, for: .normal)
+            bottomView.ghostButton.isEnabled = true
+        }
+        
+        let isMine = (loadUserData()?.memberId == data.memberID)
+        bottomView.ghostButton.isHidden = isMine
+        
+        isReplyBlind(isBlind: data.isBlind ?? false)
+        guard data.isBlind == false else { return }
+        
+        contentLabel.text = data.commentText
+        
+        contentLabel.attributedText = attributedString(for: data.commentText)
+        
+        let memberGhost = adjustGhostValue(data.memberGhost)
+        
+        grayView.alpha = data.isGhost ? 0.85 : CGFloat(Double(-memberGhost) / 100)
+        
+        contentLabel.snp.remakeConstraints {
+            $0.top.equalTo(infoView.snp.bottom).offset(12.adjusted)
+            $0.leading.equalToSuperview().inset(52.adjusted)
+            $0.trailing.equalTo(menuButton)
+            $0.bottom.equalTo(bottomView.snp.top).offset(-10.adjusted)
+        }
+        
+        let tapContentLabelGesture = UITapGestureRecognizer(target: self, action: #selector(handleContentLabelTap(_:)))
+        contentLabel.isUserInteractionEnabled = true
+        contentLabel.addGestureRecognizer(tapContentLabelGesture)
+        
+    }
+    
+    func hideChildReplyForMyPage() {
+        bottomView.hideReplyButton()
     }
 }

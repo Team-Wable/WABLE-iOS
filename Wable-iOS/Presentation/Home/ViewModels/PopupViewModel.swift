@@ -114,28 +114,15 @@ extension PopupViewModel: ViewModelType {
                 let memberID = data.memberID
                 let triggerID = data.triggerID
                 
-                switch data.contentType {
-                case .comment:
-                    return service.postBeGhost(
-                        triggerType: "commentGhost",
-                        memberID: memberID,
-                        triggerID: triggerID
-                    )
-                    .mapWableNetworkError()
-                    .replaceError(with: nil)
-                    .compactMap { $0 }
-                    .eraseToAnyPublisher()
-                case .content:
-                    return service.postBeGhost(
-                        triggerType: "contentGhost",
-                        memberID: memberID,
-                        triggerID: triggerID
-                    )
-                    .mapWableNetworkError()
-                    .replaceError(with: nil)
-                    .compactMap { $0 }
-                    .eraseToAnyPublisher()
-                }
+                return service.postBeGhost(
+                    triggerType: data.contentType.rawValue,
+                    memberID: memberID,
+                    triggerID: triggerID
+                )
+                .mapWableNetworkError()
+                .replaceError(with: nil)
+                .compactMap { $0 }
+                .eraseToAnyPublisher()
             }
             .sink { _ in
                 let popupViewType = PopupViewType.ghost
