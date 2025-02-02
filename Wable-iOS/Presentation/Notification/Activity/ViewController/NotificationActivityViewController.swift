@@ -8,10 +8,16 @@
 import UIKit
 import Combine
 
-extension Notification.Name {
-    static let didRequestPushDetailViewController = Notification.Name("didRequestPushDetailViewController")
-    static let didRequestPushWriteFeedViewController = Notification.Name("didRequestPushWriteFeedViewController")
+// MARK: - NotificationActivityViewControllerDelegate
+
+protocol NotificationActivityViewControllerDelegate: AnyObject {
+    func pushWriteFeedViewController()
+    func pushFeedDetailViewController(_ homeFeed: HomeFeedDTO, contentID: Int)
+    func moveMyProfileViewController()
+    func pushOtherProfileViewController(_ userID: Int)
 }
+
+// MARK: - NotificationActivityViewController
 
 final class NotificationActivityViewController: UIViewController {
     
@@ -24,6 +30,8 @@ final class NotificationActivityViewController: UIViewController {
     }
     
     // MARK: - Property
+    
+    weak var delegate: NotificationActivityViewControllerDelegate?
     
     private var dataSource: DataSource?
     
@@ -162,37 +170,29 @@ private extension NotificationActivityViewController {
         
         output.pushToWriteView
             .receive(on: DispatchQueue.main)
-            .sink { _ in
-                NotificationCenter.default.post(name: .didRequestPushWriteFeedViewController, object: nil)
+            .sink { [weak self] _ in
+                self?.delegate?.pushWriteFeedViewController()
             }
             .store(in: cancelBag)
         
         output.homeFeed
             .receive(on: DispatchQueue.main)
-            .sink { (homeFeed, id) in
-                NotificationCenter.default.post(
-                    name: .didRequestPushDetailViewController,
-                    object: nil,
-                    userInfo: ["data": homeFeed, "contentID": id]
-                )
+            .sink { [weak self] homeFeed, id in
+                self?.delegate?.pushFeedDetailViewController(homeFeed, contentID: id)
             }
             .store(in: cancelBag)
         
         output.moveToMyProfileView
             .receive(on: RunLoop.main)
-            .sink { _ in
-
-                // TODO: NotificationViewController의 탭바 컨트롤러의 인덱스를 3으로 조정
-                
+            .sink { [weak self] _ in
+                self?.delegate?.moveMyProfileViewController()
             }
             .store(in: cancelBag)
         
         output.pushToOtherProfileView
             .receive(on: RunLoop.main)
-            .sink { otherUserID in
-
-                // TODO: 프로필 화면으로 이동할 것
-                
+            .sink { [weak self] userID in
+                self?.delegate?.pushOtherProfileViewController(userID)
             }
             .store(in: cancelBag)
     }
