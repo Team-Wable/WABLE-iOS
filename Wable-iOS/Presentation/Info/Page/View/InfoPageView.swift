@@ -1,5 +1,5 @@
 //
-//  InfoView.swift
+//  InfoPageView.swift
 //  Wable-iOS
 //
 //  Created by 변상우 on 8/18/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Lottie
 
-final class InfoView: UIView {
+final class InfoPageView: UIView {
     
     // MARK: - UI Component
 
@@ -64,7 +64,7 @@ final class InfoView: UIView {
 
 // MARK: - Private Method
 
-private extension InfoView {
+private extension InfoPageView {
     func setupView() {
         backgroundColor = .wableWhite
         

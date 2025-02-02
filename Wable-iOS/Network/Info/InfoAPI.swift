@@ -64,4 +64,13 @@ extension InfoAPI {
             .mapError { $0 as? WableNetworkError ?? .unknownError($0.localizedDescription) }
             .eraseToAnyPublisher()
     }
+    
+    func getInfoCount() -> AnyPublisher<InfoCountDTO?, WableNetworkError> {
+        infoProvider.requestPublisher(.getInfoCount)
+            .tryMap { [weak self] response -> InfoCountDTO? in
+                return try self?.parseResponse(statusCode: response.statusCode, data: response.data)
+            }
+            .mapError { $0 as? WableNetworkError ?? .unknownError($0.localizedDescription) }
+            .eraseToAnyPublisher()
+    }
 }
