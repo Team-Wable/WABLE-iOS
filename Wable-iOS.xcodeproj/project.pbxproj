@@ -93,6 +93,11 @@
 		0586D89B2D09A68200436080 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0586D8992D09A68200436080 /* Pretendard-Regular.otf */; };
 		0586D89C2D09A68200436080 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */; };
 		0589AECF2D38311A004F531E /* PopupType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0589AECE2D383119004F531E /* PopupType.swift */; };
+		0589AED12D393C16004F531E /* MigratedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0589AED02D393C16004F531E /* MigratedDetailViewController.swift */; };
+		0589AED32D393C97004F531E /* MigratedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0589AED22D393C96004F531E /* MigratedDetailView.swift */; };
+		0589AED52D393D3A004F531E /* MigratedDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0589AED42D393D3A004F531E /* MigratedDetailCell.swift */; };
+		0589AED72D393F7D004F531E /* MigratedDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0589AED62D393F7D004F531E /* MigratedDetailViewModel.swift */; };
+		0589AED92D3BDD3E004F531E /* PopupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0589AED82D3BDD3E004F531E /* PopupModel.swift */; };
 		0593F6D62C96D6C100FFAD82 /* WablePhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */; };
 		0593F6DB2C96E75600FFAD82 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0593F6DA2C96E75600FFAD82 /* FirebaseAnalytics */; };
 		0593F6DD2C96E75600FFAD82 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 0593F6DC2C96E75600FFAD82 /* FirebaseMessaging */; };
@@ -322,6 +327,11 @@
 		0586D8992D09A68200436080 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		0589AECE2D383119004F531E /* PopupType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupType.swift; sourceTree = "<group>"; };
+		0589AED02D393C16004F531E /* MigratedDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedDetailViewController.swift; sourceTree = "<group>"; };
+		0589AED22D393C96004F531E /* MigratedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedDetailView.swift; sourceTree = "<group>"; };
+		0589AED42D393D3A004F531E /* MigratedDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedDetailCell.swift; sourceTree = "<group>"; };
+		0589AED62D393F7D004F531E /* MigratedDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedDetailViewModel.swift; sourceTree = "<group>"; };
+		0589AED82D3BDD3E004F531E /* PopupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupModel.swift; sourceTree = "<group>"; };
 		0593F6D52C96D6C100FFAD82 /* WablePhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePhotoDetailView.swift; sourceTree = "<group>"; };
 		0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePushAlarmHelper.swift; sourceTree = "<group>"; };
 		05AD1EB42CE4C1D900F36D6B /* Dev.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
@@ -516,6 +526,7 @@
 				050E0CB62C74B87400326EEA /* FeedDetailView.swift */,
 				3C8B4E522C83FB7C00174943 /* HomeBottomSheetView.swift */,
 				05F1FF492D1AB42A00982033 /* MigratedHomeView.swift */,
+				0589AED22D393C96004F531E /* MigratedDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -528,6 +539,7 @@
 				3C8B4E4E2C83F01500174943 /* LikeViewModel.swift */,
 				05F1FF452D1AAAE300982033 /* MigratedHomeViewModel.swift */,
 				05F1FF4B2D32685A00982033 /* PopupViewModel.swift */,
+				0589AED62D393F7D004F531E /* MigratedDetailViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -547,6 +559,7 @@
 				050E0CC42C74B8F000326EEA /* HomeFeedTableViewCell.swift */,
 				050E0CC62C74B8FD00326EEA /* FeedDetailTableViewCell.swift */,
 				05F1FF472D1AB39000982033 /* MigratedHomeFeedCell.swift */,
+				0589AED42D393D3A004F531E /* MigratedDetailCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -876,6 +889,7 @@
 				050E0CCA2C74B94800326EEA /* FeedDetailViewController.swift */,
 				05F1FF432D17EA1D00982033 /* MigratedHomeViewController.swift */,
 				05F1FF4F2D33DF9600982033 /* HomePopupViewController.swift */,
+				0589AED02D393C16004F531E /* MigratedDetailViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -909,6 +923,7 @@
 			children = (
 				0573B8C32CEC63EC00B5A434 /* FlattenReplyModel.swift */,
 				05F1FF412D11C95F00982033 /* BanTargetInfo.swift */,
+				0589AED82D3BDD3E004F531E /* PopupModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1808,11 +1823,14 @@
 				050E0D0D2C7F635200326EEA /* InfoAPI.swift in Sources */,
 				3CDE2E002C711A74004A84CB /* UITextField+.swift in Sources */,
 				050E0CF62C75102A00326EEA /* NotificationTableViewCell.swift in Sources */,
+				0589AED12D393C16004F531E /* MigratedDetailViewController.swift in Sources */,
 				050E0D202C82EE6600326EEA /* NotiActivityText.swift in Sources */,
 				0547F5012C64C99D001E3039 /* ExampleView.swift in Sources */,
+				0589AED32D393C97004F531E /* MigratedDetailView.swift in Sources */,
 				050E0CFC2C751A5C00326EEA /* ActivityNotificationDTO.swift in Sources */,
 				3C8B4E572C84094100174943 /* PostTransparencyRequestDTO.swift in Sources */,
 				3CDE2DFA2C70F89B004A84CB /* JoinLCKYearViewModel.swift in Sources */,
+				0589AED72D393F7D004F531E /* MigratedDetailViewModel.swift in Sources */,
 				050E0D192C82563600326EEA /* NotificationInfoViewModel.swift in Sources */,
 				3CF344CE2C73CCCA0038BB53 /* HambergerButton.swift in Sources */,
 				050E0CA62C74B70800326EEA /* UIButton+.swift in Sources */,
@@ -1886,6 +1904,7 @@
 				0547F4FC2C64C797001E3039 /* MyPageViewController.swift in Sources */,
 				3CF344E72C750DBD0038BB53 /* MyPageSignOutReasonViewModel.swift in Sources */,
 				05F1FF502D33DF9600982033 /* HomePopupViewController.swift in Sources */,
+				0589AED92D3BDD3E004F531E /* PopupModel.swift in Sources */,
 				3C8B4E1D2C78E55C00174943 /* TokenReissueResponseDTO.swift in Sources */,
 				3C8B4E372C79118500174943 /* MyPageAccountInfoResponseDTO.swift in Sources */,
 				050E0CCD2C74B95B00326EEA /* Team.swift in Sources */,
@@ -1905,6 +1924,7 @@
 				050E0D1B2C82642400326EEA /* NotificationActivityViewModel.swift in Sources */,
 				3CDE2DFE2C71167A004A84CB /* JoinProfileView.swift in Sources */,
 				3C8B4E482C80E1C900174943 /* FeedDetailViewModel.swift in Sources */,
+				0589AED52D393D3A004F531E /* MigratedDetailCell.swift in Sources */,
 				3C8B4E4F2C83F01600174943 /* LikeViewModel.swift in Sources */,
 				3CDE2E192C7232DC004A84CB /* NotificationInformationViewController.swift in Sources */,
 				3C3531822C6F15D30015A8FA /* KeychainWrapper.swift in Sources */,
@@ -2115,7 +2135,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2153,7 +2173,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

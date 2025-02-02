@@ -214,6 +214,24 @@ enum StringLiterals {
             }
             static let postOpacityDown = "v1/ghost2"
             static let postReport = "v1/report/slack"
+            static func getReply(contentID: Int) -> String {
+                return "v3/content/\(contentID)/comments"
+            }
+            static func getSpecificFeed(contentID: Int) -> String {
+                return "v3/content/\(contentID)"
+            }
+            
+            static func deleteReply(commentID: Int) -> String {
+                return "v1/comment/\(commentID)"
+            }
+            
+            static func postReplyLike(commentID: Int) -> String {
+                return "v1/comment/\(commentID)/liked"
+            }
+            
+            static func deleteReplyLike(commentID: Int) -> String {
+                return "v1/comment/\(commentID)/unliked"
+            }
         }
         
         enum Info {

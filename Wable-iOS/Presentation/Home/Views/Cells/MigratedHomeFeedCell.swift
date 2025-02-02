@@ -84,7 +84,7 @@ final class MigratedHomeFeedCell: UICollectionViewCell{
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.profileImageView.image = UIImage()
+        self.profileImageView.image = nil
         self.feedContentView.blindImageView.isHidden = true
         self.feedContentView.titleLabel.isHidden = false
         self.feedContentView.contentLabel.isHidden = false
