@@ -42,7 +42,8 @@ extension NotificationActivityViewModel: ViewModelType {
         
         input.viewWillAppear
             .handleEvents(receiveOutput: { [weak self] _ in
-                Task { _ = try await self?.patchFCMBadgeAPI(badge: 0) }
+                guard let self else { return }
+                Task { _ = try await self.patchFCMBadgeAPI(badge: 0) }
             })
             .flatMap { _ -> AnyPublisher<[ActivityNotificationDTO], Never> in
                 Future { [weak self] promise in
@@ -109,7 +110,8 @@ extension NotificationActivityViewModel: ViewModelType {
         
         input.tableViewDidRefresh
             .handleEvents(receiveOutput: { [weak self] _ in
-                Task { _ = try await self?.patchFCMBadgeAPI(badge: 0)}
+                guard let self else { return }
+                Task { _ = try await self.patchFCMBadgeAPI(badge: 0)}
             })
             .flatMap { _ -> AnyPublisher<[ActivityNotificationDTO], Never> in
                 Future { [weak self] promise in

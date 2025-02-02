@@ -15,9 +15,9 @@ final class HomePopupViewController: UIViewController {
     
     // MARK: - Properties
     
-    var deleteButtonDidTapAction: ((Int) -> Void)?
-    var ghostButtonDidTapAction: ((Int) -> Void)?
-    var banButtonDidTapAction: ((Int) -> Void)?
+    var deleteButtonDidTapAction: ((Int, TriggerType) -> Void)?
+    var ghostButtonDidTapAction: ((Int, TriggerType) -> Void)?
+    var banButtonDidTapAction: ((Int, TriggerType) -> Void)?
     var reportButtonDidTapAction: (() -> Void)?
     
     private let viewModel: PopupViewModel
@@ -67,7 +67,7 @@ private extension HomePopupViewController {
         
         output.dismissView
             .receive(on: RunLoop.main)
-            .sink { [weak self] data, type in
+            .sink { [weak self] type in
                 guard let self else { return }
                 dismiss(animated: true)
                 switch type {
@@ -88,7 +88,7 @@ private extension HomePopupViewController {
 extension HomePopupViewController {
     
     func deleteButtonDidTap() {
-        deleteButtonDidTapAction?(viewModel.data.contentID ?? -1)
+        deleteButtonDidTapAction?(viewModel.data.triggerID, viewModel.data.contentType)
     }
     
     func reportButtonDidTap() {
@@ -96,11 +96,11 @@ extension HomePopupViewController {
     }
     
     func ghostButtonDidTap() {
-        ghostButtonDidTapAction?(viewModel.data.memberID)
+        ghostButtonDidTapAction?(viewModel.data.memberID, viewModel.data.contentType)
     }
     
     func banButtonDidTap() {
-        banButtonDidTapAction?(viewModel.data.memberID)
+        banButtonDidTapAction?(viewModel.data.memberID, viewModel.data.contentType)
     }
 }
 

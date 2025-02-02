@@ -135,7 +135,15 @@ private extension MigratedHomeViewController {
             }
             
             cell.onGhostButtonTap = { [weak self] in
-                self?.presentPopup(popupType: .ghost, data: item)
+                let target = PopupModel(
+                    memberID: item.memberID,
+                    contentType: .content,
+                    triggerID: item.contentID ?? -1,
+                    nickname: item.memberNickname,
+                    relatedText: item.contentTitle ?? ""
+                )
+                                
+                self?.presentPopup(popupType: .ghost, data: target)
             }
         }
         
@@ -273,17 +281,6 @@ private extension MigratedHomeViewController {
             makeToast(toastImage: ImageLiterals.Toast.toastGhost)
         }
         .store(in: cancelBag)
-        
-        feedBanButtonDidTap.sink { [weak self] memberID in
-            guard let self else { return }
-            var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-            snapshot.appendSections([.feed])
-            snapshot.appendItems(viewModel.updateBanState(for: memberID), toSection: .feed)
-            dataSource?.apply(snapshot, animatingDifferences: true)
-            
-            makeToast(toastImage: ImageLiterals.Toast.toastBan)
-        }
-        .store(in: cancelBag)
     }
     
     func endRefreshing() {
@@ -381,13 +378,21 @@ extension MigratedHomeViewController {
     }
     
     func pushToDetailView(feed: HomeFeedDTO) {
-        let detailViewController = FeedDetailViewController(
-            viewModel: FeedDetailViewModel(networkProvider: NetworkService()),
-            likeViewModel: LikeViewModel(networkProvider: NetworkService())
-        )
+        let detailViewController = MigratedDetailViewController(viewModel: MigratedDetailViewModel(contentID: feed.contentID ?? -1))
         detailViewController.hidesBottomBarWhenPushed = true
-        detailViewController.getFeedData(data: feed)
-        detailViewController.memberId = feed.memberID
+        detailViewController.feedDeleted = { [weak self] in
+            self?.viewDidLoadSubject.send(())
+        }
+        
+        detailViewController.backToFeed = { [weak self] feed in
+            guard let self else { return }
+            let feedDatas = viewModel.updatedFeed(of: feed)
+            var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+            snapshot.appendSections([.feed])
+            snapshot.appendItems(feedDatas, toSection: .feed)
+            dataSource?.apply(snapshot, animatingDifferences: true)
+        }
+        
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
     
@@ -452,10 +457,18 @@ extension MigratedHomeViewController {
         homeBottomsheetView.reportButton.isHidden = isMine
         homeBottomsheetView.banButton.isHidden = !isAdmin
         
-        setBottomSheetButtonAction(isMine: isMine, data: data)
+        let target = PopupModel(
+            memberID: data.memberID,
+            contentType: .content,
+            triggerID: data.contentID ?? -1,
+            nickname: data.memberNickname,
+            relatedText: data.contentTitle ?? ""
+        )
+        
+        setBottomSheetButtonAction(isMine: isMine, data: target)
     }
     
-    func setBottomSheetButtonAction(isMine: Bool, data: HomeFeedDTO) {
+    func setBottomSheetButtonAction(isMine: Bool, data: PopupModel) {
 
         let bottomSheetCancelBag = CancelBag()
         homeBottomsheetView.cancelBag = bottomSheetCancelBag
@@ -483,26 +496,28 @@ extension MigratedHomeViewController {
         }
     }
     
-    private func presentPopup(popupType: PopupViewType, data: HomeFeedDTO) {
+    private func presentPopup(popupType: PopupViewType, data: PopupModel) {
         removeBottomsheetView()
         let popupViewController = HomePopupViewController(
             viewModel: PopupViewModel(data: data),
             popupType: popupType
         )
-        popupViewController.deleteButtonDidTapAction = { [weak self] contentID in
-            self?.feedDeleteButtonDidTap.send(contentID)
+        popupViewController.deleteButtonDidTapAction = { [weak self] triggerID, _ in
+            self?.feedDeleteButtonDidTap.send(triggerID)
         }
         
         popupViewController.reportButtonDidTapAction = { [weak self] in
             self?.makeToast(toastImage: ImageLiterals.Toast.toastReport)
         }
         
-        popupViewController.ghostButtonDidTapAction = { [weak self] memberID in
+        popupViewController.ghostButtonDidTapAction = { [weak self] memberID, _ in
             self?.feedGhostButtonDidTap.send(memberID)
         }
         
-        popupViewController.banButtonDidTapAction = { [weak self] memberID in
-            self?.feedBanButtonDidTap.send(memberID)
+        popupViewController.banButtonDidTapAction = { [weak self] memberID, _ in
+            guard let self else { return }
+            collectionViewDidRefreshSubject.send()
+            makeToast(toastImage: ImageLiterals.Toast.toastBan)
         }
         
         popupViewController.modalPresentationStyle = .overFullScreen

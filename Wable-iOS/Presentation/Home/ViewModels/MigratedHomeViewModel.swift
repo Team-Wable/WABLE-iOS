@@ -223,7 +223,7 @@ extension MigratedHomeViewModel: ViewModelType {
         return updatedDatas
     }
     
-    func updateHeartButtonState(at index: Int){
+    func updateHeartButtonState(at index: Int) {
         var updatedDatas = feedSubject.value
         
         guard updatedDatas.indices.contains(index) else { return }
@@ -252,6 +252,35 @@ extension MigratedHomeViewModel: ViewModelType {
         updatedDatas[index] = newData
         
         feedSubject.send(updatedDatas)
+    }
+    
+    func updatedFeed(of feed: HomeFeedDTO) -> [HomeFeedDTO] {
+        let updatedDatas = feedSubject.value.map { item in
+            guard item.contentID == feed.contentID else { return item }
+            
+            return HomeFeedDTO(
+                memberID: feed.memberID,
+                memberProfileURL: feed.memberProfileURL,
+                memberNickname: feed.memberNickname,
+                isGhost: feed.isGhost,
+                memberGhost: feed.memberGhost,
+                isLiked: feed.isLiked,
+                time: feed.time,
+                likedNumber: feed.likedNumber,
+                memberFanTeam: feed.memberFanTeam,
+                contentID: feed.contentID,
+                contentTitle: feed.contentTitle,
+                contentText: feed.contentText,
+                commentNumber: feed.commentNumber,
+                isDeleted: feed.isDeleted,
+                commnetNumber: feed.commnetNumber,
+                contentImageURL: feed.contentImageURL,
+                isBlind: feed.isBlind
+            )
+        }
+        
+        feedSubject.send(updatedDatas)
+        return updatedDatas
     }
 }
 

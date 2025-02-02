@@ -63,6 +63,15 @@ extension HomeAPI {
             .eraseToAnyPublisher()
     }
     
+    func deleteReply(commentID: Int)  -> AnyPublisher<EmptyDTO?, WableNetworkError> {
+        homeProvider.requestPublisher(.deleteReply(commentID: commentID))
+            .tryMap { [weak self] response -> EmptyDTO? in
+                return try self?.parseResponse(statusCode: response.statusCode, data: response.data)
+            }
+            .mapError { $0 as? WableNetworkError ?? .unknownError($0.localizedDescription) }
+            .eraseToAnyPublisher()
+    }
+    
     func postReport(nickname: String, relateText: String) -> AnyPublisher<EmptyDTO?, WableNetworkError> {
         homeProvider.requestPublisher(.postReport(param: ReportRequestDTO(
             reportTargetNickname: nickname,
@@ -112,5 +121,43 @@ extension HomeAPI {
         .mapError { $0 as? WableNetworkError ??
             .unknownError($0.localizedDescription)}
         .eraseToAnyPublisher()
+    }
+    
+    func getReply(cursor: Int, contentID: Int) -> AnyPublisher<[FeedReplyListDTO]?, WableNetworkError> {
+        homeProvider.requestPublisher(.getReply(cursor: cursor, contentID: contentID))
+            .tryMap { [weak self] response -> [FeedReplyListDTO]? in
+                return try self?.parseResponse(statusCode: response.statusCode, data: response.data)
+            }
+            .mapError { $0 as? WableNetworkError ?? .unknownError($0.localizedDescription) }
+            .eraseToAnyPublisher()
+    }
+    
+    func getSpecificFeed(contentID: Int) -> AnyPublisher<HomeFeedDTO?, WableNetworkError> {
+        homeProvider.requestPublisher(.getSpecificFeed(contentID: contentID))
+            .tryMap { [weak self] response -> HomeFeedDTO? in
+                return try self?.parseResponse(statusCode: response.statusCode, data: response.data)
+            }
+            .mapError { $0 as? WableNetworkError ??
+                    .unknownError($0.localizedDescription)
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func postReplyLike(commentID: Int, alarmText: String) -> AnyPublisher<EmptyDTO?, WableNetworkError> {
+        homeProvider.requestPublisher(.postReplyLike(commentID: commentID, alarmText: alarmText))
+            .tryMap { [weak self] response -> EmptyDTO? in
+                return try self?.parseResponse(statusCode: response.statusCode, data: response.data)
+            }
+            .mapError { $0 as? WableNetworkError ?? .unknownError($0.localizedDescription) }
+            .eraseToAnyPublisher()
+    }
+    
+    func deleteReplyLike(commentID: Int)  -> AnyPublisher<EmptyDTO?, WableNetworkError> {
+        homeProvider.requestPublisher(.deleteReplyLike(commentID: commentID))
+            .tryMap { [weak self] response -> EmptyDTO? in
+                return try self?.parseResponse(statusCode: response.statusCode, data: response.data)
+            }
+            .mapError { $0 as? WableNetworkError ?? .unknownError($0.localizedDescription) }
+            .eraseToAnyPublisher()
     }
 }

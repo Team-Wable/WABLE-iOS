@@ -19,6 +19,11 @@ enum HomeRouter {
     case deleteFeed(contentID: Int)
     case postBeGhost(param: PostTransparencyRequestDTO)
     case postReport(param: ReportRequestDTO)
+    case getReply(cursor: Int, contentID: Int)
+    case getSpecificFeed(contentID: Int)
+    case deleteReply(commentID: Int)
+    case postReplyLike(commentID: Int, alarmText: String)
+    case deleteReplyLike(commentID: Int)
 }
 
 extension HomeRouter: BaseTargetType {
@@ -38,22 +43,32 @@ extension HomeRouter: BaseTargetType {
             return StringLiterals.Endpoint.Home.deleteFeedLike(contentID: contentID)
         case .deleteFeed(let contentID):
             return StringLiterals.Endpoint.Home.deleteFeed(contentID: contentID)
-        case .postBeGhost(let param):
+        case .postBeGhost:
             return StringLiterals.Endpoint.Home.postOpacityDown
         case .postReport:
             return StringLiterals.Endpoint.Home.postReport
+        case .getReply(_, let contentID):
+            return StringLiterals.Endpoint.Home.getReply(contentID: contentID)
+        case .getSpecificFeed(let contentID):
+            return StringLiterals.Endpoint.Home.getSpecificFeed(contentID: contentID)
+        case .deleteReply(let commentID):
+            return StringLiterals.Endpoint.Home.deleteReply(commentID: commentID)
+        case .postReplyLike(let commentID, _):
+            return StringLiterals.Endpoint.Home.postReplyLike(commentID: commentID)
+        case .deleteReplyLike(let commentID):
+            return StringLiterals.Endpoint.Home.deleteReplyLike(commentID: commentID)
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getContent:
+        case .getContent, .getReply, .getSpecificFeed:
             return .get
         case .patchFCMToken:
             return .patch
-        case .postReply, .postBan, .postFeedLike, .postBeGhost, .postReport:
+        case .postReply, .postBan, .postFeedLike, .postBeGhost, .postReport, .postReplyLike:
             return .post
-        case .deleteFeed, .deleteFeedLike:
+        case .deleteFeed, .deleteFeedLike, .deleteReply, .deleteReplyLike:
             return .delete
         }
     }
@@ -88,7 +103,7 @@ extension HomeRouter: BaseTargetType {
             let requestBody = ContentLikeRequestDTO(alarmTriggerType: "contentLiked")
             return .requestJSONEncodable(requestBody)
             
-        case .deleteFeedLike, .deleteFeed:
+        case .deleteFeedLike, .deleteFeed, .getSpecificFeed, .deleteReply:
             return .requestPlain
             
         case .postBeGhost(let requestBody):
@@ -96,12 +111,23 @@ extension HomeRouter: BaseTargetType {
             
         case .postReport(let requestBody):
             return .requestJSONEncodable(requestBody)
+            
+        case .getReply(let cursor, _):
+            return .requestParameters(parameters: ["cursor": cursor], encoding: URLEncoding.queryString)
+        case .postReplyLike(_, let alarmText):
+            let requestBody = CommentLikeRequestDTO(
+                notificationTriggerType: "commentLiked",
+                notificationText: alarmText
+            )
+            return .requestJSONEncodable(requestBody)
+        case .deleteReplyLike:
+            return .requestPlain
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        case .getContent, .postReply, .postBan, .postFeedLike, .deleteFeedLike, .postBeGhost, .deleteFeed, .postReport:
+        case .getContent, .postReply, .postBan, .postFeedLike, .deleteFeedLike, .postBeGhost, .deleteFeed, .postReport, .getReply, .getSpecificFeed, .deleteReply, .postReplyLike, .deleteReplyLike:
             return APIConstants.hasTokenHeader
         case .patchFCMToken:
             return APIConstants.multipartHeader
