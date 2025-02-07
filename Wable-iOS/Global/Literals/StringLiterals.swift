@@ -248,5 +248,9 @@ enum StringLiterals {
             static let getNotiActivity = "v1/notifications"
             static let getFeedInfo = "v3/content/"
         }
+        
+        enum Login {
+            static let postSocialLogin = "v2/auth"
+        }
     }
 }

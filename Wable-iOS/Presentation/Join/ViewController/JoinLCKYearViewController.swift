@@ -21,10 +21,6 @@ final class JoinLCKYearViewController: UIViewController {
     private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var nextButtonTapped = self.originView.nextButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     
-    var memberLckYears: Int?
-    var memberFanTeam: String?
-    var memberDefaultProfileImage: String?
-    
     // MARK: - UI Components
     
     private var navigationBackButton = BackButton()
@@ -65,20 +61,20 @@ final class JoinLCKYearViewController: UIViewController {
     }
 }
 
-// MARK: - Extensions
+// MARK: - Private Method
 
 extension JoinLCKYearViewController {
-    private func setUI() {
+    func setUI() {
         self.view.backgroundColor = .wableWhite
         self.navigationController?.navigationBar.isHidden = false
         self.navigationItem.hidesBackButton = true
     }
     
-    private func setHierarchy() {
+    func setHierarchy() {
         self.navigationController?.navigationBar.addSubviews(navigationBackButton, navigationXButton)
     }
     
-    private func setLayout() {
+    func setLayout() {
         navigationBackButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(12.adjusted)
@@ -90,11 +86,11 @@ extension JoinLCKYearViewController {
         }
     }
     
-    private func setAddTarget() {
+    func setAddTarget() {
         navigationXButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
     }
     
-    private func bindViewModel() {
+    func bindViewModel() {
         let input = JoinLCKYearViewModel.Input(
             backButtonTapped: backButtonTapped,
             nextButtonTapped: nextButtonTapped)
@@ -115,9 +111,10 @@ extension JoinLCKYearViewController {
             .store(in: self.cancelBag)
     }
     
-    @objc private func xButtonTapped() {
+    @objc
+    func xButtonTapped() {
         if let navigationController = self.navigationController {
-            let viewControllers = [LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService()))]
+            let viewControllers = [LoginViewController(viewModel: MigratedLoginViewModel())]
             navigationController.setViewControllers(viewControllers, animated: false)
         }
     }

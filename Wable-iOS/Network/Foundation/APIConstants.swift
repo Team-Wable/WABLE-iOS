@@ -37,4 +37,11 @@ extension APIConstants{
             auth: accessToken
         ]
     }
+    
+    static func loginHeader(accessToken: String) -> Dictionary<String,String> {
+        return [
+            contentType: applicationJSON,
+            auth :  "Bearer \(accessToken)"
+        ]
+    }
 }
