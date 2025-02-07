@@ -265,7 +265,7 @@ extension JoinAgreementViewController {
     
     @objc private func xButtonTapped() {
         if let navigationController = self.navigationController {
-            let viewControllers = [LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService()))]
+            let viewControllers = [LoginViewController(viewModel: MigratedLoginViewModel())]
             navigationController.setViewControllers(viewControllers, animated: false)
         }
     }

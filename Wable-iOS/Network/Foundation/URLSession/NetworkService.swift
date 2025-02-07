@@ -84,7 +84,7 @@ final class NetworkService: NetworkServiceType {
                     // 401 에러 중 accessToken, refreshToken 둘 다 만료된 경우 소셜로그인 화면으로
                     if let sceneDelegate = await UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
                         DispatchQueue.main.async {
-                            let rootViewController = LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService()))
+                            let rootViewController = LoginViewController(viewModel: MigratedLoginViewModel())
                             sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: rootViewController)
                         }
                     }
