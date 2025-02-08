@@ -84,18 +84,6 @@ extension JoinLCKYearViewController {
     func nextButtonTapped() {
         let userInfo = UserInfoBuilder()
             .setMemberLckYears(Int(self.originView.selectedStartYear.text ?? "2024"))
-        print("========= UserInfoBuilder 프로퍼티 값=========")
-        print("\(userInfo.nickname)")
-        print("\(userInfo.memberLckYears)")
-        print("\(userInfo.memberIntro)")
-        print("\(userInfo.memberFanTeam)")
-        print("\(userInfo.memberDefaultProfileImage)")
-        print("\(userInfo.isPushAlarmAllowed)")
-        print("\(userInfo.isAlarmAllowed)")
-        print("\(userInfo.file)")
-        print("\(userInfo.fcmToken)")
-        print("===========================================")
-
         let viewController = JoinLCKTeamViewController(userInfo: userInfo)
         self.navigationController?.pushViewController(viewController, animated: true)
     }

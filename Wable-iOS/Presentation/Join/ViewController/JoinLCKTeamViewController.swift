@@ -101,36 +101,12 @@ private extension JoinLCKTeamViewController {
     
     @objc func noLCKTeamButtonTapped() {
         userInfo.setMemberFanTeam("LCK")
-        print("========= UserInfoBuilder 프로퍼티 값=========")
-        print("\(userInfo.nickname)")
-        print("\(userInfo.memberLckYears)")
-        print("\(userInfo.memberIntro)")
-        print("\(userInfo.memberFanTeam)")
-        print("\(userInfo.memberDefaultProfileImage)")
-        print("\(userInfo.isPushAlarmAllowed)")
-        print("\(userInfo.isAlarmAllowed)")
-        print("\(userInfo.file)")
-        print("\(userInfo.fcmToken)")
-        print("===========================================")
-
         let viewController = JoinProfileViewController(viewModel: JoinProfileViewModel(), userInfo: userInfo)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     @objc func nextButtonTapped() {
         userInfo.setMemberFanTeam(self.originView.selectedButton?.titleLabel?.text)
-        print("========= UserInfoBuilder 프로퍼티 값=========")
-        print("\(userInfo.nickname)")
-        print("\(userInfo.memberLckYears)")
-        print("\(userInfo.memberIntro)")
-        print("\(userInfo.memberFanTeam)")
-        print("\(userInfo.memberDefaultProfileImage)")
-        print("\(userInfo.isPushAlarmAllowed)")
-        print("\(userInfo.isAlarmAllowed)")
-        print("\(userInfo.file)")
-        print("\(userInfo.fcmToken)")
-        print("===========================================")
-
         let viewController = JoinProfileViewController(viewModel: JoinProfileViewModel(), userInfo: userInfo)
         self.navigationController?.pushViewController(viewController, animated: true)
     }

@@ -185,18 +185,6 @@ private extension JoinProfileViewController {
     func nextButtonTapped() {
         userInfo.setNickname(self.originView.nickNameTextField.text)
         let viewController = MigratedJoinAgreementViewController(viewModel: MigratedJoinAgreementViewModel(userInfo: userInfo))
-        print("========= UserInfoBuilder 프로퍼티 값=========")
-        print("\(userInfo.nickname)")
-        print("\(userInfo.memberLckYears)")
-        print("\(userInfo.memberIntro)")
-        print("\(userInfo.memberFanTeam)")
-        print("\(userInfo.memberDefaultProfileImage)")
-        print("\(userInfo.isPushAlarmAllowed)")
-        print("\(userInfo.isAlarmAllowed)")
-        print("\(userInfo.file)")
-        print("\(userInfo.fcmToken)")
-        print("===========================================")
-
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

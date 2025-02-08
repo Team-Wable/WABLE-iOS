@@ -21,15 +21,15 @@ struct UserInfoDTO: Encodable {
 
 // 프린트 찍어보려고 임시적으로 프로퍼티 Privateg 해제. 다시 고쳐주기
 final class UserInfoBuilder {
-    var nickname: String?
-    var isAlarmAllowed: Bool?
-    var memberIntro: String?
-    var isPushAlarmAllowed: Bool?
-    var fcmToken: String?
-    var memberLckYears: Int?
-    var memberFanTeam: String?
-    var memberDefaultProfileImage: String?
-    var file: Data?
+    private var nickname: String?
+    private var isAlarmAllowed: Bool?
+    private var memberIntro: String?
+    private var isPushAlarmAllowed: Bool?
+    private var fcmToken: String?
+    private var memberLckYears: Int?
+    private var memberFanTeam: String?
+    private var memberDefaultProfileImage: String?
+    private var file: Data?
     
     @discardableResult
     func setNickname(_ nickname: String?) -> Self {
