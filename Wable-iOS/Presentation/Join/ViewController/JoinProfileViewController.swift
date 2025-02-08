@@ -278,7 +278,7 @@ extension JoinProfileViewController: PHPickerViewControllerDelegate {
 
                     self.userInfo
                         .setMemberDefaultProfileImage("")
-                        .setFile(image.jpegData(compressionQuality: 0.8))
+                        .setFile(image.jpegData(compressionQuality: 0.4))
                     
                 } else if let error = error {
                     print(error)

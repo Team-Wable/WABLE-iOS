@@ -98,15 +98,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard
             let currentMajor = currentComponents[safe: 0],
             let currentMinor = currentComponents[safe: 1],
-            let currentPatch = currentComponents[safe: 2],
             let marketingMajor = marketingComponents[safe: 0],
-            let marketingMinor = marketingComponents[safe: 1],
-            let marketingPatch = marketingComponents[safe: 2]
+            let marketingMinor = marketingComponents[safe: 1]
         else {
             return false
         }
         
-        return currentMajor != marketingMajor || currentMinor != marketingMinor
+        if marketingMajor > currentMajor {
+            return true
+        } else if marketingMajor == currentMajor, marketingMinor > currentMinor {
+            return true
+        } else {
+            return false
+        }
     }
     
     func showUpdateAlert(version: String) {
