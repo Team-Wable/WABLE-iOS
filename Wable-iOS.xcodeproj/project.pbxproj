@@ -241,7 +241,7 @@
 		DE9D0E362CF088D10024BB1F /* LCKTeamRankDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */; };
 		DE9D0E442CF090630024BB1F /* InfoRankingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E432CF090630024BB1F /* InfoRankingViewModel.swift */; };
 		DE9D0E472CF0AA640024BB1F /* RankCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E462CF0AA640024BB1F /* RankCell.swift */; };
-		DE9D0E4D2CF0C9250024BB1F /* TeamImageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E4C2CF0C9250024BB1F /* TeamImageMapper.swift */; };
+		DE9D0E4D2CF0C9250024BB1F /* TeamRankMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E4C2CF0C9250024BB1F /* TeamRankMapper.swift */; };
 		DEAAA3972D3433A6002B4EC9 /* NotificationPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAA3962D3433A6002B4EC9 /* NotificationPageViewController.swift */; };
 		DEAAA3992D34352D002B4EC9 /* NotificationPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAA3982D34352D002B4EC9 /* NotificationPageView.swift */; };
 		DEAAA39B2D343AD8002B4EC9 /* NotificationPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAA39A2D343AD8002B4EC9 /* NotificationPageViewModel.swift */; };
@@ -482,7 +482,7 @@
 		DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamRankDTO.swift; sourceTree = "<group>"; };
 		DE9D0E432CF090630024BB1F /* InfoRankingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRankingViewModel.swift; sourceTree = "<group>"; };
 		DE9D0E462CF0AA640024BB1F /* RankCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankCell.swift; sourceTree = "<group>"; };
-		DE9D0E4C2CF0C9250024BB1F /* TeamImageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamImageMapper.swift; sourceTree = "<group>"; };
+		DE9D0E4C2CF0C9250024BB1F /* TeamRankMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRankMapper.swift; sourceTree = "<group>"; };
 		DEAAA3962D3433A6002B4EC9 /* NotificationPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageViewController.swift; sourceTree = "<group>"; };
 		DEAAA3982D34352D002B4EC9 /* NotificationPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageView.swift; sourceTree = "<group>"; };
 		DEAAA39A2D343AD8002B4EC9 /* NotificationPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageViewModel.swift; sourceTree = "<group>"; };
@@ -1537,7 +1537,7 @@
 		DE9D0E4B2CF0C8FF0024BB1F /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				DE9D0E4C2CF0C9250024BB1F /* TeamImageMapper.swift */,
+				DE9D0E4C2CF0C9250024BB1F /* TeamRankMapper.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -1917,7 +1917,7 @@
 				DE9D0E342CF087B30024BB1F /* LCKGameTypeDTO.swift in Sources */,
 				3C3531842C6F16D00015A8FA /* Config.swift in Sources */,
 				050E0D022C77372F00326EEA /* HomeAPI.swift in Sources */,
-				DE9D0E4D2CF0C9250024BB1F /* TeamImageMapper.swift in Sources */,
+				DE9D0E4D2CF0C9250024BB1F /* TeamRankMapper.swift in Sources */,
 				3C8B4E4A2C80E38600174943 /* FeedDetailResponseDTO.swift in Sources */,
 				3C8B4E552C84081B00174943 /* ReportRequestDTO.swift in Sources */,
 				050E0D162C8252B200326EEA /* NotificationAPI.swift in Sources */,
