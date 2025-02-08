@@ -85,8 +85,10 @@ private extension InfoRankingViewController {
     func setupDataSource() {
         let rankCellRegistration = UICollectionView.CellRegistration<RankCell, LCKTeamRankDTO> {
             cell, indexPath, item in
+            let teamRankItem = TeamRankMapper(rawValue: item.teamName)
             cell.rankLabel.text = "\(item.teamRankNumber)"
-            cell.teamLogoImageView.image = TeamImageMapper(rawValue: item.teamName)?.image
+            cell.rankLabel.textColor = teamRankItem?.lckCupTeam.color
+            cell.teamLogoImageView.image = TeamRankMapper(rawValue: item.teamName)?.image
             cell.teamNameLabel.text = item.teamName
             cell.winCountLabel.text = "\(item.teamWinCount)"
             cell.defeatCountLabel.text = "\(item.teamDefeatCount)"
@@ -136,7 +138,7 @@ private extension InfoRankingViewController {
         if snapshot.sectionIdentifiers.isEmpty {
             snapshot.appendSections(Section.allCases)
         }
-        
+        snapshot.deleteItems(snapshot.itemIdentifiers(inSection: section))
         snapshot.appendItems(items, toSection: section)
         dataSource?.apply(snapshot, animatingDifferences: false)
     }

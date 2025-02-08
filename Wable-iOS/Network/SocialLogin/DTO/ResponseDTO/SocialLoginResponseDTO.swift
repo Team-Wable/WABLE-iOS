@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - SocilLoginResponseDTO
 
-struct SocialLoginResponseDTO: Decodable {
+struct SocialLoginResponseDTO: Codable {
     let nickName: String
     let memberId: Int
     let accessToken, refreshToken: String

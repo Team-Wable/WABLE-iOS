@@ -14,16 +14,15 @@ final class LoginViewController: UIViewController {
     // MARK: - Properties
     
     private var cancelBag = CancelBag()
-    private let viewModel: LoginViewModel
-    private lazy var kakaoButtonTapped = self.kakaoLoginButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
-    private lazy var appleButtonTapped = self.appleLoginButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
-    private lazy var newUserSingleButtonTapped = self.newUserPopupView.singleButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    private let viewModel: MigratedLoginViewModel
     
     // MARK: - UI Components
     
-    private var newUserPopupView = WablePopupView(popupTitle: StringLiterals.Login.loginNewUserPopupTitle,
-                                           popupContent: StringLiterals.Login.loginNewUserPopupContent,
-                                           singleButtonTitle: StringLiterals.Login.loginNewUserPopupButtonTitle)
+    private var newUserPopupView = WablePopupView(
+        popupTitle: StringLiterals.Login.loginNewUserPopupTitle,
+        popupContent: StringLiterals.Login.loginNewUserPopupContent,
+        singleButtonTitle: StringLiterals.Login.loginNewUserPopupButtonTitle
+    )
     
     private let loginBackgroundImage: UIImageView = {
         let image = UIImageView()
@@ -68,7 +67,7 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Life Cycles
     
-    init(viewModel: LoginViewModel) {
+    init(viewModel: MigratedLoginViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -94,14 +93,14 @@ final class LoginViewController: UIViewController {
     }
 }
 
-// MARK: - Extensions
+// MARK: - Private Method
 
-extension LoginViewController {
-    private func setUI() {
+private extension LoginViewController {
+    func setUI() {
         view.backgroundColor = .wableWhite
     }
     
-    private func setHierarchy() {
+    func setHierarchy() {
         self.view.addSubviews(loginBackgroundImage,
                               loginWableLogo,
                               loginTitle,
@@ -110,7 +109,7 @@ extension LoginViewController {
                               appleLoginButton)
     }
     
-    private func setLayout() {
+    func setLayout() {
         loginBackgroundImage.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(401.adjusted)
@@ -154,22 +153,22 @@ extension LoginViewController {
         }
     }
     
-    private func bindViewModel() {
-        let input = LoginViewModel.Input(kakaoButtonTapped: kakaoButtonTapped,
-                                         appleButtonTapped: appleButtonTapped,
-                                         newUserSingleButtonTapped: newUserSingleButtonTapped)
+    func bindViewModel() {
+        let input = MigratedLoginViewModel.Input(
+            kakaoButtonTapped: kakaoLoginButton.tapPublisher.eraseToAnyPublisher(),
+            appleButtonTapped: appleLoginButton.tapPublisher.eraseToAnyPublisher(),
+            newUserSingleButtonTapped: newUserPopupView.singleButton.tapPublisher.eraseToAnyPublisher()
+        )
         
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
         
         output.userInfoPublisher
             .receive(on: RunLoop.main)
-            .sink { value in
-                if value {
-                    // 신규 유저
-                    let viewController = JoinLCKYearViewController(viewModel: JoinLCKYearViewModel())
+            .sink { isNewUser in
+                if isNewUser {
+                    let viewController = JoinLCKYearViewController()
                     self.navigationController?.pushViewController(viewController, animated: true)
                 } else {
-                    // 기존 유저
                     let viewController = WableTabBarController()
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }

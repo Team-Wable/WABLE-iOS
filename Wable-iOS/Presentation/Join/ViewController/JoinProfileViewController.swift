@@ -9,6 +9,7 @@ import UIKit
 import Photos
 import PhotosUI
 
+import CombineCocoa
 import SnapKit
 
 final class JoinProfileViewController: UIViewController {
@@ -17,24 +18,13 @@ final class JoinProfileViewController: UIViewController {
     
     private var cancelBag = CancelBag()
     private let viewModel: JoinProfileViewModel
+    private let userInfo: UserInfoBuilder
     
-    private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
-    private lazy var duplicationCheckButtonTapped = self.originView.duplicationCheckButton.publisher(for: .touchUpInside).map { _ in
-        return self.originView.nickNameTextField.text ?? ""
-    }.eraseToAnyPublisher()
-    private lazy var nextButtonTapped = self.originView.nextButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
-    
-    // 3개의 기본 프로필 사진
     let basicProfileImages: [UIImage : String] = [
         ImageLiterals.Image.imgProfile1 : "PURPLE",
         ImageLiterals.Image.imgProfile2 : "BLUE",
         ImageLiterals.Image.imgProfile3 : "GREEN"
     ]
-    
-    var memberLckYears: Int?
-    var memberFanTeam: String?
-    var memberDefaultProfileImage: String = "PURPLE"
-    var memberProfileImage: UIImage?
     
     // MARK: - UI Components
     
@@ -44,8 +34,9 @@ final class JoinProfileViewController: UIViewController {
     
     // MARK: - Life Cycles
     
-    init(viewModel: JoinProfileViewModel) {
+    init(viewModel: JoinProfileViewModel, userInfo: UserInfoBuilder) {
         self.viewModel = viewModel
+        self.userInfo = userInfo
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -75,7 +66,7 @@ final class JoinProfileViewController: UIViewController {
         setAddTarget()
         setNotification()
         dismissKeyboardTouchOutside()
-
+        
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -97,20 +88,20 @@ final class JoinProfileViewController: UIViewController {
     }
 }
 
-// MARK: - Extensions
+// MARK: - Private Method
 
-extension JoinProfileViewController {
-    private func setUI() {
+private extension JoinProfileViewController {
+    func setUI() {
         self.view.backgroundColor = .wableWhite
         self.navigationController?.navigationBar.isHidden = false
         self.navigationItem.hidesBackButton = true
     }
     
-    private func setHierarchy() {
+    func setHierarchy() {
         self.navigationController?.navigationBar.addSubviews(navigationBackButton, navigationXButton)
     }
     
-    private func setLayout() {
+    func setLayout() {
         navigationBackButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(12.adjusted)
@@ -122,85 +113,88 @@ extension JoinProfileViewController {
         }
     }
     
-    private func setAddTarget() {
+    func setAddTarget() {
         navigationXButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
-        self.originView.plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
-        self.originView.changeButton.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
+        navigationBackButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        originView.plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        originView.changeButton.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
+        originView.nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     
-    private func setNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(textFieldTisChanged), name: UITextField.textDidChangeNotification, object: nil)
+    func setNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(textFieldisChanged), name: UITextField.textDidChangeNotification, object: nil)
     }
     
-    private func bindViewModel() {
-        let input = JoinProfileViewModel.Input(
-            backButtonTapped: backButtonTapped,
-            duplicationCheckButtonTapped: duplicationCheckButtonTapped,
-            nextButtonTapped: nextButtonTapped)
+    func bindViewModel() {
+        let duplicationCheckButtonTapped = self.originView.duplicationCheckButton.tapPublisher
+            .map { [weak self] in
+                self?.originView.nickNameTextField.text ?? ""
+            }
+            .eraseToAnyPublisher()
+        
+        let input = JoinProfileViewModel.Input(duplicationCheckButtonTapped: duplicationCheckButtonTapped)
         
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
         
-        output.pushOrPopViewController
-            .receive(on: RunLoop.main)
-            .sink { value in
-                if value == 0 {
-                    self.navigationController?.popViewController(animated: true)
-                } else {
-                    let viewController = JoinAgreementViewController(viewModel: JoinAgreementViewModel(networkProvider: NetworkService()))
-                    viewController.memberNickname = self.originView.nickNameTextField.text
-                    viewController.memberLckYears = self.memberLckYears
-                    viewController.memberFanTeam = self.memberFanTeam
-                    viewController.memberDefaultProfileImage = self.memberDefaultProfileImage
-                    viewController.memberProfileImage = self.memberProfileImage
-                    self.navigationController?.pushViewController(viewController, animated: true)
-                }
-            }
-            .store(in: self.cancelBag)
-        
         output.isEnable
             .receive(on: RunLoop.main)
-            .sink { isEnable in
-                self.originView.nickNameTextField.resignFirstResponder()
-                self.originView.nextButton.isEnabled = true
+            .withUnretained(self)
+            .sink { owner, isEnable in
+                owner.originView.nickNameTextField.resignFirstResponder()
+                owner.originView.nextButton.isEnabled = isEnable
                 if isEnable {
-                    self.originView.duplicationCheckDescription.text = StringLiterals.Join.JoinProfileNicknameAvailable
-                    self.originView.duplicationCheckDescription.textColor = .success
+                    owner.originView.duplicationCheckDescription.text = StringLiterals.Join.JoinProfileNicknameAvailable
+                    owner.originView.duplicationCheckDescription.textColor = .success
                 } else {
-                    self.originView.duplicationCheckDescription.text = StringLiterals.Join.JoinProfileNicknameAlreadyUsed
-                    self.originView.duplicationCheckDescription.textColor = .error
+                    owner.originView.duplicationCheckDescription.text = StringLiterals.Join.JoinProfileNicknameAlreadyUsed
+                    owner.originView.duplicationCheckDescription.textColor = .error
                 }
             }
             .store(in: self.cancelBag)
     }
     
     @objc
-    private func textFieldTisChanged() {
+    func textFieldisChanged() {
         self.originView.nextButton.isEnabled = false
         self.originView.duplicationCheckDescription.text = StringLiterals.Join.JoinProfileNicknameInfo
         self.originView.duplicationCheckDescription.textColor = .gray600
     }
     
     @objc
-    private func changeButtonTapped() {
+    func changeButtonTapped() {
         AmplitudeManager.shared.trackEvent(tag: "click_change_picture_profile_signup")
         let randomEntry = basicProfileImages.randomElement()
         
         if let selectedImage = randomEntry?.key, let selectedColor = randomEntry?.value {
             self.originView.profileImage.image = selectedImage
-            self.memberDefaultProfileImage = selectedColor
-            self.memberProfileImage = nil
+            userInfo
+                .setMemberDefaultProfileImage(selectedColor)
+                .setFile(nil)
         }
     }
     
-    @objc private func xButtonTapped() {
+    @objc
+    func xButtonTapped() {
         if let navigationController = self.navigationController {
-            let viewControllers = [LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService()))]
+            let viewControllers = [LoginViewController(viewModel: MigratedLoginViewModel())]
             navigationController.setViewControllers(viewControllers, animated: false)
         }
     }
     
     @objc
-    private func plusButtonTapped() {
+    func nextButtonTapped() {
+        userInfo.setNickname(self.originView.nickNameTextField.text)
+        let viewController = MigratedJoinAgreementViewController(viewModel: MigratedJoinAgreementViewModel(userInfo: userInfo))
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    @objc
+    func backButtonTapped() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc
+    func plusButtonTapped() {
         AmplitudeManager.shared.trackEvent(tag: "click_add_picture_profile_signup")
         let status = PHPhotoLibrary.authorizationStatus(for: .addOnly)
         
@@ -223,29 +217,27 @@ extension JoinProfileViewController {
     }
     
     @objc
-    private func keyboardUp(notification: NSNotification) {
+    func keyboardUp(notification: NSNotification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
             let keyboardHeight = keyboardRectangle.height
             UIView.animate(withDuration: 0.3) {
-                // 뷰 전체를 키보드 높이만큼 위로 이동
                 self.view.transform = CGAffineTransform(translationX: 0, y: -keyboardHeight)
             }
         }
     }
-
+    
     @objc
-    private func keyboardDown(notification: NSNotification) {
+    func keyboardDown(notification: NSNotification) {
         UIView.animate(withDuration: 0.3) {
-            // 뷰 전체를 원래 위치로 복원
             self.view.transform = .identity
         }
     }
     
-    private func presentPicker() {
+    func presentPicker() {
         var configuration = PHPickerConfiguration()
-        configuration.filter = .images // 이미지만 필터링
-        configuration.selectionLimit = 1 // 선택 제한
+        configuration.filter = .images
+        configuration.selectionLimit = 1
         
         let picker = PHPickerViewController(configuration: configuration)
         picker.delegate = self
@@ -283,9 +275,11 @@ extension JoinProfileViewController: PHPickerViewControllerDelegate {
                     self.originView.profileImage.contentMode = .scaleAspectFill
                     self.originView.profileImage.layer.cornerRadius = self.originView.profileImage.frame.size.width / 2
                     self.originView.profileImage.clipsToBounds = true
+
+                    self.userInfo
+                        .setMemberDefaultProfileImage("")
+                        .setFile(image.jpegData(compressionQuality: 0.4))
                     
-                    self.memberProfileImage = image
-                    self.memberDefaultProfileImage = ""
                 } else if let error = error {
                     print(error)
                 }

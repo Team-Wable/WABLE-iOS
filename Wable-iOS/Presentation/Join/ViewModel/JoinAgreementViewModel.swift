@@ -14,7 +14,7 @@ final class JoinAgreementViewModel: ViewModelType {
     private let cancelBag = CancelBag()
     private let networkProvider: NetworkServiceType
     
-    private let pushOrPopViewController = PassthroughSubject<Int, Never>()
+    private let pushOrPopViewController = PassthroughSubject<Void, Never>()
     private let allButtonChecked = PassthroughSubject<Bool, Never>()
     private let isEnabled = PassthroughSubject<Int, Never>()
     private let clickedButtonState = PassthroughSubject<(Int, Bool), Never>()
@@ -34,7 +34,6 @@ final class JoinAgreementViewModel: ViewModelType {
     }
     
     struct Input {
-        let backButtonTapped: AnyPublisher<Void, Never>
         let allCheckButtonTapped: AnyPublisher<Void, Never>
         let firstCheckButtonTapped: AnyPublisher<Void, Never>
         let secondCheckButtonTapped: AnyPublisher<Void, Never>
@@ -44,19 +43,13 @@ final class JoinAgreementViewModel: ViewModelType {
     }
     
     struct Output {
-        let pushOrPopViewController: PassthroughSubject<Int, Never>
+        let nextButtonDidTapped: PassthroughSubject<Void, Never>
         let isAllcheck: PassthroughSubject<Bool, Never>
         let isEnable: PassthroughSubject<Int, Never>
         let clickedButtonState: PassthroughSubject<(Int, Bool), Never>
     }
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
-        input.backButtonTapped
-            .sink { _ in
-                self.pushOrPopViewController.send(0)
-            }
-            .store(in: cancelBag)
-        
         input.allCheckButtonTapped
             .sink { [weak self] _ in
                 // 모든 버튼 상태를 업데이트하고 신호를 보냄
@@ -130,7 +123,7 @@ final class JoinAgreementViewModel: ViewModelType {
                             memberDefaultProfileImage: value.info?.memberDefaultProfileImage ?? "",
                             profileImage: value.file
                         )
-                        self.pushOrPopViewController.send(1)
+                        self.pushOrPopViewController.send()
                     }
                 }
                 
@@ -147,7 +140,7 @@ final class JoinAgreementViewModel: ViewModelType {
             }
             .store(in: cancelBag)
         
-        return Output(pushOrPopViewController: pushOrPopViewController,
+        return Output(nextButtonDidTapped: pushOrPopViewController,
                       isAllcheck: allButtonChecked,
                       isEnable: isEnabled,
                       clickedButtonState: clickedButtonState)
