@@ -1,5 +1,5 @@
 //
-//  TeamImageMapper.swift
+//  TeamRankMapper.swift
 //  Wable-iOS
 //
 //  Created by 김진웅 on 11/22/24.
@@ -7,14 +7,14 @@
 
 import UIKit
 
-enum TeamImageMapper: String {
+enum TeamRankMapper: String {
     case t1 = "T1"
     case gen = "GEN"
     case hle = "HLE"
     case dk = "DK"
     case kt = "KT"
-    case fox = "FOX"
-    case kdf = "KDF"
+    case bfx = "BFX"
+    case dnf = "DNF"
     case ns = "NS"
     case drx = "DRX"
     case bro = "BRO"
@@ -31,16 +31,41 @@ enum TeamImageMapper: String {
             return ImageLiterals.Team.Dk
         case .kt:
             return ImageLiterals.Team.Kt
-        case .fox:
-            return ImageLiterals.Team.Fox
-        case .kdf:
-            return ImageLiterals.Team.Kdf
+        case .bfx:
+            return ImageLiterals.Team.BFX
+        case .dnf:
+            return ImageLiterals.Team.DNF
         case .ns:
             return ImageLiterals.Team.Ns
         case .drx:
             return ImageLiterals.Team.Drx
         case .bro:
             return ImageLiterals.Team.Bro
+        }
+    }
+    
+    var lckCupTeam: LCKCupTeam {
+        switch self {
+        case .t1, .hle, .dnf, .bro, .bfx:
+            return .baron
+        case .gen, .dk, .ns, .drx, .kt:
+            return .elder
+        }
+    }
+}
+
+extension TeamRankMapper {
+    enum LCKCupTeam {
+        case baron
+        case elder
+        
+        var color: UIColor {
+            switch self {
+            case .baron:
+                return .purple50
+            case .elder:
+                return .sky50
+            }
         }
     }
 }

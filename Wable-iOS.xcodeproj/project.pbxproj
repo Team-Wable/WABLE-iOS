@@ -104,6 +104,15 @@
 		0593F6E42C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */; };
 		05AD1EB52CE4C1D900F36D6B /* Dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 05AD1EB42CE4C1D900F36D6B /* Dev.xcconfig */; };
 		05AD1EB72CE4C1F400F36D6B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 05AD1EB62CE4C1F400F36D6B /* GoogleService-Info.plist */; };
+		05B4EC002D53C9C100F191E2 /* LoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EBFF2D53C9C100F191E2 /* LoginAPI.swift */; };
+		05B4EC022D53C9CF00F191E2 /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC012D53C9CF00F191E2 /* LoginRouter.swift */; };
+		05B4EC042D53D15900F191E2 /* MigratedLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC032D53D15900F191E2 /* MigratedLoginViewModel.swift */; };
+		05B4EC072D53D29500F191E2 /* SocialPlatform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC062D53D29500F191E2 /* SocialPlatform.swift */; };
+		05B4EC092D5673F500F191E2 /* UserInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC082D5673F500F191E2 /* UserInfoDTO.swift */; };
+		05B4EC0D2D56832000F191E2 /* JoinRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC0C2D56832000F191E2 /* JoinRouter.swift */; };
+		05B4EC0F2D56832700F191E2 /* JoinAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC0E2D56832700F191E2 /* JoinAPI.swift */; };
+		05B4EC112D579F3900F191E2 /* MigratedJoinAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC102D579F3900F191E2 /* MigratedJoinAgreementViewController.swift */; };
+		05B4EC132D579F4C00F191E2 /* MigratedJoinAgreementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC122D579F4C00F191E2 /* MigratedJoinAgreementViewModel.swift */; };
 		05B4F47B2CF483010033FF67 /* HomeLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4F47A2CF483010033FF67 /* HomeLoadingView.swift */; };
 		05B4F47D2CF8BE360033FF67 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4F47C2CF8BE360033FF67 /* Array+.swift */; };
 		05B4F47F2CF8C2450033FF67 /* BanRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4F47E2CF8C2450033FF67 /* BanRequestDTO.swift */; };
@@ -232,7 +241,7 @@
 		DE9D0E362CF088D10024BB1F /* LCKTeamRankDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */; };
 		DE9D0E442CF090630024BB1F /* InfoRankingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E432CF090630024BB1F /* InfoRankingViewModel.swift */; };
 		DE9D0E472CF0AA640024BB1F /* RankCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E462CF0AA640024BB1F /* RankCell.swift */; };
-		DE9D0E4D2CF0C9250024BB1F /* TeamImageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E4C2CF0C9250024BB1F /* TeamImageMapper.swift */; };
+		DE9D0E4D2CF0C9250024BB1F /* TeamRankMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9D0E4C2CF0C9250024BB1F /* TeamRankMapper.swift */; };
 		DEAAA3972D3433A6002B4EC9 /* NotificationPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAA3962D3433A6002B4EC9 /* NotificationPageViewController.swift */; };
 		DEAAA3992D34352D002B4EC9 /* NotificationPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAA3982D34352D002B4EC9 /* NotificationPageView.swift */; };
 		DEAAA39B2D343AD8002B4EC9 /* NotificationPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAA39A2D343AD8002B4EC9 /* NotificationPageViewModel.swift */; };
@@ -336,6 +345,15 @@
 		0593F6E32C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WablePushAlarmHelper.swift; sourceTree = "<group>"; };
 		05AD1EB42CE4C1D900F36D6B /* Dev.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
 		05AD1EB62CE4C1F400F36D6B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		05B4EBFF2D53C9C100F191E2 /* LoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAPI.swift; sourceTree = "<group>"; };
+		05B4EC012D53C9CF00F191E2 /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
+		05B4EC032D53D15900F191E2 /* MigratedLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedLoginViewModel.swift; sourceTree = "<group>"; };
+		05B4EC062D53D29500F191E2 /* SocialPlatform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialPlatform.swift; sourceTree = "<group>"; };
+		05B4EC082D5673F500F191E2 /* UserInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoDTO.swift; sourceTree = "<group>"; };
+		05B4EC0C2D56832000F191E2 /* JoinRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRouter.swift; sourceTree = "<group>"; };
+		05B4EC0E2D56832700F191E2 /* JoinAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinAPI.swift; sourceTree = "<group>"; };
+		05B4EC102D579F3900F191E2 /* MigratedJoinAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedJoinAgreementViewController.swift; sourceTree = "<group>"; };
+		05B4EC122D579F4C00F191E2 /* MigratedJoinAgreementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedJoinAgreementViewModel.swift; sourceTree = "<group>"; };
 		05B4F47A2CF483010033FF67 /* HomeLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLoadingView.swift; sourceTree = "<group>"; };
 		05B4F47C2CF8BE360033FF67 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		05B4F47E2CF8C2450033FF67 /* BanRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanRequestDTO.swift; sourceTree = "<group>"; };
@@ -464,7 +482,7 @@
 		DE9D0E352CF088D10024BB1F /* LCKTeamRankDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamRankDTO.swift; sourceTree = "<group>"; };
 		DE9D0E432CF090630024BB1F /* InfoRankingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRankingViewModel.swift; sourceTree = "<group>"; };
 		DE9D0E462CF0AA640024BB1F /* RankCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankCell.swift; sourceTree = "<group>"; };
-		DE9D0E4C2CF0C9250024BB1F /* TeamImageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamImageMapper.swift; sourceTree = "<group>"; };
+		DE9D0E4C2CF0C9250024BB1F /* TeamRankMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRankMapper.swift; sourceTree = "<group>"; };
 		DEAAA3962D3433A6002B4EC9 /* NotificationPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageViewController.swift; sourceTree = "<group>"; };
 		DEAAA3982D34352D002B4EC9 /* NotificationPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageView.swift; sourceTree = "<group>"; };
 		DEAAA39A2D343AD8002B4EC9 /* NotificationPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageViewModel.swift; sourceTree = "<group>"; };
@@ -724,6 +742,7 @@
 		0547F4AF2C60E240001E3039 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				05B4EC0A2D5682E700F191E2 /* Join */,
 				3C8B4E402C80884F00174943 /* Write */,
 				3C8B4E2B2C78ECA200174943 /* UserProfile */,
 				3C8B4E192C78E54600174943 /* TokenManager */,
@@ -928,6 +947,39 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		05B4EBFC2D4F788800F191E2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		05B4EC052D53D28300F191E2 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				05B4EC062D53D29500F191E2 /* SocialPlatform.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		05B4EC0A2D5682E700F191E2 /* Join */ = {
+			isa = PBXGroup;
+			children = (
+				05B4EC0B2D56830500F191E2 /* RequestDTO */,
+				05B4EC0C2D56832000F191E2 /* JoinRouter.swift */,
+				05B4EC0E2D56832700F191E2 /* JoinAPI.swift */,
+			);
+			path = Join;
+			sourceTree = "<group>";
+		};
+		05B4EC0B2D56830500F191E2 /* RequestDTO */ = {
+			isa = PBXGroup;
+			children = (
+				05B4EC082D5673F500F191E2 /* UserInfoDTO.swift */,
+			);
+			path = RequestDTO;
+			sourceTree = "<group>";
+		};
 		3C35317E2C6F13FF0015A8FA /* Font */ = {
 			isa = PBXGroup;
 			children = (
@@ -964,6 +1016,8 @@
 		3C35318F2C6F1AC00015A8FA /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				05B4EC052D53D28300F191E2 /* Support */,
+				05B4EBFC2D4F788800F191E2 /* View */,
 				3C3531902C6F1ADB0015A8FA /* ViewController */,
 				3C3531972C6F216E0015A8FA /* ViewModel */,
 			);
@@ -982,6 +1036,7 @@
 			isa = PBXGroup;
 			children = (
 				3C3531982C6F21A10015A8FA /* LoginViewModel.swift */,
+				05B4EC032D53D15900F191E2 /* MigratedLoginViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1012,6 +1067,7 @@
 				3CDE2E032C713470004A84CB /* JoinLCKTeamViewController.swift */,
 				3CDE2DE72C6F30CE004A84CB /* JoinProfileViewController.swift */,
 				3CDE2DE52C6F30BA004A84CB /* JoinAgreementViewController.swift */,
+				05B4EC102D579F3900F191E2 /* MigratedJoinAgreementViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1036,6 +1092,8 @@
 		3C8B4E112C78E0AC00174943 /* SocialLogin */ = {
 			isa = PBXGroup;
 			children = (
+				05B4EBFF2D53C9C100F191E2 /* LoginAPI.swift */,
+				05B4EC012D53C9CF00F191E2 /* LoginRouter.swift */,
 				3C8B4E122C78E0B500174943 /* DTO */,
 			);
 			path = SocialLogin;
@@ -1203,6 +1261,7 @@
 				3CDE2E072C7137C8004A84CB /* JoinLCKTeamViewModel.swift */,
 				3CDE2DFB2C70FAB5004A84CB /* JoinProfileViewModel.swift */,
 				3CDE2DF12C6F3E4E004A84CB /* JoinAgreementViewModel.swift */,
+				05B4EC122D579F4C00F191E2 /* MigratedJoinAgreementViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1478,7 +1537,7 @@
 		DE9D0E4B2CF0C8FF0024BB1F /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				DE9D0E4C2CF0C9250024BB1F /* TeamImageMapper.swift */,
+				DE9D0E4C2CF0C9250024BB1F /* TeamRankMapper.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -1762,6 +1821,7 @@
 				050E0CBF2C74B8A400326EEA /* FeedContentView.swift in Sources */,
 				0593F6E42C9AFC1B00FFAD82 /* WablePushAlarmHelper.swift in Sources */,
 				3C3531922C6F1AEA0015A8FA /* LoginViewController.swift in Sources */,
+				05B4EC002D53C9C100F191E2 /* LoginAPI.swift in Sources */,
 				0547F4DB2C624821001E3039 /* SuccessResponse.swift in Sources */,
 				3CDE2DF62C6F4170004A84CB /* JoinLCKYearView.swift in Sources */,
 				050E0D002C77341A00326EEA /* HomeRouter.swift in Sources */,
@@ -1784,6 +1844,7 @@
 				3CDE2E042C713470004A84CB /* JoinLCKTeamViewController.swift in Sources */,
 				3CF344D42C749E310038BB53 /* MyPageAccountInfoViewController.swift in Sources */,
 				050E0CE32C74CBF400326EEA /* MatchProgressStatusView.swift in Sources */,
+				05B4EC112D579F3900F191E2 /* MigratedJoinAgreementViewController.swift in Sources */,
 				0547F4E62C637F30001E3039 /* WableButton.swift in Sources */,
 				3C8B4E222C78E5FB00174943 /* NetworkError.swift in Sources */,
 				3CDE2E2B2C7302EC004A84CB /* MyPageReplyViewController.swift in Sources */,
@@ -1835,6 +1896,7 @@
 				3CF344CE2C73CCCA0038BB53 /* HambergerButton.swift in Sources */,
 				050E0CA62C74B70800326EEA /* UIButton+.swift in Sources */,
 				050E0D1E2C82E31500326EEA /* NotiInfoText.swift in Sources */,
+				05B4EC072D53D29500F191E2 /* SocialPlatform.swift in Sources */,
 				DE8001BD2CF35A0300D9DAD9 /* InfoDetailView.swift in Sources */,
 				3C3531962C6F1FBF0015A8FA /* UILabel+.swift in Sources */,
 				3CF344D82C74A3E00038BB53 /* MyPageEditProfileViewController.swift in Sources */,
@@ -1855,7 +1917,7 @@
 				DE9D0E342CF087B30024BB1F /* LCKGameTypeDTO.swift in Sources */,
 				3C3531842C6F16D00015A8FA /* Config.swift in Sources */,
 				050E0D022C77372F00326EEA /* HomeAPI.swift in Sources */,
-				DE9D0E4D2CF0C9250024BB1F /* TeamImageMapper.swift in Sources */,
+				DE9D0E4D2CF0C9250024BB1F /* TeamRankMapper.swift in Sources */,
 				3C8B4E4A2C80E38600174943 /* FeedDetailResponseDTO.swift in Sources */,
 				3C8B4E552C84081B00174943 /* ReportRequestDTO.swift in Sources */,
 				050E0D162C8252B200326EEA /* NotificationAPI.swift in Sources */,
@@ -1874,12 +1936,16 @@
 				DE54C3DB2CF4E56C00753129 /* InfoNoticeViewController.swift in Sources */,
 				3C3531992C6F21A10015A8FA /* LoginViewModel.swift in Sources */,
 				DE8001AB2CF31FFE00D9DAD9 /* NewsTimeFormatter.swift in Sources */,
+				05B4EC022D53C9CF00F191E2 /* LoginRouter.swift in Sources */,
 				3CDE2E202C72F299004A84CB /* MyPageView.swift in Sources */,
 				050E0D0B2C7F634800326EEA /* InfoRouter.swift in Sources */,
+				05B4EC0D2D56832000F191E2 /* JoinRouter.swift in Sources */,
 				05B4F47B2CF483010033FF67 /* HomeLoadingView.swift in Sources */,
+				05B4EC042D53D15900F191E2 /* MigratedLoginViewModel.swift in Sources */,
 				3CDE2E232C72F32B004A84CB /* MyPageViewModel.swift in Sources */,
 				0547F4C42C62178C001E3039 /* ImageLiterals.swift in Sources */,
 				0547F4EB2C64C618001E3039 /* WableTabBarItem.swift in Sources */,
+				05B4EC132D579F4C00F191E2 /* MigratedJoinAgreementViewModel.swift in Sources */,
 				3CDE2E062C713495004A84CB /* JoinLCKTeamView.swift in Sources */,
 				050E0CAE2C74B7F100326EEA /* WablePopupView.swift in Sources */,
 				3CDE2E082C7137C8004A84CB /* JoinLCKTeamViewModel.swift in Sources */,
@@ -1923,7 +1989,9 @@
 				050E0CAC2C74B7BB00326EEA /* HomeFeedListDTO.swift in Sources */,
 				050E0D1B2C82642400326EEA /* NotificationActivityViewModel.swift in Sources */,
 				3CDE2DFE2C71167A004A84CB /* JoinProfileView.swift in Sources */,
+				05B4EC0F2D56832700F191E2 /* JoinAPI.swift in Sources */,
 				3C8B4E482C80E1C900174943 /* FeedDetailViewModel.swift in Sources */,
+				05B4EC092D5673F500F191E2 /* UserInfoDTO.swift in Sources */,
 				0589AED52D393D3A004F531E /* MigratedDetailCell.swift in Sources */,
 				3C8B4E4F2C83F01600174943 /* LikeViewModel.swift in Sources */,
 				3CDE2E192C7232DC004A84CB /* NotificationInformationViewController.swift in Sources */,

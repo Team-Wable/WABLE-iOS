@@ -248,5 +248,14 @@ enum StringLiterals {
             static let getNotiActivity = "v1/notifications"
             static let getFeedInfo = "v3/content/"
         }
+        
+        enum Login {
+            static let postSocialLogin = "v2/auth"
+        }
+        
+        enum Join {
+            static let getIsDuplicatedNickname = "v1/nickname-validation"
+            static let patchUserProfile = "v1/user-profile2"
+        }
     }
 }

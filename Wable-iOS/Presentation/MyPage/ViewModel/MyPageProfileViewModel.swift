@@ -98,7 +98,7 @@ extension MyPageProfileViewModel {
     func patchUserInfoDataAPI(nickname: String, isAlarmAllowed: Bool, memberLckYears: Int, memberFanTeam: String, memberDefaultProfileImage: String, profileImage: Data?) async throws -> Void {
         guard let url = URL(string: Config.baseURL + "v1/user-profile2") else { return }
         guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return }
-        
+
         if memberDefaultProfileImage == "" {
             print("memberDefaultProfileImage is empty")
             let parameters: [String: Any] = [

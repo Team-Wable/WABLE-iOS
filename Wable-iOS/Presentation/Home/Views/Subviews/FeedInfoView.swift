@@ -20,7 +20,6 @@ final class FeedInfoView: UIView {
         return label
     }()
     
-    var teamImageView = UIImageView()
     var ghostPercentLabel: UILabel = {
         let label = UILabel()
         label.font = .caption4
@@ -56,7 +55,6 @@ extension FeedInfoView {
     
     private func setHierarchy() {
         self.addSubviews(nicknameLabel,
-                         teamImageView,
                          ghostPercentLabel,
                          timeLabel)
     }
@@ -65,12 +63,6 @@ extension FeedInfoView {
         nicknameLabel.snp.makeConstraints {
             $0.leading.top.equalToSuperview()
             $0.height.equalTo(22.adjusted)
-        }
-        
-        teamImageView.snp.makeConstraints {
-            $0.height.equalTo(19.adjusted)
-            $0.centerY.equalTo(nicknameLabel)
-            $0.leading.equalTo(nicknameLabel.snp.trailing).offset(8.adjusted)
         }
         
         ghostPercentLabel.snp.makeConstraints {
@@ -88,7 +80,6 @@ extension FeedInfoView {
     
     func bind(nickname: String, team: Team, ghostPercent: Int, time: String) {
         nicknameLabel.text = nickname
-        teamImageView.image = team.tag
         ghostPercentLabel.text = "투명도 \(ghostPercent)%"
         timeLabel.text = "· \(time.formattedTime())"
     }

@@ -734,7 +734,7 @@ extension MyPageViewController: WablePopupDelegate {
             
             if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
                 DispatchQueue.main.async {
-                    let rootViewController = LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService()))
+                    let rootViewController = LoginViewController(viewModel: MigratedLoginViewModel())
                     sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: rootViewController)
                 }
             }
