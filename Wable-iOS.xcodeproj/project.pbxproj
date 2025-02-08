@@ -108,6 +108,11 @@
 		05B4EC022D53C9CF00F191E2 /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC012D53C9CF00F191E2 /* LoginRouter.swift */; };
 		05B4EC042D53D15900F191E2 /* MigratedLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC032D53D15900F191E2 /* MigratedLoginViewModel.swift */; };
 		05B4EC072D53D29500F191E2 /* SocialPlatform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC062D53D29500F191E2 /* SocialPlatform.swift */; };
+		05B4EC092D5673F500F191E2 /* UserInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC082D5673F500F191E2 /* UserInfoDTO.swift */; };
+		05B4EC0D2D56832000F191E2 /* JoinRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC0C2D56832000F191E2 /* JoinRouter.swift */; };
+		05B4EC0F2D56832700F191E2 /* JoinAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC0E2D56832700F191E2 /* JoinAPI.swift */; };
+		05B4EC112D579F3900F191E2 /* MigratedJoinAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC102D579F3900F191E2 /* MigratedJoinAgreementViewController.swift */; };
+		05B4EC132D579F4C00F191E2 /* MigratedJoinAgreementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4EC122D579F4C00F191E2 /* MigratedJoinAgreementViewModel.swift */; };
 		05B4F47B2CF483010033FF67 /* HomeLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4F47A2CF483010033FF67 /* HomeLoadingView.swift */; };
 		05B4F47D2CF8BE360033FF67 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4F47C2CF8BE360033FF67 /* Array+.swift */; };
 		05B4F47F2CF8C2450033FF67 /* BanRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4F47E2CF8C2450033FF67 /* BanRequestDTO.swift */; };
@@ -344,6 +349,11 @@
 		05B4EC012D53C9CF00F191E2 /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
 		05B4EC032D53D15900F191E2 /* MigratedLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedLoginViewModel.swift; sourceTree = "<group>"; };
 		05B4EC062D53D29500F191E2 /* SocialPlatform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialPlatform.swift; sourceTree = "<group>"; };
+		05B4EC082D5673F500F191E2 /* UserInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoDTO.swift; sourceTree = "<group>"; };
+		05B4EC0C2D56832000F191E2 /* JoinRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRouter.swift; sourceTree = "<group>"; };
+		05B4EC0E2D56832700F191E2 /* JoinAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinAPI.swift; sourceTree = "<group>"; };
+		05B4EC102D579F3900F191E2 /* MigratedJoinAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedJoinAgreementViewController.swift; sourceTree = "<group>"; };
+		05B4EC122D579F4C00F191E2 /* MigratedJoinAgreementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratedJoinAgreementViewModel.swift; sourceTree = "<group>"; };
 		05B4F47A2CF483010033FF67 /* HomeLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLoadingView.swift; sourceTree = "<group>"; };
 		05B4F47C2CF8BE360033FF67 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		05B4F47E2CF8C2450033FF67 /* BanRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanRequestDTO.swift; sourceTree = "<group>"; };
@@ -732,6 +742,7 @@
 		0547F4AF2C60E240001E3039 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				05B4EC0A2D5682E700F191E2 /* Join */,
 				3C8B4E402C80884F00174943 /* Write */,
 				3C8B4E2B2C78ECA200174943 /* UserProfile */,
 				3C8B4E192C78E54600174943 /* TokenManager */,
@@ -951,6 +962,24 @@
 			path = Support;
 			sourceTree = "<group>";
 		};
+		05B4EC0A2D5682E700F191E2 /* Join */ = {
+			isa = PBXGroup;
+			children = (
+				05B4EC0B2D56830500F191E2 /* RequestDTO */,
+				05B4EC0C2D56832000F191E2 /* JoinRouter.swift */,
+				05B4EC0E2D56832700F191E2 /* JoinAPI.swift */,
+			);
+			path = Join;
+			sourceTree = "<group>";
+		};
+		05B4EC0B2D56830500F191E2 /* RequestDTO */ = {
+			isa = PBXGroup;
+			children = (
+				05B4EC082D5673F500F191E2 /* UserInfoDTO.swift */,
+			);
+			path = RequestDTO;
+			sourceTree = "<group>";
+		};
 		3C35317E2C6F13FF0015A8FA /* Font */ = {
 			isa = PBXGroup;
 			children = (
@@ -1038,6 +1067,7 @@
 				3CDE2E032C713470004A84CB /* JoinLCKTeamViewController.swift */,
 				3CDE2DE72C6F30CE004A84CB /* JoinProfileViewController.swift */,
 				3CDE2DE52C6F30BA004A84CB /* JoinAgreementViewController.swift */,
+				05B4EC102D579F3900F191E2 /* MigratedJoinAgreementViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1231,6 +1261,7 @@
 				3CDE2E072C7137C8004A84CB /* JoinLCKTeamViewModel.swift */,
 				3CDE2DFB2C70FAB5004A84CB /* JoinProfileViewModel.swift */,
 				3CDE2DF12C6F3E4E004A84CB /* JoinAgreementViewModel.swift */,
+				05B4EC122D579F4C00F191E2 /* MigratedJoinAgreementViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1813,6 +1844,7 @@
 				3CDE2E042C713470004A84CB /* JoinLCKTeamViewController.swift in Sources */,
 				3CF344D42C749E310038BB53 /* MyPageAccountInfoViewController.swift in Sources */,
 				050E0CE32C74CBF400326EEA /* MatchProgressStatusView.swift in Sources */,
+				05B4EC112D579F3900F191E2 /* MigratedJoinAgreementViewController.swift in Sources */,
 				0547F4E62C637F30001E3039 /* WableButton.swift in Sources */,
 				3C8B4E222C78E5FB00174943 /* NetworkError.swift in Sources */,
 				3CDE2E2B2C7302EC004A84CB /* MyPageReplyViewController.swift in Sources */,
@@ -1907,11 +1939,13 @@
 				05B4EC022D53C9CF00F191E2 /* LoginRouter.swift in Sources */,
 				3CDE2E202C72F299004A84CB /* MyPageView.swift in Sources */,
 				050E0D0B2C7F634800326EEA /* InfoRouter.swift in Sources */,
+				05B4EC0D2D56832000F191E2 /* JoinRouter.swift in Sources */,
 				05B4F47B2CF483010033FF67 /* HomeLoadingView.swift in Sources */,
 				05B4EC042D53D15900F191E2 /* MigratedLoginViewModel.swift in Sources */,
 				3CDE2E232C72F32B004A84CB /* MyPageViewModel.swift in Sources */,
 				0547F4C42C62178C001E3039 /* ImageLiterals.swift in Sources */,
 				0547F4EB2C64C618001E3039 /* WableTabBarItem.swift in Sources */,
+				05B4EC132D579F4C00F191E2 /* MigratedJoinAgreementViewModel.swift in Sources */,
 				3CDE2E062C713495004A84CB /* JoinLCKTeamView.swift in Sources */,
 				050E0CAE2C74B7F100326EEA /* WablePopupView.swift in Sources */,
 				3CDE2E082C7137C8004A84CB /* JoinLCKTeamViewModel.swift in Sources */,
@@ -1955,7 +1989,9 @@
 				050E0CAC2C74B7BB00326EEA /* HomeFeedListDTO.swift in Sources */,
 				050E0D1B2C82642400326EEA /* NotificationActivityViewModel.swift in Sources */,
 				3CDE2DFE2C71167A004A84CB /* JoinProfileView.swift in Sources */,
+				05B4EC0F2D56832700F191E2 /* JoinAPI.swift in Sources */,
 				3C8B4E482C80E1C900174943 /* FeedDetailViewModel.swift in Sources */,
+				05B4EC092D5673F500F191E2 /* UserInfoDTO.swift in Sources */,
 				0589AED52D393D3A004F531E /* MigratedDetailCell.swift in Sources */,
 				3C8B4E4F2C83F01600174943 /* LikeViewModel.swift in Sources */,
 				3CDE2E192C7232DC004A84CB /* NotificationInformationViewController.swift in Sources */,

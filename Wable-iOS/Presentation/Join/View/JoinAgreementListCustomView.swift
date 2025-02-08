@@ -14,6 +14,7 @@ final class JoinAgreementListCustomView: UIView {
     let checkButton: UIButton = {
         let checkButton = UIButton()
         checkButton.setImage(ImageLiterals.Button.btnCheckboxDefault, for: .normal)
+        checkButton.setImage(ImageLiterals.Button.btnCheckboxActive, for: .selected)
         return checkButton
     }()
     

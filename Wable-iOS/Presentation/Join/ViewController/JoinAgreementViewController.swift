@@ -28,7 +28,6 @@ final class JoinAgreementViewController: UIViewController {
     private var cancelBag = CancelBag()
     private let viewModel: JoinAgreementViewModel
     
-    private lazy var backButtonTapped = self.navigationBackButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var allCheckButtonTapped = self.originView.allCheck.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var firstCheck = self.originView.firstCheckView.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     private lazy var secondCheck = self.originView.secondCheckView.checkButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
@@ -116,6 +115,7 @@ extension JoinAgreementViewController {
     
     private func setAddTarget() {
         navigationXButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
+        navigationBackButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         self.originView.firstCheckView.moreButton.addTarget(self, action: #selector(firstMoreButtonTapped), for: .touchUpInside)
         self.originView.secondCheckView.moreButton.addTarget(self, action: #selector(secondMoreButtonTapped), for: .touchUpInside)
         self.originView.fourthCheckView.moreButton.addTarget(self, action: #selector(fourthMoreButtonTapped), for: .touchUpInside)
@@ -123,13 +123,13 @@ extension JoinAgreementViewController {
     
     private func bindViewModel() {
         let input = JoinAgreementViewModel.Input(
-            backButtonTapped: backButtonTapped,
             allCheckButtonTapped: allCheckButtonTapped,
             firstCheckButtonTapped: firstCheck,
             secondCheckButtonTapped: secondCheck,
             thirdCheckButtonTapped: thirdCheck,
             fourthCheckButtonTapped: fourtchCheck,
-            nextButtonTapped: nextButtonTapped)
+            nextButtonTapped: nextButtonTapped
+        )
         
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
         
@@ -141,40 +141,38 @@ extension JoinAgreementViewController {
             self.originView.fourthCheckView.checkButton
         ]
         
-        output.pushOrPopViewController
+        output.nextButtonDidTapped
             .receive(on: RunLoop.main)
             .sink { value in
-                if value == 0 {
-                    self.navigationController?.popViewController(animated: true)
-                } else {
-                    self.originView.JoinCompleteActiveButton.isEnabled = false
-                    self.loadingToastView = UIImageView(image: ImageLiterals.Toast.toastAgreementLoading)
-                    self.loadingToastView?.contentMode = .scaleAspectFit
-                    
-                    if let loadingToastView = self.loadingToastView {
-                        if let window = UIApplication.shared.keyWindowInConnectedScenes {
-                            window.addSubviews(loadingToastView)
-                        }
-                        
-                        loadingToastView.snp.makeConstraints {
-                            $0.top.equalToSuperview().inset(32.adjusted)
-                            $0.centerX.equalToSuperview()
-                            $0.width.equalTo(343.adjusted)
-                            $0.height.equalTo(60.adjusted)
-                        }
-                        
-                        UIView.animate(withDuration: 1, delay: 1, options: .curveEaseIn) {
-                            self.loadingToastView?.alpha = 0
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            self.loadingToastView?.removeFromSuperview()
-                            let viewController = WableTabBarController()
-                            self.navigationBackButton.removeFromSuperview()
-                            self.originView.JoinCompleteActiveButton.isEnabled = true
-                            self.navigationController?.pushViewController(viewController, animated: true)
-                        }
+                
+                self.originView.JoinCompleteActiveButton.isEnabled = false
+                self.loadingToastView = UIImageView(image: ImageLiterals.Toast.toastAgreementLoading)
+                self.loadingToastView?.contentMode = .scaleAspectFit
+                
+                if let loadingToastView = self.loadingToastView {
+                    if let window = UIApplication.shared.keyWindowInConnectedScenes {
+                        window.addSubviews(loadingToastView)
                     }
+                    
+                    loadingToastView.snp.makeConstraints {
+                        $0.top.equalToSuperview().inset(32.adjusted)
+                        $0.centerX.equalToSuperview()
+                        $0.width.equalTo(343.adjusted)
+                        $0.height.equalTo(60.adjusted)
+                    }
+                    
+                    UIView.animate(withDuration: 1, delay: 1, options: .curveEaseIn) {
+                        self.loadingToastView?.alpha = 0
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.loadingToastView?.removeFromSuperview()
+                        let viewController = WableTabBarController()
+                        self.navigationBackButton.removeFromSuperview()
+                        self.originView.JoinCompleteActiveButton.isEnabled = true
+                        self.navigationController?.pushViewController(viewController, animated: true)
+                    }
+                    
                 }
             }
             .store(in: self.cancelBag)
@@ -269,4 +267,9 @@ extension JoinAgreementViewController {
             navigationController.setViewControllers(viewControllers, animated: false)
         }
     }
+    
+    @objc private func backButtonTapped() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
 }
