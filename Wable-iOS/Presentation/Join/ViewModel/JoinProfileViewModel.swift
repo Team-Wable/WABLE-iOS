@@ -41,7 +41,6 @@ extension JoinProfileViewModel: ViewModelType {
                     .mapWableNetworkError()
                     .replaceError(with: EmptyDTO())
                     .compactMap {
-                        print("\($0)💫💫💫")
                         return $0 != nil ? false : true
                     }
             }
