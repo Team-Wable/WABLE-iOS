@@ -31,16 +31,7 @@ final class JoinAgreementView: UIView {
     
     private let divisionLine = UIView().makeDivisionLine()
     
-    private let JoinCompleteButton: UIButton = {
-        let button = WableButton(type: .large, title: StringLiterals.Join.JoinCompleteButtonTitle, isEnabled: false)
-        return button
-    }()
-    
-    let JoinCompleteActiveButton: UIButton = {
-        let button = WableButton(type: .large, title: StringLiterals.Join.JoinCompleteButtonTitle, isEnabled: true)
-        button.isHidden = true
-        return button
-    }()
+    let JoinCompleteActiveButton = WableButton(type: .large, title: StringLiterals.Join.JoinCompleteButtonTitle, isEnabled: true)
     
     // MARK: - Life Cycles
     
@@ -73,7 +64,6 @@ extension JoinAgreementView {
                          thirdCheckView,
                          fourthCheckView,
                          divisionLine,
-                         JoinCompleteButton,
                          JoinCompleteActiveButton)
     }
     
@@ -113,12 +103,6 @@ extension JoinAgreementView {
         fourthCheckView.snp.makeConstraints {
             $0.top.equalTo(thirdCheckView.snp.bottom).offset(4.adjustedH)
             $0.leading.trailing.height.equalTo(allCheck)
-        }
-        
-        JoinCompleteButton.snp.makeConstraints {
-            $0.bottom.equalTo(self.safeAreaLayoutGuide).inset(30.adjusted)
-            $0.leading.trailing.equalToSuperview().inset(16.adjusted)
-            $0.height.equalTo(56.adjusted)
         }
         
         JoinCompleteActiveButton.snp.makeConstraints {

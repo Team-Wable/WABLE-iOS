@@ -252,5 +252,10 @@ enum StringLiterals {
         enum Login {
             static let postSocialLogin = "v2/auth"
         }
+        
+        enum Join {
+            static let getIsDuplicatedNickname = "v1/nickname-validation"
+            static let patchUserProfile = "v1/user-profile2"
+        }
     }
 }

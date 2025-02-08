@@ -166,7 +166,7 @@ private extension LoginViewController {
             .receive(on: RunLoop.main)
             .sink { isNewUser in
                 if isNewUser {
-                    let viewController = JoinLCKYearViewController(viewModel: JoinLCKYearViewModel())
+                    let viewController = JoinLCKYearViewController()
                     self.navigationController?.pushViewController(viewController, animated: true)
                 } else {
                     let viewController = WableTabBarController()
