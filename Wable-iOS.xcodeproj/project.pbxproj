@@ -214,7 +214,6 @@
 		3CF344EB2C75EE410038BB53 /* MyPageSignOutConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344EA2C75EE410038BB53 /* MyPageSignOutConfirmViewController.swift */; };
 		3CF344ED2C75EE620038BB53 /* MyPageSignOutConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344EC2C75EE620038BB53 /* MyPageSignOutConfirmView.swift */; };
 		3CF344EF2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF344EE2C7607BB0038BB53 /* MyPageSignOutConfirmViewModel.swift */; };
-		DD0F00E42D6DE22100C4A8F8 /* Dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD0F00E32D6DE22100C4A8F8 /* Dev.xcconfig */; };
 		DE1535C72CF390B2008DBE9A /* NewsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1535C62CF390B2008DBE9A /* NewsHeaderView.swift */; };
 		DE54C3D92CF4E56300753129 /* InfoNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54C3D82CF4E56300753129 /* InfoNoticeView.swift */; };
 		DE54C3DB2CF4E56C00753129 /* InfoNoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54C3DA2CF4E56C00753129 /* InfoNoticeViewController.swift */; };
@@ -1799,7 +1798,6 @@
 			files = (
 				054308EA2CB7F582001861F1 /* wable_loading.json in Resources */,
 				0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */,
-				DD0F00E42D6DE22100C4A8F8 /* Dev.xcconfig in Resources */,
 				054308EC2CB7F6CE001861F1 /* wable_splash.json in Resources */,
 				0586D89B2D09A68200436080 /* Pretendard-Regular.otf in Resources */,
 				3C8B4E052C76247800174943 /* wable_tab.json in Resources */,
@@ -2184,9 +2182,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Wable-iOS/Wable-iOS.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 4;
-				DEVELOPMENT_TEAM = HGVD26K7DP;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Global/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "와블";
@@ -2204,6 +2204,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Wable_Debug;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2221,9 +2222,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Wable-iOS/Wable-iOS.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 4;
-				DEVELOPMENT_TEAM = HGVD26K7DP;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Global/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "와블";
@@ -2241,6 +2244,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Wable_Release;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

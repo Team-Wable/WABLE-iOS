@@ -184,7 +184,7 @@ private extension JoinProfileViewController {
     @objc
     func nextButtonTapped() {
         userInfo.setNickname(self.originView.nickNameTextField.text)
-        let viewController = MigratedJoinAgreementViewController(viewModel: MigratedJoinAgreementViewModel(userInfo: userInfo))
+        let viewController = JoinAgreementViewController(viewModel: JoinAgreementViewModel(networkProvider: NetworkService()))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
