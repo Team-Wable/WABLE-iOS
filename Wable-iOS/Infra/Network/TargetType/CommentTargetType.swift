@@ -27,7 +27,7 @@ extension CommentTargetType: BaseTargetType {
         case .deleteComment(commentID: let commentID):
             return "/v1/comment/\(commentID)"
         case .createComment(contentID: let contentID):
-            return "/api/v3/content/\(contentID)/comment"
+            return "/v3/content/\(contentID)/comment"
         }
     }
     

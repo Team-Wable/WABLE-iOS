@@ -23,18 +23,23 @@ final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
     func request<D: Decodable>(
         _ target: Target,
         for type: D.Type
-    ) -> AnyPublisher<D, WableNetworkError> {
+    ) -> AnyPublisher<D, NetworkError> {
         return self.requestPublisher(target)
             .map(\.data)
             .decode(type: BaseResponse<D>.self, decoder: jsonDecoder)
             .tryMap(validateResponse)
-            .mapError { $0 as? WableNetworkError ?? .unknown($0) }
+            .mapError { error in
+                if let decodingError = error as? DecodingError {
+                    return .decodedError(decodingError)
+                }
+                return error as? NetworkError ?? .unknown(error)
+            }
             .eraseToAnyPublisher()
     }
     
     private func validateResponse<D>(_ baseResponse: BaseResponse<D>) throws -> D {
         guard baseResponse.success else {
-            throw mapError(statusCode: baseResponse.status, message: baseResponse.message)
+            throw convertNetworkError(statusCode: baseResponse.status, message: baseResponse.message)
         }
         
         if D.self == DTO.Response.Empty.self,
@@ -43,21 +48,17 @@ final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
         }
         
         guard let data = baseResponse.data else {
-            throw WableNetworkError.missingData
+            throw NetworkError.missingData
         }
         
         return data
     }
     
-    private func mapError(statusCode: Int, message: String) -> WableNetworkError {
+    private func convertNetworkError(statusCode: Int, message: String) -> NetworkError {
         switch statusCode {
-        case 400:
-            return .badRequest(message: message)
-        case 401:
-            return .unauthorized(message: message)
-        case 404:
-            return .notFound(message: message)
-        case 500:
+        case 400..<500:
+            return .statusError(code: statusCode, message: message)
+        case 500...:
             return .internalServerError
         default:
             return .unknown(NSError(domain: "UnknownError", code: statusCode))

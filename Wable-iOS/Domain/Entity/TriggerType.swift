@@ -20,3 +20,11 @@ enum LikeTriggerType: String {
     case commentLike = "commentLiked"
     case contentLike = "contentLiked"
 }
+
+// MARK: - 밴하기에 대한 종류
+
+enum BanTriggerType: String {
+    case content = "content"
+    case comment = "comment"
+    case viewit = "viewit"
+}

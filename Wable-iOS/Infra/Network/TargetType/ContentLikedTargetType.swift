@@ -20,9 +20,9 @@ extension ContentLikedTargetType: BaseTargetType {
     var endPoint: String? {
         switch self {
         case .createContentLiked(contentID: let contentID):
-            return "v1/content/\(contentID)/liked"
+            return "/v1/content/\(contentID)/liked"
         case .deleteContentLiked(contentID: let contentID):
-            return "v1/content/\(contentID)/unliked"
+            return "/v1/content/\(contentID)/unliked"
         }
     }
     
