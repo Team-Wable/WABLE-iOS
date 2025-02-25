@@ -2058,6 +2058,7 @@
 /* Begin XCBuildConfiguration section */
 		0547F4A82C60D96B001E3039 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD0F00E32D6DE22100C4A8F8 /* Dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -2121,6 +2122,7 @@
 		};
 		0547F4A92C60D96B001E3039 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD0F00E32D6DE22100C4A8F8 /* Dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
