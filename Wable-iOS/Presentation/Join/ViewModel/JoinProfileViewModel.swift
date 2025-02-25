@@ -8,44 +8,86 @@
 import Combine
 import Foundation
 
-final class JoinProfileViewModel {
+final class JoinProfileViewModel: ViewModelType {
     
     private let cancelBag = CancelBag()
-    private let service: JoinAPI
     
-    init(service: JoinAPI = JoinAPI.shared) {
-        self.service = service
+    private let networkProvider: NetworkServiceType
+    private let pushOrPopViewController = PassthroughSubject<Int, Never>()
+    private let isNotDuplicated = PassthroughSubject<Bool, Never>()
+    
+    init(networkProvider: NetworkServiceType) {
+        self.networkProvider = networkProvider
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-}
-
-extension JoinProfileViewModel: ViewModelType {
+    
     struct Input {
+        let backButtonTapped: AnyPublisher<Void, Never>
         let duplicationCheckButtonTapped: AnyPublisher<String, Never>
+        let nextButtonTapped: AnyPublisher<Void, Never>
     }
     
     struct Output {
-        let isEnable: AnyPublisher<Bool, Never>
+        let pushOrPopViewController: PassthroughSubject<Int, Never>
+        let isEnable: PassthroughSubject<Bool, Never>
     }
     
     func transform(from input: Input, cancelBag: CancelBag) -> Output {
-        
-        let isEnable: AnyPublisher<Bool, Never> = input.duplicationCheckButtonTapped
-            .withUnretained(self)
-            .flatMap { owner, nickname in
-                owner.service.getIsNicknameDuplicated(nickname: nickname)
-                    .mapWableNetworkError()
-                    .replaceError(with: EmptyDTO())
-                    .compactMap {
-                        return $0 != nil ? false : true
-                    }
+        input.backButtonTapped
+            .sink { _ in
+                self.pushOrPopViewController.send(0)
             }
-            .eraseToAnyPublisher()
+            .store(in: cancelBag)
         
-        return Output(isEnable: isEnable)
+        input.nextButtonTapped
+            .sink { _ in
+                AmplitudeManager.shared.trackEvent(tag: "click_next_profile_signup")
+                self.pushOrPopViewController.send(1)
+            }
+            .store(in: cancelBag)
+        
+        input.duplicationCheckButtonTapped
+            .sink { value in
+                // 닉네임 중복체크 서버통신
+                Task {
+                    do {
+                        let statusCode = try await self.getNicknameDuplicationAPI(nickname: value)?.status ?? 200
+                        if statusCode == 200 {
+                            self.isNotDuplicated.send(true)
+                        } else {
+                            self.isNotDuplicated.send(false)
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+            .store(in: self.cancelBag)
+        
+        return Output(pushOrPopViewController: pushOrPopViewController,
+                      isEnable: isNotDuplicated)
+    }
+}
+
+// MARK: - Network
+
+extension JoinProfileViewModel {
+    private func getNicknameDuplicationAPI(nickname: String) async throws -> BaseResponse<EmptyResponse>? {
+        do {
+            guard let accessToken = KeychainWrapper.loadToken(forKey: "accessToken") else { return nil }
+            let data: BaseResponse<EmptyResponse>? = try await self.networkProvider.donNetwork(
+                type: .get,
+                baseURL: Config.baseURL + "v1/nickname-validation",
+                accessToken: accessToken,
+                body: EmptyBody(),
+                pathVariables: ["nickname":nickname])
+            print ("👻👻👻👻👻닉네임 중복 체크👻👻👻👻👻")
+            return data
+        } catch {
+            return nil
+        }
     }
 }

@@ -15,14 +15,15 @@ final class LoginViewController: UIViewController {
     
     private var cancelBag = CancelBag()
     private let viewModel: LoginViewModel
+    private lazy var kakaoButtonTapped = self.kakaoLoginButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    private lazy var appleButtonTapped = self.appleLoginButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    private lazy var newUserSingleButtonTapped = self.newUserPopupView.singleButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
     
     // MARK: - UI Components
     
-    private var newUserPopupView = WablePopupView(
-        popupTitle: StringLiterals.Login.loginNewUserPopupTitle,
-        popupContent: StringLiterals.Login.loginNewUserPopupContent,
-        singleButtonTitle: StringLiterals.Login.loginNewUserPopupButtonTitle
-    )
+    private var newUserPopupView = WablePopupView(popupTitle: StringLiterals.Login.loginNewUserPopupTitle,
+                                           popupContent: StringLiterals.Login.loginNewUserPopupContent,
+                                           singleButtonTitle: StringLiterals.Login.loginNewUserPopupButtonTitle)
     
     private let loginBackgroundImage: UIImageView = {
         let image = UIImageView()
@@ -93,14 +94,14 @@ final class LoginViewController: UIViewController {
     }
 }
 
-// MARK: - Private Method
+// MARK: - Extensions
 
-private extension LoginViewController {
-    func setUI() {
+extension LoginViewController {
+    private func setUI() {
         view.backgroundColor = .wableWhite
     }
     
-    func setHierarchy() {
+    private func setHierarchy() {
         self.view.addSubviews(loginBackgroundImage,
                               loginWableLogo,
                               loginTitle,
@@ -109,7 +110,7 @@ private extension LoginViewController {
                               appleLoginButton)
     }
     
-    func setLayout() {
+    private func setLayout() {
         loginBackgroundImage.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(401.adjusted)
@@ -153,22 +154,22 @@ private extension LoginViewController {
         }
     }
     
-    func bindViewModel() {
-        let input = LoginViewModel.Input(
-            kakaoButtonTapped: kakaoLoginButton.tapPublisher.eraseToAnyPublisher(),
-            appleButtonTapped: appleLoginButton.tapPublisher.eraseToAnyPublisher(),
-            newUserSingleButtonTapped: newUserPopupView.singleButton.tapPublisher.eraseToAnyPublisher()
-        )
+    private func bindViewModel() {
+        let input = LoginViewModel.Input(kakaoButtonTapped: kakaoButtonTapped,
+                                         appleButtonTapped: appleButtonTapped,
+                                         newUserSingleButtonTapped: newUserSingleButtonTapped)
         
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
         
         output.userInfoPublisher
             .receive(on: RunLoop.main)
-            .sink { isNewUser in
-                if isNewUser {
-                    let viewController = JoinLCKYearViewController()
+            .sink { value in
+                if value {
+                    // 신규 유저
+                    let viewController = JoinLCKYearViewController(viewModel: JoinLCKYearViewModel())
                     self.navigationController?.pushViewController(viewController, animated: true)
                 } else {
+                    // 기존 유저
                     let viewController = WableTabBarController()
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }
