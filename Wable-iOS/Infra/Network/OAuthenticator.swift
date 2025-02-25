@@ -1,5 +1,5 @@
 //
-//  APInterceptor.swift
+//  OAuthenticator.swift
 //  Wable-iOS
 //
 //  Created by YOUJIM on 2/25/25.
@@ -10,9 +10,9 @@ import Foundation
 
 import Alamofire
 
-final class OAuthInterceptor: Authenticator {
+final class OAuthenticator: Authenticator {
     typealias Credential = OAuthCredential
-    static let shared = OAuthInterceptor()
+    static let shared = OAuthenticator()
     
     /// 토큰 재발급 API를 제외하고 다른 API 통신을 진행할 때 헤더를 설정하는 메서드
     func apply(_ credential: OAuthCredential, to urlRequest: inout URLRequest) {
