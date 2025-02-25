@@ -8,13 +8,15 @@
 import Combine
 import Foundation
 
+import Alamofire
 import CombineMoya
 import Moya
 
 final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
     private let jsonDecoder: JSONDecoder = .init()
+    private let interceptor = AuthenticationInterceptor(authenticator: OAuthInterceptor.shared)
     
-    init(interceptor: RequestInterceptor? = nil) {
+    init() {
         let session: Session = .init(interceptor: interceptor)
         let plugin: [PluginType] = [MoyaLoggingPlugin()]
         super.init(session: session, plugins: plugin)
