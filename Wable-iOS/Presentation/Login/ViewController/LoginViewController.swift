@@ -14,7 +14,7 @@ final class LoginViewController: UIViewController {
     // MARK: - Properties
     
     private var cancelBag = CancelBag()
-    private let viewModel: MigratedLoginViewModel
+    private let viewModel: LoginViewModel
     
     // MARK: - UI Components
     
@@ -67,7 +67,7 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Life Cycles
     
-    init(viewModel: MigratedLoginViewModel) {
+    init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -154,7 +154,7 @@ private extension LoginViewController {
     }
     
     func bindViewModel() {
-        let input = MigratedLoginViewModel.Input(
+        let input = LoginViewModel.Input(
             kakaoButtonTapped: kakaoLoginButton.tapPublisher.eraseToAnyPublisher(),
             appleButtonTapped: appleLoginButton.tapPublisher.eraseToAnyPublisher(),
             newUserSingleButtonTapped: newUserPopupView.singleButton.tapPublisher.eraseToAnyPublisher()

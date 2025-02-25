@@ -70,7 +70,7 @@ extension JoinLCKYearViewController {
     @objc
     func xButtonTapped() {
         if let navigationController = self.navigationController {
-            let viewControllers = [LoginViewController(viewModel: MigratedLoginViewModel())]
+            let viewControllers = [LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService()))]
             navigationController.setViewControllers(viewControllers, animated: false)
         }
     }
