@@ -29,16 +29,8 @@ final class OAuthInterceptor: Authenticator {
     /// API 요청 중 에러가 발생했을 때 응답 코드가 401인 경우만 refresh가 실행되도록 처리하는 메서드
     func didRequest(_ urlRequest: URLRequest, with response: HTTPURLResponse, failDueToAuthenticationError error: any Error) -> Bool {
         guard let urlString = urlRequest.url?.absoluteString else { return false }
-
-        let containsKeyword = urlString.contains("comment") || urlString.contains("content")
-        let containsLiked = urlString.contains("liked")
-        switch response.statusCode {
-        case 401:
-            return !(containsKeyword && !containsLiked)
-        default:
-            return false
-        }
-
+        
+        return response.statusCode == 401 && error.localizedDescription == WableError.unauthorizedToken.rawValue
     }
     
     /// 인증이 필요한 urlRequest에 대해서만 true를 리턴해 refresh가 실행되도록 처리하는 메서드
