@@ -148,6 +148,8 @@
 		DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29676A2D6DAC3100143851 /* APIProvider.swift */; };
 		DD2968742D6DAD5F00143851 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29676B2D6DAC3100143851 /* NetworkError.swift */; };
 		DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD2968772D6DAE2200143851 /* GoogleService-Info.plist */; };
+		DD29687C2D6DB27F00143851 /* OAuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687B2D6DB27200143851 /* OAuthInterceptor.swift */; };
+		DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687D2D6DC70100143851 /* OAuthCredential.swift */; };
 		DEB5793A2CE3541300BEE54D /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DEB579392CE3541300BEE54D /* CombineCocoa */; };
 /* End PBXBuildFile section */
 
@@ -279,6 +281,8 @@
 		DD2967F62D6DAC3100143851 /* Viewit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Viewit.swift; sourceTree = "<group>"; };
 		DD2968772D6DAE2200143851 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DD29687A2D6DAE8E00143851 /* Wable-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wable-iOS.entitlements"; sourceTree = "<group>"; };
+		DD29687B2D6DB27200143851 /* OAuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthInterceptor.swift; sourceTree = "<group>"; };
+		DD29687D2D6DC70100143851 /* OAuthCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthCredential.swift; sourceTree = "<group>"; };
 		DD8CEF3D2D6A007900DBE580 /* Share.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Share.xcconfig; sourceTree = "<group>"; };
 		DD8CEF3E2D6A007900DBE580 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		DD8CEF3F2D6A007900DBE580 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
@@ -674,6 +678,8 @@
 		DD2967BB2D6DAC3100143851 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				DD29687D2D6DC70100143851 /* OAuthCredential.swift */,
+				DD29687B2D6DB27200143851 /* OAuthInterceptor.swift */,
 				DD29676A2D6DAC3100143851 /* APIProvider.swift */,
 				DD29676B2D6DAC3100143851 /* NetworkError.swift */,
 				DD29676C2D6DAC3100143851 /* MoyaLoggingPlugin.swift */,
@@ -961,6 +967,7 @@
 				DD2968562D6DAD4400143851 /* UpdateUserBadge.swift in Sources */,
 				DD2968572D6DAD4400143851 /* CreateReport.swift in Sources */,
 				DD2968582D6DAD4400143851 /* CreateContentLiked.swift in Sources */,
+				DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */,
 				DD2968592D6DAD4400143851 /* CreateViewitPostRequest.swift in Sources */,
 				DD29685A2D6DAD4400143851 /* CreateCommentLiked.swift in Sources */,
 				DD29685B2D6DAD4400143851 /* CreateAccountRequest.swift in Sources */,
@@ -1009,6 +1016,7 @@
 				DD2968362D6DAD1700143851 /* ContentLikedRepositoryImpl.swift in Sources */,
 				DD2968372D6DAD1700143851 /* ProfileRepositoryImpl.swift in Sources */,
 				DD2968382D6DAD1700143851 /* ReportRepositoryImpl.swift in Sources */,
+				DD29687C2D6DB27F00143851 /* OAuthInterceptor.swift in Sources */,
 				DD2968602D6DAD5500143851 /* GhostTargetType.swift in Sources */,
 				DD2968612D6DAD5500143851 /* ViewitTargetType.swift in Sources */,
 				DD2968622D6DAD5500143851 /* CommentLikedTargetType.swift in Sources */,
