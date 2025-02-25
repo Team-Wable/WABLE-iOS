@@ -27,7 +27,7 @@ struct Game {
 
 extension Game {
     enum Status: String {
-        case scheduled = "SCHEUDLED"
+        case scheduled = "SCHEDULED"
         case progress = "PROGRESS"
         case termination = "TERMINATION"
     }
