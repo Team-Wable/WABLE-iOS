@@ -33,9 +33,6 @@
 		DD2968002D6DAC8900143851 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8CEF472D6A007900DBE580 /* AppDelegate.swift */; };
 		DD2968012D6DAC9300143851 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEFF92D6A00BB00DBE580 /* LaunchScreen.storyboard */; };
 		DD2968022D6DAC9B00143851 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8CEF452D6A007900DBE580 /* ViewController.swift */; };
-		DD2968032D6DACA400143851 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3F2D6A007900DBE580 /* Development.xcconfig */; };
-		DD2968042D6DACA400143851 /* Share.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3D2D6A007900DBE580 /* Share.xcconfig */; };
-		DD2968052D6DACA400143851 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3E2D6A007900DBE580 /* Release.xcconfig */; };
 		DD2968062D6DACF700143851 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967E92D6DAC3100143851 /* Account.swift */; };
 		DD2968072D6DACF700143851 /* LCKTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967E62D6DAC3100143851 /* LCKTeam.swift */; };
 		DD2968082D6DACF700143851 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967EE2D6DAC3100143851 /* Comment.swift */; };
@@ -150,6 +147,7 @@
 		DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD2968772D6DAE2200143851 /* GoogleService-Info.plist */; };
 		DD29687C2D6DB27F00143851 /* OAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687B2D6DB27200143851 /* OAuthenticator.swift */; };
 		DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687D2D6DC70100143851 /* OAuthCredential.swift */; };
+		DD87931C2D7044E7001212AE /* OAuthErrorMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD87931B2D7044E0001212AE /* OAuthErrorMonitor.swift */; };
 		DEB5793A2CE3541300BEE54D /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DEB579392CE3541300BEE54D /* CombineCocoa */; };
 /* End PBXBuildFile section */
 
@@ -283,6 +281,7 @@
 		DD29687A2D6DAE8E00143851 /* Wable-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wable-iOS.entitlements"; sourceTree = "<group>"; };
 		DD29687B2D6DB27200143851 /* OAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthenticator.swift; sourceTree = "<group>"; };
 		DD29687D2D6DC70100143851 /* OAuthCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthCredential.swift; sourceTree = "<group>"; };
+		DD87931B2D7044E0001212AE /* OAuthErrorMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthErrorMonitor.swift; sourceTree = "<group>"; };
 		DD8CEF3D2D6A007900DBE580 /* Share.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Share.xcconfig; sourceTree = "<group>"; };
 		DD8CEF3E2D6A007900DBE580 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		DD8CEF3F2D6A007900DBE580 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
@@ -678,8 +677,7 @@
 		DD2967BB2D6DAC3100143851 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				DD29687D2D6DC70100143851 /* OAuthCredential.swift */,
-				DD29687B2D6DB27200143851 /* OAuthenticator.swift */,
+				DD87931D2D70452B001212AE /* OAuth */,
 				DD29676A2D6DAC3100143851 /* APIProvider.swift */,
 				DD29676B2D6DAC3100143851 /* NetworkError.swift */,
 				DD29676C2D6DAC3100143851 /* MoyaLoggingPlugin.swift */,
@@ -807,6 +805,16 @@
 			path = Domain;
 			sourceTree = "<group>";
 		};
+		DD87931D2D70452B001212AE /* OAuth */ = {
+			isa = PBXGroup;
+			children = (
+				DD29687D2D6DC70100143851 /* OAuthCredential.swift */,
+				DD87931B2D7044E0001212AE /* OAuthErrorMonitor.swift */,
+				DD29687B2D6DB27200143851 /* OAuthenticator.swift */,
+			);
+			path = OAuth;
+			sourceTree = "<group>";
+		};
 		DD8CEF402D6A007900DBE580 /* Config */ = {
 			isa = PBXGroup;
 			children = (
@@ -921,9 +929,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD2968032D6DACA400143851 /* Development.xcconfig in Resources */,
-				DD2968042D6DACA400143851 /* Share.xcconfig in Resources */,
-				DD2968052D6DACA400143851 /* Release.xcconfig in Resources */,
 				054308EA2CB7F582001861F1 /* wable_loading.json in Resources */,
 				DD2968012D6DAC9300143851 /* LaunchScreen.storyboard in Resources */,
 				DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */,
@@ -1002,6 +1007,7 @@
 				DD2968462D6DAD2F00143851 /* FetchAccountInfo.swift in Sources */,
 				DD2968472D6DAD2F00143851 /* FetchContent.swift in Sources */,
 				DD2968482D6DAD2F00143851 /* FetchNotificationNumber.swift in Sources */,
+				DD87931C2D7044E7001212AE /* OAuthErrorMonitor.swift in Sources */,
 				DD2968492D6DAD2F00143851 /* FetchContents.swift in Sources */,
 				DD29684A2D6DAD2F00143851 /* FetchLCKTeamRankings.swift in Sources */,
 				DD29684B2D6DAD2F00143851 /* CreateViewitPostResponse.swift in Sources */,
@@ -1208,9 +1214,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Wable-iOS/Wable-iOS.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 4;
-				DEVELOPMENT_TEAM = HGVD26K7DP;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Resource/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "와블";
@@ -1228,6 +1236,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Wable_Debug;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1245,9 +1254,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Wable-iOS/Wable-iOS.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 4;
-				DEVELOPMENT_TEAM = HGVD26K7DP;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Resource/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "와블";
@@ -1265,6 +1276,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Wable_Release;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

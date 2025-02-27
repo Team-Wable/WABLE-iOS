@@ -12,7 +12,12 @@ import Alamofire
 
 final class OAuthenticator: Authenticator {
     typealias Credential = OAuthCredential
-    static let shared = OAuthenticator()
+    
+    private let errorMonitor: OAuthErrorMonitor
+    
+    init(errorMonitor: OAuthErrorMonitor) {
+        self.errorMonitor = errorMonitor
+    }
     
     /// 토큰 재발급 API를 제외하고 다른 API 통신을 진행할 때 헤더를 설정하는 메서드
     func apply(_ credential: OAuthCredential, to urlRequest: inout URLRequest) {
@@ -27,10 +32,12 @@ final class OAuthenticator: Authenticator {
     }
     
     /// API 요청 중 에러가 발생했을 때 응답 코드가 401인 경우만 refresh가 실행되도록 처리하는 메서드
-    func didRequest(_ urlRequest: URLRequest, with response: HTTPURLResponse, failDueToAuthenticationError error: any Error) -> Bool {
-        guard let urlString = urlRequest.url?.absoluteString else { return false }
-        
-        return response.statusCode == 401 && error.localizedDescription == WableError.unauthorizedToken.rawValue
+    func didRequest(
+        _ urlRequest: URLRequest,
+        with response: HTTPURLResponse,
+        failDueToAuthenticationError error: any Error
+    ) -> Bool {
+        return errorMonitor.isUnauthorized
     }
     
     /// 인증이 필요한 urlRequest에 대해서만 true를 리턴해 refresh가 실행되도록 처리하는 메서드
