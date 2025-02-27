@@ -114,6 +114,8 @@ final class JoinAgreementViewModel: ViewModelType {
                 // 회원가입 서버통신
                 AmplitudeManager.shared.trackEvent(tag: "click_complete_tnc_signup")
                 Task {
+                    print(">>>>> \(value) : \(#function)")
+                    
                     do {
                         try await self.patchUserInfoDataAPI(
                             nickname: value.info?.nickname ?? "",

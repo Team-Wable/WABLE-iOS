@@ -129,7 +129,7 @@ extension WableTabBarController: UITabBarControllerDelegate {
         case 0:
 
             if let navController = viewController as? UINavigationController,
-               let homeVC = navController.viewControllers.first as? MigratedHomeViewController {
+               let homeVC = navController.viewControllers.first as? HomeViewController {
                 homeVC.scrollToTop()
                 if previousTabIndex == 3 {
                     homeVC.showLoadView()

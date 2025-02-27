@@ -206,7 +206,11 @@ extension MyPageAccountInfoViewController {
                     DispatchQueue.main.async {
                         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
                             DispatchQueue.main.async {
-                                let rootViewController = LoginViewController(viewModel: MigratedLoginViewModel())
+                                let rootViewController = LoginViewController(
+                                    viewModel: LoginViewModel(
+                                        networkProvider: NetworkService()
+                                    )
+                                )
                                 sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: rootViewController)
                             }
                         }

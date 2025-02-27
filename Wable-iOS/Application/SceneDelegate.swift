@@ -25,10 +25,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 let navigationController = UINavigationController(rootViewController: WableTabBarController())
                 self.window?.rootViewController = navigationController
             } else if loadUserData()?.isJoinedApp == false {
-                let navigationController = UINavigationController(rootViewController: LoginViewController(viewModel: MigratedLoginViewModel()))
+                let navigationController = UINavigationController(rootViewController: LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService())))
                 self.window?.rootViewController = navigationController
             } else {
-                let navigationController = UINavigationController(rootViewController: LoginViewController(viewModel: MigratedLoginViewModel()))
+                let navigationController = UINavigationController(rootViewController: LoginViewController(viewModel: LoginViewModel(networkProvider: NetworkService())))
                 self.window?.rootViewController = navigationController
             }
             self.window?.makeKeyAndVisible()
