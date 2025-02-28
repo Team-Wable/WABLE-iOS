@@ -16,7 +16,7 @@ enum NotificationMapper {
         return dtos.compactMap { dto in
             InfoNotification(
                 id: dto.infoNotificationID,
-                type: InfoNotification.NotificationType(rawValue: dto.infoNotificationType),
+                type: InfoNotificationType(rawValue: dto.infoNotificationType),
                 time: dateFormatter.date(from: dto.time),
                 imageURL: URL(string: dto.imageURL)
             )
@@ -32,7 +32,7 @@ enum NotificationMapper {
             ActivityNotification(
                 id: dto.notificationID,
                 triggerID: dto.notificationTriggerID,
-                type: ActivityNotification.TriggerType(rawValue: dto.notificationTriggerType),
+                type: TriggerType.ActivityNotification(rawValue: dto.notificationTriggerType),
                 time: dateFormatter.date(from: dto.time),
                 text: dto.notificationText,
                 userID: dto.memberID,

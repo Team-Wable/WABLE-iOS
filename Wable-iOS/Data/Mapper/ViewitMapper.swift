@@ -21,19 +21,28 @@ extension ViewitMapper {
             let videoURL = URL(string: content.viewitLink)
             let time = dateFormatter.date(from: content.time)
             
+            let postStatus: PostStatus
+            if content.isBlind {
+                postStatus = .blind
+            } else {
+                postStatus = .normal
+            }
+            
             return Viewit(
                 userID: content.memberID,
-                viewitID: content.viewitID,
                 userNickname: content.memberNickname,
                 userProfileURL: userProfileURL,
+                id: content.viewitID,
                 thumbnailURL: thumbnailURL,
                 linkURL: videoURL,
                 title: content.viewitTitle,
                 text: content.viewitText,
                 time: time,
-                likedCount: content.likedNumber,
-                isLiked: content.isLiked,
-                isBlind: content.isBlind
+                status: postStatus,
+                like: Like(
+                    status: content.isLiked,
+                    count: content.likedNumber
+                )
             )
         }
     }
