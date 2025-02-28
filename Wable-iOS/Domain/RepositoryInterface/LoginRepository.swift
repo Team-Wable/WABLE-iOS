@@ -10,6 +10,5 @@ import Combine
 import Foundation
 
 protocol LoginRepository {
-    func updateTokenStatus() -> AnyPublisher<Token, WableError>
     func fetchUserAuth(platform: String, userName: String) -> AnyPublisher<Account, WableError>
 }
