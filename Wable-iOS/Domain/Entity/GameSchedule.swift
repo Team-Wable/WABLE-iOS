@@ -22,13 +22,5 @@ struct Game {
     let homeScore: Int
     let awayTeam: LCKTeam?
     let awayScore: Int
-    let status: Self.Status?
-}
-
-extension Game {
-    enum Status: String {
-        case scheduled = "SCHEDULED"
-        case progress = "PROGRESS"
-        case termination = "TERMINATION"
-    }
+    let status: GameStatus?
 }
