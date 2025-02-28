@@ -27,10 +27,9 @@ struct ContentInfo {
     let title: String
     let imageURL: URL?
     let text: String
-    let ghostCount: Int
-    let isLiked: Bool
-    let isGhost: Bool
-    let isBlind: Bool?
-    let likedCount: Int
-    let commentCount: Int
+    
+    var status: PostStatus
+    var like: Like
+    var opacity: Opacity
+    var commentCount: Int
 }

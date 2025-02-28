@@ -14,11 +14,10 @@ struct Comment {
     let id: Int
     let text: String
     let createdDate: Date?
-    let isLiked: Bool
-    let isGhost: Bool
-    let isBlind: Bool?
-    let ghostCount: Int
-    let likedCount: Int
+    
+    var status: PostStatus
+    var like: Like
+    var opacity: Opacity
 }
 
 // MARK: - 유저가 작성한 댓글
