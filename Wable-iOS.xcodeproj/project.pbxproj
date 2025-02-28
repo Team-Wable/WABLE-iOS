@@ -152,6 +152,8 @@
 		DDF2CC9C2D71FECB000F1919 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC9B2D71FECB000F1919 /* FirebaseCore */; };
 		DDF2CC9E2D71FECB000F1919 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC9D2D71FECB000F1919 /* FirebaseMessaging */; };
 		DDF2CCA12D71FF27000F1919 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CCA02D71FF27000F1919 /* AmplitudeSwift */; };
+		DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29132D7208A00073D512 /* GameStatus.swift */; };
+		DEDC29162D72099C0073D512 /* InfoNotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29152D72099C0073D512 /* InfoNotificationType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -295,6 +297,8 @@
 		DD8CEF482D6A007900DBE580 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DD8CEFF82D6A00BB00DBE580 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "Base.lproj/LaunchScreen 2.storyboard"; sourceTree = "<group>"; };
 		DEDC29112D7207610073D512 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		DEDC29132D7208A00073D512 /* GameStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStatus.swift; sourceTree = "<group>"; };
+		DEDC29152D72099C0073D512 /* InfoNotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNotificationType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -781,13 +785,10 @@
 		DD2967F72D6DAC3100143851 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				DD2967E62D6DAC3100143851 /* LCKTeam.swift */,
 				DD2967E72D6DAC3100143851 /* User.swift */,
 				DD2967E82D6DAC3100143851 /* Token.swift */,
 				DD2967E92D6DAC3100143851 /* Account.swift */,
 				DD2967EA2D6DAC3100143851 /* AccountInfo.swift */,
-				DD2967EB2D6DAC3100143851 /* AccountDeleteReason.swift */,
-				DD2967EC2D6DAC3100143851 /* SocialPlatform.swift */,
 				DD2967ED2D6DAC3100143851 /* UserProfile.swift */,
 				DD2967EE2D6DAC3100143851 /* Comment.swift */,
 				DD2967EF2D6DAC3100143851 /* Content.swift */,
@@ -795,7 +796,6 @@
 				DD2967F12D6DAC3100143851 /* GameSchedule.swift */,
 				DD2967F22D6DAC3100143851 /* LCKTeamRank.swift */,
 				DD2967F32D6DAC3100143851 /* Announcement.swift */,
-				DD2967F42D6DAC3100143851 /* TriggerType.swift */,
 				DD2967F52D6DAC3100143851 /* Community.swift */,
 				DD2967F62D6DAC3100143851 /* Viewit.swift */,
 			);
@@ -808,6 +808,7 @@
 				DD2967D72D6DAC3100143851 /* Error */,
 				DD2967E52D6DAC3100143851 /* RepositoryInterface */,
 				DD2967F72D6DAC3100143851 /* Entity */,
+				DEDC29122D7208650073D512 /* Enum */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -855,6 +856,19 @@
 				DD8CEF482D6A007900DBE580 /* SceneDelegate.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		DEDC29122D7208650073D512 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				DD2967E62D6DAC3100143851 /* LCKTeam.swift */,
+				DD2967EC2D6DAC3100143851 /* SocialPlatform.swift */,
+				DD2967EB2D6DAC3100143851 /* AccountDeleteReason.swift */,
+				DD2967F42D6DAC3100143851 /* TriggerType.swift */,
+				DEDC29152D72099C0073D512 /* InfoNotificationType.swift */,
+				DEDC29132D7208A00073D512 /* GameStatus.swift */,
+			);
+			path = Enum;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1020,6 +1034,7 @@
 				DD87931C2D7044E7001212AE /* OAuthErrorMonitor.swift in Sources */,
 				DD2968492D6DAD2F00143851 /* FetchContents.swift in Sources */,
 				DD29684A2D6DAD2F00143851 /* FetchLCKTeamRankings.swift in Sources */,
+				DEDC29162D72099C0073D512 /* InfoNotificationType.swift in Sources */,
 				DD29684B2D6DAD2F00143851 /* CreateViewitPostResponse.swift in Sources */,
 				DD29684C2D6DAD2F00143851 /* FetchNews.swift in Sources */,
 				DD29684D2D6DAD2F00143851 /* FetchContentComments.swift in Sources */,
@@ -1030,6 +1045,7 @@
 				DD2968342D6DAD1700143851 /* InformationRepositoryImpl.swift in Sources */,
 				DD2968352D6DAD1700143851 /* GhostRepositoryImpl.swift in Sources */,
 				DD2968362D6DAD1700143851 /* ContentLikedRepositoryImpl.swift in Sources */,
+				DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */,
 				DD2968372D6DAD1700143851 /* ProfileRepositoryImpl.swift in Sources */,
 				DD2968382D6DAD1700143851 /* ReportRepositoryImpl.swift in Sources */,
 				DD29687C2D6DB27F00143851 /* OAuthenticator.swift in Sources */,

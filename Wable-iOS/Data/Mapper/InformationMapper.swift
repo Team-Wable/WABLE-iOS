@@ -25,7 +25,7 @@ enum InformationMapper {
                     homeScore: gameDTO.aTeamScore,
                     awayTeam: LCKTeam(rawValue: gameDTO.bTeamName),
                     awayScore: gameDTO.bTeamScore,
-                    status: Game.Status(rawValue: gameDTO.gameStatus.uppercased())
+                    status: GameStatus(rawValue: gameDTO.gameStatus.uppercased())
                 )
             }
             return GameSchedule(
