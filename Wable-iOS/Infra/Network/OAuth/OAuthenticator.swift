@@ -60,7 +60,7 @@ final class OAuthenticator: Authenticator {
         for session: Alamofire.Session,
         completion: @escaping (Result<OAuthCredential, any Error>) -> Void
     ) {
-        let repository = OAuthRepositoryImpl()
+        let repository = OAuthTokenProvider()
         
         repository.updateTokenStatus()
             .sink(
