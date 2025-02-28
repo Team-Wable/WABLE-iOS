@@ -20,6 +20,15 @@ extension CommentMapper {
             let fanTeam = LCKTeam(rawValue: comment.memberFanTeam)
             let date = dateFormatter.date(from: comment.time)
             
+            let postStatus: PostStatus
+            if let isBlind = comment.isBlind, isBlind {
+                postStatus = .blind
+            } else if comment.isGhost {
+                postStatus = .ghost
+            } else {
+                postStatus = .normal
+            }
+            
             return UserComment(
                 comment: Comment(
                     author: User(
@@ -31,11 +40,12 @@ extension CommentMapper {
                     id: comment.commentID,
                     text: comment.commentText,
                     createdDate: date,
-                    isLiked: comment.isLiked,
-                    isGhost: comment.isGhost,
-                    isBlind: comment.isBlind,
-                    ghostCount: comment.memberGhost,
-                    likeNumber: comment.commentLikedNumber
+                    status: postStatus,
+                    like: Like(
+                        status: comment.isLiked,
+                        count: comment.commentLikedNumber
+                    ),
+                    opacity: Opacity(value: comment.memberGhost)
                 ),
                 contentID: comment.contentID
             )
@@ -51,6 +61,15 @@ extension CommentMapper {
             let fanTeam = LCKTeam(rawValue: comment.memberFanTeam)
             let date = dateFormatter.date(from: comment.time)
             
+            let postStatus: PostStatus
+            if comment.isBlind {
+                postStatus = .blind
+            } else if comment.isGhost {
+                postStatus = .ghost
+            } else {
+                postStatus = .normal
+            }
+            
             return ContentComment(
                 comment: Comment(
                     author: User(
@@ -62,11 +81,12 @@ extension CommentMapper {
                     id: comment.commentID,
                     text: comment.commentText,
                     createdDate: date,
-                    isLiked: comment.isLiked,
-                    isGhost: comment.isGhost,
-                    isBlind: comment.isBlind,
-                    ghostCount: comment.memberGhost,
-                    likeNumber: comment.commentLikedNumber
+                    status: postStatus,
+                    like: Like(
+                        status: comment.isLiked,
+                        count: comment.commentLikedNumber
+                    ),
+                    opacity: Opacity(value: comment.memberGhost)
                 ),
                 parentID: comment.parentCommentID,
                 isDeleted: comment.isDeleted,

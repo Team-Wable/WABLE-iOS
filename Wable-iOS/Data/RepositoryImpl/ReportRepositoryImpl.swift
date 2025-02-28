@@ -31,7 +31,7 @@ extension ReportRepositoryImpl: ReportRepository {
         .mapWableError()
     }
     
-    func createBan(memberID: Int, triggerType: BanTriggerType, triggerID: Int) -> AnyPublisher<Void, WableError> {
+    func createBan(memberID: Int, triggerType: TriggerType.Ban, triggerID: Int) -> AnyPublisher<Void, WableError> {
         return provider.request(
             .createBan(
                 request: DTO.Request.CreateBan(

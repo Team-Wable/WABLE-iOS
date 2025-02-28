@@ -8,7 +8,7 @@
 
 import Foundation
 
-// MARK: 계정 정보
+// MARK: - 계정 정보
 
 struct AccountInfo {
     let memberID: Int

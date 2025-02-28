@@ -25,7 +25,7 @@ enum InformationMapper {
                     homeScore: gameDTO.aTeamScore,
                     awayTeam: LCKTeam(rawValue: gameDTO.bTeamName),
                     awayScore: gameDTO.bTeamScore,
-                    status: Game.Status(rawValue: gameDTO.gameStatus.uppercased())
+                    status: GameStatus(rawValue: gameDTO.gameStatus.uppercased())
                 )
             }
             return GameSchedule(
@@ -39,9 +39,9 @@ enum InformationMapper {
         return dtos.compactMap { dto in
             LCKTeamRank(
                 team: LCKTeam(rawValue: dto.teamName),
-                rankNumber: dto.teamRank,
-                winNumber: dto.teamWin,
-                defeatNumber: dto.teamDefeat,
+                rank: dto.teamRank,
+                winCount: dto.teamWin,
+                defeatCount: dto.teamDefeat,
                 winningRate: dto.winningRate,
                 scoreGap: dto.scoreDiff
             )

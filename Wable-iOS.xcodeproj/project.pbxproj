@@ -152,6 +152,11 @@
 		DDF2CC9C2D71FECB000F1919 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC9B2D71FECB000F1919 /* FirebaseCore */; };
 		DDF2CC9E2D71FECB000F1919 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC9D2D71FECB000F1919 /* FirebaseMessaging */; };
 		DDF2CCA12D71FF27000F1919 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CCA02D71FF27000F1919 /* AmplitudeSwift */; };
+		DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EA2D7211070021BDE1 /* Like.swift */; };
+		DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EE2D7213D90021BDE1 /* Opacity.swift */; };
+		DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29132D7208A00073D512 /* GameStatus.swift */; };
+		DEDC29162D72099C0073D512 /* InfoNotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29152D72099C0073D512 /* InfoNotificationType.swift */; };
+		DEDC29182D720D030073D512 /* PostStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29172D720D030073D512 /* PostStatus.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -294,6 +299,12 @@
 		DD8CEF472D6A007900DBE580 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD8CEF482D6A007900DBE580 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DD8CEFF82D6A00BB00DBE580 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "Base.lproj/LaunchScreen 2.storyboard"; sourceTree = "<group>"; };
+		DE67A9EA2D7211070021BDE1 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
+		DE67A9EE2D7213D90021BDE1 /* Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opacity.swift; sourceTree = "<group>"; };
+		DEDC29112D7207610073D512 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		DEDC29132D7208A00073D512 /* GameStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStatus.swift; sourceTree = "<group>"; };
+		DEDC29152D72099C0073D512 /* InfoNotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNotificationType.swift; sourceTree = "<group>"; };
+		DEDC29172D720D030073D512 /* PostStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStatus.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -780,21 +791,19 @@
 		DD2967F72D6DAC3100143851 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				DD2967E62D6DAC3100143851 /* LCKTeam.swift */,
 				DD2967E72D6DAC3100143851 /* User.swift */,
 				DD2967E82D6DAC3100143851 /* Token.swift */,
 				DD2967E92D6DAC3100143851 /* Account.swift */,
 				DD2967EA2D6DAC3100143851 /* AccountInfo.swift */,
-				DD2967EB2D6DAC3100143851 /* AccountDeleteReason.swift */,
-				DD2967EC2D6DAC3100143851 /* SocialPlatform.swift */,
 				DD2967ED2D6DAC3100143851 /* UserProfile.swift */,
+				DE67A9EE2D7213D90021BDE1 /* Opacity.swift */,
+				DE67A9EA2D7211070021BDE1 /* Like.swift */,
 				DD2967EE2D6DAC3100143851 /* Comment.swift */,
 				DD2967EF2D6DAC3100143851 /* Content.swift */,
 				DD2967F02D6DAC3100143851 /* Notification.swift */,
 				DD2967F12D6DAC3100143851 /* GameSchedule.swift */,
 				DD2967F22D6DAC3100143851 /* LCKTeamRank.swift */,
 				DD2967F32D6DAC3100143851 /* Announcement.swift */,
-				DD2967F42D6DAC3100143851 /* TriggerType.swift */,
 				DD2967F52D6DAC3100143851 /* Community.swift */,
 				DD2967F62D6DAC3100143851 /* Viewit.swift */,
 			);
@@ -807,6 +816,7 @@
 				DD2967D72D6DAC3100143851 /* Error */,
 				DD2967E52D6DAC3100143851 /* RepositoryInterface */,
 				DD2967F72D6DAC3100143851 /* Entity */,
+				DEDC29122D7208650073D512 /* Enum */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -854,6 +864,20 @@
 				DD8CEF482D6A007900DBE580 /* SceneDelegate.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		DEDC29122D7208650073D512 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				DD2967E62D6DAC3100143851 /* LCKTeam.swift */,
+				DEDC29172D720D030073D512 /* PostStatus.swift */,
+				DD2967EC2D6DAC3100143851 /* SocialPlatform.swift */,
+				DD2967EB2D6DAC3100143851 /* AccountDeleteReason.swift */,
+				DD2967F42D6DAC3100143851 /* TriggerType.swift */,
+				DEDC29152D72099C0073D512 /* InfoNotificationType.swift */,
+				DEDC29132D7208A00073D512 /* GameStatus.swift */,
+			);
+			path = Enum;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -907,11 +931,11 @@
 			};
 			buildConfigurationList = 0547F4912C60D968001E3039 /* Build configuration list for PBXProject "Wable-iOS" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				ko,
 			);
 			mainGroup = 0547F48D2C60D968001E3039;
 			packageReferences = (
@@ -1019,6 +1043,7 @@
 				DD87931C2D7044E7001212AE /* OAuthErrorMonitor.swift in Sources */,
 				DD2968492D6DAD2F00143851 /* FetchContents.swift in Sources */,
 				DD29684A2D6DAD2F00143851 /* FetchLCKTeamRankings.swift in Sources */,
+				DEDC29162D72099C0073D512 /* InfoNotificationType.swift in Sources */,
 				DD29684B2D6DAD2F00143851 /* CreateViewitPostResponse.swift in Sources */,
 				DD29684C2D6DAD2F00143851 /* FetchNews.swift in Sources */,
 				DD29684D2D6DAD2F00143851 /* FetchContentComments.swift in Sources */,
@@ -1029,6 +1054,7 @@
 				DD2968342D6DAD1700143851 /* InformationRepositoryImpl.swift in Sources */,
 				DD2968352D6DAD1700143851 /* GhostRepositoryImpl.swift in Sources */,
 				DD2968362D6DAD1700143851 /* ContentLikedRepositoryImpl.swift in Sources */,
+				DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */,
 				DD2968372D6DAD1700143851 /* ProfileRepositoryImpl.swift in Sources */,
 				DD2968382D6DAD1700143851 /* ReportRepositoryImpl.swift in Sources */,
 				DD29687C2D6DB27F00143851 /* OAuthenticator.swift in Sources */,
@@ -1047,6 +1073,7 @@
 				DD29686C2D6DAD5500143851 /* ProfileTargetType.swift in Sources */,
 				DD29686D2D6DAD5500143851 /* AccountTargetType.swift in Sources */,
 				DD2968392D6DAD1700143851 /* LoginRepositoryImpl.swift in Sources */,
+				DEDC29182D720D030073D512 /* PostStatus.swift in Sources */,
 				DD29683A2D6DAD1700143851 /* NotificationRepositoryImpl.swift in Sources */,
 				DD2967F92D6DAC4800143851 /* AnyPublisher+.swift in Sources */,
 				DD2967FA2D6DAC4800143851 /* Publisher+.swift in Sources */,
@@ -1060,6 +1087,7 @@
 				DD2968182D6DAD0200143851 /* CommunityRepository.swift in Sources */,
 				DD2968192D6DAD0200143851 /* ReportRepository.swift in Sources */,
 				DD29681A2D6DAD0200143851 /* ViewitRepository.swift in Sources */,
+				DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */,
 				DD29681B2D6DAD0200143851 /* ProfileRepository.swift in Sources */,
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
 				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
@@ -1067,6 +1095,7 @@
 				DD29681E2D6DAD0200143851 /* AccountRepository.swift in Sources */,
 				DD29681F2D6DAD0200143851 /* GhostRepository.swift in Sources */,
 				DD2968202D6DAD0200143851 /* LoginRepository.swift in Sources */,
+				DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */,
 				DD2968212D6DAD0200143851 /* ContentLikedRepository.swift in Sources */,
 				DD2968222D6DAD0200143851 /* CommentLikedRepository.swift in Sources */,
 				DD2968242D6DAD0B00143851 /* ProfileMapper.swift in Sources */,
@@ -1091,6 +1120,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				DD8CEFF82D6A00BB00DBE580 /* LaunchScreen.storyboard */,
+				DEDC29112D7207610073D512 /* ko */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1100,9 +1130,11 @@
 /* Begin XCBuildConfiguration section */
 		0547F4A82C60D96B001E3039 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD8CEF3F2D6A007900DBE580 /* Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1163,9 +1195,11 @@
 		};
 		0547F4A92C60D96B001E3039 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD8CEF3E2D6A007900DBE580 /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1219,6 +1253,7 @@
 		};
 		0547F4AB2C60D96B001E3039 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD8CEF3F2D6A007900DBE580 /* Development.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1237,6 +1272,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1259,6 +1295,7 @@
 		};
 		0547F4AC2C60D96B001E3039 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD8CEF3E2D6A007900DBE580 /* Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1277,6 +1314,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

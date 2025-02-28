@@ -20,6 +20,15 @@ extension ContentMapper {
         let fanTeam = LCKTeam(rawValue: response.memberFanTeam)
         let date = dateFormatter.date(from: response.time)
         
+        let postStatus: PostStatus
+        if let isBlind = response.isBlind, isBlind {
+            postStatus = .blind
+        } else if response.isGhost {
+            postStatus = .ghost
+        } else {
+            postStatus = .normal
+        }
+        
         return ContentInfo(
             author: User(
                 id: response.memberID,
@@ -31,12 +40,13 @@ extension ContentMapper {
             title: title,
             imageURL: contentImageURL,
             text: response.contentText,
-            ghostCount: response.memberGhost,
-            isLiked: response.isLiked,
-            isGhost: response.isGhost,
-            isBlind: response.isBlind,
-            likeNumber: response.likedNumber,
-            commentNumber: response.commentNumber
+            status: postStatus,
+            like: Like(
+                status: response.isLiked,
+                count: response.likedNumber
+            ),
+            opacity: Opacity(value: response.memberGhost),
+            commentCount: response.commentNumber
         )
     }
     
@@ -50,6 +60,15 @@ extension ContentMapper {
             let contentImageURL = URL(string: content.contentImageURL)
             let fanTeam = LCKTeam(rawValue: content.memberFanTeam)
             let date = dateFormatter.date(from: content.time)
+            
+            let postStatus: PostStatus
+            if let isBlind = content.isBlind, isBlind {
+                postStatus = .blind
+            } else if content.isGhost {
+                postStatus = .ghost
+            } else {
+                postStatus = .normal
+            }
             
             return Content(
                 content: UserContent(
@@ -65,12 +84,13 @@ extension ContentMapper {
                         title: content.contentTitle,
                         imageURL: contentImageURL,
                         text: content.contentText,
-                        ghostCount: content.memberGhost,
-                        isLiked: content.isLiked,
-                        isGhost: content.isGhost,
-                        isBlind: content.isBlind,
-                        likeNumber: content.likedNumber,
-                        commentNumber: content.commentNumber
+                        status: postStatus,
+                        like: Like(
+                            status: content.isLiked,
+                            count: content.likedNumber
+                        ),
+                        opacity: Opacity(value: content.memberGhost),
+                        commentCount: content.commentNumber
                     )
                 ),
                 isDeleted: content.isDeleted
@@ -89,6 +109,15 @@ extension ContentMapper {
             let fanTeam = LCKTeam(rawValue: content.memberFanTeam)
             let date = dateFormatter.date(from: content.time)
             
+            let postStatus: PostStatus
+            if let isBlind = content.isBlind, isBlind {
+                postStatus = .blind
+            } else if content.isGhost {
+                postStatus = .ghost
+            } else {
+                postStatus = .normal
+            }
+            
             return UserContent(
                 id: content.contentID,
                 contentInfo: ContentInfo(
@@ -102,12 +131,13 @@ extension ContentMapper {
                     title: content.contentTitle,
                     imageURL: contentImageURL,
                     text: content.contentText,
-                    ghostCount: content.memberGhost,
-                    isLiked: content.isLiked,
-                    isGhost: content.isGhost,
-                    isBlind: content.isBlind,
-                    likeNumber: content.likedNumber,
-                    commentNumber: content.commentNumber
+                    status: postStatus,
+                    like: Like(
+                        status: content.isLiked,
+                        count: content.likedNumber
+                    ),
+                    opacity: Opacity(value: content.memberGhost),
+                    commentCount: content.commentNumber
                 )
             )
         }
