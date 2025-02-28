@@ -1,13 +1,13 @@
 {
-  "originHash" : "872b30c821fcd9d5dc671e1e1c3634f0741eb85abdf80456a5fa1596cfb9e63f",
+  "originHash" : "4b0bbb69399803e52155c227308a4e3ad3a0b84c337c21fefa0f8c39a21933a2",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/abseil-cpp-binary.git",
       "state" : {
-        "revision" : "194a6706acbd25e4ef639bcaddea16e8758a3e27",
-        "version" : "1.2024011602.0"
+        "revision" : "bbe8b69694d7873315fd3a4ad41efe043e1c07c5",
+        "version" : "1.2024072200.0"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Alamofire/Alamofire.git",
       "state" : {
-        "revision" : "f455c2975872ccd2d9c81594c658af65716e9b9a",
-        "version" : "5.9.1"
+        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
+        "version" : "5.10.2"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/amplitude/Amplitude-Swift.git",
       "state" : {
-        "revision" : "ce41c105bf9f0a1518f8bd6e594177c69512f054",
-        "version" : "1.9.2"
+        "revision" : "5da183dcd74cfb7422215a3033f6c91ad8cf6c65",
+        "version" : "1.11.5"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/amplitude/analytics-connector-ios.git",
       "state" : {
-        "revision" : "e2ca17ac735bcbc48b13062484541702ef45153d",
-        "version" : "1.0.3"
+        "revision" : "4adbfe85486e6dcdcdca5fa9362097ffe5ec712b",
+        "version" : "1.3.1"
       }
     },
     {
@@ -42,26 +42,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/app-check.git",
       "state" : {
-        "revision" : "21fe1af9be463a359aaf8d96789ef73fc3760d09",
-        "version" : "11.0.1"
-      }
-    },
-    {
-      "identity" : "combinecocoa",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CombineCommunity/CombineCocoa",
-      "state" : {
-        "revision" : "7300c75ff9e072aa7fd0fccefcc88f74aae9bf56",
-        "version" : "0.4.1"
+        "revision" : "61b85103a1aeed8218f17c794687781505fbbef5",
+        "version" : "11.2.0"
       }
     },
     {
       "identity" : "firebase-ios-sdk",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/firebase/firebase-ios-sdk.git",
+      "location" : "https://github.com/firebase/firebase-ios-sdk",
       "state" : {
-        "revision" : "1fc52ab0e172e7c5a961f975a76c2611f4f22852",
-        "version" : "11.2.0"
+        "revision" : "eb523407e4293568ed55590728205c359cbecc5b",
+        "version" : "11.9.0"
       }
     },
     {
@@ -69,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleAppMeasurement.git",
       "state" : {
-        "revision" : "07a2f57d147d2bf368a0d2dcb5579ff082d9e44f",
-        "version" : "11.1.0"
+        "revision" : "d80e25104abe76d69a134d4ec18f011edd8df06c",
+        "version" : "11.9.0"
       }
     },
     {
@@ -96,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/grpc-binary.git",
       "state" : {
-        "revision" : "f56d8fc3162de9a498377c7b6cea43431f4f5083",
-        "version" : "1.65.1"
+        "revision" : "cc0001a0cf963aa40501d9c2b181e7fc9fd8ec71",
+        "version" : "1.69.0"
       }
     },
     {
@@ -105,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/gtm-session-fetcher.git",
       "state" : {
-        "revision" : "a2ab612cb980066ee56d90d60d8462992c07f24b",
-        "version" : "3.5.0"
+        "revision" : "4d70340d55d7d07cc2fdf8e8125c4c126c1d5f35",
+        "version" : "4.4.0"
       }
     },
     {
@@ -114,8 +105,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/interop-ios-for-google-sdks.git",
       "state" : {
-        "revision" : "2d12673670417654f08f5f90fdd62926dc3a2648",
-        "version" : "100.0.0"
+        "revision" : "040d087ac2267d2ddd4cca36c757d1c6a05fdbfe",
+        "version" : "101.0.0"
       }
     },
     {
@@ -123,17 +114,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kakao/kakao-ios-sdk",
       "state" : {
-        "revision" : "b7a78bac4cb015fc3b1de34255b96421091fcf42",
-        "version" : "2.22.0"
+        "revision" : "ab4309c1950550add307046ad1e08024c7514603",
+        "version" : "2.23.0"
       }
     },
     {
       "identity" : "kingfisher",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/onevcat/Kingfisher.git",
+      "location" : "https://github.com/onevcat/Kingfisher",
       "state" : {
-        "revision" : "2ef543ee21d63734e1c004ad6c870255e8716c50",
-        "version" : "7.12.0"
+        "revision" : "3db26ab625d194c38e68c1a40e43d1bc12743fe0",
+        "version" : "8.2.0"
       }
     },
     {
@@ -148,16 +139,16 @@
     {
       "identity" : "lottie-ios",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/airbnb/lottie-ios.git",
+      "location" : "https://github.com/airbnb/lottie-ios",
       "state" : {
-        "revision" : "fe4c6fe3a0aa66cdeb51d549623c82ca9704b9a5",
-        "version" : "4.5.0"
+        "revision" : "047aa81b77adcbf583a966dfef620d17650cc656",
+        "version" : "4.5.1"
       }
     },
     {
       "identity" : "moya",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Moya/Moya.git",
+      "location" : "https://github.com/Moya/Moya",
       "state" : {
         "revision" : "c263811c1f3dbf002be9bd83107f7cdc38992b26",
         "version" : "15.0.3"
@@ -195,14 +186,14 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ReactiveX/RxSwift.git",
       "state" : {
-        "revision" : "b06a8c8596e4c3e8e7788e08e720e3248563ce6a",
-        "version" : "6.7.1"
+        "revision" : "5dd1907d64f0d36f158f61a466bab75067224893",
+        "version" : "6.9.0"
       }
     },
     {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SnapKit/SnapKit.git",
+      "location" : "https://github.com/SnapKit/SnapKit",
       "state" : {
         "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
         "version" : "5.7.1"
@@ -213,8 +204,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",
       "state" : {
-        "revision" : "edb6ed4919f7756157fe02f2552b7e3850a538e5",
-        "version" : "1.28.1"
+        "revision" : "d72aed98f8253ec1aa9ea1141e28150f408cf17f",
+        "version" : "1.29.0"
+      }
+    },
+    {
+      "identity" : "then",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/devxoul/Then",
+      "state" : {
+        "revision" : "d41ef523faef0f911369f79c0b96815d9dbb6d7a",
+        "version" : "3.0.0"
       }
     }
   ],
