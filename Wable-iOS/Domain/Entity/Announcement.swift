@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - 뉴스 & 공지사항
 
-struct Announcement {
+struct Announcement: Identifiable, Hashable {
     let id: Int
     let title: String
     let imageURL: URL?

@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - 좋아요
 
-struct Like {
+struct Like: Hashable {
     private(set) var status: Bool
     private(set) var count: Int
     

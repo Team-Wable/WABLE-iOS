@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - LCK 팀 랭크
 
-struct LCKTeamRank {
+struct LCKTeamRank: Hashable {
     let team: LCKTeam?
     let rank: Int
     let winCount: Int

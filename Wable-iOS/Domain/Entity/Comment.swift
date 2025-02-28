@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - 댓글 핵심 정보
 
-struct Comment {
+struct Comment: Identifiable, Hashable {
     let author: User
     let id: Int
     let text: String
@@ -22,14 +22,14 @@ struct Comment {
 
 // MARK: - 유저가 작성한 댓글
 
-struct UserComment {
+struct UserComment: Hashable {
     let comment: Comment
     let contentID: Int
 }
 
 // MARK: - 게시물 댓글
 
-struct ContentComment {
+struct ContentComment: Hashable {
     let comment: Comment    
     let parentID: Int
     let isDeleted: Bool

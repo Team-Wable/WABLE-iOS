@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - 투명도
 
-struct Opacity {
+struct Opacity: Hashable {
     static let minValue: Int = -85
     
     private(set) var value: Int
