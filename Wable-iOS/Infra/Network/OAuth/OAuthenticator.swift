@@ -20,13 +20,20 @@ final class OAuthenticator: Authenticator {
     }
     
     /// 토큰 재발급 API를 제외하고 다른 API 통신을 진행할 때 헤더를 설정하는 메서드
+    /// 소셜 로그인 통신 시 헤더 삽입하지 않도록 설정
     func apply(_ credential: OAuthCredential, to urlRequest: inout URLRequest) {
+        guard let urlString = urlRequest.url?.absoluteString,
+              !urlString.contains("v2/auth")
+        else {
+            return
+        }
+        
         var headers = urlRequest.headers
         
         do {
             headers.add(.authorization(bearerToken: try TokenStorage.load(.accessToken)))
         } catch {
-            print(WableError(rawValue: error.localizedDescription) ?? .unknownError)
+            WableLogger.log(NetworkError.unknown(error).localizedDescription, for: .network)
             return
         }
     }
@@ -44,7 +51,7 @@ final class OAuthenticator: Authenticator {
     func isRequest(_ urlRequest: URLRequest, authenticatedWith credential: OAuthCredential) -> Bool {
         let token = HTTPHeader.authorization(bearerToken: credential.accessToken).value
         
-        return urlRequest.headers["Authrization"] == token
+        return urlRequest.headers["Authorization"] == token
     }
 
     /// 토큰 갱신을 위해 updateTokenStatus를 실행하고 받아온 결과를 TokenStorage에 저장하는 메서드
@@ -53,7 +60,7 @@ final class OAuthenticator: Authenticator {
         for session: Alamofire.Session,
         completion: @escaping (Result<OAuthCredential, any Error>) -> Void
     ) {
-        let repository = LoginRepositoryImpl()
+        let repository = OAuthRepositoryImpl()
         
         repository.updateTokenStatus()
             .sink(

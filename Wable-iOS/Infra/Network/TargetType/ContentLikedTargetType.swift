@@ -16,7 +16,6 @@ enum ContentLikedTargetType {
 }
 
 extension ContentLikedTargetType: BaseTargetType {
-    
     var endPoint: String? {
         switch self {
         case .createContentLiked(contentID: let contentID):
