@@ -1,5 +1,5 @@
 //
-//  OAuthRepositoryImpl.swift
+//  OAuthTokenProvider.swift
 //  Wable-iOS
 //
 //  Created by YOUJIM on 2/28/25.
@@ -12,7 +12,7 @@ import Foundation
 import CombineMoya
 import Moya
 
-final class OAuthRepositoryImpl: OAuthRepository {
+final class OAuthTokenProvider {
     func updateTokenStatus() -> AnyPublisher<Token, WableError> {
         return provider.request(
             .fetchTokenStatus,
