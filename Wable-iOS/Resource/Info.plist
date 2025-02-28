@@ -2,29 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIBackgroundModes</key>
+	<key>BASE_URL</key>
+	<string>$(BASE_URL)</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<string>NO</string>
+	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>remote-notification</string>
-	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Pretendard-Regular.otf</string>
-		<string>Pretendard-SemiBold.otf</string>
+		<string>kakaolink</string>
+		<string>kakaokompassauth</string>
 	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>LSApplicationQueriesSchemes</key>
+	<key>UIAppFonts</key>
 	<array>
-		<string>kakaolink</string>
-		<string>kakaokompassauth</string>
+		<string>Pretendard-Regular.otf</string>
+		<string>Pretendard-SemiBold.otf</string>
 	</array>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<string>NO</string>
-	<key>UIUserInterfaceStyle</key>
-	<string>Light</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -42,7 +38,9 @@
 			</array>
 		</dict>
 	</dict>
-	<key>BASE_URL</key>
-	<string>$(BASE_URL)</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>
