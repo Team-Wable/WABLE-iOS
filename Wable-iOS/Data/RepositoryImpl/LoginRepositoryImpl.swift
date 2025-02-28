@@ -17,15 +17,6 @@ final class LoginRepositoryImpl {
 }
 
 extension LoginRepositoryImpl: LoginRepository {
-    func updateTokenStatus() -> AnyPublisher<Token, WableError> {
-        return provider.request(
-            .fetchTokenStatus,
-            for: DTO.Response.UpdateToken.self
-        )
-        .map(LoginMapper.toDomain)
-        .mapWableError()
-    }
-    
     func fetchUserAuth(platform: String, userName: String) -> AnyPublisher<Account, WableError> {
         return provider.request(
             .fetchUserAuth(
