@@ -14,11 +14,10 @@ import Moya
 
 final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
     private let jsonDecoder: JSONDecoder = .init()
-    private let errorMonitor = OAuthErrorMonitor()
     private let interceptor: AuthenticationInterceptor<OAuthenticator>
     
     init() {
-        self.interceptor = AuthenticationInterceptor(authenticator: OAuthenticator(errorMonitor: errorMonitor))
+        self.interceptor = AuthenticationInterceptor(authenticator: OAuthenticator(errorMonitor: OAuthErrorMonitor()))
         
         let session: Session = .init(interceptor: interceptor)
         let plugin: [PluginType] = [MoyaLoggingPlugin()]
