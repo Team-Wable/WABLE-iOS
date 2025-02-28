@@ -35,7 +35,7 @@ extension CommentMapper {
                     isGhost: comment.isGhost,
                     isBlind: comment.isBlind,
                     ghostCount: comment.memberGhost,
-                    likeNumber: comment.commentLikedNumber
+                    likedCount: comment.commentLikedNumber
                 ),
                 contentID: comment.contentID
             )
@@ -66,7 +66,7 @@ extension CommentMapper {
                     isGhost: comment.isGhost,
                     isBlind: comment.isBlind,
                     ghostCount: comment.memberGhost,
-                    likeNumber: comment.commentLikedNumber
+                    likedCount: comment.commentLikedNumber
                 ),
                 parentID: comment.parentCommentID,
                 isDeleted: comment.isDeleted,

@@ -31,6 +31,6 @@ struct ContentInfo {
     let isLiked: Bool
     let isGhost: Bool
     let isBlind: Bool?
-    let likeNumber: Int
-    let commentNumber: Int
+    let likedCount: Int
+    let commentCount: Int
 }
