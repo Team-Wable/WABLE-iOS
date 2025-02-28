@@ -18,7 +18,7 @@ struct Comment {
     let isGhost: Bool
     let isBlind: Bool?
     let ghostCount: Int
-    let likeNumber: Int
+    let likedCount: Int
 }
 
 // MARK: - 유저가 작성한 댓글

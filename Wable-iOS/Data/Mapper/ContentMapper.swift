@@ -35,8 +35,8 @@ extension ContentMapper {
             isLiked: response.isLiked,
             isGhost: response.isGhost,
             isBlind: response.isBlind,
-            likeNumber: response.likedNumber,
-            commentNumber: response.commentNumber
+            likedCount: response.likedNumber,
+            commentCount: response.commentNumber
         )
     }
     
@@ -69,8 +69,8 @@ extension ContentMapper {
                         isLiked: content.isLiked,
                         isGhost: content.isGhost,
                         isBlind: content.isBlind,
-                        likeNumber: content.likedNumber,
-                        commentNumber: content.commentNumber
+                        likedCount: content.likedNumber,
+                        commentCount: content.commentNumber
                     )
                 ),
                 isDeleted: content.isDeleted
@@ -106,8 +106,8 @@ extension ContentMapper {
                     isLiked: content.isLiked,
                     isGhost: content.isGhost,
                     isBlind: content.isBlind,
-                    likeNumber: content.likedNumber,
-                    commentNumber: content.commentNumber
+                    likedCount: content.likedNumber,
+                    commentCount: content.commentNumber
                 )
             )
         }
