@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - 활동 푸쉬 알림
 
-struct ActivityNotification {
+struct ActivityNotification: Identifiable, Hashable {
     let id: Int
     let triggerID: Int
     let type: TriggerType.ActivityNotification?
@@ -26,7 +26,7 @@ struct ActivityNotification {
 
 // MARK: - 정보 푸쉬 알림
 
-struct InfoNotification {
+struct InfoNotification: Identifiable, Hashable {
     let id: Int
     let type: InfoNotificationType?
     let time: Date?

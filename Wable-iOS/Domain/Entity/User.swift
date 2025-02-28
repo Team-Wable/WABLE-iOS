@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - 유저
 
-struct User {
+struct User: Identifiable, Hashable {
     let id: Int
     let nickname: String
     let profileURL: URL?

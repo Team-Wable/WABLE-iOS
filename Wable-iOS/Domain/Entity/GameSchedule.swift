@@ -9,14 +9,14 @@ import Foundation
 
 // MARK: - 날짜별 경기 일정
 
-struct GameSchedule {
+struct GameSchedule: Hashable {
     let date: Date?
     let games: [Game]
 }
 
 // MARK: - LCK 경기
 
-struct Game {
+struct Game: Hashable {
     let date: Date?
     let homeTeam: LCKTeam?
     let homeScore: Int
