@@ -1,14 +1,11 @@
 ![about project](https://github.com/user-attachments/assets/e10fc3b0-1048-4025-ac29-70bd344365d8)
 ![wable](https://github.com/user-attachments/assets/b02e03eb-6f64-4a44-88e2-88badb3d3b10)
 
-<div align="center">
-	
 ```swift
 print("비난, 조롱 없이 내 팀과 선수를 응원하는 커뮤니티")
 print("와블 iOS 레포지토리입니다 🚀")
 ```
 
-</div>
 
 <br><br>
 
