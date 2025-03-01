@@ -140,6 +140,9 @@
 		DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687D2D6DC70100143851 /* OAuthCredential.swift */; };
 		DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */; };
 		DD87931C2D7044E7001212AE /* OAuthErrorMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD87931B2D7044E0001212AE /* OAuthErrorMonitor.swift */; };
+		DDCCA3932D738CD500658122 /* UserSessionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3922D738CD100658122 /* UserSessionStorage.swift */; };
+		DDCCA3952D73928900658122 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3942D73928400658122 /* UserSession.swift */; };
+		DDCCA3972D73988000658122 /* UserSessionWarpper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3962D73987600658122 /* UserSessionWarpper.swift */; };
 		DDF2CC842D71FA8A000F1919 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC832D71FA8A000F1919 /* Then */; };
 		DDF2CC872D71FA96000F1919 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC862D71FA96000F1919 /* SnapKit */; };
 		DDF2CC8A2D71FADB000F1919 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC892D71FADB000F1919 /* Lottie */; };
@@ -299,6 +302,9 @@
 		DD8CEF472D6A007900DBE580 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD8CEF482D6A007900DBE580 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DD8CEFF82D6A00BB00DBE580 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "Base.lproj/LaunchScreen 2.storyboard"; sourceTree = "<group>"; };
+		DDCCA3922D738CD100658122 /* UserSessionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionStorage.swift; sourceTree = "<group>"; };
+		DDCCA3942D73928400658122 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
+		DDCCA3962D73987600658122 /* UserSessionWarpper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionWarpper.swift; sourceTree = "<group>"; };
 		DE67A9EA2D7211070021BDE1 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		DE67A9EE2D7213D90021BDE1 /* Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opacity.swift; sourceTree = "<group>"; };
 		DEDC29112D7207610073D512 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -708,6 +714,7 @@
 		DD2967BC2D6DAC3100143851 /* Infra */ = {
 			isa = PBXGroup;
 			children = (
+				DDCCA38D2D73872C00658122 /* Local */,
 				DD2967662D6DAC3100143851 /* Token */,
 				DD2967692D6DAC3100143851 /* Keychain */,
 				DD2967BB2D6DAC3100143851 /* Network */,
@@ -866,6 +873,16 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		DDCCA38D2D73872C00658122 /* Local */ = {
+			isa = PBXGroup;
+			children = (
+				DDCCA3942D73928400658122 /* UserSession.swift */,
+				DDCCA3922D738CD100658122 /* UserSessionStorage.swift */,
+				DDCCA3962D73987600658122 /* UserSessionWarpper.swift */,
+			);
+			path = Local;
+			sourceTree = "<group>";
+		};
 		DEDC29122D7208650073D512 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
@@ -996,6 +1013,7 @@
 				DD2968122D6DACF700143851 /* Community.swift in Sources */,
 				DD2968132D6DACF700143851 /* TriggerType.swift in Sources */,
 				DD2968142D6DACF700143851 /* AccountInfo.swift in Sources */,
+				DDCCA3972D73988000658122 /* UserSessionWarpper.swift in Sources */,
 				DD2968152D6DACF700143851 /* Announcement.swift in Sources */,
 				DD2968512D6DAD4400143851 /* UpdateUserProfile.swift in Sources */,
 				DD2968522D6DAD4400143851 /* DTO.swift in Sources */,
@@ -1077,11 +1095,13 @@
 				DD29683A2D6DAD1700143851 /* NotificationRepositoryImpl.swift in Sources */,
 				DD2967F92D6DAC4800143851 /* AnyPublisher+.swift in Sources */,
 				DD2967FA2D6DAC4800143851 /* Publisher+.swift in Sources */,
+				DDCCA3952D73928900658122 /* UserSession.swift in Sources */,
 				DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */,
 				DD2968022D6DAC9B00143851 /* ViewController.swift in Sources */,
 				DD2967FC2D6DAC4800143851 /* Injected.swift in Sources */,
 				DD2967FD2D6DAC4800143851 /* CancelBag.swift in Sources */,
 				DD2967FE2D6DAC4800143851 /* WableLogger.swift in Sources */,
+				DDCCA3932D738CD500658122 /* UserSessionStorage.swift in Sources */,
 				DD2967FF2D6DAC8900143851 /* SceneDelegate.swift in Sources */,
 				DD2968172D6DAD0200143851 /* ContentRepository.swift in Sources */,
 				DD2968182D6DAD0200143851 /* CommunityRepository.swift in Sources */,
