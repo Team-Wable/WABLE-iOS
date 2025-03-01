@@ -1,5 +1,5 @@
 //
-//  UserSessionWarpper.swift
+//  UserSessionWrapper.swift
 //  Wable-iOS
 //
 //  Created by YOUJIM on 3/2/25.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class UserSessionWarpper {
+class UserSessionWrapper {
     private enum Keys {
         static let userSessions = "sessionDictionary"
         static let activeUserID = "activeID"
@@ -19,7 +19,7 @@ class UserSessionWarpper {
 
 // MARK: - Private Helper
 
-extension UserSessionWarpper {
+extension UserSessionWrapper {
     private func fetchSessions() -> [String: UserSession] {
         guard let data = defaults.data(forKey: Keys.userSessions),
               let sessions = try? JSONDecoder().decode([String: UserSession].self, from: data) else {
@@ -37,7 +37,7 @@ extension UserSessionWarpper {
 
 // MARK: - UserSessionStorage
 
-extension UserSessionWarpper: UserSessionStorage {
+extension UserSessionWrapper: UserSessionStorage {
     func fetchAllUserSessions() -> [String: UserSession] {
         return fetchSessions()
     }
