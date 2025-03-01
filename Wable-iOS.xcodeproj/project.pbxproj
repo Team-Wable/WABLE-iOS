@@ -14,6 +14,9 @@
 		0586D89B2D09A68200436080 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0586D8992D09A68200436080 /* Pretendard-Regular.otf */; };
 		0586D89C2D09A68200436080 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */; };
 		3C8B4E052C76247800174943 /* wable_tab.json in Resources */ = {isa = PBXBuildFile; fileRef = 3C8B4E042C76247800174943 /* wable_tab.json */; };
+		DD1C17A12D734D83009A3207 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1C17A02D734D7F009A3207 /* UIFont+.swift */; };
+		DD1C17A32D735495009A3207 /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1C17A22D735491009A3207 /* UILabel+.swift */; };
+		DD1C17A52D7362E2009A3207 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = DD1C17A42D7362E2009A3207 /* Pretendard-Medium.otf */; };
 		DD2967F92D6DAC4800143851 /* AnyPublisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29675E2D6DAC3100143851 /* AnyPublisher+.swift */; };
 		DD2967FA2D6DAC4800143851 /* Publisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967602D6DAC3100143851 /* Publisher+.swift */; };
 		DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29675B2D6DAC3100143851 /* DIContainer.swift */; };
@@ -168,6 +171,9 @@
 		0586D8992D09A68200436080 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		3C8B4E042C76247800174943 /* wable_tab.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = wable_tab.json; sourceTree = "<group>"; };
+		DD1C17A02D734D7F009A3207 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
+		DD1C17A22D735491009A3207 /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
+		DD1C17A42D7362E2009A3207 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		DD29675B2D6DAC3100143851 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		DD29675C2D6DAC3100143851 /* Injected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injected.swift; sourceTree = "<group>"; };
 		DD29675E2D6DAC3100143851 /* AnyPublisher+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnyPublisher+.swift"; sourceTree = "<group>"; };
@@ -374,10 +380,28 @@
 		3C35317E2C6F13FF0015A8FA /* Font */ = {
 			isa = PBXGroup;
 			children = (
+				DD1C17A42D7362E2009A3207 /* Pretendard-Medium.otf */,
 				0586D8992D09A68200436080 /* Pretendard-Regular.otf */,
 				0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		DD1C179E2D734D32009A3207 /* Font+ */ = {
+			isa = PBXGroup;
+			children = (
+				DD1C17A22D735491009A3207 /* UILabel+.swift */,
+				DD1C17A02D734D7F009A3207 /* UIFont+.swift */,
+			);
+			path = "Font+";
+			sourceTree = "<group>";
+		};
+		DD1C179F2D734D60009A3207 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				DD1C179E2D734D32009A3207 /* Font+ */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		DD29675D2D6DAC3100143851 /* DI */ = {
@@ -813,6 +837,7 @@
 		DD2967F82D6DAC3100143851 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				DD1C179F2D734D60009A3207 /* Helper */,
 				DD2967D72D6DAC3100143851 /* Error */,
 				DD2967E52D6DAC3100143851 /* RepositoryInterface */,
 				DD2967F72D6DAC3100143851 /* Entity */,
@@ -845,8 +870,8 @@
 		DD8CEF462D6A007900DBE580 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				DD8CEF402D6A007900DBE580 /* Config */,
 				3C35317E2C6F13FF0015A8FA /* Font */,
+				DD8CEF402D6A007900DBE580 /* Config */,
 				0547F4B32C60E31C001E3039 /* Animation */,
 				DD8CEF412D6A007900DBE580 /* Info.plist */,
 				0547F4A22C60D96B001E3039 /* Assets.xcassets */,
@@ -963,6 +988,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				054308EA2CB7F582001861F1 /* wable_loading.json in Resources */,
+				DD1C17A52D7362E2009A3207 /* Pretendard-Medium.otf in Resources */,
 				DD2968012D6DAC9300143851 /* LaunchScreen.storyboard in Resources */,
 				DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */,
 				0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */,
@@ -999,6 +1025,7 @@
 				DD2968152D6DACF700143851 /* Announcement.swift in Sources */,
 				DD2968512D6DAD4400143851 /* UpdateUserProfile.swift in Sources */,
 				DD2968522D6DAD4400143851 /* DTO.swift in Sources */,
+				DD1C17A32D735495009A3207 /* UILabel+.swift in Sources */,
 				DD2968532D6DAD4400143851 /* BaseResponse.swift in Sources */,
 				DD2968542D6DAD4400143851 /* CreateBan.swift in Sources */,
 				DD2968552D6DAD4400143851 /* CreateComment.swift in Sources */,
@@ -1013,6 +1040,7 @@
 				DD29685D2D6DAD4400143851 /* UpdatePreRegister.swift in Sources */,
 				DD29685E2D6DAD4400143851 /* DeleteAccount.swift in Sources */,
 				DD29685F2D6DAD4400143851 /* UpdateGhost.swift in Sources */,
+				DD1C17A12D734D83009A3207 /* UIFont+.swift in Sources */,
 				DD2968162D6DACF700143851 /* GameSchedule.swift in Sources */,
 				DD29682E2D6DAD1700143851 /* CommunityRepositoryImpl.swift in Sources */,
 				DD29682F2D6DAD1700143851 /* ViewitRepositoryImpl.swift in Sources */,
