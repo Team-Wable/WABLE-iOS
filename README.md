@@ -1,10 +1,14 @@
 ![about project](https://github.com/user-attachments/assets/e10fc3b0-1048-4025-ac29-70bd344365d8)
 ![wable](https://github.com/user-attachments/assets/b02e03eb-6f64-4a44-88e2-88badb3d3b10)
 
+<div align="center">
+	
 ```swift
 print("비난, 조롱 없이 내 팀과 선수를 응원하는 커뮤니티")
 print("와블 iOS 레포지토리입니다 🚀")
 ```
+
+</div>
 
 <br><br>
 
@@ -33,17 +37,56 @@ print("와블 iOS 레포지토리입니다 🚀")
 
 ## Prefix (Tag)
 
-| Prefix   | 설명 |
-|----------|------------------------------|
-| `Feat`   | 기능 구현 |
-| `Add`    | 파일(이미지, 폰트 등 포함) 추가 |
-| `Delete` | 파일 삭제 |
-| `Chore`  | 짬통 |
-| `Refactor` | 코드의 비즈니스 로직 수정 |
-| `Fix`    | 버그 등의 기능 전체 수정 |
-| `Style`  | UI 스타일(오토레이아웃 등) 설정 |
-| `Setting` | 프로젝트 설정 |
-| `Docs`   | 문서 작성 |
+<div align="center">
+
+<table>
+  <thead>
+    <tr>
+      <th>Prefix</th>
+      <th>설명</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Feat</code></td>
+      <td>기능 구현</td>
+    </tr>
+    <tr>
+      <td><code>Add</code></td>
+      <td>파일(이미지, 폰트 등 포함) 추가</td>
+    </tr>
+    <tr>
+      <td><code>Delete</code></td>
+      <td>파일 삭제</td>
+    </tr>
+    <tr>
+      <td><code>Chore</code></td>
+      <td>이외 수정 항</td>
+    </tr>
+    <tr>
+      <td><code>Refactor</code></td>
+      <td>코드의 비즈니스 로직 수정</td>
+    </tr>
+    <tr>
+      <td><code>Fix</code></td>
+      <td>버그 등의 기능 전체 수정</td>
+    </tr>
+    <tr>
+      <td><code>Style</code></td>
+      <td>UI 스타일(오토레이아웃 등) 설정</td>
+    </tr>
+    <tr>
+      <td><code>Setting</code></td>
+      <td>프로젝트 설정</td>
+    </tr>
+    <tr>
+      <td><code>Docs</code></td>
+      <td>문서 작성</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
 
 ## Message
 
@@ -55,6 +98,104 @@ print("와블 iOS 레포지토리입니다 🚀")
 ```
 
 </div>
+
+<br><br>
+
+![Library](https://github.com/user-attachments/assets/4d893132-2198-454a-b776-345bcc2fc28f)
+
+
+<div align="center">
+
+<table>
+  <thead>
+    <tr>
+      <th>Library</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Moya</strong></td>
+      <td>추상화된 네트워크 레이어를 보다 간편하게 사용하기 위함</td>
+    </tr>
+    <tr>
+      <td><strong>CombineMoya</strong></td>
+      <td>Combine을 활용한 네트워크 요청을 보다 효율적으로 처리하기 위함</td>
+    </tr>
+    <tr>
+      <td><strong>Then</strong></td>
+      <td>UI 구현 시, 클로저를 통해 인스턴스를 보다 간편하게 초기화하기 위함</td>
+    </tr>
+    <tr>
+      <td><strong>Snapkit</strong></td>
+      <td>UI 구현에서 오토레이아웃을 간편하게 적용하기 위함</td>
+    </tr>
+    <tr>
+      <td><strong>Lottie</strong></td>
+      <td>JSON 기반 애니메이션을 UI에 쉽게 적용하기 위함</td>
+    </tr>
+    <tr>
+      <td><strong>Kingfisher</strong></td>
+      <td>이미지 캐싱 및 다운로드 최적화를 통해 UI 성능을 개선하기 위함</td>
+    </tr>
+    <tr>
+      <td><strong>KakaoOpenSDK</strong></td>
+      <td>카카오 소셜 로그인 및 API 활용을 위함</td>
+    </tr>
+    <tr>
+      <td><strong>Firebase</strong></td>
+      <td>FCM을 이용한 푸시 알림 및 백엔드 기능 활용을 위함</td>
+    </tr>
+    <tr>
+      <td><strong>Amplitude-Swift</strong></td>
+      <td>사용자 행동 분석을 위한 이벤트 트래킹을 위함</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+<br><br>
+
+![foldering](https://github.com/user-attachments/assets/2d54d323-a632-4b31-a341-85efeb0c5eb9)
+
+```markdown
+📁 Wable-iOS
+├── 📁 App
+│   ├── AppDelegate
+│   ├── SceneDelegate
+├── 📁 Resource
+│   ├── 📁 Config
+│   ├── 📁 Font
+│   ├── 📁 Animation
+│   ├── 📁 Info
+│   ├── 📁 Assets
+│   │   ├── 📁 Color
+│   ├── LaunchScreen
+│   ├── ViewController
+├── 📁 Core
+│   ├── 📁 DI
+│   ├── 📁 Combine+
+│   ├── 📁 Logger
+├── 📁 Infra
+│   ├── 📁 Token
+│   ├── 📁 Keychain
+│   ├── 📁 Network
+│   │   ├── 📁 OAuth
+│   │   ├── APIProvider
+│   │   ├── NetworkError
+│   │   ├── MoyaLoggingPlugin
+│   │   ├── 📁 Bundle
+│   │   ├── 📁 TargetType
+│   │   ├── 📁 DTO
+├── 📁 Data
+│   ├── 📁 RepositoryImpl
+│   ├── 📁 Mapper
+├── 📁 Domain
+│   ├── 📁 Error
+│   ├── 📁 RepositoryInterface
+│   ├── 📁 Entity
+```
 
 <br><br>
 
@@ -163,6 +304,3 @@ private extension CustomView {
 ```
 
 </details>
-
-<br><br>
-
