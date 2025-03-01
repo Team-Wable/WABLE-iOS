@@ -61,7 +61,7 @@ print("와블 iOS 레포지토리입니다 🚀")
     </tr>
     <tr>
       <td><code>Chore</code></td>
-      <td>이외 수정 항</td>
+      <td>이외 자잘한 수정</td>
     </tr>
     <tr>
       <td><code>Refactor</code></td>
