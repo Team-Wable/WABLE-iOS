@@ -16,11 +16,11 @@ final class OAuthErrorMonitor: EventMonitor {
  
     var isUnauthorized: Bool {
         get {
-            queue.sync { OAuthErrorMonitor.condition }
+            queue.sync { Self.condition }
         }
         set {
             queue.async(flags: .barrier) {
-                OAuthErrorMonitor.condition = newValue
+                Self.condition = newValue
             }
         }
     }
