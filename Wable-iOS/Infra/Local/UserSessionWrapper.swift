@@ -22,7 +22,8 @@ class UserSessionWrapper {
 extension UserSessionWrapper {
     private func fetchSessions() -> [String: UserSession] {
         guard let data = defaults.data(forKey: Keys.userSessions),
-              let sessions = try? JSONDecoder().decode([String: UserSession].self, from: data) else {
+              let sessions = try? JSONDecoder().decode([String: UserSession].self, from: data)
+        else {
             return [:]
         }
         return sessions
