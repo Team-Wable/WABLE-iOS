@@ -15,15 +15,18 @@ print("와블 iOS 레포지토리입니다 🚀")
 
 <table>
   <tr>
+    <th>변상우</br><a href="https://github.com/boogios">@boogios</a></th>
+    <th>박윤빈</br><a href="https://github.com/binisnil">@binisnil</a></th>
     <th>김진웅</br><a href="https://github.com/JinUng41">@JinUng41</a></th>
     <th>이유진</br><a href="https://github.com/youz2me">@youz2me</a></th>
   </tr>
   <tr>
-    <td><img width="300" alt="jinung" src="https://github.com/user-attachments/assets/751d0c6b-3885-407e-a9c8-7e97eb93aae7" /></td>
-    <td><img width="300" alt="youjin" src="https://github.com/user-attachments/assets/5e9a2c2d-1687-40e5-8b8f-2132338c72b2" /></td>
+    <td><img width="250" alt="sangwoo" src="https://github.com/user-attachments/assets/457067cf-f492-41c3-b7a8-aa3456a06126" /></td>
+    <td><img width="250" alt="yunbin" src="https://github.com/user-attachments/assets/b8307c89-fde1-4e3c-9c84-73a72ce1673b" /></td>
+    <td><img width="250" alt="jinung" src="https://github.com/user-attachments/assets/751d0c6b-3885-407e-a9c8-7e97eb93aae7" /></td>
+    <td><img width="250" alt="youjin" src="https://github.com/user-attachments/assets/5e9a2c2d-1687-40e5-8b8f-2132338c72b2" /></td>
   </tr>
 </table>
-
 </div>
 
 <br><br>
