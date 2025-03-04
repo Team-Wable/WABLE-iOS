@@ -12,15 +12,15 @@ import Alamofire
 
 final class OAuthErrorMonitor: EventMonitor {
     let queue = DispatchQueue(label: "OAuthErrorMonitorQueue", attributes: .concurrent)
-    private var condition: Bool = false
-    
+    private static var condition = false
+ 
     var isUnauthorized: Bool {
         get {
-            queue.sync { condition }
+            queue.sync { Self.condition }
         }
         set {
             queue.async(flags: .barrier) {
-                self.condition = newValue
+                Self.condition = newValue
             }
         }
     }
