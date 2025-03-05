@@ -13,14 +13,14 @@ struct UserDefaultsStorage {
     private let jsonEncoder: JSONEncoder
     private let jsonDecoder: JSONDecoder
     
-    init(userDefaults: UserDefaults, jsonEncoder: JSONEncoder, jsonDecoder: JSONDecoder) {
+    init(userDefaults: UserDefaults = .standard, jsonEncoder: JSONEncoder, jsonDecoder: JSONDecoder) {
         self.userDefaults = userDefaults
         self.jsonEncoder = jsonEncoder
         self.jsonDecoder = jsonDecoder
     }
 }
 
-extension UserDefaultsStorage: LocalStorage {
+extension UserDefaultsStorage: LocalKeyValueStorage {
     func setValue<T>(_ value: T, for key: String) throws where T : Decodable, T : Encodable {
         guard let data = try? jsonEncoder.encode(value) else {
             throw LocalError.saveFailed

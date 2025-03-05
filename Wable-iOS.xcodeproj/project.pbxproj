@@ -143,7 +143,7 @@
 		DDCCA3972D73988000658122 /* UserSessionRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */; };
 		DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */; };
 		DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */; };
-		DDED594F2D784EC000A0BEF1 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594E2D784EC000A0BEF1 /* LocalStorage.swift */; };
+		DDED594F2D784EC000A0BEF1 /* LocalKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594E2D784EC000A0BEF1 /* LocalKeyValueStorage.swift */; };
 		DDED59512D7850E600A0BEF1 /* LocalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59502D7850E300A0BEF1 /* LocalError.swift */; };
 		DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59522D785B9400A0BEF1 /* TokenError.swift */; };
 		DDF2CC842D71FA8A000F1919 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC832D71FA8A000F1919 /* Then */; };
@@ -308,7 +308,7 @@
 		DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepositoryImpl.swift; sourceTree = "<group>"; };
 		DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
 		DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsStorage.swift; sourceTree = "<group>"; };
-		DDED594E2D784EC000A0BEF1 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
+		DDED594E2D784EC000A0BEF1 /* LocalKeyValueStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalKeyValueStorage.swift; sourceTree = "<group>"; };
 		DDED59502D7850E300A0BEF1 /* LocalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalError.swift; sourceTree = "<group>"; };
 		DDED59522D785B9400A0BEF1 /* TokenError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenError.swift; sourceTree = "<group>"; };
 		DE67A9EA2D7211070021BDE1 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
@@ -876,7 +876,7 @@
 		DDED59492D784E9000A0BEF1 /* Local */ = {
 			isa = PBXGroup;
 			children = (
-				DDED594E2D784EC000A0BEF1 /* LocalStorage.swift */,
+				DDED594E2D784EC000A0BEF1 /* LocalKeyValueStorage.swift */,
 				DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */,
 				DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */,
 				DDED59502D7850E300A0BEF1 /* LocalError.swift */,
@@ -1125,7 +1125,7 @@
 				DD2968252D6DAD0B00143851 /* ViewitMapper.swift in Sources */,
 				DD2968262D6DAD0B00143851 /* CommunityMapper.swift in Sources */,
 				DD2968272D6DAD0B00143851 /* LoginMapper.swift in Sources */,
-				DDED594F2D784EC000A0BEF1 /* LocalStorage.swift in Sources */,
+				DDED594F2D784EC000A0BEF1 /* LocalKeyValueStorage.swift in Sources */,
 				DD2968282D6DAD0B00143851 /* InformationMapper.swift in Sources */,
 				DD2968292D6DAD0B00143851 /* WableError.swift in Sources */,
 				DD29682A2D6DAD0B00143851 /* ErrorMapper.swift in Sources */,
