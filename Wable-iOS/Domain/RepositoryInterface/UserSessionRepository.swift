@@ -1,5 +1,5 @@
 //
-//  UserSessionStorage.swift
+//  UserSessionRepository.swift
 //  Wable-iOS
 //
 //  Created by YOUJIM on 3/2/25.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-// MARK: - UserSessionStorage
+// MARK: - UserSessionRepository
 
-protocol UserSessionStorage {
+protocol UserSessionRepository {
     func fetchAllUserSessions() -> [String: UserSession]
     func fetchUserSession(forUserID userID: String) -> UserSession?
     func fetchActiveUserSession() -> UserSession?

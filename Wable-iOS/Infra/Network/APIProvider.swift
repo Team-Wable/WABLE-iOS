@@ -17,7 +17,12 @@ final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
     private let interceptor: AuthenticationInterceptor<OAuthenticator>
     
     init() {
-        self.interceptor = AuthenticationInterceptor(authenticator: OAuthenticator(errorMonitor: OAuthErrorMonitor()))
+        self.interceptor = AuthenticationInterceptor(
+            authenticator: OAuthenticator(
+                errorMonitor: OAuthErrorMonitor(),
+                tokenStorage: TokenStorage(keyChainStorage: KeychainStorage())
+            )
+        )
         
         let session: Session = .init(interceptor: interceptor)
         let plugin: [PluginType] = [MoyaLoggingPlugin()]

@@ -1,5 +1,5 @@
 //
-//  UserSessionWrapper.swift
+//  UserSessionRepositoryImpl.swift
 //  Wable-iOS
 //
 //  Created by YOUJIM on 3/2/25.
@@ -8,43 +8,28 @@
 
 import Foundation
 
-class UserSessionWrapper {
+class UserSessionRepositoryImpl {
     private enum Keys {
         static let userSessions = "sessionDictionary"
         static let activeUserID = "activeID"
     }
     
-    private let defaults = UserDefaults.standard
+    private let userDefaults = UserDefaultsStorage(
+        userDefaults: UserDefaults.standard,
+        jsonEncoder: JSONEncoder(),
+        jsonDecoder: JSONDecoder()
+    )
 }
 
-// MARK: - Private Helper
+// MARK: - UserSessionRepository
 
-extension UserSessionWrapper {
-    private func fetchSessions() -> [String: UserSession] {
-        guard let data = defaults.data(forKey: Keys.userSessions),
-              let sessions = try? JSONDecoder().decode([String: UserSession].self, from: data)
-        else {
-            return [:]
-        }
-        return sessions
-    }
-    
-    private func updateSessions(_ sessions: [String: UserSession]) {
-        if let data = try? JSONEncoder().encode(sessions) {
-            defaults.set(data, forKey: Keys.userSessions)
-        }
-    }
-}
-
-// MARK: - UserSessionStorage
-
-extension UserSessionWrapper: UserSessionStorage {
+extension UserSessionRepositoryImpl: UserSessionRepository {
     func fetchAllUserSessions() -> [String: UserSession] {
-        return fetchSessions()
+        return (try? userDefaults.getValue(for: Keys.userSessions)) ?? [:]
     }
     
     func fetchUserSession(forUserID userID: String) -> UserSession? {
-        return fetchSessions()[userID]
+        return fetchAllUserSessions()[userID]
     }
     
     func fetchActiveUserSession() -> UserSession? {
@@ -55,13 +40,15 @@ extension UserSessionWrapper: UserSessionStorage {
     }
     
     func fetchActiveUserID() -> String? {
-        return defaults.string(forKey: Keys.activeUserID)
+        return try? userDefaults.getValue(for: Keys.activeUserID)
     }
     
     func updateUserSession(_ session: UserSession, forUserID userID: String) {
-        var sessions = fetchSessions()
+        var sessions = fetchAllUserSessions()
+        
         sessions[userID] = session
-        updateSessions(sessions)
+        
+        try? userDefaults.setValue(sessions, for: Keys.userSessions)
         
         if fetchActiveUserID() == nil {
             updateActiveUserID(forUserID: userID)
@@ -69,8 +56,9 @@ extension UserSessionWrapper: UserSessionStorage {
     }
     
     func updateAutoLogin(enabled: Bool, forUserID userID: String) {
-        var sessions = fetchSessions()
-        if var session = sessions[userID] {
+        var sessions = fetchAllUserSessions()
+        
+        if let session = sessions[userID] {
             let updatedSession = UserSession(
                 id: session.id,
                 nickname: session.nickname,
@@ -82,13 +70,14 @@ extension UserSessionWrapper: UserSessionStorage {
             )
             
             sessions[userID] = updatedSession
-            updateSessions(sessions)
+            try? userDefaults.setValue(sessions, for: Keys.userSessions)
         }
     }
     
     func updateNotificationBadge(count: Int, forUserID userID: String) {
-        var sessions = fetchSessions()
-        if var session = sessions[userID] {
+        var sessions = fetchAllUserSessions()
+        
+        if let session = sessions[userID] {
             let updatedSession = UserSession(
                 id: session.id,
                 nickname: session.nickname,
@@ -99,26 +88,24 @@ extension UserSessionWrapper: UserSessionStorage {
                 notificationBadgeCount: count
             )
             sessions[userID] = updatedSession
-            updateSessions(sessions)
+            try? userDefaults.setValue(sessions, for: Keys.userSessions)
         }
     }
     
     func updateActiveUserID(forUserID userID: String?) {
         if let userID = userID {
-            defaults.set(userID, forKey: Keys.activeUserID)
-        } else {
-            defaults.removeObject(forKey: Keys.activeUserID)
+            try? userDefaults.setValue(userID, for: Keys.activeUserID)
         }
     }
     
     func removeUserSession(forUserID userID: String) {
-        var sessions = fetchSessions()
+        var sessions = fetchAllUserSessions()
+        
         sessions.removeValue(forKey: userID)
-        updateSessions(sessions)
+        try? userDefaults.setValue(sessions, for: Keys.userSessions)
         
         if fetchActiveUserID() == userID {
             updateActiveUserID(forUserID: nil)
         }
     }
 }
-
