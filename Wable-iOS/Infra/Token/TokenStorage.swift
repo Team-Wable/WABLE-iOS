@@ -9,9 +9,6 @@
 import Foundation
 
 struct TokenStorage {
-    
-    // MARK: - TokenType
-
     enum TokenType: String {
         case accessToken = "accessToken"
         case refreshToken = "refreshToken"
