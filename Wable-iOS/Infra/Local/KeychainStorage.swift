@@ -1,20 +1,22 @@
 //
-//  KeychainWrapper.swift
+//  KeychainStorage.swift
 //  Wable-iOS
 //
-//  Created by YOUJIM on 2/15/25.
+//  Created by YOUJIM on 3/5/25.
 //
 
 
 import Foundation
 import Security
 
-enum KeychainWrapper {
-    static func save(_ data: Data, for service: String) throws {
+struct KeychainStorage { }
+
+extension KeychainStorage: LocalKeyValueStorage {
+    func setValue<T>(_ value: T, for key: String) throws where T : Decodable, T : Encodable {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecValueData as String: data
+            kSecAttrService as String: key,
+            kSecValueData as String: value
         ]
         
         SecItemDelete(query as CFDictionary)
@@ -22,15 +24,15 @@ enum KeychainWrapper {
         let status = SecItemAdd(query as CFDictionary, nil)
         
         if status != errSecSuccess {
-            throw KeychainError.saveFailed(status)
+            throw LocalError.saveFailed
         }
     }
     
-    static func load(for service: String) throws -> Data {
+    func getValue<T>(for key: String) throws -> T? where T : Decodable, T : Encodable {
         var item: AnyObject?
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
+            kSecAttrService as String: key,
             kSecReturnData as String: kCFBooleanTrue!,
             kSecMatchLimit as String: kSecMatchLimitOne
         ]
@@ -40,22 +42,22 @@ enum KeychainWrapper {
         guard status == errSecSuccess,
               let data = item as? Data
         else {
-            throw KeychainError.dataNotFound(status)
+            throw LocalError.dataNotFound
         }
         
-        return data
+        return data as? T
     }
     
-    static func delete(for service: String) throws {
+    func removeValue(for key: String) throws {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service
+            kSecAttrService as String: key
         ]
         
         let status = SecItemDelete(query as CFDictionary)
         
         if status != errSecSuccess {
-            throw KeychainError.deleteFailed(status)
+            throw LocalError.deleteFailed
         }
     }
 }
