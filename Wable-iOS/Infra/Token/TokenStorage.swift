@@ -10,8 +10,9 @@ import Foundation
 
 struct TokenStorage {
     enum TokenType: String {
-        case accessToken = "accessToken"
-        case refreshToken = "refreshToken"
+        case kakaoAccessToken = "kakaoAccessToken"
+        case wableAccessToken = "accessToken"
+        case wableRefreshToken = "refreshToken"
     }
     
     private let keychainStorage: KeychainStorage
