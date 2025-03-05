@@ -9,7 +9,9 @@
 import Foundation
 import Security
 
-struct KeychainStorage: LocalStorage {
+struct KeychainStorage { }
+
+extension KeychainStorage: LocalStorage {
     func setValue<T>(_ value: T, for key: String) throws where T : Decodable, T : Encodable {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,

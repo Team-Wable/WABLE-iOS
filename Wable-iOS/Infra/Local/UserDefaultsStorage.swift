@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct UserDefaultsStorage: LocalStorage {
+struct UserDefaultsStorage {
     private let userDefaults: UserDefaults
     private let jsonEncoder: JSONEncoder
     private let jsonDecoder: JSONDecoder
@@ -18,7 +18,9 @@ struct UserDefaultsStorage: LocalStorage {
         self.jsonEncoder = jsonEncoder
         self.jsonDecoder = jsonDecoder
     }
-    
+}
+
+extension UserDefaultsStorage: LocalStorage {
     func setValue<T>(_ value: T, for key: String) throws where T : Decodable, T : Encodable {
         guard let data = try? jsonEncoder.encode(value) else {
             throw LocalError.saveFailed
