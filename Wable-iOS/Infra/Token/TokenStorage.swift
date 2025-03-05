@@ -31,7 +31,7 @@ extension TokenStorage {
     
     func load(_ tokenType: TokenType) throws -> String {
         guard let token: String = try keychainStorage.getValue(for: tokenType.rawValue) else {
-            throw TokenStorageError.dataConversionFailed
+            throw TokenError.dataConversionFailed
         }
         
         return token
@@ -39,13 +39,5 @@ extension TokenStorage {
     
     func delete(_ tokenType: TokenType) throws {
         try keychainStorage.removeValue(for: tokenType.rawValue)
-    }
-}
-
-// MARK: - TokenStorageError
-
-extension TokenStorage {
-    enum TokenStorageError: Error {
-        case dataConversionFailed
     }
 }

@@ -145,6 +145,7 @@
 		DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */; };
 		DDED594F2D784EC000A0BEF1 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594E2D784EC000A0BEF1 /* LocalStorage.swift */; };
 		DDED59512D7850E600A0BEF1 /* LocalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59502D7850E300A0BEF1 /* LocalError.swift */; };
+		DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59522D785B9400A0BEF1 /* TokenError.swift */; };
 		DDF2CC842D71FA8A000F1919 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC832D71FA8A000F1919 /* Then */; };
 		DDF2CC872D71FA96000F1919 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC862D71FA96000F1919 /* SnapKit */; };
 		DDF2CC8A2D71FADB000F1919 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC892D71FADB000F1919 /* Lottie */; };
@@ -309,6 +310,7 @@
 		DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsStorage.swift; sourceTree = "<group>"; };
 		DDED594E2D784EC000A0BEF1 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		DDED59502D7850E300A0BEF1 /* LocalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalError.swift; sourceTree = "<group>"; };
+		DDED59522D785B9400A0BEF1 /* TokenError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenError.swift; sourceTree = "<group>"; };
 		DE67A9EA2D7211070021BDE1 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		DE67A9EE2D7213D90021BDE1 /* Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opacity.swift; sourceTree = "<group>"; };
 		DEDC29112D7207610073D512 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -431,6 +433,7 @@
 			isa = PBXGroup;
 			children = (
 				DD2967652D6DAC3100143851 /* TokenStorage.swift */,
+				DDED59522D785B9400A0BEF1 /* TokenError.swift */,
 			);
 			path = Token;
 			sourceTree = "<group>";
@@ -874,9 +877,9 @@
 			isa = PBXGroup;
 			children = (
 				DDED594E2D784EC000A0BEF1 /* LocalStorage.swift */,
-				DDED59502D7850E300A0BEF1 /* LocalError.swift */,
 				DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */,
 				DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */,
+				DDED59502D7850E300A0BEF1 /* LocalError.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -1046,6 +1049,7 @@
 				DD2968412D6DAD2F00143851 /* Empty.swift in Sources */,
 				DD2968422D6DAD2F00143851 /* FetchNotices.swift in Sources */,
 				DD29686E2D6DAD5F00143851 /* Bundle+.swift in Sources */,
+				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,
 				DD29686F2D6DAD5F00143851 /* MoyaLoggingPlugin.swift in Sources */,
 				DD2968702D6DAD5F00143851 /* TokenStorage.swift in Sources */,
 				DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */,
