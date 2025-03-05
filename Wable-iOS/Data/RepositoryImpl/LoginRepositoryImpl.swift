@@ -14,10 +14,20 @@ import Moya
 
 final class LoginRepositoryImpl {
     private let provider = APIProvider<LoginTargetType>()
+    private let appleAuthProvider = AppleAuthProvider()
+    private let kakaoAuthProvider = KakaoAuthProvider()
 }
 
 extension LoginRepositoryImpl: LoginRepository {
-    func fetchUserAuth(platform: String, userName: String) -> AnyPublisher<Account, WableError> {
+    func fetchAppleAuth() -> AnyPublisher<String, WableError> {
+        return appleAuthProvider.authenticate()
+    }
+    
+    func fetchKakaoAuth() -> AnyPublisher<Void, WableError> {
+        return kakaoAuthProvider.authenticate()
+    }
+    
+    func fetchUserAuth(platform: String, userName: String?) -> AnyPublisher<Account, WableError> {
         return provider.request(
             .fetchUserAuth(
                 request: DTO.Request.CreateAccount(
