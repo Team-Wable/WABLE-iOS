@@ -7,6 +7,7 @@
 
 
 import Foundation
+import Combine
 
 // MARK: - UserSessionRepository
 
@@ -20,4 +21,5 @@ protocol UserSessionRepository {
     func updateNotificationBadge(count: Int, forUserID userID: String)
     func updateActiveUserID(forUserID userID: String?)
     func removeUserSession(forUserID userID: String)
+    func checkAutoLogin() -> AnyPublisher<Bool, Error>
 }
