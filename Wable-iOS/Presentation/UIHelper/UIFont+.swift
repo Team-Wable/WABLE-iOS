@@ -75,7 +75,9 @@ extension UIFont {
         ///
         /// - 기본적으로 (줄 높이 - 폰트 크기)의 1/3을 적용하여 시각적 정렬을 조정합니다.
         /// - Returns: `CGFloat` 값
-        var baselineOffset: CGFloat { return (lineHeight - size) / 3 }
+        var baselineOffset: CGFloat {
+            return (lineHeight - size) / 3
+        }
     }
     
     /// `Pretendard` 폰트를 반환하는 정적 메서드.
