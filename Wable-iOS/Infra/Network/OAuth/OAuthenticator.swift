@@ -14,9 +14,11 @@ final class OAuthenticator: Authenticator {
     typealias Credential = OAuthCredential
     
     private let errorMonitor: OAuthErrorMonitor
+    private let tokenStorage: TokenStorage
     
-    init(errorMonitor: OAuthErrorMonitor) {
+    init(errorMonitor: OAuthErrorMonitor, tokenStorage: TokenStorage) {
         self.errorMonitor = errorMonitor
+        self.tokenStorage = tokenStorage
     }
     
     /// 토큰 재발급 API를 제외하고 다른 API 통신을 진행할 때 헤더를 설정하는 메서드
@@ -31,7 +33,7 @@ final class OAuthenticator: Authenticator {
         var headers = urlRequest.headers
         
         do {
-            headers.add(.authorization(bearerToken: try TokenStorage.load(.accessToken)))
+            headers.add(.authorization(bearerToken: try tokenStorage.load(.accessToken)))
         } catch {
             WableLogger.log(NetworkError.unknown(error).localizedDescription, for: .network)
             return
@@ -70,8 +72,8 @@ final class OAuthenticator: Authenticator {
                     }
                 }, receiveValue: { token in
                     do {
-                        try TokenStorage.save(token.accessToken, for: .accessToken)
-                        try TokenStorage.save(token.refreshToken, for: .refreshToken)
+                        try self.tokenStorage.save(token.accessToken, for: .accessToken)
+                        try self.tokenStorage.save(token.refreshToken, for: .refreshToken)
                     } catch {
                         completion(.failure(error))
                         return
