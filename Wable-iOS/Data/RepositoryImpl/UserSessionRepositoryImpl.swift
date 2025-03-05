@@ -6,6 +6,7 @@
 //
 
 
+import Combine
 import Foundation
 
 class UserSessionRepositoryImpl {
@@ -19,6 +20,8 @@ class UserSessionRepositoryImpl {
         jsonEncoder: JSONEncoder(),
         jsonDecoder: JSONDecoder()
     )
+    
+    private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
 }
 
 // MARK: - UserSessionRepository
@@ -108,4 +111,30 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
             updateActiveUserID(forUserID: nil)
         }
     }
+}
+
+// MARK: - 자동 로그인 관련 로직
+
+extension UserSessionRepositoryImpl {
+    func checkAutoLogin() -> AnyPublisher<Bool, Error> {
+            guard let userSession = fetchActiveUserSession(),
+                  userSession.isAutoLoginEnabled == true else {
+                return .just(false)
+            }
+            
+            do {
+                let _ = try tokenStorage.load(.wableAccessToken), _ = try tokenStorage.load(.wableRefreshToken)
+                return .just(true)
+            } catch {
+                return .fail(error)
+            }
+        }
+        
+        func enableAutoLogin(for userID: String) {
+            updateAutoLogin(enabled: true, forUserID: userID)
+        }
+        
+        func disableAutoLogin(for userID: String) {
+            updateAutoLogin(enabled: false, forUserID: userID)
+        }
 }
