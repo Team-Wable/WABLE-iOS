@@ -10,21 +10,21 @@ import UIKit
 /// `ScreenAdjustable` 프로토콜은 디바이스 화면 크기에 맞게 `CGFloat` 및 `Int` 값을 조정할 수 있도록 합니다.
 ///
 /// - `adjusted`: 기준 너비(375pt)에 따라 조정된 값
-/// - `adjustedH`: 기준 높이(812pt)에 따라 조정된 값
+/// - `adjustedHeight`: 기준 높이(812pt)에 따라 조정된 값
 ///
 /// 이를 통해 다양한 디바이스에서 일관된 크기를 유지할 수 있도록 합니다.
 ///
 /// 사용 예시:
 /// ```swift
 /// let width: CGFloat = 20.adjusted
-/// let height: CGFloat = 40.adjustedH
+/// let height: CGFloat = 40.adjustedHeight
 /// ```
 protocol ScreenAdjustable {
     /// 기준 너비(375pt)를 기준으로 조정된 값
     var adjusted: CGFloat { get }
     
     /// 기준 높이(812pt)를 기준으로 조정된 값
-    var adjustedH: CGFloat { get }
+    var adjustedHeight: CGFloat { get }
 }
 
 extension CGFloat: ScreenAdjustable {
@@ -52,9 +52,9 @@ extension CGFloat: ScreenAdjustable {
     ///
     /// 사용 예시:
     /// ```swift
-    /// let adjustedHeight = 20.0.adjustedH
+    /// let adjustedHeight = 20.0.adjustedHeight
     /// ```
-    var adjustedH: CGFloat {
+    var adjustedHeight: CGFloat {
         return self * Self.heightRatio
     }
 }
@@ -78,9 +78,9 @@ extension Int: ScreenAdjustable {
     ///
     /// 사용 예시:
     /// ```swift
-    /// let adjustedHeight = 40.adjustedH
+    /// let adjustedHeight = 40.adjustedHeight
     /// ```
-    var adjustedH: CGFloat {
-        return CGFloat(self).adjustedH
+    var adjustedHeight: CGFloat {
+        return CGFloat(self).adjustedHeight
     }
 }
