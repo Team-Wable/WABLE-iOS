@@ -152,6 +152,8 @@
 		DDED59622D78D94100A0BEF1 /* FetchKakaoAuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59612D78D93800A0BEF1 /* FetchKakaoAuthUseCase.swift */; };
 		DDED59702D78EE7800A0BEF1 /* FetchCommunityListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED596F2D78EDFA00A0BEF1 /* FetchCommunityListUseCase.swift */; };
 		DDED59722D78EE9900A0BEF1 /* UpdatePreRegisterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59712D78EE8900A0BEF1 /* UpdatePreRegisterUseCase.swift */; };
+		DDED59752D78F16400A0BEF1 /* FetchNicknameDuplicationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59742D78F15000A0BEF1 /* FetchNicknameDuplicationUseCase.swift */; };
+		DDED59782D78F1E500A0BEF1 /* UpdateUserProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59772D78F1DA00A0BEF1 /* UpdateUserProfileUseCase.swift */; };
 		DDF2CC842D71FA8A000F1919 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC832D71FA8A000F1919 /* Then */; };
 		DDF2CC872D71FA96000F1919 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC862D71FA96000F1919 /* SnapKit */; };
 		DDF2CC8A2D71FADB000F1919 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC892D71FADB000F1919 /* Lottie */; };
@@ -331,6 +333,8 @@
 		DDED59612D78D93800A0BEF1 /* FetchKakaoAuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchKakaoAuthUseCase.swift; sourceTree = "<group>"; };
 		DDED596F2D78EDFA00A0BEF1 /* FetchCommunityListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCommunityListUseCase.swift; sourceTree = "<group>"; };
 		DDED59712D78EE8900A0BEF1 /* UpdatePreRegisterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePreRegisterUseCase.swift; sourceTree = "<group>"; };
+		DDED59742D78F15000A0BEF1 /* FetchNicknameDuplicationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchNicknameDuplicationUseCase.swift; sourceTree = "<group>"; };
+		DDED59772D78F1DA00A0BEF1 /* UpdateUserProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserProfileUseCase.swift; sourceTree = "<group>"; };
 		DE67A9EA2D7211070021BDE1 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		DE67A9EE2D7213D90021BDE1 /* Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opacity.swift; sourceTree = "<group>"; };
 		DE7C530B2D761DCA00076E5D /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
@@ -919,6 +923,7 @@
 			isa = PBXGroup;
 			children = (
 				DDED59552D78BF5800A0BEF1 /* Login */,
+				DDED59732D78EFCF00A0BEF1 /* Onboarding */,
 				DDED596E2D78EB9200A0BEF1 /* Community */,
 			);
 			path = UseCase;
@@ -949,6 +954,15 @@
 				DDED596F2D78EDFA00A0BEF1 /* FetchCommunityListUseCase.swift */,
 			);
 			path = Community;
+			sourceTree = "<group>";
+		};
+		DDED59732D78EFCF00A0BEF1 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				DDED59772D78F1DA00A0BEF1 /* UpdateUserProfileUseCase.swift */,
+				DDED59742D78F15000A0BEF1 /* FetchNicknameDuplicationUseCase.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		DE7C53082D761DA500076E5D /* Presentation */ = {
@@ -1167,6 +1181,7 @@
 				DD29684A2D6DAD2F00143851 /* FetchLCKTeamRankings.swift in Sources */,
 				DEDC29162D72099C0073D512 /* InfoNotificationType.swift in Sources */,
 				DD29684B2D6DAD2F00143851 /* CreateViewitPostResponse.swift in Sources */,
+				DDED59782D78F1E500A0BEF1 /* UpdateUserProfileUseCase.swift in Sources */,
 				DD29684C2D6DAD2F00143851 /* FetchNews.swift in Sources */,
 				DD29684D2D6DAD2F00143851 /* FetchContentComments.swift in Sources */,
 				DD29684E2D6DAD2F00143851 /* FetchUserNotifications.swift in Sources */,
@@ -1238,6 +1253,7 @@
 				DD2968262D6DAD0B00143851 /* CommunityMapper.swift in Sources */,
 				DD2968272D6DAD0B00143851 /* LoginMapper.swift in Sources */,
 				DDED594F2D784EC000A0BEF1 /* LocalKeyValueStorage.swift in Sources */,
+				DDED59752D78F16400A0BEF1 /* FetchNicknameDuplicationUseCase.swift in Sources */,
 				DD2968282D6DAD0B00143851 /* InformationMapper.swift in Sources */,
 				DD2968292D6DAD0B00143851 /* WableError.swift in Sources */,
 				DD29682A2D6DAD0B00143851 /* ErrorMapper.swift in Sources */,
