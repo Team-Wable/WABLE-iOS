@@ -11,7 +11,13 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     private let cancelBag = CancelBag()
-    private let userSessionRepository: UserSessionRepository = UserSessionRepositoryImpl()
+    private let userSessionRepository: UserSessionRepository = UserSessionRepositoryImpl(
+        userDefaults: UserDefaultsStorage(
+            userDefaults: UserDefaults.standard,
+            jsonEncoder: JSONEncoder(),
+            jsonDecoder: JSONDecoder()
+        )
+    )
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }

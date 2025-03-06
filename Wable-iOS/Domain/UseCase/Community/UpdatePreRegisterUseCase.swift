@@ -21,6 +21,5 @@ final class UpdatePreRegisterUseCase {
 extension UpdatePreRegisterUseCase {
     func execute(communityName: LCKTeam) -> AnyPublisher<Void, WableError> {
         return repository.updatePreRegister(communityName: communityName)
-            .eraseToAnyPublisher()
     }
 }

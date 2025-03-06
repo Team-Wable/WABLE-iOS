@@ -15,13 +15,12 @@ class UserSessionRepositoryImpl {
         static let activeUserID = "activeID"
     }
     
-    private let userDefaults = UserDefaultsStorage(
-        userDefaults: UserDefaults.standard,
-        jsonEncoder: JSONEncoder(),
-        jsonDecoder: JSONDecoder()
-    )
-    
+    private let userDefaults: LocalKeyValueProvider
     private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
+    
+    init(userDefaults: LocalKeyValueProvider) {
+        self.userDefaults = userDefaults
+    }
 }
 
 // MARK: - UserSessionRepository
@@ -113,7 +112,7 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
     }
 }
 
-// MARK: - 자동 로그인 관련 로직
+// MARK: - 자동 로그인 관련 Extension
 
 extension UserSessionRepositoryImpl {
     func checkAutoLogin() -> AnyPublisher<Bool, Error> {
