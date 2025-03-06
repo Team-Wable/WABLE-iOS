@@ -18,7 +18,7 @@ final class AppleAuthProvider: NSObject, AuthProvider {
             self.promise = promise
             
             let request = ASAuthorizationAppleIDProvider().createRequest().then {
-                $0.requestedScopes = [.fullName, .email]
+                $0.requestedScopes = [.fullName]
             }
             
             let authorizationController = ASAuthorizationController(authorizationRequests: [request]).then {
