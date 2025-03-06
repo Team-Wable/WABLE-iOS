@@ -1,0 +1,13 @@
+# workflow 의 이름
+name: Build Wable
+on:
+  push:
+    branches: [ setting#116-github-action ]
+jobs:
+  build:
+    name: Build Project
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+      - run: swift build -v
