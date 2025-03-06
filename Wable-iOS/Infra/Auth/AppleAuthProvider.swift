@@ -9,12 +9,12 @@
 import AuthenticationServices
 import Combine
 
-final class AppleAuthProvider: NSObject {
+final class AppleAuthProvider: NSObject, AuthProvider {
     private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
-    private var promise: ((Result<String, WableError>) -> Void)?
+    private var promise: ((Result<String?, WableError>) -> Void)?
     
-    func authenticate() -> AnyPublisher<String, WableError> {
-        return Future<String, WableError> { promise in
+    func authenticate() -> AnyPublisher<String?, WableError> {
+        return Future<String?, WableError> { promise in
             self.promise = promise
             
             let request = ASAuthorizationAppleIDProvider().createRequest().then {

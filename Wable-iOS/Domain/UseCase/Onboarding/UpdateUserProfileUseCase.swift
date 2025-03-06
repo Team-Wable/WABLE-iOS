@@ -19,6 +19,5 @@ final class UpdateUserProfileUseCase {
 extension UpdateUserProfileUseCase {
     func execute(profile: UserProfile, isPushAlarmAllowed: Bool) -> AnyPublisher<Void, WableError> {
         return repository.updateUserProfile(profile: profile, isPushAlarmAllowed: isPushAlarmAllowed)
-            .eraseToAnyPublisher()
     }
 }

@@ -21,6 +21,5 @@ final class FetchNicknameDuplicationUseCase {
 extension FetchNicknameDuplicationUseCase {
     func execute(nickname: String) -> AnyPublisher<Void, WableError> {
         return repository.fetchNicknameDuplication(nickname: nickname)
-            .eraseToAnyPublisher()
     }
 }

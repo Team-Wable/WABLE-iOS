@@ -21,6 +21,5 @@ final class FetchCommunityListUseCase {
 extension FetchCommunityListUseCase {
     func execute() -> AnyPublisher<[Community], WableError> {
         return repository.fetchCommunityList()
-            .eraseToAnyPublisher()
     }
 }
