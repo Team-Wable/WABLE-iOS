@@ -9,7 +9,7 @@ jobs:
     runs-on: macos-latest
     steps:
         - name: Checkout the code
-        - uses: actions/checkout@v2
+          uses: actions/checkout@v2
         - name: Build
           run: xcodebuild clean \
                -project Wable-iOS.xcodeproj \
