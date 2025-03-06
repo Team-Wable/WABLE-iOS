@@ -8,8 +8,11 @@ jobs:
     name: Build Project
     runs-on: macos-latest
     steps:
+        - name: Checkout the code
         - uses: actions/checkout@v2
-        - name: Install Dependencies
-          run: swift package resolve
         - name: Build
-          run: xcodebuild -project Wable-iOS.xcodeproj -scheme Wable-iOS -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 13 mini'
+          run: xcodebuild clean \
+               -project Wable-iOS.xcodeproj \
+               -scheme Wable-iOS \
+               -configuration Debug \
+               -destination 'platform=iOS Simulator,OS=15.0,name=iPhone 13 mini'
