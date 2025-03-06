@@ -11,19 +11,19 @@ import Combine
 import KakaoSDKAuth
 import KakaoSDKUser
 
+typealias KakaoUserAPI = UserApi
+
 final class KakaoAuthProvider: AuthProvider {
     private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
     
     func authenticate() -> AnyPublisher<String?, WableError> {
-        let UserAPI = UserApi.self
-        
         return Future<String?, WableError> { promise in
-            if UserAPI.isKakaoTalkLoginAvailable() {
-                UserAPI.shared.loginWithKakaoTalk { [weak self] (oauthToken, error) in
+            if KakaoUserAPI.isKakaoTalkLoginAvailable() {
+                KakaoUserAPI.shared.loginWithKakaoTalk { [weak self] (oauthToken, error) in
                     self?.handleKakaoAuthResult(oauthToken: oauthToken, error: error, promise: promise)
                 }
             } else {
-                UserAPI.shared.loginWithKakaoAccount { [weak self] (oauthToken, error) in
+                KakaoUserAPI.shared.loginWithKakaoAccount { [weak self] (oauthToken, error) in
                     self?.handleKakaoAuthResult(oauthToken: oauthToken, error: error, promise: promise)
                 }
             }
@@ -45,11 +45,16 @@ private extension KakaoAuthProvider {
             return
         }
         
-        if let token = oauthToken?.accessToken {
-            try? tokenStorage.save(token, for: .kakaoAccessToken)
-        } else {
+        guard let token = oauthToken?.accessToken else {
             promise(.failure(.kakaoUnauthorizedUser))
             return
+        }
+        
+        do {
+            try tokenStorage.save(token, for: .kakaoAccessToken)
+            promise(.success(token))
+        } catch {
+            promise(.failure(.networkError))
         }
     }
 }

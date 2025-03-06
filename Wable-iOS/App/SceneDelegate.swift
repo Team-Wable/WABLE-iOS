@@ -24,8 +24,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         
         userSessionRepository.checkAutoLogin()
-            .sink { result in
-                switch result {
+            .sink { completion in
+                switch completion {
                 case .finished:
                     break
                 case .failure(_):

@@ -17,15 +17,12 @@ final class AppleAuthProvider: NSObject, AuthProvider {
         return Future<String?, WableError> { promise in
             self.promise = promise
             
-            let request = ASAuthorizationAppleIDProvider().createRequest().then {
-                $0.requestedScopes = [.fullName]
-            }
+            let request = ASAuthorizationAppleIDProvider().createRequest()
+            request.requestedScopes = [.fullName]
             
-            let authorizationController = ASAuthorizationController(authorizationRequests: [request]).then {
-                $0.delegate = self
-                $0.presentationContextProvider = self
-            }
-            
+            let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+            authorizationController.delegate = self
+            authorizationController.presentationContextProvider = self
             authorizationController.performRequests()
         }
         .eraseToAnyPublisher()
