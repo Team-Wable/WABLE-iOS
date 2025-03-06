@@ -157,6 +157,7 @@
 		DDED59862D7965E900A0BEF1 /* OverviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59852D7965DB00A0BEF1 /* OverviewUseCase.swift */; };
 		DDED59882D7965F100A0BEF1 /* NotificationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59872D7965EC00A0BEF1 /* NotificationUseCase.swift */; };
 		DDED598A2D7965F900A0BEF1 /* ProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59892D7965F400A0BEF1 /* ProfileUseCase.swift */; };
+		DDED598D2D79957700A0BEF1 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DDED598C2D79957700A0BEF1 /* CombineCocoa */; };
 		DDF2CC842D71FA8A000F1919 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC832D71FA8A000F1919 /* Then */; };
 		DDF2CC872D71FA96000F1919 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC862D71FA96000F1919 /* SnapKit */; };
 		DDF2CC8A2D71FADB000F1919 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC892D71FADB000F1919 /* Lottie */; };
@@ -364,6 +365,7 @@
 			files = (
 				DDF2CCA12D71FF27000F1919 /* AmplitudeSwift in Frameworks */,
 				DDF2CC972D71FC7E000F1919 /* KakaoSDKCommon in Frameworks */,
+				DDED598D2D79957700A0BEF1 /* CombineCocoa in Frameworks */,
 				DDF2CC952D71FC7E000F1919 /* KakaoSDKAuth in Frameworks */,
 				DDF2CC922D71FB41000F1919 /* Kingfisher in Frameworks */,
 				DDF2CC842D71FA8A000F1919 /* Then in Frameworks */,
@@ -1080,6 +1082,7 @@
 				DDF2CC9B2D71FECB000F1919 /* FirebaseCore */,
 				DDF2CC9D2D71FECB000F1919 /* FirebaseMessaging */,
 				DDF2CCA02D71FF27000F1919 /* AmplitudeSwift */,
+				DDED598C2D79957700A0BEF1 /* CombineCocoa */,
 			);
 			productName = "Wable-iOS";
 			productReference = 0547F4962C60D968001E3039 /* Wable-iOS.app */;
@@ -1118,6 +1121,7 @@
 				DDF2CC932D71FC7E000F1919 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				DDF2CC9A2D71FECB000F1919 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				DDF2CC9F2D71FF27000F1919 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
+				DDED598B2D79957700A0BEF1 /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 			);
 			productRefGroup = 0547F4972C60D968001E3039 /* Products */;
 			projectDirPath = "";
@@ -1555,6 +1559,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		DDED598B2D79957700A0BEF1 /* XCRemoteSwiftPackageReference "CombineCocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CombineCommunity/CombineCocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.1;
+			};
+		};
 		DDF2CC822D71FA8A000F1919 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
@@ -1622,6 +1634,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DDED598C2D79957700A0BEF1 /* CombineCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DDED598B2D79957700A0BEF1 /* XCRemoteSwiftPackageReference "CombineCocoa" */;
+			productName = CombineCocoa;
+		};
 		DDF2CC832D71FA8A000F1919 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DDF2CC822D71FA8A000F1919 /* XCRemoteSwiftPackageReference "Then" */;
