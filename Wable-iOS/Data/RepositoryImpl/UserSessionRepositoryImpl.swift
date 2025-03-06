@@ -53,7 +53,7 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         try? userDefaults.setValue(sessions, for: Keys.userSessions)
         
         if fetchActiveUserID() == nil {
-            updateActiveUserID(forUserID: userID)
+            updateActiveUserID(userID)
         }
     }
     
@@ -94,7 +94,7 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         }
     }
     
-    func updateActiveUserID(forUserID userID: Int?) {
+    func updateActiveUserID(_ userID: Int?) {
         if let userID = userID {
             try? userDefaults.setValue(userID, for: Keys.activeUserID)
         }
@@ -107,7 +107,7 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         try? userDefaults.setValue(sessions, for: Keys.userSessions)
         
         if fetchActiveUserID() == userID {
-            updateActiveUserID(forUserID: nil)
+            updateActiveUserID(nil)
         }
     }
 }

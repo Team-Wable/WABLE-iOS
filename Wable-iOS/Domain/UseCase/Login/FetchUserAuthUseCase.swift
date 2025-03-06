@@ -23,7 +23,9 @@ final class FetchUserAuthUseCase {
 extension FetchUserAuthUseCase {
     func execute(platform: SocialPlatform) -> AnyPublisher<Account, WableError> {
         return loginRepository.fetchUserAuth(platform: platform, userName: nil)
-            .handleEvents(receiveOutput: { account in
+            .handleEvents(receiveOutput: { [weak self] account in
+                guard let self = self else { return }
+                
                 self.userSessionRepository.updateAutoLogin(
                     enabled: true,
                     forUserID: account.user.id
@@ -42,7 +44,7 @@ extension FetchUserAuthUseCase {
                     forUserID: account.user.id
                 )
                 
-                self.userSessionRepository.updateActiveUserID(forUserID: account.user.id)
+                self.userSessionRepository.updateActiveUserID(account.user.id)
             })
             .eraseToAnyPublisher()
     }
