@@ -22,18 +22,21 @@ final class OAuthenticator: Authenticator {
     }
     
     /// 토큰 재발급 API를 제외하고 다른 API 통신을 진행할 때 헤더를 설정하는 메서드
-    /// 소셜 로그인 통신 시 헤더 삽입하지 않도록 설정
+    /// 소셜 로그인 통신 시 카카오 엑세스 토큰 무조건 삽입되도록 설정
     func apply(_ credential: OAuthCredential, to urlRequest: inout URLRequest) {
-        guard let urlString = urlRequest.url?.absoluteString,
-              !urlString.contains("v2/auth")
-        else {
-            return
-        }
-        
         var headers = urlRequest.headers
         
         do {
-            headers.add(.authorization(bearerToken: try tokenStorage.load(.accessToken)))
+            let tokenType: TokenStorage.TokenType = {
+                if let urlString = urlRequest.url?.absoluteString, urlString.contains("v2/auth") {
+                    return .kakaoAccessToken
+                } else {
+                    return .wableAccessToken
+                }
+            }()
+            
+            headers.add(.authorization(bearerToken: try tokenStorage.load(tokenType)))
+            urlRequest.headers = headers
         } catch {
             WableLogger.log(NetworkError.unknown(error).localizedDescription, for: .network)
             return
@@ -68,12 +71,16 @@ final class OAuthenticator: Authenticator {
             .sink(
                 receiveCompletion: { status in
                     if case .failure(let error) = status {
+                        if error == .signinRequired {
+                            // TODO: 로그인 화면 이동 및 토큰 만료 로직 수행
+                        }
+                        
                         completion(.failure(error))
                     }
                 }, receiveValue: { token in
                     do {
-                        try self.tokenStorage.save(token.accessToken, for: .accessToken)
-                        try self.tokenStorage.save(token.refreshToken, for: .refreshToken)
+                        try self.tokenStorage.save(token.accessToken, for: .wableAccessToken)
+                        try self.tokenStorage.save(token.refreshToken, for: .wableRefreshToken)
                     } catch {
                         completion(.failure(error))
                         return

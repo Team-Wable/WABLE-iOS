@@ -10,5 +10,5 @@ import Combine
 import Foundation
 
 protocol LoginRepository {
-    func fetchUserAuth(platform: String, userName: String) -> AnyPublisher<Account, WableError>
+    func fetchUserAuth(platform: SocialPlatform, userName: String?) -> AnyPublisher<Account, WableError>
 }
