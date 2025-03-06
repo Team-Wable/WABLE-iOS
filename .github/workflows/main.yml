@@ -11,8 +11,7 @@ jobs:
         - name: Checkout the code
           uses: actions/checkout@v2
         - name: Build
-          run: xcodebuild clean \
-               -project Wable-iOS/Wable-iOS.xcodeproj \
+          run: xcodebuild clean test -project Wable-iOS/Wable-iOS.xcodeproj \
                -scheme Wable-iOS \
                -configuration Debug \
                -destination 'platform=iOS Simulator,OS=15.0,name=iPhone 13 mini'
