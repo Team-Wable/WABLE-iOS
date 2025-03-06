@@ -26,11 +26,11 @@ class UserSessionRepositoryImpl {
 // MARK: - UserSessionRepository
 
 extension UserSessionRepositoryImpl: UserSessionRepository {
-    func fetchAllUserSessions() -> [String: UserSession] {
+    func fetchAllUserSessions() -> [Int: UserSession] {
         return (try? userDefaults.getValue(for: Keys.userSessions)) ?? [:]
     }
     
-    func fetchUserSession(forUserID userID: String) -> UserSession? {
+    func fetchUserSession(forUserID userID: Int) -> UserSession? {
         return fetchAllUserSessions()[userID]
     }
     
@@ -41,11 +41,11 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         return fetchUserSession(forUserID: activeUserID)
     }
     
-    func fetchActiveUserID() -> String? {
+    func fetchActiveUserID() -> Int? {
         return try? userDefaults.getValue(for: Keys.activeUserID)
     }
     
-    func updateUserSession(_ session: UserSession, forUserID userID: String) {
+    func updateUserSession(_ session: UserSession, forUserID userID: Int) {
         var sessions = fetchAllUserSessions()
         
         sessions[userID] = session
@@ -57,7 +57,7 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         }
     }
     
-    func updateAutoLogin(enabled: Bool, forUserID userID: String) {
+    func updateAutoLogin(enabled: Bool, forUserID userID: Int) {
         var sessions = fetchAllUserSessions()
         
         if let session = sessions[userID] {
@@ -76,7 +76,7 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         }
     }
     
-    func updateNotificationBadge(count: Int, forUserID userID: String) {
+    func updateNotificationBadge(count: Int, forUserID userID: Int) {
         var sessions = fetchAllUserSessions()
         
         if let session = sessions[userID] {
@@ -94,13 +94,13 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         }
     }
     
-    func updateActiveUserID(forUserID userID: String?) {
+    func updateActiveUserID(forUserID userID: Int?) {
         if let userID = userID {
             try? userDefaults.setValue(userID, for: Keys.activeUserID)
         }
     }
     
-    func removeUserSession(forUserID userID: String) {
+    func removeUserSession(forUserID userID: Int) {
         var sessions = fetchAllUserSessions()
         
         sessions.removeValue(forKey: userID)
@@ -129,11 +129,11 @@ extension UserSessionRepositoryImpl {
             }
         }
         
-        func enableAutoLogin(for userID: String) {
+        func enableAutoLogin(for userID: Int) {
             updateAutoLogin(enabled: true, forUserID: userID)
         }
         
-        func disableAutoLogin(for userID: String) {
+        func disableAutoLogin(for userID: Int) {
             updateAutoLogin(enabled: false, forUserID: userID)
         }
 }

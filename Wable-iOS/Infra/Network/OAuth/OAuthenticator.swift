@@ -71,6 +71,10 @@ final class OAuthenticator: Authenticator {
             .sink(
                 receiveCompletion: { status in
                     if case .failure(let error) = status {
+                        if error == .signinRequired {
+                            // TODO: 로그인 화면 이동 및 토큰 만료 로직 수행
+                        }
+                        
                         completion(.failure(error))
                     }
                 }, receiveValue: { token in
