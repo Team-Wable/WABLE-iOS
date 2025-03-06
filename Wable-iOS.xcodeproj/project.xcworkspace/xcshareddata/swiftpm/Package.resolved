@@ -1,5 +1,5 @@
 {
-  "originHash" : "4b0bbb69399803e52155c227308a4e3ad3a0b84c337c21fefa0f8c39a21933a2",
+  "originHash" : "ac8e1bfe4d65fd020ff1d1022347ae2e711a33eb2348889722e2ec7ae536ddba",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -44,6 +44,15 @@
       "state" : {
         "revision" : "61b85103a1aeed8218f17c794687781505fbbef5",
         "version" : "11.2.0"
+      }
+    },
+    {
+      "identity" : "combinecocoa",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CombineCommunity/CombineCocoa",
+      "state" : {
+        "revision" : "7300c75ff9e072aa7fd0fccefcc88f74aae9bf56",
+        "version" : "0.4.1"
       }
     },
     {
