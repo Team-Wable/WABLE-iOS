@@ -6,6 +6,7 @@
 //
 
 
+import Combine
 import Foundation
 
 class UserSessionRepositoryImpl {
@@ -14,21 +15,22 @@ class UserSessionRepositoryImpl {
         static let activeUserID = "activeID"
     }
     
-    private let userDefaults = UserDefaultsStorage(
-        userDefaults: UserDefaults.standard,
-        jsonEncoder: JSONEncoder(),
-        jsonDecoder: JSONDecoder()
-    )
+    private let userDefaults: LocalKeyValueProvider
+    private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
+    
+    init(userDefaults: LocalKeyValueProvider) {
+        self.userDefaults = userDefaults
+    }
 }
 
 // MARK: - UserSessionRepository
 
 extension UserSessionRepositoryImpl: UserSessionRepository {
-    func fetchAllUserSessions() -> [String: UserSession] {
+    func fetchAllUserSessions() -> [Int: UserSession] {
         return (try? userDefaults.getValue(for: Keys.userSessions)) ?? [:]
     }
     
-    func fetchUserSession(forUserID userID: String) -> UserSession? {
+    func fetchUserSession(forUserID userID: Int) -> UserSession? {
         return fetchAllUserSessions()[userID]
     }
     
@@ -39,11 +41,11 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         return fetchUserSession(forUserID: activeUserID)
     }
     
-    func fetchActiveUserID() -> String? {
+    func fetchActiveUserID() -> Int? {
         return try? userDefaults.getValue(for: Keys.activeUserID)
     }
     
-    func updateUserSession(_ session: UserSession, forUserID userID: String) {
+    func updateUserSession(_ session: UserSession, forUserID userID: Int) {
         var sessions = fetchAllUserSessions()
         
         sessions[userID] = session
@@ -51,11 +53,11 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         try? userDefaults.setValue(sessions, for: Keys.userSessions)
         
         if fetchActiveUserID() == nil {
-            updateActiveUserID(forUserID: userID)
+            updateActiveUserID(userID)
         }
     }
     
-    func updateAutoLogin(enabled: Bool, forUserID userID: String) {
+    func updateAutoLogin(enabled: Bool, forUserID userID: Int) {
         var sessions = fetchAllUserSessions()
         
         if let session = sessions[userID] {
@@ -74,7 +76,7 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         }
     }
     
-    func updateNotificationBadge(count: Int, forUserID userID: String) {
+    func updateNotificationBadge(count: Int, forUserID userID: Int) {
         var sessions = fetchAllUserSessions()
         
         if let session = sessions[userID] {
@@ -92,20 +94,46 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         }
     }
     
-    func updateActiveUserID(forUserID userID: String?) {
+    func updateActiveUserID(_ userID: Int?) {
         if let userID = userID {
             try? userDefaults.setValue(userID, for: Keys.activeUserID)
         }
     }
     
-    func removeUserSession(forUserID userID: String) {
+    func removeUserSession(forUserID userID: Int) {
         var sessions = fetchAllUserSessions()
         
         sessions.removeValue(forKey: userID)
         try? userDefaults.setValue(sessions, for: Keys.userSessions)
         
         if fetchActiveUserID() == userID {
-            updateActiveUserID(forUserID: nil)
+            updateActiveUserID(nil)
         }
     }
+}
+
+// MARK: - 자동 로그인 관련 Extension
+
+extension UserSessionRepositoryImpl {
+    func checkAutoLogin() -> AnyPublisher<Bool, Error> {
+            guard let userSession = fetchActiveUserSession(),
+                  userSession.isAutoLoginEnabled == true else {
+                return .just(false)
+            }
+            
+            do {
+                let _ = try tokenStorage.load(.wableAccessToken), _ = try tokenStorage.load(.wableRefreshToken)
+                return .just(true)
+            } catch {
+                return .fail(error)
+            }
+        }
+        
+        func enableAutoLogin(for userID: Int) {
+            updateAutoLogin(enabled: true, forUserID: userID)
+        }
+        
+        func disableAutoLogin(for userID: Int) {
+            updateAutoLogin(enabled: false, forUserID: userID)
+        }
 }

@@ -13,6 +13,8 @@ import CombineMoya
 import Moya
 
 final class OAuthTokenProvider {
+    private let provider = APIProvider<LoginTargetType>()
+    
     func updateTokenStatus() -> AnyPublisher<Token, WableError> {
         return provider.request(
             .fetchTokenStatus,
@@ -21,6 +23,4 @@ final class OAuthTokenProvider {
         .map(LoginMapper.toDomain)
         .mapWableError()
     }
-    
-    private let provider = APIProvider<LoginTargetType>()
 }

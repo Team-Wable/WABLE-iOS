@@ -7,17 +7,19 @@
 
 
 import Foundation
+import Combine
 
 // MARK: - UserSessionRepository
 
 protocol UserSessionRepository {
-    func fetchAllUserSessions() -> [String: UserSession]
-    func fetchUserSession(forUserID userID: String) -> UserSession?
+    func fetchAllUserSessions() -> [Int: UserSession]
+    func fetchUserSession(forUserID userID: Int) -> UserSession?
     func fetchActiveUserSession() -> UserSession?
-    func fetchActiveUserID() -> String?
-    func updateUserSession(_ session: UserSession, forUserID userID: String)
-    func updateAutoLogin(enabled: Bool, forUserID userID: String)
-    func updateNotificationBadge(count: Int, forUserID userID: String)
-    func updateActiveUserID(forUserID userID: String?)
-    func removeUserSession(forUserID userID: String)
+    func fetchActiveUserID() -> Int?
+    func updateUserSession(_ session: UserSession, forUserID userID: Int)
+    func updateAutoLogin(enabled: Bool, forUserID userID: Int)
+    func updateNotificationBadge(count: Int, forUserID userID: Int)
+    func updateActiveUserID(_ userID: Int?)
+    func removeUserSession(forUserID userID: Int)
+    func checkAutoLogin() -> AnyPublisher<Bool, Error>
 }

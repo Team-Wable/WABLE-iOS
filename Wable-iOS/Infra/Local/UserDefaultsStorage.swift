@@ -20,7 +20,7 @@ struct UserDefaultsStorage {
     }
 }
 
-extension UserDefaultsStorage: LocalKeyValueStorage {
+extension UserDefaultsStorage: LocalKeyValueProvider {
     func setValue<T>(_ value: T, for key: String) throws where T : Decodable, T : Encodable {
         guard let data = try? jsonEncoder.encode(value) else {
             throw LocalError.saveFailed
