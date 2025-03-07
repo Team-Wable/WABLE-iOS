@@ -52,6 +52,7 @@ jobs:
         
         - name: Create Config file
           run: |
+            mkdir -p ./Wable-iOS/Resource/Config/
             echo -n $DEVELOPMENT_XCCONFIG | base64 --decode > ./Wable-iOS/Resource/Config/Development.xcconfig
             echo -n $RELEASE_XCCONFIG | base64 --decode > ./Wable-iOS/Resource/Config/Release.xcconfig
             echo -n $SHARE_XCCONFIG | base64 --decode > ./Wable-iOS/Resource/Config/Share.xcconfig
