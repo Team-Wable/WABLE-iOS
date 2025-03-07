@@ -7,8 +7,83 @@ jobs:
   build:
     name: Build Project
     runs-on: macos-latest
+    
+    env:
+        XC_WORKSPACE: ${{ 'Wable-iOS.xcodeproj' }}
+        XC_SCHEME: ${{ 'Wable-iOS' }}
+        XC_ARCHIVE: ${{ 'Wable-iOS.xcarchive' }}
+        XC_EXPORT_PATH: ${{ './artifacts' }}
+        KEYCHAIN: ${{ 'test.keychain' }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        
+        # certificate
+        ENCRYPTED_CERT_FILE_PATH: ${{ '.github/secrets/TL_Distribution.p12.gpg' }}
+        DECRYPTED_CERT_FILE_PATH: ${{ '.github/secrets/TL_Distribution.p12' }}
+        CERT_ENCRYPTION_KEY: ${{ secrets.CERTS_ENCRYPTION_PWD }}
+        
+        # provisioning
+        ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Wable_Release.mobileprovision.gpg' }}
+        DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Wable_Release.mobileprovision' }}
+        PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
+        
+        #appclip provisioning
+        ENCRYPTED_CLIP_PROVISION_FILE_PATH: ${{ '.github/secrets/Appknot_Portal_App_Clip_Appstore.mobileprovision.gpg' }}
+        DECRYPTED_CLIP_PROVISION_FILE_PATH: ${{ '.github/secrets/Appknot_Portal_App_Clip_Appstore.mobileprovision' }}
+
+        # certification export key
+        CERT_EXPORT_KEY: ${{ secrets.CERT_EXPORT_PWD }}
+
     steps:
         - name: Checkout the code
           uses: actions/checkout@v2
+          
+        - name: Configure Keychain
+          run: |
+            security create-keychain -p "" "$KEYCHAIN"
+            security list-keychains -s "$KEYCHAIN"
+            security default-keychain -s "$KEYCHAIN"
+            security unlock-keychain -p "" "$KEYCHAIN"
+            security set-keychain-settings
+            
+        - name: Configure Code Signing
+          run: |
+            gpg -d -o "$DECRYPTED_CERT_FILE_PATH" --pinentry-mode=loopback --passphrase "$CERT_ENCRYPTION_KEY" "$ENCRYPTED_CERT_FILE_PATH"
+            gpg -d -o "$DECRYPTED_PROVISION_FILE_PATH" --pinentry-mode=loopback --passphrase "$PROVISIONING_ENCRYPTION_KEY" "$ENCRYPTED_PROVISION_FILE_PATH"
+            security import "$DECRYPTED_CERT_FILE_PATH" -k "$KEYCHAIN" -P "$CERT_EXPORT_KEY" -A
+            security set-key-partition-list -S apple-tool:,apple: -s -k "" "$KEYCHAIN"
+
+            mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+              for PROVISION in `ls .github/secrets/*.mobileprovision`
+              do
+                echo ALVIN PRIVISION DEBUG
+                UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i ./$PROVISION)`
+              cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
+            done
+            
         - name: Build
-          run: xcodebuild clean build -project Wable-iOS.xcodeproj -scheme Wable-iOS -configuration Debug -destination 'platform=iOS Simulator,OS=15.0,name=iPhone 13 mini'
+          run: xcodebuild clean build -project $XC_WORKSPACE -scheme $XC_SCHEME -configuration release -destination 'platform=iOS Simulator,OS=15.0,name=iPhone 13 mini'
+          
+        - name: Archive
+          run: xcodebuild archive -project $XC_WORKSPACE -scheme $XC_SCHEME -configuration release -archivePath $XC_ARCHIVE
+        
+        - name: Export
+          run: xcodebuild -exportArchive -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
+
+        - name: Upload app to TestFlight
+          uses: apple-actions/upload-testflight-build@v1
+          with:
+            app-path: "./artifacts/AppknotPortal.ipa"
+            issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+            api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+            api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+
+        - name: Notify to Slack
+          uses: 8398a7/action-slack@v3
+          with:
+            status: ${{ job.status }}
+            fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest # selectable (default: repo,message)
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+          if: always() # Pick up events even if the job fails or is canceled.
+
+      
