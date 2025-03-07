@@ -30,8 +30,8 @@ jobs:
         CERT_ENCRYPTION_KEY: ${{ secrets.CERT_ENCRYPTION_PWD }}
         
         # provisioning
-        ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Wable_Release.mobileprovision.gpg' }}
-        DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Wable_Release.mobileprovision' }}
+        ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Wable_AppStore.mobileprovision.gpg' }}
+        DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Wable_AppStore.mobileprovision' }}
         PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
         
         #appclip provisioning
