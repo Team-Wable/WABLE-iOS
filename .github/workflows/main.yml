@@ -1,5 +1,5 @@
 # workflow 의 이름
-name: Build Wable
+name: Archive and Upload TestFlight
 on:
   push:
     branches: [ setting#116-github-action ]
@@ -15,6 +15,11 @@ jobs:
         XC_EXPORT_PATH: ${{ './artifacts' }}
         KEYCHAIN: ${{ 'test.keychain' }}
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        
+        # config
+        DEVELOPMENT_XCCONFIG: ${{ secrets.DEVELOPMENT_XCCONFIG }}
+        RELEASE_XCCONFIG: ${{ secrets.RELEASE_XCCONFIG }}
+        SHARE_XCCONFIG: ${{ secrets.SHARE_XCCONFIG }}
         
         # certificate
         ENCRYPTED_CERT_FILE_PATH: ${{ '.github/secrets/TL_Distribution.p12.gpg' }}
@@ -44,6 +49,13 @@ jobs:
             security default-keychain -s "$KEYCHAIN"
             security unlock-keychain -p "" "$KEYCHAIN"
             security set-keychain-settings
+        
+        - name: Create Config file
+          run: |
+            mkdir -p ./Wable-iOS/Resource/Config/
+            echo DEVELOPMENT_XCCONFIG > ./Wable-iOS/Resource/Config/Development.xcconfig
+            echo RELEASE_XCCONFIG > ./Wable-iOS/Resource/Config/Release.xcconfig
+            echo SHARE_XCCONFIG > ./Wable-iOS/Resource/Config/Share.xcconfig
             
         - name: Configure Code Signing
           run: |
