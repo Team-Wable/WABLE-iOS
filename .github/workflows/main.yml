@@ -1,7 +1,7 @@
 name: Archive and Upload TestFlight
 on:
   push:
-    branches: [ setting#116-github-action ]
+    branches: [ main ]
 jobs:
   build:
     name: Build Project
@@ -105,5 +105,3 @@ jobs:
           env:
             SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           if: always()
-
-      
