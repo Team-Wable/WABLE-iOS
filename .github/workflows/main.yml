@@ -85,12 +85,11 @@ jobs:
             
         - name: Bump build number
           run: |
-            PLIST_PATH="./Wable-iOS/Resource/Info.plist"
+            PROJ_FILE="./Wable-iOS.xcodeproj/project.pbxproj"
+            CURRENT_VERSION=$(grep -m 1 "CURRENT_PROJECT_VERSION = " "$PROJ_FILE" | sed 's/.*CURRENT_PROJECT_VERSION = \([0-9]*\).*/\1/')
+            NEW_VERSION=$((CURRENT_VERSION + 1))
     
-            CURRENT_BUILD_NUMBER=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$PLIST_PATH")
-            NEW_BUILD_NUMBER=$((CURRENT_BUILD_NUMBER + 1))
-    
-            /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $NEW_BUILD_NUMBER" "$PLIST_PATH"
+            sed -i '' "s/CURRENT_PROJECT_VERSION = $CURRENT_VERSION;/CURRENT_PROJECT_VERSION = $NEW_VERSION;/" "$PROJ_FILE"
             
         - name: Upload app to TestFlight
           uses: apple-actions/upload-testflight-build@v1
