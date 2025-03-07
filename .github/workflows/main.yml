@@ -75,10 +75,9 @@ jobs:
             done
         
         - name: iOS Bump Version
-            uses: yanamura/ios-bump-version@v1.7.0
-            id: ios_bump_version
+            uses: yanamura/ios-bump-version@v1
             with:
-              version-path: ''
+              version: ''
               build-number: ''
             
         - name: Build
