@@ -82,7 +82,16 @@ jobs:
         
         - name: Export
           run: xcodebuild -exportArchive -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
-
+            
+        - name: Bump build number
+          run: |
+            PLIST_PATH="./Wable-iOS/Resource/Info.plist"
+    
+            CURRENT_BUILD_NUMBER=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$PLIST_PATH")
+            NEW_BUILD_NUMBER=$((CURRENT_BUILD_NUMBER + 1))
+    
+            /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $NEW_BUILD_NUMBER" "$PLIST_PATH"
+            
         - name: Upload app to TestFlight
           uses: apple-actions/upload-testflight-build@v1
           with:
