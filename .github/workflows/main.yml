@@ -75,10 +75,10 @@ jobs:
             done
         
         - name: iOS Bump Version
-            uses: yanamura/ios-bump-version@v1
-            with:
-              version: ''
-              build-number: ''
+          uses: yanamura/ios-bump-version@v1
+          with:
+            version: ''
+            build-number: ''
             
         - name: Build
           run: xcodebuild clean build -project $XC_WORKSPACE -scheme $XC_SCHEME -configuration release -destination 'platform=iOS Simulator,OS=15.0,name=iPhone 13 mini'
