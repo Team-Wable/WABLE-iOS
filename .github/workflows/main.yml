@@ -73,6 +73,14 @@ jobs:
                 UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i ./$PROVISION)`
               cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
             done
+        
+        - name: Bump build number
+          run: |
+            PROJ_FILE="./Wable-iOS.xcodeproj/project.pbxproj"
+            CURRENT_VERSION=$(grep -m 1 "CURRENT_PROJECT_VERSION = " "$PROJ_FILE" | sed 's/.*CURRENT_PROJECT_VERSION = \([0-9]*\).*/\1/')
+            NEW_VERSION=$((CURRENT_VERSION + 1))
+    
+            sed -i '' "s/CURRENT_PROJECT_VERSION = $CURRENT_VERSION;/CURRENT_PROJECT_VERSION = $NEW_VERSION;/" "$PROJ_FILE"
             
         - name: Build
           run: xcodebuild clean build -project $XC_WORKSPACE -scheme $XC_SCHEME -configuration release -destination 'platform=iOS Simulator,OS=15.0,name=iPhone 13 mini'
@@ -82,14 +90,6 @@ jobs:
         
         - name: Export
           run: xcodebuild -exportArchive -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
-            
-        - name: Bump build number
-          run: |
-            PROJ_FILE="./Wable-iOS.xcodeproj/project.pbxproj"
-            CURRENT_VERSION=$(grep -m 1 "CURRENT_PROJECT_VERSION = " "$PROJ_FILE" | sed 's/.*CURRENT_PROJECT_VERSION = \([0-9]*\).*/\1/')
-            NEW_VERSION=$((CURRENT_VERSION + 1))
-    
-            sed -i '' "s/CURRENT_PROJECT_VERSION = $CURRENT_VERSION;/CURRENT_PROJECT_VERSION = $NEW_VERSION;/" "$PROJ_FILE"
             
         - name: Upload app to TestFlight
           uses: apple-actions/upload-testflight-build@v1
