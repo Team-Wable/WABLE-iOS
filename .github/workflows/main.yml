@@ -19,7 +19,7 @@ jobs:
         # certificate
         ENCRYPTED_CERT_FILE_PATH: ${{ '.github/secrets/TL_Distribution.p12.gpg' }}
         DECRYPTED_CERT_FILE_PATH: ${{ '.github/secrets/TL_Distribution.p12' }}
-        CERT_ENCRYPTION_KEY: ${{ secrets.CERTS_ENCRYPTION_PWD }}
+        CERT_ENCRYPTION_KEY: ${{ secrets.CERT_ENCRYPTION_PWD }}
         
         # provisioning
         ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Wable_Release.mobileprovision.gpg' }}
