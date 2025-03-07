@@ -1,4 +1,3 @@
-# workflow 의 이름
 name: Archive and Upload TestFlight
 on:
   push:
@@ -34,10 +33,6 @@ jobs:
         DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Wable_AppStore.mobileprovision' }}
         PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
         
-        #appclip provisioning
-        ENCRYPTED_CLIP_PROVISION_FILE_PATH: ${{ '.github/secrets/Appknot_Portal_App_Clip_Appstore.mobileprovision.gpg' }}
-        DECRYPTED_CLIP_PROVISION_FILE_PATH: ${{ '.github/secrets/Appknot_Portal_App_Clip_Appstore.mobileprovision' }}
-
         # certification export key
         CERT_EXPORT_KEY: ${{ secrets.CERT_EXPORT_PWD }}
 
@@ -92,7 +87,7 @@ jobs:
         - name: Upload app to TestFlight
           uses: apple-actions/upload-testflight-build@v1
           with:
-            app-path: "./artifacts/AppknotPortal.ipa"
+            app-path: "Wable-iOS.ipa"
             issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
             api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
             api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
@@ -101,9 +96,9 @@ jobs:
           uses: 8398a7/action-slack@v3
           with:
             status: ${{ job.status }}
-            fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest # selectable (default: repo,message)
+            fields: repo,message,commit,author,action,eventName,ref,workflow,pullRequest
           env:
-            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-          if: always() # Pick up events even if the job fails or is canceled.
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          if: always()
 
       
