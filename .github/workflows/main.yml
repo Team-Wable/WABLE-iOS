@@ -21,6 +21,9 @@ jobs:
         RELEASE_XCCONFIG: ${{ secrets.RELEASE_XCCONFIG }}
         SHARE_XCCONFIG: ${{ secrets.SHARE_XCCONFIG }}
         
+        # googleservice-info
+        GOOGLESERVICE_INFO_PLIST: ${{ secrets.GOOGLESERVICE_INFO_PLIST }}
+        
         # certificate
         ENCRYPTED_CERT_FILE_PATH: ${{ '.github/secrets/TL_Distribution.p12.gpg' }}
         DECRYPTED_CERT_FILE_PATH: ${{ '.github/secrets/TL_Distribution.p12' }}
@@ -56,6 +59,11 @@ jobs:
             echo -n $DEVELOPMENT_XCCONFIG | base64 --decode > ./Wable-iOS/Resource/Config/Development.xcconfig
             echo -n $RELEASE_XCCONFIG | base64 --decode > ./Wable-iOS/Resource/Config/Release.xcconfig
             echo -n $SHARE_XCCONFIG | base64 --decode > ./Wable-iOS/Resource/Config/Share.xcconfig
+        
+        - name: Create GoogleService-Info.plist
+          run: |
+            mkdir -p ./Wable-iOS/
+            echo -n $GOOGLESERVICE_INFO_PLIST | base64 --decode > ./Wable-iOS/GoogleService-Info.plist
             
         - name: Configure Code Signing
           run: |
