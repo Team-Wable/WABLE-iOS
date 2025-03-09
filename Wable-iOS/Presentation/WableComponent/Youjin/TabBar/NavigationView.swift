@@ -10,11 +10,19 @@ import UIKit
 
 import Lottie
 
-enum NavigationType {
+enum NavigationType: Equatable {
     case home(hasNewNotification: Bool)
     case flow
     case page(type: PageType, text: String)
-    case hub(isBeta: Bool)
+    case hub(text: String = "", isBeta: Bool = false)
+    
+    var isHub: Bool {
+        if case .hub = self {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 enum PageType {
@@ -27,18 +35,21 @@ final class NavigationView: UIView {
     
     // MARK: Property
     
-    private let type: NavigationType
-    private let hasNewNotification: Bool
+    let type: NavigationType
     
     private let logoImageView: UIImageView = UIImageView().then {
         $0.image = .logoType
         $0.contentMode = .scaleAspectFit
     }
     
-    private let underLineView: LottieAnimationView = LottieAnimationView(name: LottieType.tab.rawValue).then {
+    private let homeUnderLineView: LottieAnimationView = LottieAnimationView(name: LottieType.tab.rawValue).then {
         $0.contentMode = .scaleToFill
         $0.loopMode = .loop
         $0.play()
+    }
+    
+    private let pageUnderLineView: UIView = UIView().then {
+        $0.backgroundColor = .gray300
     }
     
     private let hubImageView: UIImageView = UIImageView().then {
@@ -61,32 +72,29 @@ final class NavigationView: UIView {
         $0.textColor = .wableWhite
     }
     
-    private lazy var notificationButton: UIButton = UIButton().then {
-        $0.setImage(.icNotiDefault, for: .normal)
-        $0.setImage(.icNotiBadge, for: .highlighted)
+    lazy var notificationButton: UIButton = UIButton().then {
         $0.contentMode = .scaleAspectFit
     }
     
-    private lazy var backButton: UIButton = UIButton().then {
+    lazy var backButton: UIButton = UIButton().then {
         $0.setImage(.icBack, for: .normal)
         $0.contentMode = .scaleAspectFit
     }
     
-    private lazy var dismissButton: UIButton = UIButton().then {
+    lazy var dismissButton: UIButton = UIButton().then {
         $0.setImage(.icX, for: .normal)
         $0.contentMode = .scaleAspectFit
     }
     
-    private lazy var menuButton: UIButton = UIButton().then {
+    lazy var menuButton: UIButton = UIButton().then {
         $0.setImage(.btnHamberger, for: .normal)
         $0.contentMode = .scaleAspectFit
     }
     
     // MARK: - LifeCycle
     
-    init(type: NavigationType, hasNewNotification: Bool) {
+    init(type: NavigationType) {
         self.type = type
-        self.hasNewNotification = hasNewNotification
         
         super.init(frame: .zero)
         
@@ -103,7 +111,8 @@ final class NavigationView: UIView {
     private func setupView() {
         [
             logoImageView,
-            underLineView,
+            homeUnderLineView,
+            pageUnderLineView,
             hubImageView,
             betaImageView,
             pageTitleLabel,
@@ -118,8 +127,6 @@ final class NavigationView: UIView {
         }
         
         configureVisibleView()
-        
-        notificationButton.isHighlighted = hasNewNotification
     }
     
     private func setupConstraint() {
@@ -128,28 +135,34 @@ final class NavigationView: UIView {
             $0.leading.equalToSuperview().inset(16)
         }
         
-        underLineView.snp.makeConstraints {
+        homeUnderLineView.snp.makeConstraints {
             $0.bottom.horizontalEdges.equalToSuperview()
             $0.heightEqualTo(2)
         }
         
+        pageUnderLineView.snp.makeConstraints {
+            $0.bottom.horizontalEdges.equalToSuperview()
+            $0.heightEqualTo(1)
+        }
+        
         hubImageView.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalTo(safeAreaLayoutGuide)
             $0.leading.equalToSuperview().inset(16)
         }
         
         hubTitleLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalTo(safeAreaLayoutGuide)
             $0.leading.equalTo(hubImageView.snp.trailing)
         }
         
         betaImageView.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalTo(safeAreaLayoutGuide)
             $0.leading.equalTo(hubTitleLabel.snp.trailing).offset(2)
         }
         
         pageTitleLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
+            $0.centerY.equalTo(safeAreaLayoutGuide)
+            $0.centerX.equalToSuperview()
         }
         
         notificationButton.snp.makeConstraints {
@@ -170,15 +183,19 @@ final class NavigationView: UIView {
     }
 }
 
+// MARK: - Extension
+
 private extension NavigationView {
     func configureVisibleView() {
         var visibleViewList: [UIView] = []
         
         switch type {
-        case .home:
+        case .home(hasNewNotification: let hasNewNotification):
+            notificationButton.setImage(hasNewNotification ? .icNotiBadge : .icNotiDefault, for: .normal)
+            
             visibleViewList = [
                 logoImageView,
-                underLineView,
+                homeUnderLineView,
                 notificationButton
             ]
         case .flow:
@@ -187,29 +204,34 @@ private extension NavigationView {
                 dismissButton
             ]
         case .page(type: let type, text: let text):
+            pageTitleLabel.text = text
+            
             switch type {
             case .plain:
                 visibleViewList = [pageTitleLabel]
             case .detail:
                 visibleViewList = [
                     pageTitleLabel,
-                    backButton
+                    backButton,
+                    pageUnderLineView
                 ]
             case .profile:
                 visibleViewList = [
                     pageTitleLabel,
-                    menuButton
+                    menuButton,
+                    pageUnderLineView
                 ]
             }
-        case .hub(isBeta: let isBeta):
+        case .hub(text: let text, isBeta: let isBeta):
+            backgroundColor = .wableBlack
+            isBeta ? visibleViewList.append(betaImageView) : nil
+            hubTitleLabel.text = text
+            
             visibleViewList = [
                 hubImageView,
                 hubTitleLabel,
-                betaImageView,
-                underLineView
+                homeUnderLineView
             ]
-            
-            backgroundColor = .wableBlack
         }
         
         visibleViewList.forEach { $0.isHidden = false }

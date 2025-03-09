@@ -143,7 +143,7 @@
 		DDCCA3972D73988000658122 /* UserSessionRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */; };
 		DDCD66E12D7C8A4A00EF4C28 /* jinung.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E02D7C8A4900EF4C28 /* jinung.swift */; };
 		DDCD66E32D7DB11D00EF4C28 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E22D7DB11500EF4C28 /* TabBarController.swift */; };
-		DDCD66E52D7DC0EB00EF4C28 /* NavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E42D7DC0DB00EF4C28 /* NavigationBarView.swift */; };
+		DDCD66E52D7DC0EB00EF4C28 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */; };
 		DDCD66EA2D7DD72F00EF4C28 /* LottieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E92D7DD72800EF4C28 /* LottieType.swift */; };
 		DDCD66EC2D7DE5E000EF4C28 /* ConstraintMaker+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66EB2D7DE5D900EF4C28 /* ConstraintMaker+.swift */; };
 		DDCD66F32D7DF5AB00EF4C28 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */; };
@@ -151,6 +151,9 @@
 		DDCD66F92D7DF6A800EF4C28 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66F82D7DF69D00EF4C28 /* OverviewViewController.swift */; };
 		DDCD66FB2D7DF6CF00EF4C28 /* ViewitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */; };
 		DDCD66FD2D7DF6D900EF4C28 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */; };
+		DDCD66FF2D7E0C3200EF4C28 /* Share.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3D2D6A007900DBE580 /* Share.xcconfig */; };
+		DDCD67002D7E0C3600EF4C28 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3E2D6A007900DBE580 /* Release.xcconfig */; };
+		DDCD67012D7E0C3A00EF4C28 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3F2D6A007900DBE580 /* Development.xcconfig */; };
 		DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */; };
 		DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */; };
 		DDED594F2D784EC000A0BEF1 /* LocalKeyValueProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594E2D784EC000A0BEF1 /* LocalKeyValueProvider.swift */; };
@@ -337,7 +340,7 @@
 		DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepositoryImpl.swift; sourceTree = "<group>"; };
 		DDCD66E02D7C8A4900EF4C28 /* jinung.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jinung.swift; sourceTree = "<group>"; };
 		DDCD66E22D7DB11500EF4C28 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
-		DDCD66E42D7DC0DB00EF4C28 /* NavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarView.swift; sourceTree = "<group>"; };
+		DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
 		DDCD66E92D7DD72800EF4C28 /* LottieType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieType.swift; sourceTree = "<group>"; };
 		DDCD66EB2D7DE5D900EF4C28 /* ConstraintMaker+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConstraintMaker+.swift"; sourceTree = "<group>"; };
 		DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -977,7 +980,7 @@
 			isa = PBXGroup;
 			children = (
 				DDCD66E22D7DB11500EF4C28 /* TabBarController.swift */,
-				DDCD66E42D7DC0DB00EF4C28 /* NavigationBarView.swift */,
+				DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -1204,10 +1207,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDCD66FF2D7E0C3200EF4C28 /* Share.xcconfig in Resources */,
 				054308EA2CB7F582001861F1 /* wable_loading.json in Resources */,
 				DD2968012D6DAC9300143851 /* LaunchScreen.storyboard in Resources */,
 				DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */,
 				0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */,
+				DDCD67002D7E0C3600EF4C28 /* Release.xcconfig in Resources */,
+				DDCD67012D7E0C3A00EF4C28 /* Development.xcconfig in Resources */,
 				054308EC2CB7F6CE001861F1 /* wable_splash.json in Resources */,
 				0586D89B2D09A68200436080 /* Pretendard-Regular.otf in Resources */,
 				3C8B4E052C76247800174943 /* wable_tab.json in Resources */,
@@ -1252,7 +1258,7 @@
 				DD2968552D6DAD4400143851 /* CreateComment.swift in Sources */,
 				DD2968562D6DAD4400143851 /* UpdateUserBadge.swift in Sources */,
 				DDED59702D78EE7800A0BEF1 /* FetchCommunityListUseCase.swift in Sources */,
-				DDCD66E52D7DC0EB00EF4C28 /* NavigationBarView.swift in Sources */,
+				DDCD66E52D7DC0EB00EF4C28 /* NavigationView.swift in Sources */,
 				DD2968572D6DAD4400143851 /* CreateReport.swift in Sources */,
 				DD2968582D6DAD4400143851 /* CreateContentLiked.swift in Sources */,
 				DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */,
@@ -1623,7 +1629,7 @@
 				0547F4A92C60D96B001E3039 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		0547F4AA2C60D96B001E3039 /* Build configuration list for PBXNativeTarget "Wable-iOS" */ = {
 			isa = XCConfigurationList;
@@ -1632,7 +1638,7 @@
 				0547F4AC2C60D96B001E3039 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 
