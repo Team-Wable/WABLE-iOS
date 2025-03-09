@@ -154,6 +154,7 @@
 		DDCD66FF2D7E0C3200EF4C28 /* Share.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3D2D6A007900DBE580 /* Share.xcconfig */; };
 		DDCD67002D7E0C3600EF4C28 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3E2D6A007900DBE580 /* Release.xcconfig */; };
 		DDCD67012D7E0C3A00EF4C28 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3F2D6A007900DBE580 /* Development.xcconfig */; };
+		DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD67042D7E271C00EF4C28 /* ToastView.swift */; };
 		DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */; };
 		DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */; };
 		DDED594F2D784EC000A0BEF1 /* LocalKeyValueProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594E2D784EC000A0BEF1 /* LocalKeyValueProvider.swift */; };
@@ -348,6 +349,7 @@
 		DDCD66F82D7DF69D00EF4C28 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
 		DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitViewController.swift; sourceTree = "<group>"; };
 		DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		DDCD67042D7E271C00EF4C28 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
 		DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsStorage.swift; sourceTree = "<group>"; };
 		DDED594E2D784EC000A0BEF1 /* LocalKeyValueProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalKeyValueProvider.swift; sourceTree = "<group>"; };
@@ -958,6 +960,7 @@
 		DDCD66DD2D7C8A2B00EF4C28 /* Youjin */ = {
 			isa = PBXGroup;
 			children = (
+				DDCD67042D7E271C00EF4C28 /* ToastView.swift */,
 				DDCD66FE2D7DF6E800EF4C28 /* TabBar */,
 				DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */,
 				DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */,
@@ -1253,6 +1256,7 @@
 				DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */,
 				DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */,
 				DDED595C2D78C3B700A0BEF1 /* AppleAuthProvider.swift in Sources */,
+				DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */,
 				DD2968532D6DAD4400143851 /* BaseResponse.swift in Sources */,
 				DD2968542D6DAD4400143851 /* CreateBan.swift in Sources */,
 				DD2968552D6DAD4400143851 /* CreateComment.swift in Sources */,

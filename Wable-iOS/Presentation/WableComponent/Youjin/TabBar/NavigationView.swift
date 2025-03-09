@@ -63,12 +63,10 @@ final class NavigationView: UIView {
     }
     
     private let pageTitleLabel: UILabel = UILabel().then {
-        $0.font = .pretendard(.body1)
         $0.textColor = .wableBlack
     }
     
     private let hubTitleLabel: UILabel = UILabel().then {
-        $0.font = .pretendard(.head2)
         $0.textColor = .wableWhite
     }
     
@@ -204,7 +202,7 @@ private extension NavigationView {
                 dismissButton
             ]
         case .page(type: let type, text: let text):
-            pageTitleLabel.text = text
+            pageTitleLabel.attributedText = text.pretendardString(with: .body3)
             
             switch type {
             case .plain:
@@ -225,7 +223,7 @@ private extension NavigationView {
         case .hub(text: let text, isBeta: let isBeta):
             backgroundColor = .wableBlack
             isBeta ? visibleViewList.append(betaImageView) : nil
-            hubTitleLabel.text = text
+            hubTitleLabel.attributedText = text.pretendardString(with: .body3)
             
             visibleViewList = [
                 hubImageView,

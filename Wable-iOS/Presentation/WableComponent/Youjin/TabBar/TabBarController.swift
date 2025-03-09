@@ -69,6 +69,7 @@ final class TabBarController: UITabBarController {
         
         configureTabBar()
         configureNavigationView()
+
         setViewControllers(
             [
                 homeNavigationController,

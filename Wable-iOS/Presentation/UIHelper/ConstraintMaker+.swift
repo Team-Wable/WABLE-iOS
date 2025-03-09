@@ -48,7 +48,7 @@ extension ConstraintMaker {
     }
 }
 
-fileprivate extension CGFloat {
+extension CGFloat {
     /// 기준 해상도에 대한 너비 비율 (기본값: 375pt)
     private static let widthRatio: CGFloat = UIScreen.main.bounds.width / 375
     
@@ -80,7 +80,7 @@ fileprivate extension CGFloat {
     }
 }
 
-fileprivate extension Int {
+extension Int {
     /// 현재 `Int` 값을 화면 너비에 맞게 조정합니다.
     ///
     /// - Returns: `UIScreen.main.bounds.width`를 기준으로 계산된 크기
