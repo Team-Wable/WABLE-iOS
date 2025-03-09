@@ -9,6 +9,9 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
+    
+    // MARK: Property
+
     private let navigationView: NavigationView
     
     private let homeViewController = HomeViewController().then {
@@ -52,6 +55,7 @@ final class TabBarController: UITabBarController {
         super.viewDidLoad()
         
         setupView()
+        setupAction()
     }
     
     // MARK: - Setup
@@ -64,6 +68,7 @@ final class TabBarController: UITabBarController {
         let profileNavigationController = UINavigationController(rootViewController: profileViewController)
         
         configureTabBar()
+        configureNavigationView()
         setViewControllers(
             [
                 homeNavigationController,
@@ -75,7 +80,18 @@ final class TabBarController: UITabBarController {
             animated: true
         )
     }
+    
+    private func setupAction() {
+        navigationView.do {
+            $0.notificationButton.addTarget(self, action: #selector(notificationButtonDidTap), for: .touchUpInside)
+            $0.backButton.addTarget(self, action: #selector(backButtonDidTap), for: .touchUpInside)
+            $0.dismissButton.addTarget(self, action: #selector(dismissButtonDidTap), for: .touchUpInside)
+            $0.menuButton.addTarget(self, action: #selector(menuButtonDidTap), for: .touchUpInside)
+        }
+    }
 }
+
+// MARK: - Extension
 
 private extension TabBarController {
     func configureTabBar() {
@@ -90,5 +106,34 @@ private extension TabBarController {
             $0.standardAppearance = tabBarAppearance
             $0.scrollEdgeAppearance = tabBarAppearance
         }
+    }
+    
+    func configureNavigationView() {
+        let condition = navigationView.type.isHub
+        
+        view.addSubview(navigationView)
+        
+        navigationView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalTo(condition ? view : view.safeAreaLayoutGuide)
+            $0.heightEqualTo(condition ? 104 : 60)
+        }
+    }
+}
+
+private extension TabBarController {
+    @objc func notificationButtonDidTap() {
+        // TODO: 알림 화면으로 이동하는 로직 구현 필요
+    }
+    
+    @objc func backButtonDidTap() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func dismissButtonDidTap() {
+        self.dismiss(animated: true)
+    }
+    
+    @objc func menuButtonDidTap() {
+        // TODO: 프로필 바텀시트 올라오는 로직 구현 필요
     }
 }
