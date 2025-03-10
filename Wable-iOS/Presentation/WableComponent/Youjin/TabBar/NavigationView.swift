@@ -24,6 +24,17 @@ import Lottie
 ///   - `text`: 네비게이션 바에 표시될 제목 (기본값: "")
 ///   - `isBeta`: 베타 기능 표시 여부 (기본값: false)
 enum NavigationType {
+    /// 페이지 타입을 정의하는 `PageType` 열거형.
+    ///
+    /// - `plain`: 일반 페이지
+    /// - `detail`: 상세 페이지 (뒤로가기 버튼 포함)
+    /// - `profile`: 프로필 페이지 (메뉴 버튼 포함)
+    enum PageType {
+        case plain
+        case detail
+        case profile
+    }
+    
     case home(hasNewNotification: Bool)
     case flow
     case page(type: PageType, text: String)
@@ -36,19 +47,6 @@ enum NavigationType {
             return false
         }
     }
-}
-
-// MARK: - Page Types
-
-/// 페이지 타입을 정의하는 `PageType` 열거형.
-///
-/// - `plain`: 일반 페이지
-/// - `detail`: 상세 페이지 (뒤로가기 버튼 포함)
-/// - `profile`: 프로필 페이지 (메뉴 버튼 포함)
-enum PageType {
-    case plain
-    case detail
-    case profile
 }
 
 final class NavigationView: UIView {
@@ -155,12 +153,12 @@ final class NavigationView: UIView {
         
         homeUnderLineView.snp.makeConstraints {
             $0.bottom.horizontalEdges.equalToSuperview()
-            $0.heightEqualTo(2)
+            $0.adjustedHeightEqualTo(2)
         }
         
         pageUnderLineView.snp.makeConstraints {
             $0.bottom.horizontalEdges.equalToSuperview()
-            $0.heightEqualTo(1)
+            $0.adjustedHeightEqualTo(1)
         }
         
         hubTitleLabel.snp.makeConstraints {
@@ -209,8 +207,8 @@ private extension NavigationView {
         
         switch type {
         case .home(hasNewNotification: let hasNewNotification):
-            notificationButton.setImage(hasNewNotification ? .icNotiBadge : .icNotiDefault, for: .normal)
-            
+            // TODO: 새 알림 여부에 따라 알림 이미지 변환하는 로직 구현 필요
+
             visibleViewList = [
                 logoImageView,
                 homeUnderLineView,

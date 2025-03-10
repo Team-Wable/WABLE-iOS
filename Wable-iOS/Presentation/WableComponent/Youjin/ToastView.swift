@@ -84,8 +84,8 @@ final class ToastView: UIView {
         statusImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().offset(12)
-            $0.widthEqualTo(32)
-            $0.heightEqualTo(32)
+            $0.adjustedWidthEqualTo(32)
+            $0.adjustedHeightEqualTo(32)
         }
         
         statusLabel.snp.makeConstraints {
@@ -143,7 +143,9 @@ extension ToastView {
     func show() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first
-        else { return }
+        else {
+            return
+        }
         
         window.addSubview(self)
         
