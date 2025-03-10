@@ -141,8 +141,20 @@
 		DDCCA3932D738CD500658122 /* UserSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3922D738CD100658122 /* UserSessionRepository.swift */; };
 		DDCCA3952D73928900658122 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3942D73928400658122 /* UserSession.swift */; };
 		DDCCA3972D73988000658122 /* UserSessionRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */; };
-		DDCD66DF2D7C8A4500EF4C28 /* youjin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66DE2D7C8A4300EF4C28 /* youjin.swift */; };
 		DDCD66E12D7C8A4A00EF4C28 /* jinung.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E02D7C8A4900EF4C28 /* jinung.swift */; };
+		DDCD66E32D7DB11D00EF4C28 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E22D7DB11500EF4C28 /* TabBarController.swift */; };
+		DDCD66E52D7DC0EB00EF4C28 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */; };
+		DDCD66EA2D7DD72F00EF4C28 /* LottieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E92D7DD72800EF4C28 /* LottieType.swift */; };
+		DDCD66EC2D7DE5E000EF4C28 /* ConstraintMaker+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66EB2D7DE5D900EF4C28 /* ConstraintMaker+.swift */; };
+		DDCD66F32D7DF5AB00EF4C28 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */; };
+		DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */; };
+		DDCD66F92D7DF6A800EF4C28 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66F82D7DF69D00EF4C28 /* OverviewViewController.swift */; };
+		DDCD66FB2D7DF6CF00EF4C28 /* ViewitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */; };
+		DDCD66FD2D7DF6D900EF4C28 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */; };
+		DDCD66FF2D7E0C3200EF4C28 /* Share.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3D2D6A007900DBE580 /* Share.xcconfig */; };
+		DDCD67002D7E0C3600EF4C28 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3E2D6A007900DBE580 /* Release.xcconfig */; };
+		DDCD67012D7E0C3A00EF4C28 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3F2D6A007900DBE580 /* Development.xcconfig */; };
+		DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD67042D7E271C00EF4C28 /* ToastView.swift */; };
 		DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */; };
 		DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */; };
 		DDED594F2D784EC000A0BEF1 /* LocalKeyValueProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594E2D784EC000A0BEF1 /* LocalKeyValueProvider.swift */; };
@@ -179,7 +191,6 @@
 		DE7C53102D761E3300076E5D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C530F2D761E3300076E5D /* String+.swift */; };
 		DE7C53122D761EA400076E5D /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53112D761EA400076E5D /* UIStackView+.swift */; };
 		DE7C53142D761EE500076E5D /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53132D761EE500076E5D /* UIView+.swift */; };
-		DE7C53162D761F1500076E5D /* ScreenAdjustable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53152D761F1500076E5D /* ScreenAdjustable.swift */; };
 		DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */; };
 		DE7C531A2D76202B00076E5D /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53192D76202B00076E5D /* UITextField+.swift */; };
 		DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29132D7208A00073D512 /* GameStatus.swift */; };
@@ -328,8 +339,17 @@
 		DDCCA3922D738CD100658122 /* UserSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepository.swift; sourceTree = "<group>"; };
 		DDCCA3942D73928400658122 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepositoryImpl.swift; sourceTree = "<group>"; };
-		DDCD66DE2D7C8A4300EF4C28 /* youjin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = youjin.swift; sourceTree = "<group>"; };
 		DDCD66E02D7C8A4900EF4C28 /* jinung.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jinung.swift; sourceTree = "<group>"; };
+		DDCD66E22D7DB11500EF4C28 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
+		DDCD66E92D7DD72800EF4C28 /* LottieType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieType.swift; sourceTree = "<group>"; };
+		DDCD66EB2D7DE5D900EF4C28 /* ConstraintMaker+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConstraintMaker+.swift"; sourceTree = "<group>"; };
+		DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
+		DDCD66F82D7DF69D00EF4C28 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
+		DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitViewController.swift; sourceTree = "<group>"; };
+		DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		DDCD67042D7E271C00EF4C28 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
 		DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsStorage.swift; sourceTree = "<group>"; };
 		DDED594E2D784EC000A0BEF1 /* LocalKeyValueProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalKeyValueProvider.swift; sourceTree = "<group>"; };
@@ -353,7 +373,6 @@
 		DE7C530F2D761E3300076E5D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		DE7C53112D761EA400076E5D /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		DE7C53132D761EE500076E5D /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
-		DE7C53152D761F1500076E5D /* ScreenAdjustable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAdjustable.swift; sourceTree = "<group>"; };
 		DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
 		DE7C53192D76202B00076E5D /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
 		DEDC29112D7207610073D512 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -941,9 +960,32 @@
 		DDCD66DD2D7C8A2B00EF4C28 /* Youjin */ = {
 			isa = PBXGroup;
 			children = (
-				DDCD66DE2D7C8A4300EF4C28 /* youjin.swift */,
+				DDCD67042D7E271C00EF4C28 /* ToastView.swift */,
+				DDCD66FE2D7DF6E800EF4C28 /* TabBar */,
+				DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */,
+				DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */,
+				DDCD66F82D7DF69D00EF4C28 /* OverviewViewController.swift */,
+				DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */,
+				DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */,
 			);
 			path = Youjin;
+			sourceTree = "<group>";
+		};
+		DDCD66E82D7DD72200EF4C28 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				DDCD66E92D7DD72800EF4C28 /* LottieType.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
+		DDCD66FE2D7DF6E800EF4C28 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				DDCD66E22D7DB11500EF4C28 /* TabBarController.swift */,
+				DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */,
+			);
+			path = TabBar;
 			sourceTree = "<group>";
 		};
 		DDED59492D784E9000A0BEF1 /* Local */ = {
@@ -1050,13 +1092,14 @@
 		DE7C53092D761DB900076E5D /* UIHelper */ = {
 			isa = PBXGroup;
 			children = (
-				DE7C530D2D761DFB00076E5D /* UIFont+.swift */,
+				DDCD66E82D7DD72200EF4C28 /* Enum */,
 				DE7C530F2D761E3300076E5D /* String+.swift */,
-				DE7C53112D761EA400076E5D /* UIStackView+.swift */,
+				DE7C530D2D761DFB00076E5D /* UIFont+.swift */,
 				DE7C53132D761EE500076E5D /* UIView+.swift */,
-				DE7C53152D761F1500076E5D /* ScreenAdjustable.swift */,
-				DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */,
+				DE7C53112D761EA400076E5D /* UIStackView+.swift */,
 				DE7C53192D76202B00076E5D /* UITextField+.swift */,
+				DDCD66EB2D7DE5D900EF4C28 /* ConstraintMaker+.swift */,
+				DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */,
 			);
 			path = UIHelper;
 			sourceTree = "<group>";
@@ -1167,10 +1210,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDCD66FF2D7E0C3200EF4C28 /* Share.xcconfig in Resources */,
 				054308EA2CB7F582001861F1 /* wable_loading.json in Resources */,
 				DD2968012D6DAC9300143851 /* LaunchScreen.storyboard in Resources */,
 				DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */,
 				0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */,
+				DDCD67002D7E0C3600EF4C28 /* Release.xcconfig in Resources */,
+				DDCD67012D7E0C3A00EF4C28 /* Development.xcconfig in Resources */,
 				054308EC2CB7F6CE001861F1 /* wable_splash.json in Resources */,
 				0586D89B2D09A68200436080 /* Pretendard-Regular.otf in Resources */,
 				3C8B4E052C76247800174943 /* wable_tab.json in Resources */,
@@ -1189,7 +1235,6 @@
 				DD2968062D6DACF700143851 /* Account.swift in Sources */,
 				DD2968072D6DACF700143851 /* LCKTeam.swift in Sources */,
 				DD2968082D6DACF700143851 /* Comment.swift in Sources */,
-				DDCD66DF2D7C8A4500EF4C28 /* youjin.swift in Sources */,
 				DD2968092D6DACF700143851 /* AccountDeleteReason.swift in Sources */,
 				DDED597E2D79578C00A0BEF1 /* AuthProvider.swift in Sources */,
 				DD29680A2D6DACF700143851 /* User.swift in Sources */,
@@ -1200,6 +1245,7 @@
 				DD29680F2D6DACF700143851 /* SocialPlatform.swift in Sources */,
 				DD2968102D6DACF700143851 /* Notification.swift in Sources */,
 				DD2968112D6DACF700143851 /* Viewit.swift in Sources */,
+				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
 				DD2968122D6DACF700143851 /* Community.swift in Sources */,
 				DD2968132D6DACF700143851 /* TriggerType.swift in Sources */,
 				DD2968142D6DACF700143851 /* AccountInfo.swift in Sources */,
@@ -1210,11 +1256,13 @@
 				DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */,
 				DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */,
 				DDED595C2D78C3B700A0BEF1 /* AppleAuthProvider.swift in Sources */,
+				DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */,
 				DD2968532D6DAD4400143851 /* BaseResponse.swift in Sources */,
 				DD2968542D6DAD4400143851 /* CreateBan.swift in Sources */,
 				DD2968552D6DAD4400143851 /* CreateComment.swift in Sources */,
 				DD2968562D6DAD4400143851 /* UpdateUserBadge.swift in Sources */,
 				DDED59702D78EE7800A0BEF1 /* FetchCommunityListUseCase.swift in Sources */,
+				DDCD66E52D7DC0EB00EF4C28 /* NavigationView.swift in Sources */,
 				DD2968572D6DAD4400143851 /* CreateReport.swift in Sources */,
 				DD2968582D6DAD4400143851 /* CreateContentLiked.swift in Sources */,
 				DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */,
@@ -1231,7 +1279,9 @@
 				DD2968302D6DAD1700143851 /* AccountRepositoryImpl.swift in Sources */,
 				DD2968312D6DAD1700143851 /* CommentLikedRepositoryImpl.swift in Sources */,
 				DD2968322D6DAD1700143851 /* ContentRepositoryImpl.swift in Sources */,
+				DDCD66EC2D7DE5E000EF4C28 /* ConstraintMaker+.swift in Sources */,
 				DE7C530C2D761DCA00076E5D /* ViewModelType.swift in Sources */,
+				DDCD66EA2D7DD72F00EF4C28 /* LottieType.swift in Sources */,
 				DD29683B2D6DAD2F00143851 /* CreateAccountResponse.swift in Sources */,
 				DD29683C2D6DAD2F00143851 /* FetchGameCategory.swift in Sources */,
 				DD29683D2D6DAD2F00143851 /* FetchUserContents.swift in Sources */,
@@ -1266,6 +1316,7 @@
 				DD29684F2D6DAD2F00143851 /* FetchViewits.swift in Sources */,
 				DD2968502D6DAD2F00143851 /* FetchUserComments.swift in Sources */,
 				DD2968332D6DAD1700143851 /* CommentRepositoryImpl.swift in Sources */,
+				DDCD66FB2D7DF6CF00EF4C28 /* ViewitViewController.swift in Sources */,
 				DD2968342D6DAD1700143851 /* InformationRepositoryImpl.swift in Sources */,
 				DD2968352D6DAD1700143851 /* GhostRepositoryImpl.swift in Sources */,
 				DD2968362D6DAD1700143851 /* ContentLikedRepositoryImpl.swift in Sources */,
@@ -1292,13 +1343,14 @@
 				DD2968392D6DAD1700143851 /* LoginRepositoryImpl.swift in Sources */,
 				DEDC29182D720D030073D512 /* PostStatus.swift in Sources */,
 				DD29683A2D6DAD1700143851 /* NotificationRepositoryImpl.swift in Sources */,
+				DDCD66E32D7DB11D00EF4C28 /* TabBarController.swift in Sources */,
 				DD2967F92D6DAC4800143851 /* AnyPublisher+.swift in Sources */,
 				DD2967FA2D6DAC4800143851 /* Publisher+.swift in Sources */,
 				DE7C53122D761EA400076E5D /* UIStackView+.swift in Sources */,
 				DDCCA3952D73928900658122 /* UserSession.swift in Sources */,
 				DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */,
-				DE7C53162D761F1500076E5D /* ScreenAdjustable.swift in Sources */,
 				DD2968022D6DAC9B00143851 /* ViewController.swift in Sources */,
+				DDCD66FD2D7DF6D900EF4C28 /* ProfileViewController.swift in Sources */,
 				DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */,
 				DD2967FC2D6DAC4800143851 /* Injected.swift in Sources */,
 				DD2967FD2D6DAC4800143851 /* CancelBag.swift in Sources */,
@@ -1319,6 +1371,7 @@
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
 				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
 				DD29681D2D6DAD0200143851 /* CommentRepository.swift in Sources */,
+				DDCD66F92D7DF6A800EF4C28 /* OverviewViewController.swift in Sources */,
 				DDED59722D78EE9900A0BEF1 /* UpdatePreRegisterUseCase.swift in Sources */,
 				DD29681E2D6DAD0200143851 /* AccountRepository.swift in Sources */,
 				DD29681F2D6DAD0200143851 /* GhostRepository.swift in Sources */,
@@ -1338,6 +1391,7 @@
 				DD29682A2D6DAD0B00143851 /* ErrorMapper.swift in Sources */,
 				DD29682B2D6DAD0B00143851 /* CommentMapper.swift in Sources */,
 				DDED598A2D7965F900A0BEF1 /* ProfileUseCase.swift in Sources */,
+				DDCD66F32D7DF5AB00EF4C28 /* HomeViewController.swift in Sources */,
 				DD29682C2D6DAD0B00143851 /* ContentMapper.swift in Sources */,
 				DD29682D2D6DAD0B00143851 /* NotificationMapper.swift in Sources */,
 				DD2968232D6DAD0200143851 /* NotificationRepository.swift in Sources */,
@@ -1579,7 +1633,7 @@
 				0547F4A92C60D96B001E3039 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		0547F4AA2C60D96B001E3039 /* Build configuration list for PBXNativeTarget "Wable-iOS" */ = {
 			isa = XCConfigurationList;
@@ -1588,7 +1642,7 @@
 				0547F4AC2C60D96B001E3039 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 
