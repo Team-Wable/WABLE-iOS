@@ -5,9 +5,16 @@
 //  Created by YOUJIM on 3/10/25.
 //
 
-
 import UIKit
 
+// MARK: - Toast Types
+
+/// 토스트 메시지 타입을 정의하는 `ToastType` 열거형.
+///
+/// - `loading`: 로딩 중 상태를 나타내는 토스트
+/// - `complete`: 작업 완료를 나타내는 토스트
+/// - `caution`: 경고를 나타내는 토스트
+/// - `error`: 오류 상태를 나타내는 토스트
 enum ToastType {
     case loading
     case complete
@@ -15,18 +22,38 @@ enum ToastType {
     case error
 }
 
+/// 앱 내 간단한 알림을 표시하기 위한 토스트 뷰 클래스.
+/// 상단에 표시되며 2초 후 자동으로 사라집니다.
+///
+/// 사용 예시:
+/// ```
+/// // 성공 메시지 표시
+/// let toast = ToastView(status: .complete, message: "저장되었습니다")
+/// toast.show()
+///
+/// // 오류 메시지 표시
+/// ToastView(status: .error, message: "네트워크 연결이 불안정합니다").show()
+/// ```
 final class ToastView: UIView {
     
     // MARK: Property
     
+    /// 토스트의 상태 타입
     private let status: ToastType
+    /// 토스트에 표시될 메시지
     private let message: String
+    /// 상태를 나타내는 이미지 뷰
     private let statusImageView: UIImageView = UIImageView()
+    /// 메시지를 표시하는 레이블
     private let statusLabel: UILabel = UILabel().then {
         $0.textColor = .wableBlack
         $0.numberOfLines = 2
     }
     
+    /// 토스트 뷰 초기화
+    /// - Parameters:
+    ///   - status: 토스트 타입(.loading, .complete, .caution, .error)
+    ///   - message: 표시할 메시지 텍스트
     init(status: ToastType, message: String) {
         self.status = status
         self.message = message
@@ -43,6 +70,7 @@ final class ToastView: UIView {
     
     // MARK: - Setup
 
+    /// 뷰 구성 설정
     private func setupView() {
         backgroundColor = .wableWhite
         addSubviews(statusImageView, statusLabel)
@@ -51,6 +79,7 @@ final class ToastView: UIView {
         configureShadow()
     }
     
+    /// 제약조건 설정
     private func setupConstraint() {
         statusImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
@@ -69,6 +98,7 @@ final class ToastView: UIView {
 // MARK: - Extension
 
 private extension ToastView {
+    /// 토스트 상태에 따른 이미지와 메시지 구성
     func configureToast() {
         let image: UIImage = {
             switch status {
@@ -87,6 +117,7 @@ private extension ToastView {
         statusLabel.attributedText = message.pretendardString(with: .body3)
     }
     
+    /// 토스트 그림자 효과 설정
     func configureShadow() {
         layer.do {
             $0.masksToBounds = false
@@ -98,7 +129,17 @@ private extension ToastView {
     }
 }
 
+// MARK: - Public Methods
+
 extension ToastView {
+    /// 토스트 메시지를 화면에 표시합니다.
+    /// 1초 후에 페이드 아웃되어 자동으로 사라집니다.
+    ///
+    /// 사용 예시:
+    /// ```
+    /// let toast = ToastView(status: .complete, message: "완료되었습니다")
+    /// toast.show()
+    /// ```
     func show() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first
@@ -115,6 +156,8 @@ extension ToastView {
         animate()
     }
     
+    /// 토스트 애니메이션 설정
+    /// 1초 지연 후 1초 동안 페이드 아웃
     private func animate() {
         UIView.animate(withDuration: 1, delay: 1, options: .curveEaseIn) {
             self.alpha = 0

@@ -10,7 +10,20 @@ import UIKit
 
 import Lottie
 
-enum NavigationType: Equatable {
+// MARK: - Navigation Types
+
+/// `UIView`의 네비게이션 타입을 정의하는 `NavigationType` 열거형.
+///
+/// - `home`: 메인 화면에 사용되는 네비게이션 타입
+///   - `hasNewNotification`: 새로운 알림 존재 여부, 해당 값에 따라 알림 버튼 이미지 변경
+/// - `flow`: 단계별 흐름(온보딩, 프로세스 등)에 사용되는 네비게이션 타입
+/// - `page`: 일반적인 페이지 화면에 사용되는 네비게이션 타입
+///   - `type`: 페이지의 타입 (plain, detail, profile)
+///   - `text`: 네비게이션 바에 표시될 제목
+/// - `hub`: 탭 기반 메인 화면에 사용되는 네비게이션 타입
+///   - `text`: 네비게이션 바에 표시될 제목 (기본값: "")
+///   - `isBeta`: 베타 기능 표시 여부 (기본값: false)
+enum NavigationType {
     case home(hasNewNotification: Bool)
     case flow
     case page(type: PageType, text: String)
@@ -25,6 +38,13 @@ enum NavigationType: Equatable {
     }
 }
 
+// MARK: - Page Types
+
+/// 페이지 타입을 정의하는 `PageType` 열거형.
+///
+/// - `plain`: 일반 페이지
+/// - `detail`: 상세 페이지 (뒤로가기 버튼 포함)
+/// - `profile`: 프로필 페이지 (메뉴 버튼 포함)
 enum PageType {
     case plain
     case detail
