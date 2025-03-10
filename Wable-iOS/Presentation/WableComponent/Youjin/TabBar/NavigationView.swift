@@ -207,7 +207,7 @@ private extension NavigationView {
         
         switch type {
         case .home(hasNewNotification: let hasNewNotification):
-            // TODO: 새 알림 여부에 따라 알림 이미지 변환하는 로직 구현 필요
+            notificationButton.setImage(hasNewNotification ? .icNotiBadge : .icNotiDefault, for: .normal)
 
             visibleViewList = [
                 logoImageView,
