@@ -21,11 +21,11 @@ extension ConstraintMaker {
     /// 사용 예시:
     /// ```swift
     /// view.snp.makeConstraints {
-    ///     $0.widthEqualTo(100) // $0.width.equalTo(100.adjustedWidth)와 같은 효과
+    ///     $0.adjustedWidthEqualTo(100) // $0.width.equalTo(100.adjustedWidth)와 같은 효과
     /// }
     /// ```
     @discardableResult
-    func widthEqualTo(_ float: CGFloat) -> ConstraintMakerEditable {
+    func adjustedWidthEqualTo(_ float: CGFloat) -> ConstraintMakerEditable {
         return self.width.equalTo(float.adjustedWidth)
     }
     
@@ -39,11 +39,11 @@ extension ConstraintMaker {
     /// 사용 예시:
     /// ```swift
     /// view.snp.makeConstraints {
-    ///     $0.heightEqualTo(200) // $0.height.equalTo(200.adjustedHeight)와 같은 효과
+    ///     $0.adjustedHeightEqualTo(200) // $0.height.equalTo(200.adjustedHeight)와 같은 효과
     /// }
     /// ```
     @discardableResult
-    func heightEqualTo(_ float: CGFloat) -> ConstraintMakerEditable {
+    func adjustedHeightEqualTo(_ float: CGFloat) -> ConstraintMakerEditable {
         return self.height.equalTo(float.adjustedHeight)
     }
 }

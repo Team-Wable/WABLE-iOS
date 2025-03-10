@@ -116,7 +116,7 @@ private extension TabBarController {
         
         navigationView.snp.makeConstraints {
             $0.top.horizontalEdges.equalTo(condition ? view : view.safeAreaLayoutGuide)
-            $0.heightEqualTo(condition ? 104 : 60)
+            $0.adjustedHeightEqualTo(condition ? 104 : 60)
         }
     }
 }
