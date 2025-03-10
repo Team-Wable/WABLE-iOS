@@ -133,7 +133,7 @@ private extension ToastView {
 
 extension ToastView {
     /// 토스트 메시지를 화면에 표시합니다.
-    /// 1초 후에 페이드 아웃되어 자동으로 사라집니다.
+    /// 2초 후에 페이드 아웃되어 자동으로 사라집니다.
     ///
     /// 사용 예시:
     /// ```
@@ -157,9 +157,9 @@ extension ToastView {
     }
     
     /// 토스트 애니메이션 설정
-    /// 1초 지연 후 1초 동안 페이드 아웃
+    /// 2초 지연 후 1초 동안 페이드 아웃
     private func animate() {
-        UIView.animate(withDuration: 1, delay: 1, options: .curveEaseIn) {
+        UIView.animate(withDuration: 1, delay: 2, options: .curveEaseIn) {
             self.alpha = 0
         } completion: { _ in
             self.removeFromSuperview()
