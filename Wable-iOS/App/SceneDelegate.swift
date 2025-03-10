@@ -19,7 +19,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         )
     )
 
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    func scene(
+        _ scene: UIScene,
+        willConnectTo session: UISceneSession,
+        options connectionOptions: UIScene.ConnectionOptions
+    ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         self.window = UIWindow(windowScene: windowScene)
         
@@ -32,27 +36,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     self.configureLoginScreen()
                 }
             } receiveValue: { isAutoLoginEnabled in
-                if isAutoLoginEnabled {
-                    self.configureMainScreen()
-                } else {
-                    self.configureLoginScreen()
-                }
+                isAutoLoginEnabled ? self.configureMainScreen() : self.configureLoginScreen()
             }
             .store(in: cancelBag)
     }
 }
 
 // MARK: - Extension
-// TODO: 각각 VC로 화면 이동하는 로직 구현 필요
 
 private extension SceneDelegate {
+    // TODO: 로그인 화면으로 이동하는 로직 구현 필요
     func configureLoginScreen() {
         self.window?.rootViewController = ViewController()
         self.window?.makeKeyAndVisible()
     }
     
     func configureMainScreen() {
-        self.window?.rootViewController = ViewController()
+        let condition = userSessionRepository.fetchActiveUserSession()?.notificationBadgeCount ?? 0 > 0
+        
+        self.window?.rootViewController = TabBarController(
+            navigationView: NavigationView(
+                type: .home(hasNewNotification: condition)
+            )
+        )
         self.window?.makeKeyAndVisible()
     }
 }
