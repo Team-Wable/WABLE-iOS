@@ -163,14 +163,14 @@ final class NavigationView: UIView {
             $0.heightEqualTo(1)
         }
         
-        hubImageView.snp.makeConstraints {
-            $0.centerY.equalTo(safeAreaLayoutGuide)
-            $0.leading.equalToSuperview().inset(16)
-        }
-        
         hubTitleLabel.snp.makeConstraints {
             $0.centerY.equalTo(safeAreaLayoutGuide)
             $0.leading.equalTo(hubImageView.snp.trailing)
+        }
+        
+        hubImageView.snp.makeConstraints {
+            $0.centerY.equalTo(hubTitleLabel)
+            $0.leading.equalToSuperview().inset(16)
         }
         
         betaImageView.snp.makeConstraints {
@@ -242,14 +242,15 @@ private extension NavigationView {
             }
         case .hub(text: let text, isBeta: let isBeta):
             backgroundColor = .wableBlack
-            isBeta ? visibleViewList.append(betaImageView) : nil
-            hubTitleLabel.attributedText = text.pretendardString(with: .body3)
+            hubTitleLabel.attributedText = text.pretendardString(with: .head2)
             
             visibleViewList = [
                 hubImageView,
                 hubTitleLabel,
                 homeUnderLineView
             ]
+            
+            isBeta ? visibleViewList.append(betaImageView) : nil
         }
         
         visibleViewList.forEach { $0.isHidden = false }
