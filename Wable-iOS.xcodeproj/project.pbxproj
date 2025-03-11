@@ -14,6 +14,8 @@
 		0586D89B2D09A68200436080 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0586D8992D09A68200436080 /* Pretendard-Regular.otf */; };
 		0586D89C2D09A68200436080 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */; };
 		3C8B4E052C76247800174943 /* wable_tab.json in Resources */ = {isa = PBXBuildFile; fileRef = 3C8B4E042C76247800174943 /* wable_tab.json */; };
+		DD005BA92D7FFFE400B1661F /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BA82D7FFFE000B1661F /* LikeButton.swift */; };
+		DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BAA2D80071E00B1661F /* CommentButton.swift */; };
 		DD2967F92D6DAC4800143851 /* AnyPublisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29675E2D6DAC3100143851 /* AnyPublisher+.swift */; };
 		DD2967FA2D6DAC4800143851 /* Publisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967602D6DAC3100143851 /* Publisher+.swift */; };
 		DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29675B2D6DAC3100143851 /* DIContainer.swift */; };
@@ -209,6 +211,8 @@
 		0586D8992D09A68200436080 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		3C8B4E042C76247800174943 /* wable_tab.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = wable_tab.json; sourceTree = "<group>"; };
+		DD005BA82D7FFFE000B1661F /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
+		DD005BAA2D80071E00B1661F /* CommentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentButton.swift; sourceTree = "<group>"; };
 		DD29675B2D6DAC3100143851 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		DD29675C2D6DAC3100143851 /* Injected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injected.swift; sourceTree = "<group>"; };
 		DD29675E2D6DAC3100143851 /* AnyPublisher+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnyPublisher+.swift"; sourceTree = "<group>"; };
@@ -964,6 +968,8 @@
 		DDCD66DD2D7C8A2B00EF4C28 /* Youjin */ = {
 			isa = PBXGroup;
 			children = (
+				DD005BA82D7FFFE000B1661F /* LikeButton.swift */,
+				DD005BAA2D80071E00B1661F /* CommentButton.swift */,
 				DD547AB82D7E439E00B8BA5A /* GhostButton.swift */,
 				DDCD66FE2D7DF6E800EF4C28 /* TabBar */,
 				DDCD67042D7E271C00EF4C28 /* ToastView.swift */,
@@ -1358,12 +1364,14 @@
 				DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */,
 				DD2968022D6DAC9B00143851 /* ViewController.swift in Sources */,
 				DDCD66FD2D7DF6D900EF4C28 /* ProfileViewController.swift in Sources */,
+				DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */,
 				DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */,
 				DD2967FC2D6DAC4800143851 /* Injected.swift in Sources */,
 				DD2967FD2D6DAC4800143851 /* CancelBag.swift in Sources */,
 				DD2967FE2D6DAC4800143851 /* WableLogger.swift in Sources */,
 				DE7C53142D761EE500076E5D /* UIView+.swift in Sources */,
 				DDCCA3932D738CD500658122 /* UserSessionRepository.swift in Sources */,
+				DD005BA92D7FFFE400B1661F /* LikeButton.swift in Sources */,
 				DD2967FF2D6DAC8900143851 /* SceneDelegate.swift in Sources */,
 				DD2968172D6DAD0200143851 /* ContentRepository.swift in Sources */,
 				DDED595E2D78C3E000A0BEF1 /* KakaoAuthProvider.swift in Sources */,

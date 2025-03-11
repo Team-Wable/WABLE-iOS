@@ -8,24 +8,21 @@
 
 import UIKit
 
-final class LikeButton: UIButton {
+final class CommentButton: UIButton {
     
     // MARK: Property
     
-    private var isLiked: Bool
-    private var likeCount: Int
+    private var commentCount: Int
     
     // MARK: - LifeCycle
     
-    init(isLiked: Bool = false, likeCount: Int) {
-        self.isLiked = isLiked
-        self.likeCount = likeCount
+    init(commentCount: Int) {
+        self.commentCount = commentCount
         
         super.init(frame: .zero)
         
         setupView()
         setupConstraint()
-        setupAction()
     }
     
     required init?(coder: NSCoder) {
@@ -44,31 +41,19 @@ final class LikeButton: UIButton {
             $0.adjustedHeightEqualTo(24)
         }
     }
-    
-    private func setupAction() {
-        addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
-    }
 }
 
 // MARK: - Extension
 
-private extension LikeButton {
+private extension CommentButton {
     func configureButton() {
         var configuration = UIButton.Configuration.plain()
         
-        configuration.image = isLiked ? .icHeartPress : .icHeartDefault
+        configuration.image = .icRipple
         configuration.imagePadding = 4
-        configuration.title = String(likeCount)
+        configuration.title = String(commentCount)
         configuration.baseForegroundColor = .wableBlack
         
         self.configuration = configuration
-    }
-}
-
-private extension LikeButton {
-    @objc func likeButtonDidTap() {
-        isLiked ? (likeCount -= 1) : (likeCount += 1)
-        isLiked.toggle()
-        self.configureButton()
     }
 }
