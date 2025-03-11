@@ -86,6 +86,7 @@ private extension GhostButton {
             configuration.attributedTitle?.foregroundColor = UIColor("556480")
             configuration.image = .icGhostDefault.withTintColor(UIColor("556480"))
             configuration.baseBackgroundColor = UIColor("DDE4F1")
+            self.isUserInteractionEnabled = true
         case .disabled:
             configuration.attributedTitle?.foregroundColor = UIColor("AEAEAE")
             configuration.image = .icGhostDefault.withTintColor(.gray500)
