@@ -136,6 +136,7 @@
 		DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD2968772D6DAE2200143851 /* GoogleService-Info.plist */; };
 		DD29687C2D6DB27F00143851 /* OAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687B2D6DB27200143851 /* OAuthenticator.swift */; };
 		DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687D2D6DC70100143851 /* OAuthCredential.swift */; };
+		DD547AB92D7E43A600B8BA5A /* GhostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD547AB82D7E439E00B8BA5A /* GhostButton.swift */; };
 		DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */; };
 		DD87931C2D7044E7001212AE /* OAuthErrorMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD87931B2D7044E0001212AE /* OAuthErrorMonitor.swift */; };
 		DDCCA3932D738CD500658122 /* UserSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3922D738CD100658122 /* UserSessionRepository.swift */; };
@@ -184,6 +185,7 @@
 		DDF2CC9C2D71FECB000F1919 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC9B2D71FECB000F1919 /* FirebaseCore */; };
 		DDF2CC9E2D71FECB000F1919 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC9D2D71FECB000F1919 /* FirebaseMessaging */; };
 		DDF2CCA12D71FF27000F1919 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CCA02D71FF27000F1919 /* AmplitudeSwift */; };
+		DDFF126F2D7EE39500980BA7 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFF126E2D7EE39200980BA7 /* UIColor+.swift */; };
 		DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EA2D7211070021BDE1 /* Like.swift */; };
 		DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EE2D7213D90021BDE1 /* Opacity.swift */; };
 		DE7C530C2D761DCA00076E5D /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C530B2D761DCA00076E5D /* ViewModelType.swift */; };
@@ -326,6 +328,7 @@
 		DD29687A2D6DAE8E00143851 /* Wable-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wable-iOS.entitlements"; sourceTree = "<group>"; };
 		DD29687B2D6DB27200143851 /* OAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthenticator.swift; sourceTree = "<group>"; };
 		DD29687D2D6DC70100143851 /* OAuthCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthCredential.swift; sourceTree = "<group>"; };
+		DD547AB82D7E439E00B8BA5A /* GhostButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostButton.swift; sourceTree = "<group>"; };
 		DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenProvider.swift; sourceTree = "<group>"; };
 		DD87931B2D7044E0001212AE /* OAuthErrorMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthErrorMonitor.swift; sourceTree = "<group>"; };
 		DD8CEF3D2D6A007900DBE580 /* Share.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Share.xcconfig; sourceTree = "<group>"; };
@@ -366,6 +369,7 @@
 		DDED59852D7965DB00A0BEF1 /* OverviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewUseCase.swift; sourceTree = "<group>"; };
 		DDED59872D7965EC00A0BEF1 /* NotificationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUseCase.swift; sourceTree = "<group>"; };
 		DDED59892D7965F400A0BEF1 /* ProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCase.swift; sourceTree = "<group>"; };
+		DDFF126E2D7EE39200980BA7 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		DE67A9EA2D7211070021BDE1 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		DE67A9EE2D7213D90021BDE1 /* Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opacity.swift; sourceTree = "<group>"; };
 		DE7C530B2D761DCA00076E5D /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
@@ -960,8 +964,9 @@
 		DDCD66DD2D7C8A2B00EF4C28 /* Youjin */ = {
 			isa = PBXGroup;
 			children = (
-				DDCD67042D7E271C00EF4C28 /* ToastView.swift */,
+				DD547AB82D7E439E00B8BA5A /* GhostButton.swift */,
 				DDCD66FE2D7DF6E800EF4C28 /* TabBar */,
+				DDCD67042D7E271C00EF4C28 /* ToastView.swift */,
 				DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */,
 				DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */,
 				DDCD66F82D7DF69D00EF4C28 /* OverviewViewController.swift */,
@@ -1096,6 +1101,7 @@
 				DE7C530F2D761E3300076E5D /* String+.swift */,
 				DE7C530D2D761DFB00076E5D /* UIFont+.swift */,
 				DE7C53132D761EE500076E5D /* UIView+.swift */,
+				DDFF126E2D7EE39200980BA7 /* UIColor+.swift */,
 				DE7C53112D761EA400076E5D /* UIStackView+.swift */,
 				DE7C53192D76202B00076E5D /* UITextField+.swift */,
 				DDCD66EB2D7DE5D900EF4C28 /* ConstraintMaker+.swift */,
@@ -1329,6 +1335,7 @@
 				DD2968612D6DAD5500143851 /* ViewitTargetType.swift in Sources */,
 				DD2968622D6DAD5500143851 /* CommentLikedTargetType.swift in Sources */,
 				DD2968632D6DAD5500143851 /* ContentTargetType.swift in Sources */,
+				DD547AB92D7E43A600B8BA5A /* GhostButton.swift in Sources */,
 				DD2968642D6DAD5500143851 /* NotificationTargetType.swift in Sources */,
 				DD2968652D6DAD5500143851 /* ReportTargetType.swift in Sources */,
 				DD2968662D6DAD5500143851 /* LoginTargetType.swift in Sources */,
@@ -1380,6 +1387,7 @@
 				DE7C531A2D76202B00076E5D /* UITextField+.swift in Sources */,
 				DD2968212D6DAD0200143851 /* ContentLikedRepository.swift in Sources */,
 				DD2968222D6DAD0200143851 /* CommentLikedRepository.swift in Sources */,
+				DDFF126F2D7EE39500980BA7 /* UIColor+.swift in Sources */,
 				DD2968242D6DAD0B00143851 /* ProfileMapper.swift in Sources */,
 				DD2968252D6DAD0B00143851 /* ViewitMapper.swift in Sources */,
 				DD2968262D6DAD0B00143851 /* CommunityMapper.swift in Sources */,
