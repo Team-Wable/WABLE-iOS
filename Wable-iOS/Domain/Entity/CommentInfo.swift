@@ -1,5 +1,5 @@
 //
-//  Comment.swift
+//  CommentInfo.swift
 //  Wable-iOS
 //
 //  Created by 김진웅 on 2/16/25.
@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - 댓글 핵심 정보
 
-struct Comment: Identifiable, Hashable {
+struct CommentInfo: Identifiable, Hashable {
     let author: User
     let id: Int
     let text: String
@@ -23,14 +23,14 @@ struct Comment: Identifiable, Hashable {
 // MARK: - 유저가 작성한 댓글
 
 struct UserComment: Hashable {
-    let comment: Comment
+    let comment: CommentInfo
     let contentID: Int
 }
 
 // MARK: - 게시물 댓글
 
 struct ContentComment: Hashable {
-    let comment: Comment    
+    let comment: CommentInfo    
     let parentID: Int
     let isDeleted: Bool
     let childs: [ContentComment]

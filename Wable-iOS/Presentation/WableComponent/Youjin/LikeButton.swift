@@ -8,12 +8,18 @@
 
 import UIKit
 
+enum PostType {
+    case content
+    case comment
+}
+
 final class LikeButton: UIButton {
     
     // MARK: Property
     
     private var likeCount: Int = 0
     private var isLiked: Bool = false
+    private var postType: PostType = .content
     
     // MARK: - LifeCycle
     
@@ -45,17 +51,26 @@ final class LikeButton: UIButton {
 // MARK: - Extension
 
 extension LikeButton {
-    func configureButton(isLiked: Bool, likeCount: Int) {
+    func configureButton(isLiked: Bool, likeCount: Int, postType: PostType) {
         self.likeCount = likeCount
         self.isLiked = isLiked
+        self.postType = postType
         
         var configuration = UIButton.Configuration.plain()
-        let image: UIImage = self.isLiked ? .icHeartPress : .icHeartDefault
+        var image = UIImage()
+        
+        switch postType {
+        case .content:
+            image = self.isLiked ? .icHeartPress : .icHeartDefault
+            configuration.baseForegroundColor = .wableBlack
+        case .comment:
+            image = self.isLiked ? .icHeartPressSmall : .icHeartGray
+            configuration.baseForegroundColor = .gray600
+        }
         
         configuration.image = image.withConfiguration(UIImage.SymbolConfiguration(pointSize: 24))
         configuration.imagePadding = 4
         configuration.attributedTitle = String(likeCount).pretendardString(with: .caption1)
-        configuration.baseForegroundColor = .wableBlack
         
         self.configuration = configuration
     }
@@ -66,6 +81,6 @@ private extension LikeButton {
         isLiked ? (likeCount -= 1) : (likeCount += 1)
         isLiked.toggle()
         
-        configureButton(isLiked: isLiked, likeCount: likeCount)
+        configureButton(isLiked: isLiked, likeCount: likeCount, postType: postType)
     }
 }
