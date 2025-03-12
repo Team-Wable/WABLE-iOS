@@ -141,7 +141,6 @@
 		DDCCA3932D738CD500658122 /* UserSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3922D738CD100658122 /* UserSessionRepository.swift */; };
 		DDCCA3952D73928900658122 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3942D73928400658122 /* UserSession.swift */; };
 		DDCCA3972D73988000658122 /* UserSessionRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */; };
-		DDCD66E12D7C8A4A00EF4C28 /* jinung.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E02D7C8A4900EF4C28 /* jinung.swift */; };
 		DDCD66E32D7DB11D00EF4C28 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E22D7DB11500EF4C28 /* TabBarController.swift */; };
 		DDCD66E52D7DC0EB00EF4C28 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */; };
 		DDCD66EA2D7DD72F00EF4C28 /* LottieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E92D7DD72800EF4C28 /* LottieType.swift */; };
@@ -340,7 +339,6 @@
 		DDCCA3922D738CD100658122 /* UserSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepository.swift; sourceTree = "<group>"; };
 		DDCCA3942D73928400658122 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepositoryImpl.swift; sourceTree = "<group>"; };
-		DDCD66E02D7C8A4900EF4C28 /* jinung.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jinung.swift; sourceTree = "<group>"; };
 		DDCD66E22D7DB11500EF4C28 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
 		DDCD66E92D7DD72800EF4C28 /* LottieType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieType.swift; sourceTree = "<group>"; };
@@ -954,7 +952,6 @@
 		DDCD66DC2D7C8A2500EF4C28 /* Jinung */ = {
 			isa = PBXGroup;
 			children = (
-				DDCD66E02D7C8A4900EF4C28 /* jinung.swift */,
 				DE8FF1902D8155DD00C41880 /* WableButton.swift */,
 			);
 			path = Jinung;
@@ -1297,7 +1294,6 @@
 				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,
 				DD29686F2D6DAD5F00143851 /* MoyaLoggingPlugin.swift in Sources */,
 				DD2968702D6DAD5F00143851 /* TokenStorage.swift in Sources */,
-				DDCD66E12D7C8A4A00EF4C28 /* jinung.swift in Sources */,
 				DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */,
 				DD2968742D6DAD5F00143851 /* NetworkError.swift in Sources */,
 				DD2968432D6DAD2F00143851 /* FetchGameSchedules.swift in Sources */,
