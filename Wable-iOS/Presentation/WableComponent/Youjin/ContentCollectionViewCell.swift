@@ -136,7 +136,7 @@ final class ContentCollectionViewCell: UICollectionViewCell {
 // MARK: - Extension
 
 extension ContentCollectionViewCell {
-    func configureCell(info: ContentInfo, type: ContentType) {
+    func configureCell(info: ContentInfo, postType: ContentType) {
         guard let profileURL = info.author.profileURL,
         let fanTeam = info.author.fanTeam,
         let createdDate = info.createdDate else {
@@ -148,7 +148,8 @@ extension ContentCollectionViewCell {
             userName: info.author.nickname,
             userFanTeam: fanTeam,
             opacity: info.opacity.displayedValue,
-            createdDate: createdDate
+            createdDate: createdDate,
+            postType: .content
         )
     
         titleLabel.attributedText = info.title.pretendardString(with: .head2)
@@ -156,10 +157,10 @@ extension ContentCollectionViewCell {
         contentImageView.kf.setImage(with: info.imageURL)
         
         ghostButton.configureButton(type: .large, status: .normal)
-        likeButton.configureButton(isLiked: info.like.status, likeCount: info.like.count)
-        commentButton.configureButton(commentCount: info.commentCount)
+        likeButton.configureButton(isLiked: info.like.status, likeCount: info.like.count, postType: .content)
+        commentButton.configureButton(commentCount: info.commentCount, type: .content)
         
-        switch type {
+        switch postType {
         case .mine:
             ghostButton.isHidden = true
         case .others:
@@ -182,6 +183,7 @@ extension ContentCollectionViewCell {
             contentImageView.snp.updateConstraints {
                 $0.adjustedHeightEqualTo(98)
             }
+            ghostCell(opacity: info.opacity.alpha)
         }
     }
 }

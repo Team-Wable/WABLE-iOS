@@ -117,11 +117,18 @@ extension PostUserInfoView {
         userName: String,
         userFanTeam: LCKTeam,
         opacity: Int,
-        createdDate: Date
+        createdDate: Date,
+        postType: PostType
     ) {
+        switch postType {
+        case .content:
+            userNameLabel.attributedText = userName.pretendardString(with: .body3)
+        case .comment:
+            userNameLabel.attributedText = userName.pretendardString(with: .caption1)
+        }
+        
         profileImageView.kf.setImage(with: userProfileURL)
         fanTeamImageView.image = UIImage(named: "tag_\(userFanTeam.rawValue)")
-        userNameLabel.attributedText = userName.pretendardString(with: .body3)
         ghostCountLabel.attributedText = "투명도 \(opacity)%".pretendardString(with: .caption4)
         postTimeLabel.attributedText = configurePostTime(date: createdDate).pretendardString(with: .caption4)
         fanTeamImageView.isHidden = true
