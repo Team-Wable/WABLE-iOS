@@ -8,20 +8,40 @@
 
 import UIKit
 
+/// 내리기 버튼의 크기 타입을 정의하는 열거형.
+///
+/// - `large`: 텍스트를 포함한 큰 버튼 (71x32)
+/// - `small`: 아이콘만 있는 작은 버튼 (32x32)
 enum GhostButtonType {
     case large
     case small
 }
 
+/// 내리기 버튼의 상태를 정의하는 열거형.
+///
+/// - `normal`: 정상 상태 (클릭 가능)
+/// - `disabled`: 비활성화 상태 (클릭 불가)
 enum GhostButtonStatus {
     case normal
     case disabled
 }
 
+/// 게시물의 투명도를 낮추는 기능을 하는 내리기 버튼 클래스.
+/// 두 가지 크기(large/small)와 두 가지 상태(normal/disabled)를 지원합니다.
+///
+/// 사용 예시:
+/// ```swift
+/// let ghostButton = GhostButton()
+/// // 큰 버튼 구성
+/// ghostButton.configureButton(type: .large, status: .normal)
+/// // 또는 작은 버튼 구성
+/// ghostButton.configureButton(type: .small, status: .disabled)
+/// ```
 final class GhostButton: UIButton {
     
     // MARK: - Setup
     
+    /// - Parameter type: 버튼 크기 타입
     private func setupConstraint(type: GhostButtonType) {
         switch type {
         case .large:
@@ -41,6 +61,10 @@ final class GhostButton: UIButton {
 // MARK: - Extension
 
 extension GhostButton {
+    /// 내리기 버튼 구성 메서드
+    /// - Parameters:
+    ///   - type: 버튼 크기 타입 (.large 또는 .small)
+    ///   - status: 버튼 상태 (.normal 또는 .disabled)
     func configureButton(type: GhostButtonType, status: GhostButtonStatus) {
         var configuration = UIButton.Configuration.filled()
         self.roundCorners([.all], radius: 16)

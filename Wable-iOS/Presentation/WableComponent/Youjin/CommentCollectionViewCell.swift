@@ -10,17 +10,32 @@ import UIKit
 
 import Kingfisher
 
+/// 댓글 타입을 정의하는 열거형.
+///
+/// - `ripple`: 게시글에 직접 달린 댓글
+/// - `reply`: 다른 댓글에 달린 답글
 enum CommentType {
     case ripple
     case reply
 }
 
+/// 댓글을 표시하기 위한 컬렉션 뷰 셀.
+/// 사용자 정보, 댓글 내용, 좋아요/답글/내리기 버튼 등을 포함합니다.
+///
+/// 사용 예시:
+/// ```swift
+/// collectionView.register(CommentCollectionViewCell.self, forCellWithReuseIdentifier: CommentCollectionViewCell.reuseIdentifier)
+///
+/// // cellForItemAt에서:
+/// let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommentCollectionViewCell.reuseIdentifier, for: indexPath) as! CommentCollectionViewCell
+/// cell.configureCell(info: commentInfo, commentType: .ripple, postType: .others)
+/// return cell
+/// ```
 final class CommentCollectionViewCell: UICollectionViewCell {
     
     // MARK: Property
     
     private let type: CommentType = .ripple
-    
     private let infoView: PostUserInfoView = PostUserInfoView()
     
     private let contentLabel: UILabel = UILabel().then {
@@ -107,6 +122,11 @@ final class CommentCollectionViewCell: UICollectionViewCell {
 // MARK: - Extension
 
 extension CommentCollectionViewCell {
+    /// 댓글 셀 구성 메서드
+    /// - Parameters:
+    ///   - info: 댓글 정보
+    ///   - commentType: 댓글 타입 (.ripple 또는 .reply)
+    ///   - postType: 게시물 타입 (.mine 또는 .others)
     func configureCell(info: CommentInfo, commentType: CommentType, postType: ContentType) {
         guard let profileURL = info.author.profileURL,
               let fanTeam = info.author.fanTeam,
@@ -176,6 +196,8 @@ extension CommentCollectionViewCell {
 }
 
 private extension CommentCollectionViewCell {
+    /// 셀 투명도 설정
+    /// - Parameter opacity: 투명도 값 (0.0 ~ 1.0)
     func ghostCell(opacity: Float) {
         [
             infoView,

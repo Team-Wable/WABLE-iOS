@@ -8,11 +8,24 @@
 
 import UIKit
 
+/// 게시물 타입을 정의하는 열거형.
+///
+/// - `content`: 게시글 타입
+/// - `comment`: 댓글 타입
 enum PostType {
     case content
     case comment
 }
 
+/// 좋아요 버튼을 구현한 커스텀 UIButton 클래스.
+/// 버튼의 상태(좋아요 여부)와 좋아요 수를 표시합니다.
+///
+/// 사용 예시:
+/// ```swift
+/// let likeButton = LikeButton()
+/// likeButton.configureButton(isLiked: false, likeCount: 5, postType: .content)
+/// containerView.addSubview(likeButton)
+/// ```
 final class LikeButton: UIButton {
     
     // MARK: Property
@@ -51,6 +64,11 @@ final class LikeButton: UIButton {
 // MARK: - Extension
 
 extension LikeButton {
+    /// 좋아요 버튼 구성 메서드
+    /// - Parameters:
+    ///   - isLiked: 좋아요 눌렀는지 여부
+    ///   - likeCount: 좋아요 수
+    ///   - postType: 버튼이 속한 게시물 타입 (.content 또는 .comment)
     func configureButton(isLiked: Bool, likeCount: Int, postType: PostType) {
         self.likeCount = likeCount
         self.isLiked = isLiked
