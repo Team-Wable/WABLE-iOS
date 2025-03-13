@@ -20,34 +20,9 @@ enum GhostButtonStatus {
 
 final class GhostButton: UIButton {
     
-    // MARK: Property
-    
-    private let type: GhostButtonType
-    private let status: GhostButtonStatus
-    
-    // MARK: - LifeCycle
-    
-    init(type: GhostButtonType, status: GhostButtonStatus) {
-        self.type = type
-        self.status = status
-        
-        super.init(frame: .zero)
-        
-        setupView()
-        setupConstraint()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     // MARK: - Setup
     
-    private func setupView() {
-        configureButton()
-    }
-    
-    private func setupConstraint() {
+    private func setupConstraint(type: GhostButtonType) {
         switch type {
         case .large:
             snp.makeConstraints {
@@ -65,10 +40,10 @@ final class GhostButton: UIButton {
 
 // MARK: - Extension
 
-private extension GhostButton {
-    func configureButton() {
+extension GhostButton {
+    func configureButton(type: GhostButtonType, status: GhostButtonStatus) {
         var configuration = UIButton.Configuration.filled()
-        self.layer.cornerRadius = 16
+        self.roundCorners([.all], radius: 16)
         self.clipsToBounds = true
         
         switch type {
@@ -90,10 +65,11 @@ private extension GhostButton {
         case .disabled:
             configuration.attributedTitle?.foregroundColor = UIColor("AEAEAE")
             configuration.image = .icGhostDefault.withTintColor(.gray500)
-            configuration.baseBackgroundColor = .gray100
+            configuration.baseBackgroundColor = UIColor("F7F7F7")
             self.isUserInteractionEnabled = false
         }
         
         self.configuration = configuration
+        setupConstraint(type: type)
     }
 }

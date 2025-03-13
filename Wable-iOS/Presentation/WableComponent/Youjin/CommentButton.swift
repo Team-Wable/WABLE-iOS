@@ -10,18 +10,11 @@ import UIKit
 
 final class CommentButton: UIButton {
     
-    // MARK: Property
-    
-    private var commentCount: Int
-    
     // MARK: - LifeCycle
     
-    init(commentCount: Int) {
-        self.commentCount = commentCount
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        super.init(frame: .zero)
-        
-        setupView()
         setupConstraint()
     }
     
@@ -31,13 +24,9 @@ final class CommentButton: UIButton {
     
     // MARK: - Setup
     
-    private func setupView() {
-        configureButton()
-    }
-    
     private func setupConstraint() {
         snp.makeConstraints {
-            $0.width.greaterThanOrEqualTo(45.adjustedWidth)
+            $0.adjustedWidthEqualTo(45)
             $0.adjustedHeightEqualTo(24)
         }
     }
@@ -45,13 +34,13 @@ final class CommentButton: UIButton {
 
 // MARK: - Extension
 
-private extension CommentButton {
-    func configureButton() {
+extension CommentButton {
+    func configureButton(commentCount: Int) {
         var configuration = UIButton.Configuration.plain()
         
-        configuration.image = .icRipple
+        configuration.image = .icRipple.withConfiguration(UIImage.SymbolConfiguration(pointSize: 24))
         configuration.imagePadding = 4
-        configuration.title = String(commentCount)
+        configuration.attributedTitle = String(commentCount).pretendardString(with: .caption1)
         configuration.baseForegroundColor = .wableBlack
         
         self.configuration = configuration
