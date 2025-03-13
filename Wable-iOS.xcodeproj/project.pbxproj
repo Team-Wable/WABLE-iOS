@@ -28,7 +28,6 @@
 		DD2968022D6DAC9B00143851 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8CEF452D6A007900DBE580 /* ViewController.swift */; };
 		DD2968062D6DACF700143851 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967E92D6DAC3100143851 /* Account.swift */; };
 		DD2968072D6DACF700143851 /* LCKTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967E62D6DAC3100143851 /* LCKTeam.swift */; };
-		DD2968082D6DACF700143851 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967EE2D6DAC3100143851 /* Comment.swift */; };
 		DD2968092D6DACF700143851 /* AccountDeleteReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967EB2D6DAC3100143851 /* AccountDeleteReason.swift */; };
 		DD29680A2D6DACF700143851 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967E72D6DAC3100143851 /* User.swift */; };
 		DD29680B2D6DACF700143851 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967ED2D6DAC3100143851 /* UserProfile.swift */; };
@@ -141,6 +140,10 @@
 		DD547AB92D7E43A600B8BA5A /* GhostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD547AB82D7E439E00B8BA5A /* GhostButton.swift */; };
 		DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */; };
 		DD87931C2D7044E7001212AE /* OAuthErrorMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD87931B2D7044E0001212AE /* OAuthErrorMonitor.swift */; };
+		DD9980DB2D834CA900EBBFBC /* CommentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DA2D834CA900EBBFBC /* CommentInfo.swift */; };
+		DD9980DF2D834F4E00EBBFBC /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */; };
+		DD9980E02D834F4E00EBBFBC /* PostUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */; };
+		DD9980E12D834F4E00EBBFBC /* ContentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */; };
 		DDCCA3932D738CD500658122 /* UserSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3922D738CD100658122 /* UserSessionRepository.swift */; };
 		DDCCA3952D73928900658122 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3942D73928400658122 /* UserSession.swift */; };
 		DDCCA3972D73988000658122 /* UserSessionRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */; };
@@ -319,7 +322,6 @@
 		DD2967EB2D6DAC3100143851 /* AccountDeleteReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeleteReason.swift; sourceTree = "<group>"; };
 		DD2967EC2D6DAC3100143851 /* SocialPlatform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialPlatform.swift; sourceTree = "<group>"; };
 		DD2967ED2D6DAC3100143851 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
-		DD2967EE2D6DAC3100143851 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		DD2967EF2D6DAC3100143851 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		DD2967F02D6DAC3100143851 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		DD2967F12D6DAC3100143851 /* GameSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSchedule.swift; sourceTree = "<group>"; };
@@ -343,6 +345,10 @@
 		DD8CEF472D6A007900DBE580 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD8CEF482D6A007900DBE580 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DD8CEFF82D6A00BB00DBE580 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "Base.lproj/LaunchScreen 2.storyboard"; sourceTree = "<group>"; };
+		DD9980DA2D834CA900EBBFBC /* CommentInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInfo.swift; sourceTree = "<group>"; };
+		DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
+		DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCollectionViewCell.swift; sourceTree = "<group>"; };
+		DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUserInfoView.swift; sourceTree = "<group>"; };
 		DDCCA3922D738CD100658122 /* UserSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepository.swift; sourceTree = "<group>"; };
 		DDCCA3942D73928400658122 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepositoryImpl.swift; sourceTree = "<group>"; };
@@ -879,8 +885,8 @@
 				DD2967ED2D6DAC3100143851 /* UserProfile.swift */,
 				DE67A9EE2D7213D90021BDE1 /* Opacity.swift */,
 				DE67A9EA2D7211070021BDE1 /* Like.swift */,
-				DD2967EE2D6DAC3100143851 /* Comment.swift */,
 				DD2967EF2D6DAC3100143851 /* Content.swift */,
+				DD9980DA2D834CA900EBBFBC /* CommentInfo.swift */,
 				DD2967F02D6DAC3100143851 /* Notification.swift */,
 				DD2967F12D6DAC3100143851 /* GameSchedule.swift */,
 				DD2967F22D6DAC3100143851 /* LCKTeamRank.swift */,
@@ -968,10 +974,13 @@
 		DDCD66DD2D7C8A2B00EF4C28 /* Youjin */ = {
 			isa = PBXGroup;
 			children = (
+				DDCD66FE2D7DF6E800EF4C28 /* TabBar */,
 				DD005BA82D7FFFE000B1661F /* LikeButton.swift */,
 				DD005BAA2D80071E00B1661F /* CommentButton.swift */,
 				DD547AB82D7E439E00B8BA5A /* GhostButton.swift */,
-				DDCD66FE2D7DF6E800EF4C28 /* TabBar */,
+				DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */,
+				DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */,
+				DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */,
 				DDCD67042D7E271C00EF4C28 /* ToastView.swift */,
 				DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */,
 				DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */,
@@ -1246,7 +1255,6 @@
 			files = (
 				DD2968062D6DACF700143851 /* Account.swift in Sources */,
 				DD2968072D6DACF700143851 /* LCKTeam.swift in Sources */,
-				DD2968082D6DACF700143851 /* Comment.swift in Sources */,
 				DD2968092D6DACF700143851 /* AccountDeleteReason.swift in Sources */,
 				DDED597E2D79578C00A0BEF1 /* AuthProvider.swift in Sources */,
 				DD29680A2D6DACF700143851 /* User.swift in Sources */,
@@ -1260,6 +1268,9 @@
 				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
 				DD2968122D6DACF700143851 /* Community.swift in Sources */,
 				DD2968132D6DACF700143851 /* TriggerType.swift in Sources */,
+				DD9980DF2D834F4E00EBBFBC /* CommentCollectionViewCell.swift in Sources */,
+				DD9980E02D834F4E00EBBFBC /* PostUserInfoView.swift in Sources */,
+				DD9980E12D834F4E00EBBFBC /* ContentCollectionViewCell.swift in Sources */,
 				DD2968142D6DACF700143851 /* AccountInfo.swift in Sources */,
 				DDCCA3972D73988000658122 /* UserSessionRepositoryImpl.swift in Sources */,
 				DD2968152D6DACF700143851 /* Announcement.swift in Sources */,
@@ -1280,6 +1291,7 @@
 				DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */,
 				DD2968592D6DAD4400143851 /* CreateViewitPostRequest.swift in Sources */,
 				DD29685A2D6DAD4400143851 /* CreateCommentLiked.swift in Sources */,
+				DD9980DB2D834CA900EBBFBC /* CommentInfo.swift in Sources */,
 				DD29685B2D6DAD4400143851 /* CreateAccountRequest.swift in Sources */,
 				DD29685C2D6DAD4400143851 /* CreateContent.swift in Sources */,
 				DD29685D2D6DAD4400143851 /* UpdatePreRegister.swift in Sources */,
