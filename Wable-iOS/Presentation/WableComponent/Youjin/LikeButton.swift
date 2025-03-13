@@ -12,18 +12,14 @@ final class LikeButton: UIButton {
     
     // MARK: Property
     
-    private var isLiked: Bool
-    private var likeCount: Int
+    private var likeCount: Int = 0
+    private var isLiked: Bool = false
     
     // MARK: - LifeCycle
     
-    init(isLiked: Bool = false, likeCount: Int) {
-        self.isLiked = isLiked
-        self.likeCount = likeCount
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        super.init(frame: .zero)
-        
-        setupView()
         setupConstraint()
         setupAction()
     }
@@ -34,13 +30,9 @@ final class LikeButton: UIButton {
     
     // MARK: - Setup
     
-    private func setupView() {
-        configureButton()
-    }
-    
     private func setupConstraint() {
         snp.makeConstraints {
-            $0.width.greaterThanOrEqualTo(45.adjustedWidth)
+            $0.adjustedWidthEqualTo(45)
             $0.adjustedHeightEqualTo(24)
         }
     }
@@ -52,13 +44,17 @@ final class LikeButton: UIButton {
 
 // MARK: - Extension
 
-private extension LikeButton {
-    func configureButton() {
-        var configuration = UIButton.Configuration.plain()
+extension LikeButton {
+    func configureButton(isLiked: Bool, likeCount: Int) {
+        self.likeCount = likeCount
+        self.isLiked = isLiked
         
-        configuration.image = isLiked ? .icHeartPress : .icHeartDefault
+        var configuration = UIButton.Configuration.plain()
+        let image: UIImage = self.isLiked ? .icHeartPress : .icHeartDefault
+        
+        configuration.image = image.withConfiguration(UIImage.SymbolConfiguration(pointSize: 24))
         configuration.imagePadding = 4
-        configuration.title = String(likeCount)
+        configuration.attributedTitle = String(likeCount).pretendardString(with: .caption1)
         configuration.baseForegroundColor = .wableBlack
         
         self.configuration = configuration
@@ -69,6 +65,7 @@ private extension LikeButton {
     @objc func likeButtonDidTap() {
         isLiked ? (likeCount -= 1) : (likeCount += 1)
         isLiked.toggle()
-        self.configureButton()
+        
+        configureButton(isLiked: isLiked, likeCount: likeCount)
     }
 }
