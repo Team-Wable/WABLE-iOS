@@ -38,13 +38,11 @@ final class ToastView: UIView {
     
     // MARK: Property
     
-    /// 토스트의 상태 타입
     private let status: ToastType
-    /// 토스트에 표시될 메시지
     private let message: String
-    /// 상태를 나타내는 이미지 뷰
+    
     private let statusImageView: UIImageView = UIImageView()
-    /// 메시지를 표시하는 레이블
+    
     private let statusLabel: UILabel = UILabel().then {
         $0.textColor = .wableBlack
         $0.numberOfLines = 2
@@ -70,7 +68,6 @@ final class ToastView: UIView {
     
     // MARK: - Setup
 
-    /// 뷰 구성 설정
     private func setupView() {
         backgroundColor = .wableWhite
         addSubviews(statusImageView, statusLabel)
@@ -79,7 +76,6 @@ final class ToastView: UIView {
         configureShadow()
     }
     
-    /// 제약조건 설정
     private func setupConstraint() {
         statusImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
@@ -98,7 +94,6 @@ final class ToastView: UIView {
 // MARK: - Extension
 
 private extension ToastView {
-    /// 토스트 상태에 따른 이미지와 메시지 구성
     func configureToast() {
         let image: UIImage = {
             switch status {
@@ -117,7 +112,6 @@ private extension ToastView {
         statusLabel.attributedText = message.pretendardString(with: .body3)
     }
     
-    /// 토스트 그림자 효과 설정
     func configureShadow() {
         layer.do {
             $0.masksToBounds = false

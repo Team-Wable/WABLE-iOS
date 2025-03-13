@@ -8,11 +8,27 @@
 
 import UIKit
 
+/// 게시물 타입을 정의하는 열거형.
+///
+/// - `mine`: 내가 작성한 게시물
+/// - `others`: 다른 사용자가 작성한 게시물
 enum ContentType {
     case mine
     case others
 }
 
+/// 게시물을 표시하기 위한 컬렉션 뷰 셀.
+/// 사용자 정보, 제목, 내용, 이미지, 좋아요/댓글/내리기 버튼 등을 포함합니다.
+///
+/// 사용 예시:
+/// ```swift
+/// collectionView.register(ContentCollectionViewCell.self, forCellWithReuseIdentifier: ContentCollectionViewCell.reuseIdentifier)
+///
+/// // cellForItemAt에서:
+/// let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ContentCollectionViewCell.reuseIdentifier, for: indexPath) as! ContentCollectionViewCell
+/// cell.configureCell(info: contentInfo, postType: .others)
+/// return cell
+/// ```
 final class ContentCollectionViewCell: UICollectionViewCell {
     
     // MARK: Property
@@ -50,6 +66,8 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     private let divideView: UIView = UIView().then {
         $0.backgroundColor = .gray200
     }
+    
+    // MARK: - LifeCycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -136,6 +154,10 @@ final class ContentCollectionViewCell: UICollectionViewCell {
 // MARK: - Extension
 
 extension ContentCollectionViewCell {
+    /// 게시물 셀 구성 메서드
+    /// - Parameters:
+    ///   - info: 게시물 정보
+    ///   - postType: 게시물 타입 (.mine 또는 .others)
     func configureCell(info: ContentInfo, postType: ContentType) {
         guard let profileURL = info.author.profileURL,
         let fanTeam = info.author.fanTeam,
@@ -189,6 +211,8 @@ extension ContentCollectionViewCell {
 }
 
 private extension ContentCollectionViewCell {
+    /// 셀의 투명도 설정
+    /// - Parameter opacity: 투명도 값 (0.0 ~ 1.0)
     func ghostCell(opacity: Float) {
         [
             infoView,

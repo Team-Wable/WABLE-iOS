@@ -10,6 +10,22 @@ import UIKit
 
 import Kingfisher
 
+/// 게시물이나 댓글의 작성자 정보를 표시하는 뷰.
+/// 프로필 이미지, 사용자명, 좋아하는 팀, 투명도, 작성 시간, 설정 버튼을 포함합니다.
+///
+/// 사용 예시:
+/// ```swift
+/// let infoView = PostUserInfoView()
+/// infoView.configureView(
+///     userProfileURL: profileURL,
+///     userName: "사용자이름",
+///     userFanTeam: .t1,
+///     opacity: 80,
+///     createdDate: Date(),
+///     postType: .content
+/// )
+/// containerView.addSubview(infoView)
+/// ```
 final class PostUserInfoView: UIView {
     
     // MARK: Property
@@ -50,7 +66,6 @@ final class PostUserInfoView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     // MARK: - Setup
 
@@ -112,6 +127,14 @@ final class PostUserInfoView: UIView {
 // MARK: - Extension
 
 extension PostUserInfoView {
+    /// 사용자 정보 뷰 구성 메서드
+    /// - Parameters:
+    ///   - userProfileURL: 사용자 프로필 이미지 URL
+    ///   - userName: 사용자 이름
+    ///   - userFanTeam: 사용자 팬팀
+    ///   - opacity: 사용자 투명도 값 (0~100)
+    ///   - createdDate: 게시물 작성 날짜
+    ///   - postType: 게시물 타입 (.content 또는 .comment)
     func configureView(
         userProfileURL: URL,
         userName: String,
@@ -140,6 +163,9 @@ private extension PostUserInfoView {
         // TODO: 바텀시트 올리는 로직 구현 필요
     }
     
+    /// 게시물 작성 시간을 상대적인 시간 문자열로 변환
+    /// - Parameter date: 게시물 작성 날짜
+    /// - Returns: "지금", "n분 전", "n시간 전" 등의 형식으로 변환된 문자열
     func configurePostTime(date: Date) -> String {
         let now = Date()
         let timeInterval = now.timeIntervalSince(date)
