@@ -37,7 +37,7 @@ final class PhotoDetailViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         modalTransitionStyle = .crossDissolve
-        modalPresentationStyle = .overCurrentContext
+        modalPresentationStyle = .overFullScreen
     }
     
     required init?(coder: NSCoder) {
