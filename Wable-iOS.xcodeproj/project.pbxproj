@@ -141,7 +141,6 @@
 		DDCCA3932D738CD500658122 /* UserSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3922D738CD100658122 /* UserSessionRepository.swift */; };
 		DDCCA3952D73928900658122 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3942D73928400658122 /* UserSession.swift */; };
 		DDCCA3972D73988000658122 /* UserSessionRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */; };
-		DDCD66E12D7C8A4A00EF4C28 /* jinung.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E02D7C8A4900EF4C28 /* jinung.swift */; };
 		DDCD66E32D7DB11D00EF4C28 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E22D7DB11500EF4C28 /* TabBarController.swift */; };
 		DDCD66E52D7DC0EB00EF4C28 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */; };
 		DDCD66EA2D7DD72F00EF4C28 /* LottieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66E92D7DD72800EF4C28 /* LottieType.swift */; };
@@ -184,6 +183,10 @@
 		DDF2CC9C2D71FECB000F1919 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC9B2D71FECB000F1919 /* FirebaseCore */; };
 		DDF2CC9E2D71FECB000F1919 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC9D2D71FECB000F1919 /* FirebaseMessaging */; };
 		DDF2CCA12D71FF27000F1919 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CCA02D71FF27000F1919 /* AmplitudeSwift */; };
+		DE54B03C2D82C43F009A7C34 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */; };
+		DE54B03E2D82CD82009A7C34 /* NotFoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */; };
+		DE54B0402D832E78009A7C34 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */; };
+		DE54B0422D833B0B009A7C34 /* WableActionSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B0412D833B0B009A7C34 /* WableActionSheetViewController.swift */; };
 		DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EA2D7211070021BDE1 /* Like.swift */; };
 		DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EE2D7213D90021BDE1 /* Opacity.swift */; };
 		DE7C530C2D761DCA00076E5D /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C530B2D761DCA00076E5D /* ViewModelType.swift */; };
@@ -193,6 +196,7 @@
 		DE7C53142D761EE500076E5D /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53132D761EE500076E5D /* UIView+.swift */; };
 		DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */; };
 		DE7C531A2D76202B00076E5D /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53192D76202B00076E5D /* UITextField+.swift */; };
+		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
 		DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29132D7208A00073D512 /* GameStatus.swift */; };
 		DEDC29162D72099C0073D512 /* InfoNotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29152D72099C0073D512 /* InfoNotificationType.swift */; };
 		DEDC29182D720D030073D512 /* PostStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29172D720D030073D512 /* PostStatus.swift */; };
@@ -339,7 +343,6 @@
 		DDCCA3922D738CD100658122 /* UserSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepository.swift; sourceTree = "<group>"; };
 		DDCCA3942D73928400658122 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepositoryImpl.swift; sourceTree = "<group>"; };
-		DDCD66E02D7C8A4900EF4C28 /* jinung.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jinung.swift; sourceTree = "<group>"; };
 		DDCD66E22D7DB11500EF4C28 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
 		DDCD66E92D7DD72800EF4C28 /* LottieType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieType.swift; sourceTree = "<group>"; };
@@ -366,6 +369,10 @@
 		DDED59852D7965DB00A0BEF1 /* OverviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewUseCase.swift; sourceTree = "<group>"; };
 		DDED59872D7965EC00A0BEF1 /* NotificationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUseCase.swift; sourceTree = "<group>"; };
 		DDED59892D7965F400A0BEF1 /* ProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCase.swift; sourceTree = "<group>"; };
+		DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
+		DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFoundViewController.swift; sourceTree = "<group>"; };
+		DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
+		DE54B0412D833B0B009A7C34 /* WableActionSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableActionSheetViewController.swift; sourceTree = "<group>"; };
 		DE67A9EA2D7211070021BDE1 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		DE67A9EE2D7213D90021BDE1 /* Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opacity.swift; sourceTree = "<group>"; };
 		DE7C530B2D761DCA00076E5D /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
@@ -375,6 +382,7 @@
 		DE7C53132D761EE500076E5D /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
 		DE7C53192D76202B00076E5D /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		DE8FF1902D8155DD00C41880 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
 		DEDC29112D7207610073D512 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		DEDC29132D7208A00073D512 /* GameStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStatus.swift; sourceTree = "<group>"; };
 		DEDC29152D72099C0073D512 /* InfoNotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNotificationType.swift; sourceTree = "<group>"; };
@@ -952,7 +960,11 @@
 		DDCD66DC2D7C8A2500EF4C28 /* Jinung */ = {
 			isa = PBXGroup;
 			children = (
-				DDCD66E02D7C8A4900EF4C28 /* jinung.swift */,
+				DE8FF1902D8155DD00C41880 /* WableButton.swift */,
+				DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */,
+				DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */,
+				DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */,
+				DE54B0412D833B0B009A7C34 /* WableActionSheetViewController.swift */,
 			);
 			path = Jinung;
 			sourceTree = "<group>";
@@ -1239,6 +1251,7 @@
 				DDED597E2D79578C00A0BEF1 /* AuthProvider.swift in Sources */,
 				DD29680A2D6DACF700143851 /* User.swift in Sources */,
 				DD29680B2D6DACF700143851 /* UserProfile.swift in Sources */,
+				DE54B03E2D82CD82009A7C34 /* NotFoundViewController.swift in Sources */,
 				DD29680C2D6DACF700143851 /* LCKTeamRank.swift in Sources */,
 				DD29680D2D6DACF700143851 /* Content.swift in Sources */,
 				DD29680E2D6DACF700143851 /* Token.swift in Sources */,
@@ -1255,6 +1268,7 @@
 				DD2968522D6DAD4400143851 /* DTO.swift in Sources */,
 				DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */,
 				DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */,
+				DE54B0422D833B0B009A7C34 /* WableActionSheetViewController.swift in Sources */,
 				DDED595C2D78C3B700A0BEF1 /* AppleAuthProvider.swift in Sources */,
 				DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */,
 				DD2968532D6DAD4400143851 /* BaseResponse.swift in Sources */,
@@ -1294,7 +1308,6 @@
 				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,
 				DD29686F2D6DAD5F00143851 /* MoyaLoggingPlugin.swift in Sources */,
 				DD2968702D6DAD5F00143851 /* TokenStorage.swift in Sources */,
-				DDCD66E12D7C8A4A00EF4C28 /* jinung.swift in Sources */,
 				DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */,
 				DD2968742D6DAD5F00143851 /* NetworkError.swift in Sources */,
 				DD2968432D6DAD2F00143851 /* FetchGameSchedules.swift in Sources */,
@@ -1326,6 +1339,7 @@
 				DD29687C2D6DB27F00143851 /* OAuthenticator.swift in Sources */,
 				DDED59512D7850E600A0BEF1 /* LocalError.swift in Sources */,
 				DD2968602D6DAD5500143851 /* GhostTargetType.swift in Sources */,
+				DE54B03C2D82C43F009A7C34 /* PhotoDetailViewController.swift in Sources */,
 				DD2968612D6DAD5500143851 /* ViewitTargetType.swift in Sources */,
 				DD2968622D6DAD5500143851 /* CommentLikedTargetType.swift in Sources */,
 				DD2968632D6DAD5500143851 /* ContentTargetType.swift in Sources */,
@@ -1350,6 +1364,7 @@
 				DDCCA3952D73928900658122 /* UserSession.swift in Sources */,
 				DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */,
 				DD2968022D6DAC9B00143851 /* ViewController.swift in Sources */,
+				DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */,
 				DDCD66FD2D7DF6D900EF4C28 /* ProfileViewController.swift in Sources */,
 				DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */,
 				DD2967FC2D6DAC4800143851 /* Injected.swift in Sources */,
@@ -1386,6 +1401,7 @@
 				DD2968272D6DAD0B00143851 /* LoginMapper.swift in Sources */,
 				DDED594F2D784EC000A0BEF1 /* LocalKeyValueProvider.swift in Sources */,
 				DDED59752D78F16400A0BEF1 /* FetchNicknameDuplicationUseCase.swift in Sources */,
+				DE54B0402D832E78009A7C34 /* LoadingViewController.swift in Sources */,
 				DD2968282D6DAD0B00143851 /* InformationMapper.swift in Sources */,
 				DD2968292D6DAD0B00143851 /* WableError.swift in Sources */,
 				DD29682A2D6DAD0B00143851 /* ErrorMapper.swift in Sources */,
