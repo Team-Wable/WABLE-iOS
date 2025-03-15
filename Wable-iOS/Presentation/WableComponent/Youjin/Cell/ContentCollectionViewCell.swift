@@ -8,11 +8,11 @@
 
 import UIKit
 
-/// 게시물 타입을 정의하는 열거형.
+/// 작성자 타입을 정의하는 열거형.
 ///
 /// - `mine`: 내가 작성한 게시물
 /// - `others`: 다른 사용자가 작성한 게시물
-enum ContentType {
+enum AuthorType {
     case mine
     case others
 }
@@ -31,7 +31,7 @@ enum ContentType {
 /// ```
 final class ContentCollectionViewCell: UICollectionViewCell {
     
-    // MARK: Property
+    // MARK: - UIComponent
     
     private let infoView: PostUserInfoView = PostUserInfoView()
     
@@ -61,7 +61,7 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     
     private lazy var likeButton: LikeButton = LikeButton()
     
-    private lazy var commentButton: CommentButton = CommentButton()
+    private lazy var commentButton: CommentButton = CommentButton(type: .content)
     
     private let divideView: UIView = UIView().then {
         $0.backgroundColor = .gray200
@@ -80,10 +80,15 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+// MARK: - Private Extension
+
+private extension ContentCollectionViewCell {
     
     // MARK: - Setup
 
-    private func setupView() {
+    func setupView() {
         contentStackView.addArrangedSubviews(
             titleLabel,
             contentImageView,
@@ -100,7 +105,7 @@ final class ContentCollectionViewCell: UICollectionViewCell {
         )
     }
     
-    private func setupConstraint() {
+    func setupConstraint() {
         infoView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(18)
             $0.horizontalEdges.equalToSuperview()
@@ -138,7 +143,7 @@ final class ContentCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    private func setupAction() {
+    func setupAction() {
         ghostButton.addTarget(self, action: #selector(ghostButtonDidTap), for: .touchUpInside)
         infoView.settingButton.addTarget(self, action: #selector(settingButtonDidTap), for: .touchUpInside)
         commentButton.addTarget(self, action: #selector(commentButtonDidTap), for: .touchUpInside)
@@ -149,19 +154,63 @@ final class ContentCollectionViewCell: UICollectionViewCell {
             )
         )
     }
+    
+    // MARK: - @objc Method
+    
+    @objc func profileImageViewDidTap() {
+        // TODO: 프로필 이동 로직 구현 필요
+        
+        WableLogger.log("profileImageViewDidTap", for: .debug)
+    }
+    
+    @objc func settingButtonDidTap() {
+        // TODO: 바텀시트 올라오는 로직 구현 필요
+        
+        WableLogger.log("settingButtonDidTap", for: .debug)
+    }
+    
+    @objc func ghostButtonDidTap() {
+        // TODO: 내리기 로직 구현 필요
+        
+        WableLogger.log("ghostButtonDidTap", for: .debug)
+    }
+    
+    @objc func commentButtonDidTap() {
+        // TODO: 상세 화면으로 이동 로직 구현 필요
+        
+        WableLogger.log("commentButtonDidTap", for: .debug)
+    }
 }
 
-// MARK: - Extension
+// MARK: - Private Function Extension
+
+private extension ContentCollectionViewCell {
+    /// 셀의 투명도 설정
+    /// - Parameter opacity: 투명도 값 (0.0 ~ 1.0)
+    func ghostCell(opacity: Float) {
+        [
+            infoView,
+            contentImageView,
+            titleLabel,
+            contentLabel
+        ].forEach {
+            $0.alpha = CGFloat(opacity)
+        }
+    }
+}
+
+// MARK: - Configure Extension
 
 extension ContentCollectionViewCell {
     /// 게시물 셀 구성 메서드
     /// - Parameters:
     ///   - info: 게시물 정보
     ///   - postType: 게시물 타입 (.mine 또는 .others)
-    func configureCell(info: ContentInfo, postType: ContentType) {
+    func configureCell(info: ContentInfo, postType: AuthorType) {
         guard let profileURL = info.author.profileURL,
         let fanTeam = info.author.fanTeam,
-        let createdDate = info.createdDate else {
+        let createdDate = info.createdDate
+        else {
             return
         }
         
@@ -180,7 +229,7 @@ extension ContentCollectionViewCell {
         
         ghostButton.configureButton(type: .large, status: .normal)
         likeButton.configureButton(isLiked: info.like.status, likeCount: info.like.count, postType: .content)
-        commentButton.configureButton(commentCount: info.commentCount, type: .content)
+        commentButton.configureButton(commentCount: info.commentCount)
         
         switch postType {
         case .mine:
@@ -207,44 +256,5 @@ extension ContentCollectionViewCell {
             }
             ghostCell(opacity: info.opacity.alpha)
         }
-    }
-}
-
-private extension ContentCollectionViewCell {
-    /// 셀의 투명도 설정
-    /// - Parameter opacity: 투명도 값 (0.0 ~ 1.0)
-    func ghostCell(opacity: Float) {
-        [
-            infoView,
-            contentImageView,
-            titleLabel,
-            contentLabel
-        ].forEach {
-            $0.alpha = CGFloat(opacity)
-        }
-    }
-    
-    @objc func profileImageViewDidTap() {
-        // TODO: 프로필 이동 로직 구현 필요
-        
-        WableLogger.log("profileImageViewDidTap", for: .debug)
-    }
-    
-    @objc func settingButtonDidTap() {
-        // TODO: 바텀시트 올라오는 로직 구현 필요
-        
-        WableLogger.log("settingButtonDidTap", for: .debug)
-    }
-    
-    @objc func ghostButtonDidTap() {
-        // TODO: 내리기 로직 구현 필요
-        
-        WableLogger.log("ghostButtonDidTap", for: .debug)
-    }
-    
-    @objc func commentButtonDidTap() {
-        // TODO: 상세 화면으로 이동 로직 구현 필요
-        
-        WableLogger.log("commentButtonDidTap", for: .debug)
     }
 }

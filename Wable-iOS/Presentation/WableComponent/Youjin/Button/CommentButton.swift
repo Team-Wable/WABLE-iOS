@@ -24,12 +24,14 @@ final class CommentButton: UIButton {
     // MARK: Property
 
     /// 버튼이 속한 게시물 타입 (게시글/댓글)
-    private var type: PostType = .content
+    private var type: PostType
     
     // MARK: - LifeCycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(type: PostType) {
+        self.type = type
+        
+        super.init(frame: .zero)
         
         setupConstraint()
     }
@@ -37,10 +39,15 @@ final class CommentButton: UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+// MARK: - Private Extension
+
+private extension CommentButton {
     
     // MARK: - Setup
     
-    private func setupConstraint() {
+    func setupConstraint() {
         snp.makeConstraints {
             $0.adjustedWidthEqualTo(45)
             $0.adjustedHeightEqualTo(24)
@@ -48,16 +55,14 @@ final class CommentButton: UIButton {
     }
 }
 
-// MARK: - Extension
+// MARK: - Configure Extension
 
 extension CommentButton {
     /// 댓글 버튼 구성 메서드
     /// - Parameters:
     ///   - commentCount: 댓글 수 (게시글 타입일 때만 사용)
     ///   - type: 버튼이 속한 게시물 타입 (.content 또는 .comment)
-    func configureButton(commentCount: Int, type: PostType) {
-        self.type = type
-        
+    func configureButton(commentCount: Int = 0) {
         var configuration = UIButton.Configuration.plain()
         var image = UIImage()
         

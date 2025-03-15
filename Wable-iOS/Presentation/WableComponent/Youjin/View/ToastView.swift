@@ -41,6 +41,8 @@ final class ToastView: UIView {
     private let status: ToastType
     private let message: String
     
+    // MARK: UIComponent
+    
     private let statusImageView: UIImageView = UIImageView()
     
     private let statusLabel: UILabel = UILabel().then {
@@ -65,10 +67,15 @@ final class ToastView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+// MARK: - Private Extension
+
+private extension ToastView {
     
     // MARK: - Setup
 
-    private func setupView() {
+    func setupView() {
         backgroundColor = .wableWhite
         addSubviews(statusImageView, statusLabel)
         roundCorners([.all], radius: 8)
@@ -76,7 +83,7 @@ final class ToastView: UIView {
         configureShadow()
     }
     
-    private func setupConstraint() {
+    func setupConstraint() {
         statusImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().offset(12)
@@ -91,7 +98,7 @@ final class ToastView: UIView {
     }
 }
 
-// MARK: - Extension
+// MARK: - Private Configure Extension
 
 private extension ToastView {
     func configureToast() {

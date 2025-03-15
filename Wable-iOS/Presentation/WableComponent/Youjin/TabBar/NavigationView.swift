@@ -55,6 +55,8 @@ final class NavigationView: UIView {
     
     let type: NavigationType
     
+    // MARK: - UIComponent
+    
     private let logoImageView: UIImageView = UIImageView().then {
         $0.image = .logoType
         $0.contentMode = .scaleAspectFit
@@ -121,10 +123,15 @@ final class NavigationView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+// MARK: - Private Extension
+
+private extension NavigationView {
     
     // MARK: - Setup
     
-    private func setupView() {
+    func setupView() {
         [
             logoImageView,
             homeUnderLineView,
@@ -142,10 +149,10 @@ final class NavigationView: UIView {
             $0.isHidden = true
         }
         
-        configureVisibleView()
+        configureView()
     }
     
-    private func setupConstraint() {
+    func setupConstraint() {
         logoImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(16)
@@ -199,10 +206,10 @@ final class NavigationView: UIView {
     }
 }
 
-// MARK: - Extension
+// MARK: - Configure Extension
 
-private extension NavigationView {
-    func configureVisibleView() {
+extension NavigationView {
+    func configureView() {
         var visibleViewList: [UIView] = []
         
         switch type {
@@ -254,3 +261,4 @@ private extension NavigationView {
         visibleViewList.forEach { $0.isHidden = false }
     }
 }
+

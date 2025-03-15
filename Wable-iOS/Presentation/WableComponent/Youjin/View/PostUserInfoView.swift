@@ -28,7 +28,7 @@ import Kingfisher
 /// ```
 final class PostUserInfoView: UIView {
     
-    // MARK: Property
+    // MARK: UIComponent
     
     let profileImageView: UIImageView = UIImageView().then {
         $0.roundCorners([.all], radius: 36 / 2)
@@ -66,10 +66,15 @@ final class PostUserInfoView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+// MARK: - Private Extension
+
+private extension PostUserInfoView {
     
     // MARK: - Setup
 
-    private func setupView() {
+    func setupView() {
         addSubviews(
             profileImageView,
             fanTeamImageView,
@@ -80,7 +85,7 @@ final class PostUserInfoView: UIView {
         )
     }
     
-    private func setupConstraint() {
+    func setupConstraint() {
         profileImageView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(4)
             $0.leading.equalToSuperview().offset(16)
@@ -119,46 +124,12 @@ final class PostUserInfoView: UIView {
         }
     }
     
-    private func setupAction() {
+    func setupAction() {
         settingButton.addTarget(self, action: #selector(settingButtonDidTap), for: .touchUpInside)
     }
-}
-
-// MARK: - Extension
-
-extension PostUserInfoView {
-    /// 사용자 정보 뷰 구성 메서드
-    /// - Parameters:
-    ///   - userProfileURL: 사용자 프로필 이미지 URL
-    ///   - userName: 사용자 이름
-    ///   - userFanTeam: 사용자 팬팀
-    ///   - opacity: 사용자 투명도 값 (0~100)
-    ///   - createdDate: 게시물 작성 날짜
-    ///   - postType: 게시물 타입 (.content 또는 .comment)
-    func configureView(
-        userProfileURL: URL,
-        userName: String,
-        userFanTeam: LCKTeam,
-        opacity: Int,
-        createdDate: Date,
-        postType: PostType
-    ) {
-        switch postType {
-        case .content:
-            userNameLabel.attributedText = userName.pretendardString(with: .body3)
-        case .comment:
-            userNameLabel.attributedText = userName.pretendardString(with: .caption1)
-        }
-        
-        profileImageView.kf.setImage(with: userProfileURL)
-        fanTeamImageView.image = UIImage(named: "tag_\(userFanTeam.rawValue)")
-        ghostCountLabel.attributedText = "투명도 \(opacity)%".pretendardString(with: .caption4)
-        postTimeLabel.attributedText = configurePostTime(date: createdDate).pretendardString(with: .caption4)
-        fanTeamImageView.isHidden = true
-    }
-}
-
-private extension PostUserInfoView {
+    
+    // MARK: - @objc Method
+    
     @objc func settingButtonDidTap() {
         // TODO: 바텀시트 올리는 로직 구현 필요
     }
@@ -195,5 +166,40 @@ private extension PostUserInfoView {
             dateFormatter.locale = Locale(identifier: "ko_KR")
             return dateFormatter.string(from: date)
         }
+    }
+}
+
+
+// MARK: - Configure Extension
+
+extension PostUserInfoView {
+    /// 사용자 정보 뷰 구성 메서드
+    /// - Parameters:
+    ///   - userProfileURL: 사용자 프로필 이미지 URL
+    ///   - userName: 사용자 이름
+    ///   - userFanTeam: 사용자 팬팀
+    ///   - opacity: 사용자 투명도 값 (0~100)
+    ///   - createdDate: 게시물 작성 날짜
+    ///   - postType: 게시물 타입 (.content 또는 .comment)
+    func configureView(
+        userProfileURL: URL,
+        userName: String,
+        userFanTeam: LCKTeam,
+        opacity: Int,
+        createdDate: Date,
+        postType: PostType
+    ) {
+        switch postType {
+        case .content:
+            userNameLabel.attributedText = userName.pretendardString(with: .body3)
+        case .comment:
+            userNameLabel.attributedText = userName.pretendardString(with: .caption1)
+        }
+        
+        profileImageView.kf.setImage(with: userProfileURL)
+        fanTeamImageView.image = UIImage(named: "tag_\(userFanTeam.rawValue)")
+        ghostCountLabel.attributedText = "투명도 \(opacity)%".pretendardString(with: .caption4)
+        postTimeLabel.attributedText = configurePostTime(date: createdDate).pretendardString(with: .caption4)
+        fanTeamImageView.isHidden = true
     }
 }
