@@ -37,12 +37,15 @@ enum GhostButtonStatus {
 /// // 또는 작은 버튼 구성
 /// ghostButton.configureButton(type: .small, status: .disabled)
 /// ```
-final class GhostButton: UIButton {
-    
+final class GhostButton: UIButton { }
+
+// MARK: - Private Extension
+
+private extension GhostButton {
     // MARK: - Setup
     
     /// - Parameter type: 버튼 크기 타입
-    private func setupConstraint(type: GhostButtonType) {
+    func setupConstraint(type: GhostButtonType) {
         switch type {
         case .large:
             snp.makeConstraints {
@@ -58,7 +61,7 @@ final class GhostButton: UIButton {
     }
 }
 
-// MARK: - Extension
+// MARK: - Configure Extension
 
 extension GhostButton {
     /// 내리기 버튼 구성 메서드

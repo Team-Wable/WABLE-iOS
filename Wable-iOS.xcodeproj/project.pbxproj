@@ -954,6 +954,34 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		DDAD41A32D873E1D00EF312C /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				DD005BA82D7FFFE000B1661F /* LikeButton.swift */,
+				DD005BAA2D80071E00B1661F /* CommentButton.swift */,
+				DD547AB82D7E439E00B8BA5A /* GhostButton.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		DDAD41A42D873E2900EF312C /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */,
+				DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		DDAD41A52D873E3600EF312C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */,
+				DDCD67042D7E271C00EF4C28 /* ToastView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		DDCD66DB2D7C8A1600EF4C28 /* WableComponent */ = {
 			isa = PBXGroup;
 			children = (
@@ -975,13 +1003,9 @@
 			isa = PBXGroup;
 			children = (
 				DDCD66FE2D7DF6E800EF4C28 /* TabBar */,
-				DD005BA82D7FFFE000B1661F /* LikeButton.swift */,
-				DD005BAA2D80071E00B1661F /* CommentButton.swift */,
-				DD547AB82D7E439E00B8BA5A /* GhostButton.swift */,
-				DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */,
-				DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */,
-				DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */,
-				DDCD67042D7E271C00EF4C28 /* ToastView.swift */,
+				DDAD41A52D873E3600EF312C /* View */,
+				DDAD41A32D873E1D00EF312C /* Button */,
+				DDAD41A42D873E2900EF312C /* Cell */,
 				DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */,
 				DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */,
 				DDCD66F82D7DF69D00EF4C28 /* OverviewViewController.swift */,

@@ -46,22 +46,36 @@ final class LikeButton: UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+// MARK: - Private Extension
+
+private extension LikeButton {
     
     // MARK: - Setup
-    
-    private func setupConstraint() {
+
+    func setupConstraint() {
         snp.makeConstraints {
             $0.adjustedWidthEqualTo(45)
             $0.adjustedHeightEqualTo(24)
         }
     }
     
-    private func setupAction() {
+    func setupAction() {
         addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
+    }
+    
+    // MARK: - @objc method
+
+    @objc func likeButtonDidTap() {
+        isLiked ? (likeCount -= 1) : (likeCount += 1)
+        isLiked.toggle()
+        
+        configureButton(isLiked: isLiked, likeCount: likeCount, postType: postType)
     }
 }
 
-// MARK: - Extension
+// MARK: - Configure Extension
 
 extension LikeButton {
     /// 좋아요 버튼 구성 메서드
@@ -91,14 +105,5 @@ extension LikeButton {
         configuration.attributedTitle = String(likeCount).pretendardString(with: .caption1)
         
         self.configuration = configuration
-    }
-}
-
-private extension LikeButton {
-    @objc func likeButtonDidTap() {
-        isLiked ? (likeCount -= 1) : (likeCount += 1)
-        isLiked.toggle()
-        
-        configureButton(isLiked: isLiked, likeCount: likeCount, postType: postType)
     }
 }
