@@ -29,7 +29,7 @@ final class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupLayout()
+        setupView()
         setupConstraint()
     }
 }
@@ -40,7 +40,7 @@ private extension SplashViewController {
     
     // MARK: - Setup
 
-    func setupLayout() {
+    func setupView() {
         view.backgroundColor = .white
         
         view.addSubview(animationView)
