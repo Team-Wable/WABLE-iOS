@@ -9,7 +9,9 @@ import Combine
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    var window: UIWindow?
+    
+    // MARK: - Property
+
     private let cancelBag = CancelBag()
     private let userSessionRepository: UserSessionRepository = UserSessionRepositoryImpl(
         userDefaults: UserDefaultsStorage(
@@ -18,7 +20,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             jsonDecoder: JSONDecoder()
         )
     )
+    
+    // MARK: - UIComponent
 
+    var window: UIWindow?
+
+    // MARK: - WillConnentTo
+    
     func scene(
         _ scene: UIScene,
         willConnectTo session: UISceneSession,
@@ -48,7 +56,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 }
 
-// MARK: - Extension
+// MARK: - Configure Extension
 
 private extension SceneDelegate {
     func configureLoginScreen() {
@@ -64,7 +72,11 @@ private extension SceneDelegate {
             )
         )
     }
-    
+}
+
+// MARK: - Private Extension
+
+private extension SceneDelegate {
     func updateVersionIfNeeded() {
         // TODO: 강제 업데이트 로직 구현 필요
     }
