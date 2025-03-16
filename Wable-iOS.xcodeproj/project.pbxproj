@@ -156,9 +156,6 @@
 		DDCD66F92D7DF6A800EF4C28 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66F82D7DF69D00EF4C28 /* OverviewViewController.swift */; };
 		DDCD66FB2D7DF6CF00EF4C28 /* ViewitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */; };
 		DDCD66FD2D7DF6D900EF4C28 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */; };
-		DDCD66FF2D7E0C3200EF4C28 /* Share.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3D2D6A007900DBE580 /* Share.xcconfig */; };
-		DDCD67002D7E0C3600EF4C28 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3E2D6A007900DBE580 /* Release.xcconfig */; };
-		DDCD67012D7E0C3A00EF4C28 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8CEF3F2D6A007900DBE580 /* Development.xcconfig */; };
 		DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD67042D7E271C00EF4C28 /* ToastView.swift */; };
 		DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */; };
 		DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */; };
@@ -1267,13 +1264,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDCD66FF2D7E0C3200EF4C28 /* Share.xcconfig in Resources */,
 				054308EA2CB7F582001861F1 /* wable_loading.json in Resources */,
 				DD2968012D6DAC9300143851 /* LaunchScreen.storyboard in Resources */,
 				DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */,
 				0547F4A32C60D96B001E3039 /* Assets.xcassets in Resources */,
-				DDCD67002D7E0C3600EF4C28 /* Release.xcconfig in Resources */,
-				DDCD67012D7E0C3A00EF4C28 /* Development.xcconfig in Resources */,
 				054308EC2CB7F6CE001861F1 /* wable_splash.json in Resources */,
 				0586D89B2D09A68200436080 /* Pretendard-Regular.otf in Resources */,
 				3C8B4E052C76247800174943 /* wable_tab.json in Resources */,
