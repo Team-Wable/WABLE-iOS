@@ -139,6 +139,7 @@
 		DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */; };
 		DD765D9A2D8746E30029A317 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D992D8746DD0029A317 /* LoginViewController.swift */; };
 		DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D9C2D8747900029A317 /* SplashViewController.swift */; };
+		DD765DA42D8752640029A317 /* LCKYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765DA32D8752300029A317 /* LCKYearViewController.swift */; };
 		DD87931C2D7044E7001212AE /* OAuthErrorMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD87931B2D7044E0001212AE /* OAuthErrorMonitor.swift */; };
 		DDCCA3932D738CD500658122 /* UserSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3922D738CD100658122 /* UserSessionRepository.swift */; };
 		DDCCA3952D73928900658122 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3942D73928400658122 /* UserSession.swift */; };
@@ -335,6 +336,7 @@
 		DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenProvider.swift; sourceTree = "<group>"; };
 		DD765D992D8746DD0029A317 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DD765D9C2D8747900029A317 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		DD765DA32D8752300029A317 /* LCKYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearViewController.swift; sourceTree = "<group>"; };
 		DD87931B2D7044E0001212AE /* OAuthErrorMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthErrorMonitor.swift; sourceTree = "<group>"; };
 		DD8CEF3D2D6A007900DBE580 /* Share.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Share.xcconfig; sourceTree = "<group>"; };
 		DD8CEF3E2D6A007900DBE580 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -923,6 +925,14 @@
 			path = Splash;
 			sourceTree = "<group>";
 		};
+		DD765DA22D8752240029A317 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				DD765DA32D8752300029A317 /* LCKYearViewController.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		DD87931D2D70452B001212AE /* OAuth */ = {
 			isa = PBXGroup;
 			children = (
@@ -1116,6 +1126,7 @@
 			children = (
 				DD765D9B2D8747890029A317 /* Splash */,
 				DD765D982D8746D30029A317 /* Login */,
+				DD765DA22D8752240029A317 /* Onboarding */,
 				DDCD66DB2D7C8A1600EF4C28 /* WableComponent */,
 				DE7C530A2D761DBF00076E5D /* Interface */,
 				DE7C53092D761DB900076E5D /* UIHelper */,
@@ -1296,6 +1307,7 @@
 				DD2968532D6DAD4400143851 /* BaseResponse.swift in Sources */,
 				DD2968542D6DAD4400143851 /* CreateBan.swift in Sources */,
 				DD2968552D6DAD4400143851 /* CreateComment.swift in Sources */,
+				DD765DA42D8752640029A317 /* LCKYearViewController.swift in Sources */,
 				DD2968562D6DAD4400143851 /* UpdateUserBadge.swift in Sources */,
 				DDED59702D78EE7800A0BEF1 /* FetchCommunityListUseCase.swift in Sources */,
 				DDCD66E52D7DC0EB00EF4C28 /* NavigationView.swift in Sources */,

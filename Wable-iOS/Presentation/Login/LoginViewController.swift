@@ -49,11 +49,24 @@ final class LoginViewController: UIViewController {
     // MARK: - UIActionHandler
     
     private lazy var kakaoButtonHandler: UIActionHandler = { _ in
-        // TODO: - 카카오 로그인 기능 구현 필요
+        // TODO: 카카오 로그인 기능 구현 필요
     }
     
     private lazy var appleButtonHandler: UIActionHandler = { _ in
-        // TODO: - 애플 로그인 기능 구현 필요
+        // TODO: 애플 로그인 기능 구현 필요
+        
+        let noticeViewController = WableActionSheetViewController(
+            configuraton: .init(
+                title: "앗 잠깐!",
+                message: "와블은 온화하면서도 유쾌한 LCK 팬들이 모여 함께 즐기는 공간이에요.\n더 건강하고 즐거운 커뮤니티를 만들어 나가는데 함께 노력해주실거죠?",
+                confirmButtonTitle: "확인",
+                confirmAction: { completion in
+                    // TODO: 온보딩 화면으로 전환 필요
+                }
+            )
+        )
+        
+        self.present(noticeViewController, animated: true)
     }
 }
 
@@ -105,4 +118,3 @@ private extension LoginViewController {
         appleButton.addAction(UIAction(handler: appleButtonHandler), for: .touchUpInside)
     }
 }
-
