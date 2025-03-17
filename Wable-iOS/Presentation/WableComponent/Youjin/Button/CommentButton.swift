@@ -24,7 +24,7 @@ final class CommentButton: UIButton {
     // MARK: Property
 
     /// 버튼이 속한 게시물 타입 (게시글/댓글)
-    private var type: PostType
+    private let type: PostType
     
     // MARK: - LifeCycle
     

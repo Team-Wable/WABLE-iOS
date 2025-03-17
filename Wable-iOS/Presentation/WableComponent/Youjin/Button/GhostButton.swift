@@ -42,6 +42,7 @@ final class GhostButton: UIButton { }
 // MARK: - Private Extension
 
 private extension GhostButton {
+    
     // MARK: - Setup
     
     /// - Parameter type: 버튼 크기 타입
