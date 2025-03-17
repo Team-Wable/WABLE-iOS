@@ -144,6 +144,7 @@
 		DD9980DF2D834F4E00EBBFBC /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */; };
 		DD9980E02D834F4E00EBBFBC /* PostUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */; };
 		DD9980E12D834F4E00EBBFBC /* ContentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */; };
+		DDCA70972D88797200A988B8 /* AuthorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA70962D88796900A988B8 /* AuthorType.swift */; };
 		DDCCA3932D738CD500658122 /* UserSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3922D738CD100658122 /* UserSessionRepository.swift */; };
 		DDCCA3952D73928900658122 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3942D73928400658122 /* UserSession.swift */; };
 		DDCCA3972D73988000658122 /* UserSessionRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */; };
@@ -350,6 +351,7 @@
 		DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
 		DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCollectionViewCell.swift; sourceTree = "<group>"; };
 		DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUserInfoView.swift; sourceTree = "<group>"; };
+		DDCA70962D88796900A988B8 /* AuthorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorType.swift; sourceTree = "<group>"; };
 		DDCCA3922D738CD100658122 /* UserSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepository.swift; sourceTree = "<group>"; };
 		DDCCA3942D73928400658122 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepositoryImpl.swift; sourceTree = "<group>"; };
@@ -987,6 +989,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		DDCA70982D8879C600A988B8 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				DDCD66E92D7DD72800EF4C28 /* LottieType.swift */,
+				DDCA70962D88796900A988B8 /* AuthorType.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
 		DDCD66DB2D7C8A1600EF4C28 /* WableComponent */ = {
 			isa = PBXGroup;
 			children = (
@@ -1022,14 +1033,6 @@
 				DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */,
 			);
 			path = Youjin;
-			sourceTree = "<group>";
-		};
-		DDCD66E82D7DD72200EF4C28 /* Enum */ = {
-			isa = PBXGroup;
-			children = (
-				DDCD66E92D7DD72800EF4C28 /* LottieType.swift */,
-			);
-			path = Enum;
 			sourceTree = "<group>";
 		};
 		DDCD66FE2D7DF6E800EF4C28 /* TabBar */ = {
@@ -1135,6 +1138,7 @@
 		DE7C53082D761DA500076E5D /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				DDCA70982D8879C600A988B8 /* Enum */,
 				DDCD66DB2D7C8A1600EF4C28 /* WableComponent */,
 				DE7C530A2D761DBF00076E5D /* Interface */,
 				DE7C53092D761DB900076E5D /* UIHelper */,
@@ -1145,7 +1149,6 @@
 		DE7C53092D761DB900076E5D /* UIHelper */ = {
 			isa = PBXGroup;
 			children = (
-				DDCD66E82D7DD72200EF4C28 /* Enum */,
 				DE7C530F2D761E3300076E5D /* String+.swift */,
 				DE7C530D2D761DFB00076E5D /* UIFont+.swift */,
 				DE7C53132D761EE500076E5D /* UIView+.swift */,
@@ -1411,6 +1414,7 @@
 				DDCD66FD2D7DF6D900EF4C28 /* ProfileViewController.swift in Sources */,
 				DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */,
 				DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */,
+				DDCA70972D88797200A988B8 /* AuthorType.swift in Sources */,
 				DD2967FC2D6DAC4800143851 /* Injected.swift in Sources */,
 				DD2967FD2D6DAC4800143851 /* CancelBag.swift in Sources */,
 				DD2967FE2D6DAC4800143851 /* WableLogger.swift in Sources */,
