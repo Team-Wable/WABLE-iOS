@@ -196,6 +196,7 @@
 		DE7C53142D761EE500076E5D /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53132D761EE500076E5D /* UIView+.swift */; };
 		DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */; };
 		DE7C531A2D76202B00076E5D /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53192D76202B00076E5D /* UITextField+.swift */; };
+		DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */; };
 		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
 		DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29132D7208A00073D512 /* GameStatus.swift */; };
 		DEDC29162D72099C0073D512 /* InfoNotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29152D72099C0073D512 /* InfoNotificationType.swift */; };
@@ -382,6 +383,7 @@
 		DE7C53132D761EE500076E5D /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
 		DE7C53192D76202B00076E5D /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableBottomSheetController.swift; sourceTree = "<group>"; };
 		DE8FF1902D8155DD00C41880 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
 		DEDC29112D7207610073D512 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		DEDC29132D7208A00073D512 /* GameStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStatus.swift; sourceTree = "<group>"; };
@@ -965,6 +967,7 @@
 				DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */,
 				DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */,
 				DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */,
+				DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */,
 			);
 			path = Jinung;
 			sourceTree = "<group>";
@@ -1308,6 +1311,7 @@
 				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,
 				DD29686F2D6DAD5F00143851 /* MoyaLoggingPlugin.swift in Sources */,
 				DD2968702D6DAD5F00143851 /* TokenStorage.swift in Sources */,
+				DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */,
 				DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */,
 				DD2968742D6DAD5F00143851 /* NetworkError.swift in Sources */,
 				DD2968432D6DAD2F00143851 /* FetchGameSchedules.swift in Sources */,
