@@ -30,7 +30,7 @@ extension CommentMapper {
             }
             
             return UserComment(
-                comment: Comment(
+                comment: CommentInfo(
                     author: User(
                         id: comment.memberID,
                         nickname: comment.memberNickname,
@@ -71,7 +71,7 @@ extension CommentMapper {
             }
             
             return ContentComment(
-                comment: Comment(
+                comment: CommentInfo(
                     author: User(
                         id: comment.memberID,
                         nickname: comment.memberNickname,
