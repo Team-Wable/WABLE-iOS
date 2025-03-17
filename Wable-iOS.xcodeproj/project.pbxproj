@@ -993,7 +993,16 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		DDAD41A32D873E1D00EF312C /* Button */ = {
+		DDCA70912D87CE3900A988B8 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				DDCA70922D88315C00A988B8 /* LCKYearView.swift */,
+				DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+        DDAD41A32D873E1D00EF312C /* Button */ = {
 			isa = PBXGroup;
 			children = (
 				DD005BA82D7FFFE000B1661F /* LikeButton.swift */,
