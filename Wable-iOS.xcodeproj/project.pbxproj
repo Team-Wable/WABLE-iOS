@@ -193,7 +193,7 @@
 		DE54B03C2D82C43F009A7C34 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */; };
 		DE54B03E2D82CD82009A7C34 /* NotFoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */; };
 		DE54B0402D832E78009A7C34 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */; };
-		DE54B0422D833B0B009A7C34 /* WableActionSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B0412D833B0B009A7C34 /* WableActionSheetViewController.swift */; };
+		DE54B0422D833B0B009A7C34 /* WableSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */; };
 		DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EA2D7211070021BDE1 /* Like.swift */; };
 		DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EE2D7213D90021BDE1 /* Opacity.swift */; };
 		DE7C530C2D761DCA00076E5D /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C530B2D761DCA00076E5D /* ViewModelType.swift */; };
@@ -203,6 +203,7 @@
 		DE7C53142D761EE500076E5D /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53132D761EE500076E5D /* UIView+.swift */; };
 		DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */; };
 		DE7C531A2D76202B00076E5D /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53192D76202B00076E5D /* UITextField+.swift */; };
+		DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */; };
 		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
 		DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29132D7208A00073D512 /* GameStatus.swift */; };
 		DEDC29162D72099C0073D512 /* InfoNotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29152D72099C0073D512 /* InfoNotificationType.swift */; };
@@ -389,7 +390,7 @@
 		DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFoundViewController.swift; sourceTree = "<group>"; };
 		DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
-		DE54B0412D833B0B009A7C34 /* WableActionSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableActionSheetViewController.swift; sourceTree = "<group>"; };
+		DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSheetViewController.swift; sourceTree = "<group>"; };
 		DE67A9EA2D7211070021BDE1 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		DE67A9EE2D7213D90021BDE1 /* Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opacity.swift; sourceTree = "<group>"; };
 		DE7C530B2D761DCA00076E5D /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
@@ -399,6 +400,7 @@
 		DE7C53132D761EE500076E5D /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
 		DE7C53192D76202B00076E5D /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableBottomSheetController.swift; sourceTree = "<group>"; };
 		DE8FF1902D8155DD00C41880 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
 		DEDC29112D7207610073D512 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		DEDC29132D7208A00073D512 /* GameStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStatus.swift; sourceTree = "<group>"; };
@@ -1034,7 +1036,8 @@
 				DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */,
 				DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */,
 				DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */,
-				DE54B0412D833B0B009A7C34 /* WableActionSheetViewController.swift */,
+				DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */,
+				DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */,
 			);
 			path = Jinung;
 			sourceTree = "<group>";
@@ -1334,7 +1337,7 @@
 				DD2968522D6DAD4400143851 /* DTO.swift in Sources */,
 				DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */,
 				DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */,
-				DE54B0422D833B0B009A7C34 /* WableActionSheetViewController.swift in Sources */,
+				DE54B0422D833B0B009A7C34 /* WableSheetViewController.swift in Sources */,
 				DDED595C2D78C3B700A0BEF1 /* AppleAuthProvider.swift in Sources */,
 				DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */,
 				DD2968532D6DAD4400143851 /* BaseResponse.swift in Sources */,
@@ -1375,6 +1378,7 @@
 				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,
 				DD29686F2D6DAD5F00143851 /* MoyaLoggingPlugin.swift in Sources */,
 				DD2968702D6DAD5F00143851 /* TokenStorage.swift in Sources */,
+				DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */,
 				DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */,
 				DD2968742D6DAD5F00143851 /* NetworkError.swift in Sources */,
 				DD2968432D6DAD2F00143851 /* FetchGameSchedules.swift in Sources */,
