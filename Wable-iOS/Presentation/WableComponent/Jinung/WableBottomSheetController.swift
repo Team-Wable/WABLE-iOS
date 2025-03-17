@@ -86,7 +86,7 @@ final class WableBottomSheetController: UIViewController {
 extension WableBottomSheetController {
     func addAction(_ action: WableBottomSheetAction) {
         let buttonAction = UIAction { [weak self] _ in
-            self?.dismissWithAnimation(completion: action.handler)
+            self?.dismissWithAnimation(handler: action.handler)
         }
         
         let button = UIButton().then {
@@ -109,13 +109,13 @@ extension WableBottomSheetController {
 // MARK: - Private Method
 
 private extension WableBottomSheetController {
-    func dismissWithAnimation(completion: (() -> Void)? = nil) {
+    func dismissWithAnimation(handler: (() -> Void)? = nil) {
         UIView.animate(withDuration: Constant.animationDuration) {
             self.view.backgroundColor = .black.withAlphaComponent(.zero)
             self.containerView.frame.origin.y = self.view.bounds.height
         } completion: { _ in
             self.dismiss(animated: false) {
-                completion?()
+                handler?()
             }
         }
     }
