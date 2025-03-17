@@ -9,7 +9,9 @@ import Combine
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    var window: UIWindow?
+    
+    // MARK: - Property
+
     private let cancelBag = CancelBag()
     private let userSessionRepository: UserSessionRepository = UserSessionRepositoryImpl(
         userDefaults: UserDefaultsStorage(
@@ -18,7 +20,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             jsonDecoder: JSONDecoder()
         )
     )
+    
+    // MARK: - UIComponent
 
+    var window: UIWindow?
+
+    // MARK: - WillConnentTo
+    
     func scene(
         _ scene: UIScene,
         willConnectTo session: UISceneSession,
@@ -26,29 +34,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         self.window = UIWindow(windowScene: windowScene)
+        self.window?.rootViewController = SplashViewController()
+        self.window?.makeKeyAndVisible()
         
-        userSessionRepository.checkAutoLogin()
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(_):
-                    self.configureLoginScreen()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
+            self.userSessionRepository.checkAutoLogin()
+                .sink { completion in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(_):
+                        self.configureLoginScreen()
+                    }
+                } receiveValue: { isAutoLoginEnabled in
+                    isAutoLoginEnabled ? self.configureMainScreen() : self.configureLoginScreen()
+                    self.window?.makeKeyAndVisible()
+                    self.updateVersionIfNeeded()
                 }
-            } receiveValue: { isAutoLoginEnabled in
-                isAutoLoginEnabled ? self.configureMainScreen() : self.configureLoginScreen()
-            }
-            .store(in: cancelBag)
+                .store(in: self.cancelBag)
+        }
     }
 }
 
-// MARK: - Extension
+// MARK: - Configure Extension
 
 private extension SceneDelegate {
-    // TODO: 로그인 화면으로 이동하는 로직 구현 필요
     func configureLoginScreen() {
-        self.window?.rootViewController = ViewController()
-        self.window?.makeKeyAndVisible()
+        self.window?.rootViewController = LoginViewController()
     }
     
     func configureMainScreen() {
@@ -59,6 +71,13 @@ private extension SceneDelegate {
                 type: .home(hasNewNotification: condition)
             )
         )
-        self.window?.makeKeyAndVisible()
+    }
+}
+
+// MARK: - Private Extension
+
+private extension SceneDelegate {
+    func updateVersionIfNeeded() {
+        // TODO: 강제 업데이트 로직 구현 필요
     }
 }
