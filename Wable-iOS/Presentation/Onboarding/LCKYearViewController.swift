@@ -65,6 +65,7 @@ private extension LCKYearViewController {
         }
         
         configuration.image = isPullDownEnabled ? .btnDropdownDown : .btnDropdownUp
+        
         rootView.yearCollectionView.isHidden = isPullDownEnabled
         rootView.pullDownButton.configuration = configuration
         
