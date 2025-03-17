@@ -134,8 +134,9 @@ private extension WableSheetViewController {
             $0.configuration = config
             
             let action = UIAction { [weak self] _ in
-                action.handler?()
-                self?.dismiss(animated: true)
+                self?.dismiss(animated: true) {
+                    action.handler?()
+                }
             }
             
             $0.addAction(action, for: .touchUpInside)
