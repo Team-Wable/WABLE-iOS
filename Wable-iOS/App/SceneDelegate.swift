@@ -60,7 +60,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 private extension SceneDelegate {
     func configureLoginScreen() {
-        self.window?.rootViewController = LoginViewController()
+        self.window?.rootViewController = LCKYearViewController()
     }
     
     func configureMainScreen() {
