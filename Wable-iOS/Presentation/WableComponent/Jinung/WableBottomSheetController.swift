@@ -94,6 +94,7 @@ extension WableBottomSheetController {
             $0.setTitleColor(.wableBlack, for: .normal)
             $0.addAction(buttonAction, for: .touchUpInside)
         }
+        
         button.snp.makeConstraints { make in
             make.adjustedHeightEqualTo(Constant.buttonHeight)
         }
