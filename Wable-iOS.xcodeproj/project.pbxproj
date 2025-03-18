@@ -147,6 +147,9 @@
 		DD9980E02D834F4E00EBBFBC /* PostUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */; };
 		DD9980E12D834F4E00EBBFBC /* ContentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */; };
 		DDCA70972D88797200A988B8 /* AuthorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA70962D88796900A988B8 /* AuthorType.swift */; };
+		DDCA70902D87CE2700A988B8 /* LCKYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */; };
+		DDCA70932D88316200A988B8 /* LCKYearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA70922D88315C00A988B8 /* LCKYearView.swift */; };
+		DDCA70952D883D4100A988B8 /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA70942D883D3B00A988B8 /* NavigationViewController.swift */; };
 		DDCCA3932D738CD500658122 /* UserSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3922D738CD100658122 /* UserSessionRepository.swift */; };
 		DDCCA3952D73928900658122 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3942D73928400658122 /* UserSession.swift */; };
 		DDCCA3972D73988000658122 /* UserSessionRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */; };
@@ -357,6 +360,9 @@
 		DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCollectionViewCell.swift; sourceTree = "<group>"; };
 		DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUserInfoView.swift; sourceTree = "<group>"; };
 		DDCA70962D88796900A988B8 /* AuthorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorType.swift; sourceTree = "<group>"; };
+		DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearViewController.swift; sourceTree = "<group>"; };
+		DDCA70922D88315C00A988B8 /* LCKYearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearView.swift; sourceTree = "<group>"; };
+		DDCA70942D883D3B00A988B8 /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		DDCCA3922D738CD100658122 /* UserSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepository.swift; sourceTree = "<group>"; };
 		DDCCA3942D73928400658122 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionRepositoryImpl.swift; sourceTree = "<group>"; };
@@ -1018,6 +1024,15 @@
 				DDCA70962D88796900A988B8 /* AuthorType.swift */,
 			);
 			path = Enum;
+            sourceTree = "<group>";
+        };
+		DDCA70912D87CE3900A988B8 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				DDCA70922D88315C00A988B8 /* LCKYearView.swift */,
+				DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		DDCD66DB2D7C8A1600EF4C28 /* WableComponent */ = {
@@ -1061,6 +1076,7 @@
 		DDCD66FE2D7DF6E800EF4C28 /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
+				DDCA70942D883D3B00A988B8 /* NavigationViewController.swift */,
 				DDCD66E22D7DB11500EF4C28 /* TabBarController.swift */,
 				DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */,
 			);
@@ -1164,6 +1180,7 @@
 				DDCA70982D8879C600A988B8 /* Enum */,
 				DD765D9B2D8747890029A317 /* Splash */,
 				DD765D982D8746D30029A317 /* Login */,
+				DDCA70912D87CE3900A988B8 /* Onboarding */,
 				DDCD66DB2D7C8A1600EF4C28 /* WableComponent */,
 				DE7C530A2D761DBF00076E5D /* Interface */,
 				DE7C53092D761DB900076E5D /* UIHelper */,
@@ -1333,6 +1350,7 @@
 				DD2968142D6DACF700143851 /* AccountInfo.swift in Sources */,
 				DDCCA3972D73988000658122 /* UserSessionRepositoryImpl.swift in Sources */,
 				DD2968152D6DACF700143851 /* Announcement.swift in Sources */,
+				DDCA70932D88316200A988B8 /* LCKYearView.swift in Sources */,
 				DD2968512D6DAD4400143851 /* UpdateUserProfile.swift in Sources */,
 				DD2968522D6DAD4400143851 /* DTO.swift in Sources */,
 				DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */,
@@ -1398,6 +1416,7 @@
 				DD29684D2D6DAD2F00143851 /* FetchContentComments.swift in Sources */,
 				DD29684E2D6DAD2F00143851 /* FetchUserNotifications.swift in Sources */,
 				DD29684F2D6DAD2F00143851 /* FetchViewits.swift in Sources */,
+				DDCA70952D883D4100A988B8 /* NavigationViewController.swift in Sources */,
 				DD2968502D6DAD2F00143851 /* FetchUserComments.swift in Sources */,
 				DD2968332D6DAD1700143851 /* CommentRepositoryImpl.swift in Sources */,
 				DDCD66FB2D7DF6CF00EF4C28 /* ViewitViewController.swift in Sources */,
@@ -1466,6 +1485,7 @@
 				DDCD66F92D7DF6A800EF4C28 /* OverviewViewController.swift in Sources */,
 				DDED59722D78EE9900A0BEF1 /* UpdatePreRegisterUseCase.swift in Sources */,
 				DD29681E2D6DAD0200143851 /* AccountRepository.swift in Sources */,
+				DDCA70902D87CE2700A988B8 /* LCKYearViewController.swift in Sources */,
 				DD29681F2D6DAD0200143851 /* GhostRepository.swift in Sources */,
 				DD2968202D6DAD0200143851 /* LoginRepository.swift in Sources */,
 				DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */,
