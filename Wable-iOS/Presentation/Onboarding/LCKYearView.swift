@@ -16,8 +16,6 @@ final class LCKYearView: UIView {
     
     // MARK: - UIComponent
     
-    var yearButtonList = [UIButton]()
-    
     private let titleLabel: UILabel = UILabel().then {
         $0.attributedText = "언제부터 LCK를 시청하셨나요?".pretendardString(with: .head0)
         $0.textColor = .wableBlack
@@ -46,17 +44,18 @@ final class LCKYearView: UIView {
         $0.layer.borderColor = UIColor.gray300.cgColor
     }
     
-    lazy var scrollView: UIScrollView = UIScrollView().then {
-        $0.isHidden = true
-        $0.layer.cornerRadius = 8
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor.gray300.cgColor
-    }
-    
-    private lazy var yearStackView: UIStackView = UIStackView(axis: .vertical).then {
-        $0.alignment = .center
-        $0.spacing = 8
-    }
+    lazy var yearCollectionView: UICollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout().then {
+        $0.itemSize = .init(width: 318.adjustedWidth, height: 54.adjustedHeight)
+        $0.minimumLineSpacing = 8
+        }).then {
+            $0.register(UICollectionViewCell.self, forCellWithReuseIdentifier: UICollectionViewCell.reuseIdentifier)
+            $0.isHidden = true
+            $0.layer.cornerRadius = 8
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.gray300.cgColor
+        }
     
     let nextButton: WableButton = WableButton(style: .primary).then {
         $0.configuration?.attributedTitle = "다음으로".pretendardString(with: .head2)
@@ -89,12 +88,9 @@ private extension LCKYearView {
             descriptionLabel,
             viewingYearLabel,
             pullDownButton,
-            scrollView,
+            yearCollectionView,
             nextButton
         )
-        
-        scrollView.addSubview(yearStackView)
-        configureYearsView()
     }
     
     func setupConstraint() {
@@ -119,41 +115,16 @@ private extension LCKYearView {
             $0.adjustedHeightEqualTo(60)
         }
         
-        scrollView.snp.makeConstraints {
+        yearCollectionView.snp.makeConstraints {
             $0.top.equalTo(pullDownButton.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.adjustedHeightEqualTo(314)
-        }
-        
-        yearStackView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(6)
-            $0.centerX.equalToSuperview()
-            $0.width.equalToSuperview().inset(12)
         }
         
         nextButton.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide).inset(30)
             $0.horizontalEdges.equalToSuperview().inset(16)
             $0.adjustedHeightEqualTo(56)
-        }
-    }
-}
-
-// MARK: - ConfigureExtension
-
-extension LCKYearView {
-    func configureYearsView() {
-        for year in lckYears {
-            let button = UIButton(configuration: .plain()).then {
-                $0.configuration?.attributedTitle = "\(year)".pretendardString(with: .body2)
-                $0.configuration?.baseForegroundColor = .wableBlack
-                $0.configuration?.titleAlignment = .leading
-                $0.configuration?.contentInsets = .init(top: 15, leading: 8, bottom: 15, trailing: 266)
-                $0.configuration?.cornerStyle = .small
-            }
-            
-            yearButtonList.append(button)
-            yearStackView.addArrangedSubview(button)
         }
     }
 }
