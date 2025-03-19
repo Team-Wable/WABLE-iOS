@@ -264,8 +264,6 @@ extension NavigationView {
         visibleViewList.forEach { $0.isHidden = false }
     }
     
-    // MARK: - Configure Extension
-    
     func setNavigationTitle(text: String) {
         hubTitleLabel.attributedText = text.pretendardString(with: .head2)
     }
