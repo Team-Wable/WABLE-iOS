@@ -12,9 +12,19 @@ class NavigationViewController: UIViewController {
     
     // MARK: - UIComponent
     
-    let navigationView: NavigationView = NavigationView(type: .flow)
+    let navigationView: NavigationView
 
     // MARK: - LifeCycle
+    
+    init(type: NavigationType) {
+        self.navigationView = NavigationView(type: type)
+        
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +43,7 @@ private extension NavigationViewController {
     
     func setupView() {
         view.backgroundColor = .wableWhite
+        
         view.addSubview(navigationView)
     }
     
@@ -44,11 +55,17 @@ private extension NavigationViewController {
     }
     
     func setupAction() {
+        navigationView.notificationButton.addTarget(self, action: #selector(notificationButtonDidTap), for: .touchUpInside)
         navigationView.backButton.addTarget(self, action: #selector(backButtonDidTap), for: .touchUpInside)
         navigationView.dismissButton.addTarget(self, action: #selector(dismissButtonDidTap), for: .touchUpInside)
+        navigationView.menuButton.addTarget(self, action: #selector(menuButtonDidTap), for: .touchUpInside)
     }
     
     // MARK: - @objc Method
+    
+    @objc func notificationButtonDidTap() {
+        // TODO: 알림 화면으로 이동하는 로직 구현 필요
+    }
     
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
@@ -56,5 +73,9 @@ private extension NavigationViewController {
     
     @objc func dismissButtonDidTap() {
         self.dismiss(animated: true)
+    }
+    
+    @objc func menuButtonDidTap() {
+        // TODO: 프로필 바텀시트 올라오는 로직 구현 필요
     }
 }
