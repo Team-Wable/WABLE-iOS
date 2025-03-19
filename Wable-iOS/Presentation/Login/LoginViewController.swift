@@ -126,12 +126,7 @@ private extension LoginViewController {
         tempButton.addAction(
             .init(
                 handler: { _ in
-                    let condition = self.userSessionRepository.fetchActiveUserSession()?.notificationBadgeCount ?? 0 > 0
-                    let tabBarController = TabBarController(
-                        navigationView: NavigationView(
-                            type: .home(hasNewNotification: condition)
-                        )
-                    ).then {
+                    let tabBarController = TabBarController().then {
                         $0.modalPresentationStyle = .fullScreen
                     }
                     
