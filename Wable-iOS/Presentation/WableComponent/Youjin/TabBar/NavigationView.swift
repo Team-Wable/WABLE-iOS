@@ -37,8 +37,8 @@ enum NavigationType {
     
     case home(hasNewNotification: Bool)
     case flow
-    case page(type: PageType, text: String)
-    case hub(text: String = "", isBeta: Bool = false)
+    case page(type: PageType, title: String)
+    case hub(title: String = "", isBeta: Bool = false)
     
     var isHub: Bool {
         if case .hub = self {
@@ -206,9 +206,12 @@ private extension NavigationView {
     }
 }
 
-// MARK: - Configure Extension
+// MARK: - Public Extension
 
 extension NavigationView {
+    
+    // MARK: - Configure Extension
+    
     func configureView() {
         var visibleViewList: [UIView] = []
         
@@ -226,7 +229,7 @@ extension NavigationView {
                 backButton,
                 dismissButton
             ]
-        case .page(type: let type, text: let text):
+        case .page(type: let type, title: let text):
             pageTitleLabel.attributedText = text.pretendardString(with: .body3)
             
             switch type {
@@ -245,7 +248,7 @@ extension NavigationView {
                     pageUnderLineView
                 ]
             }
-        case .hub(text: let text, isBeta: let isBeta):
+        case .hub(title: let text, isBeta: let isBeta):
             backgroundColor = .wableBlack
             hubTitleLabel.attributedText = text.pretendardString(with: .head2)
             
@@ -260,5 +263,10 @@ extension NavigationView {
         
         visibleViewList.forEach { $0.isHidden = false }
     }
+    
+    // MARK: - Configure Extension
+    
+    func setNavigationTitle(text: String) {
+        hubTitleLabel.attributedText = text.pretendardString(with: .head2)
+    }
 }
-
