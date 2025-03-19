@@ -64,13 +64,7 @@ private extension SceneDelegate {
     }
     
     func configureMainScreen() {
-        let condition = userSessionRepository.fetchActiveUserSession()?.notificationBadgeCount ?? 0 > 0
-        
-        self.window?.rootViewController = TabBarController(
-            navigationView: NavigationView(
-                type: .home(hasNewNotification: condition)
-            )
-        )
+        self.window?.rootViewController = TabBarController()
     }
 }
 
