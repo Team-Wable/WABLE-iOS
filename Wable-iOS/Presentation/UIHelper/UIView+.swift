@@ -9,6 +9,12 @@ import UIKit
 
 extension UIView {
     
+    // MARK: - safeArea
+    
+    var safeArea: UILayoutGuide {
+        return safeAreaLayoutGuide
+    }
+    
     // MARK: - addSubviews
 
     /// 여러 개의 `UIView`를 한 번에 `addSubview(_:)`하는 메서드.
