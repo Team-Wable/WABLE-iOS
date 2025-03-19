@@ -197,12 +197,7 @@
 		DE54B03E2D82CD82009A7C34 /* NotFoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */; };
 		DE54B0402D832E78009A7C34 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */; };
 		DE54B0422D833B0B009A7C34 /* WableSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */; };
-		DE59BB972D8A9D1F0040ADCB /* HomeEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BB962D8A9D1F0040ADCB /* HomeEmpty.swift */; };
 		DE59BB9A2D8A9D3A0040ADCB /* NotificationEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BB992D8A9D3A0040ADCB /* NotificationEmpty.swift */; };
-		DE59BB9E2D8A9D9D0040ADCB /* CommunityEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BB9D2D8A9D9D0040ADCB /* CommunityEmpty.swift */; };
-		DE59BBA12D8A9DB00040ADCB /* OverviewEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BBA02D8A9DB00040ADCB /* OverviewEmpty.swift */; };
-		DE59BBA42D8A9DCA0040ADCB /* ViewitEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BBA32D8A9DCA0040ADCB /* ViewitEmpty.swift */; };
-		DE59BBA72D8A9DE30040ADCB /* ProfileEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BBA62D8A9DE30040ADCB /* ProfileEmpty.swift */; };
 		DE59BBA92D8A9EFD0040ADCB /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */; };
 		DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EA2D7211070021BDE1 /* Like.swift */; };
 		DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EE2D7213D90021BDE1 /* Opacity.swift */; };
@@ -404,12 +399,7 @@
 		DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFoundViewController.swift; sourceTree = "<group>"; };
 		DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSheetViewController.swift; sourceTree = "<group>"; };
-		DE59BB962D8A9D1F0040ADCB /* HomeEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEmpty.swift; sourceTree = "<group>"; };
 		DE59BB992D8A9D3A0040ADCB /* NotificationEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEmpty.swift; sourceTree = "<group>"; };
-		DE59BB9D2D8A9D9D0040ADCB /* CommunityEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityEmpty.swift; sourceTree = "<group>"; };
-		DE59BBA02D8A9DB00040ADCB /* OverviewEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewEmpty.swift; sourceTree = "<group>"; };
-		DE59BBA32D8A9DCA0040ADCB /* ViewitEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitEmpty.swift; sourceTree = "<group>"; };
-		DE59BBA62D8A9DE30040ADCB /* ProfileEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEmpty.swift; sourceTree = "<group>"; };
 		DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		DE67A9EA2D7211070021BDE1 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		DE67A9EE2D7213D90021BDE1 /* Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opacity.swift; sourceTree = "<group>"; };
@@ -1009,6 +999,7 @@
 				DD005BA82D7FFFE000B1661F /* LikeButton.swift */,
 				DD005BAA2D80071E00B1661F /* CommentButton.swift */,
 				DD547AB82D7E439E00B8BA5A /* GhostButton.swift */,
+				DE8FF1902D8155DD00C41880 /* WableButton.swift */,
 			);
 			path = Button;
 			sourceTree = "<group>";
@@ -1052,49 +1043,22 @@
 		DDCD66DB2D7C8A1600EF4C28 /* WableComponent */ = {
 			isa = PBXGroup;
 			children = (
-				DDCD66DD2D7C8A2B00EF4C28 /* Youjin */,
-				DDCD66DC2D7C8A2500EF4C28 /* Jinung */,
+				DDCD66FE2D7DF6E800EF4C28 /* Navigation */,
+				DE59BBAB2D8AA2510040ADCB /* ViewController */,
+				DDAD41A52D873E3600EF312C /* View */,
+				DDAD41A32D873E1D00EF312C /* Button */,
+				DDAD41A42D873E2900EF312C /* Cell */,
 			);
 			path = WableComponent;
 			sourceTree = "<group>";
 		};
-		DDCD66DC2D7C8A2500EF4C28 /* Jinung */ = {
-			isa = PBXGroup;
-			children = (
-				DE8FF1902D8155DD00C41880 /* WableButton.swift */,
-				DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */,
-				DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */,
-				DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */,
-				DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */,
-				DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */,
-			);
-			path = Jinung;
-			sourceTree = "<group>";
-		};
-		DDCD66DD2D7C8A2B00EF4C28 /* Youjin */ = {
-			isa = PBXGroup;
-			children = (
-				DDCD66FE2D7DF6E800EF4C28 /* TabBar */,
-				DDAD41A52D873E3600EF312C /* View */,
-				DDAD41A32D873E1D00EF312C /* Button */,
-				DDAD41A42D873E2900EF312C /* Cell */,
-				DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */,
-				DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */,
-				DDCD66F82D7DF69D00EF4C28 /* OverviewViewController.swift */,
-				DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */,
-				DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */,
-			);
-			path = Youjin;
-			sourceTree = "<group>";
-		};
-		DDCD66FE2D7DF6E800EF4C28 /* TabBar */ = {
+		DDCD66FE2D7DF6E800EF4C28 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
 				DDCA70942D883D3B00A988B8 /* NavigationViewController.swift */,
-				DDCD66E22D7DB11500EF4C28 /* TabBarController.swift */,
 				DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */,
 			);
-			path = TabBar;
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 		DDED59492D784E9000A0BEF1 /* Local */ = {
@@ -1191,7 +1155,7 @@
 		DE59BB952D8A9D130040ADCB /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				DE59BB962D8A9D1F0040ADCB /* HomeEmpty.swift */,
+				DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1207,7 +1171,7 @@
 		DE59BB9C2D8A9D870040ADCB /* Community */ = {
 			isa = PBXGroup;
 			children = (
-				DE59BB9D2D8A9D9D0040ADCB /* CommunityEmpty.swift */,
+				DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -1215,7 +1179,7 @@
 		DE59BB9F2D8A9DA30040ADCB /* Overview */ = {
 			isa = PBXGroup;
 			children = (
-				DE59BBA02D8A9DB00040ADCB /* OverviewEmpty.swift */,
+				DDCD66F82D7DF69D00EF4C28 /* OverviewViewController.swift */,
 			);
 			path = Overview;
 			sourceTree = "<group>";
@@ -1223,7 +1187,7 @@
 		DE59BBA22D8A9DBC0040ADCB /* Viewit */ = {
 			isa = PBXGroup;
 			children = (
-				DE59BBA32D8A9DCA0040ADCB /* ViewitEmpty.swift */,
+				DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */,
 			);
 			path = Viewit;
 			sourceTree = "<group>";
@@ -1231,9 +1195,29 @@
 		DE59BBA52D8A9DD50040ADCB /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				DE59BBA62D8A9DE30040ADCB /* ProfileEmpty.swift */,
+				DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		DE59BBAA2D8AA2330040ADCB /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				DDCD66E22D7DB11500EF4C28 /* TabBarController.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		DE59BBAB2D8AA2510040ADCB /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */,
+				DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */,
+				DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */,
+				DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */,
+				DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */,
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		DE7C53082D761DA500076E5D /* Presentation */ = {
@@ -1246,6 +1230,7 @@
 				DD765D9B2D8747890029A317 /* Splash */,
 				DD765D982D8746D30029A317 /* Login */,
 				DDCA70912D87CE3900A988B8 /* Onboarding */,
+				DE59BBAA2D8AA2330040ADCB /* TabBar */,
 				DE59BB952D8A9D130040ADCB /* Home */,
 				DE59BB982D8A9D290040ADCB /* Notification */,
 				DE59BB9C2D8A9D870040ADCB /* Community */,
@@ -1409,7 +1394,6 @@
 				DD29680E2D6DACF700143851 /* Token.swift in Sources */,
 				DD29680F2D6DACF700143851 /* SocialPlatform.swift in Sources */,
 				DD2968102D6DACF700143851 /* Notification.swift in Sources */,
-				DE59BBA12D8A9DB00040ADCB /* OverviewEmpty.swift in Sources */,
 				DD2968112D6DACF700143851 /* Viewit.swift in Sources */,
 				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
 				DD2968122D6DACF700143851 /* Community.swift in Sources */,
@@ -1431,7 +1415,6 @@
 				DD2968532D6DAD4400143851 /* BaseResponse.swift in Sources */,
 				DD2968542D6DAD4400143851 /* CreateBan.swift in Sources */,
 				DD2968552D6DAD4400143851 /* CreateComment.swift in Sources */,
-				DE59BB9E2D8A9D9D0040ADCB /* CommunityEmpty.swift in Sources */,
 				DD2968562D6DAD4400143851 /* UpdateUserBadge.swift in Sources */,
 				DDED59702D78EE7800A0BEF1 /* FetchCommunityListUseCase.swift in Sources */,
 				DDCD66E52D7DC0EB00EF4C28 /* NavigationView.swift in Sources */,
@@ -1465,7 +1448,6 @@
 				DD2968422D6DAD2F00143851 /* FetchNotices.swift in Sources */,
 				DD29686E2D6DAD5F00143851 /* Bundle+.swift in Sources */,
 				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,
-				DE59BBA42D8A9DCA0040ADCB /* ViewitEmpty.swift in Sources */,
 				DD29686F2D6DAD5F00143851 /* MoyaLoggingPlugin.swift in Sources */,
 				DD2968702D6DAD5F00143851 /* TokenStorage.swift in Sources */,
 				DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */,
@@ -1540,7 +1522,6 @@
 				DE59BBA92D8A9EFD0040ADCB /* UIViewController+.swift in Sources */,
 				DE7C53142D761EE500076E5D /* UIView+.swift in Sources */,
 				DDCCA3932D738CD500658122 /* UserSessionRepository.swift in Sources */,
-				DE59BB972D8A9D1F0040ADCB /* HomeEmpty.swift in Sources */,
 				DD005BA92D7FFFE400B1661F /* LikeButton.swift in Sources */,
 				DD2967FF2D6DAC8900143851 /* SceneDelegate.swift in Sources */,
 				DD2968172D6DAD0200143851 /* ContentRepository.swift in Sources */,
@@ -1579,7 +1560,6 @@
 				DD2968292D6DAD0B00143851 /* WableError.swift in Sources */,
 				DD29682A2D6DAD0B00143851 /* ErrorMapper.swift in Sources */,
 				DD29682B2D6DAD0B00143851 /* CommentMapper.swift in Sources */,
-				DE59BBA72D8A9DE30040ADCB /* ProfileEmpty.swift in Sources */,
 				DDED598A2D7965F900A0BEF1 /* ProfileUseCase.swift in Sources */,
 				DDCD66F32D7DF5AB00EF4C28 /* HomeViewController.swift in Sources */,
 				DD29682C2D6DAD0B00143851 /* ContentMapper.swift in Sources */,
