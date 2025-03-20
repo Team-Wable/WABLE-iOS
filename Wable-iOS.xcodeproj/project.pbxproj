@@ -159,7 +159,6 @@
 		DDCD66EC2D7DE5E000EF4C28 /* ConstraintMaker+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66EB2D7DE5D900EF4C28 /* ConstraintMaker+.swift */; };
 		DDCD66F32D7DF5AB00EF4C28 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */; };
 		DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */; };
-		DDCD66F92D7DF6A800EF4C28 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66F82D7DF69D00EF4C28 /* OverviewViewController.swift */; };
 		DDCD66FB2D7DF6CF00EF4C28 /* ViewitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */; };
 		DDCD66FD2D7DF6D900EF4C28 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */; };
 		DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD67042D7E271C00EF4C28 /* ToastView.swift */; };
@@ -193,6 +192,7 @@
 		DDF2CC9E2D71FECB000F1919 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC9D2D71FECB000F1919 /* FirebaseMessaging */; };
 		DDF2CCA12D71FF27000F1919 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CCA02D71FF27000F1919 /* AmplitudeSwift */; };
 		DDFF126F2D7EE39500980BA7 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFF126E2D7EE39200980BA7 /* UIColor+.swift */; };
+		DE277A882D8C09AD006D2B53 /* OverviewPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */; };
 		DE54B03C2D82C43F009A7C34 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */; };
 		DE54B03E2D82CD82009A7C34 /* NotFoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */; };
 		DE54B0402D832E78009A7C34 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */; };
@@ -374,7 +374,6 @@
 		DDCD66EB2D7DE5D900EF4C28 /* ConstraintMaker+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConstraintMaker+.swift"; sourceTree = "<group>"; };
 		DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
-		DDCD66F82D7DF69D00EF4C28 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
 		DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitViewController.swift; sourceTree = "<group>"; };
 		DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		DDCD67042D7E271C00EF4C28 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
@@ -395,6 +394,7 @@
 		DDED59872D7965EC00A0BEF1 /* NotificationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUseCase.swift; sourceTree = "<group>"; };
 		DDED59892D7965F400A0BEF1 /* ProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCase.swift; sourceTree = "<group>"; };
 		DDFF126E2D7EE39200980BA7 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPageViewController.swift; sourceTree = "<group>"; };
 		DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFoundViewController.swift; sourceTree = "<group>"; };
 		DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
@@ -1152,6 +1152,14 @@
 			path = Overview;
 			sourceTree = "<group>";
 		};
+		DE277A862D8C09A3006D2B53 /* Page */ = {
+			isa = PBXGroup;
+			children = (
+				DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */,
+			);
+			path = Page;
+			sourceTree = "<group>";
+		};
 		DE59BB952D8A9D130040ADCB /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -1179,7 +1187,8 @@
 		DE59BB9F2D8A9DA30040ADCB /* Overview */ = {
 			isa = PBXGroup;
 			children = (
-				DDCD66F82D7DF69D00EF4C28 /* OverviewViewController.swift */,
+				DEAFE04F2D8C43D90097E91C /* Rank */,
+				DE277A862D8C09A3006D2B53 /* Page */,
 			);
 			path = Overview;
 			sourceTree = "<group>";
@@ -1263,6 +1272,13 @@
 				DE7C530B2D761DCA00076E5D /* ViewModelType.swift */,
 			);
 			path = Interface;
+			sourceTree = "<group>";
+		};
+		DEAFE04F2D8C43D90097E91C /* Rank */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Rank;
 			sourceTree = "<group>";
 		};
 		DEDC29122D7208650073D512 /* Enum */ = {
@@ -1391,6 +1407,7 @@
 				DE54B03E2D82CD82009A7C34 /* NotFoundViewController.swift in Sources */,
 				DD29680C2D6DACF700143851 /* LCKTeamRank.swift in Sources */,
 				DD29680D2D6DACF700143851 /* Content.swift in Sources */,
+				DE277A882D8C09AD006D2B53 /* OverviewPageViewController.swift in Sources */,
 				DD29680E2D6DACF700143851 /* Token.swift in Sources */,
 				DD29680F2D6DACF700143851 /* SocialPlatform.swift in Sources */,
 				DD2968102D6DACF700143851 /* Notification.swift in Sources */,
@@ -1538,7 +1555,6 @@
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
 				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
 				DD29681D2D6DAD0200143851 /* CommentRepository.swift in Sources */,
-				DDCD66F92D7DF6A800EF4C28 /* OverviewViewController.swift in Sources */,
 				DDED59722D78EE9900A0BEF1 /* UpdatePreRegisterUseCase.swift in Sources */,
 				DD29681E2D6DAD0200143851 /* AccountRepository.swift in Sources */,
 				DDCA70902D87CE2700A988B8 /* LCKYearViewController.swift in Sources */,
