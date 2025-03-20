@@ -138,6 +138,9 @@
 		DD29687C2D6DB27F00143851 /* OAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687B2D6DB27200143851 /* OAuthenticator.swift */; };
 		DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687D2D6DC70100143851 /* OAuthCredential.swift */; };
 		DD514D082D8C83560095021D /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D072D8C833D0095021D /* AgreementViewController.swift */; };
+		DD514D0A2D8C958B0095021D /* AgreementItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D092D8C957E0095021D /* AgreementItemView.swift */; };
+		DD514D0E2D8C99DC0095021D /* AgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D0D2D8C99DC0095021D /* AgreementView.swift */; };
+		DD514D102D8CA3780095021D /* AttributedString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D0F2D8CA36D0095021D /* AttributedString+.swift */; };
 		DD547AB92D7E43A600B8BA5A /* GhostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD547AB82D7E439E00B8BA5A /* GhostButton.swift */; };
 		DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */; };
 		DD765D9A2D8746E30029A317 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D992D8746DD0029A317 /* LoginViewController.swift */; };
@@ -353,6 +356,9 @@
 		DD29687B2D6DB27200143851 /* OAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthenticator.swift; sourceTree = "<group>"; };
 		DD29687D2D6DC70100143851 /* OAuthCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthCredential.swift; sourceTree = "<group>"; };
 		DD514D072D8C833D0095021D /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
+		DD514D092D8C957E0095021D /* AgreementItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementItemView.swift; sourceTree = "<group>"; };
+		DD514D0D2D8C99DC0095021D /* AgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementView.swift; sourceTree = "<group>"; };
+		DD514D0F2D8CA36D0095021D /* AttributedString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedString+.swift"; sourceTree = "<group>"; };
 		DD547AB82D7E439E00B8BA5A /* GhostButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostButton.swift; sourceTree = "<group>"; };
 		DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenProvider.swift; sourceTree = "<group>"; };
 		DD765D992D8746DD0029A317 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -1185,6 +1191,8 @@
 				DDCA70922D88315C00A988B8 /* LCKYearView.swift */,
 				DDFB22432D8BB8D100FEA24A /* LCKTeamView.swift */,
 				DDFB22472D8BBCB000FEA24A /* ProfileRegisterView.swift */,
+				DD514D0D2D8C99DC0095021D /* AgreementView.swift */,
+				DD514D092D8C957E0095021D /* AgreementItemView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1292,6 +1300,7 @@
 		DE7C53092D761DB900076E5D /* UIHelper */ = {
 			isa = PBXGroup;
 			children = (
+				DD514D0F2D8CA36D0095021D /* AttributedString+.swift */,
 				DE7C530F2D761E3300076E5D /* String+.swift */,
 				DE7C530D2D761DFB00076E5D /* UIFont+.swift */,
 				DE7C53132D761EE500076E5D /* UIView+.swift */,
@@ -1442,6 +1451,7 @@
 				DD29680E2D6DACF700143851 /* Token.swift in Sources */,
 				DD29680F2D6DACF700143851 /* SocialPlatform.swift in Sources */,
 				DD2968102D6DACF700143851 /* Notification.swift in Sources */,
+				DD514D0A2D8C958B0095021D /* AgreementItemView.swift in Sources */,
 				DDFB22442D8BB8D500FEA24A /* LCKTeamView.swift in Sources */,
 				DD2968112D6DACF700143851 /* Viewit.swift in Sources */,
 				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
@@ -1555,6 +1565,7 @@
 				DD29686B2D6DAD5500143851 /* CommunityTargetType.swift in Sources */,
 				DD29686C2D6DAD5500143851 /* ProfileTargetType.swift in Sources */,
 				DD29686D2D6DAD5500143851 /* AccountTargetType.swift in Sources */,
+				DD514D102D8CA3780095021D /* AttributedString+.swift in Sources */,
 				DD2968392D6DAD1700143851 /* LoginRepositoryImpl.swift in Sources */,
 				DEDC29182D720D030073D512 /* PostStatus.swift in Sources */,
 				DD29683A2D6DAD1700143851 /* NotificationRepositoryImpl.swift in Sources */,
@@ -1610,6 +1621,7 @@
 				DD2968262D6DAD0B00143851 /* CommunityMapper.swift in Sources */,
 				DD2968272D6DAD0B00143851 /* LoginMapper.swift in Sources */,
 				DDED594F2D784EC000A0BEF1 /* LocalKeyValueProvider.swift in Sources */,
+				DD514D0E2D8C99DC0095021D /* AgreementView.swift in Sources */,
 				DDED59752D78F16400A0BEF1 /* FetchNicknameDuplicationUseCase.swift in Sources */,
 				DE54B0402D832E78009A7C34 /* LoadingViewController.swift in Sources */,
 				DD2968282D6DAD0B00143851 /* InformationMapper.swift in Sources */,

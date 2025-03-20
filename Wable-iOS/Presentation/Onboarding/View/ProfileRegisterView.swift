@@ -126,7 +126,6 @@ private extension ProfileRegisterView {
             $0.leading.equalToSuperview().offset(16)
         }
         
-        
         profileImageView.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(48)
             $0.centerX.equalToSuperview()
