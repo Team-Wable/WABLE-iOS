@@ -95,7 +95,26 @@ private extension AgreementViewController {
     }
     
     @objc func nextButtonDidTap() {
-        navigationController?.pushViewController(AgreementViewController(type: .flow), animated: true)
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let loginViewController = windowScene.windows.first?.rootViewController
+        else {
+            return
+        }
+        
+        let tabBarController = TabBarController()
+        
+        dismiss(animated: false) {
+            loginViewController.present(tabBarController, animated: true) {
+                let noticeViewController = WableSheetViewController(
+                    title: "와블과 함께해 주셔서 감사합니다!",
+                    message: "%(user)님\n와블의 일원이 되신 것을 환영해요.\nLCK 함께 보며 같이 즐겨요 :)"
+                )
+                
+                noticeViewController.addAction(.init(title: "와블 즐기러 가기", style: .primary))
+                
+                tabBarController.present(noticeViewController, animated: true)
+            }
+        }
     }
     
     // MARK: - Function Method
