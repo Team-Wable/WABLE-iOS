@@ -12,12 +12,12 @@ final class LCKTeamView: UIView {
     
     // MARK: - UIComponent
     
-    let titleLabel: UILabel = UILabel().then {
+    private let titleLabel: UILabel = UILabel().then {
         $0.attributedText = "가장 응원하는 팀을 골라주세요".pretendardString(with: .head0)
         $0.textColor = .wableBlack
     }
     
-    let descriptionLabel: UILabel = UILabel().then {
+    private let descriptionLabel: UILabel = UILabel().then {
         $0.attributedText = "선택하신 팀은 프로필에 응원중인 팀으로 소개돼요\n팀 순서는 랜덤으로 표시됩니다".pretendardString(with: .body2)
         $0.textColor = .gray600
         $0.numberOfLines = 2
@@ -64,6 +64,9 @@ final class LCKTeamView: UIView {
 // MARK: - Private Extension
 
 private extension LCKTeamView {
+    
+    // MARK: Setup Method
+    
     func setupView() {
         addSubviews(
             titleLabel,

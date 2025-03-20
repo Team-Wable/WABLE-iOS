@@ -10,7 +10,6 @@ import Foundation
 // MARK: - 2025년 LCK 팀 목록
 
 enum LCKTeam: String {
-    case lck = "LCK"
     case t1 = "T1"
     case gen = "GEN"
     case hle = "HLE"

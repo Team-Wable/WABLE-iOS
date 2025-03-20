@@ -80,7 +80,7 @@ final class LCKYearView: UIView {
 
 private extension LCKYearView {
     
-    // MARK: - Setup
+    // MARK: - Setup Method
     
     func setupView() {
         backgroundColor = .wableWhite

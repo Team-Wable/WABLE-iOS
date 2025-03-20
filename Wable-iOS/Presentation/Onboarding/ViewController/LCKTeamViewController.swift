@@ -39,7 +39,7 @@ private extension LCKTeamViewController {
     
     func setupConstraint() {
         rootView.snp.makeConstraints {
-            $0.top.equalTo(navigationView.snp.bottom).offset(10)
+            $0.top.equalTo(navigationView.snp.bottom)
             $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
@@ -51,17 +51,21 @@ private extension LCKTeamViewController {
     
     func setupAction() {
         rootView.skipButton.addTarget(self, action: #selector(skipButtonDidTap), for: .touchUpInside)
-        rootView.skipButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
+        rootView.nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
     }
     
     // MARK: - @objc Method
 
     @objc func skipButtonDidTap() {
+        // TODO: 좋아하는 팀 LCK로 설정하는 로직 필요
         
+        navigationController?.pushViewController(ProfileRegisterViewController(type: .flow), animated: true)
     }
     
     @objc func nextButtonDidTap() {
+        // TODO: 좋아하는 팀 선택된 버튼 팀으로 설정하는 로직 필요
         
+        navigationController?.pushViewController(ProfileRegisterViewController(type: .flow), animated: true)
     }
 }
 
