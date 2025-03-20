@@ -17,6 +17,8 @@ final class LCKYearCollectionViewCell: UICollectionViewCell {
         $0.textColor = .wableBlack
     }
     
+    // MARK: - LifeCycle
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         

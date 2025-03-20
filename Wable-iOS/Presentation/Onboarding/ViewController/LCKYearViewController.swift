@@ -81,7 +81,7 @@ private extension LCKYearViewController {
     }
     
     @objc func nextButtonDidTap() {
-        
+        navigationController?.pushViewController(LCKTeamViewController(type: .flow), animated: true)
     }
 }
 
