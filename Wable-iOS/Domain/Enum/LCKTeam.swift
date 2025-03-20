@@ -16,9 +16,9 @@ enum LCKTeam: String {
     case hle = "HLE"
     case dk = "DK"
     case kt = "KT"
-    case fox = "FOX"
-    case kdf = "KDF"
     case ns = "NS"
     case drx = "DRX"
     case bro = "BRO"
+    case bfx = "BFX"
+    case dnf = "DNF"
 }
