@@ -60,9 +60,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 private extension SceneDelegate {
     func configureLoginScreen() {
-        self.window?.rootViewController = UINavigationController(rootViewController: LCKYearViewController(type: .flow)).then {
-            $0.navigationBar.isHidden = true
-        }
+        self.window?.rootViewController = LoginViewController()
     }
     
     func configureMainScreen() {
