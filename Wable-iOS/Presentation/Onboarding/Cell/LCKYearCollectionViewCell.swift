@@ -33,7 +33,7 @@ final class LCKYearCollectionViewCell: UICollectionViewCell {
 
 private extension LCKYearCollectionViewCell {
     func setupView() {
-        layer.cornerRadius = 8
+        layer.cornerRadius = 8.adjustedHeight
         clipsToBounds = true
         
         contentView.addSubview(yearLabel)
