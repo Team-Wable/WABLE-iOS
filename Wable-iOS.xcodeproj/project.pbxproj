@@ -1027,9 +1027,9 @@
 		DDCA70912D87CE3900A988B8 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				DDFB223A2D8B9F3F00FEA24A /* LCKYearCollectionViewCell.swift */,
-				DDCA70922D88315C00A988B8 /* LCKYearView.swift */,
-				DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */,
+				DDFB223C2D8BA64500FEA24A /* Cell */,
+				DDFB223D2D8BA64C00FEA24A /* View */,
+				DDFB223E2D8BA65200FEA24A /* ViewController */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -1153,6 +1153,30 @@
 				DDED59852D7965DB00A0BEF1 /* OverviewUseCase.swift */,
 			);
 			path = Overview;
+			sourceTree = "<group>";
+		};
+		DDFB223C2D8BA64500FEA24A /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DDFB223A2D8B9F3F00FEA24A /* LCKYearCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		DDFB223D2D8BA64C00FEA24A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DDCA70922D88315C00A988B8 /* LCKYearView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DDFB223E2D8BA65200FEA24A /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */,
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		DE59BB952D8A9D130040ADCB /* Home */ = {
