@@ -19,7 +19,7 @@ class NavigationViewController: UIViewController {
     init(type: NavigationType) {
         self.navigationView = NavigationView(type: type)
         
-        super.init()
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
