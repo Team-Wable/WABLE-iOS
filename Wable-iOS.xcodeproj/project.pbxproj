@@ -194,6 +194,8 @@
 		DDF2CCA12D71FF27000F1919 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CCA02D71FF27000F1919 /* AmplitudeSwift */; };
 		DDFB223B2D8B9F5100FEA24A /* LCKYearCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB223A2D8B9F3F00FEA24A /* LCKYearCollectionViewCell.swift */; };
 		DDFB22402D8BA68900FEA24A /* LCKTeamCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB223F2D8BA67D00FEA24A /* LCKTeamCollectionViewCell.swift */; };
+		DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22412D8BA9C800FEA24A /* LCKTeamViewController.swift */; };
+		DDFB22442D8BB8D500FEA24A /* LCKTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22432D8BB8D100FEA24A /* LCKTeamView.swift */; };
 		DDFF126F2D7EE39500980BA7 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFF126E2D7EE39200980BA7 /* UIColor+.swift */; };
 		DE54B03C2D82C43F009A7C34 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */; };
 		DE54B03E2D82CD82009A7C34 /* NotFoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */; };
@@ -398,6 +400,8 @@
 		DDED59892D7965F400A0BEF1 /* ProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCase.swift; sourceTree = "<group>"; };
 		DDFB223A2D8B9F3F00FEA24A /* LCKYearCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearCollectionViewCell.swift; sourceTree = "<group>"; };
 		DDFB223F2D8BA67D00FEA24A /* LCKTeamCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamCollectionViewCell.swift; sourceTree = "<group>"; };
+		DDFB22412D8BA9C800FEA24A /* LCKTeamViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamViewController.swift; sourceTree = "<group>"; };
+		DDFB22432D8BB8D100FEA24A /* LCKTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamView.swift; sourceTree = "<group>"; };
 		DDFF126E2D7EE39200980BA7 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFoundViewController.swift; sourceTree = "<group>"; };
@@ -1169,6 +1173,7 @@
 		DDFB223D2D8BA64C00FEA24A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DDFB22432D8BB8D100FEA24A /* LCKTeamView.swift */,
 				DDCA70922D88315C00A988B8 /* LCKYearView.swift */,
 			);
 			path = View;
@@ -1177,6 +1182,7 @@
 		DDFB223E2D8BA65200FEA24A /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				DDFB22412D8BA9C800FEA24A /* LCKTeamViewController.swift */,
 				DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */,
 			);
 			path = ViewController;
@@ -1424,6 +1430,7 @@
 				DD29680E2D6DACF700143851 /* Token.swift in Sources */,
 				DD29680F2D6DACF700143851 /* SocialPlatform.swift in Sources */,
 				DD2968102D6DACF700143851 /* Notification.swift in Sources */,
+				DDFB22442D8BB8D500FEA24A /* LCKTeamView.swift in Sources */,
 				DD2968112D6DACF700143851 /* Viewit.swift in Sources */,
 				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
 				DD2968122D6DACF700143851 /* Community.swift in Sources */,
@@ -1565,6 +1572,7 @@
 				DD2968192D6DAD0200143851 /* ReportRepository.swift in Sources */,
 				DD29681A2D6DAD0200143851 /* ViewitRepository.swift in Sources */,
 				DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */,
+				DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */,
 				DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */,
 				DD29681B2D6DAD0200143851 /* ProfileRepository.swift in Sources */,
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
