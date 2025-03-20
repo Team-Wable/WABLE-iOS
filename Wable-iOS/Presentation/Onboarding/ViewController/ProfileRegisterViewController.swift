@@ -1,0 +1,174 @@
+//
+//  ProfileRegisterViewController.swift
+//  Wable-iOS
+//
+//  Created by YOUJIM on 3/20/25.
+//
+
+import Photos
+import PhotosUI
+import UIKit
+
+final class ProfileRegisterViewController: NavigationViewController {
+    
+    // MARK: - UIComponent
+    
+    private let rootView = ProfileRegisterView()
+    
+    // MARK: - LifeCycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupView()
+        setupConstraint()
+        setupDelegate()
+        setupAction()
+    }
+}
+
+// MARK: - Priviate Extension
+
+private extension ProfileRegisterViewController {
+    
+    // MARK: - Setup Method
+    
+    func setupView() {
+        view.addSubview(rootView)
+    }
+    
+    func setupConstraint() {
+        rootView.snp.makeConstraints {
+            $0.top.equalTo(navigationView.snp.bottom)
+            $0.horizontalEdges.bottom.equalToSuperview()
+        }
+    }
+    
+    func setupDelegate() {
+        rootView.nickNameTextField.delegate = self
+    }
+    
+    func setupAction() {
+        rootView.switchButton.addTarget(self, action: #selector(switchButtonDidTap), for: .touchUpInside)
+        rootView.addButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
+        rootView.duplicationCheckButton.addTarget(self, action: #selector(duplicationCheckButtonDidTap), for: .touchUpInside)
+        rootView.nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
+    }
+    
+    // MARK: - @objc Method
+    
+    @objc func switchButtonDidTap() {
+        rootView.configureDefaultImage()
+    }
+    
+    @objc func addButtonDidTap() {
+        switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
+        case .denied, .restricted:
+            presentSettings()
+        case .authorized, .limited:
+            presentPhotoPicker()
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
+                DispatchQueue.main.async {
+                    status == .authorized ? self.presentPhotoPicker() : nil
+                }
+            }
+        default:
+            break
+        }
+    }
+    
+    @objc func duplicationCheckButtonDidTap() {
+        // TODO: - 서버 연결 후 해당 부분 업데이트 필요
+        let condition = true
+        
+        rootView.conditiionLabel.text = condition ? "사용 가능한 닉네임입니다." : "이미 사용 중인 닉네임입니다."
+        rootView.conditiionLabel.textColor = condition ? .success : .error
+        rootView.nextButton.isUserInteractionEnabled = condition
+        rootView.nextButton.updateStyle(condition ? .primary : .gray)
+    }
+    
+    @objc func nextButtonDidTap() {
+        navigationController?.pushViewController(AgreementViewController(type: .flow), animated: true)
+    }
+    
+    // MARK: - Function Method
+    
+    func presentPhotoPicker() {
+        var configuration = PHPickerConfiguration()
+        configuration.filter = .images
+        configuration.selectionLimit = 1
+        
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        
+        present(picker, animated: true)
+    }
+    
+    func presentSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        let alert = UIAlertController(
+            title: "설정",
+            message: "Don't Be 앱에 사진 권한이 없습니다.\n설정으로 이동해 권한 설정을 진행해주세요.",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "닫기", style: .default))
+        alert.addAction(UIAlertAction(title: "권한 설정하기", style: .default) { _ in
+            UIApplication.shared.open(url)
+        })
+        
+        present(alert, animated: true, completion: nil)
+    }
+}
+
+// MARK: - PHPickerViewControllerDelegate
+
+extension ProfileRegisterViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        results.first?.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+            guard let image = image as? UIImage else { return }
+            
+            DispatchQueue.main.async {
+                self.rootView.profileImageView.image = image
+            }
+        }
+        
+        dismiss(animated: true)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension ProfileRegisterViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool{
+        textField.resignFirstResponder()
+        
+        return true
+    }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        let regex = try? NSRegularExpression(pattern: "^[가-힣a-zA-Z0-9]+$")
+        let range = NSRange(location: 0, length: text.utf16.count)
+        let condition = regex?.firstMatch(in: text, options: [], range: range) != nil
+        
+        self.rootView.conditiionLabel.text = condition || text == "" ? "10자리 이내, 문자/숫자로 입력 가능해요" : "닉네임에 사용할 수 없는 문자가 포함되어 있어요."
+        self.rootView.conditiionLabel.textColor = condition || text == "" ? .gray600 : .error
+        self.rootView.duplicationCheckButton.isUserInteractionEnabled = condition
+        self.rootView.duplicationCheckButton.configuration?.baseForegroundColor = condition ? .white : .gray600
+        self.rootView.duplicationCheckButton.configuration?.baseBackgroundColor = condition ? .wableBlack : .gray200
+        self.rootView.nextButton.updateStyle(.gray)
+        self.rootView.nextButton.isUserInteractionEnabled = false
+    }
+    
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        guard let text = textField.text else { return false }
+        
+        return string.isEmpty || (text + string).count <= 10
+    }
+}
