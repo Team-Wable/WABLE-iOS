@@ -25,7 +25,8 @@ final class GameScheduleHeaderView: UICollectionReusableView {
     }
     
     private let dateLabel = UILabel().then {
-        $0.textColor = .gray900
+        $0.attributedText = "12.31 (목)".pretendardString(with: .head2)
+        $0.textColor = .wableBlack
     }
     
     // MARK: - Initializer
@@ -51,7 +52,7 @@ final class GameScheduleHeaderView: UICollectionReusableView {
 extension GameScheduleHeaderView {
     func configure(isToday: Bool, date: String) {
         todayDescriptionLabel.isHidden = !isToday
-        dateLabel.attributedText = date.pretendardString(with: .body3)
+        dateLabel.text = date
     }
 }
 

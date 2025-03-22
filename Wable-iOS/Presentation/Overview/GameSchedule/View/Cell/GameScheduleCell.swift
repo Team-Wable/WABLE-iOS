@@ -17,6 +17,7 @@ final class GameScheduleCell: UICollectionViewCell {
     private let gameStatusImageView = UIImageView()
     
     private let gameTimeLabel = UILabel().then {
+        $0.attributedText = "24:59".pretendardString(with: .body3)
         $0.textColor = .gray900
     }
     
@@ -29,20 +30,24 @@ final class GameScheduleCell: UICollectionViewCell {
     private let homeTeamLogoImageView = UIImageView()
     
     private let homeTeamNameLabel = UILabel().then {
+        $0.attributedText = "TBD".pretendardString(with: .body3)
         $0.textColor = .gray700
     }
     
     private let homeTeamScoreLabel = UILabel().then {
+        $0.attributedText = "0".pretendardString(with: .head0)
         $0.textColor = .wableBlack
     }
     
     private let colonImageView = UIImageView(image: .icVersus)
     
     private let awayTeamScoreLabel = UILabel().then {
+        $0.attributedText = "0".pretendardString(with: .head0)
         $0.textColor = .wableBlack
     }
     
     private let awayTeamNameLabel = UILabel().then {
+        $0.attributedText = "TBD".pretendardString(with: .body3)
         $0.textColor = .gray700
     }
     
@@ -85,14 +90,14 @@ extension GameScheduleCell {
         awayTeamLogoImage: UIImage?
     ) {
         gameStatusImageView.image = gameStatusImage
-        gameTimeLabel.attributedText = gameTime.pretendardString(with: .body3)
+        gameTimeLabel.text = gameTime
         
         homeTeamLogoImageView.image = homeTeamLogoImage
-        homeTeamNameLabel.attributedText = homeTeamName.pretendardString(with: .body3)
-        homeTeamScoreLabel.attributedText = "\(homeTeamScore)".pretendardString(with: .head0)
+        homeTeamNameLabel.text = homeTeamName
+        homeTeamScoreLabel.text = "\(homeTeamScore)"
         
-        awayTeamScoreLabel.attributedText = "\(awayTeamScore)".pretendardString(with: .head0)
-        awayTeamNameLabel.attributedText = awayTeamName.pretendardString(with: .body3)
+        awayTeamScoreLabel.text = "\(awayTeamScore)"
+        awayTeamNameLabel.text = awayTeamName
         awayTeamLogoImageView.image = awayTeamLogoImage
     }
 }
