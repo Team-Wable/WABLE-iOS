@@ -36,6 +36,11 @@ final class GameScheduleListViewController: UIViewController {
         collectionViewLayout: UICollectionViewLayout()
     ).then {
         $0.refreshControl = UIRefreshControl()
+        $0.alwaysBounceVertical = true
+    }
+    
+    private let emptyView: GameScheduleEmptyView = .init().then {
+        $0.isHidden = true
     }
     
     // MARK: - Property
@@ -59,12 +64,21 @@ final class GameScheduleListViewController: UIViewController {
 
 private extension GameScheduleListViewController {
     func setupView() {
-        view.addSubview(collectionView)
+        view.backgroundColor = .wableWhite
+        
+        view.addSubviews(
+            collectionView,
+            emptyView
+        )
     }
     
     func setupConstraint() {
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+        
+        emptyView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
     
@@ -197,14 +211,14 @@ private extension GameScheduleListViewController {
     var gameScheduleSection: NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(100)
+            heightDimension: .fractionalHeight(1)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = .init(top: 12, leading: 0, bottom: 16, trailing: 0)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1)
+            heightDimension: .estimated(100)
         )
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: groupSize,
