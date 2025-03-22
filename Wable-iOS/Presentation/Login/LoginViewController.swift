@@ -151,7 +151,12 @@ private extension LoginViewController {
         )
         
         noticeViewController.addAction(.init(title: "확인", style: .primary, handler: {
-            // TODO: 온보딩 화면으로 전환 필요
+            let navigationController = UINavigationController(rootViewController: LCKYearViewController(type: .flow)).then {
+                $0.navigationBar.isHidden = true
+                $0.modalPresentationStyle = .fullScreen
+            }
+            
+            self.present(navigationController, animated: true)
         }))
         
         self.present(noticeViewController, animated: true)

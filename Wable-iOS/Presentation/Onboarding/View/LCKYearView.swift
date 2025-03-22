@@ -47,10 +47,11 @@ final class LCKYearView: UIView {
     lazy var yearCollectionView: UICollectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout().then {
-        $0.itemSize = .init(width: 318.adjustedWidth, height: 54.adjustedHeight)
-        $0.minimumLineSpacing = 8
+            $0.itemSize = .init(width: 318.adjustedWidth, height: 54.adjustedHeight)
+            $0.sectionInset = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+            $0.minimumLineSpacing = 8
         }).then {
-            $0.register(UICollectionViewCell.self, forCellWithReuseIdentifier: UICollectionViewCell.reuseIdentifier)
+            $0.register(LCKYearCollectionViewCell.self, forCellWithReuseIdentifier: LCKYearCollectionViewCell.reuseIdentifier)
             $0.isHidden = true
             $0.layer.cornerRadius = 8
             $0.layer.borderWidth = 1
@@ -79,7 +80,7 @@ final class LCKYearView: UIView {
 
 private extension LCKYearView {
     
-    // MARK: - Setup
+    // MARK: - Setup Method
     
     func setupView() {
         backgroundColor = .wableWhite

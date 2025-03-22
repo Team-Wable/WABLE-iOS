@@ -137,6 +137,10 @@
 		DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD2968772D6DAE2200143851 /* GoogleService-Info.plist */; };
 		DD29687C2D6DB27F00143851 /* OAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687B2D6DB27200143851 /* OAuthenticator.swift */; };
 		DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687D2D6DC70100143851 /* OAuthCredential.swift */; };
+		DD514D082D8C83560095021D /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D072D8C833D0095021D /* AgreementViewController.swift */; };
+		DD514D0A2D8C958B0095021D /* AgreementItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D092D8C957E0095021D /* AgreementItemView.swift */; };
+		DD514D0E2D8C99DC0095021D /* AgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D0D2D8C99DC0095021D /* AgreementView.swift */; };
+		DD514D102D8CA3780095021D /* AttributedString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D0F2D8CA36D0095021D /* AttributedString+.swift */; };
 		DD547AB92D7E43A600B8BA5A /* GhostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD547AB82D7E439E00B8BA5A /* GhostButton.swift */; };
 		DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */; };
 		DD765D9A2D8746E30029A317 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D992D8746DD0029A317 /* LoginViewController.swift */; };
@@ -162,6 +166,7 @@
 		DDCD66FB2D7DF6CF00EF4C28 /* ViewitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */; };
 		DDCD66FD2D7DF6D900EF4C28 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */; };
 		DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD67042D7E271C00EF4C28 /* ToastView.swift */; };
+		DDE966102D8C62A4004E899B /* DefaultProfileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE9660F2D8C629A004E899B /* DefaultProfileType.swift */; };
 		DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */; };
 		DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */; };
 		DDED594F2D784EC000A0BEF1 /* LocalKeyValueProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594E2D784EC000A0BEF1 /* LocalKeyValueProvider.swift */; };
@@ -191,6 +196,12 @@
 		DDF2CC9C2D71FECB000F1919 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC9B2D71FECB000F1919 /* FirebaseCore */; };
 		DDF2CC9E2D71FECB000F1919 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC9D2D71FECB000F1919 /* FirebaseMessaging */; };
 		DDF2CCA12D71FF27000F1919 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CCA02D71FF27000F1919 /* AmplitudeSwift */; };
+		DDFB223B2D8B9F5100FEA24A /* LCKYearCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB223A2D8B9F3F00FEA24A /* LCKYearCollectionViewCell.swift */; };
+		DDFB22402D8BA68900FEA24A /* LCKTeamCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB223F2D8BA67D00FEA24A /* LCKTeamCollectionViewCell.swift */; };
+		DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22412D8BA9C800FEA24A /* LCKTeamViewController.swift */; };
+		DDFB22442D8BB8D500FEA24A /* LCKTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22432D8BB8D100FEA24A /* LCKTeamView.swift */; };
+		DDFB22462D8BBB8600FEA24A /* ProfileRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22452D8BBB7900FEA24A /* ProfileRegisterViewController.swift */; };
+		DDFB22482D8BBCB300FEA24A /* ProfileRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22472D8BBCB000FEA24A /* ProfileRegisterView.swift */; };
 		DDFF126F2D7EE39500980BA7 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFF126E2D7EE39200980BA7 /* UIColor+.swift */; };
 		DE277A882D8C09AD006D2B53 /* OverviewPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */; };
 		DE54B03C2D82C43F009A7C34 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */; };
@@ -356,6 +367,10 @@
 		DD29687A2D6DAE8E00143851 /* Wable-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wable-iOS.entitlements"; sourceTree = "<group>"; };
 		DD29687B2D6DB27200143851 /* OAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthenticator.swift; sourceTree = "<group>"; };
 		DD29687D2D6DC70100143851 /* OAuthCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthCredential.swift; sourceTree = "<group>"; };
+		DD514D072D8C833D0095021D /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
+		DD514D092D8C957E0095021D /* AgreementItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementItemView.swift; sourceTree = "<group>"; };
+		DD514D0D2D8C99DC0095021D /* AgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementView.swift; sourceTree = "<group>"; };
+		DD514D0F2D8CA36D0095021D /* AttributedString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedString+.swift"; sourceTree = "<group>"; };
 		DD547AB82D7E439E00B8BA5A /* GhostButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostButton.swift; sourceTree = "<group>"; };
 		DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenProvider.swift; sourceTree = "<group>"; };
 		DD765D992D8746DD0029A317 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -389,6 +404,7 @@
 		DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitViewController.swift; sourceTree = "<group>"; };
 		DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		DDCD67042D7E271C00EF4C28 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		DDE9660F2D8C629A004E899B /* DefaultProfileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultProfileType.swift; sourceTree = "<group>"; };
 		DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
 		DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsStorage.swift; sourceTree = "<group>"; };
 		DDED594E2D784EC000A0BEF1 /* LocalKeyValueProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalKeyValueProvider.swift; sourceTree = "<group>"; };
@@ -405,6 +421,12 @@
 		DDED59852D7965DB00A0BEF1 /* OverviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewUseCase.swift; sourceTree = "<group>"; };
 		DDED59872D7965EC00A0BEF1 /* NotificationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUseCase.swift; sourceTree = "<group>"; };
 		DDED59892D7965F400A0BEF1 /* ProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCase.swift; sourceTree = "<group>"; };
+		DDFB223A2D8B9F3F00FEA24A /* LCKYearCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearCollectionViewCell.swift; sourceTree = "<group>"; };
+		DDFB223F2D8BA67D00FEA24A /* LCKTeamCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamCollectionViewCell.swift; sourceTree = "<group>"; };
+		DDFB22412D8BA9C800FEA24A /* LCKTeamViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamViewController.swift; sourceTree = "<group>"; };
+		DDFB22432D8BB8D100FEA24A /* LCKTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamView.swift; sourceTree = "<group>"; };
+		DDFB22452D8BBB7900FEA24A /* ProfileRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRegisterViewController.swift; sourceTree = "<group>"; };
+		DDFB22472D8BBCB000FEA24A /* ProfileRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRegisterView.swift; sourceTree = "<group>"; };
 		DDFF126E2D7EE39200980BA7 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPageViewController.swift; sourceTree = "<group>"; };
 		DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
@@ -1050,8 +1072,9 @@
 		DDCA70912D87CE3900A988B8 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				DDCA70922D88315C00A988B8 /* LCKYearView.swift */,
-				DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */,
+				DDFB223C2D8BA64500FEA24A /* Cell */,
+				DDFB223D2D8BA64C00FEA24A /* View */,
+				DDFB223E2D8BA65200FEA24A /* ViewController */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -1059,6 +1082,7 @@
 		DDCA70982D8879C600A988B8 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				DDE9660F2D8C629A004E899B /* DefaultProfileType.swift */,
 				DDCD66E92D7DD72800EF4C28 /* LottieType.swift */,
 				DDCA70962D88796900A988B8 /* AuthorType.swift */,
 			);
@@ -1183,6 +1207,38 @@
 				DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */,
 			);
 			path = Page;
+            sourceTree = "<group>";
+		};
+		DDFB223C2D8BA64500FEA24A /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DDFB223A2D8B9F3F00FEA24A /* LCKYearCollectionViewCell.swift */,
+				DDFB223F2D8BA67D00FEA24A /* LCKTeamCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		DDFB223D2D8BA64C00FEA24A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DDCA70922D88315C00A988B8 /* LCKYearView.swift */,
+				DDFB22432D8BB8D100FEA24A /* LCKTeamView.swift */,
+				DDFB22472D8BBCB000FEA24A /* ProfileRegisterView.swift */,
+				DD514D0D2D8C99DC0095021D /* AgreementView.swift */,
+				DD514D092D8C957E0095021D /* AgreementItemView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DDFB223E2D8BA65200FEA24A /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */,
+				DDFB22412D8BA9C800FEA24A /* LCKTeamViewController.swift */,
+				DDFB22452D8BBB7900FEA24A /* ProfileRegisterViewController.swift */,
+				DD514D072D8C833D0095021D /* AgreementViewController.swift */,
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		DE59BB952D8A9D130040ADCB /* Home */ = {
@@ -1340,6 +1396,7 @@
 		DE7C53092D761DB900076E5D /* UIHelper */ = {
 			isa = PBXGroup;
 			children = (
+				DD514D0F2D8CA36D0095021D /* AttributedString+.swift */,
 				DE7C530F2D761E3300076E5D /* String+.swift */,
 				DE7C530D2D761DFB00076E5D /* UIFont+.swift */,
 				DE7C53132D761EE500076E5D /* UIView+.swift */,
@@ -1527,8 +1584,12 @@
 				DD29680E2D6DACF700143851 /* Token.swift in Sources */,
 				DD29680F2D6DACF700143851 /* SocialPlatform.swift in Sources */,
 				DD2968102D6DACF700143851 /* Notification.swift in Sources */,
+				DD514D0A2D8C958B0095021D /* AgreementItemView.swift in Sources */,
+				DDFB22442D8BB8D500FEA24A /* LCKTeamView.swift in Sources */,
 				DD2968112D6DACF700143851 /* Viewit.swift in Sources */,
 				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
+				DD514D082D8C83560095021D /* AgreementViewController.swift in Sources */,
+				DDFB22482D8BBCB300FEA24A /* ProfileRegisterView.swift in Sources */,
 				DD2968122D6DACF700143851 /* Community.swift in Sources */,
 				DD2968132D6DACF700143851 /* TriggerType.swift in Sources */,
 				DD9980DF2D834F4E00EBBFBC /* CommentCollectionViewCell.swift in Sources */,
@@ -1557,6 +1618,7 @@
 				DD2968592D6DAD4400143851 /* CreateViewitPostRequest.swift in Sources */,
 				DD29685A2D6DAD4400143851 /* CreateCommentLiked.swift in Sources */,
 				DD9980DB2D834CA900EBBFBC /* CommentInfo.swift in Sources */,
+				DDFB22462D8BBB8600FEA24A /* ProfileRegisterViewController.swift in Sources */,
 				DD29685B2D6DAD4400143851 /* CreateAccountRequest.swift in Sources */,
 				DD29685C2D6DAD4400143851 /* CreateContent.swift in Sources */,
 				DD29685D2D6DAD4400143851 /* UpdatePreRegister.swift in Sources */,
@@ -1565,6 +1627,7 @@
 				DD2968162D6DACF700143851 /* GameSchedule.swift in Sources */,
 				DD29682E2D6DAD1700143851 /* CommunityRepositoryImpl.swift in Sources */,
 				DD29682F2D6DAD1700143851 /* ViewitRepositoryImpl.swift in Sources */,
+				DDE966102D8C62A4004E899B /* DefaultProfileType.swift in Sources */,
 				DD2968302D6DAD1700143851 /* AccountRepositoryImpl.swift in Sources */,
 				DE7004872D8E882B00B7AB71 /* RankCell.swift in Sources */,
 				DD2968312D6DAD1700143851 /* CommentLikedRepositoryImpl.swift in Sources */,
@@ -1632,6 +1695,7 @@
 				DD2968652D6DAD5500143851 /* ReportTargetType.swift in Sources */,
 				DD2968662D6DAD5500143851 /* LoginTargetType.swift in Sources */,
 				DDED59882D7965F100A0BEF1 /* NotificationUseCase.swift in Sources */,
+				DDFB223B2D8B9F5100FEA24A /* LCKYearCollectionViewCell.swift in Sources */,
 				DD2968672D6DAD5500143851 /* InformationTargetType.swift in Sources */,
 				DD2968682D6DAD5500143851 /* BaseTargetType.swift in Sources */,
 				DD2968692D6DAD5500143851 /* CommentTargetType.swift in Sources */,
@@ -1640,6 +1704,7 @@
 				DE7004952D8EBA9100B7AB71 /* GameScheduleEmptyView.swift in Sources */,
 				DD29686C2D6DAD5500143851 /* ProfileTargetType.swift in Sources */,
 				DD29686D2D6DAD5500143851 /* AccountTargetType.swift in Sources */,
+				DD514D102D8CA3780095021D /* AttributedString+.swift in Sources */,
 				DD2968392D6DAD1700143851 /* LoginRepositoryImpl.swift in Sources */,
 				DEDC29182D720D030073D512 /* PostStatus.swift in Sources */,
 				DD29683A2D6DAD1700143851 /* NotificationRepositoryImpl.swift in Sources */,
@@ -1657,6 +1722,7 @@
 				DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */,
 				DEAFE05B2D8C4E930097E91C /* GameScheduleHeaderView.swift in Sources */,
 				DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */,
+				DDFB22402D8BA68900FEA24A /* LCKTeamCollectionViewCell.swift in Sources */,
 				DDCA70972D88797200A988B8 /* AuthorType.swift in Sources */,
 				DD2967FC2D6DAC4800143851 /* Injected.swift in Sources */,
 				DD2967FD2D6DAC4800143851 /* CancelBag.swift in Sources */,
@@ -1675,6 +1741,7 @@
 				DD2968192D6DAD0200143851 /* ReportRepository.swift in Sources */,
 				DD29681A2D6DAD0200143851 /* ViewitRepository.swift in Sources */,
 				DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */,
+				DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */,
 				DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */,
 				DD29681B2D6DAD0200143851 /* ProfileRepository.swift in Sources */,
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
@@ -1698,6 +1765,7 @@
 				DE7004842D8E87DC00B7AB71 /* RankListViewController.swift in Sources */,
 				DD2968272D6DAD0B00143851 /* LoginMapper.swift in Sources */,
 				DDED594F2D784EC000A0BEF1 /* LocalKeyValueProvider.swift in Sources */,
+				DD514D0E2D8C99DC0095021D /* AgreementView.swift in Sources */,
 				DDED59752D78F16400A0BEF1 /* FetchNicknameDuplicationUseCase.swift in Sources */,
 				DE54B0402D832E78009A7C34 /* LoadingViewController.swift in Sources */,
 				DD2968282D6DAD0B00143851 /* InformationMapper.swift in Sources */,
