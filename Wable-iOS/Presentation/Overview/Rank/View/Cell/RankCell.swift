@@ -14,11 +14,15 @@ final class RankCell: UICollectionViewCell {
     
     // MARK: - UIComponent
     
-    private let rankLabel = UILabel()
+    private let rankLabel = UILabel().then {
+        $0.attributedText = "0".pretendardString(with: .body3)
+    }
 
     private let teamLogoImageView = UIImageView()
     
-    private let teamNameLabel = UILabel()
+    private let teamNameLabel = UILabel().then {
+        $0.attributedText = "이름".pretendardString(with: .body3)
+    }
     
     private let teamStatsStackView = UIStackView(axis: .horizontal).then {
         $0.spacing = 12
@@ -26,13 +30,21 @@ final class RankCell: UICollectionViewCell {
         $0.alignment = .center
     }
     
-    private let winCountLabel = UILabel()
+    private let winCountLabel = UILabel().then {
+        $0.attributedText = "0".pretendardString(with: .body4)
+    }
     
-    private let defeatCountLabel = UILabel()
+    private let defeatCountLabel = UILabel().then {
+        $0.attributedText = "0".pretendardString(with: .body4)
+    }
     
-    private let winningRateLabel = UILabel()
+    private let winningRateLabel = UILabel().then {
+        $0.attributedText = "0%".pretendardString(with: .body4)
+    }
     
-    private let scoreGapLabel = UILabel()
+    private let scoreGapLabel = UILabel().then {
+        $0.attributedText = "0".pretendardString(with: .body4)
+    }
     
     // MARK: - Initializer
 
@@ -57,14 +69,14 @@ final class RankCell: UICollectionViewCell {
         winningRate: Int,
         scoreGap: Int
     ) {
-        rankLabel.attributedText = "\(rank)".pretendardString(with: .body3)
+        rankLabel.text = "\(rank)"
         teamLogoImageView.image = teamLogoImage
-        teamNameLabel.attributedText = teamName.pretendardString(with: .body3)
+        teamNameLabel.text = teamName
         
-        winCountLabel.attributedText = "\(winCount)".pretendardString(with: .body4)
-        defeatCountLabel.attributedText = "\(defeatCount)".pretendardString(with: .body4)
-        winningRateLabel.attributedText = "\(winningRate)%".pretendardString(with: .body4)
-        scoreGapLabel.attributedText = "\(scoreGap)".pretendardString(with: .body4)
+        winCountLabel.text = "\(winCount)"
+        defeatCountLabel.text = "\(defeatCount)"
+        winningRateLabel.text = "\(winningRate)%"
+        scoreGapLabel.text = "\(scoreGap)"
     }
 }
 
