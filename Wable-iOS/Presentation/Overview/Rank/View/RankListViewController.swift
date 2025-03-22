@@ -5,8 +5,11 @@
 //  Created by 김진웅 on 3/22/25.
 //
 
+import Combine
 import UIKit
+import SafariServices
 
+import CombineCocoa
 import SnapKit
 import Then
 
@@ -38,9 +41,17 @@ final class RankListViewController: UIViewController {
         $0.refreshControl = UIRefreshControl()
     }
     
+    private let submitButton: WableButton = .init(style: .black).then {
+        var config = $0.configuration
+        config?.attributedTitle = Constant.submitButtonTitle.pretendardString(with: .body3)
+        $0.configuration = config
+    }
+    
     // MARK: - Property
     
     private var dataSource: DataSource?
+    
+    private let cancelBag: CancelBag = .init()
 
     // MARK: - Life Cycle
 
@@ -49,6 +60,7 @@ final class RankListViewController: UIViewController {
         
         setupView()
         setupConstraint()
+        setupAction()
         setupColletionViewLayout()
         setupDataSource()
     }
@@ -65,8 +77,24 @@ private extension RankListViewController {
     
     func setupConstraint() {
         collectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.horizontalEdges.equalToSuperview()
         }
+        
+        submitButton.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom).offset(20)
+            make.horizontalEdges.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview().offset(-12)
+        }
+    }
+    
+    func setupAction() {
+        submitButton.tapPublisher
+            .compactMap { _ in URL(string: Constant.googleFormURLText) }
+            .sink { [weak self] url in
+                let safariViewController = SFSafariViewController(url: url)
+                self?.present(safariViewController, animated: true)
+            }
+            .store(in: cancelBag)
     }
     
     func setupColletionViewLayout() {
@@ -194,5 +222,14 @@ private extension RankListViewController {
         section.boundarySupplementaryItems = [header]
         
         return section
+    }
+}
+
+// MARK: - Constant
+
+private extension RankListViewController {
+    enum Constant {
+        static let submitButtonTitle: String = "더 알고싶은 정보가 있다면? 의견 남기러 가기"
+        static let googleFormURLText: String = "https://docs.google.com/forms/d/e/1FAIpQLSf3JlBkVRPaPFSreQHaEv-u5pqZWZzk7Y4Qll9lRP0htBZs-Q/viewform"
     }
 }
