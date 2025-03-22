@@ -65,6 +65,7 @@ private extension LCKYearViewController {
         }
         
         configuration.image = isPullDownEnabled ? .btnDropdownDown : .btnDropdownUp
+        
         rootView.yearCollectionView.isHidden = isPullDownEnabled
         rootView.pullDownButton.configuration = configuration
         
@@ -80,7 +81,7 @@ private extension LCKYearViewController {
     }
     
     @objc func nextButtonDidTap() {
-        
+        navigationController?.pushViewController(LCKTeamViewController(type: .flow), animated: true)
     }
 }
 
@@ -88,23 +89,23 @@ private extension LCKYearViewController {
 
 extension LCKYearViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let cell = collectionView.cellForItem(at: indexPath)
-//        
-//        cell
-//        
-//        rootView.yearButtonList.forEach {
-//            guard var configuration = $0.configuration else { return }
-//            let condition: Bool = ($0 == sender)
-//            
-//            configuration.background.backgroundColor = condition ? .purple10 : .wableWhite
-//            configuration.attributedTitle = $0.titleLabel?.text?.pretendardString(with: condition ? .body1 : .body2)
-//            configuration.baseForegroundColor = condition ? .purple50 : .wableBlack
-//            
-//            $0.configuration = configuration
-//        }
-//        
-//        rootView.pullDownButton.configuration?.attributedTitle = sender.titleLabel?.text?
-//            .pretendardString(with: .body1)
+        for visibleCell in collectionView.visibleCells {
+            if let yearCell = visibleCell as? LCKYearCollectionViewCell {
+                yearCell.backgroundColor = .clear
+                yearCell.yearLabel.textColor = .black
+            }
+        }
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? LCKYearCollectionViewCell else {
+            return
+        }
+        
+        cell.backgroundColor = .purple10
+        cell.yearLabel.attributedText = cell.yearLabel.text?.pretendardString(with:  .body1)
+        cell.yearLabel.textColor = .purple50
+        
+        rootView.pullDownButton.configuration?.attributedTitle = cell.yearLabel.text?
+            .pretendardString(with: .body1)
     }
 }
 
@@ -112,26 +113,18 @@ extension LCKYearViewController: UICollectionViewDelegate {
 
 extension LCKYearViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Calendar.current.component(.year, from: Date()) - 2012
+        return Calendar.current.component(.year, from: Date()) - 2012 + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: UICollectionViewCell.reuseIdentifier,
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: LCKYearCollectionViewCell.reuseIdentifier,
             for: indexPath
-        )
-        
-        let label = UILabel().then {
-            $0.attributedText = "\(Calendar.current.component(.year, from: Date()))".pretendardString(with: .body2)
-            $0.textColor = .wableBlack
+        ) as? LCKYearCollectionViewCell else {
+            return UICollectionViewCell()
         }
         
-        cell.addSubview(label)
-        
-        label.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().offset(9)
-        }
+        cell.yearLabel.attributedText = String(2012 + indexPath.row).pretendardString(with:  .body2)
         
         return cell
     }
