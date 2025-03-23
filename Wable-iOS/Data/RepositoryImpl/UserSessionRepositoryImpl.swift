@@ -116,24 +116,17 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
 
 extension UserSessionRepositoryImpl {
     func checkAutoLogin() -> AnyPublisher<Bool, Error> {
-            guard let userSession = fetchActiveUserSession(),
-                  userSession.isAutoLoginEnabled == true else {
-                return .just(false)
-            }
-            
-            do {
-                let _ = try tokenStorage.load(.wableAccessToken), _ = try tokenStorage.load(.wableRefreshToken)
-                return .just(true)
-            } catch {
-                return .fail(error)
-            }
+        guard let userSession = fetchActiveUserSession(),
+              userSession.isAutoLoginEnabled == true
+        else {
+            return .just(false)
         }
         
-        func enableAutoLogin(for userID: Int) {
-            updateAutoLogin(enabled: true, forUserID: userID)
+        do {
+            let _ = try tokenStorage.load(.wableAccessToken), _ = try tokenStorage.load(.wableRefreshToken)
+            return .just(true)
+        } catch {
+            return .fail(error)
         }
-        
-        func disableAutoLogin(for userID: Int) {
-            updateAutoLogin(enabled: false, forUserID: userID)
-        }
+    }
 }

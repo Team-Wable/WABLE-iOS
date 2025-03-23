@@ -8,12 +8,15 @@
 import Combine
 import UIKit
 
+import KakaoSDKAuth
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     // MARK: - Property
-
+    
     private let cancelBag = CancelBag()
-    private let userSessionRepository: UserSessionRepository = UserSessionRepositoryImpl(
+    private let loginRepository = LoginRepositoryImpl()
+    private let userSessionRepository = UserSessionRepositoryImpl(
         userDefaults: UserDefaultsStorage(
             userDefaults: UserDefaults.standard,
             jsonEncoder: JSONEncoder(),
@@ -22,9 +25,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     )
     
     // MARK: - UIComponent
-
+    
     var window: UIWindow?
-
+    
     // MARK: - WillConnentTo
     
     func scene(
@@ -37,21 +40,52 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window?.rootViewController = SplashViewController()
         self.window?.makeKeyAndVisible()
         
+        AuthEventManager.shared.tokenExpiredSubject
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, _ in
+                if let sessionID = owner.userSessionRepository.fetchActiveUserSession()?.id {
+                    WableLogger.log("토큰 만료로 인한 활성 세션 삭제 후 로그인 화면 전환", for: .debug)
+                    owner.userSessionRepository.removeUserSession(forUserID: sessionID)
+                }
+                
+                owner.configureLoginScreen()
+            }
+            .store(in: cancelBag)
+        
+#if DEBUG
+        if let sessionID = userSessionRepository.fetchActiveUserSession()?.id {
+            WableLogger.log("로그인 기능 구현을 위한 활성 세션 삭제", for: .debug)
+            userSessionRepository.removeUserSession(forUserID: sessionID)
+        }
+#endif
+        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
             self.userSessionRepository.checkAutoLogin()
+                .withUnretained(self)
                 .sink { completion in
                     switch completion {
                     case .finished:
                         break
-                    case .failure(_):
-                        self.configureLoginScreen()
+                    case .failure(let error):
+                        WableLogger.log("로그인 실패: \(error)", for: .error)
                     }
-                } receiveValue: { isAutoLoginEnabled in
-                    isAutoLoginEnabled ? self.configureMainScreen() : self.configureLoginScreen()
-                    self.window?.makeKeyAndVisible()
-                    self.updateVersionIfNeeded()
+                } receiveValue: { owner, isAutoLoginEnabled in
+                    isAutoLoginEnabled ? owner.configureMainScreen() : owner.configureLoginScreen()
+                    owner.window?.makeKeyAndVisible()
+                    owner.updateVersionIfNeeded()
                 }
                 .store(in: self.cancelBag)
+        }
+    }
+    
+    // MARK: - Kakao URLContexts
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
         }
     }
 }
@@ -60,7 +94,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 private extension SceneDelegate {
     func configureLoginScreen() {
-        self.window?.rootViewController = LoginViewController()
+        self.window?.rootViewController = LoginViewController(
+            viewModel: LoginViewModel(
+                useCase: FetchUserAuthUseCase(
+                    loginRepository: loginRepository,
+                    userSessionRepository: userSessionRepository
+                )
+            )
+        )
     }
     
     func configureMainScreen() {
