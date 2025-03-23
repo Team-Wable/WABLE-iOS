@@ -76,8 +76,8 @@ private extension NoticeViewController {
     }
     
     func setupDataSource() {
-        let noticeCellRegistration = CellRegistration<NoticeCell, Announcement> { [weak self] cell, indexPath, item in
-            guard let timeText = self?.elapsedString(from: item.createdDate) else { return }
+        let noticeCellRegistration = CellRegistration<NoticeCell, Announcement> { cell, indexPath, item in
+            guard let timeText = item.createdDate?.elapsedText else { return }
             cell.configure(title: item.title, time: timeText, body: item.text)
         }
         
@@ -87,41 +87,6 @@ private extension NoticeViewController {
                 for: indexPath,
                 item: item
             )
-        }
-    }
-}
-
-// MARK: - Private Method
-
-private extension NoticeViewController {
-    func elapsedString(from date: Date?) -> String {
-        guard let date else {
-            return "지금"
-        }
-        
-        let now = Date()
-        let calendar = Calendar.current
-        
-        let components = calendar.dateComponents(
-            [.minute, .hour, .day, .weekOfMonth, .month, .year],
-            from: date,
-            to: now
-        )
-        
-        if let years = components.year, years > 0 {
-            return "\(years)년 전"
-        } else if let months = components.month, months > 0 {
-            return "\(months)달 전"
-        } else if let weeks = components.weekOfMonth, weeks > 0 {
-            return "\(weeks)주 전"
-        } else if let days = components.day, days > 0 {
-            return "\(days)일 전"
-        } else if let hours = components.hour, hours > 0 {
-            return "\(hours)시간 전"
-        } else if let minutes = components.minute, minutes > 0 {
-            return "\(minutes)분 전"
-        } else {
-            return "지금"
         }
     }
 }
