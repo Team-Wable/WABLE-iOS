@@ -106,4 +106,12 @@ extension UIView {
         
         layer.maskedCorners = cornerMask
     }
+    
+    // MARK: - backgroundColor Initializer
+
+    convenience init(backgroundColor: UIColor) {
+        self.init()
+        
+        self.backgroundColor = backgroundColor
+    }
 }
