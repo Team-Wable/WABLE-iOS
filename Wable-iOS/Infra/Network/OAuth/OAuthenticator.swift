@@ -29,17 +29,23 @@ final class OAuthenticator: Authenticator {
         do {
             let tokenType: TokenStorage.TokenType = {
                 if let urlString = urlRequest.url?.absoluteString, urlString.contains("v2/auth") {
-                    return .kakaoAccessToken
+                    WableLogger.log("소셜 로그인을 위해 loginAccessToken으로 헤더 설정", for: .debug)
+                    return .loginAccessToken
                 } else {
+                    WableLogger.log("서버 통신을 위해 wableAccessToken으로 헤더 설정", for: .debug)
                     return .wableAccessToken
                 }
             }()
             
-            headers.add(.authorization(bearerToken: try tokenStorage.load(tokenType)))
+            let token = try tokenStorage.load(tokenType)
+            WableLogger.log("토큰 불러오기 성공: \(String(token.prefix(10)))...", for: .debug)
+            
+            headers.add(.authorization(bearerToken: token))
             urlRequest.headers = headers
+            
+            WableLogger.log("요청 헤더에 토큰 추가 완료", for: .debug)
         } catch {
-            WableLogger.log(NetworkError.unknown(error).localizedDescription, for: .network)
-            return
+            WableLogger.log("토큰 불러오기 실패: \(error.localizedDescription)", for: .error)
         }
     }
     
@@ -71,8 +77,18 @@ final class OAuthenticator: Authenticator {
             .sink(
                 receiveCompletion: { status in
                     if case .failure(let error) = status {
+                        let userSessionRepository = UserSessionRepositoryImpl(
+                            userDefaults: UserDefaultsStorage(
+                            jsonEncoder: JSONEncoder(),
+                            jsonDecoder: JSONDecoder()
+                            ))
+                        
                         if error == .signinRequired {
-                            // TODO: 로그인 화면 이동 및 토큰 만료 로직 수행
+                            guard let id = userSessionRepository.fetchActiveUserID() else { return }
+                            
+                            userSessionRepository.removeUserSession(forUserID: id)
+                            
+                            AuthEventManager.shared.tokenExpiredSubject.send()
                         }
                         
                         completion(.failure(error))

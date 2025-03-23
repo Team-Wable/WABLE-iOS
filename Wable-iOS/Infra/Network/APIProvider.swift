@@ -17,15 +17,28 @@ final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
     private let interceptor: AuthenticationInterceptor<OAuthenticator>
     
     init() {
-        self.interceptor = AuthenticationInterceptor(
-            authenticator: OAuthenticator(
-                errorMonitor: OAuthErrorMonitor(),
-                tokenStorage: TokenStorage(keyChainStorage: KeychainStorage())
-            )
+        WableLogger.log("APIProvider 초기화 시작", for: .debug)
+        
+        let authenticator = OAuthenticator(
+            errorMonitor: OAuthErrorMonitor(),
+            tokenStorage: TokenStorage(keyChainStorage: KeychainStorage())
         )
         
-        let session: Session = .init(interceptor: interceptor)
+        let credential = OAuthCredential(
+            accessToken: "",
+            refreshToken: "",
+            requiresRefresh: false
+        )
+        
+        self.interceptor = AuthenticationInterceptor(
+            authenticator: authenticator,
+            credential: credential
+        )
+        
+        let session = Session(interceptor: interceptor)
         let plugin: [PluginType] = [MoyaLoggingPlugin()]
+        
+        WableLogger.log("APIProvider session 및 interceptor 설정 완료", for: .debug)
         
         super.init(session: session, plugins: plugin)
     }

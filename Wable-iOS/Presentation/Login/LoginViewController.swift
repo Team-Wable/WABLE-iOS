@@ -7,19 +7,17 @@
 
 
 import AuthenticationServices
+import Combine
 import UIKit
+
+import CombineCocoa
 
 final class LoginViewController: UIViewController {
     
     // MARK: Property
-
-    private let userSessionRepository: UserSessionRepository = UserSessionRepositoryImpl(
-        userDefaults: UserDefaultsStorage(
-            userDefaults: UserDefaults.standard,
-            jsonEncoder: JSONEncoder(),
-            jsonDecoder: JSONDecoder()
-        )
-    )
+    
+    private let viewModel: LoginViewModel
+    private let cancelBag = CancelBag()
     
     // MARK: UIComponent
     
@@ -38,17 +36,19 @@ final class LoginViewController: UIViewController {
         $0.textColor = .black
     }
     
-    private lazy var kakaoButton: UIButton = UIButton(configuration: UIButton.Configuration.plain()).then {
+    private lazy var kakaoButton: UIButton = UIButton(configuration: .plain()).then {
         $0.configuration?.image = .btnKakao
         $0.backgroundColor = UIColor("FEE500")
         $0.layer.cornerRadius = 6
         $0.clipsToBounds = true
     }
     
-    private lazy var appleButton: ASAuthorizationAppleIDButton = ASAuthorizationAppleIDButton(
-        type: .continue,
-        style: .black
-    )
+    private lazy var appleButton: UIButton = UIButton(configuration: .plain()).then {
+        $0.configuration?.image = .btnApple
+        $0.backgroundColor = .wableBlack
+        $0.layer.cornerRadius = 6
+        $0.clipsToBounds = true
+    }
     
     // TODO: - 자동 로그인 구현 이후 삭제 필요
     
@@ -60,12 +60,23 @@ final class LoginViewController: UIViewController {
     
     // MARK: - LifeCycle
     
+    init(viewModel: LoginViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupView()
         setupConstraint()
         setupAction()
+        setupBinding()
     }
 }
 
@@ -76,7 +87,15 @@ private extension LoginViewController {
     // MARK: - Setup
 
     func setupView() {
-        view.addSubviews(backgroundImageView, logoImageView, loginImageView, titleLabel, kakaoButton, appleButton, tempButton)
+        view.addSubviews(
+            backgroundImageView,
+            logoImageView,
+            loginImageView,
+            titleLabel,
+            kakaoButton,
+            appleButton,
+            tempButton
+        )
     }
     
     func setupConstraint() {
@@ -121,14 +140,10 @@ private extension LoginViewController {
     }
     
     func setupAction() {
-        kakaoButton.addTarget(self, action: #selector(kakaoButtonDidTap), for: .touchUpInside)
-        appleButton.addTarget(self, action: #selector(appleButtonDidTap), for: .touchUpInside)
         tempButton.addAction(
             .init(
                 handler: { _ in
-                    let tabBarController = TabBarController().then {
-                        $0.modalPresentationStyle = .fullScreen
-                    }
+                    let tabBarController = TabBarController()
                     
                     self.present(tabBarController, animated: true)
                 }),
@@ -136,15 +151,35 @@ private extension LoginViewController {
         )
     }
     
-    // MARK: - @objc Method
-    
-    @objc func kakaoButtonDidTap() {
-        // TODO: 카카오 로그인 기능 구현 필요
+    func setupBinding() {
+        let output = viewModel.transform(
+            input: .init(
+                kakaoLoginTrigger: kakaoButton
+                    .tapPublisher
+                    .handleEvents(receiveOutput: { _ in
+                        WableLogger.log("카카오 로그인 버튼 트리거 발생", for: .debug)
+                    })
+                    .eraseToAnyPublisher(),
+                appleLoginTrigger: appleButton
+                    .tapPublisher
+                    .handleEvents(receiveOutput: { _ in
+                        WableLogger.log("애플 로그인 버튼 트리거 발생", for: .debug)
+                    })
+                    .eraseToAnyPublisher()
+            ),
+            cancelBag: cancelBag
+        )
+        
+        output.loginSuccess
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, sessionInfo in
+                owner.navigateToHome()
+            }
+            .store(in: cancelBag)
     }
     
-    @objc func appleButtonDidTap() {
-        // TODO: 애플 로그인 기능 구현 필요
-        
+    private func navigateToOnboarding() {
         let noticeViewController = WableSheetViewController(
             title: "앗 잠깐!",
             message: "와블은 온화하면서도 유쾌한 LCK 팬들이 모여 함께 즐기는 공간이에요.\n더 건강하고 즐거운 커뮤니티를 만들어 나가는데 함께 노력해주실거죠?"
@@ -159,6 +194,12 @@ private extension LoginViewController {
             self.present(navigationController, animated: true)
         }))
         
-        self.present(noticeViewController, animated: true)
+        present(noticeViewController, animated: true)
+    }
+    
+    private func navigateToHome() {
+        let tabBarController = TabBarController()
+        
+        present(tabBarController, animated: true)
     }
 }

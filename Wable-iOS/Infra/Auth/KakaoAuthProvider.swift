@@ -51,9 +51,11 @@ private extension KakaoAuthProvider {
         }
         
         do {
-            try tokenStorage.save(token, for: .kakaoAccessToken)
+            try tokenStorage.save(token, for: .loginAccessToken)
+            WableLogger.log("카카오 로그인 토큰 저장 완료", for: .debug)
             promise(.success(token))
         } catch {
+            WableLogger.log("카카오 로그인 토큰 저장 중 오류 발생: \(error)", for: .debug)
             promise(.failure(.networkError))
         }
     }
