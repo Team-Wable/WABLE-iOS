@@ -21,8 +21,6 @@ final class NewsViewController: UIViewController {
     typealias Item = Announcement
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
-    typealias CellRegistration = UICollectionView.CellRegistration
-    typealias SupplementaryRegistration = UICollectionView.SupplementaryRegistration
     
     // MARK: - UIComponent
     

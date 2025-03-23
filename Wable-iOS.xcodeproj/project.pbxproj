@@ -230,6 +230,7 @@
 		DE7C53142D761EE500076E5D /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53132D761EE500076E5D /* UIView+.swift */; };
 		DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */; };
 		DE7C531A2D76202B00076E5D /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53192D76202B00076E5D /* UITextField+.swift */; };
+		DE83891B2D906C0C00C089E6 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE83891A2D906C0C00C089E6 /* Types.swift */; };
 		DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */; };
 		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
@@ -459,6 +460,7 @@
 		DE7C53132D761EE500076E5D /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
 		DE7C53192D76202B00076E5D /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		DE83891A2D906C0C00C089E6 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableBottomSheetController.swift; sourceTree = "<group>"; };
 		DE8FF1902D8155DD00C41880 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
@@ -1466,6 +1468,7 @@
 				DDCD66EB2D7DE5D900EF4C28 /* ConstraintMaker+.swift */,
 				DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */,
 				DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */,
+				DE83891A2D906C0C00C089E6 /* Types.swift */,
 			);
 			path = UIHelper;
 			sourceTree = "<group>";
@@ -1838,6 +1841,7 @@
 				DDED598A2D7965F900A0BEF1 /* ProfileUseCase.swift in Sources */,
 				DDCD66F32D7DF5AB00EF4C28 /* HomeViewController.swift in Sources */,
 				DD29682C2D6DAD0B00143851 /* ContentMapper.swift in Sources */,
+				DE83891B2D906C0C00C089E6 /* Types.swift in Sources */,
 				DD29682D2D6DAD0B00143851 /* NotificationMapper.swift in Sources */,
 				DE3390302D8EC6C400638BB4 /* NoticeViewController.swift in Sources */,
 				DD2968232D6DAD0200143851 /* NotificationRepository.swift in Sources */,
