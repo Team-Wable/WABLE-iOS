@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  AmplitudeManager.swift
 //  Wable-iOS
 //
 //  Created by 김진웅 on 3/24/25.
