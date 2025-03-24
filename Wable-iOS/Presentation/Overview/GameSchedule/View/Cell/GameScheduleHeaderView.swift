@@ -15,7 +15,7 @@ final class GameScheduleHeaderView: UICollectionReusableView {
     // MARK: - UIComponent
 
     private let labelStackView = UIStackView(axis: .horizontal).then {
-        $0.spacing = 8
+        $0.spacing = 4
     }
     
     private let todayDescriptionLabel = UILabel().then {

@@ -27,8 +27,11 @@ final class RankListViewController: UIViewController {
         case rank(LCKTeamRank)
     }
     
+    // MARK: - typealias
+
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    typealias ViewModel = RankViewModel
     
     // MARK: - UIComponent
 
@@ -49,8 +52,24 @@ final class RankListViewController: UIViewController {
     
     private var dataSource: DataSource?
     
+    private let viewModel: ViewModel
     private let cancelBag: CancelBag = .init()
+    private let didLoadSubject = PassthroughSubject<Void, Never>()
+    private let didRefreshSubject = PassthroughSubject<Void, Never>()
+    
+    // MARK: - Initializer
 
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -61,6 +80,9 @@ final class RankListViewController: UIViewController {
         setupAction()
         setupColletionViewLayout()
         setupDataSource()
+        setupBinding()
+        
+        didLoadSubject.send()
     }
 }
 
@@ -97,6 +119,8 @@ private extension RankListViewController {
                 self?.present(safariViewController, animated: true)
             }
             .store(in: cancelBag)
+        
+        collectionView.refreshControl?.addTarget(self, action: #selector(collectionViewDidRefresh), for: .valueChanged)
     }
     
     func setupColletionViewLayout() {
@@ -165,6 +189,55 @@ private extension RankListViewController {
             return collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
         }
     }
+    
+    func setupBinding() {
+        let input = ViewModel.Input(
+            viewDidLoad: didLoadSubject.eraseToAnyPublisher(),
+            viewDidRefresh: didRefreshSubject.eraseToAnyPublisher()
+        )
+        
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.item
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] item in
+                self?.applySnapshot(item: item)
+            }
+            .store(in: cancelBag)
+        
+        output.isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                guard !isLoading else { return }
+                self?.collectionView.refreshControl?.endRefreshing()
+            }
+            .store(in: cancelBag)
+    }
+}
+
+// MARK: - Helper Method
+
+private extension RankListViewController {
+    func applySnapshot(item: RankViewItem) {
+        var snapshot = Snapshot()
+        
+        snapshot.appendSections([.gameType])
+        snapshot.appendItems([.gameType(item.gameType)], toSection: .gameType)
+        
+        snapshot.appendSections([.rank])
+        let ranks = item.ranks.map { Item.rank($0) }
+        snapshot.appendItems(ranks, toSection: .rank)
+        
+        dataSource?.apply(snapshot)
+    }
+}
+
+// MARK: - Action Method
+
+private extension RankListViewController {
+    @objc func collectionViewDidRefresh() {
+        didRefreshSubject.send()
+    }
 }
 
 // MARK: - Computed Property
@@ -187,7 +260,7 @@ private extension RankListViewController {
         )
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 24, leading: 16, bottom: 20, trailing: 16)
+        section.contentInsets = .init(top: 20, leading: 16, bottom: 12, trailing: 16)
         
         return section
     }
@@ -195,7 +268,7 @@ private extension RankListViewController {
     var rankSection: NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1)
+            heightDimension: .absolute(40.adjustedHeight)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
