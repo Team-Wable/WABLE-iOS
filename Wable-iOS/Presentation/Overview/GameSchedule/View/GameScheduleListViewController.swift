@@ -287,7 +287,7 @@ private extension GameScheduleListViewController {
         )
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 20, leading: 16, bottom: 0, trailing: 16)
+        section.contentInsets = .init(top: 20, leading: 16, bottom: 20, trailing: 16)
         
         return section
     }
@@ -301,7 +301,7 @@ private extension GameScheduleListViewController {
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .absolute(100.adjustedHeight)
+            heightDimension: .estimated(100.adjustedHeight)
         )
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: groupSize,
@@ -309,7 +309,7 @@ private extension GameScheduleListViewController {
         )
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 0, leading: 16, bottom: 16, trailing: 16)
+        section.contentInsets = .init(top: 0, leading: 16, bottom: 36, trailing: 16)
         section.interGroupSpacing = 16
         
         let headerSize = NSCollectionLayoutSize(

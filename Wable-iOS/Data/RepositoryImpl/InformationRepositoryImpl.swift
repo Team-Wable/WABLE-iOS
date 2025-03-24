@@ -155,7 +155,30 @@ struct MockInformationRepositoryImpl: InformationRepository {
     }
     
     func fetchNews(cursor: Int) -> AnyPublisher<[Announcement], WableError> {
-        return .fail(.networkError)
+        let range: ClosedRange<Int>
+        
+        switch cursor {
+        case -1:
+            range = 1...15
+        case 15:
+            range = 16...30
+        case 30:
+            range = 31...33
+        default:
+            return .just([])
+        }
+        
+        return .just(range.map { id in
+            Announcement(
+                id: id,
+                title: "공지사항 \(id)",
+                imageURL: URL(string: Constant.imageURLText),
+                text: "이것은 공지사항 \(id)입니다.",
+                createdDate: Calendar.current.date(byAdding: .day, value: -id, to: Date())
+            )
+        })
+        .delay(for: .seconds(randomDelaySecond), scheduler: RunLoop.main)
+        .eraseToAnyPublisher()
     }
     
     func fetchNotice(cursor: Int) -> AnyPublisher<[Announcement], WableError> {
@@ -167,4 +190,8 @@ struct MockInformationRepositoryImpl: InformationRepository {
     }
     
     private var randomDelaySecond: Double { .random(in: 0.3...1.0) }
+    
+    private enum Constant {
+        static let imageURLText: String = "https://private-user-images.githubusercontent.com/98076050/396859961-b02e03eb-6f64-4a44-88e2-88badb3d3b10.jpg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDI4MzUxNzYsIm5iZiI6MTc0MjgzNDg3NiwicGF0aCI6Ii85ODA3NjA1MC8zOTY4NTk5NjEtYjAyZTAzZWItNmY2NC00YTQ0LTg4ZTItODhiYWRiM2QzYjEwLmpwZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTAzMjQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwMzI0VDE2NDc1NlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQzZWE1OTlhNDFhYzk5MGYwYWZiNDg4MGMwNDllOTMzNGE5MTFlZGQ2NDY5MmViZTgzZDhiMTM3YWE1ODY5NmUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.LO8fsMErFZAKahjnYeQk8nHpzc3Cpug0n_-6fq3R4K4"
+    }
 }

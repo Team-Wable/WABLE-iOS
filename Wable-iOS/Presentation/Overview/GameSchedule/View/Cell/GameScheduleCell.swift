@@ -150,7 +150,8 @@ private extension GameScheduleCell {
     
     func setupConstraint() {
         contentStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
         }
         
         statusImageView.snp.makeConstraints { make in
