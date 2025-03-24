@@ -234,6 +234,7 @@
 		DE83891D2D9071E400C089E6 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE83891C2D9071E400C089E6 /* Date+.swift */; };
 		DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */; };
 		DE8E863F2D91A032000A4292 /* AmplitudeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */; };
+		DE8E86432D91A0DA000A4292 /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = DE8E86422D91A0DA000A4292 /* LookinServer */; };
 		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
 		DEAFE0562D8C45980097E91C /* GameScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */; };
@@ -496,6 +497,7 @@
 				DDF2CC8A2D71FADB000F1919 /* Lottie in Frameworks */,
 				DDF2CC9E2D71FECB000F1919 /* FirebaseMessaging in Frameworks */,
 				DDF2CC992D71FC7E000F1919 /* KakaoSDKUser in Frameworks */,
+				DE8E86432D91A0DA000A4292 /* LookinServer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1575,6 +1577,7 @@
 				DDF2CC9D2D71FECB000F1919 /* FirebaseMessaging */,
 				DDF2CCA02D71FF27000F1919 /* AmplitudeSwift */,
 				DDED598C2D79957700A0BEF1 /* CombineCocoa */,
+				DE8E86422D91A0DA000A4292 /* LookinServer */,
 			);
 			productName = "Wable-iOS";
 			productReference = 0547F4962C60D968001E3039 /* Wable-iOS.app */;
@@ -1614,6 +1617,7 @@
 				DDF2CC9A2D71FECB000F1919 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				DDF2CC9F2D71FF27000F1919 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
 				DDED598B2D79957700A0BEF1 /* XCRemoteSwiftPackageReference "CombineCocoa" */,
+				DE8E86412D91A0DA000A4292 /* XCRemoteSwiftPackageReference "LookinServer" */,
 			);
 			productRefGroup = 0547F4972C60D968001E3039 /* Products */;
 			projectDirPath = "";
@@ -2185,6 +2189,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		DE8E86412D91A0DA000A4292 /* XCRemoteSwiftPackageReference "LookinServer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/QMUI/LookinServer";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.8;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2252,6 +2264,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DDF2CC9F2D71FF27000F1919 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */;
 			productName = AmplitudeSwift;
+		};
+		DE8E86422D91A0DA000A4292 /* LookinServer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DE8E86412D91A0DA000A4292 /* XCRemoteSwiftPackageReference "LookinServer" */;
+			productName = LookinServer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
