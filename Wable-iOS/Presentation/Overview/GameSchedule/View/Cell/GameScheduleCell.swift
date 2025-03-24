@@ -35,8 +35,9 @@ final class GameScheduleCell: UICollectionViewCell {
     }
     
     private let homeTeamLogoImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
         $0.layer.cornerRadius = 22
+        $0.clipsToBounds = true
     }
     
     private let homeTeamNameLabel = UILabel().then {
@@ -62,8 +63,9 @@ final class GameScheduleCell: UICollectionViewCell {
     }
     
     private let awayTeamLogoImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
         $0.layer.cornerRadius = 22
+        $0.clipsToBounds = true
     }
     
     // MARK: - Initializer
@@ -191,7 +193,7 @@ private extension GameScheduleCell {
         
         awayTeamNameLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.trailing.equalTo(awayTeamLogoImageView.snp.leading)
+            make.trailing.equalTo(awayTeamLogoImageView.snp.leading).offset(-8)
         }
         
         awayTeamLogoImageView.snp.makeConstraints { make in
