@@ -242,6 +242,8 @@
 		DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29132D7208A00073D512 /* GameStatus.swift */; };
 		DEDC29162D72099C0073D512 /* InfoNotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29152D72099C0073D512 /* InfoNotificationType.swift */; };
 		DEDC29182D720D030073D512 /* PostStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29172D720D030073D512 /* PostStatus.swift */; };
+		DEE5D6112D9121E5009E5A25 /* OverviewPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6102D9121E5009E5A25 /* OverviewPageView.swift */; };
+		DEE5D6132D9126D8009E5A25 /* WableBadgeSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6122D9126D8009E5A25 /* WableBadgeSegmentedControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -474,6 +476,8 @@
 		DEDC29132D7208A00073D512 /* GameStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStatus.swift; sourceTree = "<group>"; };
 		DEDC29152D72099C0073D512 /* InfoNotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNotificationType.swift; sourceTree = "<group>"; };
 		DEDC29172D720D030073D512 /* PostStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStatus.swift; sourceTree = "<group>"; };
+		DEE5D6102D9121E5009E5A25 /* OverviewPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPageView.swift; sourceTree = "<group>"; };
+		DEE5D6122D9126D8009E5A25 /* WableBadgeSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableBadgeSegmentedControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1256,7 +1260,7 @@
 		DE277A862D8C09A3006D2B53 /* Page */ = {
 			isa = PBXGroup;
 			children = (
-				DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */,
+				DEE5D60E2D9121D4009E5A25 /* View */,
 			);
 			path = Page;
 			sourceTree = "<group>";
@@ -1534,6 +1538,24 @@
 			path = Enum;
 			sourceTree = "<group>";
 		};
+		DEE5D60E2D9121D4009E5A25 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */,
+				DEE5D60F2D9121DA009E5A25 /* Subview */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DEE5D60F2D9121DA009E5A25 /* Subview */ = {
+			isa = PBXGroup;
+			children = (
+				DEE5D6102D9121E5009E5A25 /* OverviewPageView.swift */,
+				DEE5D6122D9126D8009E5A25 /* WableBadgeSegmentedControl.swift */,
+			);
+			path = Subview;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1651,6 +1673,7 @@
 				DD29680F2D6DACF700143851 /* SocialPlatform.swift in Sources */,
 				DD2968102D6DACF700143851 /* Notification.swift in Sources */,
 				DD514D0A2D8C958B0095021D /* AgreementItemView.swift in Sources */,
+				DEE5D6112D9121E5009E5A25 /* OverviewPageView.swift in Sources */,
 				DDFB22442D8BB8D500FEA24A /* LCKTeamView.swift in Sources */,
 				DD2968112D6DACF700143851 /* Viewit.swift in Sources */,
 				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
@@ -1789,6 +1812,7 @@
 				DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */,
 				DE3390352D8EF40B00638BB4 /* AnnouncementDetailViewController.swift in Sources */,
 				DDCD66FD2D7DF6D900EF4C28 /* ProfileViewController.swift in Sources */,
+				DEE5D6132D9126D8009E5A25 /* WableBadgeSegmentedControl.swift in Sources */,
 				DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */,
 				DEAFE05B2D8C4E930097E91C /* GameScheduleHeaderView.swift in Sources */,
 				DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */,
