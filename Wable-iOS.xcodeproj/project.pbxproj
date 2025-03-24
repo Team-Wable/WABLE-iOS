@@ -216,6 +216,7 @@
 		DE59BBA92D8A9EFD0040ADCB /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */; };
 		DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EA2D7211070021BDE1 /* Like.swift */; };
 		DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EE2D7213D90021BDE1 /* Opacity.swift */; };
+		DE6C3E3E2D91A8E00046DB30 /* NewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6C3E3D2D91A8E00046DB30 /* NewsViewModel.swift */; };
 		DE7004842D8E87DC00B7AB71 /* RankListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7004832D8E87DC00B7AB71 /* RankListViewController.swift */; };
 		DE7004872D8E882B00B7AB71 /* RankCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7004862D8E882B00B7AB71 /* RankCell.swift */; };
 		DE7004892D8E907300B7AB71 /* RankHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7004882D8E907300B7AB71 /* RankHeaderView.swift */; };
@@ -455,6 +456,7 @@
 		DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		DE67A9EA2D7211070021BDE1 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		DE67A9EE2D7213D90021BDE1 /* Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opacity.swift; sourceTree = "<group>"; };
+		DE6C3E3D2D91A8E00046DB30 /* NewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewModel.swift; sourceTree = "<group>"; };
 		DE7004832D8E87DC00B7AB71 /* RankListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankListViewController.swift; sourceTree = "<group>"; };
 		DE7004862D8E882B00B7AB71 /* RankCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankCell.swift; sourceTree = "<group>"; };
 		DE7004882D8E907300B7AB71 /* RankHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankHeaderView.swift; sourceTree = "<group>"; };
@@ -1392,6 +1394,14 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		DE6C3E3C2D91A8D50046DB30 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DE6C3E3D2D91A8E00046DB30 /* NewsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		DE7004812D8E878C00B7AB71 /* Rank */ = {
 			isa = PBXGroup;
 			children = (
@@ -1423,6 +1433,7 @@
 		DE70048A2D8EA82400B7AB71 /* News */ = {
 			isa = PBXGroup;
 			children = (
+				DE6C3E3C2D91A8D50046DB30 /* ViewModel */,
 				DE70048B2D8EA84A00B7AB71 /* View */,
 			);
 			path = News;
@@ -1889,6 +1900,7 @@
 				DDED597C2D794F0D00A0BEF1 /* FetchUserAuthUseCase.swift in Sources */,
 				DE7C53102D761E3300076E5D /* String+.swift in Sources */,
 				DD2968192D6DAD0200143851 /* ReportRepository.swift in Sources */,
+				DE6C3E3E2D91A8E00046DB30 /* NewsViewModel.swift in Sources */,
 				DD29681A2D6DAD0200143851 /* ViewitRepository.swift in Sources */,
 				DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */,
 				DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */,

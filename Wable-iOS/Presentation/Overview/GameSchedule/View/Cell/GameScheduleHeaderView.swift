@@ -73,9 +73,8 @@ private extension GameScheduleHeaderView {
     
     func setupConstraint() {
         labelStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
+            make.centerY.equalToSuperview()
             make.leading.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-12)
         }
     }
 }

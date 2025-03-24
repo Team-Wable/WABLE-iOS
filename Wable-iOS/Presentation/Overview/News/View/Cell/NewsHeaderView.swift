@@ -15,7 +15,7 @@ final class NewsHeaderView: UICollectionReusableView {
     // MARK: - UIComponent
     
     private let bannerImageView: UIImageView = .init(image: .imgNewsbanner).then {
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
         $0.layer.cornerRadius = 8
         $0.clipsToBounds = true
     }
@@ -39,12 +39,16 @@ final class NewsHeaderView: UICollectionReusableView {
 
 private extension NewsHeaderView {
     func setupView() {
+        backgroundColor = .wableWhite
+        
         addSubviews(bannerImageView)
     }
     
     func setupConstraint() {
         bannerImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.horizontalEdges.equalToSuperview().inset(16)
+            make.centerY.equalToSuperview()
+            make.height.equalTo(bannerImageView.snp.width).multipliedBy(64.0/344.0)
         }
     }
 }

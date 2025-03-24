@@ -78,7 +78,14 @@ final class NewsCell: UICollectionViewCell {
         body: String,
         time: String
     ) {
-        imageView.kf.setImage(with: imageURL)
+        imageView.kf.setImage(with: imageURL) { [weak self] result in
+            switch result {
+            case .success(_):
+                self?.imageView.isHidden = false
+            case .failure(_):
+                self?.imageView.isHidden = true
+            }
+        }
         titleLabel.text = title
         bodyLabel.text = body
         timeLabel.text = time
@@ -100,18 +107,21 @@ private extension NewsCell {
             labelStackView
         )
         
-        contentView.addSubview(contentStackView)
+        contentView.addSubviews(
+            contentStackView,
+            divisionLine
+        )
     }
     
     func setupConstraint() {
         imageView.snp.makeConstraints { make in
             make.adjustedWidthEqualTo(100)
-            make.adjustedHeightEqualTo(70)
+            make.height.equalTo(imageView.snp.width).multipliedBy(70.0/100.0)
         }
         
         contentStackView.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview().inset(12)
-            make.horizontalEdges.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.horizontalEdges.equalToSuperview().inset(16)
         }
         
         divisionLine.snp.makeConstraints { make in
