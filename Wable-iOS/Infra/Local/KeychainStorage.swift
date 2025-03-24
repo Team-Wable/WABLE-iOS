@@ -13,11 +13,20 @@ struct KeychainStorage { }
 
 extension KeychainStorage: LocalKeyValueProvider {
     func setValue<T>(_ value: T, for key: String) throws where T : Decodable, T : Encodable {
-        let data = try JSONEncoder().encode(String(data: value as! Data, encoding: .utf8))
+        let data: Data
+        if let stringValue = value as? String {
+            guard let stringData = stringValue.data(using: .utf8) else {
+                throw LocalError.saveFailed
+            }
+            data = stringData
+        } else {
+            data = try JSONEncoder().encode(value)
+        }
         
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: key,
+            kSecAttrAccount as String: key,
+            kSecAttrService as String: Bundle.main.bundleIdentifier ?? "com.wable.Wable-iOS",
             kSecValueData as String: data
         ]
         
