@@ -94,8 +94,10 @@ extension OverviewPageViewController: UIPageViewControllerDataSource {
 
 private extension OverviewPageViewController {
     func setupViewControllers() {
-        let gameScheduleViewController = GameScheduleListViewController(viewModel: .init(overviewRepository: MockInformationRepositoryImpl()))
-        let rankViewController = RankListViewController()
+        let repository = MockInformationRepositoryImpl()
+        
+        let gameScheduleViewController = GameScheduleListViewController(viewModel: .init(overviewRepository: repository))
+        let rankViewController = RankListViewController(viewModel: .init(overviewRepository: repository))
         let newsViewController = NewsViewController()
         let noticeViewController = NoticeViewController()
         

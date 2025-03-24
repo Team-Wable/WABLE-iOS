@@ -26,8 +26,11 @@ final class GameScheduleListViewController: UIViewController {
         case game(Game)
     }
     
+    // MARK: - typealias
+
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    typealias ViewModel = GameScheduleViewModel
 
     // MARK: - UIComponent
 
@@ -47,14 +50,14 @@ final class GameScheduleListViewController: UIViewController {
     
     private var dataSource: DataSource?
     
-    private let viewModel: GameScheduleViewModel
+    private let viewModel: ViewModel
     private let didLoadSubject = PassthroughSubject<Void, Never>()
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
 
-    init(viewModel: GameScheduleViewModel) {
+    init(viewModel: ViewModel) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -207,7 +210,7 @@ private extension GameScheduleListViewController {
     }
     
     func setupBinding() {
-        let input = GameScheduleViewModel.Input(
+        let input = ViewModel.Input(
             viewDidLoad: didLoadSubject.eraseToAnyPublisher(),
             viewDidRefresh: didRefreshSubject.eraseToAnyPublisher()
         )
@@ -284,7 +287,7 @@ private extension GameScheduleListViewController {
         )
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 24, leading: 16, bottom: 20, trailing: 16)
+        section.contentInsets = .init(top: 20, leading: 16, bottom: 12, trailing: 16)
         
         return section
     }

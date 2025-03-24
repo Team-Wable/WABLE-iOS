@@ -152,14 +152,14 @@ private extension GameScheduleCell {
         }
         
         statusImageView.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview()
+            make.verticalEdges.leading.equalToSuperview()
             make.adjustedWidthEqualTo(32)
             make.adjustedHeightEqualTo(20)
         }
         
         timeLabel.snp.makeConstraints { make in
             make.centerY.equalTo(statusImageView)
-            make.leading.equalTo(statusImageView.snp.trailing).offset(12)
+            make.leading.equalTo(statusImageView.snp.trailing).offset(8)
         }
         
         homeTeamLogoImageView.snp.makeConstraints { make in
