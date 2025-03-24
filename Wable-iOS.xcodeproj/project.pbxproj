@@ -244,6 +244,8 @@
 		DEDC29182D720D030073D512 /* PostStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29172D720D030073D512 /* PostStatus.swift */; };
 		DEE5D6112D9121E5009E5A25 /* OverviewPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6102D9121E5009E5A25 /* OverviewPageView.swift */; };
 		DEE5D6132D9126D8009E5A25 /* WableBadgeSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6122D9126D8009E5A25 /* WableBadgeSegmentedControl.swift */; };
+		DEE5D6162D9130E5009E5A25 /* GameScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6152D9130E5009E5A25 /* GameScheduleViewModel.swift */; };
+		DEE5D61A2D91537C009E5A25 /* GameScheduleViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6192D91537C009E5A25 /* GameScheduleViewItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -478,6 +480,8 @@
 		DEDC29172D720D030073D512 /* PostStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStatus.swift; sourceTree = "<group>"; };
 		DEE5D6102D9121E5009E5A25 /* OverviewPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPageView.swift; sourceTree = "<group>"; };
 		DEE5D6122D9126D8009E5A25 /* WableBadgeSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableBadgeSegmentedControl.swift; sourceTree = "<group>"; };
+		DEE5D6152D9130E5009E5A25 /* GameScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleViewModel.swift; sourceTree = "<group>"; };
+		DEE5D6192D91537C009E5A25 /* GameScheduleViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleViewItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1383,6 +1387,8 @@
 		DE7004812D8E878C00B7AB71 /* Rank */ = {
 			isa = PBXGroup;
 			children = (
+				DEE5D61E2D9161CE009E5A25 /* Model */,
+				DEE5D61D2D9161C7009E5A25 /* ViewModel */,
 				DE7004822D8E87CC00B7AB71 /* View */,
 			);
 			path = Rank;
@@ -1492,6 +1498,7 @@
 			isa = PBXGroup;
 			children = (
 				DEAFE0572D8C4C020097E91C /* Model */,
+				DEE5D6142D9130D4009E5A25 /* ViewModel */,
 				DEAFE0522D8C44840097E91C /* View */,
 			);
 			path = GameSchedule;
@@ -1520,6 +1527,7 @@
 			isa = PBXGroup;
 			children = (
 				DEAFE0582D8C4E0B0097E91C /* GameStatus+.swift */,
+				DEE5D6192D91537C009E5A25 /* GameScheduleViewItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1554,6 +1562,28 @@
 				DEE5D6122D9126D8009E5A25 /* WableBadgeSegmentedControl.swift */,
 			);
 			path = Subview;
+			sourceTree = "<group>";
+		};
+		DEE5D6142D9130D4009E5A25 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DEE5D6152D9130E5009E5A25 /* GameScheduleViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DEE5D61D2D9161C7009E5A25 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DEE5D61E2D9161CE009E5A25 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1707,6 +1737,7 @@
 				DD2968592D6DAD4400143851 /* CreateViewitPostRequest.swift in Sources */,
 				DD29685A2D6DAD4400143851 /* CreateCommentLiked.swift in Sources */,
 				DD9980DB2D834CA900EBBFBC /* CommentInfo.swift in Sources */,
+				DEE5D61A2D91537C009E5A25 /* GameScheduleViewItem.swift in Sources */,
 				DDFB22462D8BBB8600FEA24A /* ProfileRegisterViewController.swift in Sources */,
 				DD29685B2D6DAD4400143851 /* CreateAccountRequest.swift in Sources */,
 				DD29685C2D6DAD4400143851 /* CreateContent.swift in Sources */,
@@ -1804,6 +1835,7 @@
 				DDCD66E32D7DB11D00EF4C28 /* TabBarController.swift in Sources */,
 				DD2967F92D6DAC4800143851 /* AnyPublisher+.swift in Sources */,
 				DD2967FA2D6DAC4800143851 /* Publisher+.swift in Sources */,
+				DEE5D6162D9130E5009E5A25 /* GameScheduleViewModel.swift in Sources */,
 				DE7C53122D761EA400076E5D /* UIStackView+.swift in Sources */,
 				DDCCA3952D73928900658122 /* UserSession.swift in Sources */,
 				DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */,

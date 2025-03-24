@@ -33,6 +33,9 @@ final class GameScheduleHeaderView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        setupView()
+        setupConstraint()
     }
     
     @available(*, unavailable)
@@ -70,7 +73,8 @@ private extension GameScheduleHeaderView {
     
     func setupConstraint() {
         labelStackView.snp.makeConstraints { make in
-            make.verticalEdges.leading.equalToSuperview()
+            make.top.leading.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-12)
         }
     }
 }
