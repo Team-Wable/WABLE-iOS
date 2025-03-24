@@ -70,7 +70,10 @@ private extension RankListViewController {
     func setupView() {
         view.backgroundColor = .wableWhite
         
-        view.addSubview(collectionView)
+        view.addSubviews(
+            collectionView,
+            submitButton
+        )
     }
     
     func setupConstraint() {
@@ -82,6 +85,7 @@ private extension RankListViewController {
             make.top.equalTo(collectionView.snp.bottom).offset(20)
             make.horizontalEdges.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().offset(-12)
+            make.adjustedHeightEqualTo(48)
         }
     }
     
