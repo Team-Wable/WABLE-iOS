@@ -204,21 +204,7 @@ private extension NewsViewController {
         output.selectedNews
             .receive(on: DispatchQueue.main)
             .sink { [weak self] news in
-                let date = news.createdDate ?? Date()
-                let detailViewController = AnnouncementDetailViewController().then {
-                    $0.configure(
-                        type: .news,
-                        title: news.title,
-                        time: date.elapsedText,
-                        imageURL: news.imageURL,
-                        bodyText: news.text
-                    )
-                }
-                
-                // TODO: Delegate 패턴을 이용한 네비게이션 화면 이동
-                
                 self?.delegate?.navigateToDetail(with: news)
-                
             }
             .store(in: cancelBag)
         
