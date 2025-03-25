@@ -5,8 +5,10 @@
 //  Created by 김진웅 on 3/20/25.
 //
 
+import Combine
 import UIKit
 
+import CombineCocoa
 import SnapKit
 import Then
 
@@ -14,9 +16,9 @@ final class GameScheduleListViewController: UIViewController {
     
     // MARK: - Section & Item
     
-    enum Section: Int, CaseIterable {
+    enum Section: Hashable {
         case gameType
-        case gameSchedule
+        case gameSchedule(Date)
     }
     
     enum Item: Hashable {
@@ -24,8 +26,11 @@ final class GameScheduleListViewController: UIViewController {
         case game(Game)
     }
     
+    // MARK: - typealias
+
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    typealias ViewModel = GameScheduleViewModel
 
     // MARK: - UIComponent
 
@@ -45,6 +50,24 @@ final class GameScheduleListViewController: UIViewController {
     
     private var dataSource: DataSource?
     
+    private let viewModel: ViewModel
+    private let didLoadSubject = PassthroughSubject<Void, Never>()
+    private let didRefreshSubject = PassthroughSubject<Void, Never>()
+    private let cancelBag = CancelBag()
+    
+    // MARK: - Initializer
+
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -55,6 +78,10 @@ final class GameScheduleListViewController: UIViewController {
         setupConstraint()
         setupCollectionViewLayout()
         setupDataSource()
+        setupAction()
+        setupBinding()
+        
+        didLoadSubject.send()
     }
 }
 
@@ -82,14 +109,10 @@ private extension GameScheduleListViewController {
     
     func setupCollectionViewLayout() {
         let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ -> NSCollectionLayoutSection? in
-            guard let section = Section(rawValue: sectionIndex) else {
-                return nil
-            }
-            
-            switch section {
-            case .gameType:
+            switch sectionIndex {
+            case .zero:
                 return self?.gameTypeSection
-            case .gameSchedule:
+            default:
                 return self?.gameScheduleSection
             }
         }
@@ -128,6 +151,12 @@ private extension GameScheduleListViewController {
             )
         }
         
+        let dateFormatter = DateFormatter().then {
+            $0.dateFormat = "MM.dd (E)"
+            $0.locale = Locale(identifier: "ko_KR")
+        }
+        let nowText = dateFormatter.string(from: Date())
+        
         let headerKind = UICollectionView.elementKindSectionHeader
         let headerRegistration = SupplementaryRegistration<GameScheduleHeaderView>(
             elementKind: headerKind
@@ -142,12 +171,9 @@ private extension GameScheduleListViewController {
             switch section {
             case .gameType:
                 return
-            case .gameSchedule:
-                //            let gameDateFormatter = DateFormatter().then {
-                //                $0.dateFormat = "MM.dd (E)"
-                //                $0.locale = Locale(identifier: "ko_KR")
-                //            }
-                headerView.configure(isToday: true, date: Date().toString())
+            case .gameSchedule(let date):
+                let dateText = dateFormatter.string(from: date)
+                headerView.configure(isToday: dateText == nowText, date: dateText)
             }
         }
         
@@ -170,14 +196,74 @@ private extension GameScheduleListViewController {
         
         dataSource?.supplementaryViewProvider = { collectionView, kind, indexPath in
             guard kind == headerKind,
-                  let section = Section(rawValue: indexPath.section),
-                  section == .gameSchedule
+                  indexPath.section != .zero
             else {
                 return nil
             }
             
             return collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
         }
+    }
+    
+    func setupAction() {
+        collectionView.refreshControl?.addTarget(self, action: #selector(collectionViewDidRefresh), for: .valueChanged)
+    }
+    
+    func setupBinding() {
+        let input = ViewModel.Input(
+            viewDidLoad: didLoadSubject.eraseToAnyPublisher(),
+            viewDidRefresh: didRefreshSubject.eraseToAnyPublisher()
+        )
+        
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.item
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] item in
+                self?.applySnapshot(item: item)
+                self?.emptyView.isHidden = !item.isEmpty
+            }
+            .store(in: cancelBag)
+        
+        output.isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                guard !isLoading else { return }
+                self?.collectionView.refreshControl?.endRefreshing()
+            }
+            .store(in: cancelBag)
+    }
+}
+
+// MARK: - Helper Method
+
+private extension GameScheduleListViewController {
+    func applySnapshot(item: GameScheduleViewItem) {
+        var snapshot = Snapshot()
+        
+        snapshot.appendSections([.gameType])
+        snapshot.appendItems([.gameType(item.gameType)], toSection: .gameType)
+        
+        for gameSchedule in item.gameSchedules {
+            guard let date = gameSchedule.date else {
+                continue
+            }
+            
+            let section = Section.gameSchedule(date)
+            snapshot.appendSections([section])
+            let games = gameSchedule.games.map { Item.game($0) }
+            snapshot.appendItems(games, toSection: section)
+        }
+        
+        dataSource?.apply(snapshot, animatingDifferences: true)
+    }
+}
+
+// MARK: - Action Method
+
+private extension GameScheduleListViewController {
+    @objc func collectionViewDidRefresh() {
+        didRefreshSubject.send()
     }
 }
 
@@ -193,7 +279,7 @@ private extension GameScheduleListViewController {
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(40)
+            heightDimension: .absolute(40.adjustedHeight)
         )
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
@@ -201,7 +287,7 @@ private extension GameScheduleListViewController {
         )
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 24, leading: 16, bottom: 20, trailing: 16)
+        section.contentInsets = .init(top: 20, leading: 16, bottom: 20, trailing: 16)
         
         return section
     }
@@ -212,11 +298,10 @@ private extension GameScheduleListViewController {
             heightDimension: .fractionalHeight(1)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 12, leading: 0, bottom: 16, trailing: 0)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(100)
+            heightDimension: .estimated(100.adjustedHeight)
         )
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: groupSize,
@@ -224,19 +309,20 @@ private extension GameScheduleListViewController {
         )
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+        section.contentInsets = .init(top: 0, leading: 16, bottom: 36, trailing: 16)
+        section.interGroupSpacing = 16
         
         let headerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(40)
+            heightDimension: .estimated(28.adjustedHeight)
         )
         let header = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
             elementKind: UICollectionView.elementKindSectionHeader,
             alignment: .top
         )
-        
         section.boundarySupplementaryItems = [header]
+        
         return section
     }
 }

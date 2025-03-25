@@ -13,21 +13,32 @@ import Then
 final class GameScheduleCell: UICollectionViewCell {
     
     // MARK: - UIComponent
-
-    private let gameStatusImageView = UIImageView()
     
-    private let gameTimeLabel = UILabel().then {
+    private let contentStackView = UIStackView(axis: .vertical).then {
+        $0.spacing = 8
+        $0.alignment = .fill
+    }
+    
+    private let statusImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+    }
+    
+    private let timeLabel = UILabel().then {
         $0.attributedText = "24:59".pretendardString(with: .body3)
         $0.textColor = .gray900
     }
     
-    private let borderView = UIView().then {
+    private let scoreView = UIView().then {
         $0.layer.cornerRadius = 8
         $0.layer.borderColor = UIColor.gray200.cgColor
         $0.layer.borderWidth = 1
     }
     
-    private let homeTeamLogoImageView = UIImageView()
+    private let homeTeamLogoImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+        $0.layer.cornerRadius = 22
+        $0.clipsToBounds = true
+    }
     
     private let homeTeamNameLabel = UILabel().then {
         $0.attributedText = "TBD".pretendardString(with: .body3)
@@ -39,7 +50,7 @@ final class GameScheduleCell: UICollectionViewCell {
         $0.textColor = .wableBlack
     }
     
-    private let colonImageView = UIImageView(image: .icVersus)
+    private let colonImageView = UIImageView(image: .icVersus.withRenderingMode(.alwaysOriginal))
     
     private let awayTeamScoreLabel = UILabel().then {
         $0.attributedText = "0".pretendardString(with: .head0)
@@ -51,7 +62,11 @@ final class GameScheduleCell: UICollectionViewCell {
         $0.textColor = .gray700
     }
     
-    private let awayTeamLogoImageView = UIImageView()
+    private let awayTeamLogoImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+        $0.layer.cornerRadius = 22
+        $0.clipsToBounds = true
+    }
     
     // MARK: - Initializer
     
@@ -70,15 +85,18 @@ final class GameScheduleCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        gameStatusImageView.image = nil
-        homeTeamLogoImageView.image = nil
-        awayTeamLogoImageView.image = nil
+        configure(
+            gameStatusImage: nil,
+            gameTime: "12.31 (목)",
+            homeTeamLogoImage: nil,
+            homeTeamName: "TBD",
+            homeTeamScore: 0,
+            awayTeamScore: 0,
+            awayTeamName: "TBD",
+            awayTeamLogoImage: nil
+        )
     }
-}
-
-// MARK: - Public Method
-
-extension GameScheduleCell {
+    
     func configure(
         gameStatusImage: UIImage?,
         gameTime: String,
@@ -89,8 +107,8 @@ extension GameScheduleCell {
         awayTeamName: String,
         awayTeamLogoImage: UIImage?
     ) {
-        gameStatusImageView.image = gameStatusImage
-        gameTimeLabel.text = gameTime
+        statusImageView.image = gameStatusImage
+        timeLabel.text = gameTime
         
         homeTeamLogoImageView.image = homeTeamLogoImage
         homeTeamNameLabel.text = homeTeamName
@@ -106,7 +124,13 @@ extension GameScheduleCell {
 
 private extension GameScheduleCell {
     func setupView() {
-        borderView.addSubviews(
+        let statusView = UIView()
+        statusView.addSubviews(
+            statusImageView,
+            timeLabel
+        )
+        
+        scoreView.addSubviews(
             homeTeamLogoImageView,
             homeTeamNameLabel,
             homeTeamScoreLabel,
@@ -116,66 +140,67 @@ private extension GameScheduleCell {
             awayTeamLogoImageView
         )
         
-        contentView.addSubviews(
-            gameStatusImageView,
-            gameTimeLabel,
-            borderView
+        contentStackView.addArrangedSubviews(
+            statusView,
+            scoreView
         )
+        
+        contentView.addSubview(contentStackView)
     }
     
     func setupConstraint() {
-        gameStatusImageView.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
+        contentStackView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
+        }
+        
+        statusImageView.snp.makeConstraints { make in
+            make.verticalEdges.leading.equalToSuperview()
             make.adjustedWidthEqualTo(32)
             make.adjustedHeightEqualTo(20)
         }
         
-        gameTimeLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(gameStatusImageView)
-            make.leading.equalTo(gameStatusImageView).offset(8)
-        }
-        
-        borderView.snp.makeConstraints { make in
-            make.top.equalTo(gameStatusImageView.snp.bottom).offset(8)
-            make.horizontalEdges.bottom.equalToSuperview()
+        timeLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(statusImageView)
+            make.leading.equalTo(statusImageView.snp.trailing).offset(8)
         }
         
         homeTeamLogoImageView.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview().inset(12)
             make.leading.equalToSuperview().offset(20)
-            make.width.equalTo(homeTeamLogoImageView.snp.height)
+            make.adjustedWidthEqualTo(44)
+            make.height.equalTo(homeTeamLogoImageView.snp.width)
         }
         
         homeTeamNameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(homeTeamLogoImageView)
-            make.leading.equalTo(homeTeamLogoImageView).offset(8)
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(homeTeamLogoImageView.snp.trailing).offset(8)
         }
         
         homeTeamScoreLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(colonImageView)
+            make.centerY.equalToSuperview()
             make.trailing.equalTo(colonImageView.snp.leading).offset(-24)
         }
         
         colonImageView.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview().inset(28)
-            make.centerX.equalToSuperview()
+            make.center.equalToSuperview()
             make.adjustedWidthEqualTo(4)
         }
         
         awayTeamScoreLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(colonImageView)
+            make.centerY.equalToSuperview()
             make.leading.equalTo(colonImageView.snp.trailing).offset(24)
         }
         
         awayTeamNameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(awayTeamLogoImageView)
+            make.centerY.equalToSuperview()
             make.trailing.equalTo(awayTeamLogoImageView.snp.leading).offset(-8)
         }
         
         awayTeamLogoImageView.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview().inset(12)
+            make.verticalEdges.equalTo(homeTeamLogoImageView)
             make.trailing.equalToSuperview().offset(-20)
-            make.width.equalTo(awayTeamLogoImageView.snp.height)
+            make.size.equalTo(homeTeamLogoImageView)
         }
     }
 }

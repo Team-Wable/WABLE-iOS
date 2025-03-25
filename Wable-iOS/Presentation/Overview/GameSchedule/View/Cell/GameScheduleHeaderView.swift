@@ -15,7 +15,7 @@ final class GameScheduleHeaderView: UICollectionReusableView {
     // MARK: - UIComponent
 
     private let labelStackView = UIStackView(axis: .horizontal).then {
-        $0.spacing = 8
+        $0.spacing = 4
     }
     
     private let todayDescriptionLabel = UILabel().then {
@@ -33,6 +33,9 @@ final class GameScheduleHeaderView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        setupView()
+        setupConstraint()
     }
     
     @available(*, unavailable)
@@ -70,7 +73,8 @@ private extension GameScheduleHeaderView {
     
     func setupConstraint() {
         labelStackView.snp.makeConstraints { make in
-            make.verticalEdges.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview()
         }
     }
 }

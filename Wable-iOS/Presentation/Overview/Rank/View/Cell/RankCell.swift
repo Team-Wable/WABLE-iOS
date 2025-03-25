@@ -18,32 +18,32 @@ final class RankCell: UICollectionViewCell {
         $0.attributedText = "0".pretendardString(with: .body3)
     }
 
-    private let teamLogoImageView = UIImageView()
+    private let teamLogoImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
+    }
     
     private let teamNameLabel = UILabel().then {
         $0.attributedText = "이름".pretendardString(with: .body3)
     }
     
-    private let teamStatsStackView = UIStackView(axis: .horizontal).then {
-        $0.spacing = 12
-        $0.distribution = .fillEqually
-        $0.alignment = .center
-    }
-    
     private let winCountLabel = UILabel().then {
         $0.attributedText = "0".pretendardString(with: .body4)
+        $0.textAlignment = .right
     }
     
     private let defeatCountLabel = UILabel().then {
         $0.attributedText = "0".pretendardString(with: .body4)
+        $0.textAlignment = .right
     }
     
     private let winningRateLabel = UILabel().then {
         $0.attributedText = "0%".pretendardString(with: .body4)
+        $0.textAlignment = .right
     }
     
     private let scoreGapLabel = UILabel().then {
         $0.attributedText = "0".pretendardString(with: .body4)
+        $0.textAlignment = .right
     }
     
     // MARK: - Initializer
@@ -84,18 +84,14 @@ final class RankCell: UICollectionViewCell {
 
 private extension RankCell {
     func setupView() {
-        teamStatsStackView.addArrangedSubviews(
-            winCountLabel,
-            defeatCountLabel,
-            winningRateLabel,
-            scoreGapLabel
-        )
-        
         contentView.addSubviews(
             rankLabel,
             teamLogoImageView,
             teamNameLabel,
-            teamStatsStackView
+            winCountLabel,
+            defeatCountLabel,
+            winningRateLabel,
+            scoreGapLabel
         )
     }
     
@@ -107,7 +103,7 @@ private extension RankCell {
         
         teamLogoImageView.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview().inset(4)
-            make.leading.equalTo(rankLabel.snp.trailing).offset(20)
+            make.leading.equalToSuperview().offset(56)
             make.width.equalTo(teamLogoImageView.snp.height)
         }
         
@@ -116,9 +112,24 @@ private extension RankCell {
             make.leading.equalTo(teamLogoImageView.snp.trailing).offset(12)
         }
         
-        teamStatsStackView.snp.makeConstraints { make in
+        winCountLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().offset(-16)
+            make.trailing.equalToSuperview().offset(-144)
+        }
+        
+        defeatCountLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-112)
+        }
+        
+        winningRateLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(defeatCountLabel.snp.trailing).offset(24)
+        }
+        
+        scoreGapLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-20)
         }
     }
 }
