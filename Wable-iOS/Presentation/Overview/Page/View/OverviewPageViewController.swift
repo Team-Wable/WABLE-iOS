@@ -93,7 +93,7 @@ extension OverviewPageViewController: UIPageViewControllerDataSource {
 // MARK: - NewsViewControllerDelegate
 
 extension OverviewPageViewController: NewsViewControllerDelegate {
-    func navigateToDetail(with news: Announcement) {
+    func navigateToNewsDetail(with news: Announcement) {
         let date = news.createdDate ?? Date()
         let detailViewController = AnnouncementDetailViewController().then {
             $0.configure(
@@ -109,6 +109,24 @@ extension OverviewPageViewController: NewsViewControllerDelegate {
     }
 }
 
+// MARK: - NoticeViewControllerDelegate
+
+extension OverviewPageViewController: NoticeViewControllerDelegate {
+    func navigateToNoticeDetail(with news: Announcement) {
+        let date = news.createdDate ?? Date()
+        let detailViewController = AnnouncementDetailViewController().then {
+            $0.configure(
+                type: .notice,
+                title: news.title,
+                time: date.elapsedText,
+                imageURL: news.imageURL,
+                bodyText: news.text
+            )
+        }
+        
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
+}
 
 // MARK: - Setup Method
 
@@ -120,7 +138,8 @@ private extension OverviewPageViewController {
         let rankViewController = RankListViewController(viewModel: .init(overviewRepository: repository))
         let newsViewController = NewsViewController(viewModel: .init(overviewRepository: repository))
         newsViewController.delegate = self
-        let noticeViewController = NoticeViewController()
+        let noticeViewController = NoticeViewController(viewModel: .init(overviewRepository: repository))
+        noticeViewController.delegate = self
         
         viewControllers.append(gameScheduleViewController)
         viewControllers.append(rankViewController)

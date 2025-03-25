@@ -12,7 +12,7 @@ import SnapKit
 import Then
 
 protocol NewsViewControllerDelegate: AnyObject {
-    func navigateToDetail(with news: Announcement)
+    func navigateToNewsDetail(with news: Announcement)
 }
 
 final class NewsViewController: UIViewController {
@@ -48,7 +48,7 @@ final class NewsViewController: UIViewController {
     
     private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
         $0.hidesWhenStopped = true
-        $0.color = .gray500
+        $0.color = .gray600
     }
 
     // MARK: - Property
@@ -204,7 +204,7 @@ private extension NewsViewController {
         output.selectedNews
             .receive(on: DispatchQueue.main)
             .sink { [weak self] news in
-                self?.delegate?.navigateToDetail(with: news)
+                self?.delegate?.navigateToNewsDetail(with: news)
             }
             .store(in: cancelBag)
         

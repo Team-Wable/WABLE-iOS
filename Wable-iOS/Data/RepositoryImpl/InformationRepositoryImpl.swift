@@ -166,6 +166,8 @@ struct MockInformationRepositoryImpl: InformationRepository {
             range = 31...33
         default:
             return .just([])
+                .delay(for: .seconds(randomDelaySecond), scheduler: RunLoop.main)
+                .eraseToAnyPublisher()
         }
         
         return .just(range.map { id in
@@ -182,7 +184,32 @@ struct MockInformationRepositoryImpl: InformationRepository {
     }
     
     func fetchNotice(cursor: Int) -> AnyPublisher<[Announcement], WableError> {
-        return .fail(.networkError)
+        let range: ClosedRange<Int>
+        
+        switch cursor {
+        case -1:
+            range = 1...15
+        case 15:
+            range = 16...30
+        case 30:
+            range = 31...33
+        default:
+            return .just([])
+                .delay(for: .seconds(randomDelaySecond), scheduler: RunLoop.main)
+                .eraseToAnyPublisher()
+        }
+        
+        return .just(range.map { id in
+            Announcement(
+                id: id,
+                title: "공지사항 \(id)",
+                imageURL: URL(string: Constant.imageURLText),
+                text: "이것은 공지사항 \(id)입니다.",
+                createdDate: Calendar.current.date(byAdding: .day, value: -id, to: Date())
+            )
+        })
+        .delay(for: .seconds(randomDelaySecond), scheduler: RunLoop.main)
+        .eraseToAnyPublisher()
     }
     
     func fetchNewsNoticeNumber() -> AnyPublisher<(newsNumber: Int, noticeNumber: Int), WableError> {

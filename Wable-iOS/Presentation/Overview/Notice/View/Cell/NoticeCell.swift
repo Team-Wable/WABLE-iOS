@@ -87,7 +87,7 @@ private extension NoticeCell {
         bodyLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
             make.horizontalEdges.equalToSuperview().inset(4)
-            make.bottom.equalToSuperview().offset(-12)
+            make.bottom.lessThanOrEqualToSuperview().offset(-12)
         }
         
         divisionLine.snp.makeConstraints { make in
