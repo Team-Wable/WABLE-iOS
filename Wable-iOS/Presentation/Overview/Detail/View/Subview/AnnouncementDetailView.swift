@@ -65,6 +65,7 @@ final class AnnouncementDetailView: UIView {
         $0.dataDetectorTypes = .link
         $0.isEditable = false
         $0.isSelectable = true
+        $0.isScrollEnabled = false
     }
     
     private let divisionLine: UIView = .init(backgroundColor: .gray200)
@@ -171,7 +172,7 @@ private extension AnnouncementDetailView {
         }
         
         timeLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+            make.centerY.equalTo(titleLabel)
             make.trailing.equalToSuperview().offset(-16)
         }
         

@@ -24,30 +24,28 @@ final class RankHeaderView: UICollectionReusableView {
         $0.textColor = Constant.textColor
     }
     
-    private let statsStackView: UIStackView = .init(axis: .horizontal).then {
-        $0.spacing = 24
-        $0.distribution = .fillEqually
-        $0.alignment = .center
-    }
-    
     private let winLabel: UILabel = .init().then {
         $0.attributedText = "승".pretendardString(with: Constant.pretendardStyle)
         $0.textColor = Constant.textColor
+        $0.textAlignment = .right
     }
         
     private let defeatLabel: UILabel = .init().then {
         $0.attributedText = "패".pretendardString(with: Constant.pretendardStyle)
         $0.textColor = Constant.textColor
+        $0.textAlignment = .right
     }
     
     private let winnningRateLabel: UILabel = .init().then {
         $0.attributedText = "승률".pretendardString(with: Constant.pretendardStyle)
         $0.textColor = Constant.textColor
+        $0.textAlignment = .right
     }
     
     private let scoreGapLabel: UILabel = .init().then {
         $0.attributedText = "득점차".pretendardString(with: Constant.pretendardStyle)
         $0.textColor = Constant.textColor
+        $0.textAlignment = .right
     }
     
     // MARK: - Initializer
@@ -69,36 +67,47 @@ final class RankHeaderView: UICollectionReusableView {
 
 private extension RankHeaderView {
     func setupView() {
-        backgroundColor = .gray600
+        backgroundColor = UIColor("EDEDED")
         layer.cornerRadius = 8
-        
-        statsStackView.addArrangedSubviews(
+                
+        addSubviews(
+            rankLabel,
+            teamLabel,
             winLabel,
             defeatLabel,
             winnningRateLabel,
             scoreGapLabel
         )
-        
-        addSubviews(
-            rankLabel,
-            teamLabel,
-            statsStackView
-        )
     }
     
     func setupConstraint() {
-        winLabel.snp.makeConstraints { make in
+        rankLabel.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview().inset(8)
             make.leading.equalToSuperview().offset(12)
         }
         
         teamLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(winLabel)
-            make.leading.equalTo(winLabel.snp.trailing).offset(24)
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().offset(56)
         }
         
-        statsStackView.snp.makeConstraints { make in
-            make.centerY.equalTo(winLabel)
+        winLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-148)
+        }
+        
+        defeatLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-112)
+        }
+        
+        winnningRateLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-68)
+        }
+        
+        scoreGapLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().offset(-12)
         }
     }
