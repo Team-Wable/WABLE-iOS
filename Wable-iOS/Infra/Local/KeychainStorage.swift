@@ -13,21 +13,18 @@ struct KeychainStorage { }
 
 extension KeychainStorage: LocalKeyValueProvider {
     func setValue<T>(_ value: T, for key: String) throws where T : Decodable, T : Encodable {
-        let data: Data
-        if let stringValue = value as? String {
-            guard let stringData = stringValue.data(using: .utf8) else {
-                throw LocalError.saveFailed
-            }
-            data = stringData
-        } else {
-            data = try JSONEncoder().encode(value)
+        guard let stringValue = value as? String,
+              let stringData = stringValue.data(using: .utf8) else {
+            throw LocalError.saveFailed
         }
+        
+        WableLogger.log("키체인에 데이터 저장 완료: \(stringValue)", for: .debug)
         
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
             kSecAttrService as String: Bundle.main.bundleIdentifier ?? "com.wable.Wable-iOS",
-            kSecValueData as String: data
+            kSecValueData as String: stringData
         ]
         
         SecItemDelete(query as CFDictionary)
@@ -43,7 +40,8 @@ extension KeychainStorage: LocalKeyValueProvider {
         var item: AnyObject?
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: key,
+            kSecAttrAccount as String: key,  // key 값을 kSecAttrAccount에 사용해야 함
+            kSecAttrService as String: Bundle.main.bundleIdentifier ?? "com.wable.Wable-iOS",
             kSecReturnData as String: kCFBooleanTrue!,
             kSecMatchLimit as String: kSecMatchLimitOne
         ]
@@ -58,10 +56,13 @@ extension KeychainStorage: LocalKeyValueProvider {
         }
         
         if T.self == Data.self {
+            WableLogger.log("\(data)", for: .debug)
             return data as? T
         }
         
-        if T.self == String.self, let stringValue = String(data: data, encoding: .utf8) {
+        if T.self == String.self,
+           let stringValue = String(data: data, encoding: .utf8) {
+            WableLogger.log("\(stringValue)", for: .debug)
             return stringValue as? T
         }
         
