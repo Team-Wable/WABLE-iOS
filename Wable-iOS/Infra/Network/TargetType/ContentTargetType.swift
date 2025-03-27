@@ -28,7 +28,7 @@ extension ContentTargetType: BaseTargetType {
         case .fetchContentInfo(contentID: let contentID):
             return "/v3/content/\(contentID)"
         case .fetchContentList:
-            return "/api/v3/contents"
+            return "/v3/contents"
         case .fetchUserContentList(memberID: let memberID):
             return "/v3/member/\(memberID)/contents"
         }
