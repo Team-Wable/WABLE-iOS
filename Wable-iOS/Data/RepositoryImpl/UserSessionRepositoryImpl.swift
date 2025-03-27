@@ -18,6 +18,8 @@ class UserSessionRepositoryImpl {
     private let userDefaults: LocalKeyValueProvider
     private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
     
+    // MARK: - LifeCycle
+
     init(userDefaults: LocalKeyValueProvider) {
         self.userDefaults = userDefaults
     }
@@ -54,25 +56,6 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         
         if fetchActiveUserID() == nil {
             updateActiveUserID(userID)
-        }
-    }
-    
-    func updateAutoLogin(enabled: Bool, forUserID userID: Int) {
-        var sessions = fetchAllUserSessions()
-        
-        if let session = sessions[userID] {
-            let updatedSession = UserSession(
-                id: session.id,
-                nickname: session.nickname,
-                profileURL: session.profileURL,
-                isPushAlarmAllowed: session.isPushAlarmAllowed,
-                isAdmin: session.isAdmin,
-                isAutoLoginEnabled: enabled,
-                notificationBadgeCount: session.notificationBadgeCount
-            )
-            
-            sessions[userID] = updatedSession
-            try? userDefaults.setValue(sessions, for: Keys.userSessions)
         }
     }
     
@@ -123,7 +106,8 @@ extension UserSessionRepositoryImpl {
         }
         
         do {
-            let _ = try tokenStorage.load(.wableAccessToken), _ = try tokenStorage.load(.wableRefreshToken)
+            let _ = try tokenStorage.load(.wableAccessToken),
+                _ = try tokenStorage.load(.wableRefreshToken)
             return .just(true)
         } catch {
             return .fail(error)
