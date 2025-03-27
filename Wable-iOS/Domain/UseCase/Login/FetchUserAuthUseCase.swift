@@ -36,11 +36,6 @@ extension FetchUserAuthUseCase {
                     WableLogger.log("토큰 저장 실패: \(error)", for: .debug)
                 }
                 
-                self.userSessionRepository.updateAutoLogin(
-                    enabled: true,
-                    forUserID: account.user.id
-                )
-                
                 self.userSessionRepository.updateUserSession(
                     UserSession(
                         id: account.user.id,
