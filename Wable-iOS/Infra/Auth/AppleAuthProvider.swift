@@ -46,7 +46,7 @@ extension AppleAuthProvider: ASAuthorizationControllerDelegate {
             do {
                 try tokenStorage.save(tokenText, for: .loginAccessToken)
                 WableLogger.log("애플 로그인 토큰 저장 완료", for: .debug)
-                promise(.success(appleIDCredential.user))
+                promise(.success(appleIDCredential.fullName?.formatted()))
             } catch {
                 WableLogger.log("애플 로그인 토큰 저장 중 오류 발생: \(error)", for: .error)
                 promise(.failure(.networkError))
