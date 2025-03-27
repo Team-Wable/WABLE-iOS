@@ -12,7 +12,7 @@ final class TabBarController: UITabBarController {
     
     // MARK: - UIComponent
     
-    private let homeViewController = HomeViewController().then {
+    private let homeViewController = HomeViewController(contentRepostiory: ContentRepositoryImpl()).then {
         $0.tabBarItem.title = "홈"
         $0.tabBarItem.image = .icHomeDefault
     }

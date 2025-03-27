@@ -33,47 +33,46 @@ extension LoginViewModel: ViewModelType {
     }
     
     struct Output {
-        let loginSuccess: AnyPublisher<Account, Never>
-        /// 이후 로그인 실패 시 에러 추가될 것을 고려해 추가해둠
-        let loginError: AnyPublisher<WableError, Never>
+        let account: AnyPublisher<Account, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
         input.kakaoLoginTrigger
-            .flatMap { _ -> AnyPublisher<Account, WableError> in
-                return self.fetchUserAuthUseCase.execute(platform: .kakao)
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<Account, WableError> in
+                return owner.fetchUserAuthUseCase.execute(platform: .kakao)
             }
             .sink(
-                receiveCompletion: { completion in
+                receiveCompletion: { [weak self] completion in
                     if case .failure(let error) = completion {
-                        self.loginErrorSubject.send(error)
+                        self?.loginErrorSubject.send(error)
                     }
                 },
-                receiveValue: { account in
-                    self.loginSuccessSubject.send(account)
+                receiveValue: { [weak self] account in
+                    self?.loginSuccessSubject.send(account)
                 }
             )
             .store(in: cancelBag)
         
         input.appleLoginTrigger
-            .flatMap { _ -> AnyPublisher<Account, WableError> in
-                return self.fetchUserAuthUseCase.execute(platform: .apple)
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<Account, WableError> in
+                return owner.fetchUserAuthUseCase.execute(platform: .apple)
             }
             .sink(
-                receiveCompletion: { completion in
+                receiveCompletion: { [weak self] completion in
                     if case .failure(let error) = completion {
-                        self.loginErrorSubject.send(error)
+                        self?.loginErrorSubject.send(error)
                     }
                 },
-                receiveValue: { account in
-                    self.loginSuccessSubject.send(account)
+                receiveValue: { [weak self] account in
+                    self?.loginSuccessSubject.send(account)
                 }
             )
             .store(in: cancelBag)
         
         return Output(
-            loginSuccess: loginSuccessSubject.eraseToAnyPublisher(),
-            loginError: loginErrorSubject.eraseToAnyPublisher()
+            account: loginSuccessSubject.eraseToAnyPublisher()
         )
     }
 }
