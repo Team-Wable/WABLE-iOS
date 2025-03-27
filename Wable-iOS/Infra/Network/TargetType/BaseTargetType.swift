@@ -39,7 +39,7 @@ extension BaseTargetType {
     }
     
     var validationType: ValidationType {
-        return .successCodes
+        return .none 
     }
     
     var headers: [String : String]? {
