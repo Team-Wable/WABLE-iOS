@@ -15,6 +15,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // MARK: - Property
     
     private let cancelBag = CancelBag()
+    private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
+    private let tokenProvider = OAuthTokenProvider()
+    
     private let loginRepository = LoginRepositoryImpl()
     private let userSessionRepository = UserSessionRepositoryImpl(
         userDefaults: UserDefaultsStorage(
@@ -40,40 +43,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window?.rootViewController = SplashViewController()
         self.window?.makeKeyAndVisible()
         
-        AuthEventManager.shared.tokenExpiredSubject
-            .receive(on: DispatchQueue.main)
-            .withUnretained(self)
-            .sink { owner, _ in
-                if let sessionID = owner.userSessionRepository.fetchActiveUserSession()?.id {
-                    WableLogger.log("토큰 만료로 인한 활성 세션 삭제 후 로그인 화면 전환", for: .debug)
-                    owner.userSessionRepository.removeUserSession(forUserID: sessionID)
-                }
-                
-                owner.configureLoginScreen()
-            }
-            .store(in: cancelBag)
-        
-#if DEBUG
-        if let sessionID = userSessionRepository.fetchActiveUserSession()?.id {
-            WableLogger.log("로그인 기능 구현을 위한 활성 세션 삭제", for: .debug)
-            userSessionRepository.removeUserSession(forUserID: sessionID)
-        }
-#endif
+        setupBinding()
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
             self.userSessionRepository.checkAutoLogin()
                 .withUnretained(self)
-                .sink { completion in
+                .sink { [weak self] completion in
                     switch completion {
                     case .finished:
                         break
                     case .failure(let error):
-                        WableLogger.log("로그인 실패: \(error)", for: .error)
+                        WableLogger.log("자동 로그인 여부 체크 실패: \(error)", for: .error)
+                        self?.configureLoginScreen()
                     }
-                } receiveValue: { owner, isAutoLoginEnabled in
-                    isAutoLoginEnabled ? owner.configureMainScreen() : owner.configureLoginScreen()
-                    owner.window?.makeKeyAndVisible()
-                    owner.updateVersionIfNeeded()
+                } receiveValue: { owner, isAutologinEnabled in
+                    WableLogger.log("자동 로그인 여부 체크 성공: \(isAutologinEnabled)", for: .debug)
+                    isAutologinEnabled ? owner.configureMainScreen() : owner.configureLoginScreen()
                 }
                 .store(in: self.cancelBag)
         }
@@ -112,6 +97,27 @@ private extension SceneDelegate {
 // MARK: - Private Extension
 
 private extension SceneDelegate {
+    
+    // MARK: - Setup
+
+    func setupBinding() {
+        OAuthEventManager.shared.tokenExpiredSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.handleTokenExpired()
+            }
+            .store(in: cancelBag)
+    }
+    
+    
+    func handleTokenExpired() {
+        userSessionRepository.updateActiveUserID(nil)
+        configureLoginScreen()
+        
+        let toast = ToastView(status: .caution, message: "세션이 만료되었습니다. 다시 로그인해주세요.")
+        toast.show()
+    }
+    
     func updateVersionIfNeeded() {
         // TODO: 강제 업데이트 로직 구현 필요
     }

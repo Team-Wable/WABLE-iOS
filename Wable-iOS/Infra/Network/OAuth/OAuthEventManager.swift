@@ -8,8 +8,8 @@
 
 import Combine
 
-final class AuthEventManager {
-    static let shared = AuthEventManager()
+final class OAuthEventManager {
+    static let shared = OAuthEventManager()
     
     let tokenExpiredSubject = PassthroughSubject<Void, Never>()
 }
