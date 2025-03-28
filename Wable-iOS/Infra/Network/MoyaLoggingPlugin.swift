@@ -128,11 +128,8 @@ private extension MoyaLoggingPlugin {
                 do {
                     try owner.tokenStorage.save(token.accessToken, for: .wableAccessToken)
                     try owner.tokenStorage.save(token.refreshToken, for: .wableRefreshToken)
-                    
-                    let toast = ToastView(status: .caution, message: "다시 시도하세요")
-                    toast.show()
                 } catch {
-                    WableLogger.log("당신은 이제 망햇습니다...", for: .error)
+                    WableLogger.log("토큰 재발급 중 문제 발생", for: .error)
                     owner.logoutHandler?()
                 }
             }
