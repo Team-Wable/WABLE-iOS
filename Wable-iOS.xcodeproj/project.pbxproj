@@ -226,6 +226,8 @@
 		DE7004952D8EBA9100B7AB71 /* GameScheduleEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7004942D8EBA9100B7AB71 /* GameScheduleEmptyView.swift */; };
 		DE72BB102D93CC68008E5774 /* NotificationPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB0F2D93CC68008E5774 /* NotificationPageView.swift */; };
 		DE72BB132D93CD9D008E5774 /* WableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB122D93CD9D008E5774 /* WableSegmentedControl.swift */; };
+		DE72BB182D93D4E1008E5774 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB172D93D4E1008E5774 /* NotificationCell.swift */; };
+		DE72BB1A2D93DC8C008E5774 /* ActivityNotiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB192D93DC8C008E5774 /* ActivityNotiViewController.swift */; };
 		DE7C530C2D761DCA00076E5D /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C530B2D761DCA00076E5D /* ViewModelType.swift */; };
 		DE7C530E2D761DFB00076E5D /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C530D2D761DFB00076E5D /* UIFont+.swift */; };
 		DE7C53102D761E3300076E5D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C530F2D761E3300076E5D /* String+.swift */; };
@@ -469,6 +471,8 @@
 		DE7004942D8EBA9100B7AB71 /* GameScheduleEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleEmptyView.swift; sourceTree = "<group>"; };
 		DE72BB0F2D93CC68008E5774 /* NotificationPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageView.swift; sourceTree = "<group>"; };
 		DE72BB122D93CD9D008E5774 /* WableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSegmentedControl.swift; sourceTree = "<group>"; };
+		DE72BB172D93D4E1008E5774 /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
+		DE72BB192D93DC8C008E5774 /* ActivityNotiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotiViewController.swift; sourceTree = "<group>"; };
 		DE7C530B2D761DCA00076E5D /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		DE7C530D2D761DFB00076E5D /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		DE7C530F2D761E3300076E5D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
@@ -1092,6 +1096,7 @@
 				DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */,
 				DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */,
 				DED4BE3C2D8C531E009B65CB /* GameTypeCell.swift */,
+				DE72BB172D93D4E1008E5774 /* NotificationCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1341,6 +1346,7 @@
 			isa = PBXGroup;
 			children = (
 				DE72BB0C2D93CAA6008E5774 /* Page */,
+				DE72BB142D93D4B2008E5774 /* Activity */,
 			);
 			path = Notification;
 			sourceTree = "<group>";
@@ -1504,6 +1510,22 @@
 				DE72BB122D93CD9D008E5774 /* WableSegmentedControl.swift */,
 			);
 			path = SegmentedControl;
+			sourceTree = "<group>";
+		};
+		DE72BB142D93D4B2008E5774 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				DE72BB152D93D4D3008E5774 /* View */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
+		DE72BB152D93D4D3008E5774 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DE72BB192D93DC8C008E5774 /* ActivityNotiViewController.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		DE7C53082D761DA500076E5D /* Presentation */ = {
@@ -1879,6 +1901,7 @@
 				DD29684F2D6DAD2F00143851 /* FetchViewits.swift in Sources */,
 				DE59BB9A2D8A9D3A0040ADCB /* NotificationPageViewController.swift in Sources */,
 				DDCA70952D883D4100A988B8 /* NavigationViewController.swift in Sources */,
+				DE72BB182D93D4E1008E5774 /* NotificationCell.swift in Sources */,
 				DD2968502D6DAD2F00143851 /* FetchUserComments.swift in Sources */,
 				DD2968332D6DAD1700143851 /* CommentRepositoryImpl.swift in Sources */,
 				DE7004892D8E907300B7AB71 /* RankHeaderView.swift in Sources */,
@@ -1961,6 +1984,7 @@
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
 				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
 				DD29681D2D6DAD0200143851 /* CommentRepository.swift in Sources */,
+				DE72BB1A2D93DC8C008E5774 /* ActivityNotiViewController.swift in Sources */,
 				DDED59722D78EE9900A0BEF1 /* UpdatePreRegisterUseCase.swift in Sources */,
 				DEAFE0592D8C4E0B0097E91C /* GameStatus+.swift in Sources */,
 				DD29681E2D6DAD0200143851 /* AccountRepository.swift in Sources */,
