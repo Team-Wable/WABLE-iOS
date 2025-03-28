@@ -35,6 +35,12 @@ final class KakaoAuthProvider: AuthProvider {
 // MARK: - Extension
 
 private extension KakaoAuthProvider {
+    /// Processes the result of a Kakao authentication attempt by verifying the OAuth token, saving it if valid, and completing the provided promise accordingly.
+    ///
+    /// - Parameters:
+    ///   - oauthToken: The OAuth token received from the Kakao authentication response, if available.
+    ///   - error: An error encountered during the authentication request, if any.
+    ///   - promise: A closure to be called with the result. On success, it returns the saved access token; on failure, it returns a corresponding WableError.
     func handleKakaoAuthResult(
         oauthToken: OAuthToken?,
         error: Error?,

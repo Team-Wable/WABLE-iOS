@@ -36,6 +36,16 @@ extension LoginViewModel: ViewModelType {
         let account: AnyPublisher<Account, Never>
     }
     
+    /// Processes login triggers for Kakao and Apple authentication, returning a publisher for successful logins.
+    /// 
+    /// For each login trigger in the input, this method initiates the corresponding authentication process using
+    /// the fetchUserAuthUseCase. On successful authentication, the account is published via the success subject;
+    /// on failure, the error is routed to the error subject. The active subscriptions are managed with the provided cancel bag.
+    /// 
+    /// - Parameters:
+    ///   - input: Contains publishers for Kakao and Apple login trigger events.
+    ///   - cancelBag: A container for managing Combine subscriptions.
+    /// - Returns: An Output instance with a publisher that emits authenticated Account events.
     func transform(input: Input, cancelBag: CancelBag) -> Output {
         input.kakaoLoginTrigger
             .withUnretained(self)

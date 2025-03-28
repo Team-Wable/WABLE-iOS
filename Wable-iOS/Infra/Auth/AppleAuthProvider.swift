@@ -32,6 +32,9 @@ final class AppleAuthProvider: NSObject, AuthProvider {
 // MARK: - ASAuthorizationControllerDelegate
 
 extension AppleAuthProvider: ASAuthorizationControllerDelegate {
+    /// Processes a successful Apple ID authorization by extracting and securely storing the identity token.
+    ///
+    /// If the authorization credential is valid and includes an identity token, the method converts the token to a string and attempts to save it as the login access token. On successful storage, it resolves the stored promise with the user's formatted full name; if token storage fails, it resolves the promise with a network error. No action is taken if the promise is not set.
     func authorizationController(
         controller: ASAuthorizationController,
         didCompleteWithAuthorization authorization: ASAuthorization
@@ -54,6 +57,15 @@ extension AppleAuthProvider: ASAuthorizationControllerDelegate {
         }
     }
     
+    /// Handles failed Apple authentication requests.
+    ///
+    /// If a pending promise exists, this method resolves it with a failure result using the
+    /// `.failedToValidateAppleLogin` error, regardless of the provided error. If no promise is set,
+    /// no action is taken.
+    ///
+    /// - Parameters:
+    ///   - controller: The authorization controller that encountered the error.
+    ///   - error: The error produced during the authorization attempt.
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         guard let promise = self.promise else { return }
         

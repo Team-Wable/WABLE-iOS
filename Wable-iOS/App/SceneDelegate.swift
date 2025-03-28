@@ -31,7 +31,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     
-    // MARK: - WillConnentTo
+    /// Configures and presents the main window for the scene and initiates the auto-login process.
+    /// 
+    /// When the scene connects, this method creates a new window using the provided window scene, sets its root
+    /// view controller to a splash screen, and makes the window key and visible. It also sets up a binding to listen
+    /// for token expiration events and, after a 2-second delay, checks whether auto-login is enabled. Depending on the
+    /// auto-login check result, it transitions to either the main screen or the login screen.
+    /// 
+    /// - Parameters:
+    ///   - scene: The scene object that is connecting to the app.
+    ///   - session: The session associated with the scene.
+    ///   - connectionOptions: Options used to configure the scene’s connection.
     
     func scene(
         _ scene: UIScene,
@@ -64,7 +74,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
-    // MARK: - Kakao URLContexts
+    /// Handles incoming URL contexts for KakaoTalk authentication.
+    ///
+    /// Extracts the first URL from the provided set and, if it is recognized as a KakaoTalk login URL by AuthApi, delegates its handling to AuthController.
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         if let url = URLContexts.first?.url {
@@ -78,6 +90,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 // MARK: - Configure Extension
 
 private extension SceneDelegate {
+    /// Configures the login screen as the app's root view controller.
+    /// 
+    /// This method creates a `LoginViewController` with an associated `LoginViewModel` that is initialized
+    /// using a `FetchUserAuthUseCase`. The use case leverages the login and user session repositories to manage user authentication.
+    /// The configured view controller is then set as the window's root view controller.
     func configureLoginScreen() {
         self.window?.rootViewController = LoginViewController(
             viewModel: LoginViewModel(
@@ -89,6 +106,8 @@ private extension SceneDelegate {
         )
     }
     
+    /// Configures the main application screen by setting the window's root view controller to a new instance of `TabBarController`.
+    /// This effectively transitions the app to the main tab-based interface.
     func configureMainScreen() {
         self.window?.rootViewController = TabBarController()
     }
@@ -98,7 +117,9 @@ private extension SceneDelegate {
 
 private extension SceneDelegate {
     
-    // MARK: - Setup
+    /// Configures a subscription to token expiration events.
+    /// 
+    /// Listens to the `tokenExpiredSubject` from the shared OAuthEventManager on the main thread. When a token expiration event is received, it triggers `handleTokenExpired()` to handle the session update, storing the subscription in `cancelBag` for proper lifecycle management.
 
     func setupBinding() {
         OAuthEventManager.shared.tokenExpiredSubject
@@ -110,6 +131,10 @@ private extension SceneDelegate {
     }
     
     
+    /// Handles token expiration by clearing the active user session and prompting a re-login.
+    /// 
+    /// This method resets the active user ID, reconfigures the interface to display the login screen, 
+    /// and shows a caution toast notifying the user that the session has expired.
     func handleTokenExpired() {
         userSessionRepository.updateActiveUserID(nil)
         configureLoginScreen()
@@ -118,6 +143,12 @@ private extension SceneDelegate {
         toast.show()
     }
     
+    /// Placeholder for forced update functionality.
+    ///
+    /// Future implementation should determine if a mandatory update is required and perform the necessary actions,
+    /// such as notifying the user and redirecting them to the update screen.
+    ///
+    /// - Note: Forced update logic is not yet implemented.
     func updateVersionIfNeeded() {
         // TODO: 강제 업데이트 로직 구현 필요
     }

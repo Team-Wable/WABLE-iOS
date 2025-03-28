@@ -51,6 +51,14 @@ final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
         super.init(session: session, plugins: plugin)
     }
     
+    /// Sends an API request to the specified target and publishes a decoded response.
+    ///
+    /// This method initiates a network request using the provided target. It extracts the response data, decodes it into a `BaseResponse` wrapping the expected type, and validates the response. Any decoding or validation errors are mapped to a corresponding `NetworkError`.
+    ///
+    /// - Parameters:
+    ///   - target: The API endpoint configuration for the request.
+    ///   - type: The expected type for decoding the response data.
+    /// - Returns: A publisher that emits the decoded response data or a `NetworkError`.
     func request<D: Decodable>(
         _ target: Target,
         for type: D.Type

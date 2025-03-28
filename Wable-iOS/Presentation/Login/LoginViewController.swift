@@ -70,6 +70,15 @@ final class LoginViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// Configures the view controller after the view is loaded into memory.
+    /// 
+    /// This method performs the initial setup for the login interface by:
+    /// - Adding UI components to the view hierarchy.
+    /// - Establishing layout constraints.
+    /// - Assigning actions to the relevant UI elements.
+    /// - Setting up reactive bindings using Combine.
+    /// 
+    /// Overrides the default implementation to execute these custom setup routines.
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -84,7 +93,9 @@ final class LoginViewController: UIViewController {
 
 private extension LoginViewController {
     
-    // MARK: - Setup
+    /// Adds the required UI components to the view hierarchy.
+    /// 
+    /// This method adds the background image, logo, login image, title label, Kakao and Apple login buttons, and a temporary button to the main view. Layout constraints are applied separately.
 
     func setupView() {
         view.addSubviews(
@@ -98,6 +109,16 @@ private extension LoginViewController {
         )
     }
     
+    /// Configures SnapKit layout constraints for the login view's UI elements.
+    /// 
+    /// This method sets the following constraints:
+    /// - The background image fills the entire view.
+    /// - The logo image is centered horizontally near the top of the safe area with fixed dimensions.
+    /// - The title label is centered horizontally below the logo.
+    /// - The login image spans the full horizontal width below the title label.
+    /// - The apple button is anchored to the bottom safe area with horizontal insets.
+    /// - The kakao button is positioned directly above the apple button with the same side insets.
+    /// - The temporary button is placed above the kakao button.
     func setupConstraint() {
         backgroundImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -139,6 +160,9 @@ private extension LoginViewController {
         }
     }
     
+    /// Configures the temporary button's tap action.
+    /// 
+    /// When the temporary button is tapped, this method presents the main TabBarController modally with animation.
     func setupAction() {
         tempButton.addAction(
             .init(
@@ -151,6 +175,9 @@ private extension LoginViewController {
         )
     }
     
+    /// Binds the login button tap events to the view model and navigates based on user session status.
+    /// 
+    /// This method sets up reactive bindings using Combine for both the Kakao and Apple login buttons. It transforms their tap events into publishers that log debug messages and passes them to the view model's transform function. The resulting output is observed on the main thread; if the session indicates a new user, it triggers navigation to the onboarding flow, otherwise to the home screen.
     func setupBinding() {
         let output = viewModel.transform(
             input: .init(
@@ -180,6 +207,11 @@ private extension LoginViewController {
             .store(in: cancelBag)
     }
     
+    /// Presents an onboarding notice and navigates to the year selection flow.
+    ///
+    /// Displays a modal sheet with an informative title and message. When the user taps the "확인" action,
+    /// a full-screen `UINavigationController` containing a `LCKYearViewController` (configured for the onboarding flow)
+    /// is presented.
     private func navigateToOnboarding() {
         let noticeViewController = WableSheetViewController(
             title: "앗 잠깐!",
@@ -198,6 +230,9 @@ private extension LoginViewController {
         present(noticeViewController, animated: true)
     }
     
+    /// Navigates to the home screen by presenting the tab bar interface.
+    ///
+    /// This method creates a new instance of TabBarController and displays it modally with animation.
     private func navigateToHome() {
         let tabBarController = TabBarController()
         

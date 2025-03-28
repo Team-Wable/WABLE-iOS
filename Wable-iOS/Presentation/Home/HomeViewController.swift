@@ -27,6 +27,12 @@ final class HomeViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// Called after the view controller's view is loaded into memory.
+    /// 
+    /// In addition to the default setup, this method asynchronously fetches a content list using the content repository.
+    /// The fetch operation is performed with a cursor of -1 and its results are received on the main dispatch queue.
+    /// Upon completion, a debug message is logged, and when data is received, it is printed to the console.
+    /// The Combine subscription is stored in the cancel bag to manage its lifecycle.
     override func viewDidLoad() {
         super.viewDidLoad()
         

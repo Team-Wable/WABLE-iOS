@@ -22,6 +22,15 @@ final class FetchUserAuthUseCase {
 // MARK: - Extension
 
 extension FetchUserAuthUseCase {
+    /// Executes the user authentication process for the specified social platform.
+    /// 
+    /// Initiates an authentication request using the login repository. Upon receiving an authenticated account,
+    /// the method attempts to save the access and refresh tokens securely. It logs success or failure for both token
+    /// storage operations and then updates the user session repository with the account's session details, including 
+    /// user identification and related preferences. The resulting publisher emits an `Account` on success or a `WableError` on failure.
+    /// 
+    /// - Parameter platform: The social platform to use for authentication.
+    /// - Returns: A publisher that emits an authenticated `Account` or a `WableError`.
     func execute(platform: SocialPlatform) -> AnyPublisher<Account, WableError> {
         return loginRepository.fetchUserAuth(platform: platform, userName: nil)
             .handleEvents(receiveOutput: { account in

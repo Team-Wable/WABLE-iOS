@@ -28,7 +28,13 @@ final class MoyaLoggingPlugin: PluginType {
         self.tokenStorage = tokenStorage
     }
     
-    // MARK: - Request 보낼 시 호출
+    /// Logs details of the outgoing HTTP request.
+    /// 
+    /// Extracts and prints essential information from the HTTP request, including its HTTP method, URL, headers, and body. If the request lacks a valid URLRequest, it prints an error message indicating the request is invalid.
+    /// 
+    /// - Parameters:
+    ///   - request: A wrapper that provides access to the underlying URLRequest to be sent.
+    ///   - target: The target endpoint associated with the request.
     
     func willSend(_ request: RequestType, target: TargetType) {
         guard let httpRequest = request.request else {
@@ -56,7 +62,13 @@ final class MoyaLoggingPlugin: PluginType {
         print(log)
     }
     
-    // MARK: - Response 받을 시 호출
+    /// Processes the result of an HTTP request for a specified target.
+    ///
+    /// For a successful response, this method logs the response details using `onSucceed(_, target:)` and checks for authentication errors with `checkForAuthError(_:)`. In the case of a failure, it logs the error via `onFail(_, target:)` and, if an HTTP response is available, it examines that response for potential authentication issues.
+    ///
+    /// - Parameters:
+    ///   - result: The outcome of the HTTP request, containing either a successful response or an error.
+    ///   - target: The network target associated with the request.
     
     func didReceive(_ result: Result<Response, MoyaError>, target: TargetType) {
         switch result {
@@ -88,6 +100,13 @@ final class MoyaLoggingPlugin: PluginType {
         print(log)
     }
     
+    /// Logs details for a failed network request.
+    ///
+    /// If the error contains a valid HTTP response, the handler delegates logging to the provided success handler (`onSucceed`). Otherwise, it constructs and prints an error log that includes the error code and a descriptive message.
+    ///
+    /// - Parameters:
+    ///   - error: The Moya error that occurred during the network request.
+    ///   - target: The API target associated with the network request.
     func onFail(_ error: MoyaError, target: TargetType) {
         if let response = error.response {
             onSucceed(response, target: target)
@@ -104,6 +123,13 @@ final class MoyaLoggingPlugin: PluginType {
 // MARK: - Private Extension
 
 private extension MoyaLoggingPlugin {
+    /// Checks the provided HTTP response for an authentication error (HTTP 401) that is not from the token refresh endpoint.
+    /// 
+    /// If such an error is detected, the method initiates a token refresh process via an OAuth token provider. On a failure due
+    /// to a sign-in requirement, it clears the stored access and refresh tokens and triggers the logout handler. On a successful
+    /// refresh, new tokens are saved to storage; if saving fails, an error is logged and logout is triggered.
+    /// 
+    /// - Parameter response: The HTTP response to inspect for authentication errors.
     private func checkForAuthError(_ response: Response) {
         guard let condtion = response.response?.url?.absoluteString.contains("v1/auth/token"),
               response.statusCode == 401 && !condtion else { return }
