@@ -14,7 +14,12 @@ final class NotificationPageViewController: UIViewController {
     
     // MARK: - Property
 
-    private var currentIndex = 0
+    private var currentIndex = 0 {
+        didSet {
+            guard oldValue != currentIndex else { return }
+            trackPageChangeEvent(for: currentIndex)
+        }
+    }
     private var viewControllers = [UIViewController]()
     
     private let pageViewController = UIPageViewController(
@@ -128,6 +133,17 @@ private extension NotificationPageViewController {
 private extension NotificationPageViewController {
     func index(for viewController: UIViewController) -> Int? {
         return viewControllers.firstIndex(of: viewController)
+    }
+    
+    func trackPageChangeEvent(for index: Int) {
+        switch index {
+        case 0:
+            AmplitudeManager.shared.trackEvent(tag: "click_activitiesnoti")
+        case 1:
+            AmplitudeManager.shared.trackEvent(tag: "click_infonoti")
+        default:
+            break
+        }
     }
 }
 
