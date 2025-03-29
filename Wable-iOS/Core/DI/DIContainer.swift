@@ -37,12 +37,7 @@ extension AppDIContainer: DependencyContainer {
     }
     
     func register<T>(for type: T.Type, _ resolver: @escaping (any DependencyResolvable) -> T) {
-        dependencies[key(type)] = { [weak self] in
-            guard let self else {
-                fatalError("self is optional")
-            }
-            return resolver(self)
-        }
+        dependencies[key(type)] = resolver
     }
     
     func unregister<T>(for type: T.Type) {
