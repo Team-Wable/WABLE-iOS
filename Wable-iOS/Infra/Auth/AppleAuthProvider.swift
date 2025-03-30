@@ -32,25 +32,32 @@ final class AppleAuthProvider: NSObject, AuthProvider {
 // MARK: - ASAuthorizationControllerDelegate
 
 extension AppleAuthProvider: ASAuthorizationControllerDelegate {
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+    func authorizationController(
+        controller: ASAuthorizationController,
+        didCompleteWithAuthorization authorization: ASAuthorization
+    ) {
         guard let promise = self.promise else { return }
         
-        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            try? tokenStorage.save("", for: .kakaoAccessToken)
-            promise(.success(appleIDCredential.user))
-        } else {
-            promise(.failure(.failedToValidateAppleLogin))
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
+           let token = appleIDCredential.identityToken,
+           let tokenText = String(data: token, encoding: .utf8) {
+            WableLogger.log("애플 로그인 토큰 추출 완료", for: .debug)
+            
+            do {
+                try tokenStorage.save(tokenText, for: .loginAccessToken)
+                WableLogger.log("애플 로그인 토큰 저장 완료", for: .debug)
+                promise(.success(appleIDCredential.fullName?.formatted()))
+            } catch {
+                WableLogger.log("애플 로그인 토큰 저장 중 오류 발생: \(error)", for: .error)
+                promise(.failure(.networkError))
+            }
         }
-        
-        self.promise = nil
     }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         guard let promise = self.promise else { return }
         
         promise(.failure(.failedToValidateAppleLogin))
-        
-        self.promise = nil
     }
 }
 

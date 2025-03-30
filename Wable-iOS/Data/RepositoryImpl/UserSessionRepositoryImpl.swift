@@ -18,6 +18,8 @@ class UserSessionRepositoryImpl {
     private let userDefaults: LocalKeyValueProvider
     private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
     
+    // MARK: - LifeCycle
+
     init(userDefaults: LocalKeyValueProvider) {
         self.userDefaults = userDefaults
     }
@@ -54,25 +56,6 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         
         if fetchActiveUserID() == nil {
             updateActiveUserID(userID)
-        }
-    }
-    
-    func updateAutoLogin(enabled: Bool, forUserID userID: Int) {
-        var sessions = fetchAllUserSessions()
-        
-        if let session = sessions[userID] {
-            let updatedSession = UserSession(
-                id: session.id,
-                nickname: session.nickname,
-                profileURL: session.profileURL,
-                isPushAlarmAllowed: session.isPushAlarmAllowed,
-                isAdmin: session.isAdmin,
-                isAutoLoginEnabled: enabled,
-                notificationBadgeCount: session.notificationBadgeCount
-            )
-            
-            sessions[userID] = updatedSession
-            try? userDefaults.setValue(sessions, for: Keys.userSessions)
         }
     }
     
@@ -116,24 +99,18 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
 
 extension UserSessionRepositoryImpl {
     func checkAutoLogin() -> AnyPublisher<Bool, Error> {
-            guard let userSession = fetchActiveUserSession(),
-                  userSession.isAutoLoginEnabled == true else {
-                return .just(false)
-            }
-            
-            do {
-                let _ = try tokenStorage.load(.wableAccessToken), _ = try tokenStorage.load(.wableRefreshToken)
-                return .just(true)
-            } catch {
-                return .fail(error)
-            }
+        guard let userSession = fetchActiveUserSession(),
+              userSession.isAutoLoginEnabled == true
+        else {
+            return .just(false)
         }
         
-        func enableAutoLogin(for userID: Int) {
-            updateAutoLogin(enabled: true, forUserID: userID)
+        do {
+            let _ = try tokenStorage.load(.wableAccessToken),
+                _ = try tokenStorage.load(.wableRefreshToken)
+            return .just(true)
+        } catch {
+            return .fail(error)
         }
-        
-        func disableAutoLogin(for userID: Int) {
-            updateAutoLogin(enabled: false, forUserID: userID)
-        }
+    }
 }
