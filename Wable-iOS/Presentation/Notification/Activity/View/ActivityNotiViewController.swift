@@ -109,20 +109,11 @@ private extension ActivityNotiViewController {
 
 private extension ActivityNotiViewController {
     var collectionViewLayout: UICollectionViewCompositionalLayout {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(80)
-        )
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(80))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(80)
-        )
-        let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: groupSize,
-            subitems: [item]
-        )
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(80))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
