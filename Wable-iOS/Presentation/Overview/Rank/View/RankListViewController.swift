@@ -54,8 +54,8 @@ final class RankListViewController: UIViewController {
     
     private let viewModel: ViewModel
     private let cancelBag: CancelBag = .init()
-    private let didLoadSubject = PassthroughSubject<Void, Never>()
-    private let didRefreshSubject = PassthroughSubject<Void, Never>()
+    private let didLoadSubject = PublishRelay<Void>()
+    private let didRefreshSubject = PublishRelay<Void>()
     
     // MARK: - Initializer
 
@@ -199,14 +199,12 @@ private extension RankListViewController {
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
         
         output.item
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] item in
                 self?.applySnapshot(item: item)
             }
             .store(in: cancelBag)
         
         output.isLoading
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoading in
                 guard !isLoading else { return }
                 self?.collectionView.refreshControl?.endRefreshing()
