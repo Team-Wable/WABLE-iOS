@@ -67,11 +67,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // MARK: - Kakao URLContexts
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        if let url = URLContexts.first?.url {
-            if (AuthApi.isKakaoTalkLoginUrl(url)) {
-                _ = AuthController.handleOpenUrl(url: url)
-            }
+        guard let url = URLContexts.first?.url,
+              AuthApi.isKakaoTalkLoginUrl(url)
+        else {
+            return
         }
+        
+        _ = AuthController.handleOpenUrl(url: url)
     }
 }
 
