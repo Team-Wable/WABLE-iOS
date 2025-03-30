@@ -9,7 +9,9 @@
 import Foundation
 import Security
 
-struct KeychainStorage { }
+struct KeychainStorage {
+    private let jsonDecoder = JSONDecoder()
+}
 
 extension KeychainStorage: LocalKeyValueProvider {
     func setValue<T>(_ value: T, for key: String) throws where T : Decodable, T : Encodable {
@@ -23,7 +25,7 @@ extension KeychainStorage: LocalKeyValueProvider {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
-            kSecAttrService as String: Bundle.main.bundleIdentifier ?? "com.wable.Wable-iOS",
+            kSecAttrService as String: Bundle.identifier,
             kSecValueData as String: stringData
         ]
         
@@ -40,8 +42,8 @@ extension KeychainStorage: LocalKeyValueProvider {
         var item: AnyObject?
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: key,  // key 값을 kSecAttrAccount에 사용해야 함
-            kSecAttrService as String: Bundle.main.bundleIdentifier ?? "com.wable.Wable-iOS",
+            kSecAttrAccount as String: key,
+            kSecAttrService as String: Bundle.identifier,
             kSecReturnData as String: kCFBooleanTrue!,
             kSecMatchLimit as String: kSecMatchLimitOne
         ]
@@ -66,7 +68,7 @@ extension KeychainStorage: LocalKeyValueProvider {
             return stringValue as? T
         }
         
-        return try JSONDecoder().decode(T.self, from: data)
+        return try jsonDecoder.decode(T.self, from: data)
     }
     
     func removeValue(for key: String) throws {

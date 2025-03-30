@@ -37,27 +37,15 @@ extension LoginViewModel: ViewModelType {
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
-        input.kakaoLoginTrigger
-            .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<Account, WableError> in
-                return owner.fetchUserAuthUseCase.execute(platform: .kakao)
-            }
-            .sink(
-                receiveCompletion: { [weak self] completion in
-                    if case .failure(let error) = completion {
-                        self?.loginErrorSubject.send(error)
-                    }
-                },
-                receiveValue: { [weak self] account in
-                    self?.loginSuccessSubject.send(account)
-                }
-            )
-            .store(in: cancelBag)
+        let kakaoLoginTrigger = input.kakaoLoginTrigger
+            .map { SocialPlatform.kakao }
+        let appleLoginTrigger = input.appleLoginTrigger
+            .map { SocialPlatform.apple }
         
-        input.appleLoginTrigger
+        Publishers.Merge(appleLoginTrigger, kakaoLoginTrigger)
             .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<Account, WableError> in
-                return owner.fetchUserAuthUseCase.execute(platform: .apple)
+            .flatMap { owner, flatform -> AnyPublisher<Account, WableError> in
+                return owner.fetchUserAuthUseCase.execute(platform: flatform)
             }
             .sink(
                 receiveCompletion: { [weak self] completion in
