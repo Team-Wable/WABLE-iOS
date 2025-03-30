@@ -99,7 +99,14 @@ extension NotificationPageViewController: UIPageViewControllerDataSource {
 
 private extension NotificationPageViewController {
     func setupViewControllers() {
+        let repository = MockNotificationRepositoryImpl()
         
+        let activityNotiViewController = ActivityNotiViewController()
+        
+        let informationNotiViewController = InformationNotiViewController(viewModel: .init(notificationRepository: repository))
+        
+        viewControllers.append(activityNotiViewController)
+        viewControllers.append(informationNotiViewController)
     }
     
     func setupPageController() {
