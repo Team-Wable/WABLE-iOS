@@ -14,7 +14,6 @@ extension Publisher {
             .replaceError(with: defaultValue)
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
-        
     }
 }
 
