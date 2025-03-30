@@ -74,9 +74,35 @@ final class NotificationCell: UICollectionViewCell {
         content: String,
         time: String
     ) {
-        profileImageView.kf.setImage(with: imageURL, placeholder: UIImage(resource: .imgProfileSmall))
+        if let defaultProfileImage = configureDefaultProfileImage(imageURL: imageURL) {
+            profileImageView.image = defaultProfileImage
+        } else {
+            profileImageView.kf.setImage(with: imageURL, placeholder: UIImage(resource: .imgProfileSmall))
+        }
+        
         contentLabel.text = content
         timeLabel.text = time
+    }
+}
+
+// MARK: - Helper Method
+
+private extension NotificationCell {
+    func configureDefaultProfileImage(imageURL: URL?) -> UIImage? {
+        guard let absoluteString = imageURL?.absoluteString else {
+            return nil
+        }
+        
+        switch absoluteString {
+        case "PURPLE":
+            return .imgProfilePurple
+        case "BLUE":
+            return .imgProfileBlue
+        case "GREEN":
+            return .imgProfileGreen
+        default:
+            return nil
+        }
     }
 }
 

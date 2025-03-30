@@ -248,6 +248,8 @@
 		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
 		DE98919B2D993D7200D538D8 /* InformationNotiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919A2D993D7200D538D8 /* InformationNotiViewModel.swift */; };
 		DE9891A02D995EE800D538D8 /* InfoNotificationType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919F2D995EE800D538D8 /* InfoNotificationType+.swift */; };
+		DE9891A32D9981DC00D538D8 /* ActivityNotification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9891A22D9981DC00D538D8 /* ActivityNotification+.swift */; };
+		DE9891AA2D99925900D538D8 /* ActivityNotiTriggerType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9891A92D99925900D538D8 /* ActivityNotiTriggerType+.swift */; };
 		DE9B94762D927F140060FF92 /* NoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9B94752D927F140060FF92 /* NoticeViewModel.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
 		DEAFE0562D8C45980097E91C /* GameScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */; };
@@ -497,6 +499,8 @@
 		DE8FF1902D8155DD00C41880 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
 		DE98919A2D993D7200D538D8 /* InformationNotiViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotiViewModel.swift; sourceTree = "<group>"; };
 		DE98919F2D995EE800D538D8 /* InfoNotificationType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InfoNotificationType+.swift"; sourceTree = "<group>"; };
+		DE9891A22D9981DC00D538D8 /* ActivityNotification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityNotification+.swift"; sourceTree = "<group>"; };
+		DE9891A92D99925900D538D8 /* ActivityNotiTriggerType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityNotiTriggerType+.swift"; sourceTree = "<group>"; };
 		DE9B94752D927F140060FF92 /* NoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewModel.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
 		DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleCell.swift; sourceTree = "<group>"; };
@@ -1546,6 +1550,7 @@
 		DE72BB142D93D4B2008E5774 /* Activity */ = {
 			isa = PBXGroup;
 			children = (
+				DE9891A12D9981D100D538D8 /* Model */,
 				DE72BB152D93D4D3008E5774 /* View */,
 			);
 			path = Activity;
@@ -1628,6 +1633,15 @@
 			isa = PBXGroup;
 			children = (
 				DE98919F2D995EE800D538D8 /* InfoNotificationType+.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DE9891A12D9981D100D538D8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DE9891A22D9981DC00D538D8 /* ActivityNotification+.swift */,
+				DE9891A92D99925900D538D8 /* ActivityNotiTriggerType+.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1884,6 +1898,7 @@
 				DE8E863F2D91A032000A4292 /* AmplitudeManager.swift in Sources */,
 				DD2968572D6DAD4400143851 /* CreateReport.swift in Sources */,
 				DD2968582D6DAD4400143851 /* CreateContentLiked.swift in Sources */,
+				DE9891A32D9981DC00D538D8 /* ActivityNotification+.swift in Sources */,
 				DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */,
 				DD2968592D6DAD4400143851 /* CreateViewitPostRequest.swift in Sources */,
 				DD29685A2D6DAD4400143851 /* CreateCommentLiked.swift in Sources */,
@@ -2000,6 +2015,7 @@
 				DE7C53122D761EA400076E5D /* UIStackView+.swift in Sources */,
 				DDCCA3952D73928900658122 /* UserSession.swift in Sources */,
 				DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */,
+				DE9891AA2D99925900D538D8 /* ActivityNotiTriggerType+.swift in Sources */,
 				DE7004902D8EA93A00B7AB71 /* NewsCell.swift in Sources */,
 				DD2968022D6DAC9B00143851 /* ViewController.swift in Sources */,
 				DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */,
