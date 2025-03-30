@@ -34,7 +34,7 @@ enum NotificationMapper {
                 triggerID: dto.notificationTriggerID,
                 type: TriggerType.ActivityNotification(rawValue: dto.notificationTriggerType),
                 time: dateFormatter.date(from: dto.time),
-                text: dto.notificationText,
+                targetContentText: dto.notificationText,
                 userID: dto.memberID,
                 userNickname: dto.memberNickname,
                 triggerUserID: dto.triggerMemberID,
