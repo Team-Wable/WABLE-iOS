@@ -49,6 +49,23 @@ private extension WableSegmentedControl {
         setBackgroundImage(image, for: .selected, barMetrics: .default)
         setBackgroundImage(image, for: .highlighted, barMetrics: .default)
         setDividerImage(image, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
+        
+        let normalTextStyle: UIFont.Pretendard = .body2
+        let normalTextAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.pretendard(normalTextStyle),
+            .kern: normalTextStyle.kerning,
+            .foregroundColor: UIColor.gray600
+        ]
+        
+        let selectedTextStyle: UIFont.Pretendard = .body1
+        let selectedTextAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.pretendard(selectedTextStyle),
+            .kern: selectedTextStyle.kerning,
+            .foregroundColor: UIColor.wableBlack
+        ]
+        
+        setTitleTextAttributes(normalTextAttributes, for: .normal)
+        setTitleTextAttributes(selectedTextAttributes, for: .selected)
     }
     
     func updateUnderlinePosition(animated: Bool) {
