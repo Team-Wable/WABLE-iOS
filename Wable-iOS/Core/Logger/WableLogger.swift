@@ -20,7 +20,7 @@ enum WableLogger {
     ) {
         let fileName = ((file as NSString).lastPathComponent as NSString)
             .deletingPathExtension
-        let formattedMessage = "[\(type.rawValue)/\(fileName)] \(function)-\(line); \(message)"
+        let formattedMessage = "[\(type.rawValue)/\(fileName)] \(line) line in \(function) ; \(message)"
         logger.debug("\(formattedMessage, privacy: .public)")
     }
 }

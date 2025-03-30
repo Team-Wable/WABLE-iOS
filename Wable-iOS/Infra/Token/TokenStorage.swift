@@ -10,7 +10,7 @@ import Foundation
 
 struct TokenStorage {
     enum TokenType: String {
-        case kakaoAccessToken = "kakaoAccessToken"
+        case loginAccessToken = "loginAccessToken"
         case wableAccessToken = "accessToken"
         case wableRefreshToken = "refreshToken"
     }
@@ -28,11 +28,12 @@ extension TokenStorage {
     }
     
     func load(_ tokenType: TokenType) throws -> String {
-        guard let token: String = try keychainStorage.getValue(for: tokenType.rawValue) else {
+        guard let token: Data = try keychainStorage.getValue(for: tokenType.rawValue),
+              let tokenString = String(data: token, encoding: .utf8) else {
             throw TokenError.dataConversionFailed
         }
         
-        return token
+        return tokenString
     }
     
     func delete(_ tokenType: TokenType) throws {
