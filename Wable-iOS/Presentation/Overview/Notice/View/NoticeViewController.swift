@@ -43,7 +43,6 @@ final class NoticeViewController: UIViewController {
     private let emptyLabel: UILabel = .init().then {
         $0.attributedText = "아직 작성된 공지사항이 없어요.".pretendardString(with: .body2)
         $0.textColor = .gray500
-        $0.isHidden = true
     }
     
     private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
@@ -250,7 +249,6 @@ private extension NoticeViewController {
         )
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         
         return UICollectionViewCompositionalLayout(section: section)
     }

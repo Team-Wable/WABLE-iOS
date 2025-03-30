@@ -75,18 +75,18 @@ private extension NoticeCell {
     func setupConstraint() {
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(12)
-            make.leading.equalToSuperview().offset(4)
+            make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-68)
         }
         
         timeLabel.snp.makeConstraints { make in
             make.centerY.equalTo(titleLabel)
-            make.trailing.equalToSuperview().offset(-4)
+            make.trailing.equalToSuperview().offset(-16)
         }
         
         bodyLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
-            make.horizontalEdges.equalToSuperview().inset(4)
+            make.horizontalEdges.equalToSuperview().inset(16)
             make.bottom.lessThanOrEqualToSuperview().offset(-12)
         }
         
