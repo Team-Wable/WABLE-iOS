@@ -81,6 +81,7 @@ final class InformationNotiViewController: UIViewController {
         setupDataSource()
         setupAction()
         setupDelegate()
+        setupBinding()
         
         didLoadSubject.send()
     }
@@ -140,9 +141,12 @@ private extension InformationNotiViewController {
     
     func setupDataSource() {
         let cellRegistration = CellRegistration<NotificationCell, Item> { cell, indexPath, item in
-            
-            // TODO: Cell Configure
-            
+            let date = item.time ?? .now
+            cell.configure(
+                imageURL: item.imageURL,
+                content: item.type?.message ?? "",
+                time: date.elapsedText
+            )
         }
         
         dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in

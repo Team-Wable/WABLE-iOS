@@ -45,6 +45,8 @@ final class NotificationPageView: UIView {
 
 private extension NotificationPageView {
     func setupView() {
+        backgroundColor = .wableWhite
+        
         addSubviews(
             navigationView,
             segmentedControl,

@@ -247,6 +247,7 @@
 		DE8E86432D91A0DA000A4292 /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = DE8E86422D91A0DA000A4292 /* LookinServer */; };
 		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
 		DE98919B2D993D7200D538D8 /* InformationNotiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919A2D993D7200D538D8 /* InformationNotiViewModel.swift */; };
+		DE9891A02D995EE800D538D8 /* InfoNotificationType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919F2D995EE800D538D8 /* InfoNotificationType+.swift */; };
 		DE9B94762D927F140060FF92 /* NoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9B94752D927F140060FF92 /* NoticeViewModel.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
 		DEAFE0562D8C45980097E91C /* GameScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */; };
@@ -495,6 +496,7 @@
 		DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeManager.swift; sourceTree = "<group>"; };
 		DE8FF1902D8155DD00C41880 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
 		DE98919A2D993D7200D538D8 /* InformationNotiViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotiViewModel.swift; sourceTree = "<group>"; };
+		DE98919F2D995EE800D538D8 /* InfoNotificationType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InfoNotificationType+.swift"; sourceTree = "<group>"; };
 		DE9B94752D927F140060FF92 /* NoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewModel.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
 		DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleCell.swift; sourceTree = "<group>"; };
@@ -1422,6 +1424,7 @@
 		DE6459D22D97B8AD005569B8 /* Information */ = {
 			isa = PBXGroup;
 			children = (
+				DE98919E2D995EDA00D538D8 /* Model */,
 				DE9891992D993D6400D538D8 /* ViewModel */,
 				DE6459D32D97B8B7005569B8 /* View */,
 			);
@@ -1619,6 +1622,14 @@
 				DE98919A2D993D7200D538D8 /* InformationNotiViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DE98919E2D995EDA00D538D8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DE98919F2D995EE800D538D8 /* InfoNotificationType+.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		DE9B94742D927F0C0060FF92 /* ViewModel */ = {
@@ -1906,6 +1917,7 @@
 				DE70048D2D8EA85400B7AB71 /* NewsViewController.swift in Sources */,
 				DE6459CF2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift in Sources */,
 				DE8E863B2D918735000A4292 /* RankViewItem.swift in Sources */,
+				DE9891A02D995EE800D538D8 /* InfoNotificationType+.swift in Sources */,
 				DD29683F2D6DAD2F00143851 /* FetchInfoNotifications.swift in Sources */,
 				DD2968402D6DAD2F00143851 /* FetchNewsNoticeNumber.swift in Sources */,
 				DD2968412D6DAD2F00143851 /* Empty.swift in Sources */,
