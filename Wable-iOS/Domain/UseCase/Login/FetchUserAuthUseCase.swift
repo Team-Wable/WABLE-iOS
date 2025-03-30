@@ -11,6 +11,7 @@ import Combine
 final class FetchUserAuthUseCase {
     private let loginRepository: LoginRepository
     private let userSessionRepository: UserSessionRepository
+    private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
     
     init(loginRepository: LoginRepository, userSessionRepository: UserSessionRepository) {
         self.loginRepository = loginRepository
@@ -23,13 +24,17 @@ final class FetchUserAuthUseCase {
 extension FetchUserAuthUseCase {
     func execute(platform: SocialPlatform) -> AnyPublisher<Account, WableError> {
         return loginRepository.fetchUserAuth(platform: platform, userName: nil)
-            .handleEvents(receiveOutput: { [weak self] account in
-                guard let self = self else { return }
-                
-                self.userSessionRepository.updateAutoLogin(
-                    enabled: true,
-                    forUserID: account.user.id
-                )
+            .handleEvents(receiveOutput: { account in
+                do {
+                    try self.tokenStorage.save(account.token.accessToken, for: .wableAccessToken)
+                    
+                    WableLogger.log("액세스 토큰 저장 성공: \(account.token.accessToken)", for: .debug)
+                    try self.tokenStorage.save(account.token.refreshToken, for: .wableRefreshToken)
+                    
+                    WableLogger.log("리프레시 토큰 저장 성공: \(account.token.refreshToken)", for: .debug)
+                } catch {
+                    WableLogger.log("토큰 저장 실패: \(error)", for: .debug)
+                }
                 
                 self.userSessionRepository.updateUserSession(
                     UserSession(

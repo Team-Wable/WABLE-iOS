@@ -6,7 +6,7 @@
 //
 
 import Combine
-import Foundation
+import UIKit
 
 import Alamofire
 import CombineMoya
@@ -17,15 +17,36 @@ final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
     private let interceptor: AuthenticationInterceptor<OAuthenticator>
     
     init() {
-        self.interceptor = AuthenticationInterceptor(
-            authenticator: OAuthenticator(
-                errorMonitor: OAuthErrorMonitor(),
-                tokenStorage: TokenStorage(keyChainStorage: KeychainStorage())
-            )
+        
+        let authenticator = OAuthenticator(
+            tokenStorage: TokenStorage(keyChainStorage: KeychainStorage())
         )
         
-        let session: Session = .init(interceptor: interceptor)
-        let plugin: [PluginType] = [MoyaLoggingPlugin()]
+        let credential = OAuthCredential(
+            accessToken: "",
+            refreshToken: "",
+            requiresRefresh: false
+        )
+        
+        self.interceptor = AuthenticationInterceptor(
+            authenticator: authenticator,
+            credential: credential
+        )
+        
+        let logoutHandler = {
+            let userSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage(
+                userDefaults: UserDefaults.standard,
+                jsonEncoder: JSONEncoder(),
+                jsonDecoder: JSONDecoder()
+            ))
+            
+            userSessionRepository.updateActiveUserID(nil)
+            
+            OAuthEventManager.shared.tokenExpiredSubject.send()
+        }
+        
+        let session = Session(interceptor: interceptor)
+        let plugin: [PluginType] = [MoyaLoggingPlugin(logoutHandler: logoutHandler)]
         
         super.init(session: session, plugins: plugin)
     }
@@ -35,9 +56,11 @@ final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
         for type: D.Type
     ) -> AnyPublisher<D, NetworkError> {
         return self.requestPublisher(target)
-            .map(\.data)
+            .map { $0.data }
             .decode(type: BaseResponse<D>.self, decoder: jsonDecoder)
-            .tryMap(validateResponse)
+            .tryMap { response in
+                return try self.validateResponse(response)
+            }
             .mapError { error in
                 if let decodingError = error as? DecodingError {
                     return .decodedError(decodingError)

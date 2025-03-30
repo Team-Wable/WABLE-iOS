@@ -8,6 +8,14 @@
 import Foundation
 
 extension Bundle {
+    static let identifier: String = {
+        guard let identifierString = main.bundleIdentifier else {
+            fatalError("Bundle identifier를 찾을 수 없습니다.")
+        }
+        
+        return identifierString
+    }()
+    
     static let baseURL: URL = {
         guard let urlString = main.object(forInfoDictionaryKey: "BASE_URL") as? String,
               let url = URL(string: urlString)

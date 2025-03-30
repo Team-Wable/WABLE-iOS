@@ -17,9 +17,7 @@ protocol UserSessionRepository {
     func fetchActiveUserSession() -> UserSession?
     func fetchActiveUserID() -> Int?
     func updateUserSession(_ session: UserSession, forUserID userID: Int)
-    func updateAutoLogin(enabled: Bool, forUserID userID: Int)
     func updateNotificationBadge(count: Int, forUserID userID: Int)
     func updateActiveUserID(_ userID: Int?)
     func removeUserSession(forUserID userID: Int)
-    func checkAutoLogin() -> AnyPublisher<Bool, Error>
 }
