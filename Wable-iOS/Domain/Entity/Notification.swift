@@ -14,7 +14,7 @@ struct ActivityNotification: Identifiable, Hashable {
     let triggerID: Int
     let type: TriggerType.ActivityNotification?
     let time: Date?
-    let text: String
+    let targetContentText: String
     let userID: Int
     let userNickname: String
     let triggerUserID: Int
