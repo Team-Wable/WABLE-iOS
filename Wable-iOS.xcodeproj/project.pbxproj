@@ -241,6 +241,7 @@
 		DE8E863F2D91A032000A4292 /* AmplitudeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */; };
 		DE8E86432D91A0DA000A4292 /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = DE8E86422D91A0DA000A4292 /* LookinServer */; };
 		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
+		DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */; };
 		DE9B94762D927F140060FF92 /* NoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9B94752D927F140060FF92 /* NoticeViewModel.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
 		DEAFE0562D8C45980097E91C /* GameScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */; };
@@ -483,6 +484,7 @@
 		DE8E863C2D918759000A4292 /* RankViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankViewModel.swift; sourceTree = "<group>"; };
 		DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeManager.swift; sourceTree = "<group>"; };
 		DE8FF1902D8155DD00C41880 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
+		DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Driver.swift"; sourceTree = "<group>"; };
 		DE9B94752D927F140060FF92 /* NoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewModel.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
 		DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleCell.swift; sourceTree = "<group>"; };
@@ -1527,6 +1529,7 @@
 				DDCD66EB2D7DE5D900EF4C28 /* ConstraintMaker+.swift */,
 				DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */,
 				DE83891C2D9071E400C089E6 /* Date+.swift */,
+				DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1826,6 +1829,7 @@
 				DE8E863D2D918759000A4292 /* RankViewModel.swift in Sources */,
 				DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */,
 				DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */,
+				DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */,
 				DE83891D2D9071E400C089E6 /* Date+.swift in Sources */,
 				DD2968742D6DAD5F00143851 /* NetworkError.swift in Sources */,
 				DD2968432D6DAD2F00143851 /* FetchGameSchedules.swift in Sources */,
