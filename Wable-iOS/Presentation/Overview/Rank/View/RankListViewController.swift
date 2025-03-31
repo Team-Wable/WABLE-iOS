@@ -9,7 +9,6 @@ import Combine
 import UIKit
 import SafariServices
 
-import CombineCocoa
 import SnapKit
 import Then
 

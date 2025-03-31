@@ -8,7 +8,6 @@
 import Combine
 import UIKit
 
-import CombineCocoa
 import SnapKit
 import Then
 
