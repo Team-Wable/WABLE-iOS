@@ -55,7 +55,7 @@ extension NoticeViewModel: ViewModelType {
             }
             .handleEvents(receiveOutput: { news in
                 isLoadingSubject.send(false)
-                isLastPageSubject.send(news.isEmpty || news.count < Constant.defaultNewsCountPerPage)
+                isLastPageSubject.send(news.isEmpty || news.count < Constant.defaultItemsCountPerPage)
             })
             .sink { noticesSubject.send($0) }
             .store(in: cancelBag)
@@ -79,7 +79,7 @@ extension NoticeViewModel: ViewModelType {
             }
             .handleEvents(receiveOutput: { news in
                 isLoadingMoreSubject.send(false)
-                isLastPageSubject.send(news.isEmpty || news.count < Constant.defaultNewsCountPerPage)
+                isLastPageSubject.send(news.isEmpty || news.count < Constant.defaultItemsCountPerPage)
             })
             .filter { !$0.isEmpty }
             .sink { news in
@@ -105,7 +105,7 @@ extension NoticeViewModel: ViewModelType {
 
 private extension NoticeViewModel {
     enum Constant {
-        static let defaultNewsCountPerPage: Int = 15
+        static let defaultItemsCountPerPage: Int = 15
         static let initialCursor: Int = -1
     }
 }

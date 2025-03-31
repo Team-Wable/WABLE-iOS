@@ -15,7 +15,7 @@ final class NotificationRepositoryImpl: NotificationRepository {
         self.provider = provider
     }
     
-    func fetchInfoNotifications(cursor: Int) -> AnyPublisher<[InfoNotification], WableError> {
+    func fetchInfoNotifications(cursor: Int) -> AnyPublisher<[InformationNotification], WableError> {
         return provider.request(
             .fetchInfoNotifications(cursor: cursor),
             for: [DTO.Response.FetchInfoNotifications].self

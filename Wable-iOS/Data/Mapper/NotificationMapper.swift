@@ -8,15 +8,15 @@
 import Foundation
 
 enum NotificationMapper {
-    static func toDomain(_ dtos: [DTO.Response.FetchInfoNotifications]) -> [InfoNotification] {
+    static func toDomain(_ dtos: [DTO.Response.FetchInfoNotifications]) -> [InformationNotification] {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
         
         return dtos.compactMap { dto in
-            InfoNotification(
+            InformationNotification(
                 id: dto.infoNotificationID,
-                type: InfoNotificationType(rawValue: dto.infoNotificationType),
+                type: InformationNotificationType(rawValue: dto.infoNotificationType),
                 time: dateFormatter.date(from: dto.time),
                 imageURL: URL(string: dto.imageURL)
             )
@@ -34,7 +34,7 @@ enum NotificationMapper {
                 triggerID: dto.notificationTriggerID,
                 type: TriggerType.ActivityNotification(rawValue: dto.notificationTriggerType),
                 time: dateFormatter.date(from: dto.time),
-                text: dto.notificationText,
+                targetContentText: dto.notificationText,
                 userID: dto.memberID,
                 userNickname: dto.memberNickname,
                 triggerUserID: dto.triggerMemberID,
