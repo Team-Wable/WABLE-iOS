@@ -42,7 +42,9 @@ final class GameScheduleListViewController: UIViewController {
         $0.alwaysBounceVertical = true
     }
     
-    private let emptyView = GameScheduleEmptyView()
+    private let emptyImageView = UIImageView(image: .imgNotiEmpty).then {
+        $0.contentMode = .scaleAspectFit
+    }
     
     // MARK: - Property
     
@@ -91,7 +93,7 @@ private extension GameScheduleListViewController {
         
         view.addSubviews(
             collectionView,
-            emptyView
+            emptyImageView
         )
     }
     
@@ -100,8 +102,10 @@ private extension GameScheduleListViewController {
             make.edges.equalToSuperview()
         }
         
-        emptyView.snp.makeConstraints { make in
+        emptyImageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
+            make.adjustedWidthEqualTo(200)
+            make.adjustedHeightEqualTo(188)
         }
     }
     
@@ -219,7 +223,7 @@ private extension GameScheduleListViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] item in
                 self?.applySnapshot(item: item)
-                self?.emptyView.isHidden = !item.isEmpty
+                self?.emptyImageView.isHidden = !item.isEmpty
             }
             .store(in: cancelBag)
         

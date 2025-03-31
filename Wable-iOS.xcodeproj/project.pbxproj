@@ -226,7 +226,6 @@
 		DE70048D2D8EA85400B7AB71 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE70048C2D8EA85400B7AB71 /* NewsViewController.swift */; };
 		DE7004902D8EA93A00B7AB71 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE70048F2D8EA93A00B7AB71 /* NewsCell.swift */; };
 		DE7004922D8EB5CF00B7AB71 /* NewsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7004912D8EB5CF00B7AB71 /* NewsHeaderView.swift */; };
-		DE7004952D8EBA9100B7AB71 /* GameScheduleEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7004942D8EBA9100B7AB71 /* GameScheduleEmptyView.swift */; };
 		DE72BB102D93CC68008E5774 /* NotificationPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB0F2D93CC68008E5774 /* NotificationPageView.swift */; };
 		DE72BB132D93CD9D008E5774 /* WableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB122D93CD9D008E5774 /* WableSegmentedControl.swift */; };
 		DE72BB182D93D4E1008E5774 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB172D93D4E1008E5774 /* NotificationCell.swift */; };
@@ -479,7 +478,6 @@
 		DE70048C2D8EA85400B7AB71 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
 		DE70048F2D8EA93A00B7AB71 /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		DE7004912D8EB5CF00B7AB71 /* NewsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsHeaderView.swift; sourceTree = "<group>"; };
-		DE7004942D8EBA9100B7AB71 /* GameScheduleEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleEmptyView.swift; sourceTree = "<group>"; };
 		DE72BB0F2D93CC68008E5774 /* NotificationPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageView.swift; sourceTree = "<group>"; };
 		DE72BB122D93CD9D008E5774 /* WableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSegmentedControl.swift; sourceTree = "<group>"; };
 		DE72BB172D93D4E1008E5774 /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
@@ -1508,14 +1506,6 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		DE7004932D8EBA8000B7AB71 /* Subview */ = {
-			isa = PBXGroup;
-			children = (
-				DE7004942D8EBA9100B7AB71 /* GameScheduleEmptyView.swift */,
-			);
-			path = Subview;
-			sourceTree = "<group>";
-		};
 		DE72BB0C2D93CAA6008E5774 /* Page */ = {
 			isa = PBXGroup;
 			children = (
@@ -1679,7 +1669,6 @@
 			isa = PBXGroup;
 			children = (
 				DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */,
-				DE7004932D8EBA8000B7AB71 /* Subview */,
 				DEAFE0542D8C44940097E91C /* Cell */,
 			);
 			path = View;
@@ -2011,7 +2000,6 @@
 				DD2968692D6DAD5500143851 /* CommentTargetType.swift in Sources */,
 				DD29686A2D6DAD5500143851 /* ContentLikedTargetType.swift in Sources */,
 				DD29686B2D6DAD5500143851 /* CommunityTargetType.swift in Sources */,
-				DE7004952D8EBA9100B7AB71 /* GameScheduleEmptyView.swift in Sources */,
 				DD29686C2D6DAD5500143851 /* ProfileTargetType.swift in Sources */,
 				DD29686D2D6DAD5500143851 /* AccountTargetType.swift in Sources */,
 				DD514D102D8CA3780095021D /* AttributedString+.swift in Sources */,
