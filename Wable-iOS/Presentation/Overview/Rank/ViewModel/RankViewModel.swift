@@ -28,7 +28,7 @@ extension RankViewModel: ViewModelType {
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
-        let isLoadingSubject = BehaviorRelay<Bool>(false)
+        let isLoadingSubject = CurrentValueRelay<Bool>(false)
         
         let loadTrigger = Publishers.Merge(input.viewDidLoad, input.viewDidRefresh)
         
