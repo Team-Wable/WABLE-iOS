@@ -99,11 +99,10 @@ extension NotificationPageViewController: UIPageViewControllerDataSource {
 
 private extension NotificationPageViewController {
     func setupViewControllers() {
-        let repository = MockNotificationRepositoryImpl()
+        let useCase = MockNotificationUseCaseImpl()
+        let activityNotiViewController = ActivityNotiViewController(viewModel: .init(useCase: useCase))
         
-        let activityNotiViewController = ActivityNotiViewController()
-        
-        let informationNotiViewController = InformationNotiViewController(viewModel: .init(notificationRepository: repository))
+        let informationNotiViewController = InformationNotiViewController(viewModel: .init(useCase: useCase))
         
         viewControllers.append(activityNotiViewController)
         viewControllers.append(informationNotiViewController)

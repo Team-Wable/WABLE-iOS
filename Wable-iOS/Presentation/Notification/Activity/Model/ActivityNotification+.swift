@@ -29,7 +29,7 @@ extension ActivityNotification {
         case .actingContinue:
             return "\(userNickname)님, 이제 글을 다시 작성할 수 있어요! 오랜만에 와블에 인사를 남겨주세요!"
         case .userBan:
-            return "\(userNickname)님, 커뮤니티 활동 정책 위반으로 더 이상 와블을 사용할 수 없어요. 자세한 내용은 문의사항으로 남겨주세요."
+            return "\(userNickname)님, 신고가 누적되어 작성하신 글이 블라인드 처리되었습니다. 자세한 내용은 문의사항으로 남겨주세요."
         case .popularWriter:
             return "\(userNickname)님이 작성하신 글이 인기글로 선정 되었어요!🥳🥳"
         case .popularContent:

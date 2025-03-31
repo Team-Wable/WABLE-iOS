@@ -7,6 +7,7 @@
 
 import Combine
 import UIKit
+import SafariServices
 
 import SnapKit
 import Then
@@ -24,20 +25,10 @@ final class ActivityNotiViewController: UIViewController {
     typealias Item = ActivityNotification
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
-    
-    // MARK: - Property
-
-    private var dataSource: DataSource?
-    
-    private let didLoadSubject = PassthroughSubject<Void, Never>()
-    private let didRefreshSubject = PassthroughSubject<Void, Never>()
-    private let didSelectItemSubject = PassthroughSubject<Int, Never>()
-    private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
-    private let profileImageViewDidTapSubject = PassthroughSubject<Int, Never>()
-    private let cancelBag = CancelBag()
+    typealias ViewModel = ActivityNotiViewModel
     
     // MARK: - UIComponent
-
+    
     private lazy var collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: collectionViewLayout
@@ -51,6 +42,36 @@ final class ActivityNotiViewController: UIViewController {
         $0.textColor = .gray500
     }
     
+    private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
+        $0.hidesWhenStopped = true
+        $0.color = .gray600
+    }
+    
+    // MARK: - Property
+
+    private var dataSource: DataSource?
+    
+    private let viewModel: ViewModel
+    private let didLoadSubject = PassthroughSubject<Void, Never>()
+    private let didRefreshSubject = PassthroughSubject<Void, Never>()
+    private let didSelectItemSubject = PassthroughSubject<Int, Never>()
+    private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
+    private let profileImageViewDidTapSubject = PassthroughSubject<Int, Never>()
+    private let cancelBag = CancelBag()
+    
+    // MARK: - Initializer
+    
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -61,6 +82,7 @@ final class ActivityNotiViewController: UIViewController {
         setupDataSource()
         setupAction()
         setupDelegate()
+        setupBinding()
         
         didLoadSubject.send()
     }
@@ -99,7 +121,8 @@ private extension ActivityNotiViewController {
         
         view.addSubviews(
             collectionView,
-            emptyLabel
+            emptyLabel,
+            loadingIndicator
         )
     }
     
@@ -108,8 +131,13 @@ private extension ActivityNotiViewController {
             make.edges.equalToSuperview()
         }
         
-        collectionView.snp.makeConstraints { make in
+        emptyLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
+        }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-20)
         }
     }
     
@@ -149,6 +177,79 @@ private extension ActivityNotiViewController {
     func setupDelegate() {
         collectionView.delegate = self
     }
+    
+    func setupBinding() {
+        let input = ViewModel.Input(
+            viewDidLoad: didLoadSubject.eraseToAnyPublisher(),
+            viewDidRefresh: didRefreshSubject.eraseToAnyPublisher(),
+            didSelectItem: didSelectItemSubject.eraseToAnyPublisher(),
+            willDisplayLastItem: willDisplayLastItemSubject.eraseToAnyPublisher(),
+            profileImageViewDidTap: profileImageViewDidTapSubject.eraseToAnyPublisher()
+        )
+        
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                guard !isLoading else { return }
+                self?.collectionView.refreshControl?.endRefreshing()
+            }
+            .store(in: cancelBag)
+        
+        output.notifications
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] items in
+                self?.applySnapshot(items: items)
+                self?.emptyLabel.isHidden = !items.isEmpty
+            }
+            .store(in: cancelBag)
+        
+        output.isLoadingMore
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoadingMore in
+                isLoadingMore ? self?.loadingIndicator.startAnimating() : self?.loadingIndicator.stopAnimating()
+            }
+            .store(in: cancelBag)
+        
+        output.content
+            .receive(on: DispatchQueue.main)
+            .sink { contentID in
+                WableLogger.log("게시물 ID: \(contentID)", for: .debug)
+                
+                // TODO: 상세 게시물로 이동
+                
+            }
+            .store(in: cancelBag)
+        
+        output.writeContent
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+                
+                // TODO: 게시물 작성하기로 이동
+                
+            }
+            .store(in: cancelBag)
+        
+        output.googleForm
+            .receive(on: DispatchQueue.main)
+            .compactMap { URL(string: Constant.googleFormURLText) }
+            .sink { [weak self] url in
+                let safariController = SFSafariViewController(url: url)
+                self?.present(safariController, animated: true)
+            }
+            .store(in: cancelBag)
+        
+        output.user
+            .receive(on: DispatchQueue.main)
+            .sink { userID in
+                WableLogger.log("유저 아이디: \(userID)", for: .debug)
+                
+                // TODO: 유저 프로필로 이동
+                
+            }
+            .store(in: cancelBag)
+    }
 }
 
 // MARK: - Helper Method
@@ -185,5 +286,13 @@ private extension ActivityNotiViewController {
         section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         
         return UICollectionViewCompositionalLayout(section: section)
+    }
+}
+
+// MARK: - Constant
+
+private extension ActivityNotiViewController {
+    enum Constant {
+        static let googleFormURLText: String = "https://docs.google.com/forms/d/e/1FAIpQLSf3JlBkVRPaPFSreQHaEv-u5pqZWZzk7Y4Qll9lRP0htBZs-Q/viewform"
     }
 }
