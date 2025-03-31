@@ -66,6 +66,10 @@ extension NSMutableAttributedString {
         }
         
         let range = (string as NSString).range(of: targetText)
+        guard range.location != NSNotFound else {
+            return self
+        }
+        
         addAttribute(.underlineStyle, value: style.rawValue, range: range)
         return self
     }
@@ -100,6 +104,10 @@ extension NSMutableAttributedString {
         }
         
         let range = (string as NSString).range(of: targetText)
+        guard range.location != NSNotFound else {
+            return self
+        }
+        
         addAttribute(.foregroundColor, value: textColor, range: range)
         return self
     }
