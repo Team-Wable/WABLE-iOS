@@ -172,7 +172,7 @@ private extension AnnouncementDetailView {
         }
         
         timeLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(titleLabel)
+            make.top.equalTo(titleLabel)
             make.trailing.equalToSuperview().offset(-16)
         }
         
