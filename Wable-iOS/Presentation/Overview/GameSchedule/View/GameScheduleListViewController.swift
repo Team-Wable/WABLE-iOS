@@ -42,9 +42,7 @@ final class GameScheduleListViewController: UIViewController {
         $0.alwaysBounceVertical = true
     }
     
-    private let emptyView: GameScheduleEmptyView = .init().then {
-        $0.isHidden = true
-    }
+    private let emptyView = GameScheduleEmptyView()
     
     // MARK: - Property
     
