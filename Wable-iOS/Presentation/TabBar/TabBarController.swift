@@ -13,9 +13,12 @@ final class TabBarController: UITabBarController {
     // MARK: - UIComponent
     
     private let homeViewController = HomeViewController(
-        viewModel: HomeViewModel(),
-        cancelBag: CancelBag(),
-        userDefaultsStorage: UserDefaultsStorage(jsonEncoder: JSONEncoder(), jsonDecoder: JSONDecoder())
+        viewModel: HomeViewModel(
+            fetchContentListUseCase: FetchContentListUseCase(
+                repository: ContentRepositoryImpl()
+            )
+        ),
+        cancelBag: CancelBag()
     ).then {
         $0.tabBarItem.title = "홈"
         $0.tabBarItem.image = .icHomeDefault
