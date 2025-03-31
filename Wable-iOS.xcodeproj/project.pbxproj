@@ -152,6 +152,13 @@
 		DD9980DF2D834F4E00EBBFBC /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */; };
 		DD9980E02D834F4E00EBBFBC /* PostUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */; };
 		DD9980E12D834F4E00EBBFBC /* ContentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */; };
+		DD9EAE222D99C59900803A1A /* FetchContentListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE212D99C59100803A1A /* FetchContentListUseCase.swift */; };
+		DD9EAE242D99C66200803A1A /* FetchContentInfoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE232D99C66200803A1A /* FetchContentInfoUseCase.swift */; };
+		DD9EAE262D99C75F00803A1A /* CreateContentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE252D99C75C00803A1A /* CreateContentUseCase.swift */; };
+		DD9EAE282D99C7DE00803A1A /* DeleteContentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE272D99C7D200803A1A /* DeleteContentUseCase.swift */; };
+		DD9EAE2A2D99C81F00803A1A /* FetchUserContentListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE292D99C81800803A1A /* FetchUserContentListUseCase.swift */; };
+		DD9EAE2E2D9A63FD00803A1A /* WritePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE2D2D9A63F400803A1A /* WritePostViewController.swift */; };
+		DD9EAE302D9A64A800803A1A /* HomeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */; };
 		DDCA70902D87CE2700A988B8 /* LCKYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */; };
 		DDCA70932D88316200A988B8 /* LCKYearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA70922D88315C00A988B8 /* LCKYearView.swift */; };
 		DDCA70952D883D4100A988B8 /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA70942D883D3B00A988B8 /* NavigationViewController.swift */; };
@@ -184,7 +191,6 @@
 		DDED597E2D79578C00A0BEF1 /* AuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED597D2D79578800A0BEF1 /* AuthProvider.swift */; };
 		DDED59862D7965E900A0BEF1 /* OverviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59852D7965DB00A0BEF1 /* OverviewUseCase.swift */; };
 		DDED59882D7965F100A0BEF1 /* NotificationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59872D7965EC00A0BEF1 /* NotificationUseCase.swift */; };
-		DDED598A2D7965F900A0BEF1 /* ProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59892D7965F400A0BEF1 /* ProfileUseCase.swift */; };
 		DDED598D2D79957700A0BEF1 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DDED598C2D79957700A0BEF1 /* CombineCocoa */; };
 		DDF2CC842D71FA8A000F1919 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC832D71FA8A000F1919 /* Then */; };
 		DDF2CC872D71FA96000F1919 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC862D71FA96000F1919 /* SnapKit */; };
@@ -420,6 +426,13 @@
 		DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
 		DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCollectionViewCell.swift; sourceTree = "<group>"; };
 		DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUserInfoView.swift; sourceTree = "<group>"; };
+		DD9EAE212D99C59100803A1A /* FetchContentListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchContentListUseCase.swift; sourceTree = "<group>"; };
+		DD9EAE232D99C66200803A1A /* FetchContentInfoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchContentInfoUseCase.swift; sourceTree = "<group>"; };
+		DD9EAE252D99C75C00803A1A /* CreateContentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContentUseCase.swift; sourceTree = "<group>"; };
+		DD9EAE272D99C7D200803A1A /* DeleteContentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteContentUseCase.swift; sourceTree = "<group>"; };
+		DD9EAE292D99C81800803A1A /* FetchUserContentListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserContentListUseCase.swift; sourceTree = "<group>"; };
+		DD9EAE2D2D9A63F400803A1A /* WritePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePostViewController.swift; sourceTree = "<group>"; };
+		DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailViewController.swift; sourceTree = "<group>"; };
 		DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearViewController.swift; sourceTree = "<group>"; };
 		DDCA70922D88315C00A988B8 /* LCKYearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearView.swift; sourceTree = "<group>"; };
 		DDCA70942D883D3B00A988B8 /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
@@ -452,7 +465,6 @@
 		DDED597D2D79578800A0BEF1 /* AuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthProvider.swift; sourceTree = "<group>"; };
 		DDED59852D7965DB00A0BEF1 /* OverviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewUseCase.swift; sourceTree = "<group>"; };
 		DDED59872D7965EC00A0BEF1 /* NotificationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUseCase.swift; sourceTree = "<group>"; };
-		DDED59892D7965F400A0BEF1 /* ProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCase.swift; sourceTree = "<group>"; };
 		DDFB223A2D8B9F3F00FEA24A /* LCKYearCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearCollectionViewCell.swift; sourceTree = "<group>"; };
 		DDFB223F2D8BA67D00FEA24A /* LCKTeamCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamCollectionViewCell.swift; sourceTree = "<group>"; };
 		DDFB22412D8BA9C800FEA24A /* LCKTeamViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamViewController.swift; sourceTree = "<group>"; };
@@ -1101,6 +1113,17 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		DD9EAE202D99C58600803A1A /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				DD9EAE292D99C81800803A1A /* FetchUserContentListUseCase.swift */,
+				DD9EAE272D99C7D200803A1A /* DeleteContentUseCase.swift */,
+				DD9EAE252D99C75C00803A1A /* CreateContentUseCase.swift */,
+				DD9EAE212D99C59100803A1A /* FetchContentListUseCase.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		DDAD41A32D873E1D00EF312C /* Button */ = {
 			isa = PBXGroup;
 			children = (
@@ -1189,6 +1212,7 @@
 			children = (
 				DDED59552D78BF5800A0BEF1 /* Login */,
 				DDED59732D78EFCF00A0BEF1 /* Onboarding */,
+				DD9EAE202D99C58600803A1A /* Home */,
 				DDED596E2D78EB9200A0BEF1 /* Community */,
 				DDED59822D79614E00A0BEF1 /* Overview */,
 				DDED59812D79612600A0BEF1 /* Notification */,
@@ -1244,7 +1268,7 @@
 		DDED59802D79611F00A0BEF1 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				DDED59892D7965F400A0BEF1 /* ProfileUseCase.swift */,
+				DD9EAE232D99C66200803A1A /* FetchContentInfoUseCase.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1359,6 +1383,8 @@
 		DE59BB952D8A9D130040ADCB /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */,
+				DD9EAE2D2D9A63F400803A1A /* WritePostViewController.swift */,
 				DD8326952D95836B0014B62D /* HomeViewModel.swift */,
 				DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */,
 			);
@@ -1912,6 +1938,7 @@
 				DD2968592D6DAD4400143851 /* CreateViewitPostRequest.swift in Sources */,
 				DD29685A2D6DAD4400143851 /* CreateCommentLiked.swift in Sources */,
 				DD9980DB2D834CA900EBBFBC /* CommentInfo.swift in Sources */,
+				DD9EAE2A2D99C81F00803A1A /* FetchUserContentListUseCase.swift in Sources */,
 				DEE5D61A2D91537C009E5A25 /* GameScheduleViewItem.swift in Sources */,
 				DE72BB102D93CC68008E5774 /* NotificationPageView.swift in Sources */,
 				DDFB22462D8BBB8600FEA24A /* ProfileRegisterViewController.swift in Sources */,
@@ -1962,6 +1989,7 @@
 				DD8326962D95836F0014B62D /* HomeViewModel.swift in Sources */,
 				DD2968442D6DAD2F00143851 /* FetchUserProfile.swift in Sources */,
 				DE7C530E2D761DFB00076E5D /* UIFont+.swift in Sources */,
+				DD9EAE242D99C66200803A1A /* FetchContentInfoUseCase.swift in Sources */,
 				DD2968452D6DAD2F00143851 /* FetchCommunites.swift in Sources */,
 				DD2968462D6DAD2F00143851 /* FetchAccountInfo.swift in Sources */,
 				DD2968472D6DAD2F00143851 /* FetchContent.swift in Sources */,
@@ -1969,6 +1997,7 @@
 				DD2968492D6DAD2F00143851 /* FetchContents.swift in Sources */,
 				DD29684A2D6DAD2F00143851 /* FetchLCKTeamRankings.swift in Sources */,
 				DEDC29162D72099C0073D512 /* InformationNotificationType.swift in Sources */,
+				DD9EAE262D99C75F00803A1A /* CreateContentUseCase.swift in Sources */,
 				DD29684B2D6DAD2F00143851 /* CreateViewitPostResponse.swift in Sources */,
 				DDED59782D78F1E500A0BEF1 /* CreateUserProfileUseCase.swift in Sources */,
 				DD29684C2D6DAD2F00143851 /* FetchNews.swift in Sources */,
@@ -1987,6 +2016,7 @@
 				DE7004922D8EB5CF00B7AB71 /* NewsHeaderView.swift in Sources */,
 				DD2968362D6DAD1700143851 /* ContentLikedRepositoryImpl.swift in Sources */,
 				DD765D9A2D8746E30029A317 /* LoginViewController.swift in Sources */,
+				DD9EAE282D99C7DE00803A1A /* DeleteContentUseCase.swift in Sources */,
 				DE33902E2D8EC3B700638BB4 /* NoticeCell.swift in Sources */,
 				DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */,
 				DD2968372D6DAD1700143851 /* ProfileRepositoryImpl.swift in Sources */,
@@ -2045,6 +2075,7 @@
 				DE7C53142D761EE500076E5D /* UIView+.swift in Sources */,
 				DDCCA3932D738CD500658122 /* UserSessionRepository.swift in Sources */,
 				DD005BA92D7FFFE400B1661F /* LikeButton.swift in Sources */,
+				DD9EAE2E2D9A63FD00803A1A /* WritePostViewController.swift in Sources */,
 				DD2967FF2D6DAC8900143851 /* SceneDelegate.swift in Sources */,
 				DD2968172D6DAD0200143851 /* ContentRepository.swift in Sources */,
 				DDED595E2D78C3E000A0BEF1 /* KakaoAuthProvider.swift in Sources */,
@@ -2053,6 +2084,7 @@
 				DDED59862D7965E900A0BEF1 /* OverviewUseCase.swift in Sources */,
 				DDED597C2D794F0D00A0BEF1 /* FetchUserAuthUseCase.swift in Sources */,
 				DE7C53102D761E3300076E5D /* String+.swift in Sources */,
+				DD9EAE222D99C59900803A1A /* FetchContentListUseCase.swift in Sources */,
 				DD2968192D6DAD0200143851 /* ReportRepository.swift in Sources */,
 				DE6C3E3E2D91A8E00046DB30 /* NewsViewModel.swift in Sources */,
 				DD29681A2D6DAD0200143851 /* ViewitRepository.swift in Sources */,
@@ -2089,8 +2121,8 @@
 				DD2968282D6DAD0B00143851 /* InformationMapper.swift in Sources */,
 				DD2968292D6DAD0B00143851 /* WableError.swift in Sources */,
 				DD29682A2D6DAD0B00143851 /* ErrorMapper.swift in Sources */,
+				DD9EAE302D9A64A800803A1A /* HomeDetailViewController.swift in Sources */,
 				DD29682B2D6DAD0B00143851 /* CommentMapper.swift in Sources */,
-				DDED598A2D7965F900A0BEF1 /* ProfileUseCase.swift in Sources */,
 				DDCD66F32D7DF5AB00EF4C28 /* HomeViewController.swift in Sources */,
 				DD29682C2D6DAD0B00143851 /* ContentMapper.swift in Sources */,
 				DE83891B2D906C0C00C089E6 /* Types.swift in Sources */,

@@ -19,7 +19,7 @@ final class HomeViewController: NavigationViewController {
     
     // MARK: - typealias
     
-    typealias Item = UserContent
+    typealias Item = Content
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     
@@ -27,9 +27,9 @@ final class HomeViewController: NavigationViewController {
     
     private var dataSource: DataSource?
     private let viewModel: HomeViewModel
-    private let userDefaultsStorage: UserDefaultsStorage
+    private let willAppearSubject = PassthroughSubject<Void, Never>()
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
-    private let didSelectSubject = PassthroughSubject<Int, Never>()
+    private let didSelectedSubject = PassthroughSubject<Int, Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
     private let cancelBag: CancelBag
     
@@ -47,12 +47,22 @@ final class HomeViewController: NavigationViewController {
         $0.configuration?.image = .btnWrite
     }
     
+    private let emptyLabel: UILabel = UILabel().then {
+        $0.attributedText = "아직 작성된 글이 없어요.".pretendardString(with: .body2)
+        $0.textColor = .gray500
+        $0.isHidden = true
+    }
+    
+    private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
+        $0.hidesWhenStopped = true
+        $0.color = .gray600
+    }
+    
     // MARK: - LifeCycle
     
-    init(viewModel: HomeViewModel, cancelBag: CancelBag, userDefaultsStorage: UserDefaultsStorage) {
+    init(viewModel: HomeViewModel, cancelBag: CancelBag) {
         self.viewModel = viewModel
         self.cancelBag = cancelBag
-        self.userDefaultsStorage = userDefaultsStorage
         
         // TODO: 알림 여부 판단해서 넣어주는 로직 필요
         super.init(type: .home(hasNewNotification: false))
@@ -65,6 +75,8 @@ final class HomeViewController: NavigationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.isHidden = true
+        
         setupView()
         setupConstraint()
         setupDataSource()
@@ -72,13 +84,19 @@ final class HomeViewController: NavigationViewController {
         setupDelegate()
         setupBinding()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        willAppearSubject.send()
+    }
 }
 
 // MARK: - UICollectionViewDelegate
 
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        didSelectSubject.send(indexPath.item)
+        didSelectedSubject.send(indexPath.item)
     }
     
     func collectionView(
@@ -105,26 +123,38 @@ private extension HomeViewController {
     func setupView() {
         view.addSubviews(
             collectionView,
-            plusButton
+            plusButton,
+            emptyLabel,
+            loadingIndicator
         )
     }
     
     func setupConstraint() {
         collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(navigationView.snp.bottom)
+            $0.horizontalEdges.bottom.equalToSuperview()
         }
         
         plusButton.snp.makeConstraints {
             $0.bottom.trailing.equalToSuperview().inset(16)
         }
+        
+        emptyLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-20)
+        }
     }
     
     func setupDataSource() {
-        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, UserContent> {
+        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> {
             cell,
             indexPath,
             itemIdentifier in
-            cell.configureCell(info: itemIdentifier.contentInfo, postType: .mine)
+            cell.configureCell(info: itemIdentifier.content.contentInfo, postType: .mine)
         }
         
         dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
@@ -137,7 +167,10 @@ private extension HomeViewController {
     }
     
     func setupAction() {
-        collectionView.refreshControl?.addTarget(self, action: #selector(collectionViewDidRefresh), for: .valueChanged)
+        collectionView.refreshControl?.addAction(UIAction(handler: { [weak self] _ in
+            self?.didRefreshSubject.send()
+        }), for: .valueChanged)
+        plusButton.addTarget(self, action: #selector(plusButtonDidTap), for: .touchUpInside)
     }
     
     func setupDelegate() {
@@ -145,17 +178,60 @@ private extension HomeViewController {
     }
     
     func setupBinding() {
-        let input = HomeViewModel.Input()
+        let input = HomeViewModel.Input(
+            viewWillAppear: willAppearSubject.eraseToAnyPublisher(),
+            viewDidRefresh: didRefreshSubject.eraseToAnyPublisher(),
+            didSelectedItem: didSelectedSubject.eraseToAnyPublisher(),
+            willDisplayLastItem: willDisplayLastItemSubject.eraseToAnyPublisher()
+        )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.contents
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] contents in
+                self?.applySnapshot(items: contents)
+                self?.emptyLabel.isHidden = !contents.isEmpty
+            }
+            .store(in: cancelBag)
+        
+        output.selectedContent
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] content in
+                let viewController = HomeDetailViewController(type: .page(type: .detail, title: content.content.contentInfo.title))
+                
+                self?.navigationController?.pushViewController(viewController, animated: true)
+            }
+            .store(in: cancelBag)
+        
+        output.isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                isLoading ? self?.loadingIndicator.startAnimating() : self?.loadingIndicator.stopAnimating()
+            }
+            .store(in: cancelBag)
+    }
+}
+
+// MARK: - Helper Method
+
+private extension HomeViewController {
+    func applySnapshot(items: [Item]) {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(items, toSection: .main)
+        
+        dataSource?.apply(snapshot)
     }
 }
 
 // MARK: - Action Method
 
 private extension HomeViewController {
-    @objc func collectionViewDidRefresh() {
-        didRefreshSubject.send()
+    @objc func plusButtonDidTap() {
+        let viewController = WritePostViewController(type: .page(type: .detail, title: "새로운 글"))
+        
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
