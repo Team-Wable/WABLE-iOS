@@ -235,7 +235,7 @@ private extension NoticeViewController {
     var collectionViewLayout: UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1)
+            heightDimension: .estimated(96.adjustedHeight)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         

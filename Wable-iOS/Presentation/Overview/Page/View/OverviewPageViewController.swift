@@ -137,7 +137,9 @@ extension OverviewPageViewController: NoticeViewControllerDelegate {
 
 private extension OverviewPageViewController {
     func setupViewControllers() {
-        let mockUseCase = MockOverviewUseCaseImpl()
+        let repository = InformationRepositoryImpl()
+        
+        let mockUseCase = OverviewUseCaseImpl(repository: repository)
         
         let gameScheduleViewController = GameScheduleListViewController(viewModel: .init(useCase: mockUseCase))
         let rankViewController = RankListViewController(viewModel: .init(useCase: mockUseCase))
