@@ -49,8 +49,7 @@ extension String {
     /// button.configuration = config
     /// ```
     func pretendardString(with style: UIFont.Pretendard) -> AttributedString {
-        let nsAttributedString: NSAttributedString = self.pretendardString(with: style)
-        return AttributedString(nsAttributedString)
+        return AttributedString(self.pretendardString(with: style))
     }
     
     // MARK: - truncated
