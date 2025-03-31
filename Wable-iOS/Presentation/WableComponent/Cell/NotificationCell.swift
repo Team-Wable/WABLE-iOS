@@ -17,6 +17,7 @@ final class NotificationCell: UICollectionViewCell {
 
     private let profileImageView = UIImageView().then {
         $0.image = .imgProfileSmall
+        $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
         $0.isUserInteractionEnabled = false
     }
@@ -28,7 +29,6 @@ final class NotificationCell: UICollectionViewCell {
     private let contentLabel = UILabel().then {
         $0.attributedText = "내용".pretendardString(with: .body4)
         $0.numberOfLines = 3
-        $0.lineBreakMode = .byTruncatingTail
     }
     
     private let timeLabel = UILabel().then {
