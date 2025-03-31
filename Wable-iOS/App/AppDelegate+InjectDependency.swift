@@ -11,8 +11,6 @@ extension AppDelegate {
     var diContainer: AppDIContainer { AppDIContainer.shared }
     
     func injectDependency() {
-        
-        // TODO: 객체를 주입
-        
+        diContainer.register(for: InformationRepository.self, object: InformationRepositoryImpl())
     }
 }

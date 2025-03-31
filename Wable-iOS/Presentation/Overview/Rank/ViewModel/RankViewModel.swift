@@ -9,10 +9,10 @@ import Combine
 import Foundation
 
 final class RankViewModel {
-    private let overviewRepository: InformationRepository
+    private let useCase: OverviewUseCase
     
-    init(overviewRepository: InformationRepository) {
-        self.overviewRepository = overviewRepository
+    init(useCase: OverviewUseCase) {
+        self.useCase = useCase
     }
 }
 
@@ -30,18 +30,16 @@ extension RankViewModel: ViewModelType {
     func transform(input: Input, cancelBag: CancelBag) -> Output {
         let isLoadingSubject = CurrentValueRelay<Bool>(false)
         
-        let loadTrigger = Publishers.Merge(input.viewDidLoad, input.viewDidRefresh)
-        
-        let fetchGameType = overviewRepository.fetchGameCategory()
+        let fetchGameType = useCase.fetchGameCategory()
             .replaceError(with: "")
             .filter { !$0.isEmpty }
             .removeDuplicates()
         
-        let fetchRanks = overviewRepository.fetchTeamRanks()
+        let fetchRanks = useCase.fetchTeamRanks()
             .replaceError(with: [])
             .removeDuplicates()
         
-        let item = loadTrigger
+        let item = Publishers.Merge(input.viewDidLoad, input.viewDidRefresh)
             .handleEvents(receiveOutput: { _ in
                 isLoadingSubject.send(true)
             })
