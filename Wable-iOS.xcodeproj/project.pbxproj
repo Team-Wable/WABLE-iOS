@@ -245,6 +245,7 @@
 		DE8E863F2D91A032000A4292 /* AmplitudeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */; };
 		DE8E86432D91A0DA000A4292 /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = DE8E86422D91A0DA000A4292 /* LookinServer */; };
 		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
+		DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */; };
 		DE9593352D9A1465009B00D3 /* ActivityNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */; };
 		DE98919B2D993D7200D538D8 /* InformationNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */; };
 		DE9891A02D995EE800D538D8 /* InformationNotificationType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919F2D995EE800D538D8 /* InformationNotificationType+.swift */; };
@@ -496,6 +497,7 @@
 		DE8E863C2D918759000A4292 /* RankViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankViewModel.swift; sourceTree = "<group>"; };
 		DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeManager.swift; sourceTree = "<group>"; };
 		DE8FF1902D8155DD00C41880 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
+		DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Driver.swift"; sourceTree = "<group>"; };
 		DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotificationViewModel.swift; sourceTree = "<group>"; };
 		DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationViewModel.swift; sourceTree = "<group>"; };
 		DE98919F2D995EE800D538D8 /* InformationNotificationType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InformationNotificationType+.swift"; sourceTree = "<group>"; };
@@ -1610,6 +1612,7 @@
 				DDCD66EB2D7DE5D900EF4C28 /* ConstraintMaker+.swift */,
 				DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */,
 				DE83891C2D9071E400C089E6 /* Date+.swift */,
+				DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1945,6 +1948,7 @@
 				DE8E863D2D918759000A4292 /* RankViewModel.swift in Sources */,
 				DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */,
 				DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */,
+				DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */,
 				DE83891D2D9071E400C089E6 /* Date+.swift in Sources */,
 				DD2968742D6DAD5F00143851 /* NetworkError.swift in Sources */,
 				DD2968432D6DAD2F00143851 /* FetchGameSchedules.swift in Sources */,

@@ -18,17 +18,17 @@ final class RankViewModel {
 
 extension RankViewModel: ViewModelType {
     struct Input {
-        let viewDidLoad: AnyPublisher<Void, Never>
-        let viewDidRefresh: AnyPublisher<Void, Never>
+        let viewDidLoad: Driver<Void>
+        let viewDidRefresh: Driver<Void>
     }
     
     struct Output {
-        let item: AnyPublisher<RankViewItem, Never>
-        let isLoading: AnyPublisher<Bool, Never>
+        let item: Driver<RankViewItem>
+        let isLoading: Driver<Bool>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
-        let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
+        let isLoadingSubject = CurrentValueRelay<Bool>(false)
         
         let fetchGameType = useCase.fetchGameCategory()
             .replaceError(with: "")
@@ -45,21 +45,18 @@ extension RankViewModel: ViewModelType {
             })
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<RankViewItem, Never> in
-                return Publishers.CombineLatest(
-                    fetchGameType,
-                    fetchRanks
-                )
+                return Publishers.CombineLatest(fetchGameType, fetchRanks)
                 .map { RankViewItem(gameType: $0, ranks: $1) }
                 .eraseToAnyPublisher()
             }
             .handleEvents(receiveOutput: { _ in
                 isLoadingSubject.send(false)
             })
-            .eraseToAnyPublisher()
+            .asDriver()
         
         return Output(
             item: item,
-            isLoading: isLoadingSubject.eraseToAnyPublisher()
+            isLoading: isLoadingSubject.asDriver()
         )
     }
 }
