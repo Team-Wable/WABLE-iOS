@@ -140,7 +140,7 @@ private extension InformationNotiViewController {
     }
     
     func setupDataSource() {
-        let cellRegistration = CellRegistration<NotificationCell, Item> { cell, indexPath, item in
+        let cellRegistration = CellRegistration<NotificationCell, Item> { cell, _, item in
             let date = item.time ?? .now
             cell.configure(
                 imageURL: item.imageURL,
