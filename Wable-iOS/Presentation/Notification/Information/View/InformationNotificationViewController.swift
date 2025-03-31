@@ -1,8 +1,8 @@
 //
-//  NoticeViewController.swift
+//  InformationNotificationViewController.swift
 //  Wable-iOS
 //
-//  Created by 김진웅 on 3/22/25.
+//  Created by 김진웅 on 3/29/25.
 //
 
 import Combine
@@ -11,28 +11,24 @@ import UIKit
 import SnapKit
 import Then
 
-protocol NoticeViewControllerDelegate: AnyObject {
-    func navigateToNoticeDetail(with news: Announcement)
-}
-
-final class NoticeViewController: UIViewController {
+final class InformationNotificationViewController: UIViewController {
     
     // MARK: - Section
-    
+
     enum Section {
         case main
     }
     
     // MARK: - typealias
     
-    typealias Item = Announcement
+    typealias Item = InformationNotification
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
-    typealias ViewModel = NoticeViewModel
-
+    typealias ViewModel = InformationNotificationViewModel
+    
     // MARK: - UIComponent
-
-    private lazy var collectionView: UICollectionView = .init(
+    
+    private lazy var collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: collectionViewLayout
     ).then {
@@ -40,9 +36,10 @@ final class NoticeViewController: UIViewController {
         $0.alwaysBounceVertical = true
     }
     
-    private let emptyLabel: UILabel = .init().then {
-        $0.attributedText = "아직 작성된 공지사항이 없어요.".pretendardString(with: .body2)
+    private let emptyLabel = UILabel().then {
+        $0.attributedText = "아직 표시할 내용이 없습니다.".pretendardString(with: .body2)
         $0.textColor = .gray500
+        $0.isHidden = true
     }
     
     private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
@@ -51,8 +48,6 @@ final class NoticeViewController: UIViewController {
     }
     
     // MARK: - Property
-    
-    weak var delegate: NoticeViewControllerDelegate?
     
     private var dataSource: DataSource?
     
@@ -77,7 +72,7 @@ final class NoticeViewController: UIViewController {
     }
     
     // MARK: - Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -94,7 +89,7 @@ final class NoticeViewController: UIViewController {
 
 // MARK: - UICollectionViewDelegate
 
-extension NoticeViewController: UICollectionViewDelegate {
+extension InformationNotificationViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         didSelectSubject.send(indexPath.item)
     }
@@ -118,7 +113,7 @@ extension NoticeViewController: UICollectionViewDelegate {
 
 // MARK: - Setup Method
 
-private extension NoticeViewController {
+private extension InformationNotificationViewController {
     func setupView() {
         view.backgroundColor = .wableWhite
         
@@ -145,14 +140,18 @@ private extension NoticeViewController {
     }
     
     func setupDataSource() {
-        let noticeCellRegistration = CellRegistration<NoticeCell, Announcement> { cell, indexPath, item in
-            guard let timeText = item.createdDate?.elapsedText else { return }
-            cell.configure(title: item.title, time: timeText, body: item.text)
+        let cellRegistration = CellRegistration<NotificationCell, Item> { cell, _, item in
+            let date = item.time ?? .now
+            cell.configure(
+                imageURL: item.imageURL,
+                content: item.type?.message ?? "",
+                time: date.elapsedText
+            )
         }
         
         dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
             return collectionView.dequeueConfiguredReusableCell(
-                using: noticeCellRegistration,
+                using: cellRegistration,
                 for: indexPath,
                 item: item
             )
@@ -185,18 +184,20 @@ private extension NoticeViewController {
             }
             .store(in: cancelBag)
         
-        output.notices
+        output.notifications
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] notices in
-                self?.applySnapshot(items: notices)
-                self?.emptyLabel.isHidden = !notices.isEmpty
+            .sink { [weak self] items in
+                self?.applySnapshot(items: items)
+                self?.emptyLabel.isHidden = !items.isEmpty
             }
             .store(in: cancelBag)
         
-        output.selectedNotice
+        output.selectedNotification
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] notice in
-                self?.delegate?.navigateToNoticeDetail(with: notice)
+            .sink { [weak self] item in
+                
+                // TODO: Item에 따른 화면 이동
+                
             }
             .store(in: cancelBag)
         
@@ -211,7 +212,7 @@ private extension NoticeViewController {
 
 // MARK: - Helper Method
 
-private extension NoticeViewController {
+private extension InformationNotificationViewController {
     func applySnapshot(items: [Item]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
@@ -223,7 +224,7 @@ private extension NoticeViewController {
 
 // MARK: - Action Method
 
-private extension NoticeViewController {
+private extension InformationNotificationViewController {
     @objc func collectionViewDidRefresh() {
         didRefreshSubject.send()
     }
@@ -231,24 +232,16 @@ private extension NoticeViewController {
 
 // MARK: - Computed Property
 
-private extension NoticeViewController {
+private extension InformationNotificationViewController {
     var collectionViewLayout: UICollectionViewCompositionalLayout {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1)
-        )
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(80))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(96.adjustedHeight)
-        )
-        let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: groupSize,
-            subitems: [item]
-        )
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(80))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         
         return UICollectionViewCompositionalLayout(section: section)
     }

@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 protocol NotificationRepository {
-    func fetchInfoNotifications(cursor: Int) -> AnyPublisher<[InfoNotification], WableError>
+    func fetchInfoNotifications(cursor: Int) -> AnyPublisher<[InformationNotification], WableError>
     func checkNotification() -> AnyPublisher<Void, WableError>
     func fetchUserNotifications(cursor: Int) -> AnyPublisher<[ActivityNotification], WableError>
     func fetchUncheckedNotificationNumber() -> AnyPublisher<Int, WableError>
