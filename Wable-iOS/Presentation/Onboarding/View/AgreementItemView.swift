@@ -23,7 +23,7 @@ final class AgreementItemView: UIView {
     }
     
     lazy var infoButton: UIButton = UIButton(configuration: .plain()).then {
-        $0.configuration?.attributedTitle = "보러가기".pretendardString(with: .body4).withUnderline()
+        $0.configuration?.attributedTitle = "보러가기".pretendardString(with: .body4).addUnderline()
         $0.configuration?.baseForegroundColor = .gray500
         $0.configuration?.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
     }
