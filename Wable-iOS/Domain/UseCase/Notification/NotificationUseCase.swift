@@ -10,7 +10,7 @@ import Foundation
 
 protocol NotificationUseCase {
     func fetchActivityNotifications(for lastItemID: Int) -> AnyPublisher<[ActivityNotification], WableError>
-    func fetchInformationNotifications(for lastItemID: Int) -> AnyPublisher<[InfoNotification], WableError>
+    func fetchInformationNotifications(for lastItemID: Int) -> AnyPublisher<[InformationNotification], WableError>
 }
 
 final class NotificationUseCaseImpl: NotificationUseCase {
@@ -27,7 +27,7 @@ final class NotificationUseCaseImpl: NotificationUseCase {
             .eraseToAnyPublisher()
     }
     
-    func fetchInformationNotifications(for lastItemID: Int) -> AnyPublisher<[InfoNotification], WableError> {
+    func fetchInformationNotifications(for lastItemID: Int) -> AnyPublisher<[InformationNotification], WableError> {
         return notificationRepository.fetchInfoNotifications(cursor: lastItemID)
             .eraseToAnyPublisher()
     }
@@ -69,17 +69,17 @@ struct MockNotificationUseCaseImpl: NotificationUseCase {
         .eraseToAnyPublisher()
     }
     
-    func fetchInformationNotifications(for lastItemID: Int) -> AnyPublisher<[InfoNotification], WableError> {
+    func fetchInformationNotifications(for lastItemID: Int) -> AnyPublisher<[InformationNotification], WableError> {
         let range = getPaginationRange(for: lastItemID, maxPage: 33)
         
         if range == nil {
             return emptyPublisher()
         }
         
-        let types: [InfoNotificationType] = [.gameDone, .gameStart, .weekDone]
+        let types: [InformationNotificationType] = [.gameDone, .gameStart, .weekDone]
         
         return .just(range!.map { id in
-            InfoNotification(
+            InformationNotification(
                 id: id,
                 type: types.randomElement(),
                 time: getRelativeDate(for: id),

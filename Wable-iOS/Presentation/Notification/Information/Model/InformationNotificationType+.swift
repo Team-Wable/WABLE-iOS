@@ -1,5 +1,5 @@
 //
-//  InfoNotificationType+.swift
+//  InformationNotificationType+.swift
 //  Wable-iOS
 //
 //  Created by 김진웅 on 3/30/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension InfoNotificationType {
+extension InformationNotificationType {
     var message: String {
         switch self {
         case .gameDone:

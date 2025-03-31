@@ -216,7 +216,7 @@
 		DE59BB9A2D8A9D3A0040ADCB /* NotificationPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BB992D8A9D3A0040ADCB /* NotificationPageViewController.swift */; };
 		DE59BBA92D8A9EFD0040ADCB /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */; };
 		DE6459CF2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6459CE2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift */; };
-		DE6459D52D97B8C2005569B8 /* InformationNotiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6459D42D97B8C2005569B8 /* InformationNotiViewController.swift */; };
+		DE6459D52D97B8C2005569B8 /* InformationNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6459D42D97B8C2005569B8 /* InformationNotificationViewController.swift */; };
 		DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EA2D7211070021BDE1 /* Like.swift */; };
 		DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EE2D7213D90021BDE1 /* Opacity.swift */; };
 		DE6C3E3E2D91A8E00046DB30 /* NewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6C3E3D2D91A8E00046DB30 /* NewsViewModel.swift */; };
@@ -230,7 +230,7 @@
 		DE72BB102D93CC68008E5774 /* NotificationPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB0F2D93CC68008E5774 /* NotificationPageView.swift */; };
 		DE72BB132D93CD9D008E5774 /* WableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB122D93CD9D008E5774 /* WableSegmentedControl.swift */; };
 		DE72BB182D93D4E1008E5774 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB172D93D4E1008E5774 /* NotificationCell.swift */; };
-		DE72BB1A2D93DC8C008E5774 /* ActivityNotiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB192D93DC8C008E5774 /* ActivityNotiViewController.swift */; };
+		DE72BB1A2D93DC8C008E5774 /* ActivityNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB192D93DC8C008E5774 /* ActivityNotificationViewController.swift */; };
 		DE7C530C2D761DCA00076E5D /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C530B2D761DCA00076E5D /* ViewModelType.swift */; };
 		DE7C530E2D761DFB00076E5D /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C530D2D761DFB00076E5D /* UIFont+.swift */; };
 		DE7C53102D761E3300076E5D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C530F2D761E3300076E5D /* String+.swift */; };
@@ -246,11 +246,11 @@
 		DE8E863F2D91A032000A4292 /* AmplitudeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */; };
 		DE8E86432D91A0DA000A4292 /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = DE8E86422D91A0DA000A4292 /* LookinServer */; };
 		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
-		DE9593352D9A1465009B00D3 /* ActivityNotiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9593342D9A1465009B00D3 /* ActivityNotiViewModel.swift */; };
-		DE98919B2D993D7200D538D8 /* InformationNotiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919A2D993D7200D538D8 /* InformationNotiViewModel.swift */; };
-		DE9891A02D995EE800D538D8 /* InfoNotificationType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919F2D995EE800D538D8 /* InfoNotificationType+.swift */; };
+		DE9593352D9A1465009B00D3 /* ActivityNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */; };
+		DE98919B2D993D7200D538D8 /* InformationNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */; };
+		DE9891A02D995EE800D538D8 /* InformationNotificationType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919F2D995EE800D538D8 /* InformationNotificationType+.swift */; };
 		DE9891A32D9981DC00D538D8 /* ActivityNotification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9891A22D9981DC00D538D8 /* ActivityNotification+.swift */; };
-		DE9891AA2D99925900D538D8 /* ActivityNotiTriggerType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9891A92D99925900D538D8 /* ActivityNotiTriggerType+.swift */; };
+		DE9891AA2D99925900D538D8 /* ActivityNotificationTriggerType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9891A92D99925900D538D8 /* ActivityNotificationTriggerType+.swift */; };
 		DE9B94762D927F140060FF92 /* NoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9B94752D927F140060FF92 /* NoticeViewModel.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
 		DEAFE0562D8C45980097E91C /* GameScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */; };
@@ -258,7 +258,7 @@
 		DEAFE05B2D8C4E930097E91C /* GameScheduleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE05A2D8C4E930097E91C /* GameScheduleHeaderView.swift */; };
 		DED4BE3D2D8C531E009B65CB /* GameTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED4BE3C2D8C531E009B65CB /* GameTypeCell.swift */; };
 		DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29132D7208A00073D512 /* GameStatus.swift */; };
-		DEDC29162D72099C0073D512 /* InfoNotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29152D72099C0073D512 /* InfoNotificationType.swift */; };
+		DEDC29162D72099C0073D512 /* InformationNotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29152D72099C0073D512 /* InformationNotificationType.swift */; };
 		DEDC29182D720D030073D512 /* PostStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29172D720D030073D512 /* PostStatus.swift */; };
 		DEE5D6112D9121E5009E5A25 /* OverviewPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6102D9121E5009E5A25 /* OverviewPageView.swift */; };
 		DEE5D6132D9126D8009E5A25 /* WableBadgeSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6122D9126D8009E5A25 /* WableBadgeSegmentedControl.swift */; };
@@ -469,7 +469,7 @@
 		DE59BB992D8A9D3A0040ADCB /* NotificationPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageViewController.swift; sourceTree = "<group>"; };
 		DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		DE6459CE2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+InjectDependency.swift"; sourceTree = "<group>"; };
-		DE6459D42D97B8C2005569B8 /* InformationNotiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotiViewController.swift; sourceTree = "<group>"; };
+		DE6459D42D97B8C2005569B8 /* InformationNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationViewController.swift; sourceTree = "<group>"; };
 		DE67A9EA2D7211070021BDE1 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		DE67A9EE2D7213D90021BDE1 /* Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opacity.swift; sourceTree = "<group>"; };
 		DE6C3E3D2D91A8E00046DB30 /* NewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewModel.swift; sourceTree = "<group>"; };
@@ -483,7 +483,7 @@
 		DE72BB0F2D93CC68008E5774 /* NotificationPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageView.swift; sourceTree = "<group>"; };
 		DE72BB122D93CD9D008E5774 /* WableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSegmentedControl.swift; sourceTree = "<group>"; };
 		DE72BB172D93D4E1008E5774 /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
-		DE72BB192D93DC8C008E5774 /* ActivityNotiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotiViewController.swift; sourceTree = "<group>"; };
+		DE72BB192D93DC8C008E5774 /* ActivityNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotificationViewController.swift; sourceTree = "<group>"; };
 		DE7C530B2D761DCA00076E5D /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		DE7C530D2D761DFB00076E5D /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		DE7C530F2D761E3300076E5D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
@@ -498,11 +498,11 @@
 		DE8E863C2D918759000A4292 /* RankViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankViewModel.swift; sourceTree = "<group>"; };
 		DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeManager.swift; sourceTree = "<group>"; };
 		DE8FF1902D8155DD00C41880 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
-		DE9593342D9A1465009B00D3 /* ActivityNotiViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotiViewModel.swift; sourceTree = "<group>"; };
-		DE98919A2D993D7200D538D8 /* InformationNotiViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotiViewModel.swift; sourceTree = "<group>"; };
-		DE98919F2D995EE800D538D8 /* InfoNotificationType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InfoNotificationType+.swift"; sourceTree = "<group>"; };
+		DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotificationViewModel.swift; sourceTree = "<group>"; };
+		DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationViewModel.swift; sourceTree = "<group>"; };
+		DE98919F2D995EE800D538D8 /* InformationNotificationType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InformationNotificationType+.swift"; sourceTree = "<group>"; };
 		DE9891A22D9981DC00D538D8 /* ActivityNotification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityNotification+.swift"; sourceTree = "<group>"; };
-		DE9891A92D99925900D538D8 /* ActivityNotiTriggerType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityNotiTriggerType+.swift"; sourceTree = "<group>"; };
+		DE9891A92D99925900D538D8 /* ActivityNotificationTriggerType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityNotificationTriggerType+.swift"; sourceTree = "<group>"; };
 		DE9B94752D927F140060FF92 /* NoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewModel.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
 		DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleCell.swift; sourceTree = "<group>"; };
@@ -511,7 +511,7 @@
 		DED4BE3C2D8C531E009B65CB /* GameTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTypeCell.swift; sourceTree = "<group>"; };
 		DEDC29112D7207610073D512 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		DEDC29132D7208A00073D512 /* GameStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStatus.swift; sourceTree = "<group>"; };
-		DEDC29152D72099C0073D512 /* InfoNotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoNotificationType.swift; sourceTree = "<group>"; };
+		DEDC29152D72099C0073D512 /* InformationNotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationType.swift; sourceTree = "<group>"; };
 		DEDC29172D720D030073D512 /* PostStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStatus.swift; sourceTree = "<group>"; };
 		DEE5D6102D9121E5009E5A25 /* OverviewPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPageView.swift; sourceTree = "<group>"; };
 		DEE5D6122D9126D8009E5A25 /* WableBadgeSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableBadgeSegmentedControl.swift; sourceTree = "<group>"; };
@@ -1440,7 +1440,7 @@
 		DE6459D32D97B8B7005569B8 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				DE6459D42D97B8C2005569B8 /* InformationNotiViewController.swift */,
+				DE6459D42D97B8C2005569B8 /* InformationNotificationViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1562,7 +1562,7 @@
 		DE72BB152D93D4D3008E5774 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				DE72BB192D93DC8C008E5774 /* ActivityNotiViewController.swift */,
+				DE72BB192D93DC8C008E5774 /* ActivityNotificationViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1627,7 +1627,7 @@
 		DE9593332D9A1453009B00D3 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				DE9593342D9A1465009B00D3 /* ActivityNotiViewModel.swift */,
+				DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1635,7 +1635,7 @@
 		DE9891992D993D6400D538D8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				DE98919A2D993D7200D538D8 /* InformationNotiViewModel.swift */,
+				DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1643,7 +1643,7 @@
 		DE98919E2D995EDA00D538D8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				DE98919F2D995EE800D538D8 /* InfoNotificationType+.swift */,
+				DE98919F2D995EE800D538D8 /* InformationNotificationType+.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1652,7 +1652,7 @@
 			isa = PBXGroup;
 			children = (
 				DE9891A22D9981DC00D538D8 /* ActivityNotification+.swift */,
-				DE9891A92D99925900D538D8 /* ActivityNotiTriggerType+.swift */,
+				DE9891A92D99925900D538D8 /* ActivityNotificationTriggerType+.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1711,7 +1711,7 @@
 				DD2967EC2D6DAC3100143851 /* SocialPlatform.swift */,
 				DD2967EB2D6DAC3100143851 /* AccountDeleteReason.swift */,
 				DD2967F42D6DAC3100143851 /* TriggerType.swift */,
-				DEDC29152D72099C0073D512 /* InfoNotificationType.swift */,
+				DEDC29152D72099C0073D512 /* InformationNotificationType.swift */,
 				DEDC29132D7208A00073D512 /* GameStatus.swift */,
 			);
 			path = Enum;
@@ -1943,7 +1943,7 @@
 				DE70048D2D8EA85400B7AB71 /* NewsViewController.swift in Sources */,
 				DE6459CF2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift in Sources */,
 				DE8E863B2D918735000A4292 /* RankViewItem.swift in Sources */,
-				DE9891A02D995EE800D538D8 /* InfoNotificationType+.swift in Sources */,
+				DE9891A02D995EE800D538D8 /* InformationNotificationType+.swift in Sources */,
 				DD29683F2D6DAD2F00143851 /* FetchInfoNotifications.swift in Sources */,
 				DD2968402D6DAD2F00143851 /* FetchNewsNoticeNumber.swift in Sources */,
 				DD2968412D6DAD2F00143851 /* Empty.swift in Sources */,
@@ -1951,7 +1951,7 @@
 				DD29686E2D6DAD5F00143851 /* Bundle+.swift in Sources */,
 				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,
 				DD29686F2D6DAD5F00143851 /* MoyaLoggingPlugin.swift in Sources */,
-				DE98919B2D993D7200D538D8 /* InformationNotiViewModel.swift in Sources */,
+				DE98919B2D993D7200D538D8 /* InformationNotificationViewModel.swift in Sources */,
 				DD2968702D6DAD5F00143851 /* TokenStorage.swift in Sources */,
 				DE8E863D2D918759000A4292 /* RankViewModel.swift in Sources */,
 				DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */,
@@ -1959,7 +1959,7 @@
 				DE83891D2D9071E400C089E6 /* Date+.swift in Sources */,
 				DD2968742D6DAD5F00143851 /* NetworkError.swift in Sources */,
 				DD2968432D6DAD2F00143851 /* FetchGameSchedules.swift in Sources */,
-				DE6459D52D97B8C2005569B8 /* InformationNotiViewController.swift in Sources */,
+				DE6459D52D97B8C2005569B8 /* InformationNotificationViewController.swift in Sources */,
 				DD2968442D6DAD2F00143851 /* FetchUserProfile.swift in Sources */,
 				DE7C530E2D761DFB00076E5D /* UIFont+.swift in Sources */,
 				DD2968452D6DAD2F00143851 /* FetchCommunites.swift in Sources */,
@@ -1968,7 +1968,7 @@
 				DD2968482D6DAD2F00143851 /* FetchNotificationNumber.swift in Sources */,
 				DD2968492D6DAD2F00143851 /* FetchContents.swift in Sources */,
 				DD29684A2D6DAD2F00143851 /* FetchLCKTeamRankings.swift in Sources */,
-				DEDC29162D72099C0073D512 /* InfoNotificationType.swift in Sources */,
+				DEDC29162D72099C0073D512 /* InformationNotificationType.swift in Sources */,
 				DD29684B2D6DAD2F00143851 /* CreateViewitPostResponse.swift in Sources */,
 				DDED59782D78F1E500A0BEF1 /* CreateUserProfileUseCase.swift in Sources */,
 				DD29684C2D6DAD2F00143851 /* FetchNews.swift in Sources */,
@@ -2007,7 +2007,7 @@
 				DDFB223B2D8B9F5100FEA24A /* LCKYearCollectionViewCell.swift in Sources */,
 				DD2968672D6DAD5500143851 /* InformationTargetType.swift in Sources */,
 				DD2968682D6DAD5500143851 /* BaseTargetType.swift in Sources */,
-				DE9593352D9A1465009B00D3 /* ActivityNotiViewModel.swift in Sources */,
+				DE9593352D9A1465009B00D3 /* ActivityNotificationViewModel.swift in Sources */,
 				DD2968692D6DAD5500143851 /* CommentTargetType.swift in Sources */,
 				DD29686A2D6DAD5500143851 /* ContentLikedTargetType.swift in Sources */,
 				DD29686B2D6DAD5500143851 /* CommunityTargetType.swift in Sources */,
@@ -2027,7 +2027,7 @@
 				DE7C53122D761EA400076E5D /* UIStackView+.swift in Sources */,
 				DDCCA3952D73928900658122 /* UserSession.swift in Sources */,
 				DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */,
-				DE9891AA2D99925900D538D8 /* ActivityNotiTriggerType+.swift in Sources */,
+				DE9891AA2D99925900D538D8 /* ActivityNotificationTriggerType+.swift in Sources */,
 				DE7004902D8EA93A00B7AB71 /* NewsCell.swift in Sources */,
 				DD2968022D6DAC9B00143851 /* ViewController.swift in Sources */,
 				DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */,
@@ -2064,7 +2064,7 @@
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
 				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
 				DD29681D2D6DAD0200143851 /* CommentRepository.swift in Sources */,
-				DE72BB1A2D93DC8C008E5774 /* ActivityNotiViewController.swift in Sources */,
+				DE72BB1A2D93DC8C008E5774 /* ActivityNotificationViewController.swift in Sources */,
 				DDED59722D78EE9900A0BEF1 /* UpdatePreRegisterUseCase.swift in Sources */,
 				DEAFE0592D8C4E0B0097E91C /* GameStatus+.swift in Sources */,
 				DD29681E2D6DAD0200143851 /* AccountRepository.swift in Sources */,

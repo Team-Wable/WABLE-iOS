@@ -1,5 +1,5 @@
 //
-//  ActivityNotiViewController.swift
+//  ActivityNotificationViewController.swift
 //  Wable-iOS
 //
 //  Created by 김진웅 on 3/26/25.
@@ -12,7 +12,7 @@ import SafariServices
 import SnapKit
 import Then
 
-final class ActivityNotiViewController: UIViewController {
+final class ActivityNotificationViewController: UIViewController {
     
     // MARK: - Section
     
@@ -25,7 +25,7 @@ final class ActivityNotiViewController: UIViewController {
     typealias Item = ActivityNotification
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
-    typealias ViewModel = ActivityNotiViewModel
+    typealias ViewModel = ActivityNotificationViewModel
     
     // MARK: - UIComponent
     
@@ -90,7 +90,7 @@ final class ActivityNotiViewController: UIViewController {
 
 // MARK: - UICollectionViewDelegate
 
-extension ActivityNotiViewController: UICollectionViewDelegate {
+extension ActivityNotificationViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         didSelectItemSubject.send(indexPath.item)
     }
@@ -115,7 +115,7 @@ extension ActivityNotiViewController: UICollectionViewDelegate {
 
 // MARK: - Setup Method
 
-private extension ActivityNotiViewController {
+private extension ActivityNotificationViewController {
     func setupView() {
         view.backgroundColor = .wableWhite
         
@@ -254,7 +254,7 @@ private extension ActivityNotiViewController {
 
 // MARK: - Helper Method
 
-private extension ActivityNotiViewController {
+private extension ActivityNotificationViewController {
     func applySnapshot(items: [Item]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
@@ -266,7 +266,7 @@ private extension ActivityNotiViewController {
 
 // MARK: - Action Method
 
-private extension ActivityNotiViewController {
+private extension ActivityNotificationViewController {
     @objc func collectionViewDidRefresh() {
         didRefreshSubject.send()
     }
@@ -274,7 +274,7 @@ private extension ActivityNotiViewController {
 
 // MARK: - Computed Property
 
-private extension ActivityNotiViewController {
+private extension ActivityNotificationViewController {
     var collectionViewLayout: UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(80))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -291,7 +291,7 @@ private extension ActivityNotiViewController {
 
 // MARK: - Constant
 
-private extension ActivityNotiViewController {
+private extension ActivityNotificationViewController {
     enum Constant {
         static let googleFormURLText: String = "https://docs.google.com/forms/d/e/1FAIpQLSf3JlBkVRPaPFSreQHaEv-u5pqZWZzk7Y4Qll9lRP0htBZs-Q/viewform"
     }
