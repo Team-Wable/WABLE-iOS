@@ -60,9 +60,10 @@ final class RankListViewController: UIViewController {
     private var dataSource: DataSource?
     
     private let viewModel: ViewModel
+
+    private let didLoadRelay = PassthroughRelay<Void>()
+    private let didRefreshRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
-    private let didLoadSubject = PassthroughSubject<Void, Never>()
-    private let didRefreshSubject = PassthroughSubject<Void, Never>()
     
     // MARK: - Initializer
 
@@ -89,7 +90,7 @@ final class RankListViewController: UIViewController {
         setupDataSource()
         setupBinding()
         
-        didLoadSubject.send()
+        didLoadRelay.send()
     }
 }
 
@@ -199,21 +200,19 @@ private extension RankListViewController {
     
     func setupBinding() {
         let input = ViewModel.Input(
-            viewDidLoad: didLoadSubject.eraseToAnyPublisher(),
-            viewDidRefresh: didRefreshSubject.eraseToAnyPublisher()
+            viewDidLoad: didLoadRelay.eraseToAnyPublisher(),
+            viewDidRefresh: didRefreshRelay.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
         
         output.item
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] item in
                 self?.applySnapshot(item: item)
             }
             .store(in: cancelBag)
         
         output.isLoading
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoading in
                 guard !isLoading else { return }
                 self?.collectionView.refreshControl?.endRefreshing()
@@ -243,7 +242,7 @@ private extension RankListViewController {
 
 private extension RankListViewController {
     @objc func collectionViewDidRefresh() {
-        didRefreshSubject.send()
+        didRefreshRelay.send()
     }
 }
 
