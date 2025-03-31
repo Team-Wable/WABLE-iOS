@@ -52,4 +52,22 @@ extension String {
         let nsAttributedString: NSAttributedString = self.pretendardString(with: style)
         return AttributedString(nsAttributedString)
     }
+    
+    // MARK: - truncated
+    
+    /// 문자열을 지정된 길이로 제한하고 필요한 경우 생략 부호를 추가합니다.
+    /// - Parameters:
+    ///   - maxLength: 최대 문자 수
+    ///   - appendEllipsis: 생략 부호 추가 여부
+    /// - Returns: 제한된 문자열
+    func truncated(toLength maxLength: Int, appendingEllipsis: Bool = true) -> String {
+        if count <= maxLength {
+            return self
+        }
+        
+        let index = self.index(startIndex, offsetBy: maxLength)
+        let truncated = self[..<index]
+        
+        return appendingEllipsis ? "\(truncated)..." : "\(truncated)"
+    }
 }

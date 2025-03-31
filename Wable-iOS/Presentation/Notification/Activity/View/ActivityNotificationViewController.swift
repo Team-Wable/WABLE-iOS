@@ -1,21 +1,18 @@
 //
-//  NoticeViewController.swift
+//  ActivityNotificationViewController.swift
 //  Wable-iOS
 //
-//  Created by 김진웅 on 3/22/25.
+//  Created by 김진웅 on 3/26/25.
 //
 
 import Combine
 import UIKit
+import SafariServices
 
 import SnapKit
 import Then
 
-protocol NoticeViewControllerDelegate: AnyObject {
-    func navigateToNoticeDetail(with news: Announcement)
-}
-
-final class NoticeViewController: UIViewController {
+final class ActivityNotificationViewController: UIViewController {
     
     // MARK: - Section
     
@@ -24,15 +21,15 @@ final class NoticeViewController: UIViewController {
     }
     
     // MARK: - typealias
-    
-    typealias Item = Announcement
+
+    typealias Item = ActivityNotification
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
-    typealias ViewModel = NoticeViewModel
-
+    typealias ViewModel = ActivityNotificationViewModel
+    
     // MARK: - UIComponent
-
-    private lazy var collectionView: UICollectionView = .init(
+    
+    private lazy var collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: collectionViewLayout
     ).then {
@@ -40,8 +37,8 @@ final class NoticeViewController: UIViewController {
         $0.alwaysBounceVertical = true
     }
     
-    private let emptyLabel: UILabel = .init().then {
-        $0.attributedText = "아직 작성된 공지사항이 없어요.".pretendardString(with: .body2)
+    private let emptyLabel = UILabel().then {
+        $0.attributedText = "아직 표시할 내용이 없습니다.".pretendardString(with: .body2)
         $0.textColor = .gray500
     }
     
@@ -51,16 +48,15 @@ final class NoticeViewController: UIViewController {
     }
     
     // MARK: - Property
-    
-    weak var delegate: NoticeViewControllerDelegate?
-    
+
     private var dataSource: DataSource?
     
     private let viewModel: ViewModel
     private let didLoadSubject = PassthroughSubject<Void, Never>()
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
-    private let didSelectSubject = PassthroughSubject<Int, Never>()
+    private let didSelectItemSubject = PassthroughSubject<Int, Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
+    private let profileImageViewDidTapSubject = PassthroughSubject<Int, Never>()
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
@@ -77,7 +73,7 @@ final class NoticeViewController: UIViewController {
     }
     
     // MARK: - Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -94,9 +90,9 @@ final class NoticeViewController: UIViewController {
 
 // MARK: - UICollectionViewDelegate
 
-extension NoticeViewController: UICollectionViewDelegate {
+extension ActivityNotificationViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        didSelectSubject.send(indexPath.item)
+        didSelectItemSubject.send(indexPath.item)
     }
     
     func collectionView(
@@ -116,9 +112,10 @@ extension NoticeViewController: UICollectionViewDelegate {
     }
 }
 
+
 // MARK: - Setup Method
 
-private extension NoticeViewController {
+private extension ActivityNotificationViewController {
     func setupView() {
         view.backgroundColor = .wableWhite
         
@@ -145,14 +142,28 @@ private extension NoticeViewController {
     }
     
     func setupDataSource() {
-        let noticeCellRegistration = CellRegistration<NoticeCell, Announcement> { cell, indexPath, item in
-            guard let timeText = item.createdDate?.elapsedText else { return }
-            cell.configure(title: item.title, time: timeText, body: item.text)
+        let profileInteractionTypes = TriggerType.ActivityNotification.profileInteractionTypes
+        
+        let cellRegistration = CellRegistration<NotificationCell, Item> { cell, indexPath, item in
+            let content = item.targetContentText.isEmpty
+            ? item.message
+            : "\(item.message)\n : \(item.targetContentText.truncated(toLength: 15))"
+            
+            let time = item.time ?? .now
+            
+            cell.configure(imageURL: item.triggerUserProfileURL, content: content, time: time.elapsedText)
+            
+            if let triggerType = item.type,
+               profileInteractionTypes.contains(triggerType) {
+                cell.profileImageViewDidTapAction = { [weak self] in
+                    self?.profileImageViewDidTapSubject.send(indexPath.item)
+                }
+            }
         }
         
         dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
             return collectionView.dequeueConfiguredReusableCell(
-                using: noticeCellRegistration,
+                using: cellRegistration,
                 for: indexPath,
                 item: item
             )
@@ -171,8 +182,9 @@ private extension NoticeViewController {
         let input = ViewModel.Input(
             viewDidLoad: didLoadSubject.eraseToAnyPublisher(),
             viewDidRefresh: didRefreshSubject.eraseToAnyPublisher(),
-            didSelectItem: didSelectSubject.eraseToAnyPublisher(),
-            willDisplayLastItem: willDisplayLastItemSubject.eraseToAnyPublisher()
+            didSelectItem: didSelectItemSubject.eraseToAnyPublisher(),
+            willDisplayLastItem: willDisplayLastItemSubject.eraseToAnyPublisher(),
+            profileImageViewDidTap: profileImageViewDidTapSubject.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
@@ -185,18 +197,11 @@ private extension NoticeViewController {
             }
             .store(in: cancelBag)
         
-        output.notices
+        output.notifications
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] notices in
-                self?.applySnapshot(items: notices)
-                self?.emptyLabel.isHidden = !notices.isEmpty
-            }
-            .store(in: cancelBag)
-        
-        output.selectedNotice
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] notice in
-                self?.delegate?.navigateToNoticeDetail(with: notice)
+            .sink { [weak self] items in
+                self?.applySnapshot(items: items)
+                self?.emptyLabel.isHidden = !items.isEmpty
             }
             .store(in: cancelBag)
         
@@ -206,12 +211,50 @@ private extension NoticeViewController {
                 isLoadingMore ? self?.loadingIndicator.startAnimating() : self?.loadingIndicator.stopAnimating()
             }
             .store(in: cancelBag)
+        
+        output.content
+            .receive(on: DispatchQueue.main)
+            .sink { contentID in
+                WableLogger.log("게시물 ID: \(contentID)", for: .debug)
+                
+                // TODO: 상세 게시물로 이동
+                
+            }
+            .store(in: cancelBag)
+        
+        output.writeContent
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+                
+                // TODO: 게시물 작성하기로 이동
+                
+            }
+            .store(in: cancelBag)
+        
+        output.googleForm
+            .receive(on: DispatchQueue.main)
+            .compactMap { URL(string: Constant.googleFormURLText) }
+            .sink { [weak self] url in
+                let safariController = SFSafariViewController(url: url)
+                self?.present(safariController, animated: true)
+            }
+            .store(in: cancelBag)
+        
+        output.user
+            .receive(on: DispatchQueue.main)
+            .sink { userID in
+                WableLogger.log("유저 아이디: \(userID)", for: .debug)
+                
+                // TODO: 유저 프로필로 이동
+                
+            }
+            .store(in: cancelBag)
     }
 }
 
 // MARK: - Helper Method
 
-private extension NoticeViewController {
+private extension ActivityNotificationViewController {
     func applySnapshot(items: [Item]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
@@ -223,7 +266,7 @@ private extension NoticeViewController {
 
 // MARK: - Action Method
 
-private extension NoticeViewController {
+private extension ActivityNotificationViewController {
     @objc func collectionViewDidRefresh() {
         didRefreshSubject.send()
     }
@@ -231,25 +274,25 @@ private extension NoticeViewController {
 
 // MARK: - Computed Property
 
-private extension NoticeViewController {
+private extension ActivityNotificationViewController {
     var collectionViewLayout: UICollectionViewCompositionalLayout {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1)
-        )
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(80))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(96.adjustedHeight)
-        )
-        let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: groupSize,
-            subitems: [item]
-        )
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(80))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         
         return UICollectionViewCompositionalLayout(section: section)
+    }
+}
+
+// MARK: - Constant
+
+private extension ActivityNotificationViewController {
+    enum Constant {
+        static let googleFormURLText: String = "https://docs.google.com/forms/d/e/1FAIpQLSf3JlBkVRPaPFSreQHaEv-u5pqZWZzk7Y4Qll9lRP0htBZs-Q/viewform"
     }
 }
