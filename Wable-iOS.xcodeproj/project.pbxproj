@@ -226,7 +226,6 @@
 		DE70048D2D8EA85400B7AB71 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE70048C2D8EA85400B7AB71 /* NewsViewController.swift */; };
 		DE7004902D8EA93A00B7AB71 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE70048F2D8EA93A00B7AB71 /* NewsCell.swift */; };
 		DE7004922D8EB5CF00B7AB71 /* NewsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7004912D8EB5CF00B7AB71 /* NewsHeaderView.swift */; };
-		DE7004952D8EBA9100B7AB71 /* GameScheduleEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7004942D8EBA9100B7AB71 /* GameScheduleEmptyView.swift */; };
 		DE72BB102D93CC68008E5774 /* NotificationPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB0F2D93CC68008E5774 /* NotificationPageView.swift */; };
 		DE72BB132D93CD9D008E5774 /* WableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB122D93CD9D008E5774 /* WableSegmentedControl.swift */; };
 		DE72BB182D93D4E1008E5774 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB172D93D4E1008E5774 /* NotificationCell.swift */; };
@@ -246,6 +245,7 @@
 		DE8E863F2D91A032000A4292 /* AmplitudeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */; };
 		DE8E86432D91A0DA000A4292 /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = DE8E86422D91A0DA000A4292 /* LookinServer */; };
 		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
+		DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */; };
 		DE9593352D9A1465009B00D3 /* ActivityNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */; };
 		DE98919B2D993D7200D538D8 /* InformationNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */; };
 		DE9891A02D995EE800D538D8 /* InformationNotificationType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919F2D995EE800D538D8 /* InformationNotificationType+.swift */; };
@@ -479,7 +479,6 @@
 		DE70048C2D8EA85400B7AB71 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
 		DE70048F2D8EA93A00B7AB71 /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		DE7004912D8EB5CF00B7AB71 /* NewsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsHeaderView.swift; sourceTree = "<group>"; };
-		DE7004942D8EBA9100B7AB71 /* GameScheduleEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleEmptyView.swift; sourceTree = "<group>"; };
 		DE72BB0F2D93CC68008E5774 /* NotificationPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageView.swift; sourceTree = "<group>"; };
 		DE72BB122D93CD9D008E5774 /* WableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSegmentedControl.swift; sourceTree = "<group>"; };
 		DE72BB172D93D4E1008E5774 /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
@@ -498,6 +497,7 @@
 		DE8E863C2D918759000A4292 /* RankViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankViewModel.swift; sourceTree = "<group>"; };
 		DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeManager.swift; sourceTree = "<group>"; };
 		DE8FF1902D8155DD00C41880 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
+		DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Driver.swift"; sourceTree = "<group>"; };
 		DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotificationViewModel.swift; sourceTree = "<group>"; };
 		DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationViewModel.swift; sourceTree = "<group>"; };
 		DE98919F2D995EE800D538D8 /* InformationNotificationType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InformationNotificationType+.swift"; sourceTree = "<group>"; };
@@ -1508,14 +1508,6 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		DE7004932D8EBA8000B7AB71 /* Subview */ = {
-			isa = PBXGroup;
-			children = (
-				DE7004942D8EBA9100B7AB71 /* GameScheduleEmptyView.swift */,
-			);
-			path = Subview;
-			sourceTree = "<group>";
-		};
 		DE72BB0C2D93CAA6008E5774 /* Page */ = {
 			isa = PBXGroup;
 			children = (
@@ -1620,6 +1612,7 @@
 				DDCD66EB2D7DE5D900EF4C28 /* ConstraintMaker+.swift */,
 				DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */,
 				DE83891C2D9071E400C089E6 /* Date+.swift */,
+				DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1679,7 +1672,6 @@
 			isa = PBXGroup;
 			children = (
 				DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */,
-				DE7004932D8EBA8000B7AB71 /* Subview */,
 				DEAFE0542D8C44940097E91C /* Cell */,
 			);
 			path = View;
@@ -1956,6 +1948,7 @@
 				DE8E863D2D918759000A4292 /* RankViewModel.swift in Sources */,
 				DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */,
 				DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */,
+				DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */,
 				DE83891D2D9071E400C089E6 /* Date+.swift in Sources */,
 				DD2968742D6DAD5F00143851 /* NetworkError.swift in Sources */,
 				DD2968432D6DAD2F00143851 /* FetchGameSchedules.swift in Sources */,
@@ -2011,7 +2004,6 @@
 				DD2968692D6DAD5500143851 /* CommentTargetType.swift in Sources */,
 				DD29686A2D6DAD5500143851 /* ContentLikedTargetType.swift in Sources */,
 				DD29686B2D6DAD5500143851 /* CommunityTargetType.swift in Sources */,
-				DE7004952D8EBA9100B7AB71 /* GameScheduleEmptyView.swift in Sources */,
 				DD29686C2D6DAD5500143851 /* ProfileTargetType.swift in Sources */,
 				DD29686D2D6DAD5500143851 /* AccountTargetType.swift in Sources */,
 				DD514D102D8CA3780095021D /* AttributedString+.swift in Sources */,
