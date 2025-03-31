@@ -8,10 +8,14 @@
 import Combine
 import Foundation
 
+// MARK: - NotificationUseCase
+
 protocol NotificationUseCase {
     func fetchActivityNotifications(for lastItemID: Int) -> AnyPublisher<[ActivityNotification], WableError>
     func fetchInformationNotifications(for lastItemID: Int) -> AnyPublisher<[InformationNotification], WableError>
 }
+
+// MARK: - NotificationUseCaseImpl
 
 final class NotificationUseCaseImpl: NotificationUseCase {
     private let notificationRepository: NotificationRepository
@@ -32,6 +36,8 @@ final class NotificationUseCaseImpl: NotificationUseCase {
             .eraseToAnyPublisher()
     }
 }
+
+// MARK: - MockNotificationUseCaseImpl
 
 struct MockNotificationUseCaseImpl: NotificationUseCase {
     private var randomDelaySecond: Double { .random(in: 0.3...1.0) }
@@ -89,8 +95,6 @@ struct MockNotificationUseCaseImpl: NotificationUseCase {
         .delay(for: .seconds(randomDelaySecond), scheduler: RunLoop.main)
         .eraseToAnyPublisher()
     }
-    
-    // MARK: - 헬퍼 메소드
     
     private func getPaginationRange(for lastItemID: Int, maxPage: Int = 33) -> ClosedRange<Int>? {
         switch lastItemID {
