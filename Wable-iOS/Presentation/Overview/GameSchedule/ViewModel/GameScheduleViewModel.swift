@@ -9,10 +9,10 @@ import Combine
 import Foundation
 
 final class GameScheduleViewModel {
-    private let overviewRepository: InformationRepository
+    private let useCase: OverviewUseCase
     
-    init(overviewRepository: InformationRepository) {
-        self.overviewRepository = overviewRepository
+    init(useCase: OverviewUseCase) {
+        self.useCase = useCase
     }
 }
 
@@ -30,33 +30,25 @@ extension GameScheduleViewModel: ViewModelType {
     func transform(input: Input, cancelBag: CancelBag) -> Output {
         let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
         
-        let loadTrigger = Publishers.Merge(
-            input.viewDidLoad,
-            input.viewDidRefresh
-        )
-        
-        let fetchGameType = overviewRepository.fetchGameCategory()
+        let fetchGameType = useCase.fetchGameCategory()
             .replaceError(with: "")
             .filter { !$0.isEmpty }
             .removeDuplicates()
         
-        let fetchGameSchedules = overviewRepository.fetchGameSchedules()
+        let fetchGameSchedules = useCase.fetchGameSchedules()
             .map { gameSchedules in
                 gameSchedules.filter { !$0.games.isEmpty }
             }
             .replaceError(with: [])
             .removeDuplicates()
         
-        let item = loadTrigger
+        let item = Publishers.Merge(input.viewDidLoad, input.viewDidRefresh)
             .handleEvents(receiveOutput: { _ in
                 isLoadingSubject.send(true)
             })
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<GameScheduleViewItem, Never> in
-                return Publishers.CombineLatest(
-                    fetchGameType,
-                    fetchGameSchedules
-                )
+                return Publishers.CombineLatest(fetchGameType, fetchGameSchedules)
                 .map { GameScheduleViewItem(gameType: $0, gameSchedules: $1) }
                 .eraseToAnyPublisher()
             }

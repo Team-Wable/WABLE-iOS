@@ -137,13 +137,13 @@ extension OverviewPageViewController: NoticeViewControllerDelegate {
 
 private extension OverviewPageViewController {
     func setupViewControllers() {
-        let repository = MockInformationRepositoryImpl()
+        let mockUseCase = MockOverviewUseCaseImpl()
         
-        let gameScheduleViewController = GameScheduleListViewController(viewModel: .init(overviewRepository: repository))
-        let rankViewController = RankListViewController(viewModel: .init(overviewRepository: repository))
-        let newsViewController = NewsViewController(viewModel: .init(overviewRepository: repository))
+        let gameScheduleViewController = GameScheduleListViewController(viewModel: .init(useCase: mockUseCase))
+        let rankViewController = RankListViewController(viewModel: .init(useCase: mockUseCase))
+        let newsViewController = NewsViewController(viewModel: .init(useCase: mockUseCase))
         newsViewController.delegate = self
-        let noticeViewController = NoticeViewController(viewModel: .init(overviewRepository: repository))
+        let noticeViewController = NoticeViewController(viewModel: .init(useCase: mockUseCase))
         noticeViewController.delegate = self
         
         viewControllers.append(gameScheduleViewController)

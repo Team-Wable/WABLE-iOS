@@ -9,10 +9,10 @@ import Combine
 import Foundation
 
 final class NoticeViewModel {
-    private let overviewRepository: InformationRepository
+    private let useCase: OverviewUseCase
     
-    init(overviewRepository: InformationRepository) {
-        self.overviewRepository = overviewRepository
+    init(useCase: OverviewUseCase) {
+        self.useCase = useCase
     }
 }
 
@@ -36,26 +36,19 @@ extension NoticeViewModel: ViewModelType {
         let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
         let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
         let isLastPageSubject = CurrentValueSubject<Bool, Never>(false)
-        
-        let loadTrigger = Publishers.Merge(
-            input.viewDidLoad,
-            input.viewDidRefresh
-        )
-        
-        loadTrigger
+                
+        Publishers.Merge(input.viewDidLoad, input.viewDidRefresh)
             .handleEvents(receiveOutput: { _ in
                 isLoadingSubject.send(true)
                 isLastPageSubject.send(false)
             })
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<[Announcement], Never> in
-                return owner.overviewRepository.fetchNotice(cursor: Constant.initialCursor)
-                    .replaceError(with: [])
-                    .eraseToAnyPublisher()
+                return owner.fetchNotices(with: Constant.initialCursor)
             }
-            .handleEvents(receiveOutput: { news in
+            .handleEvents(receiveOutput: { [weak self] notices in
                 isLoadingSubject.send(false)
-                isLastPageSubject.send(news.isEmpty || news.count < Constant.defaultItemsCountPerPage)
+                isLastPageSubject.send(self?.isLastPage(notices) ?? false)
             })
             .sink { noticesSubject.send($0) }
             .store(in: cancelBag)
@@ -71,20 +64,16 @@ extension NoticeViewModel: ViewModelType {
                 guard let lastItem = noticesSubject.value.last else {
                     return .just([])
                 }
-                
-                let cursor = lastItem.id
-                return owner.overviewRepository.fetchNews(cursor: cursor)
-                    .replaceError(with: [])
-                    .eraseToAnyPublisher()
+                return owner.fetchNotices(with: lastItem.id)
             }
-            .handleEvents(receiveOutput: { news in
+            .handleEvents(receiveOutput: { [weak self] notices in
                 isLoadingMoreSubject.send(false)
-                isLastPageSubject.send(news.isEmpty || news.count < Constant.defaultItemsCountPerPage)
+                isLastPageSubject.send(self?.isLastPage(notices) ?? true)
             })
             .filter { !$0.isEmpty }
-            .sink { news in
+            .sink { notices in
                 var currentItems = noticesSubject.value
-                currentItems.append(contentsOf: news)
+                currentItems.append(contentsOf: notices)
                 noticesSubject.send(currentItems)
             }
             .store(in: cancelBag)
@@ -102,6 +91,25 @@ extension NoticeViewModel: ViewModelType {
         )
     }
 }
+
+// MARK: - Helper Method
+
+private extension NoticeViewModel {
+    func fetchNotices(with lastItemID: Int) -> AnyPublisher<[Announcement], Never> {
+        return useCase.fetchNotices(with: lastItemID)
+            .catch { error -> AnyPublisher<[Announcement], Never> in
+                WableLogger.log("에러 발생: \(error.localizedDescription)", for: .error)
+                return .just([])
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func isLastPage(_ notices: [Announcement]) -> Bool {
+        return notices.isEmpty || notices.count < Constant.defaultItemsCountPerPage
+    }
+}
+
+// MARK: - Constant
 
 private extension NoticeViewModel {
     enum Constant {
