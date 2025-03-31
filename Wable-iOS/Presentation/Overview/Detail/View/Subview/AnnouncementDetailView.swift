@@ -159,7 +159,7 @@ private extension AnnouncementDetailView {
         
         contentStackView.snp.makeConstraints { make in
             make.top.equalTo(navigationBackgroundView.snp.bottom)
-            make.horizontalEdges.bottom.equalToSuperview()
+            make.horizontalEdges.bottom.equalTo(safeArea)
         }
         
         containerView.snp.makeConstraints { make in
