@@ -54,8 +54,8 @@ final class RankListViewController: UIViewController {
     
     private let viewModel: ViewModel
     private let cancelBag: CancelBag = .init()
-    private let didLoadSubject = PublishRelay<Void>()
-    private let didRefreshSubject = PublishRelay<Void>()
+    private let didLoadRelay = PassthroughRelay<Void>()
+    private let didRefreshRelay = PassthroughRelay<Void>()
     
     // MARK: - Initializer
 
@@ -82,7 +82,7 @@ final class RankListViewController: UIViewController {
         setupDataSource()
         setupBinding()
         
-        didLoadSubject.send()
+        didLoadRelay.send()
     }
 }
 
@@ -192,8 +192,8 @@ private extension RankListViewController {
     
     func setupBinding() {
         let input = ViewModel.Input(
-            viewDidLoad: didLoadSubject.eraseToAnyPublisher(),
-            viewDidRefresh: didRefreshSubject.eraseToAnyPublisher()
+            viewDidLoad: didLoadRelay.eraseToAnyPublisher(),
+            viewDidRefresh: didRefreshRelay.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
@@ -234,7 +234,7 @@ private extension RankListViewController {
 
 private extension RankListViewController {
     @objc func collectionViewDidRefresh() {
-        didRefreshSubject.send()
+        didRefreshRelay.send()
     }
 }
 

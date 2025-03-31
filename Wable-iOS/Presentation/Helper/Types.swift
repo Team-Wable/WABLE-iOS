@@ -19,5 +19,5 @@ typealias Driver<T> = AnyPublisher<T, Never>
 
 // MARK: - Combine PublishRelay & BehaviorRelay
 
-typealias PublishRelay<T> = PassthroughSubject<T, Never>
-typealias BehaviorRelay<T> = CurrentValueSubject<T, Never>
+typealias PassthroughRelay<T> = PassthroughSubject<T, Never>
+typealias CurrentValueRelay<T> = CurrentValueSubject<T, Never>
