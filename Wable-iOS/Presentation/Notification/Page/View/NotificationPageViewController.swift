@@ -129,7 +129,7 @@ private extension NotificationPageViewController {
     }
     
     func setupAction() {
-        navigationView.backButton.addTarget(self, action: #selector(backButtoDidTap), for: .touchUpInside)
+        navigationView.backButton.addTarget(self, action: #selector(backButtonDidTap), for: .touchUpInside)
         segmentedControl.addTarget(self, action: #selector(segmentedControlDidChange(_:)), for: .valueChanged)
     }
 }
@@ -156,7 +156,7 @@ private extension NotificationPageViewController {
 // MARK: - Action Method
 
 private extension NotificationPageViewController {
-    @objc func backButtoDidTap() {
+    @objc func backButtonDidTap() {
         navigationController?.popViewController(animated: true)
     }
     
