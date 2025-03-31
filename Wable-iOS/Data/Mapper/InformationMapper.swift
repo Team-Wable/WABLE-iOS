@@ -57,7 +57,7 @@ enum InformationMapper {
             Announcement(
                 id: dto.newsID,
                 title: dto.newsTitle,
-                imageURL: URL(string: dto.newsImageURL),
+                imageURL: URL(string: dto.newsImageURL ?? ""),
                 text: dto.newsText,
                 createdDate: dateFormatter.date(from: dto.time)
             )
@@ -73,7 +73,7 @@ enum InformationMapper {
             Announcement(
                 id: dto.noticeID,
                 title: dto.noticeTitle,
-                imageURL: URL(string: dto.noticeImageURL),
+                imageURL: URL(string: dto.noticeImageURL ?? ""),
                 text: dto.noticeText,
                 createdDate: dateFormatter.date(from: dto.time)
             )
