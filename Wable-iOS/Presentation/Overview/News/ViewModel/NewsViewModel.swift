@@ -9,10 +9,10 @@ import Combine
 import Foundation
 
 final class NewsViewModel {
-    private let overviewRepository: InformationRepository
+    private let useCase: OverviewUseCase
     
-    init(overviewRepository: InformationRepository) {
-        self.overviewRepository = overviewRepository
+    init(useCase: OverviewUseCase) {
+        self.useCase = useCase
     }
 }
 
@@ -36,26 +36,19 @@ extension NewsViewModel: ViewModelType {
         let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
         let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
         let isLastPageSubject = CurrentValueSubject<Bool, Never>(false)
-        
-        let loadTrigger = Publishers.Merge(
-            input.viewDidLoad,
-            input.viewDidRefresh
-        )
-        
-        loadTrigger
+                
+        Publishers.Merge(input.viewDidLoad, input.viewDidRefresh)
             .handleEvents(receiveOutput: { _ in
                 isLoadingSubject.send(true)
                 isLastPageSubject.send(false)
             })
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<[Announcement], Never> in
-                return owner.overviewRepository.fetchNews(cursor: Constant.initialCursor)
-                    .replaceError(with: [])
-                    .eraseToAnyPublisher()
+                return owner.fetchNews(with: Constant.initialCursor)
             }
-            .handleEvents(receiveOutput: { news in
+            .handleEvents(receiveOutput: { [weak self] news in
                 isLoadingSubject.send(false)
-                isLastPageSubject.send(news.isEmpty || news.count < Constant.defaultItemsCountPerPage)
+                isLastPageSubject.send(self?.isLastPage(news) ?? false)
             })
             .sink { news in
                 newsSubject.send(news)
@@ -73,15 +66,11 @@ extension NewsViewModel: ViewModelType {
                 guard let lastItem = newsSubject.value.last else {
                     return .just([])
                 }
-                
-                let cursor = lastItem.id
-                return owner.overviewRepository.fetchNews(cursor: cursor)
-                    .replaceError(with: [])
-                    .eraseToAnyPublisher()
+                return owner.fetchNews(with: lastItem.id)
             }
-            .handleEvents(receiveOutput: { news in
+            .handleEvents(receiveOutput: { [weak self] news in
                 isLoadingMoreSubject.send(false)
-                isLastPageSubject.send(news.isEmpty || news.count < Constant.defaultItemsCountPerPage)
+                isLastPageSubject.send(self?.isLastPage(news) ?? true)
             })
             .filter { !$0.isEmpty }
             .sink { news in
@@ -102,6 +91,23 @@ extension NewsViewModel: ViewModelType {
             isLoading: isLoadingSubject.eraseToAnyPublisher(),
             isLoadingMore: isLoadingMoreSubject.eraseToAnyPublisher()
         )
+    }
+}
+
+// MARK: - Helper Method
+
+private extension NewsViewModel {
+    func fetchNews(with lastItemID: Int) -> AnyPublisher<[Announcement], Never> {
+        return useCase.fetchNews(with: lastItemID)
+            .catch { error -> AnyPublisher<[Announcement], Never> in
+                WableLogger.log("에러 발생: \(error.localizedDescription)", for: .error)
+                return .just([])
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func isLastPage(_ news: [Announcement]) -> Bool {
+        return news.isEmpty || news.count < Constant.defaultItemsCountPerPage
     }
 }
 

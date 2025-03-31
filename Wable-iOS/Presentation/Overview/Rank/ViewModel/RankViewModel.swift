@@ -9,63 +9,54 @@ import Combine
 import Foundation
 
 final class RankViewModel {
-    private let overviewRepository: InformationRepository
+    private let useCase: OverviewUseCase
     
-    init(overviewRepository: InformationRepository) {
-        self.overviewRepository = overviewRepository
+    init(useCase: OverviewUseCase) {
+        self.useCase = useCase
     }
 }
 
 extension RankViewModel: ViewModelType {
     struct Input {
-        let viewDidLoad: AnyPublisher<Void, Never>
-        let viewDidRefresh: AnyPublisher<Void, Never>
+        let viewDidLoad: Driver<Void>
+        let viewDidRefresh: Driver<Void>
     }
     
     struct Output {
-        let item: AnyPublisher<RankViewItem, Never>
-        let isLoading: AnyPublisher<Bool, Never>
+        let item: Driver<RankViewItem>
+        let isLoading: Driver<Bool>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
-        let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
+        let isLoadingSubject = CurrentValueRelay<Bool>(false)
         
-        let loadTrigger = Publishers.Merge(
-            input.viewDidLoad,
-            input.viewDidRefresh
-        )
-        
-        let fetchGameType = overviewRepository.fetchGameCategory()
+        let fetchGameType = useCase.fetchGameCategory()
             .replaceError(with: "")
             .filter { !$0.isEmpty }
             .removeDuplicates()
         
-        let fetchRanks = overviewRepository.fetchTeamRanks()
+        let fetchRanks = useCase.fetchTeamRanks()
             .replaceError(with: [])
             .removeDuplicates()
         
-        let item = loadTrigger
+        let item = Publishers.Merge(input.viewDidLoad, input.viewDidRefresh)
             .handleEvents(receiveOutput: { _ in
                 isLoadingSubject.send(true)
             })
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<RankViewItem, Never> in
-                
-                return Publishers.CombineLatest(
-                    fetchGameType,
-                    fetchRanks
-                )
+                return Publishers.CombineLatest(fetchGameType, fetchRanks)
                 .map { RankViewItem(gameType: $0, ranks: $1) }
                 .eraseToAnyPublisher()
             }
             .handleEvents(receiveOutput: { _ in
                 isLoadingSubject.send(false)
             })
-            .eraseToAnyPublisher()
+            .asDriver()
         
         return Output(
             item: item,
-            isLoading: isLoadingSubject.eraseToAnyPublisher()
+            isLoading: isLoadingSubject.asDriver()
         )
     }
 }

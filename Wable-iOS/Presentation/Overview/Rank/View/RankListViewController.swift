@@ -9,7 +9,6 @@ import Combine
 import UIKit
 import SafariServices
 
-import CombineCocoa
 import SnapKit
 import Then
 
@@ -35,16 +34,24 @@ final class RankListViewController: UIViewController {
     
     // MARK: - UIComponent
 
-    private let collectionView: UICollectionView = .init(
+    private let collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewLayout()
     ).then {
         $0.refreshControl = UIRefreshControl()
     }
     
-    private let submitButton: WableButton = .init(style: .black).then {
+    private let submitButton = WableButton(style: .black).then {
         var config = $0.configuration
-        config?.attributedTitle = Constant.submitButtonTitle.pretendardString(with: .body3)
+        let fullText = NSMutableAttributedString(Constant.submitButtonTitle.pretendardString(with: .body3))
+        if let range = Constant.submitButtonTitle.range(of: "의견 남기러 가기") {
+            fullText.addAttributes(
+                [.foregroundColor: UIColor.sky50],
+                range: NSRange(range, in: Constant.submitButtonTitle)
+            )
+        }
+        
+        config?.attributedTitle = AttributedString(fullText)
         $0.configuration = config
     }
     
@@ -53,9 +60,10 @@ final class RankListViewController: UIViewController {
     private var dataSource: DataSource?
     
     private let viewModel: ViewModel
-    private let cancelBag: CancelBag = .init()
-    private let didLoadSubject = PassthroughSubject<Void, Never>()
-    private let didRefreshSubject = PassthroughSubject<Void, Never>()
+
+    private let didLoadRelay = PassthroughRelay<Void>()
+    private let didRefreshRelay = PassthroughRelay<Void>()
+    private let cancelBag = CancelBag()
     
     // MARK: - Initializer
 
@@ -82,7 +90,7 @@ final class RankListViewController: UIViewController {
         setupDataSource()
         setupBinding()
         
-        didLoadSubject.send()
+        didLoadRelay.send()
     }
 }
 
@@ -192,21 +200,19 @@ private extension RankListViewController {
     
     func setupBinding() {
         let input = ViewModel.Input(
-            viewDidLoad: didLoadSubject.eraseToAnyPublisher(),
-            viewDidRefresh: didRefreshSubject.eraseToAnyPublisher()
+            viewDidLoad: didLoadRelay.eraseToAnyPublisher(),
+            viewDidRefresh: didRefreshRelay.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
         
         output.item
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] item in
                 self?.applySnapshot(item: item)
             }
             .store(in: cancelBag)
         
         output.isLoading
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoading in
                 guard !isLoading else { return }
                 self?.collectionView.refreshControl?.endRefreshing()
@@ -236,7 +242,7 @@ private extension RankListViewController {
 
 private extension RankListViewController {
     @objc func collectionViewDidRefresh() {
-        didRefreshSubject.send()
+        didRefreshRelay.send()
     }
 }
 
