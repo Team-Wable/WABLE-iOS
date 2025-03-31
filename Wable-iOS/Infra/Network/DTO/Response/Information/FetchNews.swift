@@ -15,7 +15,7 @@ extension DTO.Response {
         let newsID: Int
         let newsTitle: String
         let newsText: String
-        let newsImageURL: String
+        let newsImageURL: String?
         let time: String
         
         enum CodingKeys: String, CodingKey {

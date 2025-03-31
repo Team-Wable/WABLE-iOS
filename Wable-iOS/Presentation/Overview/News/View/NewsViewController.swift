@@ -32,7 +32,7 @@ final class NewsViewController: UIViewController {
     
     // MARK: - UIComponent
     
-    private lazy var collectionView: UICollectionView = .init(
+    private lazy var collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: collectionViewLayout
     ).then {
@@ -40,10 +40,9 @@ final class NewsViewController: UIViewController {
         $0.alwaysBounceVertical = true
     }
     
-    private let emptyLabel: UILabel = .init().then {
+    private let emptyLabel = UILabel().then {
         $0.attributedText = "아직 작성된 뉴스가 없어요.".pretendardString(with: .body2)
         $0.textColor = .gray500
-        $0.isHidden = true
     }
     
     private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
