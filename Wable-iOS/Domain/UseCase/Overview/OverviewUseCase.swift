@@ -22,12 +22,8 @@ protocol OverviewUseCase {
 // MARK: - OverviewUseCaseImpl
 
 final class OverviewUseCaseImpl: OverviewUseCase {
-    private let repository: InformationRepository
-    
-    init(repository: InformationRepository) {
-        self.repository = repository
-    }
-    
+    @Injected private var repository: InformationRepository
+        
     func fetchGameCategory() -> AnyPublisher<String, WableError> {
         return repository.fetchGameCategory()
     }

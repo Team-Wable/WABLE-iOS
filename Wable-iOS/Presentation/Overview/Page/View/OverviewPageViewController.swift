@@ -137,21 +137,27 @@ extension OverviewPageViewController: NoticeViewControllerDelegate {
 
 private extension OverviewPageViewController {
     func setupViewControllers() {
-        let repository = InformationRepositoryImpl()
         
-        let mockUseCase = OverviewUseCaseImpl(repository: repository)
+        // TODO: 추후 주석 삭제 요망
         
-        let gameScheduleViewController = GameScheduleListViewController(viewModel: .init(useCase: mockUseCase))
-        let rankViewController = RankListViewController(viewModel: .init(useCase: mockUseCase))
-        let newsViewController = NewsViewController(viewModel: .init(useCase: mockUseCase))
+        let useCase = MockOverviewUseCaseImpl()
+//        let useCase = OverviewUseCaseImpl()
+        
+        let gameScheduleViewController = GameScheduleListViewController(viewModel: .init(useCase: useCase))
+        let rankViewController = RankListViewController(viewModel: .init(useCase: useCase))
+        let newsViewController = NewsViewController(viewModel: .init(useCase: useCase))
         newsViewController.delegate = self
-        let noticeViewController = NoticeViewController(viewModel: .init(useCase: mockUseCase))
+        let noticeViewController = NoticeViewController(viewModel: .init(useCase: useCase))
         noticeViewController.delegate = self
         
-        viewControllers.append(gameScheduleViewController)
-        viewControllers.append(rankViewController)
-        viewControllers.append(newsViewController)
-        viewControllers.append(noticeViewController)
+        [
+            gameScheduleViewController,
+            rankViewController,
+            newsViewController,
+            noticeViewController
+        ].forEach {
+            viewControllers.append($0)
+        }
     }
     
     func setupPageController() {
