@@ -1,5 +1,5 @@
 //
-//  InformationNotiViewController.swift
+//  InformationNotificationViewController.swift
 //  Wable-iOS
 //
 //  Created by 김진웅 on 3/29/25.
@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class InformationNotiViewController: UIViewController {
+final class InformationNotificationViewController: UIViewController {
     
     // MARK: - Section
 
@@ -21,10 +21,10 @@ final class InformationNotiViewController: UIViewController {
     
     // MARK: - typealias
     
-    typealias Item = InfoNotification
+    typealias Item = InformationNotification
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
-    typealias ViewModel = InformationNotiViewModel
+    typealias ViewModel = InformationNotificationViewModel
     
     // MARK: - UIComponent
     
@@ -89,7 +89,7 @@ final class InformationNotiViewController: UIViewController {
 
 // MARK: - UICollectionViewDelegate
 
-extension InformationNotiViewController: UICollectionViewDelegate {
+extension InformationNotificationViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         didSelectSubject.send(indexPath.item)
     }
@@ -113,7 +113,7 @@ extension InformationNotiViewController: UICollectionViewDelegate {
 
 // MARK: - Setup Method
 
-private extension InformationNotiViewController {
+private extension InformationNotificationViewController {
     func setupView() {
         view.backgroundColor = .wableWhite
         
@@ -212,7 +212,7 @@ private extension InformationNotiViewController {
 
 // MARK: - Helper Method
 
-private extension InformationNotiViewController {
+private extension InformationNotificationViewController {
     func applySnapshot(items: [Item]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
@@ -224,7 +224,7 @@ private extension InformationNotiViewController {
 
 // MARK: - Action Method
 
-private extension InformationNotiViewController {
+private extension InformationNotificationViewController {
     @objc func collectionViewDidRefresh() {
         didRefreshSubject.send()
     }
@@ -232,7 +232,7 @@ private extension InformationNotiViewController {
 
 // MARK: - Computed Property
 
-private extension InformationNotiViewController {
+private extension InformationNotificationViewController {
     var collectionViewLayout: UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(80))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)

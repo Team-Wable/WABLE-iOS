@@ -1,5 +1,5 @@
 //
-//  ActivityNotiTriggerType+.swift
+//  ActivityNotificationTriggerType+.swift
 //  Wable-iOS
 //
 //  Created by 김진웅 on 3/30/25.
