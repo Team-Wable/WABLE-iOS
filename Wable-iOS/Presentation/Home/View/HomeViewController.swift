@@ -75,8 +75,6 @@ final class HomeViewController: NavigationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.isHidden = true
-        
         setupView()
         setupConstraint()
         setupDataSource()
@@ -121,6 +119,8 @@ extension HomeViewController: UICollectionViewDelegate {
 
 private extension HomeViewController {
     func setupView() {
+        navigationController?.navigationBar.isHidden = true
+        
         view.addSubviews(
             collectionView,
             plusButton,
@@ -229,7 +229,7 @@ private extension HomeViewController {
 
 private extension HomeViewController {
     @objc func plusButtonDidTap() {
-        let viewController = WritePostViewController(type: .page(type: .detail, title: "새로운 글"))
+        let viewController = WritePostViewController()
         
         navigationController?.pushViewController(viewController, animated: true)
     }

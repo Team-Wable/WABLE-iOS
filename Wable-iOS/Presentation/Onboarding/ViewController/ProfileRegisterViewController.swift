@@ -109,7 +109,7 @@ private extension ProfileRegisterViewController {
         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
         let alert = UIAlertController(
             title: "설정",
-            message: "Don't Be 앱에 사진 권한이 없습니다.\n설정으로 이동해 권한 설정을 진행해주세요.",
+            message: "사진 권한이 없습니다.\n설정으로 이동해 권한 설정을 진행해주세요.",
             preferredStyle: .alert
         )
         

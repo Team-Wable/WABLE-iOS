@@ -230,7 +230,7 @@ extension NavigationView {
                 dismissButton
             ]
         case .page(type: let type, title: let text):
-            pageTitleLabel.attributedText = text.pretendardString(with: .body3)
+            pageTitleLabel.attributedText = text.pretendardString(with: .body1)
             
             switch type {
             case .plain:
