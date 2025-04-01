@@ -43,15 +43,8 @@ final class RankListViewController: UIViewController {
     
     private let submitButton = WableButton(style: .black).then {
         var config = $0.configuration
-        let fullText = NSMutableAttributedString(Constant.submitButtonTitle.pretendardString(with: .body3))
-        if let range = Constant.submitButtonTitle.range(of: "의견 남기러 가기") {
-            fullText.addAttributes(
-                [.foregroundColor: UIColor.sky50],
-                range: NSRange(range, in: Constant.submitButtonTitle)
-            )
-        }
-        
-        config?.attributedTitle = AttributedString(fullText)
+        config?.attributedTitle = Constant.submitButtonTitle.pretendardString(with: .body3)
+            .highlight(textColor: .sky50, to: "의견 남기러 가기")
         $0.configuration = config
     }
     
