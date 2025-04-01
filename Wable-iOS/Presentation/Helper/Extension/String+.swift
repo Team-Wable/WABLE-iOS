@@ -11,17 +11,17 @@ extension String {
     
     // MARK: - pretendardString
 
-    /// 주어진 `Pretendard` 스타일을 적용한 `NSAttributedString`을 반환합니다.
+    /// 주어진 `Pretendard` 스타일을 적용한 `NSMutableAttributedString`을 반환합니다.
     ///
     /// - Parameter style: 적용할 `UIFont.Pretendard` 스타일
-    /// - Returns: `NSAttributedString` 객체
+    /// - Returns: `NSMutableAttributedString` 객체
     ///
     /// 사용 예시 (`UILabel`에서 `attributedText` 설정):
     /// ```swift
     /// let label = UILabel()
     /// label.attributedText = "Hello, world!".pretendardString(with: .caption3)
     /// ```
-    func pretendardString(with style: UIFont.Pretendard) -> NSAttributedString {
+    func pretendardString(with style: UIFont.Pretendard) -> NSMutableAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = style.lineHeight
         paragraphStyle.maximumLineHeight = style.lineHeight
@@ -33,7 +33,7 @@ extension String {
             .baselineOffset: style.baselineOffset
         ]
         
-        return NSAttributedString(string: self, attributes: attributes)
+        return NSMutableAttributedString(string: self, attributes: attributes)
     }
     
     /// 주어진 `Pretendard` 스타일을 적용한 `AttributedString`을 반환합니다.
@@ -49,8 +49,7 @@ extension String {
     /// button.configuration = config
     /// ```
     func pretendardString(with style: UIFont.Pretendard) -> AttributedString {
-        let nsAttributedString: NSAttributedString = self.pretendardString(with: style)
-        return AttributedString(nsAttributedString)
+        return AttributedString(self.pretendardString(with: style))
     }
     
     // MARK: - truncated
