@@ -32,6 +32,7 @@ extension WritePostViewModel: ViewModelType {
         
         input.postButtonDidTap
             .flatMap { (title, content, image) -> AnyPublisher<Void, WableError> in
+                WableLogger.log("postButtonDidTap flatMap", for: .debug)
                 return self.createContentUseCase.execute(
                     title: title,
                     text: content ?? "",
@@ -42,6 +43,7 @@ extension WritePostViewModel: ViewModelType {
                 receiveCompletion: { completion in },
                 receiveValue: { value in
                     postSuccessRelay.send(())
+                    WableLogger.log("postSuccessRelay 전송 완료", for: .debug)
                 }
             )
             .store(in: cancelBag)
