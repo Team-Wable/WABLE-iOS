@@ -8,35 +8,46 @@
 
 import Combine
 import Foundation
+import UIKit
 
 final class WritePostViewModel {
-    private let createContentListUseCase: CreateContentUseCase
+    private let createContentUseCase: CreateContentUseCase
     
-    init(createContentListUseCase: CreateContentUseCase) {
-        self.createContentListUseCase = createContentListUseCase
+    init(createContentUseCase: CreateContentUseCase) {
+        self.createContentUseCase = createContentUseCase
     }
 }
 
 extension WritePostViewModel: ViewModelType {
     struct Input {
-        let postButtonDidTap: AnyPublisher<Void, Never>
+        let postButtonDidTap: AnyPublisher<(title: String, content: String?, image: UIImage?), Never>
     }
     
     struct Output {
-        
+        let postSuccess: Driver<Void>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
+        let postSuccessRelay = PassthroughRelay<Void>()
+        
+        input.postButtonDidTap
+            .flatMap { (title, content, image) -> AnyPublisher<Void, WableError> in
+                return self.createContentUseCase.execute(
+                    title: title,
+                    text: content ?? "",
+                    image: image?.jpegData(compressionQuality: 0.1)
+                )
+            }
+            .sink(
+                receiveCompletion: { completion in },
+                receiveValue: { value in
+                    postSuccessRelay.send(())
+                }
+            )
+            .store(in: cancelBag)
         
         return Output(
-            
+            postSuccess: postSuccessRelay.asDriver()
         )
     }
 }
-
-private extension WritePostViewModel {
-    enum Constant {
-        
-    }
-}
-

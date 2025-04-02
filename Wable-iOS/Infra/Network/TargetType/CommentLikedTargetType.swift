@@ -16,6 +16,9 @@ enum CommentLikedTargetType {
 }
 
 extension CommentLikedTargetType: BaseTargetType {
+    var multipartFormData: [Moya.MultipartFormData]? {
+        return .none
+    }
     
     var endPoint: String? {
         switch self {
