@@ -44,14 +44,21 @@ extension LoginViewModel: ViewModelType {
         
         Publishers.Merge(appleLoginTrigger, kakaoLoginTrigger)
             .withUnretained(self)
-            .flatMap { owner, flatform -> AnyPublisher<Account, WableError> in
+            .flatMap { owner, flatform -> AnyPublisher<Account, Never> in
                 return owner.fetchUserAuthUseCase.execute(platform: flatform)
+                    .handleEvents(receiveCompletion: { completion in
+                        if case .failure(let error) = completion {
+                            WableLogger.log("로그인 중 오류 발생: \(error)", for: .error)
+                        }
+                    })
+                    .catch { error -> AnyPublisher<Account, Never> in
+                        return Empty<Account, Never>().eraseToAnyPublisher()
+                    }
+                    .eraseToAnyPublisher()
             }
             .sink(
-                receiveCompletion: { [weak self] completion in
-                    if case .failure(let error) = completion {
-                        self?.loginErrorSubject.send(error)
-                    }
+                receiveCompletion: { completion in
+                    WableLogger.log("로그인 작업 완료", for: .debug)
                 },
                 receiveValue: { [weak self] account in
                     self?.loginSuccessSubject.send(account)

@@ -31,16 +31,27 @@ extension WritePostViewModel: ViewModelType {
         let postSuccessRelay = PassthroughRelay<Void>()
         
         input.postButtonDidTap
-            .flatMap { (title, content, image) -> AnyPublisher<Void, WableError> in
-                WableLogger.log("postButtonDidTap flatMap", for: .debug)
+            .map { (title, content, image) -> AnyPublisher<Void, Never> in
                 return self.createContentUseCase.execute(
                     title: title,
                     text: content ?? "",
                     image: image?.jpegData(compressionQuality: 0.1)
                 )
+                .handleEvents(receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        WableLogger.log("게시물 생성 중 오류 발생: \(error)", for: .error)
+                    }
+                })
+                .catch { _ -> AnyPublisher<Void, Never> in
+                    return Empty<Void, Never>().eraseToAnyPublisher()
+                }
+                .eraseToAnyPublisher()
             }
+            .switchToLatest()
             .sink(
-                receiveCompletion: { completion in },
+                receiveCompletion: { completion in
+                    WableLogger.log("게시물 생성 작업 완료", for: .debug)
+                },
                 receiveValue: { value in
                     postSuccessRelay.send(())
                     WableLogger.log("postSuccessRelay 전송 완료", for: .debug)
