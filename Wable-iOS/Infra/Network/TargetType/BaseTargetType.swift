@@ -46,7 +46,7 @@ extension BaseTargetType {
     }
     
     var headers: [String : String]? {
-        guard let multipartFormData = multipartFormData else {
+        guard multipartFormData != nil else {
             return ["Content-Type": "application/json"]
         }
         
