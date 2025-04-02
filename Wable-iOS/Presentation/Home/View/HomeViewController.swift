@@ -53,11 +53,6 @@ final class HomeViewController: NavigationViewController {
         $0.isHidden = true
     }
     
-    private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
-        $0.hidesWhenStopped = true
-        $0.color = .gray600
-    }
-    
     // MARK: - LifeCycle
     
     init(viewModel: HomeViewModel, cancelBag: CancelBag) {
@@ -124,8 +119,7 @@ private extension HomeViewController {
         view.addSubviews(
             collectionView,
             plusButton,
-            emptyLabel,
-            loadingIndicator
+            emptyLabel
         )
     }
     
@@ -142,19 +136,11 @@ private extension HomeViewController {
         emptyLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
-        
-        loadingIndicator.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-20)
-        }
     }
     
     func setupDataSource() {
-        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> {
-            cell,
-            indexPath,
-            itemIdentifier in
-            cell.configureCell(info: itemIdentifier.content.contentInfo, postType: .mine)
+        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> { cell, indexPath, itemID in
+            cell.configureCell(info: itemID.content.contentInfo, postType: .mine)
         }
         
         dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
@@ -207,7 +193,9 @@ private extension HomeViewController {
         output.isLoading
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoading in
-                isLoading ? self?.loadingIndicator.startAnimating() : self?.loadingIndicator.stopAnimating()
+                if !isLoading {
+                    self?.collectionView.refreshControl?.endRefreshing()
+                }
             }
             .store(in: cancelBag)
     }
@@ -229,7 +217,13 @@ private extension HomeViewController {
 
 private extension HomeViewController {
     @objc func plusButtonDidTap() {
-        let viewController = WritePostViewController()
+        let viewController = WritePostViewController(
+            viewModel: WritePostViewModel(
+                createContentUseCase: CreateContentUseCase(
+                    repository: ContentRepositoryImpl()
+                )
+            )
+        )
         
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -241,14 +235,14 @@ private extension HomeViewController {
     var collectionViewLayout: UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1)
+            heightDimension: .estimated(500)
         )
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(96.adjustedHeight)
+            heightDimension: .estimated(500)
         )
         
         let group = NSCollectionLayoutGroup.vertical(
@@ -257,7 +251,7 @@ private extension HomeViewController {
         )
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+        section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         return UICollectionViewCompositionalLayout(section: section)
     }

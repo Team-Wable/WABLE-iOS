@@ -17,6 +17,10 @@ enum ReportTargetType {
 }
 
 extension ReportTargetType: BaseTargetType {
+    var multipartFormData: [Moya.MultipartFormData]? {
+        return .none
+    }
+    
     var endPoint: String? {
         switch self {
         case .createReport:

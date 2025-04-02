@@ -12,6 +12,12 @@ import PhotosUI
 
 final class WritePostViewController: NavigationViewController {
     
+    // MARK: - Property
+    
+    private let viewModel: WritePostViewModel
+    private let postButtonTapRelay = PassthroughRelay<(title: String, content: String?, image: UIImage?)>()
+    private var cancelBag = CancelBag()
+    
     // MARK: - UIComponents
     
     private let scrollView: UIScrollView = .init().then {
@@ -38,10 +44,12 @@ final class WritePostViewController: NavigationViewController {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 8
+        $0.isHidden = true
     }
     
     private lazy var deleteButton: UIButton = .init(configuration: .plain()).then {
         $0.configuration?.image = .btnRemovePhoto
+        $0.isHidden = true
     }
     
     private lazy var imageButton: UIButton = .init(configuration: .plain()).then {
@@ -60,11 +68,14 @@ final class WritePostViewController: NavigationViewController {
         $0.layer.cornerRadius = 16
         $0.configuration?.contentInsets = .init(top: 6, leading: 14, bottom: 6, trailing: 14)
         $0.clipsToBounds = true
+        $0.isEnabled = false
     }
     
     // MARK: - LifeCycle
     
-    init() {
+    init(viewModel: WritePostViewModel) {
+        self.viewModel = viewModel
+        
         super.init(type: .page(type: .detail, title: "새로운 글"))
     }
     
@@ -145,8 +156,10 @@ private extension WritePostViewController {
     }
     
     func setupAction() {
+        postButton.addTarget(self, action: #selector(postButtonDidTap), for: .touchUpInside)
         imageButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
         deleteButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.imageView.image = nil
             self?.imageView.isHidden = true
             self?.deleteButton.isHidden = true
         }), for: .touchUpInside)
@@ -158,7 +171,19 @@ private extension WritePostViewController {
     }
     
     func setupBinding() {
+        let input = WritePostViewModel.Input(
+            postButtonDidTap: postButtonTapRelay.eraseToAnyPublisher()
+        )
         
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.postSuccess
+            .sink { _ in
+                let toast = ToastView(status: .complete, message: "게시물이 작성되었습니다")
+                toast.show()
+                self.navigationController?.popViewController(animated: true)
+            }
+            .store(in: cancelBag)
     }
 }
 
@@ -180,6 +205,14 @@ private extension WritePostViewController {
         default:
             break
         }
+    }
+    
+    @objc func postButtonDidTap() {
+        guard let title = titleTextView.text else { return }
+        let content = contentTextView.text == Constant.contentPlaceholder ? nil : contentTextView.text
+        
+        postButtonTapRelay.send((title: title, content: content, image: imageView.image))
+        WableLogger.log("postButtonTapRelay 실행 완료", for: .debug)
     }
 }
 
@@ -245,6 +278,8 @@ extension WritePostViewController: PHPickerViewControllerDelegate {
             
             DispatchQueue.main.async {
                 self.imageView.image = image
+                self.imageView.isHidden = false
+                self.deleteButton.isHidden = false
             }
         }
         
@@ -316,4 +351,3 @@ extension WritePostViewController {
         static let contentPlaceholder: String = "지금 머릿속에 떠오른 생각들을 남겨보세요\n본문은 생략이 가능해요"
     }
 }
-

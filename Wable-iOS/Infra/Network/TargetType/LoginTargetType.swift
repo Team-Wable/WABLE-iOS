@@ -17,6 +17,10 @@ enum LoginTargetType {
 }
 
 extension LoginTargetType: BaseTargetType {
+    var multipartFormData: [Moya.MultipartFormData]? {
+        return .none
+    }
+    
     var query: [String : Any]? {
         return .none
     }

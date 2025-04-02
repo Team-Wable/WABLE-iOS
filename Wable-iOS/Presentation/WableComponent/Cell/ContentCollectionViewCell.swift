@@ -71,6 +71,15 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        contentImageView.kf.cancelDownloadTask()
+        contentImageView.image = nil
+        contentLabel.text = nil
+        titleLabel.text = nil
+    }
 }
 
 // MARK: - Private Extension
@@ -198,17 +207,12 @@ extension ContentCollectionViewCell {
     ///   - info: 게시물 정보
     ///   - postType: 게시물 타입 (.mine 또는 .others)
     func configureCell(info: ContentInfo, postType: AuthorType) {
-        guard let profileURL = info.author.profileURL,
-        let fanTeam = info.author.fanTeam,
-        let createdDate = info.createdDate
-        else {
-            return
-        }
+        guard let createdDate = info.createdDate else { return }
         
         infoView.configureView(
-            userProfileURL: profileURL,
+            userProfileURL: info.author.profileURL,
             userName: info.author.nickname,
-            userFanTeam: fanTeam,
+            userFanTeam: info.author.fanTeam,
             opacity: info.opacity.displayedValue,
             createdDate: createdDate,
             postType: .content
@@ -216,6 +220,7 @@ extension ContentCollectionViewCell {
     
         titleLabel.attributedText = info.title.pretendardString(with: .head2)
         contentLabel.attributedText = info.text.pretendardString(with: .body4)
+        contentImageView.isHidden = info.imageURL == nil
         contentImageView.kf.setImage(with: info.imageURL)
         
         ghostButton.configureButton(type: .large, status: .normal)

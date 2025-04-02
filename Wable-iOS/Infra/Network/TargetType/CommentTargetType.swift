@@ -18,6 +18,10 @@ enum CommentTargetType {
 }
 
 extension CommentTargetType: BaseTargetType {
+    var multipartFormData: [Moya.MultipartFormData]? {
+        return .none
+    }
+    
     var endPoint: String? {
         switch self {
         case .fetchUserCommentList(memberID: let memberID):
