@@ -209,6 +209,7 @@ private extension WritePostViewController {
     
     @objc func postButtonDidTap() {
         guard let title = titleTextView.text else { return }
+        
         let content = contentTextView.text == Constant.contentPlaceholder ? nil : contentTextView.text
         
         postButtonTapRelay.send((title: title, content: content, image: imageView.image))
@@ -236,7 +237,7 @@ private extension WritePostViewController {
             return
         }
         
-        let isEnabled = totalCount > 0 && totalCount <= 500
+        let isEnabled = totalCount > 0 && totalCount <= 500 && titleTextView.text != Constant.titlePlaceholder
         postButton.isEnabled = isEnabled
         postButton.configuration?.baseBackgroundColor = isEnabled ? .purple50 : .gray400
     }
