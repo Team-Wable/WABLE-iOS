@@ -14,9 +14,9 @@ final class TabBarController: UITabBarController {
     
     private let homeViewController = HomeViewController(
         viewModel: HomeViewModel(
-            fetchContentListUseCase: FetchContentListUseCase(
-                repository: ContentRepositoryImpl()
-            )
+            fetchContentListUseCase: FetchContentListUseCase(repository: ContentRepositoryImpl()),
+            createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+            deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl())
         ),
         cancelBag: CancelBag()
     ).then {

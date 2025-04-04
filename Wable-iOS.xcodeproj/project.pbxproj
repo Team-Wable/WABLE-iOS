@@ -16,6 +16,8 @@
 		3C8B4E052C76247800174943 /* wable_tab.json in Resources */ = {isa = PBXBuildFile; fileRef = 3C8B4E042C76247800174943 /* wable_tab.json */; };
 		DD005BA92D7FFFE400B1661F /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BA82D7FFFE000B1661F /* LikeButton.swift */; };
 		DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BAA2D80071E00B1661F /* CommentButton.swift */; };
+		DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */; };
+		DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */; };
 		DD2967F92D6DAC4800143851 /* AnyPublisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29675E2D6DAC3100143851 /* AnyPublisher+.swift */; };
 		DD2967FA2D6DAC4800143851 /* Publisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967602D6DAC3100143851 /* Publisher+.swift */; };
 		DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29675B2D6DAC3100143851 /* DIContainer.swift */; };
@@ -286,6 +288,8 @@
 		3C8B4E042C76247800174943 /* wable_tab.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = wable_tab.json; sourceTree = "<group>"; };
 		DD005BA82D7FFFE000B1661F /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
 		DD005BAA2D80071E00B1661F /* CommentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentButton.swift; sourceTree = "<group>"; };
+		DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContentLikedUseCase.swift; sourceTree = "<group>"; };
+		DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD29675B2D6DAC3100143851 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		DD29675C2D6DAC3100143851 /* Injected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injected.swift; sourceTree = "<group>"; };
 		DD29675E2D6DAC3100143851 /* AnyPublisher+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnyPublisher+.swift"; sourceTree = "<group>"; };
@@ -1118,6 +1122,8 @@
 		DD9EAE202D99C58600803A1A /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */,
+				DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */,
 				DD9EAE292D99C81800803A1A /* FetchUserContentListUseCase.swift */,
 				DD9EAE272D99C7D200803A1A /* DeleteContentUseCase.swift */,
 				DD9EAE252D99C75C00803A1A /* CreateContentUseCase.swift */,
@@ -1954,6 +1960,7 @@
 				DD2968532D6DAD4400143851 /* BaseResponse.swift in Sources */,
 				DD2968542D6DAD4400143851 /* CreateBan.swift in Sources */,
 				DD2968552D6DAD4400143851 /* CreateComment.swift in Sources */,
+				DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */,
 				DD2968562D6DAD4400143851 /* UpdateUserBadge.swift in Sources */,
 				DDED59702D78EE7800A0BEF1 /* FetchCommunityListUseCase.swift in Sources */,
 				DDCD66E52D7DC0EB00EF4C28 /* NavigationView.swift in Sources */,
@@ -2120,6 +2127,7 @@
 				DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */,
 				DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */,
 				DD29681B2D6DAD0200143851 /* ProfileRepository.swift in Sources */,
+				DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */,
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
 				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
 				DD29681D2D6DAD0200143851 /* CommentRepository.swift in Sources */,

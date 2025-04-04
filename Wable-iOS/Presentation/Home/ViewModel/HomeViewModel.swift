@@ -11,9 +11,13 @@ import Foundation
 
 final class HomeViewModel {
     private let fetchContentListUseCase: FetchContentListUseCase
+    private let createContentLikedUseCase: CreateContentLikedUseCase
+    private let deleteContentLikedUseCase: DeleteContentLikedUseCase
     
-    init(fetchContentListUseCase: FetchContentListUseCase) {
+    init(fetchContentListUseCase: FetchContentListUseCase, createContentLikedUseCase: CreateContentLikedUseCase, deleteContentLikedUseCase: DeleteContentLikedUseCase) {
         self.fetchContentListUseCase = fetchContentListUseCase
+        self.createContentLikedUseCase = createContentLikedUseCase
+        self.deleteContentLikedUseCase = deleteContentLikedUseCase
     }
 }
 
@@ -22,6 +26,7 @@ extension HomeViewModel: ViewModelType {
         let viewWillAppear: AnyPublisher<Void, Never>
         let viewDidRefresh: AnyPublisher<Void, Never>
         let didSelectedItem: AnyPublisher<Int, Never>
+        let didHeartTappedItem: AnyPublisher<Bool, Never>
         let willDisplayLastItem: AnyPublisher<Void, Never>
     }
     
@@ -88,6 +93,23 @@ extension HomeViewModel: ViewModelType {
             }
             .store(in: cancelBag)
         
+        // TODO: 하트 탭했을 때 서버 통신하는 부분 추가해야됨 (ViewModel도)
+        input.didHeartTappedItem
+            .withUnretained(self)
+            .flatMap { owner, isLike in
+                if isLike {
+                    owner.createContentLikedUseCase.execute(contentID: <#T##Int#>)
+                } else {
+                    owner.deleteContentLikedUseCase.execute(contentID: <#T##Int#>)
+                }
+            }
+            .sink { completion in
+                <#code#>
+            } receiveValue: { <#Void#> in
+                <#code#>
+            }
+            .store(in: cancelBag)
+
         let selectedContent = input.didSelectedItem
             .filter { $0 < contentsSubject.value.count }
             .map { contentsSubject.value[$0] }
