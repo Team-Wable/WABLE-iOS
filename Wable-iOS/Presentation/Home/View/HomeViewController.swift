@@ -30,6 +30,7 @@ final class HomeViewController: NavigationViewController {
     private let willAppearSubject = PassthroughSubject<Void, Never>()
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
     private let didSelectedSubject = PassthroughSubject<Int, Never>()
+    private let didHeartTappedSubject = PassthroughSubject<Bool, Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
     private let cancelBag: CancelBag
     
@@ -168,6 +169,7 @@ private extension HomeViewController {
             viewWillAppear: willAppearSubject.eraseToAnyPublisher(),
             viewDidRefresh: didRefreshSubject.eraseToAnyPublisher(),
             didSelectedItem: didSelectedSubject.eraseToAnyPublisher(),
+            didHeartTappedItem: didHeartTappedSubject.eraseToAnyPublisher(),
             willDisplayLastItem: willDisplayLastItemSubject.eraseToAnyPublisher()
         )
         
