@@ -61,6 +61,7 @@ final class TabBarController: UITabBarController {
         super.viewDidLoad()
         
         setupView()
+        setupDelegate()
     }
 }
 
@@ -90,6 +91,10 @@ private extension TabBarController {
             animated: true
         )
     }
+    
+    func setupDelegate() {
+        delegate = self
+    }
 }
 
 // MARK: - Configure Extension
@@ -106,6 +111,20 @@ private extension TabBarController {
             $0.isTranslucent = false
             $0.standardAppearance = tabBarAppearance
             $0.scrollEdgeAppearance = tabBarAppearance
+        }
+    }
+}
+
+// MARK: - UITabBarControllerDelegate
+
+extension TabBarController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if let navigationController = viewController as? UINavigationController {
+            if navigationController.viewControllers.first is HomeViewController {
+                if tabBarController.selectedIndex == 0 {
+                    homeViewController.scrollToTop()
+                }
+            }
         }
     }
 }
