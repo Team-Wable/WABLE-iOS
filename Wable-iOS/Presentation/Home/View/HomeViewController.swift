@@ -54,6 +54,11 @@ final class HomeViewController: NavigationViewController {
         $0.isHidden = true
     }
     
+    private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
+        $0.hidesWhenStopped = true
+        $0.color = .gray600
+    }
+    
     // MARK: - LifeCycle
     
     init(viewModel: HomeViewModel, cancelBag: CancelBag) {
@@ -120,7 +125,8 @@ private extension HomeViewController {
         view.addSubviews(
             collectionView,
             plusButton,
-            emptyLabel
+            emptyLabel,
+            loadingIndicator
         )
     }
     
@@ -136,6 +142,11 @@ private extension HomeViewController {
         
         emptyLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
+        }
+        
+        loadingIndicator.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-20)
         }
     }
     
@@ -200,6 +211,13 @@ private extension HomeViewController {
                 if !isLoading {
                     self?.collectionView.refreshControl?.endRefreshing()
                 }
+            }
+            .store(in: cancelBag)
+        
+        output.isLoadingMore
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoadingMore in
+                isLoadingMore ? self?.loadingIndicator.startAnimating() : self?.loadingIndicator.stopAnimating()
             }
             .store(in: cancelBag)
     }

@@ -34,11 +34,13 @@ extension HomeViewModel: ViewModelType {
         let contents: AnyPublisher<[Content], Never>
         let selectedContent: AnyPublisher<Content, Never>
         let isLoading: AnyPublisher<Bool, Never>
+        let isLoadingMore: AnyPublisher<Bool, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
         let contentsSubject = CurrentValueSubject<[Content], Never>([])
         let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
+        let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
         let isLastViewSubject = CurrentValueSubject<Bool, Never>(false)
         
         let loadTrigger = Publishers.Merge(
@@ -66,9 +68,9 @@ extension HomeViewModel: ViewModelType {
         
         input.willDisplayLastItem
             .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
-            .filter { !isLoadingSubject.value && !isLastViewSubject.value && !contentsSubject.value.isEmpty }
+            .filter { !isLoadingMoreSubject.value && !isLastViewSubject.value && !contentsSubject.value.isEmpty }
             .handleEvents(receiveOutput: { _ in
-                isLoadingSubject.send(true)
+                isLoadingMoreSubject.send(true)
             })
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<[Content], Never> in
@@ -82,7 +84,7 @@ extension HomeViewModel: ViewModelType {
                     .eraseToAnyPublisher()
             }
             .handleEvents(receiveOutput: { content in
-                isLoadingSubject.send(false)
+                isLoadingMoreSubject.send(false)
                 isLastViewSubject.send(content.isEmpty || content.count < Constant.defaultContentCountPerPage)
             })
             .filter { !$0.isEmpty }
@@ -115,7 +117,8 @@ extension HomeViewModel: ViewModelType {
         return Output(
             contents: contentsSubject.eraseToAnyPublisher(),
             selectedContent: selectedContent,
-            isLoading: isLoadingSubject.eraseToAnyPublisher()
+            isLoading: isLoadingSubject.eraseToAnyPublisher(),
+            isLoadingMore: isLoadingMoreSubject.eraseToAnyPublisher()
         )
     }
 }
