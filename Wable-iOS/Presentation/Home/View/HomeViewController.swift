@@ -88,6 +88,14 @@ final class HomeViewController: NavigationViewController {
         super.viewWillAppear(animated)
         
         willAppearSubject.send()
+        
+        let loadingController = LoadingViewController()
+        
+        present(loadingController, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                loadingController.dismiss(animated: false)
+            }
+        }
     }
 }
 
@@ -232,6 +240,7 @@ extension HomeViewController {
         snapshot.appendItems(items, toSection: .main)
         
         dataSource?.apply(snapshot)
+        collectionView.reloadData()
     }
     
     func scrollToTop() {
