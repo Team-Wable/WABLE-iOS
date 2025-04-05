@@ -42,6 +42,7 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     }
     
     private let contentImageView: UIImageView = UIImageView().then {
+        $0.isUserInteractionEnabled = true
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.roundCorners([.all], radius: 8)
@@ -151,16 +152,33 @@ private extension ContentCollectionViewCell {
         ghostButton.addTarget(self, action: #selector(ghostButtonDidTap), for: .touchUpInside)
         infoView.settingButton.addTarget(self, action: #selector(settingButtonDidTap), for: .touchUpInside)
         commentButton.addTarget(self, action: #selector(commentButtonDidTap), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
+        contentImageView.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(contentImageViewDidTap)
+            )
+        )
         infoView.profileImageView.addGestureRecognizer(
             UITapGestureRecognizer(
                 target: self,
                 action: #selector(profileImageViewDidTap)
             )
         )
-        likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
     }
     
     // MARK: - @objc Method
+    
+    @objc func contentImageViewDidTap() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController = windowScene.windows.first?.rootViewController,
+              let image = contentImageView.image
+        else {
+            return
+        }
+        
+        rootViewController.present(PhotoDetailViewController(image: image), animated: true)
+    }
     
     @objc func profileImageViewDidTap() {
         // TODO: 프로필 이동 로직 구현 필요
