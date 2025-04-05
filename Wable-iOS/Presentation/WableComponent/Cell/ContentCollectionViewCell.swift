@@ -22,6 +22,10 @@ import UIKit
 /// ```
 final class ContentCollectionViewCell: UICollectionViewCell {
     
+    // MARK: - Property
+    
+    var likeButtonTapHandler: (() -> Void)?
+    
     // MARK: - UIComponent
     
     private let infoView: PostUserInfoView = PostUserInfoView()
@@ -50,7 +54,7 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     
     private lazy var ghostButton: GhostButton = GhostButton()
     
-    private lazy var likeButton: LikeButton = LikeButton()
+    lazy var likeButton: LikeButton = LikeButton()
     
     private lazy var commentButton: CommentButton = CommentButton(type: .content)
     
@@ -153,6 +157,7 @@ private extension ContentCollectionViewCell {
                 action: #selector(profileImageViewDidTap)
             )
         )
+        likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
     }
     
     // MARK: - @objc Method
@@ -180,6 +185,14 @@ private extension ContentCollectionViewCell {
         
         WableLogger.log("commentButtonDidTap", for: .debug)
     }
+    
+    @objc func likeButtonDidTap() {
+        let newCount = likeButton.isLiked ? likeButton.likeCount - 1 : likeButton.likeCount + 1
+        
+        likeButton.configureButton(isLiked: !likeButton.isLiked, likeCount: newCount, postType: .content)
+        
+        self.likeButtonTapHandler?()
+    }
 }
 
 // MARK: - Private Function Extension
@@ -206,7 +219,9 @@ extension ContentCollectionViewCell {
     /// - Parameters:
     ///   - info: 게시물 정보
     ///   - postType: 게시물 타입 (.mine 또는 .others)
-    func configureCell(info: ContentInfo, postType: AuthorType) {
+    func configureCell(info: ContentInfo, postType: AuthorType, likeButtonTapHandler: (() -> Void)?) {
+        self.likeButtonTapHandler = likeButtonTapHandler
+        
         guard let createdDate = info.createdDate else { return }
         
         infoView.configureView(

@@ -30,7 +30,7 @@ final class HomeViewController: NavigationViewController {
     private let willAppearSubject = PassthroughSubject<Void, Never>()
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
     private let didSelectedSubject = PassthroughSubject<Int, Never>()
-    private let didHeartTappedSubject = PassthroughSubject<Bool, Never>()
+    private let didHeartTappedSubject = PassthroughSubject<(Int, Bool), Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
     private let cancelBag: CancelBag
     
@@ -141,7 +141,9 @@ private extension HomeViewController {
     
     func setupDataSource() {
         let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> { cell, indexPath, itemID in
-            cell.configureCell(info: itemID.content.contentInfo, postType: .mine)
+            cell.configureCell(info: itemID.content.contentInfo, postType: .mine, likeButtonTapHandler: {
+                self.didHeartTappedSubject.send((itemID.content.id, cell.likeButton.isLiked))
+            })
         }
         
         dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
