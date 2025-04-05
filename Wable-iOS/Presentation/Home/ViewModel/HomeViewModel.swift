@@ -26,7 +26,7 @@ extension HomeViewModel: ViewModelType {
         let viewWillAppear: AnyPublisher<Void, Never>
         let viewDidRefresh: AnyPublisher<Void, Never>
         let didSelectedItem: AnyPublisher<Int, Never>
-        let didHeartTappedItem: AnyPublisher<Bool, Never>
+        let didHeartTappedItem: AnyPublisher<(Int, Bool), Never>
         let willDisplayLastItem: AnyPublisher<Void, Never>
     }
     
@@ -93,21 +93,18 @@ extension HomeViewModel: ViewModelType {
             }
             .store(in: cancelBag)
         
-        // TODO: 하트 탭했을 때 서버 통신하는 부분 추가해야됨 (ViewModel도)
         input.didHeartTappedItem
             .withUnretained(self)
-            .flatMap { owner, isLike in
-                if isLike {
-                    owner.createContentLikedUseCase.execute(contentID: <#T##Int#>)
+            .flatMap { owner, info -> AnyPublisher<Void, Never> in
+                if info.1 {
+                    return owner.createContentLikedUseCase.execute(contentID: info.0)
+                        .asDriver(onErrorJustReturn: ())
                 } else {
-                    owner.deleteContentLikedUseCase.execute(contentID: <#T##Int#>)
+                    return owner.deleteContentLikedUseCase.execute(contentID: info.0)
+                        .asDriver(onErrorJustReturn: ())
                 }
             }
-            .sink { completion in
-                <#code#>
-            } receiveValue: { <#Void#> in
-                <#code#>
-            }
+            .sink(receiveValue: { _ in })
             .store(in: cancelBag)
 
         let selectedContent = input.didSelectedItem
