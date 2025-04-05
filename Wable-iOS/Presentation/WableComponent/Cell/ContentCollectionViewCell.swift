@@ -48,9 +48,14 @@ final class ContentCollectionViewCell: UICollectionViewCell {
         $0.roundCorners([.all], radius: 8)
     }
     
-    private let contentLabel: UILabel = UILabel().then {
+    private let contentTextView: UITextView = UITextView().then {
+        $0.textContainerInset = .zero
+        $0.textContainer.lineFragmentPadding = 0
+        $0.dataDetectorTypes = [.link]
+        $0.isEditable = false
+        $0.isScrollEnabled = false
+        $0.setPretendard(with: .body4)
         $0.textColor = .gray800
-        $0.numberOfLines = 0
     }
     
     private lazy var ghostButton: GhostButton = GhostButton()
@@ -82,7 +87,7 @@ final class ContentCollectionViewCell: UICollectionViewCell {
         
         contentImageView.kf.cancelDownloadTask()
         contentImageView.image = nil
-        contentLabel.text = nil
+        contentTextView.text = nil
         titleLabel.text = nil
     }
 }
@@ -97,7 +102,7 @@ private extension ContentCollectionViewCell {
         contentStackView.addArrangedSubviews(
             titleLabel,
             contentImageView,
-            contentLabel
+            contentTextView
         )
         
         contentView.addSubviews(
@@ -223,7 +228,7 @@ private extension ContentCollectionViewCell {
             infoView,
             contentImageView,
             titleLabel,
-            contentLabel
+            contentTextView
         ].forEach {
             $0.alpha = CGFloat(opacity)
         }
@@ -250,11 +255,14 @@ extension ContentCollectionViewCell {
             createdDate: createdDate,
             postType: .content
         )
+        
+        contentStackView.spacing = info.imageURL == nil ? 4 : 10
     
         titleLabel.attributedText = info.title.pretendardString(with: .head2)
-        contentLabel.attributedText = info.text.pretendardString(with: .body4)
         contentImageView.isHidden = info.imageURL == nil
         contentImageView.kf.setImage(with: info.imageURL)
+        
+        contentTextView.text = info.text
         
         ghostButton.configureButton(type: .large, status: .normal)
         likeButton.configureButton(isLiked: info.like.status, likeCount: info.like.count, postType: .content)
@@ -279,7 +287,7 @@ extension ContentCollectionViewCell {
             }
             
             titleLabel.isHidden = true
-            contentLabel.isHidden = true
+            contentTextView.isHidden = true
             contentImageView.snp.updateConstraints {
                 $0.adjustedHeightEqualTo(98)
             }
