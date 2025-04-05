@@ -207,13 +207,17 @@ private extension HomeViewController {
 
 // MARK: - Helper Method
 
-private extension HomeViewController {
-    func applySnapshot(items: [Item]) {
+extension HomeViewController {
+    private func applySnapshot(items: [Item]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)
         
         dataSource?.apply(snapshot)
+    }
+    
+    func scrollToTop() {
+        collectionView.setContentOffset(.zero, animated: true)
     }
 }
 
