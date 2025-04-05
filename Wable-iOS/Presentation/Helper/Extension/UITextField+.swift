@@ -45,8 +45,8 @@ extension UITextField {
     ///
     /// - Parameters:
     ///   - style: UIFont.Pretendard 스타일
-    ///   - text: 초기 텍스트 (선택 사항)
     ///   - placeholder: 플레이스홀더 텍스트 (선택 사항)
+    ///   - text: 초기 텍스트 (선택 사항)
     ///
     /// - 사용 예시:
     /// ```
@@ -56,9 +56,9 @@ extension UITextField {
     ///
     /// - Note: UITextField는 한 줄 텍스트만 지원하므로 baselineOffset과 lineHeight는 적용하지 않습니다.
     convenience init(
-        pretendardStyle style: UIFont.Pretendard,
-        text: String? = nil,
-        placeholder: String? = nil
+        pretendard style: UIFont.Pretendard,
+        placeholder: String? = nil,
+        text: String? = nil
     ) {
         self.init(frame: .zero)
         
@@ -75,12 +75,12 @@ extension UITextField {
         
         self.font = font
         
-        if let text {
-            self.text = text
-        }
-        
         if let placeholder {
             self.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: defaultAttributes)
+        }
+        
+        if let text {
+            self.text = text
         }
     }
     
