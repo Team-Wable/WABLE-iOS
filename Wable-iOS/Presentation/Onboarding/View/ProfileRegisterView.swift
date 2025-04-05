@@ -39,9 +39,10 @@ final class ProfileRegisterView: UIView {
         $0.configuration?.image = .icProfileplus
     }
     
-    let nickNameTextField: UITextField = UITextField().then {
-        $0.setPretendard(with: .body2)
-        $0.placeholder = "예) 중꺾마"
+    let nickNameTextField: UITextField = UITextField(
+        pretendard: .body2,
+        placeholder: "예) 중꺾마"
+    ).then {
         $0.textColor = .wableBlack
         $0.layer.cornerRadius = 6.adjustedWidth
         $0.backgroundColor = .gray200
