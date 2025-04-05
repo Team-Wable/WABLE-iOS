@@ -30,13 +30,15 @@ final class WritePostViewController: NavigationViewController {
     
     private lazy var titleTextView: UITextView = .init().then {
         $0.isScrollEnabled = false
-        $0.attributedText = Constant.titlePlaceholder.pretendardString(with: .head2)
+        $0.textContainerInset = .zero
+        $0.setPretendard(with: .head1, text: Constant.titlePlaceholder)
         $0.textColor = .gray700
     }
     
     private lazy var contentTextView: UITextView = .init().then {
         $0.isScrollEnabled = false
-        $0.attributedText = Constant.contentPlaceholder.pretendardString(with: .body2)
+        $0.textContainerInset = .zero
+        $0.setPretendard(with: .body2, text: Constant.contentPlaceholder)
         $0.textColor = .gray500
     }
     
@@ -348,7 +350,7 @@ extension WritePostViewController: UITextViewDelegate {
 
 extension WritePostViewController {
     enum Constant {
-        static let titlePlaceholder: String = "어떤 생각을 하고 있나요?"
+        static let titlePlaceholder: String = "자유롭게 이야기해요"
         static let contentPlaceholder: String = "지금 머릿속에 떠오른 생각들을 남겨보세요\n본문은 생략이 가능해요"
     }
 }

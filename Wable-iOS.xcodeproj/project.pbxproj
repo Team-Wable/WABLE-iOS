@@ -150,6 +150,7 @@
 		DD765D9A2D8746E30029A317 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D992D8746DD0029A317 /* LoginViewController.swift */; };
 		DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D9C2D8747900029A317 /* SplashViewController.swift */; };
 		DD8326962D95836F0014B62D /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8326952D95836B0014B62D /* HomeViewModel.swift */; };
+		DD8B42A42DA15DB0007DC1CA /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8B42A32DA15DA9007DC1CA /* UITextView+.swift */; };
 		DD9980DB2D834CA900EBBFBC /* CommentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DA2D834CA900EBBFBC /* CommentInfo.swift */; };
 		DD9980DF2D834F4E00EBBFBC /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */; };
 		DD9980E02D834F4E00EBBFBC /* PostUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */; };
@@ -419,6 +420,7 @@
 		DD765D992D8746DD0029A317 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DD765D9C2D8747900029A317 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		DD8326952D95836B0014B62D /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		DD8B42A32DA15DA9007DC1CA /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
 		DD8CEF3D2D6A007900DBE580 /* Share.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Share.xcconfig; sourceTree = "<group>"; };
 		DD8CEF3E2D6A007900DBE580 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		DD8CEF3F2D6A007900DBE580 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
@@ -1666,6 +1668,7 @@
 		DE8E86402D91A092000A4292 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				DD8B42A32DA15DA9007DC1CA /* UITextView+.swift */,
 				DE7C530F2D761E3300076E5D /* String+.swift */,
 				DE9C3BFB2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift */,
 				DD514D0F2D8CA36D0095021D /* AttributedString+.swift */,
@@ -2018,6 +2021,7 @@
 				DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */,
 				DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */,
 				DE83891D2D9071E400C089E6 /* Date+.swift in Sources */,
+				DD8B42A42DA15DB0007DC1CA /* UITextView+.swift in Sources */,
 				DD2968742D6DAD5F00143851 /* NetworkError.swift in Sources */,
 				DD2968432D6DAD2F00143851 /* FetchGameSchedules.swift in Sources */,
 				DE6459D52D97B8C2005569B8 /* InformationNotificationViewController.swift in Sources */,
