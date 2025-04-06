@@ -141,6 +141,11 @@
 		DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687D2D6DC70100143851 /* OAuthCredential.swift */; };
 		DD4AFD452D8FF19F00D56B94 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */; };
 		DD4AFD472D90264500D56B94 /* OAuthEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AFD462D90263400D56B94 /* OAuthEventManager.swift */; };
+		DD50980C2DA2C1A300F666DE /* FetchContentCommentListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD50980B2DA2C18F00F666DE /* FetchContentCommentListUseCase.swift */; };
+		DD50980E2DA2C1BA00F666DE /* CreateCommentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD50980D2DA2C1AF00F666DE /* CreateCommentUseCase.swift */; };
+		DD5098102DA2C1C500F666DE /* DeleteCommentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD50980F2DA2C1BE00F666DE /* DeleteCommentUseCase.swift */; };
+		DD5098122DA2C35500F666DE /* CreateCommentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5098112DA2C34900F666DE /* CreateCommentLikedUseCase.swift */; };
+		DD5098142DA2C36600F666DE /* DeleteCommentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5098132DA2C35C00F666DE /* DeleteCommentLikedUseCase.swift */; };
 		DD514D082D8C83560095021D /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D072D8C833D0095021D /* AgreementViewController.swift */; };
 		DD514D0A2D8C958B0095021D /* AgreementItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D092D8C957E0095021D /* AgreementItemView.swift */; };
 		DD514D0E2D8C99DC0095021D /* AgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D0D2D8C99DC0095021D /* AgreementView.swift */; };
@@ -412,6 +417,11 @@
 		DD29687D2D6DC70100143851 /* OAuthCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthCredential.swift; sourceTree = "<group>"; };
 		DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		DD4AFD462D90263400D56B94 /* OAuthEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthEventManager.swift; sourceTree = "<group>"; };
+		DD50980B2DA2C18F00F666DE /* FetchContentCommentListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchContentCommentListUseCase.swift; sourceTree = "<group>"; };
+		DD50980D2DA2C1AF00F666DE /* CreateCommentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCommentUseCase.swift; sourceTree = "<group>"; };
+		DD50980F2DA2C1BE00F666DE /* DeleteCommentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCommentUseCase.swift; sourceTree = "<group>"; };
+		DD5098112DA2C34900F666DE /* CreateCommentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCommentLikedUseCase.swift; sourceTree = "<group>"; };
+		DD5098132DA2C35C00F666DE /* DeleteCommentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCommentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD514D072D8C833D0095021D /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
 		DD514D092D8C957E0095021D /* AgreementItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementItemView.swift; sourceTree = "<group>"; };
 		DD514D0D2D8C99DC0095021D /* AgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementView.swift; sourceTree = "<group>"; };
@@ -1126,6 +1136,11 @@
 		DD9EAE202D99C58600803A1A /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				DD5098132DA2C35C00F666DE /* DeleteCommentLikedUseCase.swift */,
+				DD5098112DA2C34900F666DE /* CreateCommentLikedUseCase.swift */,
+				DD50980F2DA2C1BE00F666DE /* DeleteCommentUseCase.swift */,
+				DD50980D2DA2C1AF00F666DE /* CreateCommentUseCase.swift */,
+				DD50980B2DA2C18F00F666DE /* FetchContentCommentListUseCase.swift */,
 				DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */,
 				DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */,
 				DD9EAE292D99C81800803A1A /* FetchUserContentListUseCase.swift */,
@@ -1993,6 +2008,7 @@
 				DD29682F2D6DAD1700143851 /* ViewitRepositoryImpl.swift in Sources */,
 				DDE966102D8C62A4004E899B /* DefaultProfileType.swift in Sources */,
 				DD2968302D6DAD1700143851 /* AccountRepositoryImpl.swift in Sources */,
+				DD50980E2DA2C1BA00F666DE /* CreateCommentUseCase.swift in Sources */,
 				DE7004872D8E882B00B7AB71 /* RankCell.swift in Sources */,
 				DD2968312D6DAD1700143851 /* CommentLikedRepositoryImpl.swift in Sources */,
 				DD2968322D6DAD1700143851 /* ContentRepositoryImpl.swift in Sources */,
@@ -2025,6 +2041,7 @@
 				DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */,
 				DE83891D2D9071E400C089E6 /* Date+.swift in Sources */,
 				DD8B42A42DA15DB0007DC1CA /* UITextView+.swift in Sources */,
+				DD50980C2DA2C1A300F666DE /* FetchContentCommentListUseCase.swift in Sources */,
 				DD2968742D6DAD5F00143851 /* NetworkError.swift in Sources */,
 				DD2968432D6DAD2F00143851 /* FetchGameSchedules.swift in Sources */,
 				DE6459D52D97B8C2005569B8 /* InformationNotificationViewController.swift in Sources */,
@@ -2037,6 +2054,7 @@
 				DD2968472D6DAD2F00143851 /* FetchContent.swift in Sources */,
 				DD2968482D6DAD2F00143851 /* FetchNotificationNumber.swift in Sources */,
 				DD2968492D6DAD2F00143851 /* FetchContents.swift in Sources */,
+				DD5098102DA2C1C500F666DE /* DeleteCommentUseCase.swift in Sources */,
 				DD29684A2D6DAD2F00143851 /* FetchLCKTeamRankings.swift in Sources */,
 				DD8B42A82DA16B1F007DC1CA /* HomeDetailViewModel.swift in Sources */,
 				DEDC29162D72099C0073D512 /* InformationNotificationType.swift in Sources */,
@@ -2094,8 +2112,10 @@
 				DDCD66E32D7DB11D00EF4C28 /* TabBarController.swift in Sources */,
 				DD2967F92D6DAC4800143851 /* AnyPublisher+.swift in Sources */,
 				DD4AFD452D8FF19F00D56B94 /* LoginViewModel.swift in Sources */,
+				DD5098142DA2C36600F666DE /* DeleteCommentLikedUseCase.swift in Sources */,
 				DD2967FA2D6DAC4800143851 /* Publisher+.swift in Sources */,
 				DEE5D6162D9130E5009E5A25 /* GameScheduleViewModel.swift in Sources */,
+				DD5098122DA2C35500F666DE /* CreateCommentLikedUseCase.swift in Sources */,
 				DE7C53122D761EA400076E5D /* UIStackView+.swift in Sources */,
 				DDCCA3952D73928900658122 /* UserSession.swift in Sources */,
 				DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */,
