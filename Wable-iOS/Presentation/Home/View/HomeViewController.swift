@@ -207,7 +207,7 @@ private extension HomeViewController {
         output.selectedContent
             .receive(on: DispatchQueue.main)
             .sink { [weak self] content in
-                let viewController = HomeDetailViewController(type: .page(type: .detail, title: content.content.contentInfo.title))
+                let viewController = HomeDetailViewController(viewModel: HomeDetailViewModel(), cancelBag: CancelBag())
                 
                 self?.navigationController?.pushViewController(viewController, animated: true)
             }
