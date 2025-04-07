@@ -242,6 +242,7 @@ extension ContentCollectionViewCell {
     /// - Parameters:
     ///   - info: 게시물 정보
     ///   - postType: 게시물 타입 (.mine 또는 .others)
+    ///   - likeButtonTapHandler: 좋아요 버튼을 클릭했을 때 실행될 로직
     func configureCell(info: ContentInfo, postType: AuthorType, likeButtonTapHandler: (() -> Void)?) {
         self.likeButtonTapHandler = likeButtonTapHandler
         
