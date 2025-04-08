@@ -2,11 +2,13 @@
 //  CommunityViewController.swift
 //  Wable-iOS
 //
-//  Created by YOUJIM on 3/10/25.
+//  Created by 김진웅 on 4/8/25.
 //
 
-
 import UIKit
+
+import SnapKit
+import Then
 
 final class CommunityViewController: UIViewController {
     
