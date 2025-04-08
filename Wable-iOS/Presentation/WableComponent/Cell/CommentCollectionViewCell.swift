@@ -54,7 +54,7 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFit
     }
     
-    private lazy var likeButton = LikeButton()
+    lazy var likeButton = LikeButton()
     private lazy var replyButton = CommentButton(type: .comment)
     private lazy var ghostButton = GhostButton()
     

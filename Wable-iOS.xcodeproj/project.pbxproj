@@ -146,6 +146,7 @@
 		DD5098102DA2C1C500F666DE /* DeleteCommentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD50980F2DA2C1BE00F666DE /* DeleteCommentUseCase.swift */; };
 		DD5098122DA2C35500F666DE /* CreateCommentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5098112DA2C34900F666DE /* CreateCommentLikedUseCase.swift */; };
 		DD5098142DA2C36600F666DE /* DeleteCommentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5098132DA2C35C00F666DE /* DeleteCommentLikedUseCase.swift */; };
+		DD50981A2DA519DC00F666DE /* FetchUserInformationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5098192DA519C600F666DE /* FetchUserInformationUseCase.swift */; };
 		DD514D082D8C83560095021D /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D072D8C833D0095021D /* AgreementViewController.swift */; };
 		DD514D0A2D8C958B0095021D /* AgreementItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D092D8C957E0095021D /* AgreementItemView.swift */; };
 		DD514D0E2D8C99DC0095021D /* AgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D0D2D8C99DC0095021D /* AgreementView.swift */; };
@@ -422,6 +423,7 @@
 		DD50980F2DA2C1BE00F666DE /* DeleteCommentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCommentUseCase.swift; sourceTree = "<group>"; };
 		DD5098112DA2C34900F666DE /* CreateCommentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCommentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD5098132DA2C35C00F666DE /* DeleteCommentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCommentLikedUseCase.swift; sourceTree = "<group>"; };
+		DD5098192DA519C600F666DE /* FetchUserInformationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserInformationUseCase.swift; sourceTree = "<group>"; };
 		DD514D072D8C833D0095021D /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
 		DD514D092D8C957E0095021D /* AgreementItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementItemView.swift; sourceTree = "<group>"; };
 		DD514D0D2D8C99DC0095021D /* AgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementView.swift; sourceTree = "<group>"; };
@@ -1136,6 +1138,7 @@
 		DD9EAE202D99C58600803A1A /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				DD5098192DA519C600F666DE /* FetchUserInformationUseCase.swift */,
 				DD5098132DA2C35C00F666DE /* DeleteCommentLikedUseCase.swift */,
 				DD5098112DA2C34900F666DE /* CreateCommentLikedUseCase.swift */,
 				DD50980F2DA2C1BE00F666DE /* DeleteCommentUseCase.swift */,
@@ -1157,7 +1160,6 @@
 				DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */,
 				DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */,
 				DD9EAE2D2D9A63F400803A1A /* WritePostViewController.swift */,
-				DD9EAE332D9A95EC00803A1A /* SubView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1170,13 +1172,6 @@
 				DDA2098C2D9BFB98008042DA /* WritePostViewModel.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		DD9EAE332D9A95EC00803A1A /* SubView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = SubView;
 			sourceTree = "<group>";
 		};
 		DDAD41A32D873E1D00EF312C /* Button */ = {
@@ -2163,6 +2158,7 @@
 				DDED59722D78EE9900A0BEF1 /* UpdatePreRegisterUseCase.swift in Sources */,
 				DEAFE0592D8C4E0B0097E91C /* GameStatus+.swift in Sources */,
 				DD29681E2D6DAD0200143851 /* AccountRepository.swift in Sources */,
+				DD50981A2DA519DC00F666DE /* FetchUserInformationUseCase.swift in Sources */,
 				DEAFE0562D8C45980097E91C /* GameScheduleCell.swift in Sources */,
 				DDCA70902D87CE2700A988B8 /* LCKYearViewController.swift in Sources */,
 				DD29681F2D6DAD0200143851 /* GhostRepository.swift in Sources */,
