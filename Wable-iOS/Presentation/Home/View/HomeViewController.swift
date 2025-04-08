@@ -65,7 +65,7 @@ final class HomeViewController: NavigationViewController {
         self.viewModel = viewModel
         self.cancelBag = cancelBag
         
-        // TODO: 알림 여부 판단해서 넣어주는 로직 필요
+        
         super.init(type: .home(hasNewNotification: false))
     }
     
@@ -207,7 +207,21 @@ private extension HomeViewController {
         output.selectedContent
             .receive(on: DispatchQueue.main)
             .sink { [weak self] content in
-                let viewController = HomeDetailViewController(viewModel: HomeDetailViewModel(), cancelBag: CancelBag())
+                let viewController = HomeDetailViewController(
+                    viewModel: HomeDetailViewModel(
+                        contentID: content.content.id,
+                        contentTitle: content.content.contentInfo.title,
+                        fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
+                        createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+                        deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+                        fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
+                        createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),
+                        deleteCommentUseCase: DeleteCommentUseCase(repository: CommentRepositoryImpl()),
+                        createCommentLikedUseCase: CreateCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
+                        deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: CommentLikedRepositoryImpl())
+                    ),
+                    cancelBag: CancelBag()
+                )
                 
                 self?.navigationController?.pushViewController(viewController, animated: true)
             }

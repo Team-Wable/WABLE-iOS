@@ -35,9 +35,23 @@ final class HomeDetailViewController: NavigationViewController {
     private let viewModel: HomeDetailViewModel
     private let willAppearSubject = PassthroughSubject<Void, Never>()
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
-    private let didHeartTappedSubject = PassthroughSubject<(Int, Bool), Never>()
+    private let didContentHeartTappedSubject = PassthroughSubject<Bool, Never>()
+    private let didCommentHeartTappedSubject = PassthroughSubject<Bool, Never>()
+    private let didReplyTappedSubject = PassthroughSubject<Void, Never>()
+    private let didCreateTappedSubject = PassthroughSubject<(String, Int?, Int?), Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
     private let cancelBag: CancelBag
+    
+    // TODO: ViewModel로 옮겨야 할 로직
+    
+    private let userInformationUseCase = FetchUserInformationUseCase(
+        repository: UserSessionRepositoryImpl(
+            userDefaults: UserDefaultsStorage(
+                jsonEncoder: JSONEncoder(),
+                jsonDecoder: JSONDecoder()
+            )
+        )
+    )
     
     // MARK: - UIComponent
     
@@ -47,6 +61,29 @@ final class HomeDetailViewController: NavigationViewController {
     ).then {
         $0.refreshControl = UIRefreshControl()
         $0.alwaysBounceVertical = true
+    }
+    
+    private let writeCommentView: UIView = UIView().then {
+        $0.backgroundColor = .wableWhite
+    }
+    
+    private lazy var commentTextView: UITextView = UITextView().then {
+        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 16
+        $0.backgroundColor = .gray100
+        $0.setPretendard(with: .body4)
+        $0.textContainer.lineFragmentPadding = .zero
+        $0.textContainerInset = .zero
+    }
+    
+    private lazy var createCommentButton: UIButton = UIButton().then {
+        $0.setImage(.btnRippleDefault, for: .disabled)
+        $0.setImage(.btnRipplePress, for: .normal)
+    }
+    
+    private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
+        $0.hidesWhenStopped = true
+        $0.color = .gray600
     }
     
     // MARK: - LifeCycle
@@ -68,6 +105,7 @@ final class HomeDetailViewController: NavigationViewController {
         setupView()
         setupConstraint()
         setupDataSource()
+        setupAction()
         setupBinding()
     }
 }
@@ -76,12 +114,35 @@ final class HomeDetailViewController: NavigationViewController {
 
 private extension HomeDetailViewController {
     func setupView() {
-        view.addSubview(collectionView)
+        view.addSubviews(collectionView, writeCommentView, loadingIndicator)
+        writeCommentView.addSubviews(commentTextView, createCommentButton)
     }
     
     func setupConstraint() {
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        writeCommentView.snp.makeConstraints {
+            $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
+            $0.horizontalEdges.equalToSuperview()
+            $0.adjustedHeightEqualTo(64)
+        }
+        
+        commentTextView.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview().inset(10)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalTo(createCommentButton.snp.leading).offset(-7)
+        }
+        
+        createCommentButton.snp.makeConstraints {
+            $0.verticalEdges.trailing.equalToSuperview().inset(16)
+            $0.width.equalTo(createCommentButton.snp.height)
+        }
+        
+        loadingIndicator.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-20)
         }
     }
     
@@ -90,12 +151,27 @@ private extension HomeDetailViewController {
             guard let self = self else { return }
             
             cell.configureCell(info: item.content.contentInfo, postType: .mine, likeButtonTapHandler: {
-                self.didHeartTappedSubject.send((item.content.id, cell.likeButton.isLiked))
+                self.didContentHeartTappedSubject.send(cell.likeButton.isLiked)
             })
         }
         
         let commentCellRegistration = UICollectionView.CellRegistration<CommentCollectionViewCell, ContentComment> { cell, indexPath, item in
-            cell.configureCell(info: item.comment, commentType: .ripple, postType: .mine)
+            
+            self.userInformationUseCase.fetchActiveUserID()
+                .sink { id in
+                    cell.configureCell(
+                        info: item.comment,
+                        commentType: item.parentID == -1 ? .ripple : .reply,
+                        postType: item.comment.author.id == id ? .mine : .others,
+                        likeButtonTapHandler: {
+                            self.didCommentHeartTappedSubject.send(cell.likeButton.isLiked)
+                        },
+                        replyButtonTapHandler: {
+                            // 뭘 넘겨줘야 하는지 생각해보기
+                            self.didReplyTappedSubject
+                        })
+                }
+                .cancel()
         }
         
         dataSource = DataSource(collectionView: collectionView) { (collectionView, indexPath, item) -> UICollectionViewCell? in
@@ -117,8 +193,58 @@ private extension HomeDetailViewController {
         dataSource?.apply(snapshot, animatingDifferences: false)
     }
     
+    func setupAction() {
+        createCommentButton.addAction(UIAction(handler: { _ in
+            // TODO: 데이터 뭐 넘겨야하는지 확인하고 넘기기
+            self.didCreateTappedSubject.send((
+                commentTextView.text,
+                Int?,
+                Int?)
+            )
+        }), for: .touchUpInside)
+    }
+    
     func setupBinding() {
+        let input = HomeDetailViewModel.Input(
+            viewWillAppear: willAppearSubject.eraseToAnyPublisher(),
+            viewDidRefresh: didRefreshSubject.eraseToAnyPublisher(),
+            didContentHeartTappedItem: didContentHeartTappedSubject.eraseToAnyPublisher(),
+            didReplyTappedItem: didReplyTappedSubject.eraseToAnyPublisher(),
+            didCreateTappedItem: didCreateTappedSubject.eraseToAnyPublisher(),
+            willDisplayLastItem: willDisplayLastItemSubject.eraseToAnyPublisher()
+        )
         
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.comments
+            .receive(on: DispatchQueue.main)
+            .sink { comments in
+                <#code#>
+            }
+            .store(in: cancelBag)
+        
+        output.content
+            .receive(on: DispatchQueue.main)
+            .sink { content in
+                <#code#>
+            }
+            .store(in: cancelBag)
+        
+        output.isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                if !isLoading {
+                    self?.collectionView.refreshControl?.endRefreshing()
+                }
+            }
+            .store(in: cancelBag)
+        
+        output.isLoadingMore
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoadingMore in
+                isLoadingMore ? self?.loadingIndicator.startAnimating() : self?.loadingIndicator.stopAnimating()
+            }
+            .store(in: cancelBag)
     }
 }
 
