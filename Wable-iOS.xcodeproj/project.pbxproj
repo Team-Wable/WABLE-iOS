@@ -222,6 +222,9 @@
 		DDFB22462D8BBB8600FEA24A /* ProfileRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22452D8BBB7900FEA24A /* ProfileRegisterViewController.swift */; };
 		DDFB22482D8BBCB300FEA24A /* ProfileRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22472D8BBCB000FEA24A /* ProfileRegisterView.swift */; };
 		DDFF126F2D7EE39500980BA7 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFF126E2D7EE39200980BA7 /* UIColor+.swift */; };
+		DE0BFB5E2DA4EC4D00F06656 /* CommunityPreRegistrationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BFB5D2DA4EC4D00F06656 /* CommunityPreRegistrationCell.swift */; };
+		DE0BFB602DA4F63800F06656 /* CommunityInvitationCell .swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BFB5F2DA4F63800F06656 /* CommunityInvitationCell .swift */; };
+		DE0BFB632DA4F7FA00F06656 /* CommunityCellBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */; };
 		DE20BAD72D903985000126A4 /* AnnouncementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE20BAD62D903985000126A4 /* AnnouncementDetailView.swift */; };
 		DE277A882D8C09AD006D2B53 /* OverviewPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */; };
 		DE33902E2D8EC3B700638BB4 /* NoticeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE33902D2D8EC3B700638BB4 /* NoticeCell.swift */; };
@@ -494,6 +497,9 @@
 		DDFB22452D8BBB7900FEA24A /* ProfileRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRegisterViewController.swift; sourceTree = "<group>"; };
 		DDFB22472D8BBCB000FEA24A /* ProfileRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRegisterView.swift; sourceTree = "<group>"; };
 		DDFF126E2D7EE39200980BA7 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		DE0BFB5D2DA4EC4D00F06656 /* CommunityPreRegistrationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPreRegistrationCell.swift; sourceTree = "<group>"; };
+		DE0BFB5F2DA4F63800F06656 /* CommunityInvitationCell .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityInvitationCell .swift"; sourceTree = "<group>"; };
+		DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityCellBaseView.swift; sourceTree = "<group>"; };
 		DE20BAD62D903985000126A4 /* AnnouncementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementDetailView.swift; sourceTree = "<group>"; };
 		DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPageViewController.swift; sourceTree = "<group>"; };
 		DE33902D2D8EC3B700638BB4 /* NoticeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeCell.swift; sourceTree = "<group>"; };
@@ -1371,6 +1377,33 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		DE0BFB5B2DA4EC3700F06656 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */,
+				DE0BFB5C2DA4EC4000F06656 /* Cell */,
+				DE0BFB612DA4F7D300F06656 /* Subview */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DE0BFB5C2DA4EC4000F06656 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DE0BFB5D2DA4EC4D00F06656 /* CommunityPreRegistrationCell.swift */,
+				DE0BFB5F2DA4F63800F06656 /* CommunityInvitationCell .swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		DE0BFB612DA4F7D300F06656 /* Subview */ = {
+			isa = PBXGroup;
+			children = (
+				DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */,
+			);
+			path = Subview;
+			sourceTree = "<group>";
+		};
 		DE20BAD52D903964000126A4 /* Subview */ = {
 			isa = PBXGroup;
 			children = (
@@ -1452,7 +1485,7 @@
 		DE59BB9C2D8A9D870040ADCB /* Community */ = {
 			isa = PBXGroup;
 			children = (
-				DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */,
+				DE0BFB5B2DA4EC3700F06656 /* View */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -2032,6 +2065,8 @@
 				DD2968702D6DAD5F00143851 /* TokenStorage.swift in Sources */,
 				DE8E863D2D918759000A4292 /* RankViewModel.swift in Sources */,
 				DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */,
+				DE0BFB602DA4F63800F06656 /* CommunityInvitationCell .swift in Sources */,
+				DE0BFB5E2DA4EC4D00F06656 /* CommunityPreRegistrationCell.swift in Sources */,
 				DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */,
 				DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */,
 				DE83891D2D9071E400C089E6 /* Date+.swift in Sources */,
@@ -2186,6 +2221,7 @@
 				DDCD66F32D7DF5AB00EF4C28 /* HomeViewController.swift in Sources */,
 				DD29682C2D6DAD0B00143851 /* ContentMapper.swift in Sources */,
 				DE83891B2D906C0C00C089E6 /* Types.swift in Sources */,
+				DE0BFB632DA4F7FA00F06656 /* CommunityCellBaseView.swift in Sources */,
 				DD29682D2D6DAD0B00143851 /* NotificationMapper.swift in Sources */,
 				DE3390302D8EC6C400638BB4 /* NoticeViewController.swift in Sources */,
 				DD2968232D6DAD0200143851 /* NotificationRepository.swift in Sources */,
