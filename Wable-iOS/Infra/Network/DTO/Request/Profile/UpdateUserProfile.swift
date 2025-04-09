@@ -18,6 +18,7 @@ extension DTO.Request {
     
     struct ProfileInfo: Encodable {
         let nickname: String?
+        let isAlarmAllowed: Bool?
         let memberIntro: String?
         let isPushAlarmAllowed: Bool?
         let fcmToken: String?
@@ -26,6 +27,7 @@ extension DTO.Request {
         
         enum CodingKeys: String, CodingKey {
             case nickname
+            case isAlarmAllowed
             case memberIntro
             case isPushAlarmAllowed
             case fcmToken
