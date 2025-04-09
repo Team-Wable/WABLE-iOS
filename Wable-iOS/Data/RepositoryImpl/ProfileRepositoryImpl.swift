@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import UIKit
 
 import CombineMoya
 import Moya
@@ -34,20 +35,28 @@ extension ProfileRepositoryImpl: ProfileRepository {
         .mapWableError()
     }
     
-    func updateUserProfile(profile: UserProfile, isPushAlarmAllowed: Bool) -> AnyPublisher<Void, WableError> {
+    func updateUserProfile(
+        profile: UserProfile,
+        isPushAlarmAllowed: Bool,
+        isAlarmAllowed: Bool,
+        image: UIImage? = nil,
+        defaultProfileType: String? = nil
+    ) -> AnyPublisher<Void, WableError> {
         return provider.request(
             .updateUserProfile(
                 request: DTO.Request.UpdateUserProfile(
                     info: DTO.Request.ProfileInfo(
                         nickname: profile.user.nickname,
+                        isAlarmAllowed: isAlarmAllowed,
                         memberIntro: profile.introduction,
                         isPushAlarmAllowed: isPushAlarmAllowed,
+                        // TODO: fcm 토큰 넣어주는 로직 필요
                         fcmToken: nil,
                         memberLCKYears: profile.lckYears,
                         memberFanTeam: profile.user.fanTeam?.rawValue,
-                        memberDefaultProfileImage: profile.user.profileURL?.absoluteString
+                        memberDefaultProfileImage: defaultProfileType
                     ),
-                    file: nil
+                    file: image?.jpegData(compressionQuality: 0.1)
                 )
             ),
             for: DTO.Response.Empty.self

@@ -18,7 +18,45 @@ enum ProfileTargetType {
 
 extension ProfileTargetType: BaseTargetType {
     var multipartFormData: [Moya.MultipartFormData]? {
-        return .none
+        switch self {
+        case .updateUserProfile(request: let request):
+            var multipartFormData: [MultipartFormData] = []
+            
+            let parameters: [String: Any?] = [
+                "nickname": request.info?.nickname,
+                "isAlarmAllowed": request.info?.isAlarmAllowed,
+                "memberIntro": request.info?.memberIntro,
+                "isPushAlarmAllowed": request.info?.isPushAlarmAllowed,
+                "fcmToken": request.info?.fcmToken,
+                "memberLckYears": request.info?.memberLCKYears,
+                "memberFanTeam": request.info?.memberFanTeam,
+                "memberDefaultProfileImage": request.info?.memberDefaultProfileImage
+            ]
+            
+            if let jsonData = try? JSONSerialization.data(withJSONObject: parameters, options: []) {
+                let textData = MultipartFormData(
+                    provider: .data(jsonData),
+                    name: "info"
+                )
+                
+                multipartFormData.append(textData)
+            }
+            
+            if let imageData = request.file {
+                let imageFormData = MultipartFormData(
+                    provider: .data(imageData),
+                    name: "file",
+                    fileName: "profile.jpeg",
+                    mimeType: "image/jpeg"
+                )
+                
+                multipartFormData.append(imageFormData)
+            }
+            
+            return multipartFormData
+        default:
+            return .none
+        }
     }
     
     var endPoint: String? {
@@ -37,12 +75,7 @@ extension ProfileTargetType: BaseTargetType {
     }
     
     var requestBody: (any Encodable)? {
-        switch self {
-        case .updateUserProfile(request: let request):
-            return request
-        default:
-            return .none
-        }
+        return .none
     }
     
     var method: Moya.Method {
