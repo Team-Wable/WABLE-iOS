@@ -11,5 +11,5 @@ import Foundation
 
 struct Community: Hashable {
     let name: LCKTeam?
-    let participantsCount: Int
+    let registrationRate: Double
 }

@@ -9,34 +9,7 @@ import Combine
 import Foundation
 
 protocol CommunityUseCase {
+    func isUserRegistered() -> AnyPublisher<CommunityRegistrationStatus, WableError>
     func fetchCommunityList() -> AnyPublisher<[Community], WableError>
-    func preRegister(communityName: String) -> AnyPublisher<Double, WableError>
-    func isUserPreRegistered() -> AnyPublisher<CommunityPreRegistrationStatus, WableError>
-}
-
-final class CommunityUseCaseImpl: CommunityUseCase {
-    private let repository: CommunityRepository
-    
-    init(repository: CommunityRepository) {
-        self.repository = repository
-    }
-    
-    func fetchCommunityList() -> AnyPublisher<[Community], WableError> {
-        return repository.fetchCommunityList()
-    }
-    
-    func preRegister(communityName: String) -> AnyPublisher<Double, WableError> {
-        return repository.updatePreRegister(communityName: communityName)
-    }
-    
-    func isUserPreRegistered() -> AnyPublisher<CommunityPreRegistrationStatus, WableError> {
-        return repository.isUserPreRegistered()
-            .map { name -> CommunityPreRegistrationStatus in
-                guard let name else {
-                    return .notPreRegistered
-                }
-                return .preRegistered(communityName: name)
-            }
-            .eraseToAnyPublisher()
-    }
+    func register(for communityTeam: LCKTeam) -> AnyPublisher<Double, WableError>
 }
