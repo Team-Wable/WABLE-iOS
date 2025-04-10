@@ -44,6 +44,7 @@ final class ProfileRegisterViewController: NavigationViewController {
         setupConstraint()
         setupDelegate()
         setupAction()
+        setupTapGesture()
     }
 }
 
@@ -77,7 +78,17 @@ private extension ProfileRegisterViewController {
         rootView.nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
     }
     
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        
+        view.addGestureRecognizer(tapGesture)
+    }
+    
     // MARK: - @objc Method
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
     
     @objc func switchButtonDidTap() {
         rootView.configureDefaultImage()
