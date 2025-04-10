@@ -10,6 +10,17 @@ import UIKit
 
 import Kingfisher
 
+// MARK: - Enum
+
+/// 댓글 타입을 정의하는 열거형.
+///
+/// - `ripple`: 게시글에 직접 달린 댓글
+/// - `reply`: 다른 댓글에 달린 답글
+enum CommentType {
+    case ripple
+    case reply
+}
+
 /// 댓글을 표시하기 위한 컬렉션 뷰 셀.
 /// 사용자 정보, 댓글 내용, 좋아요/답글/내리기 버튼 등을 포함합니다.
 ///
@@ -23,17 +34,6 @@ import Kingfisher
 /// return cell
 /// ```
 final class CommentCollectionViewCell: UICollectionViewCell {
-    
-    // MARK: - Enum
-    
-    /// 댓글 타입을 정의하는 열거형.
-    ///
-    /// - `ripple`: 게시글에 직접 달린 댓글
-    /// - `reply`: 다른 댓글에 달린 답글
-    enum CommentType {
-        case ripple
-        case reply
-    }
     
     // MARK: - Property
     

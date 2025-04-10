@@ -11,12 +11,32 @@ import UIKit
 
 final class ProfileRegisterViewController: NavigationViewController {
     
+    // MARK: Property
+    // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
+    
+    private let lckYear: Int
+    private let lckTeam: String
+    private var defaultImage: String? = nil
+    private let useCase = FetchNicknameDuplicationUseCase(repository: AccountRepositoryImpl())
+    private let cancelBag = CancelBag()
+    
     // MARK: - UIComponent
     
     private let rootView = ProfileRegisterView()
     
     // MARK: - LifeCycle
-
+    
+    init(lckYear: Int, lckTeam: String) {
+        self.lckYear = lckYear
+        self.lckTeam = lckTeam
+        
+        super.init(type: .flow)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,6 +55,8 @@ private extension ProfileRegisterViewController {
     
     func setupView() {
         view.addSubview(rootView)
+        
+        defaultImage = rootView.defaultImageList[0].uppercased
     }
     
     func setupConstraint() {
@@ -59,6 +81,7 @@ private extension ProfileRegisterViewController {
     
     @objc func switchButtonDidTap() {
         rootView.configureDefaultImage()
+        defaultImage = rootView.defaultImageList[0].uppercased
     }
     
     @objc func addButtonDidTap() {
@@ -79,17 +102,36 @@ private extension ProfileRegisterViewController {
     }
     
     @objc func duplicationCheckButtonDidTap() {
-        // TODO: - 서버 연결 후 해당 부분 업데이트 필요
-        let condition = true
-        
-        rootView.conditiionLabel.text = condition ? "사용 가능한 닉네임입니다." : "이미 사용 중인 닉네임입니다."
-        rootView.conditiionLabel.textColor = condition ? .success : .error
-        rootView.nextButton.isUserInteractionEnabled = condition
-        rootView.nextButton.updateStyle(condition ? .primary : .gray)
+        guard let text = rootView.nickNameTextField.text else { return }
+
+        useCase.execute(nickname: text)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                let condition = completion == .finished
+                
+                self?.rootView.conditiionLabel.text = condition ? "사용 가능한 닉네임입니다." : "이미 사용 중인 닉네임입니다."
+                self?.rootView.conditiionLabel.textColor = condition ? .success : .error
+                self?.rootView.nextButton.isUserInteractionEnabled = condition
+                self?.rootView.nextButton.updateStyle(condition ? .primary : .gray)
+            }, receiveValue: { _ in
+            })
+            .store(in: cancelBag)
     }
     
     @objc func nextButtonDidTap() {
-        navigationController?.pushViewController(AgreementViewController(type: .flow), animated: true)
+        guard let name = rootView.nickNameTextField.text else { return }
+        let condition = defaultImage == nil && rootView.profileImageView.image == .imgProfileLarge
+        
+        navigationController?.pushViewController(
+            AgreementViewController(
+                nickname: name,
+                lckTeam: lckTeam,
+                lckYear: lckYear,
+                profileImage: condition ? rootView.profileImageView.image : nil,
+                defaultImage: defaultImage
+            ),
+            animated: true
+        )
     }
     
     // MARK: - Function Method
@@ -131,6 +173,7 @@ extension ProfileRegisterViewController: PHPickerViewControllerDelegate {
             
             DispatchQueue.main.async {
                 self.rootView.profileImageView.image = image
+                self.defaultImage = nil
             }
         }
         

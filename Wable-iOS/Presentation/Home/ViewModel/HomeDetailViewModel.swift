@@ -51,8 +51,9 @@ extension HomeDetailViewModel: ViewModelType {
         let viewWillAppear: AnyPublisher<Void, Never>
         let viewDidRefresh: AnyPublisher<Void, Never>
         let didContentHeartTappedItem: AnyPublisher<Bool, Never>
-        let didReplyTappedItem: AnyPublisher<Void, Never>
-        let didCreateTappedItem: AnyPublisher<(String, Int?, Int?), Never>
+        let didCommentTappedItem: AnyPublisher<Void, Never>
+        let didReplyTappedItem: AnyPublisher<Int, Never>
+        let didCreateTappedItem: AnyPublisher<String, Never>
         let willDisplayLastItem: AnyPublisher<Void, Never>
     }
     
@@ -61,6 +62,7 @@ extension HomeDetailViewModel: ViewModelType {
         let comments: AnyPublisher<[ContentComment], Never>
         let isLoading: AnyPublisher<Bool, Never>
         let isLoadingMore: AnyPublisher<Bool, Never>
+        let textViewState: AnyPublisher<CommentType, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
@@ -69,6 +71,8 @@ extension HomeDetailViewModel: ViewModelType {
         let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
         let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
         let isLastViewSubject = CurrentValueSubject<Bool, Never>(false)
+        let replyParentSubject = CurrentValueSubject<(Int, Int), Never>((-1, -1))
+        let commentTypeSubject = CurrentValueSubject<CommentType, Never>(.ripple)
         
         Publishers.Merge<AnyPublisher<Void, Never>, AnyPublisher<Void, Never>>(
             input.viewWillAppear,
@@ -123,14 +127,32 @@ extension HomeDetailViewModel: ViewModelType {
             .sink(receiveValue: { _ in })
             .store(in: cancelBag)
         
+        input.didCommentTappedItem
+            .withUnretained(self)
+            .sink { owner, _ in
+                commentTypeSubject.send(.ripple)
+            }
+            .store(in: cancelBag)
+        
+        input.didReplyTappedItem
+            .withUnretained(self)
+            .sink { owner, index in
+                replyParentSubject.send((
+                        commentsSubject.value[index].comment.id,
+                        commentsSubject.value[index].comment.author.id
+                    ))
+                commentTypeSubject.send(.reply)
+            }
+            .store(in: cancelBag)
+        
         input.didCreateTappedItem
             .withUnretained(self)
-            .flatMap { owner, info -> AnyPublisher<Void, Never> in
+            .flatMap { owner, text -> AnyPublisher<Void, Never> in
                 return owner.createCommentUseCase.execute(
                     contentID: owner.contentID,
-                    text: info.0,
-                    parentID: info.1,
-                    parentMemberID: info.2
+                    text: text,
+                    parentID: replyParentSubject.value.0,
+                    parentMemberID: replyParentSubject.value.1
                 )
                 .asDriver(onErrorJustReturn: ())
             }
@@ -170,7 +192,8 @@ extension HomeDetailViewModel: ViewModelType {
             content: contentSubject.eraseToAnyPublisher(),
             comments: commentsSubject.eraseToAnyPublisher(),
             isLoading: isLoadingSubject.eraseToAnyPublisher(),
-            isLoadingMore: isLoadingMoreSubject.eraseToAnyPublisher()
+            isLoadingMore: isLoadingMoreSubject.eraseToAnyPublisher(),
+            textViewState: commentTypeSubject.eraseToAnyPublisher()
         )
     }
 }
