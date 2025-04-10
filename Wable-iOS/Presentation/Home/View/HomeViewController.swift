@@ -90,6 +90,8 @@ final class HomeViewController: NavigationViewController {
         willAppearSubject.send()
         
         shouldShowLoadingScreen ? showLoadingScreen() : nil
+        
+        scrollToTop()
     }
 }
 
