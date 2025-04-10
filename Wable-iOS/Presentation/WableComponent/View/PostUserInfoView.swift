@@ -196,10 +196,19 @@ extension PostUserInfoView {
             userNameLabel.attributedText = userName.pretendardString(with: .caption1)
         }
         
-        profileImageView.kf.setImage(
-            with: userProfileURL,
-            placeholder: [UIImage.imgProfilePurple, UIImage.imgProfileBlue, UIImage.imgProfileGreen].randomElement()
-        )
+        switch userProfileURL?.absoluteString {
+        case "PURPLE":
+            profileImageView.image = .imgProfilePurple
+        case "GREEN":
+            profileImageView.image = .imgProfileGreen
+        case "BLUE":
+            profileImageView.image = .imgProfileBlue
+        default:
+            profileImageView.kf.setImage(
+                with: userProfileURL,
+                placeholder: [UIImage.imgProfilePurple, UIImage.imgProfileBlue, UIImage.imgProfileGreen].randomElement()
+            )
+        }
         
         // fanTeamImageView.image = UIImage(named: "tag_\(userFanTeam.rawValue)")
         ghostCountLabel.attributedText = "투명도 \(opacity)%".pretendardString(with: .caption4)
