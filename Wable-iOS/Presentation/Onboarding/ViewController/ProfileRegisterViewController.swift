@@ -131,14 +131,13 @@ private extension ProfileRegisterViewController {
     
     @objc func nextButtonDidTap() {
         guard let name = rootView.nickNameTextField.text else { return }
-        let condition = defaultImage == nil && rootView.profileImageView.image == .imgProfileLarge
         
         navigationController?.pushViewController(
             AgreementViewController(
                 nickname: name,
                 lckTeam: lckTeam,
                 lckYear: lckYear,
-                profileImage: condition ? rootView.profileImageView.image : nil,
+                profileImage: defaultImage == nil ? rootView.profileImageView.image : nil,
                 defaultImage: defaultImage
             ),
             animated: true

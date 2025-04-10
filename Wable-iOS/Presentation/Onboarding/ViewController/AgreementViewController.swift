@@ -180,31 +180,31 @@ private extension AgreementViewController {
                     .sink(receiveCompletion: { _ in
                     }, receiveValue: { _ in
                         WableLogger.log("세션 저장 완료", for: .debug)
+                        
+                        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                              let loginViewController = windowScene.windows.first?.rootViewController
+                        else {
+                            return
+                        }
+                        
+                        let tabBarController = TabBarController()
+                        
+                        self?.dismiss(animated: false) {
+                            guard let nickname = self?.nickname else { return }
+                            
+                            loginViewController.present(tabBarController, animated: true) {
+                                let noticeViewController = WableSheetViewController(
+                                    title: "와블과 함께해 주셔서 감사합니다!",
+                                    message: "\(nickname)님\n와블의 일원이 되신 것을 환영해요.\nLCK 함께 보며 같이 즐겨요 :)"
+                                )
+                                
+                                noticeViewController.addAction(.init(title: "와블 즐기러 가기", style: .primary))
+                                
+                                tabBarController.present(noticeViewController, animated: true)
+                            }
+                        }
                     })
                     .store(in: cancelBag)
-                    
-                    guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                          let loginViewController = windowScene.windows.first?.rootViewController
-                    else {
-                        return
-                    }
-                    
-                    let tabBarController = TabBarController()
-                    
-                    self?.dismiss(animated: false) {
-                        guard let nickname = self?.nickname else { return }
-                        
-                        loginViewController.present(tabBarController, animated: true) {
-                            let noticeViewController = WableSheetViewController(
-                                title: "와블과 함께해 주셔서 감사합니다!",
-                                message: "\(nickname)님\n와블의 일원이 되신 것을 환영해요.\nLCK 함께 보며 같이 즐겨요 :)"
-                            )
-                            
-                            noticeViewController.addAction(.init(title: "와블 즐기러 가기", style: .primary))
-                            
-                            tabBarController.present(noticeViewController, animated: true)
-                        }
-                    }
                 }
                 .store(in: owner.cancelBag)
             }
