@@ -14,15 +14,18 @@ import Moya
 enum CommunityTargetType {
     case updatePreRegister(request: DTO.Request.UpdatePreRegister)
     case fetchCommunityList
+    case isUserPreRegisterd
 }
 
 extension CommunityTargetType: BaseTargetType {
     var endPoint: String? {
         switch self {
         case .updatePreRegister:
-            return "/v1/community/prein"
+            return "/v2/community/prein"
         case .fetchCommunityList:
             return "/v1/community/list"
+        case .isUserPreRegisterd:
+            return "/v1/community/member"
         }
     }
     
@@ -36,14 +39,18 @@ extension CommunityTargetType: BaseTargetType {
             return request
         case .fetchCommunityList:
             return .none
+        case .isUserPreRegisterd:
+            return .none
         }
     }
     
     var method: Moya.Method {
         switch self {
         case .updatePreRegister:
-            return .post
+            return .patch
         case .fetchCommunityList:
+            return .get
+        case .isUserPreRegisterd:
             return .get
         }
     }
