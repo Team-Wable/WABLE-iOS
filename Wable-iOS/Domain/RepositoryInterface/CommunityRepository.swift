@@ -10,6 +10,7 @@ import Combine
 import Foundation
 
 protocol CommunityRepository {
-    func updatePreRegister(communityName: LCKTeam) -> AnyPublisher<Void, WableError>
+    func updateRegister(community: LCKTeam) -> AnyPublisher<Double, WableError>
     func fetchCommunityList() -> AnyPublisher<[Community], WableError>
+    func isUserRegistered() -> AnyPublisher<CommunityRegistrationStatus, WableError>
 }

@@ -13,11 +13,11 @@ import Foundation
 extension DTO.Response {
     struct FetchCommunites: Decodable {
         let communityName: String
-        let preRegistrationRate: Double
+        let registrationRate: Double
         
         enum CodingKeys: String, CodingKey {
             case communityName
-            case preRegistrationRate = "communityNum"
+            case registrationRate = "communityNum"
         }
     }
 }

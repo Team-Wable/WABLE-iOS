@@ -1,5 +1,5 @@
 //
-//  CommunityPreRegisterCell.swift
+//  CommunityRegisterCell.swift
 //  Wable-iOS
 //
 //  Created by 김진웅 on 4/8/25.
@@ -11,7 +11,7 @@ import Kingfisher
 import SnapKit
 import Then
 
-final class CommunityPreRegisterCell: UICollectionViewCell {
+final class CommunityRegisterCell: UICollectionViewCell {
     
     // MARK: - UIComponent
     
@@ -19,7 +19,7 @@ final class CommunityPreRegisterCell: UICollectionViewCell {
     
     // MARK: - Property
     
-    var preRegisterClosure: (() -> Void)?
+    var registerClosure: (() -> Void)?
     
     // MARK: - Initializer
     
@@ -40,22 +40,22 @@ final class CommunityPreRegisterCell: UICollectionViewCell {
         super.prepareForReuse()
         
         communityImageView.image = nil
-        preRegisterButton.isHidden = false
+        registerButton.isHidden = false
         
-        preRegisterClosure = nil
+        registerClosure = nil
     }
     
-    func configure(imageURL: URL?, title: String, isPreRegistered: Bool = false) {
+    func configure(imageURL: URL?, title: String, isRegistered: Bool = false) {
         communityImageView.kf.setImage(with: imageURL)
         titleLabel.text = title
         
-        preRegisterButton.isHidden = isPreRegistered
+        registerButton.isHidden = isRegistered
     }
 }
 
 // MARK: - Setup Method
 
-private extension CommunityPreRegisterCell {
+private extension CommunityRegisterCell {
     func setupView() {
         contentView.addSubview(baseView)
     }
@@ -68,29 +68,29 @@ private extension CommunityPreRegisterCell {
     }
     
     func setupAction() {
-        preRegisterButton.addTarget(self, action: #selector(preRegisterButtonDidTap), for: .touchUpInside)
+        registerButton.addTarget(self, action: #selector(registerButtonDidTap), for: .touchUpInside)
     }
 }
 
 // MARK: - Action Method
 
-private extension CommunityPreRegisterCell {
-    @objc func preRegisterButtonDidTap() {
-        preRegisterClosure?()
+private extension CommunityRegisterCell {
+    @objc func registerButtonDidTap() {
+        registerClosure?()
     }
 }
 
 // MARK: - Computed Property
 
-private extension CommunityPreRegisterCell {
+private extension CommunityRegisterCell {
     var communityImageView: UIImageView { baseView.communityImageView }
     var titleLabel: UILabel { baseView.titleLabel }
-    var preRegisterButton: UIButton { baseView.primaryButton }
+    var registerButton: UIButton { baseView.primaryButton }
 }
 
 // MARK: - Constant
 
-private extension CommunityPreRegisterCell {
+private extension CommunityRegisterCell {
     enum Constant {
         static let defaultButtonTitle = "사전 신청하기"
     }
