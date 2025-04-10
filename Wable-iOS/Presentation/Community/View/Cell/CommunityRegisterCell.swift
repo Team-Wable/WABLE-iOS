@@ -19,7 +19,7 @@ final class CommunityRegisterCell: UICollectionViewCell {
     
     // MARK: - Property
     
-    var registerClosure: (() -> Void)?
+    var registerCommunityClosure: (() -> Void)?
     
     // MARK: - Initializer
     
@@ -42,7 +42,7 @@ final class CommunityRegisterCell: UICollectionViewCell {
         communityImageView.image = nil
         registerButton.isHidden = false
         
-        registerClosure = nil
+        registerCommunityClosure = nil
     }
     
     func configure(imageURL: URL?, title: String, isRegistered: Bool = false) {
@@ -76,7 +76,7 @@ private extension CommunityRegisterCell {
 
 private extension CommunityRegisterCell {
     @objc func registerButtonDidTap() {
-        registerClosure?()
+        registerCommunityClosure?()
     }
 }
 
