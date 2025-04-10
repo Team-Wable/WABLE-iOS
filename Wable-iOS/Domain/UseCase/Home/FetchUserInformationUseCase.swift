@@ -29,4 +29,9 @@ extension FetchUserInformationUseCase {
         return Just(repository.fetchActiveUserSession())
             .eraseToAnyPublisher()
     }
+    
+    func updateUserSession(session: UserSession) -> AnyPublisher<Void, Never> {
+        return Just(repository.updateUserSession(session))
+            .eraseToAnyPublisher()
+    }
 }

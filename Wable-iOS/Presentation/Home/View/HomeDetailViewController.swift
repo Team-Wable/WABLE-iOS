@@ -37,8 +37,9 @@ final class HomeDetailViewController: NavigationViewController {
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
     private let didContentHeartTappedSubject = PassthroughSubject<Bool, Never>()
     private let didCommentHeartTappedSubject = PassthroughSubject<Bool, Never>()
-    private let didReplyTappedSubject = PassthroughSubject<Void, Never>()
-    private let didCreateTappedSubject = PassthroughSubject<(String, Int?, Int?), Never>()
+    private let didReplyTappedSubject = PassthroughSubject<Int, Never>()
+    private let didCommentTappedSubject = PassthroughSubject<Void, Never>()
+    private let didCreateTappedSubject = PassthroughSubject<String, Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
     private let cancelBag: CancelBag
     
@@ -167,8 +168,7 @@ private extension HomeDetailViewController {
                             self.didCommentHeartTappedSubject.send(cell.likeButton.isLiked)
                         },
                         replyButtonTapHandler: {
-                            // 뭘 넘겨줘야 하는지 생각해보기
-                            self.didReplyTappedSubject
+                            self.didReplyTappedSubject.send(indexPath.item)
                         })
                 }
                 .cancel()
@@ -196,11 +196,11 @@ private extension HomeDetailViewController {
     func setupAction() {
         createCommentButton.addAction(UIAction(handler: { _ in
             // TODO: 데이터 뭐 넘겨야하는지 확인하고 넘기기
-            self.didCreateTappedSubject.send((
-                commentTextView.text,
-                Int?,
-                Int?)
-            )
+//            self.didCreateTappedSubject.send((
+//                commentTextView.text,
+//                Int?,
+//                Int?)
+//            )
         }), for: .touchUpInside)
     }
     
@@ -209,6 +209,7 @@ private extension HomeDetailViewController {
             viewWillAppear: willAppearSubject.eraseToAnyPublisher(),
             viewDidRefresh: didRefreshSubject.eraseToAnyPublisher(),
             didContentHeartTappedItem: didContentHeartTappedSubject.eraseToAnyPublisher(),
+            didCommentTappedItem: didCommentTappedSubject.eraseToAnyPublisher(),
             didReplyTappedItem: didReplyTappedSubject.eraseToAnyPublisher(),
             didCreateTappedItem: didCreateTappedSubject.eraseToAnyPublisher(),
             willDisplayLastItem: willDisplayLastItemSubject.eraseToAnyPublisher()
@@ -216,19 +217,19 @@ private extension HomeDetailViewController {
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
         
-        output.comments
-            .receive(on: DispatchQueue.main)
-            .sink { comments in
-                <#code#>
-            }
-            .store(in: cancelBag)
-        
-        output.content
-            .receive(on: DispatchQueue.main)
-            .sink { content in
-                <#code#>
-            }
-            .store(in: cancelBag)
+//        output.comments
+//            .receive(on: DispatchQueue.main)
+//            .sink { comments in
+//                <#code#>
+//            }
+//            .store(in: cancelBag)
+//        
+//        output.content
+//            .receive(on: DispatchQueue.main)
+//            .sink { content in
+//                <#code#>
+//            }
+//            .store(in: cancelBag)
         
         output.isLoading
             .receive(on: DispatchQueue.main)
