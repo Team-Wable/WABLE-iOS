@@ -10,9 +10,13 @@ import UIKit
 
 final class TabBarController: UITabBarController {
     
+    // MARK: Property
+
+    private let shouldShowLoadingScreen: Bool
+    
     // MARK: - UIComponent
     
-    private let homeViewController = HomeViewController(
+    private lazy var homeViewController = HomeViewController(
         viewModel: HomeViewModel(
             fetchContentListUseCase: FetchContentListUseCase(repository: ContentRepositoryImpl()),
             createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
@@ -22,6 +26,7 @@ final class TabBarController: UITabBarController {
     ).then {
         $0.tabBarItem.title = "홈"
         $0.tabBarItem.image = .icHomeDefault
+        $0.shouldShowLoadingScreen = self.shouldShowLoadingScreen
     }
     
     private let communityViewController = CommunityViewController().then {
@@ -46,7 +51,9 @@ final class TabBarController: UITabBarController {
     
     // MARK: - LifeCycle
 
-    init() {
+    init(shouldShowLoadingScreen: Bool = true) {
+        self.shouldShowLoadingScreen = shouldShowLoadingScreen
+        
         super.init(nibName: nil, bundle: nil)
         
         modalPresentationStyle = .fullScreen

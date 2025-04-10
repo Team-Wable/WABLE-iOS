@@ -33,6 +33,7 @@ final class HomeViewController: NavigationViewController {
     private let didHeartTappedSubject = PassthroughSubject<(Int, Bool), Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
     private let cancelBag: CancelBag
+    var shouldShowLoadingScreen: Bool = true
     
     // MARK: - UIComponent
     
@@ -65,7 +66,6 @@ final class HomeViewController: NavigationViewController {
         self.viewModel = viewModel
         self.cancelBag = cancelBag
         
-        
         super.init(type: .home(hasNewNotification: false))
     }
     
@@ -89,13 +89,7 @@ final class HomeViewController: NavigationViewController {
         
         willAppearSubject.send()
         
-        let loadingController = LoadingViewController()
-        
-        present(loadingController, animated: true) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                loadingController.dismiss(animated: false)
-            }
-        }
+        shouldShowLoadingScreen ? showLoadingScreen() : nil
     }
 }
 
@@ -259,6 +253,15 @@ extension HomeViewController {
     
     func scrollToTop() {
         collectionView.setContentOffset(.zero, animated: true)
+    }
+    
+    func showLoadingScreen() {
+        let loadingController = LoadingViewController()
+        present(loadingController, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                loadingController.dismiss(animated: false)
+            }
+        }
     }
 }
 
