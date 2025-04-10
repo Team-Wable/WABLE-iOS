@@ -17,11 +17,11 @@ final class CommunityRepositoryImpl {
 }
 
 extension CommunityRepositoryImpl: CommunityRepository {
-    func updateRegister(community: LCKTeam) -> AnyPublisher<Double, WableError> {
+    func updateRegister(communityName: String) -> AnyPublisher<Double, WableError> {
         return provider.request(
             .updateRegister(
                 request: DTO.Request.UpdateRegister(
-                    communityName: community.rawValue
+                    communityName: communityName
                 )
             ),
             for: DTO.Response.RegisterResult.self
