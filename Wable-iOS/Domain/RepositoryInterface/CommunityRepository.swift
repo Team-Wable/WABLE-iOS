@@ -12,5 +12,5 @@ import Foundation
 protocol CommunityRepository {
     func updateRegister(communityName: String) -> AnyPublisher<Double, WableError>
     func fetchCommunityList() -> AnyPublisher<[Community], WableError>
-    func isUserRegistered() -> AnyPublisher<CommunityRegistrationStatus, WableError>
+    func isUserRegistered() -> AnyPublisher<CommunityRegistration, WableError>
 }

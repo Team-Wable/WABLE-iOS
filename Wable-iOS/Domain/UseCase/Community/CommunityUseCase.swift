@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 protocol CommunityUseCase {
-    func isUserRegistered() -> AnyPublisher<CommunityRegistrationStatus, WableError>
+    func isUserRegistered() -> AnyPublisher<CommunityRegistration, WableError>
     func fetchCommunityList() -> AnyPublisher<[Community], WableError>
     func register(for communityTeam: LCKTeam) -> AnyPublisher<Double, WableError>
 }
@@ -21,7 +21,7 @@ final class CommunityUseCaseImpl: CommunityUseCase {
         self.repository = repository
     }
     
-    func isUserRegistered() -> AnyPublisher<CommunityRegistrationStatus, WableError> {
+    func isUserRegistered() -> AnyPublisher<CommunityRegistration, WableError> {
         return repository.isUserRegistered()
     }
     

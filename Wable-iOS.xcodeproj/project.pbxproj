@@ -287,7 +287,10 @@
 		DEF148402DA7B586003B2AD8 /* CommunityUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF1483F2DA7B586003B2AD8 /* CommunityUseCase.swift */; };
 		DEF148422DA7B7E5003B2AD8 /* IsUserRegistered.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148412DA7B7E5003B2AD8 /* IsUserRegistered.swift */; };
 		DEF148442DA7B966003B2AD8 /* RegisterResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148432DA7B966003B2AD8 /* RegisterResult.swift */; };
-		DEF148542DA7EF7B003B2AD8 /* CommunityRegistrationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148532DA7EF7B003B2AD8 /* CommunityRegistrationStatus.swift */; };
+		DEF148542DA7EF7B003B2AD8 /* CommunityRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148532DA7EF7B003B2AD8 /* CommunityRegistration.swift */; };
+		DEF148572DA8019B003B2AD8 /* CommunityItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148562DA8019B003B2AD8 /* CommunityItem.swift */; };
+		DEF1485A2DA801D4003B2AD8 /* CommunityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148592DA801D4003B2AD8 /* CommunityViewModel.swift */; };
+		DEF1485E2DA81571003B2AD8 /* CommunityHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF1485D2DA81571003B2AD8 /* CommunityHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -564,7 +567,10 @@
 		DEF1483F2DA7B586003B2AD8 /* CommunityUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityUseCase.swift; sourceTree = "<group>"; };
 		DEF148412DA7B7E5003B2AD8 /* IsUserRegistered.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsUserRegistered.swift; sourceTree = "<group>"; };
 		DEF148432DA7B966003B2AD8 /* RegisterResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterResult.swift; sourceTree = "<group>"; };
-		DEF148532DA7EF7B003B2AD8 /* CommunityRegistrationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegistrationStatus.swift; sourceTree = "<group>"; };
+		DEF148532DA7EF7B003B2AD8 /* CommunityRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegistration.swift; sourceTree = "<group>"; };
+		DEF148562DA8019B003B2AD8 /* CommunityItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityItem.swift; sourceTree = "<group>"; };
+		DEF148592DA801D4003B2AD8 /* CommunityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewModel.swift; sourceTree = "<group>"; };
+		DEF1485D2DA81571003B2AD8 /* CommunityHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1067,7 +1073,7 @@
 				DD2967F22D6DAC3100143851 /* LCKTeamRank.swift */,
 				DD2967F32D6DAC3100143851 /* Announcement.swift */,
 				DD2967F52D6DAC3100143851 /* Community.swift */,
-				DEF148532DA7EF7B003B2AD8 /* CommunityRegistrationStatus.swift */,
+				DEF148532DA7EF7B003B2AD8 /* CommunityRegistration.swift */,
 				DD2967F62D6DAC3100143851 /* Viewit.swift */,
 			);
 			path = Entity;
@@ -1398,6 +1404,7 @@
 			children = (
 				DE0BFB5D2DA4EC4D00F06656 /* CommunityRegisterCell.swift */,
 				DE0BFB5F2DA4F63800F06656 /* CommunityInviteCell.swift */,
+				DEF1485D2DA81571003B2AD8 /* CommunityHeaderView.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1491,6 +1498,8 @@
 		DE59BB9C2D8A9D870040ADCB /* Community */ = {
 			isa = PBXGroup;
 			children = (
+				DEF148552DA80193003B2AD8 /* Model */,
+				DEF148582DA801C8003B2AD8 /* ViewModel */,
 				DE0BFB5B2DA4EC3700F06656 /* View */,
 			);
 			path = Community;
@@ -1871,6 +1880,22 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		DEF148552DA80193003B2AD8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DEF148562DA8019B003B2AD8 /* CommunityItem.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DEF148582DA801C8003B2AD8 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DEF148592DA801D4003B2AD8 /* CommunityViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2033,6 +2058,7 @@
 				DD29685B2D6DAD4400143851 /* CreateAccountRequest.swift in Sources */,
 				DE9B94762D927F140060FF92 /* NoticeViewModel.swift in Sources */,
 				DD29685C2D6DAD4400143851 /* CreateContent.swift in Sources */,
+				DEF148572DA8019B003B2AD8 /* CommunityItem.swift in Sources */,
 				DD29685D2D6DAD4400143851 /* UpdateRegister.swift in Sources */,
 				DD29685E2D6DAD4400143851 /* DeleteAccount.swift in Sources */,
 				DD29685F2D6DAD4400143851 /* UpdateGhost.swift in Sources */,
@@ -2132,7 +2158,7 @@
 				DDED59882D7965F100A0BEF1 /* NotificationUseCase.swift in Sources */,
 				DDFB223B2D8B9F5100FEA24A /* LCKYearCollectionViewCell.swift in Sources */,
 				DD2968672D6DAD5500143851 /* InformationTargetType.swift in Sources */,
-				DEF148542DA7EF7B003B2AD8 /* CommunityRegistrationStatus.swift in Sources */,
+				DEF148542DA7EF7B003B2AD8 /* CommunityRegistration.swift in Sources */,
 				DD2968682D6DAD5500143851 /* BaseTargetType.swift in Sources */,
 				DE9593352D9A1465009B00D3 /* ActivityNotificationViewModel.swift in Sources */,
 				DD2968692D6DAD5500143851 /* CommentTargetType.swift in Sources */,
@@ -2153,6 +2179,7 @@
 				DEE5D6162D9130E5009E5A25 /* GameScheduleViewModel.swift in Sources */,
 				DD5098122DA2C35500F666DE /* CreateCommentLikedUseCase.swift in Sources */,
 				DE7C53122D761EA400076E5D /* UIStackView+.swift in Sources */,
+				DEF1485A2DA801D4003B2AD8 /* CommunityViewModel.swift in Sources */,
 				DDCCA3952D73928900658122 /* UserSession.swift in Sources */,
 				DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */,
 				DE9891AA2D99925900D538D8 /* ActivityNotificationTriggerType+.swift in Sources */,
@@ -2208,6 +2235,7 @@
 				DD2968202D6DAD0200143851 /* LoginRepository.swift in Sources */,
 				DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */,
 				DE7C531A2D76202B00076E5D /* UITextField+.swift in Sources */,
+				DEF1485E2DA81571003B2AD8 /* CommunityHeaderView.swift in Sources */,
 				DE9C3BFC2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift in Sources */,
 				DD2968212D6DAD0200143851 /* ContentLikedRepository.swift in Sources */,
 				DD2968222D6DAD0200143851 /* CommentLikedRepository.swift in Sources */,
