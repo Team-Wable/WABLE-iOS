@@ -75,20 +75,20 @@ private extension ViewitCardButton {
     func setupConstraint() {
         thumbnailImageView.snp.makeConstraints { make in
             make.verticalEdges.leading.equalToSuperview()
-            make.adjustedWidthEqualTo(344)
+            make.adjustedWidthEqualTo(148)
             make.adjustedHeightEqualTo(84)
         }
         
         videoTitleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
             make.leading.equalTo(thumbnailImageView.snp.trailing).offset(8)
-            make.trailing.equalToSuperview().offset(8)
+            make.trailing.equalToSuperview().offset(-8)
         }
         
         siteNameLabel.snp.makeConstraints { make in
             make.top.equalTo(videoTitleLabel.snp.bottom).offset(4)
             make.leading.equalTo(thumbnailImageView.snp.trailing).offset(8)
-            make.trailing.equalToSuperview().offset(8)
+            make.trailing.equalToSuperview().offset(-8)
         }
     }
 }

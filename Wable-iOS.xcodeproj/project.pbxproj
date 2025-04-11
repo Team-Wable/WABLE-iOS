@@ -294,6 +294,9 @@
 		DEF1485A2DA801D4003B2AD8 /* CommunityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148592DA801D4003B2AD8 /* CommunityViewModel.swift */; };
 		DEF1485E2DA81571003B2AD8 /* CommunityHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF1485D2DA81571003B2AD8 /* CommunityHeaderView.swift */; };
 		DEF6A3BC2DA97F8D0044ACAB /* ViewitCardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF6A3BB2DA97F8D0044ACAB /* ViewitCardButton.swift */; };
+		DEF6A3BF2DA9849A0044ACAB /* ViewitCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF6A3BE2DA9849A0044ACAB /* ViewitCell.swift */; };
+		DEF6A3C12DA988DE0044ACAB /* ViewitContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF6A3C02DA988DE0044ACAB /* ViewitContentView.swift */; };
+		DEF6A3C32DA98E4A0044ACAB /* ViewitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF6A3C22DA98E4A0044ACAB /* ViewitView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -577,6 +580,9 @@
 		DEF148592DA801D4003B2AD8 /* CommunityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewModel.swift; sourceTree = "<group>"; };
 		DEF1485D2DA81571003B2AD8 /* CommunityHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHeaderView.swift; sourceTree = "<group>"; };
 		DEF6A3BB2DA97F8D0044ACAB /* ViewitCardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitCardButton.swift; sourceTree = "<group>"; };
+		DEF6A3BE2DA9849A0044ACAB /* ViewitCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitCell.swift; sourceTree = "<group>"; };
+		DEF6A3C02DA988DE0044ACAB /* ViewitContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitContentView.swift; sourceTree = "<group>"; };
+		DEF6A3C22DA98E4A0044ACAB /* ViewitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1908,6 +1914,7 @@
 			isa = PBXGroup;
 			children = (
 				DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */,
+				DEF6A3BD2DA9848F0044ACAB /* Cell */,
 				DEF6A3BA2DA97F830044ACAB /* Subview */,
 			);
 			path = View;
@@ -1916,9 +1923,19 @@
 		DEF6A3BA2DA97F830044ACAB /* Subview */ = {
 			isa = PBXGroup;
 			children = (
+				DEF6A3C22DA98E4A0044ACAB /* ViewitView.swift */,
+				DEF6A3C02DA988DE0044ACAB /* ViewitContentView.swift */,
 				DEF6A3BB2DA97F8D0044ACAB /* ViewitCardButton.swift */,
 			);
 			path = Subview;
+			sourceTree = "<group>";
+		};
+		DEF6A3BD2DA9848F0044ACAB /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DEF6A3BE2DA9849A0044ACAB /* ViewitCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2044,6 +2061,7 @@
 				DDFB22442D8BB8D500FEA24A /* LCKTeamView.swift in Sources */,
 				DD2968112D6DACF700143851 /* Viewit.swift in Sources */,
 				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
+				DEF6A3C12DA988DE0044ACAB /* ViewitContentView.swift in Sources */,
 				DD514D082D8C83560095021D /* AgreementViewController.swift in Sources */,
 				DDFB22482D8BBCB300FEA24A /* ProfileRegisterView.swift in Sources */,
 				DD2968122D6DACF700143851 /* Community.swift in Sources */,
@@ -2261,6 +2279,7 @@
 				DD29681F2D6DAD0200143851 /* GhostRepository.swift in Sources */,
 				DD2968202D6DAD0200143851 /* LoginRepository.swift in Sources */,
 				DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */,
+				DEF6A3C32DA98E4A0044ACAB /* ViewitView.swift in Sources */,
 				DE7C531A2D76202B00076E5D /* UITextField+.swift in Sources */,
 				DEF1485E2DA81571003B2AD8 /* CommunityHeaderView.swift in Sources */,
 				DE9C3BFC2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift in Sources */,
@@ -2285,6 +2304,7 @@
 				DD29682C2D6DAD0B00143851 /* ContentMapper.swift in Sources */,
 				DE83891B2D906C0C00C089E6 /* Types.swift in Sources */,
 				DE0BFB632DA4F7FA00F06656 /* CommunityCellBaseView.swift in Sources */,
+				DEF6A3BF2DA9849A0044ACAB /* ViewitCell.swift in Sources */,
 				DD29682D2D6DAD0B00143851 /* NotificationMapper.swift in Sources */,
 				DE3390302D8EC6C400638BB4 /* NoticeViewController.swift in Sources */,
 				DD2968232D6DAD0200143851 /* NotificationRepository.swift in Sources */,
