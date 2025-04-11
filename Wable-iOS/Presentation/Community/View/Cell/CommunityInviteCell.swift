@@ -26,6 +26,7 @@ final class CommunityInviteCell: UICollectionViewCell {
     private let progressBar = UIProgressView(progressViewStyle: .bar).then {
         $0.trackTintColor = .gray200
         $0.layer.cornerRadius = 8
+        $0.setProgress(0.0, animated: false)
         $0.clipsToBounds = true
     }
     
