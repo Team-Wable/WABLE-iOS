@@ -18,15 +18,19 @@ enum CommentTargetType {
 }
 
 extension CommentTargetType: BaseTargetType {
+    var multipartFormData: [Moya.MultipartFormData]? {
+        return .none
+    }
+    
     var endPoint: String? {
         switch self {
-        case .fetchUserCommentList(memberID: let memberID):
+        case .fetchUserCommentList(memberID: let memberID, _):
             return "/v3/member/\(memberID)/member-comments"
-        case .fetchContentCommentList(contentID: let contentID):
-            return "/v3/content/\(contentID)/comments?cursor=277"
+        case .fetchContentCommentList(contentID: let contentID, _):
+            return "/v3/content/\(contentID)/comments"
         case .deleteComment(commentID: let commentID):
             return "/v1/comment/\(commentID)"
-        case .createComment(contentID: let contentID):
+        case .createComment(contentID: let contentID, _):
             return "/v3/content/\(contentID)/comment"
         }
     }

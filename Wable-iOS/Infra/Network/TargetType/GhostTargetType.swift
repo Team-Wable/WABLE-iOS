@@ -14,6 +14,10 @@ enum GhostTargetType {
 }
 
 extension GhostTargetType: BaseTargetType {
+    var multipartFormData: [Moya.MultipartFormData]? {
+        return .none
+    }
+    
     var endPoint: String? {
         switch self {
         case .ghostReduction:

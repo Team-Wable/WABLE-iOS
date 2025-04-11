@@ -81,7 +81,13 @@ private extension LCKYearViewController {
     }
     
     @objc func nextButtonDidTap() {
-        navigationController?.pushViewController(LCKTeamViewController(type: .flow), animated: true)
+        guard let pullDownButtonLabel = rootView.pullDownButton.titleLabel?.text,
+              let lckYear = Int(pullDownButtonLabel)
+        else {
+            return
+        }
+        
+        navigationController?.pushViewController(LCKTeamViewController(lckYear: lckYear), animated: true)
     }
 }
 

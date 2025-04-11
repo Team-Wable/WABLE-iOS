@@ -11,7 +11,7 @@ import Foundation
 struct UserSession: Codable, Identifiable {
     let id: Int
     let nickname: String
-    let profileURL: String
+    let profileURL: URL?
     let isPushAlarmAllowed: Bool
     let isAdmin: Bool
     let isAutoLoginEnabled: Bool?

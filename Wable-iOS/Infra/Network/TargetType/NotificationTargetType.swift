@@ -17,6 +17,10 @@ enum NotificationTargetType {
 }
 
 extension NotificationTargetType: BaseTargetType {
+    var multipartFormData: [Moya.MultipartFormData]? {
+        return .none
+    }
+    
     var endPoint: String? {
         switch self {
         case .fetchInfoNotifications:

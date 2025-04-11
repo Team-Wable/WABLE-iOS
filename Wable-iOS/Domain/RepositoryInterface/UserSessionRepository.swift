@@ -16,7 +16,7 @@ protocol UserSessionRepository {
     func fetchUserSession(forUserID userID: Int) -> UserSession?
     func fetchActiveUserSession() -> UserSession?
     func fetchActiveUserID() -> Int?
-    func updateUserSession(_ session: UserSession, forUserID userID: Int)
+    func updateUserSession(_ session: UserSession)
     func updateNotificationBadge(count: Int, forUserID userID: Int)
     func updateActiveUserID(_ userID: Int?)
     func removeUserSession(forUserID userID: Int)

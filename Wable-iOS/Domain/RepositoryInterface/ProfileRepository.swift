@@ -8,9 +8,16 @@
 
 import Combine
 import Foundation
+import UIKit
 
 protocol ProfileRepository {
     func fetchUserInfo() -> AnyPublisher<AccountInfo, WableError>
     func fetchUserProfile(memberID: Int) -> AnyPublisher<UserProfile, WableError>
-    func updateUserProfile(profile: UserProfile, isPushAlarmAllowed: Bool) -> AnyPublisher<Void, WableError>
+    func updateUserProfile(
+        profile: UserProfile,
+        isPushAlarmAllowed: Bool,
+        isAlarmAllowed: Bool,
+        image: UIImage?,
+        defaultProfileType: String?
+    ) -> AnyPublisher<Void, WableError>
 }

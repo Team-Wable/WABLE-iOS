@@ -19,6 +19,10 @@ enum InformationTargetType {
 }
 
 extension InformationTargetType: BaseTargetType {
+    var multipartFormData: [Moya.MultipartFormData]? {
+        return .none
+    }
+    
     var endPoint: String? {
         switch self {
         case .fetchGameSchedules:
