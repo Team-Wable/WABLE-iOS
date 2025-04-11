@@ -12,4 +12,15 @@ enum DefaultProfileType: String {
     case green = "img_profile_green"
     case blue = "img_profile_blue"
     case purple = "img_profile_purple"
+    
+    var uppercased: String {
+        switch self {
+        case .green:
+            return "GREEN"
+        case .blue:
+            return "BLUE"
+        case .purple:
+            return "PURPLE"
+        }
+    }
 }

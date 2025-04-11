@@ -47,15 +47,15 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         return try? userDefaults.getValue(for: Keys.activeUserID)
     }
     
-    func updateUserSession(_ session: UserSession, forUserID userID: Int) {
+    func updateUserSession(_ session: UserSession) {
         var sessions = fetchAllUserSessions()
         
-        sessions[userID] = session
+        sessions[session.id] = session
         
         try? userDefaults.setValue(sessions, for: Keys.userSessions)
         
         if fetchActiveUserID() == nil {
-            updateActiveUserID(userID)
+            updateActiveUserID(session.id)
         }
     }
     
