@@ -32,26 +32,10 @@ final class CommentButton: UIButton {
         self.type = type
         
         super.init(frame: .zero)
-        
-        setupConstraint()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-}
-
-// MARK: - Private Extension
-
-private extension CommentButton {
-    
-    // MARK: - Setup
-    
-    func setupConstraint() {
-        snp.makeConstraints {
-            $0.adjustedWidthEqualTo(45)
-            $0.adjustedHeightEqualTo(24)
-        }
     }
 }
 
@@ -72,6 +56,11 @@ extension CommentButton {
             
             configuration.attributedTitle = String(commentCount).pretendardString(with: .caption1)
             configuration.baseForegroundColor = .wableBlack
+            
+            snp.makeConstraints {
+                $0.adjustedWidthEqualTo(45)
+                $0.adjustedHeightEqualTo(24)
+            }
         case .comment:
             image = .icRippleReply
             
