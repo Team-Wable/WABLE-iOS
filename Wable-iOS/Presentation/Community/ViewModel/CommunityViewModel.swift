@@ -9,10 +9,7 @@ import Combine
 import Foundation
 
 final class CommunityViewModel {
-    var registration: CommunityRegistration { registrationRelay.value }
-    
     private let useCase: CommunityUseCase
-    private let registrationRelay = CurrentValueRelay<CommunityRegistration>(.initialState())
     
     init(useCase: CommunityUseCase) {
         self.useCase = useCase
@@ -32,6 +29,7 @@ extension CommunityViewModel: ViewModelType {
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
+        let registrationRelay = CurrentValueRelay<CommunityRegistration>(.initialState())
         let communityListRelay = CurrentValueRelay<[Community]>([])
         let isLoadingRelay = CurrentValueRelay<Bool>(false)
         
@@ -40,8 +38,8 @@ extension CommunityViewModel: ViewModelType {
                 WableLogger.log("\(error.localizedDescription)", for: .error)
                 return .just(.initialState())
             }
-            .sink { [weak self] status in
-                self?.registrationRelay.send(status)
+            .sink { status in
+                registrationRelay.send(status)
             }
             .store(in: cancelBag)
         
@@ -80,8 +78,8 @@ extension CommunityViewModel: ViewModelType {
         
         input.register
             .compactMap { communityListRelay.value[$0].team }
-            .handleEvents(receiveOutput: { [weak self] team in
-                self?.registrationRelay.send(.init(team: team, hasRegisteredTeam: true))
+            .handleEvents(receiveOutput: { team in
+                registrationRelay.send(.init(team: team, hasRegisteredTeam: true))
             })
             .withUnretained(self)
             .flatMap { owner, team -> AnyPublisher<Double, Never> in
@@ -96,12 +94,8 @@ extension CommunityViewModel: ViewModelType {
                     .compactMap { $0 }
                     .eraseToAnyPublisher()
             }
-            .sink { [weak self] updatedRate in
-                guard let registration = self?.registration,
-                      let team = registration.team
-                else {
-                    return
-                }
+            .sink { updatedRate in
+                guard let team = registrationRelay.value.team else { return }
                 
                 var community = communityListRelay.value.first { $0.team == team }
                 community?.registrationRate = updatedRate
@@ -115,7 +109,11 @@ extension CommunityViewModel: ViewModelType {
                     ? $0.team == registration.team
                     : false
                     
-                    return CommunityItem(community: $0, isRegistered: isRegistered)
+                    return CommunityItem(
+                        community: $0,
+                        isRegistered: isRegistered,
+                        hasRegisteredCommunity: registration.hasRegisteredTeam
+                    )
                 }
                 .sorted { $0.isRegistered && !$1.isRegistered }
             }
