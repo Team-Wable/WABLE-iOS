@@ -45,8 +45,8 @@ final class CommunityRegisterCell: UICollectionViewCell {
         registerCommunityClosure = nil
     }
     
-    func configure(imageURL: URL?, title: String, isRegistered: Bool = false) {
-        communityImageView.kf.setImage(with: imageURL)
+    func configure(image: UIImage?, title: String, isRegistered: Bool = false) {
+        communityImageView.image = image
         titleLabel.text = title
         
         registerButton.isHidden = isRegistered
