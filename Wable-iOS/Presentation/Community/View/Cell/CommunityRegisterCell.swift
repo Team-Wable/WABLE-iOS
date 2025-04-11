@@ -45,11 +45,11 @@ final class CommunityRegisterCell: UICollectionViewCell {
         registerCommunityClosure = nil
     }
     
-    func configure(image: UIImage?, title: String, isRegistered: Bool = false) {
+    func configure(image: UIImage?, title: String, hasRegisteredTeam: Bool = false) {
         communityImageView.image = image
         titleLabel.text = title
         
-        registerButton.isHidden = isRegistered
+        registerButton.isHidden = hasRegisteredTeam
     }
 }
 

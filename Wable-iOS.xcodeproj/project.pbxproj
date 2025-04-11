@@ -254,6 +254,7 @@
 		DE9891AA2D99925900D538D8 /* ActivityNotificationTriggerType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9891A92D99925900D538D8 /* ActivityNotificationTriggerType+.swift */; };
 		DE9B94762D927F140060FF92 /* NoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9B94752D927F140060FF92 /* NoticeViewModel.swift */; };
 		DE9C3BFC2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9C3BFB2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift */; };
+		DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7142DA92E7100D35646 /* CommunityView.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
 		DEAFE0562D8C45980097E91C /* GameScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */; };
 		DEAFE0592D8C4E0B0097E91C /* GameStatus+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0582D8C4E0B0097E91C /* GameStatus+.swift */; };
@@ -515,6 +516,7 @@
 		DE9891A92D99925900D538D8 /* ActivityNotificationTriggerType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityNotificationTriggerType+.swift"; sourceTree = "<group>"; };
 		DE9B94752D927F140060FF92 /* NoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewModel.swift; sourceTree = "<group>"; };
 		DE9C3BFB2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+.swift"; sourceTree = "<group>"; };
+		DEA9E7142DA92E7100D35646 /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
 		DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleCell.swift; sourceTree = "<group>"; };
 		DEAFE0582D8C4E0B0097E91C /* GameStatus+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameStatus+.swift"; sourceTree = "<group>"; };
@@ -1336,6 +1338,7 @@
 		DE0BFB612DA4F7D300F06656 /* Subview */ = {
 			isa = PBXGroup;
 			children = (
+				DEA9E7142DA92E7100D35646 /* CommunityView.swift */,
 				DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */,
 			);
 			path = Subview;
@@ -2009,6 +2012,7 @@
 				DD2968422D6DAD2F00143851 /* FetchNotices.swift in Sources */,
 				DD29686E2D6DAD5F00143851 /* Bundle+.swift in Sources */,
 				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,
+				DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */,
 				DD29686F2D6DAD5F00143851 /* MoyaLoggingPlugin.swift in Sources */,
 				DE98919B2D993D7200D538D8 /* InformationNotificationViewModel.swift in Sources */,
 				DD2968702D6DAD5F00143851 /* TokenStorage.swift in Sources */,

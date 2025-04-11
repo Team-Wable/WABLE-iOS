@@ -10,4 +10,5 @@ import UIKit
 struct CommunityItem: Hashable {
     let community: Community
     let isRegistered: Bool
+    let hasRegisteredCommunity: Bool
 }
