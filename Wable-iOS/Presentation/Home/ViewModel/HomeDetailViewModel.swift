@@ -107,7 +107,7 @@ extension HomeDetailViewModel: ViewModelType {
             })
             .handleEvents(receiveOutput: { result in
                 isLoadingSubject.send(false)
-                isLastViewSubject.send(result.1.isEmpty || result.1.count < Constant.defaultContentCountPerPage)
+                isLastViewSubject.send(result.1.isEmpty)
             })
             .sink { result in
                 contentSubject.send(result.0)
@@ -214,7 +214,7 @@ extension HomeDetailViewModel: ViewModelType {
 
 private extension HomeDetailViewModel {
     enum Constant {
-        static let defaultContentCountPerPage: Int = 10
+        static let defaultContentCountPerPage: Int = 15
         static let initialCursor: Int = -1
     }
 }
