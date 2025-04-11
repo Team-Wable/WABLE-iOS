@@ -17,6 +17,10 @@ enum CommunityTargetType {
 }
 
 extension CommunityTargetType: BaseTargetType {
+    var multipartFormData: [Moya.MultipartFormData]? {
+        return .none
+    }
+    
     var endPoint: String? {
         switch self {
         case .updatePreRegister:

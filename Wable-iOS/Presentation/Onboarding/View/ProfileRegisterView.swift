@@ -12,6 +12,14 @@ import Kingfisher
 
 final class ProfileRegisterView: UIView {
     
+    // MARK: Property
+
+    var defaultImageList = [
+        DefaultProfileType.blue,
+        DefaultProfileType.green,
+        DefaultProfileType.purple
+    ]
+    
     // MARK: - UIComponent
     
     private let titleLabel: UILabel = UILabel().then {
@@ -84,13 +92,9 @@ final class ProfileRegisterView: UIView {
 
 extension ProfileRegisterView {
     func configureDefaultImage() {
-        let defaultImage = [
-            DefaultProfileType.blue,
-            DefaultProfileType.green,
-            DefaultProfileType.purple
-        ].shuffled()[0]
+        defaultImageList.shuffle()
         
-        profileImageView.image = UIImage(named: defaultImage.rawValue)
+        profileImageView.image = UIImage(named: defaultImageList[0].rawValue)
     }
 }
 

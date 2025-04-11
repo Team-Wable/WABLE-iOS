@@ -22,6 +22,10 @@ import UIKit
 /// ```
 final class ContentCollectionViewCell: UICollectionViewCell {
     
+    // MARK: - Property
+    
+    var likeButtonTapHandler: (() -> Void)?
+    
     // MARK: - UIComponent
     
     private let infoView: PostUserInfoView = PostUserInfoView()
@@ -38,19 +42,25 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     }
     
     private let contentImageView: UIImageView = UIImageView().then {
+        $0.isUserInteractionEnabled = true
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.roundCorners([.all], radius: 8)
     }
     
-    private let contentLabel: UILabel = UILabel().then {
+    private let contentTextView: UITextView = UITextView().then {
+        $0.textContainerInset = .zero
+        $0.textContainer.lineFragmentPadding = 0
+        $0.dataDetectorTypes = [.link]
+        $0.isEditable = false
+        $0.isScrollEnabled = false
+        $0.setPretendard(with: .body4)
         $0.textColor = .gray800
-        $0.numberOfLines = 0
     }
     
     private lazy var ghostButton: GhostButton = GhostButton()
     
-    private lazy var likeButton: LikeButton = LikeButton()
+    lazy var likeButton: LikeButton = LikeButton()
     
     private lazy var commentButton: CommentButton = CommentButton(type: .content)
     
@@ -71,6 +81,15 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        contentImageView.kf.cancelDownloadTask()
+        contentImageView.image = nil
+        contentTextView.text = nil
+        titleLabel.text = nil
+    }
 }
 
 // MARK: - Private Extension
@@ -83,7 +102,7 @@ private extension ContentCollectionViewCell {
         contentStackView.addArrangedSubviews(
             titleLabel,
             contentImageView,
-            contentLabel
+            contentTextView
         )
         
         contentView.addSubviews(
@@ -138,6 +157,13 @@ private extension ContentCollectionViewCell {
         ghostButton.addTarget(self, action: #selector(ghostButtonDidTap), for: .touchUpInside)
         infoView.settingButton.addTarget(self, action: #selector(settingButtonDidTap), for: .touchUpInside)
         commentButton.addTarget(self, action: #selector(commentButtonDidTap), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
+        contentImageView.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(contentImageViewDidTap)
+            )
+        )
         infoView.profileImageView.addGestureRecognizer(
             UITapGestureRecognizer(
                 target: self,
@@ -147,6 +173,17 @@ private extension ContentCollectionViewCell {
     }
     
     // MARK: - @objc Method
+    
+    @objc func contentImageViewDidTap() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController = windowScene.windows.first?.rootViewController,
+              let image = contentImageView.image
+        else {
+            return
+        }
+        
+        rootViewController.present(PhotoDetailViewController(image: image), animated: true)
+    }
     
     @objc func profileImageViewDidTap() {
         // TODO: 프로필 이동 로직 구현 필요
@@ -171,6 +208,14 @@ private extension ContentCollectionViewCell {
         
         WableLogger.log("commentButtonDidTap", for: .debug)
     }
+    
+    @objc func likeButtonDidTap() {
+        let newCount = likeButton.isLiked ? likeButton.likeCount - 1 : likeButton.likeCount + 1
+        
+        likeButton.configureButton(isLiked: !likeButton.isLiked, likeCount: newCount, postType: .content)
+        
+        self.likeButtonTapHandler?()
+    }
 }
 
 // MARK: - Private Function Extension
@@ -183,7 +228,7 @@ private extension ContentCollectionViewCell {
             infoView,
             contentImageView,
             titleLabel,
-            contentLabel
+            contentTextView
         ].forEach {
             $0.alpha = CGFloat(opacity)
         }
@@ -197,26 +242,28 @@ extension ContentCollectionViewCell {
     /// - Parameters:
     ///   - info: 게시물 정보
     ///   - postType: 게시물 타입 (.mine 또는 .others)
-    func configureCell(info: ContentInfo, postType: AuthorType) {
-        guard let profileURL = info.author.profileURL,
-        let fanTeam = info.author.fanTeam,
-        let createdDate = info.createdDate
-        else {
-            return
-        }
+    ///   - likeButtonTapHandler: 좋아요 버튼을 클릭했을 때 실행될 로직
+    func configureCell(info: ContentInfo, postType: AuthorType, likeButtonTapHandler: (() -> Void)?) {
+        self.likeButtonTapHandler = likeButtonTapHandler
+        
+        guard let createdDate = info.createdDate else { return }
         
         infoView.configureView(
-            userProfileURL: profileURL,
+            userProfileURL: info.author.profileURL,
             userName: info.author.nickname,
-            userFanTeam: fanTeam,
+            userFanTeam: info.author.fanTeam,
             opacity: info.opacity.displayedValue,
             createdDate: createdDate,
             postType: .content
         )
+        
+        contentStackView.spacing = info.imageURL == nil ? 4 : 10
     
         titleLabel.attributedText = info.title.pretendardString(with: .head2)
-        contentLabel.attributedText = info.text.pretendardString(with: .body4)
+        contentImageView.isHidden = info.imageURL == nil
         contentImageView.kf.setImage(with: info.imageURL)
+        
+        contentTextView.text = info.text
         
         ghostButton.configureButton(type: .large, status: .normal)
         likeButton.configureButton(isLiked: info.like.status, likeCount: info.like.count, postType: .content)
@@ -241,7 +288,7 @@ extension ContentCollectionViewCell {
             }
             
             titleLabel.isHidden = true
-            contentLabel.isHidden = true
+            contentTextView.isHidden = true
             contentImageView.snp.updateConstraints {
                 $0.adjustedHeightEqualTo(98)
             }

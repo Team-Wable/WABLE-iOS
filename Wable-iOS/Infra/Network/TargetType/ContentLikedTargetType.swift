@@ -16,9 +16,13 @@ enum ContentLikedTargetType {
 }
 
 extension ContentLikedTargetType: BaseTargetType {
+    var multipartFormData: [Moya.MultipartFormData]? {
+        return .none
+    }
+    
     var endPoint: String? {
         switch self {
-        case .createContentLiked(contentID: let contentID):
+        case .createContentLiked(contentID: let contentID, _):
             return "/v1/content/\(contentID)/liked"
         case .deleteContentLiked(contentID: let contentID):
             return "/v1/content/\(contentID)/unliked"
@@ -30,7 +34,12 @@ extension ContentLikedTargetType: BaseTargetType {
     }
     
     var requestBody: (any Encodable)? {
-        return .none
+        switch self {
+        case .createContentLiked(_, request: let request):
+            return request
+        case .deleteContentLiked:
+            return .none
+        }
     }
     
     var method: Moya.Method {

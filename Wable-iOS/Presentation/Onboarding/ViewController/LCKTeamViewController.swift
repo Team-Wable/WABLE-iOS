@@ -11,14 +11,27 @@ import UIKit
 final class LCKTeamViewController: NavigationViewController {
     
     // MARK: - Property
+    // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
     
+    private let lckYear: Int
     private let randomTeamList: [LCKTeam] = [.t1, .gen, .bro, .drx, .dk, .kt, .ns, .bfx, .hle, .dnf].shuffled()
+    private var lckTeam = "LCK"
     
     // MARK: - UIComponent
     
     private let rootView = LCKTeamView()
     
     // MARK: - LifeCycle
+    
+    init(lckYear: Int) {
+        self.lckYear = lckYear
+        
+        super.init(type: .flow)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,15 +70,23 @@ private extension LCKTeamViewController {
     // MARK: - @objc Method
 
     @objc func skipButtonDidTap() {
-        // TODO: 좋아하는 팀 LCK로 설정하는 로직 필요
-        
-        navigationController?.pushViewController(ProfileRegisterViewController(type: .flow), animated: true)
+        navigationController?.pushViewController(
+            ProfileRegisterViewController(
+                lckYear: lckYear,
+                lckTeam: "LCK"
+            ),
+            animated: true
+        )
     }
     
     @objc func nextButtonDidTap() {
-        // TODO: 좋아하는 팀 선택된 버튼 팀으로 설정하는 로직 필요
-        
-        navigationController?.pushViewController(ProfileRegisterViewController(type: .flow), animated: true)
+        navigationController?.pushViewController(
+            ProfileRegisterViewController(
+                lckYear: lckYear,
+                lckTeam: lckTeam
+            ),
+            animated: true
+        )
     }
 }
 
@@ -79,6 +100,8 @@ extension LCKTeamViewController: UICollectionViewDelegate {
             cell.layer.borderColor = UIColor.gray300.cgColor
             cell.teamLabel.textColor = .gray700
         }
+        
+        lckTeam = randomTeamList[indexPath.row].rawValue
         
         guard let cell = collectionView.cellForItem(at: indexPath) as? LCKTeamCollectionViewCell else { return }
         

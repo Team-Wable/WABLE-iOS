@@ -89,6 +89,7 @@ private extension PostUserInfoView {
         profileImageView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(4)
             $0.leading.equalToSuperview().offset(16)
+            $0.bottom.equalToSuperview().inset(3)
             $0.adjustedWidthEqualTo(36)
             $0.adjustedHeightEqualTo(36)
         }
@@ -106,9 +107,8 @@ private extension PostUserInfoView {
         }
         
         ghostCountLabel.snp.makeConstraints {
-            $0.top.equalTo(userNameLabel.snp.bottom).offset(2)
             $0.leading.equalTo(profileImageView.snp.trailing).offset(10)
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(1)
         }
         
         postTimeLabel.snp.makeConstraints {
@@ -182,9 +182,9 @@ extension PostUserInfoView {
     ///   - createdDate: 게시물 작성 날짜
     ///   - postType: 게시물 타입 (.content 또는 .comment)
     func configureView(
-        userProfileURL: URL,
+        userProfileURL: URL?,
         userName: String,
-        userFanTeam: LCKTeam,
+        userFanTeam: LCKTeam?,
         opacity: Int,
         createdDate: Date,
         postType: PostType
@@ -196,8 +196,21 @@ extension PostUserInfoView {
             userNameLabel.attributedText = userName.pretendardString(with: .caption1)
         }
         
-        profileImageView.kf.setImage(with: userProfileURL)
-        fanTeamImageView.image = UIImage(named: "tag_\(userFanTeam.rawValue)")
+        switch userProfileURL?.absoluteString {
+        case "PURPLE":
+            profileImageView.image = .imgProfilePurple
+        case "GREEN":
+            profileImageView.image = .imgProfileGreen
+        case "BLUE":
+            profileImageView.image = .imgProfileBlue
+        default:
+            profileImageView.kf.setImage(
+                with: userProfileURL,
+                placeholder: [UIImage.imgProfilePurple, UIImage.imgProfileBlue, UIImage.imgProfileGreen].randomElement()
+            )
+        }
+        
+        // fanTeamImageView.image = UIImage(named: "tag_\(userFanTeam.rawValue)")
         ghostCountLabel.attributedText = "투명도 \(opacity)%".pretendardString(with: .caption4)
         postTimeLabel.attributedText = configurePostTime(date: createdDate).pretendardString(with: .caption4)
         fanTeamImageView.isHidden = true

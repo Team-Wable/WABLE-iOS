@@ -20,6 +20,10 @@ enum ViewitTargetType {
 }
 
 extension ViewitTargetType: BaseTargetType {
+    var multipartFormData: [Moya.MultipartFormData]? {
+        return .none
+    }
+    
     var endPoint: String? {
         switch self {
         case .deleteViewit(viewitID: let viewitID):

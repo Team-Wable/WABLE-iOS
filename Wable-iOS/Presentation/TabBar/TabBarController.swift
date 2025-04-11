@@ -10,11 +10,23 @@ import UIKit
 
 final class TabBarController: UITabBarController {
     
+    // MARK: Property
+
+    private let shouldShowLoadingScreen: Bool
+    
     // MARK: - UIComponent
     
-    private let homeViewController = HomeViewController(contentRepostiory: ContentRepositoryImpl()).then {
+    private lazy var homeViewController = HomeViewController(
+        viewModel: HomeViewModel(
+            fetchContentListUseCase: FetchContentListUseCase(repository: ContentRepositoryImpl()),
+            createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+            deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl())
+        ),
+        cancelBag: CancelBag()
+    ).then {
         $0.tabBarItem.title = "홈"
         $0.tabBarItem.image = .icHomeDefault
+        $0.shouldShowLoadingScreen = self.shouldShowLoadingScreen
     }
     
     private let communityViewController = CommunityViewController().then {
@@ -39,7 +51,9 @@ final class TabBarController: UITabBarController {
     
     // MARK: - LifeCycle
 
-    init() {
+    init(shouldShowLoadingScreen: Bool = true) {
+        self.shouldShowLoadingScreen = shouldShowLoadingScreen
+        
         super.init(nibName: nil, bundle: nil)
         
         modalPresentationStyle = .fullScreen
@@ -54,6 +68,7 @@ final class TabBarController: UITabBarController {
         super.viewDidLoad()
         
         setupView()
+        setupDelegate()
     }
 }
 
@@ -83,6 +98,10 @@ private extension TabBarController {
             animated: true
         )
     }
+    
+    func setupDelegate() {
+        delegate = self
+    }
 }
 
 // MARK: - Configure Extension
@@ -99,6 +118,20 @@ private extension TabBarController {
             $0.isTranslucent = false
             $0.standardAppearance = tabBarAppearance
             $0.scrollEdgeAppearance = tabBarAppearance
+        }
+    }
+}
+
+// MARK: - UITabBarControllerDelegate
+
+extension TabBarController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if let navigationController = viewController as? UINavigationController {
+            if navigationController.viewControllers.first is HomeViewController {
+                if tabBarController.selectedIndex == 0 {
+                    homeViewController.scrollToTop()
+                }
+            }
         }
     }
 }
