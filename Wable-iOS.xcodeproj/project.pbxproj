@@ -114,7 +114,7 @@
 		DD29685A2D6DAD4400143851 /* CreateCommentLiked.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29678A2D6DAC3100143851 /* CreateCommentLiked.swift */; };
 		DD29685B2D6DAD4400143851 /* CreateAccountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967812D6DAC3100143851 /* CreateAccountRequest.swift */; };
 		DD29685C2D6DAD4400143851 /* CreateContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29678C2D6DAC3100143851 /* CreateContent.swift */; };
-		DD29685D2D6DAD4400143851 /* UpdatePreRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967922D6DAC3100143851 /* UpdatePreRegister.swift */; };
+		DD29685D2D6DAD4400143851 /* UpdateRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967922D6DAC3100143851 /* UpdateRegister.swift */; };
 		DD29685E2D6DAD4400143851 /* DeleteAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967832D6DAC3100143851 /* DeleteAccount.swift */; };
 		DD29685F2D6DAD4400143851 /* UpdateGhost.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967902D6DAC3100143851 /* UpdateGhost.swift */; };
 		DD2968602D6DAD5500143851 /* GhostTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967772D6DAC3100143851 /* GhostTargetType.swift */; };
@@ -194,8 +194,6 @@
 		DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59522D785B9400A0BEF1 /* TokenError.swift */; };
 		DDED595C2D78C3B700A0BEF1 /* AppleAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED595B2D78C3B600A0BEF1 /* AppleAuthProvider.swift */; };
 		DDED595E2D78C3E000A0BEF1 /* KakaoAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED595D2D78C3D900A0BEF1 /* KakaoAuthProvider.swift */; };
-		DDED59702D78EE7800A0BEF1 /* FetchCommunityListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED596F2D78EDFA00A0BEF1 /* FetchCommunityListUseCase.swift */; };
-		DDED59722D78EE9900A0BEF1 /* UpdatePreRegisterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59712D78EE8900A0BEF1 /* UpdatePreRegisterUseCase.swift */; };
 		DDED59752D78F16400A0BEF1 /* FetchNicknameDuplicationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59742D78F15000A0BEF1 /* FetchNicknameDuplicationUseCase.swift */; };
 		DDED59782D78F1E500A0BEF1 /* CreateUserProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59772D78F1DA00A0BEF1 /* CreateUserProfileUseCase.swift */; };
 		DDED597C2D794F0D00A0BEF1 /* FetchUserAuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED597B2D794F0600A0BEF1 /* FetchUserAuthUseCase.swift */; };
@@ -222,6 +220,9 @@
 		DDFB22462D8BBB8600FEA24A /* ProfileRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22452D8BBB7900FEA24A /* ProfileRegisterViewController.swift */; };
 		DDFB22482D8BBCB300FEA24A /* ProfileRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22472D8BBCB000FEA24A /* ProfileRegisterView.swift */; };
 		DDFF126F2D7EE39500980BA7 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFF126E2D7EE39200980BA7 /* UIColor+.swift */; };
+		DE0BFB5E2DA4EC4D00F06656 /* CommunityRegisterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BFB5D2DA4EC4D00F06656 /* CommunityRegisterCell.swift */; };
+		DE0BFB602DA4F63800F06656 /* CommunityInviteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BFB5F2DA4F63800F06656 /* CommunityInviteCell.swift */; };
+		DE0BFB632DA4F7FA00F06656 /* CommunityCellBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */; };
 		DE20BAD72D903985000126A4 /* AnnouncementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE20BAD62D903985000126A4 /* AnnouncementDetailView.swift */; };
 		DE277A882D8C09AD006D2B53 /* OverviewPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */; };
 		DE33902E2D8EC3B700638BB4 /* NoticeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE33902D2D8EC3B700638BB4 /* NoticeCell.swift */; };
@@ -271,6 +272,8 @@
 		DE9891AA2D99925900D538D8 /* ActivityNotificationTriggerType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9891A92D99925900D538D8 /* ActivityNotificationTriggerType+.swift */; };
 		DE9B94762D927F140060FF92 /* NoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9B94752D927F140060FF92 /* NoticeViewModel.swift */; };
 		DE9C3BFC2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9C3BFB2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift */; };
+		DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7142DA92E7100D35646 /* CommunityView.swift */; };
+		DEA9E7172DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
 		DEAFE0562D8C45980097E91C /* GameScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */; };
 		DEAFE0592D8C4E0B0097E91C /* GameStatus+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0582D8C4E0B0097E91C /* GameStatus+.swift */; };
@@ -283,6 +286,13 @@
 		DEE5D6132D9126D8009E5A25 /* WableBadgeSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6122D9126D8009E5A25 /* WableBadgeSegmentedControl.swift */; };
 		DEE5D6162D9130E5009E5A25 /* GameScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6152D9130E5009E5A25 /* GameScheduleViewModel.swift */; };
 		DEE5D61A2D91537C009E5A25 /* GameScheduleViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6192D91537C009E5A25 /* GameScheduleViewItem.swift */; };
+		DEF148402DA7B586003B2AD8 /* CommunityUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF1483F2DA7B586003B2AD8 /* CommunityUseCase.swift */; };
+		DEF148422DA7B7E5003B2AD8 /* IsUserRegistered.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148412DA7B7E5003B2AD8 /* IsUserRegistered.swift */; };
+		DEF148442DA7B966003B2AD8 /* RegisterResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148432DA7B966003B2AD8 /* RegisterResult.swift */; };
+		DEF148542DA7EF7B003B2AD8 /* CommunityRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148532DA7EF7B003B2AD8 /* CommunityRegistration.swift */; };
+		DEF148572DA8019B003B2AD8 /* CommunityItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148562DA8019B003B2AD8 /* CommunityItem.swift */; };
+		DEF1485A2DA801D4003B2AD8 /* CommunityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148592DA801D4003B2AD8 /* CommunityViewModel.swift */; };
+		DEF1485E2DA81571003B2AD8 /* CommunityHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF1485D2DA81571003B2AD8 /* CommunityHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -334,7 +344,7 @@
 		DD29678C2D6DAC3100143851 /* CreateContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContent.swift; sourceTree = "<group>"; };
 		DD29678E2D6DAC3100143851 /* CreateContentLiked.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContentLiked.swift; sourceTree = "<group>"; };
 		DD2967902D6DAC3100143851 /* UpdateGhost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGhost.swift; sourceTree = "<group>"; };
-		DD2967922D6DAC3100143851 /* UpdatePreRegister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePreRegister.swift; sourceTree = "<group>"; };
+		DD2967922D6DAC3100143851 /* UpdateRegister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRegister.swift; sourceTree = "<group>"; };
 		DD2967942D6DAC3100143851 /* CreateBan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBan.swift; sourceTree = "<group>"; };
 		DD2967952D6DAC3100143851 /* CreateReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReport.swift; sourceTree = "<group>"; };
 		DD2967972D6DAC3100143851 /* CreateViewitPostRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewitPostRequest.swift; sourceTree = "<group>"; };
@@ -479,8 +489,6 @@
 		DDED59522D785B9400A0BEF1 /* TokenError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenError.swift; sourceTree = "<group>"; };
 		DDED595B2D78C3B600A0BEF1 /* AppleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthProvider.swift; sourceTree = "<group>"; };
 		DDED595D2D78C3D900A0BEF1 /* KakaoAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthProvider.swift; sourceTree = "<group>"; };
-		DDED596F2D78EDFA00A0BEF1 /* FetchCommunityListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCommunityListUseCase.swift; sourceTree = "<group>"; };
-		DDED59712D78EE8900A0BEF1 /* UpdatePreRegisterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePreRegisterUseCase.swift; sourceTree = "<group>"; };
 		DDED59742D78F15000A0BEF1 /* FetchNicknameDuplicationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchNicknameDuplicationUseCase.swift; sourceTree = "<group>"; };
 		DDED59772D78F1DA00A0BEF1 /* CreateUserProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserProfileUseCase.swift; sourceTree = "<group>"; };
 		DDED597B2D794F0600A0BEF1 /* FetchUserAuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserAuthUseCase.swift; sourceTree = "<group>"; };
@@ -494,6 +502,9 @@
 		DDFB22452D8BBB7900FEA24A /* ProfileRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRegisterViewController.swift; sourceTree = "<group>"; };
 		DDFB22472D8BBCB000FEA24A /* ProfileRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRegisterView.swift; sourceTree = "<group>"; };
 		DDFF126E2D7EE39200980BA7 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		DE0BFB5D2DA4EC4D00F06656 /* CommunityRegisterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegisterCell.swift; sourceTree = "<group>"; };
+		DE0BFB5F2DA4F63800F06656 /* CommunityInviteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityInviteCell.swift; sourceTree = "<group>"; };
+		DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityCellBaseView.swift; sourceTree = "<group>"; };
 		DE20BAD62D903985000126A4 /* AnnouncementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementDetailView.swift; sourceTree = "<group>"; };
 		DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPageViewController.swift; sourceTree = "<group>"; };
 		DE33902D2D8EC3B700638BB4 /* NoticeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeCell.swift; sourceTree = "<group>"; };
@@ -542,6 +553,8 @@
 		DE9891A92D99925900D538D8 /* ActivityNotificationTriggerType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityNotificationTriggerType+.swift"; sourceTree = "<group>"; };
 		DE9B94752D927F140060FF92 /* NoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewModel.swift; sourceTree = "<group>"; };
 		DE9C3BFB2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+.swift"; sourceTree = "<group>"; };
+		DEA9E7142DA92E7100D35646 /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
+		DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegisterCompleteViewController.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
 		DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleCell.swift; sourceTree = "<group>"; };
 		DEAFE0582D8C4E0B0097E91C /* GameStatus+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameStatus+.swift"; sourceTree = "<group>"; };
@@ -555,6 +568,13 @@
 		DEE5D6122D9126D8009E5A25 /* WableBadgeSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableBadgeSegmentedControl.swift; sourceTree = "<group>"; };
 		DEE5D6152D9130E5009E5A25 /* GameScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleViewModel.swift; sourceTree = "<group>"; };
 		DEE5D6192D91537C009E5A25 /* GameScheduleViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleViewItem.swift; sourceTree = "<group>"; };
+		DEF1483F2DA7B586003B2AD8 /* CommunityUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityUseCase.swift; sourceTree = "<group>"; };
+		DEF148412DA7B7E5003B2AD8 /* IsUserRegistered.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsUserRegistered.swift; sourceTree = "<group>"; };
+		DEF148432DA7B966003B2AD8 /* RegisterResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterResult.swift; sourceTree = "<group>"; };
+		DEF148532DA7EF7B003B2AD8 /* CommunityRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegistration.swift; sourceTree = "<group>"; };
+		DEF148562DA8019B003B2AD8 /* CommunityItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityItem.swift; sourceTree = "<group>"; };
+		DEF148592DA801D4003B2AD8 /* CommunityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewModel.swift; sourceTree = "<group>"; };
+		DEF1485D2DA81571003B2AD8 /* CommunityHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -785,7 +805,7 @@
 		DD2967932D6DAC3100143851 /* Community */ = {
 			isa = PBXGroup;
 			children = (
-				DD2967922D6DAC3100143851 /* UpdatePreRegister.swift */,
+				DD2967922D6DAC3100143851 /* UpdateRegister.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -897,6 +917,8 @@
 			isa = PBXGroup;
 			children = (
 				DD2967B42D6DAC3100143851 /* FetchCommunites.swift */,
+				DEF148412DA7B7E5003B2AD8 /* IsUserRegistered.swift */,
+				DEF148432DA7B966003B2AD8 /* RegisterResult.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -1055,6 +1077,7 @@
 				DD2967F22D6DAC3100143851 /* LCKTeamRank.swift */,
 				DD2967F32D6DAC3100143851 /* Announcement.swift */,
 				DD2967F52D6DAC3100143851 /* Community.swift */,
+				DEF148532DA7EF7B003B2AD8 /* CommunityRegistration.swift */,
 				DD2967F62D6DAC3100143851 /* Viewit.swift */,
 			);
 			path = Entity;
@@ -1291,8 +1314,7 @@
 		DDED596E2D78EB9200A0BEF1 /* Community */ = {
 			isa = PBXGroup;
 			children = (
-				DDED59712D78EE8900A0BEF1 /* UpdatePreRegisterUseCase.swift */,
-				DDED596F2D78EDFA00A0BEF1 /* FetchCommunityListUseCase.swift */,
+				DEF1483F2DA7B586003B2AD8 /* CommunityUseCase.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -1369,6 +1391,36 @@
 				DD514D072D8C833D0095021D /* AgreementViewController.swift */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		DE0BFB5B2DA4EC3700F06656 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */,
+				DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */,
+				DE0BFB5C2DA4EC4000F06656 /* Cell */,
+				DE0BFB612DA4F7D300F06656 /* Subview */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DE0BFB5C2DA4EC4000F06656 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DE0BFB5D2DA4EC4D00F06656 /* CommunityRegisterCell.swift */,
+				DE0BFB5F2DA4F63800F06656 /* CommunityInviteCell.swift */,
+				DEF1485D2DA81571003B2AD8 /* CommunityHeaderView.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		DE0BFB612DA4F7D300F06656 /* Subview */ = {
+			isa = PBXGroup;
+			children = (
+				DEA9E7142DA92E7100D35646 /* CommunityView.swift */,
+				DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */,
+			);
+			path = Subview;
 			sourceTree = "<group>";
 		};
 		DE20BAD52D903964000126A4 /* Subview */ = {
@@ -1452,7 +1504,9 @@
 		DE59BB9C2D8A9D870040ADCB /* Community */ = {
 			isa = PBXGroup;
 			children = (
-				DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */,
+				DEF148552DA80193003B2AD8 /* Model */,
+				DEF148582DA801C8003B2AD8 /* ViewModel */,
+				DE0BFB5B2DA4EC3700F06656 /* View */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -1832,6 +1886,22 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		DEF148552DA80193003B2AD8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DEF148562DA8019B003B2AD8 /* CommunityItem.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DEF148582DA801C8003B2AD8 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DEF148592DA801D4003B2AD8 /* CommunityViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1978,7 +2048,6 @@
 				DD2968552D6DAD4400143851 /* CreateComment.swift in Sources */,
 				DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */,
 				DD2968562D6DAD4400143851 /* UpdateUserBadge.swift in Sources */,
-				DDED59702D78EE7800A0BEF1 /* FetchCommunityListUseCase.swift in Sources */,
 				DDCD66E52D7DC0EB00EF4C28 /* NavigationView.swift in Sources */,
 				DE8E863F2D91A032000A4292 /* AmplitudeManager.swift in Sources */,
 				DD2968572D6DAD4400143851 /* CreateReport.swift in Sources */,
@@ -1995,7 +2064,8 @@
 				DD29685B2D6DAD4400143851 /* CreateAccountRequest.swift in Sources */,
 				DE9B94762D927F140060FF92 /* NoticeViewModel.swift in Sources */,
 				DD29685C2D6DAD4400143851 /* CreateContent.swift in Sources */,
-				DD29685D2D6DAD4400143851 /* UpdatePreRegister.swift in Sources */,
+				DEF148572DA8019B003B2AD8 /* CommunityItem.swift in Sources */,
+				DD29685D2D6DAD4400143851 /* UpdateRegister.swift in Sources */,
 				DD29685E2D6DAD4400143851 /* DeleteAccount.swift in Sources */,
 				DD29685F2D6DAD4400143851 /* UpdateGhost.swift in Sources */,
 				DD2968162D6DACF700143851 /* GameSchedule.swift in Sources */,
@@ -2027,11 +2097,14 @@
 				DD2968422D6DAD2F00143851 /* FetchNotices.swift in Sources */,
 				DD29686E2D6DAD5F00143851 /* Bundle+.swift in Sources */,
 				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,
+				DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */,
 				DD29686F2D6DAD5F00143851 /* MoyaLoggingPlugin.swift in Sources */,
 				DE98919B2D993D7200D538D8 /* InformationNotificationViewModel.swift in Sources */,
 				DD2968702D6DAD5F00143851 /* TokenStorage.swift in Sources */,
 				DE8E863D2D918759000A4292 /* RankViewModel.swift in Sources */,
 				DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */,
+				DE0BFB602DA4F63800F06656 /* CommunityInviteCell.swift in Sources */,
+				DE0BFB5E2DA4EC4D00F06656 /* CommunityRegisterCell.swift in Sources */,
 				DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */,
 				DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */,
 				DE83891D2D9071E400C089E6 /* Date+.swift in Sources */,
@@ -2059,6 +2132,7 @@
 				DD29684C2D6DAD2F00143851 /* FetchNews.swift in Sources */,
 				DD29684D2D6DAD2F00143851 /* FetchContentComments.swift in Sources */,
 				DD29684E2D6DAD2F00143851 /* FetchUserNotifications.swift in Sources */,
+				DEA9E7172DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift in Sources */,
 				DD29684F2D6DAD2F00143851 /* FetchViewits.swift in Sources */,
 				DE59BB9A2D8A9D3A0040ADCB /* NotificationPageViewController.swift in Sources */,
 				DDCA70952D883D4100A988B8 /* NavigationViewController.swift in Sources */,
@@ -2092,6 +2166,7 @@
 				DDED59882D7965F100A0BEF1 /* NotificationUseCase.swift in Sources */,
 				DDFB223B2D8B9F5100FEA24A /* LCKYearCollectionViewCell.swift in Sources */,
 				DD2968672D6DAD5500143851 /* InformationTargetType.swift in Sources */,
+				DEF148542DA7EF7B003B2AD8 /* CommunityRegistration.swift in Sources */,
 				DD2968682D6DAD5500143851 /* BaseTargetType.swift in Sources */,
 				DE9593352D9A1465009B00D3 /* ActivityNotificationViewModel.swift in Sources */,
 				DD2968692D6DAD5500143851 /* CommentTargetType.swift in Sources */,
@@ -2112,9 +2187,11 @@
 				DEE5D6162D9130E5009E5A25 /* GameScheduleViewModel.swift in Sources */,
 				DD5098122DA2C35500F666DE /* CreateCommentLikedUseCase.swift in Sources */,
 				DE7C53122D761EA400076E5D /* UIStackView+.swift in Sources */,
+				DEF1485A2DA801D4003B2AD8 /* CommunityViewModel.swift in Sources */,
 				DDCCA3952D73928900658122 /* UserSession.swift in Sources */,
 				DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */,
 				DE9891AA2D99925900D538D8 /* ActivityNotificationTriggerType+.swift in Sources */,
+				DEF148442DA7B966003B2AD8 /* RegisterResult.swift in Sources */,
 				DE7004902D8EA93A00B7AB71 /* NewsCell.swift in Sources */,
 				DD2968022D6DAC9B00143851 /* ViewController.swift in Sources */,
 				DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */,
@@ -2128,6 +2205,7 @@
 				DDCA70972D88797200A988B8 /* AuthorType.swift in Sources */,
 				DD2967FC2D6DAC4800143851 /* Injected.swift in Sources */,
 				DD2967FD2D6DAC4800143851 /* CancelBag.swift in Sources */,
+				DEF148422DA7B7E5003B2AD8 /* IsUserRegistered.swift in Sources */,
 				DD2967FE2D6DAC4800143851 /* WableLogger.swift in Sources */,
 				DE59BBA92D8A9EFD0040ADCB /* UIViewController+.swift in Sources */,
 				DE7C53142D761EE500076E5D /* UIView+.swift in Sources */,
@@ -2140,6 +2218,7 @@
 				DD2968182D6DAD0200143851 /* CommunityRepository.swift in Sources */,
 				DD4AFD472D90264500D56B94 /* OAuthEventManager.swift in Sources */,
 				DDED59862D7965E900A0BEF1 /* OverviewUseCase.swift in Sources */,
+				DEF148402DA7B586003B2AD8 /* CommunityUseCase.swift in Sources */,
 				DDED597C2D794F0D00A0BEF1 /* FetchUserAuthUseCase.swift in Sources */,
 				DE7C53102D761E3300076E5D /* String+.swift in Sources */,
 				DD9EAE222D99C59900803A1A /* FetchContentListUseCase.swift in Sources */,
@@ -2155,7 +2234,6 @@
 				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
 				DD29681D2D6DAD0200143851 /* CommentRepository.swift in Sources */,
 				DE72BB1A2D93DC8C008E5774 /* ActivityNotificationViewController.swift in Sources */,
-				DDED59722D78EE9900A0BEF1 /* UpdatePreRegisterUseCase.swift in Sources */,
 				DEAFE0592D8C4E0B0097E91C /* GameStatus+.swift in Sources */,
 				DD29681E2D6DAD0200143851 /* AccountRepository.swift in Sources */,
 				DD50981A2DA519DC00F666DE /* FetchUserInformationUseCase.swift in Sources */,
@@ -2165,6 +2243,7 @@
 				DD2968202D6DAD0200143851 /* LoginRepository.swift in Sources */,
 				DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */,
 				DE7C531A2D76202B00076E5D /* UITextField+.swift in Sources */,
+				DEF1485E2DA81571003B2AD8 /* CommunityHeaderView.swift in Sources */,
 				DE9C3BFC2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift in Sources */,
 				DD2968212D6DAD0200143851 /* ContentLikedRepository.swift in Sources */,
 				DD2968222D6DAD0200143851 /* CommentLikedRepository.swift in Sources */,
@@ -2186,6 +2265,7 @@
 				DDCD66F32D7DF5AB00EF4C28 /* HomeViewController.swift in Sources */,
 				DD29682C2D6DAD0B00143851 /* ContentMapper.swift in Sources */,
 				DE83891B2D906C0C00C089E6 /* Types.swift in Sources */,
+				DE0BFB632DA4F7FA00F06656 /* CommunityCellBaseView.swift in Sources */,
 				DD29682D2D6DAD0B00143851 /* NotificationMapper.swift in Sources */,
 				DE3390302D8EC6C400638BB4 /* NoticeViewController.swift in Sources */,
 				DD2968232D6DAD0200143851 /* NotificationRepository.swift in Sources */,

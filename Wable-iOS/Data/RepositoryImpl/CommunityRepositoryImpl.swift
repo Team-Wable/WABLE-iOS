@@ -17,16 +17,16 @@ final class CommunityRepositoryImpl {
 }
 
 extension CommunityRepositoryImpl: CommunityRepository {
-    func updatePreRegister(communityName: LCKTeam) -> AnyPublisher<Void, WableError> {
+    func updateRegister(communityName: String) -> AnyPublisher<Double, WableError> {
         return provider.request(
-            .updatePreRegister(
-                request: DTO.Request.UpdatePreRegister(
-                    communityName: communityName.rawValue
+            .updateRegister(
+                request: DTO.Request.UpdateRegister(
+                    communityName: communityName
                 )
             ),
-            for: DTO.Response.Empty.self
+            for: DTO.Response.RegisterResult.self
         )
-        .asVoid()
+        .map { $0.registrationRate }
         .mapWableError()
     }
     
@@ -37,5 +37,11 @@ extension CommunityRepositoryImpl: CommunityRepository {
         )
         .map(CommunityMapper.toDomain)
         .mapWableError()
+    }
+    
+    func isUserRegistered() -> AnyPublisher<CommunityRegistration, WableError> {
+        return provider.request(.isUserRegistered, for: DTO.Response.IsUserRegistered.self)
+            .map(CommunityMapper.toDomain)
+            .mapWableError()
     }
 }
