@@ -8,6 +8,8 @@
 import Combine
 import UIKit
 
+import Lottie
+
 final class HomeDetailViewController: NavigationViewController {
     
     // MARK: - Section
@@ -64,6 +66,12 @@ final class HomeDetailViewController: NavigationViewController {
         $0.alwaysBounceVertical = true
     }
     
+    private let underLineView: LottieAnimationView = LottieAnimationView(name: LottieType.tab.rawValue).then {
+        $0.contentMode = .scaleToFill
+        $0.loopMode = .loop
+        $0.play()
+    }
+    
     private let writeCommentView: UIView = UIView().then {
         $0.backgroundColor = .wableWhite
     }
@@ -74,7 +82,7 @@ final class HomeDetailViewController: NavigationViewController {
         $0.backgroundColor = .gray100
         $0.setPretendard(with: .body4)
         $0.textContainer.lineFragmentPadding = .zero
-        $0.textContainerInset = .zero
+        $0.textContainerInset = .init(top: 10, left: 10, bottom: 10, right: 10)
     }
     
     private lazy var createCommentButton: UIButton = UIButton().then {
@@ -100,6 +108,12 @@ final class HomeDetailViewController: NavigationViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        willAppearSubject.send()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -115,13 +129,21 @@ final class HomeDetailViewController: NavigationViewController {
 
 private extension HomeDetailViewController {
     func setupView() {
-        view.addSubviews(collectionView, writeCommentView, loadingIndicator)
+        view.addSubviews(collectionView, underLineView, writeCommentView, loadingIndicator)
         writeCommentView.addSubviews(commentTextView, createCommentButton)
     }
     
     func setupConstraint() {
         collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(navigationView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalTo(underLineView.snp.top)
+        }
+        
+        underLineView.snp.makeConstraints {
+            $0.bottom.equalTo(writeCommentView.snp.top)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(2)
         }
         
         writeCommentView.snp.makeConstraints {
@@ -195,12 +217,9 @@ private extension HomeDetailViewController {
     
     func setupAction() {
         createCommentButton.addAction(UIAction(handler: { _ in
-            // TODO: 데이터 뭐 넘겨야하는지 확인하고 넘기기
-//            self.didCreateTappedSubject.send((
-//                commentTextView.text,
-//                Int?,
-//                Int?)
-//            )
+            guard let text = self.commentTextView.text else { return }
+            
+            self.didCreateTappedSubject.send(text)
         }), for: .touchUpInside)
     }
     
@@ -217,33 +236,80 @@ private extension HomeDetailViewController {
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
         
-//        output.comments
+//        output.textViewState
 //            .receive(on: DispatchQueue.main)
-//            .sink { comments in
-//                <#code#>
-//            }
-//            .store(in: cancelBag)
-//        
-//        output.content
-//            .receive(on: DispatchQueue.main)
-//            .sink { content in
-//                <#code#>
+//            .sink { commentType in
+//                switch commentType {
+//                case .ripple:
+//                    <#code#>
+//                case .reply:
+//                    <#code#>
+//                }
 //            }
 //            .store(in: cancelBag)
         
+        output.content
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, contentInfo in
+                guard let contentInfo = contentInfo else { return }
+                
+                owner.userInformationUseCase.fetchActiveUserID()
+                    .receive(on: DispatchQueue.main)
+                    .sink { id in
+                        guard let id = id else { return }
+                        
+                        let content = Content(
+                            content: UserContent(
+                                id: id,
+                                contentInfo: contentInfo
+                            ),
+                            isDeleted: false
+                        )
+                        
+                        owner.updateContent(content)
+                    }
+                    .store(in: owner.cancelBag)
+            }
+            .store(in: cancelBag)
+        
+        output.comments
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, comments in
+                owner.updateComments(comments)
+            }
+            .store(in: cancelBag)
+        
         output.isLoading
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isLoading in
+            .withUnretained(self)
+            .sink { owner, isLoading in
                 if !isLoading {
-                    self?.collectionView.refreshControl?.endRefreshing()
+                    owner.collectionView.refreshControl?.endRefreshing()
                 }
             }
             .store(in: cancelBag)
         
         output.isLoadingMore
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isLoadingMore in
-                isLoadingMore ? self?.loadingIndicator.startAnimating() : self?.loadingIndicator.stopAnimating()
+            .withUnretained(self)
+            .sink { owner, isLoadingMore in
+                isLoadingMore ? owner.loadingIndicator.startAnimating() : owner.loadingIndicator.stopAnimating()
+            }
+            .store(in: cancelBag)
+        
+        output.postSucceed
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, isSucceed in
+                if isSucceed {
+                    owner.commentTextView.text = nil
+                    owner.scrollToTop()
+                    
+                    let toast = ToastView(status: .complete, message: "댓글을 남겼어요")
+                    toast.show()
+                }
             }
             .store(in: cancelBag)
     }
@@ -257,16 +323,17 @@ private extension HomeDetailViewController {
             guard let self = self else { return nil }
             
             let section = Section.allCases[sectionIndex]
+            
             switch section {
             case .content:
-                return self.createSection(estimatedHeight: 500, topInset: 0)
+                return self.createSection(estimatedHeight: 500)
             case .comment:
-                return self.createSection(estimatedHeight: 300, topInset: 10)
+                return self.createSection(estimatedHeight: 500)
             }
         }
     }
 
-    private func createSection(estimatedHeight: CGFloat, topInset: CGFloat) -> NSCollectionLayoutSection {
+    private func createSection(estimatedHeight: CGFloat) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .estimated(estimatedHeight)
@@ -285,13 +352,12 @@ private extension HomeDetailViewController {
         )
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: topInset, leading: 0, bottom: 0, trailing: 0)
         
         return section
     }
 }
 
-// MARK: - Update Data Methods
+// MARK: - Helper Method
 
 extension HomeDetailViewController {
     func updateContent(_ content: Content) {
@@ -312,5 +378,9 @@ extension HomeDetailViewController {
         snapshot.appendItems(commentItems, toSection: .comment)
         
         dataSource?.apply(snapshot, animatingDifferences: true)
+    }
+    
+    func scrollToTop() {
+        collectionView.setContentOffset(.zero, animated: true)
     }
 }

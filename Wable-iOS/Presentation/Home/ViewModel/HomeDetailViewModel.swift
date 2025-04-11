@@ -63,6 +63,7 @@ extension HomeDetailViewModel: ViewModelType {
         let isLoading: AnyPublisher<Bool, Never>
         let isLoadingMore: AnyPublisher<Bool, Never>
         let textViewState: AnyPublisher<CommentType, Never>
+        let postSucceed: AnyPublisher<Bool, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
@@ -73,6 +74,7 @@ extension HomeDetailViewModel: ViewModelType {
         let isLastViewSubject = CurrentValueSubject<Bool, Never>(false)
         let replyParentSubject = CurrentValueSubject<(Int, Int), Never>((-1, -1))
         let commentTypeSubject = CurrentValueSubject<CommentType, Never>(.ripple)
+        let postSucceedSubject = CurrentValueSubject<Bool, Never>(false)
         
         Publishers.Merge<AnyPublisher<Void, Never>, AnyPublisher<Void, Never>>(
             input.viewWillAppear,
@@ -156,7 +158,18 @@ extension HomeDetailViewModel: ViewModelType {
                 )
                 .asDriver(onErrorJustReturn: ())
             }
-            .sink(receiveValue: { _ in })
+            .sink(receiveValue: { [weak self] _ in
+                guard let id = self?.contentID else { return }
+                
+                self?.fetchContentCommentListUseCase.execute(contentID: id, cursor: -1)
+                    .sink(receiveCompletion: { _ in
+                    }, receiveValue: { comments in
+                        commentsSubject.send(comments)
+                    })
+                    .store(in: cancelBag)
+                
+                postSucceedSubject.send(true)
+            })
             .store(in: cancelBag)
         
         input.willDisplayLastItem
@@ -193,7 +206,8 @@ extension HomeDetailViewModel: ViewModelType {
             comments: commentsSubject.eraseToAnyPublisher(),
             isLoading: isLoadingSubject.eraseToAnyPublisher(),
             isLoadingMore: isLoadingMoreSubject.eraseToAnyPublisher(),
-            textViewState: commentTypeSubject.eraseToAnyPublisher()
+            textViewState: commentTypeSubject.eraseToAnyPublisher(),
+            postSucceed: postSucceedSubject.eraseToAnyPublisher()
         )
     }
 }
