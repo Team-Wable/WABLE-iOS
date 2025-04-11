@@ -79,6 +79,7 @@ final class HomeDetailViewController: NavigationViewController {
     private lazy var commentTextView: UITextView = UITextView().then {
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 16
+        $0.isScrollEnabled = false
         $0.backgroundColor = .gray100
         $0.setPretendard(with: .body4)
         $0.textContainer.lineFragmentPadding = .zero
@@ -121,6 +122,7 @@ final class HomeDetailViewController: NavigationViewController {
         setupConstraint()
         setupDataSource()
         setupAction()
+        setupDelegate()
         setupBinding()
     }
 }
@@ -221,6 +223,13 @@ private extension HomeDetailViewController {
             
             self.didCreateTappedSubject.send(text)
         }), for: .touchUpInside)
+        collectionView.refreshControl?.addAction(UIAction(handler: { _ in
+            self.didRefreshSubject.send()
+        }), for: .valueChanged)
+    }
+    
+    func setupDelegate() {
+        collectionView.delegate = self
     }
     
     func setupBinding() {
@@ -312,6 +321,24 @@ private extension HomeDetailViewController {
                 }
             }
             .store(in: cancelBag)
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension HomeDetailViewController: UICollectionViewDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if Section.allCases[indexPath.section] == .comment {
+            let sectionItemCount = dataSource?.snapshot().numberOfItems(inSection: .comment) ?? 0
+            
+            if indexPath.item >= sectionItemCount - 5 && sectionItemCount > 0 {
+                willDisplayLastItemSubject.send()
+            }
+        }
     }
 }
 
