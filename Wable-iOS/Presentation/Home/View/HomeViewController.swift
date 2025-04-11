@@ -33,7 +33,7 @@ final class HomeViewController: NavigationViewController {
     private let didHeartTappedSubject = PassthroughSubject<(Int, Bool), Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
     private let cancelBag: CancelBag
-    var shouldShowLoadingScreen: Bool = true
+    var shouldShowLoadingScreen: Bool = false
     
     // MARK: - UIComponent
     
@@ -87,9 +87,9 @@ final class HomeViewController: NavigationViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        willAppearSubject.send()
-        
         shouldShowLoadingScreen ? showLoadingScreen() : nil
+        
+        willAppearSubject.send()
         
         scrollToTop()
     }
