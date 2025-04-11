@@ -22,8 +22,8 @@ extension CommentLikedTargetType: BaseTargetType {
     
     var endPoint: String? {
         switch self {
-        case .createCommentLiked(contentID: let contentID):
-            return "v1/comment/\(contentID)/liked"
+        case .createCommentLiked(commentID: let commentID, _):
+            return "v1/comment/\(commentID)/liked"
         case .deleteCommentLiked(commentID: let commentID):
             return "v1/comment/\(commentID)/unliked"
         }

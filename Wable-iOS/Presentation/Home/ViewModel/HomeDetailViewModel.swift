@@ -51,6 +51,7 @@ extension HomeDetailViewModel: ViewModelType {
         let viewWillAppear: AnyPublisher<Void, Never>
         let viewDidRefresh: AnyPublisher<Void, Never>
         let didContentHeartTappedItem: AnyPublisher<Bool, Never>
+        let didCommentHeartTappedItem: AnyPublisher<(Bool, ContentComment), Never>
         let didCommentTappedItem: AnyPublisher<Void, Never>
         let didReplyTappedItem: AnyPublisher<Int, Never>
         let didCreateTappedItem: AnyPublisher<String, Never>
@@ -129,6 +130,20 @@ extension HomeDetailViewModel: ViewModelType {
             .sink(receiveValue: { _ in })
             .store(in: cancelBag)
         
+        input.didCommentHeartTappedItem
+            .withUnretained(self)
+            .flatMap { owner, info -> AnyPublisher<Void, Never> in
+                if info.0 {
+                    return owner.createCommentLikedUseCase.execute(commentID: info.1.comment.id, notificationText: info.1.comment.text)
+                        .asDriver(onErrorJustReturn: ())
+                } else {
+                    return owner.deleteCommentLikedUseCase.execute(commentID: info.1.comment.id)
+                        .asDriver(onErrorJustReturn: ())
+                }
+            }
+            .sink(receiveValue: { _ in })
+            .store(in: cancelBag)
+        
         input.didCommentTappedItem
             .withUnretained(self)
             .sink { owner, _ in
@@ -201,7 +216,7 @@ extension HomeDetailViewModel: ViewModelType {
             }
             .store(in: cancelBag)
         
-        return Output(
+    return Output(
             content: contentSubject.eraseToAnyPublisher(),
             comments: commentsSubject.eraseToAnyPublisher(),
             isLoading: isLoadingSubject.eraseToAnyPublisher(),

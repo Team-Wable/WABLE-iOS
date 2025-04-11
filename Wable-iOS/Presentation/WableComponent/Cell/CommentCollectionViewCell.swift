@@ -37,7 +37,6 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Property
     
-    private let type: CommentType = .ripple
     var likeButtonTapHandler: (() -> Void)?
     var replyButtonTapHandler: (() -> Void)?
     
@@ -158,7 +157,7 @@ private extension CommentCollectionViewCell {
     @objc func likeButtonDidTap() {
         let newCount = likeButton.isLiked ? likeButton.likeCount - 1 : likeButton.likeCount + 1
         
-        likeButton.configureButton(isLiked: !likeButton.isLiked, likeCount: newCount, postType: .content)
+        likeButton.configureButton(isLiked: !likeButton.isLiked, likeCount: newCount, postType: .comment)
         
         self.likeButtonTapHandler?()
     }

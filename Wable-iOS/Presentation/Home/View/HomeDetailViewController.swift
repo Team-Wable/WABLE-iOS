@@ -38,7 +38,7 @@ final class HomeDetailViewController: NavigationViewController {
     private let willAppearSubject = PassthroughSubject<Void, Never>()
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
     private let didContentHeartTappedSubject = PassthroughSubject<Bool, Never>()
-    private let didCommentHeartTappedSubject = PassthroughSubject<Bool, Never>()
+    private let didCommentHeartTappedSubject = PassthroughSubject<(Bool, ContentComment), Never>()
     private let didReplyTappedSubject = PassthroughSubject<Int, Never>()
     private let didCommentTappedSubject = PassthroughSubject<Void, Never>()
     private let didCreateTappedSubject = PassthroughSubject<String, Never>()
@@ -189,7 +189,7 @@ private extension HomeDetailViewController {
                         commentType: item.parentID == -1 ? .ripple : .reply,
                         postType: item.comment.author.id == id ? .mine : .others,
                         likeButtonTapHandler: {
-                            self.didCommentHeartTappedSubject.send(cell.likeButton.isLiked)
+                            self.didCommentHeartTappedSubject.send((cell.likeButton.isLiked, item))
                         },
                         replyButtonTapHandler: {
                             self.didReplyTappedSubject.send(indexPath.item)
@@ -237,6 +237,7 @@ private extension HomeDetailViewController {
             viewWillAppear: willAppearSubject.eraseToAnyPublisher(),
             viewDidRefresh: didRefreshSubject.eraseToAnyPublisher(),
             didContentHeartTappedItem: didContentHeartTappedSubject.eraseToAnyPublisher(),
+            didCommentHeartTappedItem: didCommentHeartTappedSubject.eraseToAnyPublisher(),
             didCommentTappedItem: didCommentTappedSubject.eraseToAnyPublisher(),
             didReplyTappedItem: didReplyTappedSubject.eraseToAnyPublisher(),
             didCreateTappedItem: didCreateTappedSubject.eraseToAnyPublisher(),
