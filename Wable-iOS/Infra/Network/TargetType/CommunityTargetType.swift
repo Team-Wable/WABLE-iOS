@@ -14,7 +14,7 @@ import Moya
 enum CommunityTargetType {
     case updateRegister(request: DTO.Request.UpdateRegister)
     case fetchCommunityList
-    case isUserRegisterd
+    case isUserRegistered
 }
 
 extension CommunityTargetType: BaseTargetType {
@@ -24,7 +24,7 @@ extension CommunityTargetType: BaseTargetType {
             return "/v2/community/prein"
         case .fetchCommunityList:
             return "/v1/community/list"
-        case .isUserRegisterd:
+        case .isUserRegistered:
             return "/v1/community/member"
         }
     }
@@ -39,7 +39,7 @@ extension CommunityTargetType: BaseTargetType {
             return request
         case .fetchCommunityList:
             return .none
-        case .isUserRegisterd:
+        case .isUserRegistered:
             return .none
         }
     }
@@ -50,7 +50,7 @@ extension CommunityTargetType: BaseTargetType {
             return .patch
         case .fetchCommunityList:
             return .get
-        case .isUserRegisterd:
+        case .isUserRegistered:
             return .get
         }
     }
