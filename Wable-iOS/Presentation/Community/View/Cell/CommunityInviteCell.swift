@@ -57,12 +57,12 @@ final class CommunityInviteCell: UICollectionViewCell {
     }
     
     func configure(
-        imageURL: URL?,
+        image: UIImage?,
         title: String,
         progress: Float,
         progressBarColor: UIColor
     ) {
-        communityImageView.kf.setImage(with: imageURL, placeholder: UIImage(resource: .logoSymbolSmall))
+        communityImageView.image = image
         
         titleLabel.text = title
         
