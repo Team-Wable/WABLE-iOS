@@ -58,6 +58,8 @@ final class CommunityRegisterCell: UICollectionViewCell {
 private extension CommunityRegisterCell {
     func setupView() {
         contentView.addSubview(baseView)
+        
+        registerButton.configuration?.attributedTitle = Constant.defaultButtonTitle.pretendardString(with: .body3)
     }
     
     func setupConstraint() {
