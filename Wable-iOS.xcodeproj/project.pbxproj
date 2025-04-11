@@ -293,6 +293,7 @@
 		DEF148572DA8019B003B2AD8 /* CommunityItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148562DA8019B003B2AD8 /* CommunityItem.swift */; };
 		DEF1485A2DA801D4003B2AD8 /* CommunityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148592DA801D4003B2AD8 /* CommunityViewModel.swift */; };
 		DEF1485E2DA81571003B2AD8 /* CommunityHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF1485D2DA81571003B2AD8 /* CommunityHeaderView.swift */; };
+		DEF6A3BC2DA97F8D0044ACAB /* ViewitCardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF6A3BB2DA97F8D0044ACAB /* ViewitCardButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -575,6 +576,7 @@
 		DEF148562DA8019B003B2AD8 /* CommunityItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityItem.swift; sourceTree = "<group>"; };
 		DEF148592DA801D4003B2AD8 /* CommunityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewModel.swift; sourceTree = "<group>"; };
 		DEF1485D2DA81571003B2AD8 /* CommunityHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHeaderView.swift; sourceTree = "<group>"; };
+		DEF6A3BB2DA97F8D0044ACAB /* ViewitCardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitCardButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1527,7 +1529,7 @@
 		DE59BBA22D8A9DBC0040ADCB /* Viewit */ = {
 			isa = PBXGroup;
 			children = (
-				DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */,
+				DEF6A3B92DA97F6E0044ACAB /* View */,
 			);
 			path = Viewit;
 			sourceTree = "<group>";
@@ -1902,6 +1904,23 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		DEF6A3B92DA97F6E0044ACAB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DDCD66FA2D7DF6C600EF4C28 /* ViewitViewController.swift */,
+				DEF6A3BA2DA97F830044ACAB /* Subview */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DEF6A3BA2DA97F830044ACAB /* Subview */ = {
+			isa = PBXGroup;
+			children = (
+				DEF6A3BB2DA97F8D0044ACAB /* ViewitCardButton.swift */,
+			);
+			path = Subview;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2270,6 +2289,7 @@
 				DE3390302D8EC6C400638BB4 /* NoticeViewController.swift in Sources */,
 				DD2968232D6DAD0200143851 /* NotificationRepository.swift in Sources */,
 				DD2968002D6DAC8900143851 /* AppDelegate.swift in Sources */,
+				DEF6A3BC2DA97F8D0044ACAB /* ViewitCardButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
