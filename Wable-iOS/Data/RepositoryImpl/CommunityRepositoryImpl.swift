@@ -40,7 +40,7 @@ extension CommunityRepositoryImpl: CommunityRepository {
     }
     
     func isUserRegistered() -> AnyPublisher<CommunityRegistration, WableError> {
-        return provider.request(.isUserRegisterd, for: DTO.Response.IsUserRegistered.self)
+        return provider.request(.isUserRegistered, for: DTO.Response.IsUserRegistered.self)
             .map(CommunityMapper.toDomain)
             .mapWableError()
     }
