@@ -9,9 +9,10 @@ import Combine
 import Foundation
 
 final class CommunityViewModel {
-    private(set) var registration = CommunityRegistration.initialState()
+    var registration: CommunityRegistration { registrationRelay.value }
     
     private let useCase: CommunityUseCase
+    private let registrationRelay = CurrentValueRelay<CommunityRegistration>(.initialState())
     
     init(useCase: CommunityUseCase) {
         self.useCase = useCase
@@ -21,26 +22,30 @@ final class CommunityViewModel {
 extension CommunityViewModel: ViewModelType {
     struct Input {
         let viewDidLoad: Driver<Void>
+        let viewDidRefresh: Driver<Void>
         let register: Driver<Int>
     }
     
     struct Output {
         let communityItems: Driver<[CommunityItem]>
+        let isLoading: Driver<Bool>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
         let communityListRelay = CurrentValueRelay<[Community]>([])
+        let isLoadingRelay = CurrentValueRelay<Bool>(false)
         
-        _ = useCase.isUserRegistered()
+        useCase.isUserRegistered()
             .catch { error -> AnyPublisher<CommunityRegistration, Never> in
                 WableLogger.log("\(error.localizedDescription)", for: .error)
                 return .just(.initialState())
             }
             .sink { [weak self] status in
-                self?.registration = status
+                self?.registrationRelay.send(status)
             }
+            .store(in: cancelBag)
         
-        _ = input.viewDidLoad
+        input.viewDidLoad
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<[Community], Never> in
                 owner.useCase.fetchCommunityList()
@@ -52,11 +57,31 @@ extension CommunityViewModel: ViewModelType {
             }
             .filter { !$0.isEmpty }
             .sink { communityListRelay.send($0) }
+            .store(in: cancelBag)
         
-         input.register
+        let viewDidRefresh = input.viewDidRefresh
+            .handleEvents(receiveOutput: { _ in
+                isLoadingRelay.send(true)
+            })
+        
+        Publishers.Merge(input.viewDidLoad, viewDidRefresh)
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<[Community], Never> in
+                owner.useCase.fetchCommunityList()
+                    .catch { error -> AnyPublisher<[Community], Never> in
+                        WableLogger.log("\(error.localizedDescription)", for: .error)
+                        return .just([])
+                    }
+                    .eraseToAnyPublisher()
+            }
+            .filter { !$0.isEmpty }
+            .sink { communityListRelay.send($0) }
+            .store(in: cancelBag)
+        
+        input.register
             .compactMap { communityListRelay.value[$0].team }
             .handleEvents(receiveOutput: { [weak self] team in
-                self?.registration = .init(team: team, hasRegisteredTeam: true)
+                self?.registrationRelay.send(.init(team: team, hasRegisteredTeam: true))
             })
             .withUnretained(self)
             .flatMap { owner, team -> AnyPublisher<Double, Never> in
@@ -83,25 +108,25 @@ extension CommunityViewModel: ViewModelType {
             }
             .store(in: cancelBag)
         
-        let communityItems = communityListRelay
-            .map { [weak self] communityList in
-                let registration = self?.registration ?? .initialState()
-                
+        let communityItems = Publishers.CombineLatest(communityListRelay, registrationRelay)
+            .map { communityList, registration in
                 return communityList.map {
                     let isRegistered = registration.hasRegisteredTeam
                     ? $0.team == registration.team
                     : false
-
+                    
                     return CommunityItem(community: $0, isRegistered: isRegistered)
                 }
                 .sorted { $0.isRegistered && !$1.isRegistered }
             }
-            .removeDuplicates()
+            .handleEvents(receiveOutput: { _ in
+                isLoadingRelay.send(false)
+            })
             .asDriver()
         
-        
         return Output(
-            communityItems: communityItems
+            communityItems: communityItems,
+            isLoading: isLoadingRelay.asDriver()
         )
     }
 }
