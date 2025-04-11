@@ -13,7 +13,7 @@ import Then
 
 final class CommunityViewController: UIViewController {
     
-    // MARK: - Section & Item
+    // MARK: - Section
 
     enum Section {
         case main
@@ -26,24 +26,6 @@ final class CommunityViewController: UIViewController {
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     typealias ViewModel = CommunityViewModel
 
-    // MARK: - UIComponent
-    
-    private lazy var collectionView = UICollectionView(
-        frame: .zero,
-        collectionViewLayout: collectionViewLayout
-    ).then {
-        $0.refreshControl = UIRefreshControl()
-        $0.alwaysBounceVertical = true
-    }
-    
-    private let askButton = WableButton(style: .black).then {
-        var config = $0.configuration
-        config?.attributedTitle = Constant.askButtonTitle
-            .pretendardString(with: .body3)
-            .highlight(textColor: .sky50, to: "요청하기")
-        $0.configuration = config
-    }
-    
     // MARK: - Property
 
     private var dataSource: DataSource?
@@ -54,6 +36,7 @@ final class CommunityViewController: UIViewController {
     private let registerRelay = PassthroughRelay<Int>()
     private let copyLinkRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
+    private let rootView = CommunityView()
     
     // MARK: - Initializer
 
@@ -70,10 +53,13 @@ final class CommunityViewController: UIViewController {
     
     // MARK: - Life Cycle
 
+    override func loadView() {
+        view = rootView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
         setupAction()
         setupNavigationBar()
         setupDataSource()
@@ -86,57 +72,10 @@ final class CommunityViewController: UIViewController {
 // MARK: - Setup Method
 
 private extension CommunityViewController {
-    func setupView() {
-        view.backgroundColor = .wableWhite
-        
-        let statusBarBackgroundView = UIView(backgroundColor: .wableBlack)
-        
-        let navigationView = NavigationView(type: .hub(title: "커뮤니티", isBeta: true)).then {
-            $0.configureView()
-        }
-        
-        let underlineView = UIView(backgroundColor: .gray200)
-        
-        view.addSubviews(
-            statusBarBackgroundView,
-            navigationView,
-            collectionView,
-            askButton,
-            underlineView
-        )
-        
-        statusBarBackgroundView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(safeArea.snp.top)
-        }
-        
-        navigationView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(safeArea)
-            make.adjustedHeightEqualTo(60)
-        }
-        
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(navigationView.snp.bottom)
-            make.horizontalEdges.equalToSuperview()
-        }
-        
-        askButton.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom).offset(8)
-            make.horizontalEdges.equalToSuperview().inset(16)
-            make.bottom.equalTo(safeArea).offset(-16)
-            make.adjustedHeightEqualTo(48)
-        }
-        
-        underlineView.snp.makeConstraints { make in
-            make.bottom.horizontalEdges.equalTo(safeArea)
-            make.height.equalTo(1)
-        }
-    }
-    
     func setupAction() {
         askButton.addTarget(self, action: #selector(askButtonDidTap), for: .touchUpInside)
         
-        collectionView.refreshControl?.addTarget(self, action: #selector(collectionViewDidRefresh), for: .valueChanged)
+        refreshControl?.addTarget(self, action: #selector(collectionViewDidRefresh), for: .valueChanged)
     }
     
     func setupNavigationBar() {
@@ -144,13 +83,13 @@ private extension CommunityViewController {
     }
     
     func setupDataSource() {
-        let registerCellRegistration = CellRegistration<CommunityRegisterCell, Item> { cell, indexPath, item in
+        let registerCellRegistration = CellRegistration<CommunityRegisterCell, Item> { [weak self] cell, indexPath, item in
             let teamName = item.community.team?.rawValue ?? ""
             
             cell.configure(
                 image: UIImage(named: teamName.lowercased()),
                 title: teamName,
-                isRegistered: item.isRegistered
+                hasRegisteredTeam: item.hasRegisteredCommunity
             )
             
             cell.registerCommunityClosure = { [weak self] in
@@ -177,13 +116,8 @@ private extension CommunityViewController {
         let headerKind = UICollectionView.elementKindSectionHeader
         let headerRegistration = SupplementaryRegistration<CommunityHeaderView>(elementKind: headerKind) { _, _, _ in }
         
-        dataSource = DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, item in
-            guard let communityRegistration = self?.viewModel.registration else {
-                return nil
-            }
-            
-            if communityRegistration.hasRegisteredTeam,
-                item.isRegistered {
+        dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
+            if item.hasRegisteredCommunity, item.isRegistered {
                 return collectionView.dequeueConfiguredReusableCell(
                     using: inviteCellRegistration,
                     for: indexPath,
@@ -228,7 +162,7 @@ private extension CommunityViewController {
         output.isLoading
             .filter { !$0 }
             .sink { [weak self] _ in
-                self?.collectionView.refreshControl?.endRefreshing()
+                self?.refreshControl?.endRefreshing()
             }
             .store(in: cancelBag)
     }
@@ -263,42 +197,15 @@ private extension CommunityViewController {
 // MARK: - Computed Property
 
 private extension CommunityViewController {
-    var collectionViewLayout: UICollectionViewCompositionalLayout {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(96)
-        )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(96)
-        )
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
-        
-        let headerSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(100.adjustedHeight)
-        )
-        let header = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: headerSize,
-            elementKind: UICollectionView.elementKindSectionHeader,
-            alignment: .top
-        )
-        section.boundarySupplementaryItems = [header]
-        
-        return UICollectionViewCompositionalLayout(section: section)
-    }
+    var collectionView: UICollectionView { rootView.collectionView }
+    var refreshControl: UIRefreshControl? { rootView.collectionView.refreshControl }
+    var askButton: UIButton { rootView.askButton }
 }
 
 // MARK: - Constant
 
 private extension CommunityViewController {
     enum Constant {
-        static let askButtonTitle = "더 추가하고 싶은 게시판이 있다면? 요청하기"
         static let googleFormURLText = "https://docs.google.com/forms/d/e/1FAIpQLSf3JlBkVRPaPFSreQHaEv-u5pqZWZzk7Y4Qll9lRP0htBZs-Q/viewform"
     }
 }
