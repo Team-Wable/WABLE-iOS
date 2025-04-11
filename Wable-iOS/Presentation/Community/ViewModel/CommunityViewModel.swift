@@ -26,12 +26,14 @@ extension CommunityViewModel: ViewModelType {
     struct Output {
         let communityItems: Driver<[CommunityItem]>
         let isLoading: Driver<Bool>
+        let completeRegistration: Driver<LCKTeam?>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
         let registrationRelay = CurrentValueRelay<CommunityRegistration>(.initialState())
         let communityListRelay = CurrentValueRelay<[Community]>([])
         let isLoadingRelay = CurrentValueRelay<Bool>(false)
+        let completeRegistrationRelay = CurrentValueRelay<LCKTeam?>(nil)
         
         useCase.isUserRegistered()
             .catch { error -> AnyPublisher<CommunityRegistration, Never> in
@@ -92,6 +94,9 @@ extension CommunityViewModel: ViewModelType {
                         return .just(nil)
                     }
                     .compactMap { $0 }
+                    .handleEvents(receiveOutput: { _ in
+                        completeRegistrationRelay.send(team)
+                    })
                     .eraseToAnyPublisher()
             }
             .sink { updatedRate in
@@ -124,7 +129,8 @@ extension CommunityViewModel: ViewModelType {
         
         return Output(
             communityItems: communityItems,
-            isLoading: isLoadingRelay.asDriver()
+            isLoading: isLoadingRelay.asDriver(),
+            completeRegistration: completeRegistrationRelay.asDriver()
         )
     }
 }

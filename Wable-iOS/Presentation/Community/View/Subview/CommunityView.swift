@@ -30,6 +30,8 @@ final class CommunityView: UIView {
         $0.configuration = config
     }
     
+    // MARK: - Initializer
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
