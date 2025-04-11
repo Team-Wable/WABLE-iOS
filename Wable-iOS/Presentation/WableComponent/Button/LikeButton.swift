@@ -30,8 +30,8 @@ final class LikeButton: UIButton {
     
     // MARK: Property
     
-    private var likeCount: Int = 0
-    private var isLiked: Bool = false
+    var isLiked: Bool = false
+    var likeCount: Int = 0
     private var postType: PostType = .content
     
     // MARK: - LifeCycle
@@ -40,7 +40,6 @@ final class LikeButton: UIButton {
         super.init(frame: frame)
         
         setupConstraint()
-        setupAction()
     }
     
     required init?(coder: NSCoder) {
@@ -59,19 +58,6 @@ private extension LikeButton {
             $0.adjustedWidthEqualTo(45)
             $0.adjustedHeightEqualTo(24)
         }
-    }
-    
-    func setupAction() {
-        addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
-    }
-    
-    // MARK: - @objc method
-
-    @objc func likeButtonDidTap() {
-        isLiked ? (likeCount -= 1) : (likeCount += 1)
-        isLiked.toggle()
-        
-        configureButton(isLiked: isLiked, likeCount: likeCount, postType: postType)
     }
 }
 

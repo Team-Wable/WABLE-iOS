@@ -10,6 +10,17 @@ import UIKit
 
 import Kingfisher
 
+// MARK: - Enum
+
+/// 댓글 타입을 정의하는 열거형.
+///
+/// - `ripple`: 게시글에 직접 달린 댓글
+/// - `reply`: 다른 댓글에 달린 답글
+enum CommentType {
+    case ripple
+    case reply
+}
+
 /// 댓글을 표시하기 위한 컬렉션 뷰 셀.
 /// 사용자 정보, 댓글 내용, 좋아요/답글/내리기 버튼 등을 포함합니다.
 ///
@@ -24,20 +35,10 @@ import Kingfisher
 /// ```
 final class CommentCollectionViewCell: UICollectionViewCell {
     
-    // MARK: - Enum
-    
-    /// 댓글 타입을 정의하는 열거형.
-    ///
-    /// - `ripple`: 게시글에 직접 달린 댓글
-    /// - `reply`: 다른 댓글에 달린 답글
-    enum CommentType {
-        case ripple
-        case reply
-    }
-    
     // MARK: - Property
     
-    private let type: CommentType = .ripple
+    var likeButtonTapHandler: (() -> Void)?
+    var replyButtonTapHandler: (() -> Void)?
     
     // MARK: - UIComponent
     
@@ -52,8 +53,8 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFit
     }
     
-    private lazy var likeButton = LikeButton()
-    private lazy var commentButton = CommentButton(type: .comment)
+    lazy var likeButton = LikeButton()
+    private lazy var replyButton = CommentButton(type: .comment)
     private lazy var ghostButton = GhostButton()
     
     // MARK: - LifeCycle
@@ -83,7 +84,7 @@ private extension CommentCollectionViewCell {
             ghostButton,
             contentLabel,
             likeButton,
-            commentButton
+            replyButton
         )
     }
     
@@ -110,7 +111,7 @@ private extension CommentCollectionViewCell {
             $0.bottom.equalTo(ghostButton.snp.top).offset(-12)
         }
         
-        commentButton.snp.makeConstraints {
+        replyButton.snp.makeConstraints {
             $0.leading.equalTo(likeButton.snp.trailing).offset(8)
             $0.centerY.equalTo(ghostButton)
         }
@@ -119,7 +120,8 @@ private extension CommentCollectionViewCell {
     func setupAction() {
         ghostButton.addTarget(self, action: #selector(ghostButtonDidTap), for: .touchUpInside)
         infoView.settingButton.addTarget(self, action: #selector(settingButtonDidTap), for: .touchUpInside)
-        commentButton.addTarget(self, action: #selector(replyButtonDidTap), for: .touchUpInside)
+        replyButton.addTarget(self, action: #selector(replyButtonDidTap), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
         infoView.profileImageView.addGestureRecognizer(
             UITapGestureRecognizer(
                 target: self,
@@ -149,9 +151,15 @@ private extension CommentCollectionViewCell {
     }
     
     @objc func replyButtonDidTap() {
-        // TODO: 상세 화면으로 이동 로직 구현 필요
+        self.replyButtonTapHandler?()
+    }
+    
+    @objc func likeButtonDidTap() {
+        let newCount = likeButton.isLiked ? likeButton.likeCount - 1 : likeButton.likeCount + 1
         
-        WableLogger.log("replyButtonDidTap", for: .debug)
+        likeButton.configureButton(isLiked: !likeButton.isLiked, likeCount: newCount, postType: .comment)
+        
+        self.likeButtonTapHandler?()
     }
 }
 
@@ -179,7 +187,12 @@ extension CommentCollectionViewCell {
     ///   - info: 댓글 정보
     ///   - commentType: 댓글 타입 (.ripple 또는 .reply)
     ///   - postType: 게시물 타입 (.mine 또는 .others)
-    func configureCell(info: CommentInfo, commentType: CommentType, postType: AuthorType) {
+    ///   - likeButtonTapHandler: 좋아요 버튼을 클릭했을 때 실행될 로직
+    ///   - replyButtonTapHandler: 답글쓰기 버튼을 클릭했을 때 실행될 로직
+    func configureCell(info: CommentInfo, commentType: CommentType, postType: AuthorType, likeButtonTapHandler: (() -> Void)?, replyButtonTapHandler: (() -> Void)?) {
+        self.likeButtonTapHandler = likeButtonTapHandler
+        self.replyButtonTapHandler = replyButtonTapHandler
+        
         guard let profileURL = info.author.profileURL,
               let fanTeam = info.author.fanTeam,
               let createdDate = info.createdDate else {
@@ -200,7 +213,7 @@ extension CommentCollectionViewCell {
             createdDate: createdDate,
             postType: .comment
         )
-        commentButton.configureButton()
+        replyButton.configureButton()
         likeButton.configureButton(
             isLiked: info.like.status,
             likeCount: info.like.count,
@@ -221,13 +234,13 @@ extension CommentCollectionViewCell {
         switch commentType {
         case .ripple:
             contentLabel.attributedText = info.text.pretendardString(with: .body4)
-            commentButton.isHidden = false
+            replyButton.isHidden = false
         case .reply:
             infoView.snp.updateConstraints {
                 $0.leading.equalToSuperview().offset(36)
             }
             
-            commentButton.isHidden = true
+            replyButton.isHidden = true
         }
     }
     

@@ -40,13 +40,12 @@ extension FetchUserAuthUseCase {
                     UserSession(
                         id: account.user.id,
                         nickname: account.user.nickname,
-                        profileURL: account.user.profileURL?.absoluteString ?? "",
+                        profileURL: account.user.profileURL,
                         isPushAlarmAllowed: account.isPushAlarmAllowed ?? false,
                         isAdmin: account.isAdmin,
                         isAutoLoginEnabled: true,
                         notificationBadgeCount: 0
-                    ),
-                    forUserID: account.user.id
+                    )
                 )
                 
                 self.userSessionRepository.updateActiveUserID(account.user.id)

@@ -13,6 +13,7 @@ protocol BaseTargetType: TargetType {
     var endPoint: String? { get }
     var query: [String: Any]? { get }
     var requestBody: Encodable? { get }
+    var multipartFormData: [MultipartFormData]? { get }
 }
 
 extension BaseTargetType {
@@ -34,6 +35,8 @@ extension BaseTargetType {
             )
         } else if let requestBody {
             return .requestJSONEncodable(requestBody)
+        } else if let multipartFormData {
+            return .uploadMultipart(multipartFormData)
         }
         return .requestPlain
     }
@@ -43,6 +46,10 @@ extension BaseTargetType {
     }
     
     var headers: [String : String]? {
-        return ["Content-Type": "application/json"]
+        guard multipartFormData != nil else {
+            return ["Content-Type": "application/json"]
+        }
+        
+        return ["Content-Type": "multipart/form-data"]
     }
 }

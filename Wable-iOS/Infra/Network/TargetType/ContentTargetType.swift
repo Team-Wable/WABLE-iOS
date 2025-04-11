@@ -19,6 +19,42 @@ enum ContentTargetType {
 }
 
 extension ContentTargetType: BaseTargetType {
+    var multipartFormData: [Moya.MultipartFormData]? {
+        switch self {
+        case .createContent(request: let request):
+            var multipartFormData: [MultipartFormData] = []
+            
+            let parameters: [String: Any] = [
+                "contentTitle": request.text.contentTitle,
+                "contentText": request.text.contentText
+            ]
+            
+            if let jsonData = try? JSONSerialization.data(withJSONObject: parameters, options: []) {
+                let textData = MultipartFormData(
+                    provider: .data(jsonData),
+                    name: "text"
+                )
+                
+                multipartFormData.append(textData)
+            }
+            
+            if let imageData = request.image {
+                let imageFormData = MultipartFormData(
+                    provider: .data(imageData),
+                    name: "image",
+                    fileName: "dontbe.jpeg",
+                    mimeType: "image/jpeg"
+                )
+                
+                multipartFormData.append(imageFormData)
+            }
+            
+            return multipartFormData
+        default:
+            return .none
+        }
+    }
+    
     var endPoint: String? {
         switch self {
         case .createContent:
@@ -47,8 +83,6 @@ extension ContentTargetType: BaseTargetType {
     
     var requestBody: (any Encodable)? {
         switch self {
-        case .createContent(request: let request):
-            return request
         default:
             return .none
         }
