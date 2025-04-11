@@ -177,7 +177,7 @@ private extension HomeDetailViewController {
         let contentCellRegistration = UICollectionView.CellRegistration<ContentCollectionViewCell, Content> { [weak self] cell, indexPath, item in
             guard let self = self else { return }
             
-            cell.configureCell(info: item.content.contentInfo, postType: .mine, likeButtonTapHandler: {
+            cell.configureCell(info: item.content.contentInfo, postType: .mine, cellType: .detail, likeButtonTapHandler: {
                 self.didContentHeartTappedSubject.send(cell.likeButton.isLiked)
             })
             
@@ -428,7 +428,17 @@ extension HomeDetailViewController {
     func updateComments(_ comments: [ContentComment]) {
         guard var snapshot = dataSource?.snapshot() else { return }
         
-        let commentItems = comments.map { Item.comment($0) }
+        let commentItems = comments.flatMap { comment -> [Item] in
+            var items: [Item] = [.comment(comment)]
+            
+            if !comment.childs.isEmpty {
+                let childItems = comment.childs.map { Item.comment($0) }
+                
+                items.append(contentsOf: childItems)
+            }
+            
+            return items
+        }
         
         snapshot.deleteItems(snapshot.itemIdentifiers(inSection: .comment))
         snapshot.appendItems(commentItems, toSection: .comment)

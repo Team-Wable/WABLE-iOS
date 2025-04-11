@@ -76,6 +76,8 @@ final class HomeViewController: NavigationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        shouldShowLoadingScreen ? showLoadingScreen() : nil
+        
         setupView()
         setupConstraint()
         setupDataSource()
@@ -86,8 +88,6 @@ final class HomeViewController: NavigationViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        shouldShowLoadingScreen ? showLoadingScreen() : nil
         
         willAppearSubject.send()
         
