@@ -24,9 +24,9 @@ final class CommunityInviteCell: UICollectionViewCell {
     private let progressImageView = UIImageView(image: .icFan)
     
     private let progressBar = UIProgressView(progressViewStyle: .bar).then {
-        $0.trackTintColor = .purple50
-        $0.backgroundColor = .gray200
+        $0.trackTintColor = .gray200
         $0.layer.cornerRadius = 8
+        $0.clipsToBounds = true
     }
     
     // MARK: - Property
@@ -66,7 +66,7 @@ final class CommunityInviteCell: UICollectionViewCell {
         
         titleLabel.text = title
         
-        progressBar.trackTintColor = progressBarColor
+        progressBar.progressTintColor = progressBarColor
         progressBar.setProgress(progress, animated: true)
     }
 }
@@ -76,14 +76,14 @@ final class CommunityInviteCell: UICollectionViewCell {
 private extension CommunityInviteCell {
     func resetCopyLinkButton() {
         var config = copyLinkButton.configuration
-        config?.title = Constant.defaultTitle
+        config?.attributedTitle = Constant.defaultTitle.pretendardString(with: .body3)
         config?.image = nil
         copyLinkButton.configuration = config
     }
     
     func showCopyLinkCompletedState() {
         var config = copyLinkButton.configuration
-        config?.title = Constant.copyLinkCompletedTitle
+        config?.attributedTitle = Constant.copyLinkCompletedTitle.pretendardString(with: .body3)
         config?.image = .icCheck
         config?.imagePlacement = .leading
         copyLinkButton.configuration = config
@@ -116,7 +116,8 @@ private extension CommunityInviteCell {
         }
         
         progressImageView.snp.makeConstraints { make in
-            make.centerY.leading.equalTo(progressTitleLabel)
+            make.centerY.equalTo(progressTitleLabel)
+            make.leading.equalTo(progressTitleLabel.snp.trailing)
             make.adjustedWidthEqualTo(16)
             make.height.equalTo(progressImageView.snp.width)
         }
@@ -125,6 +126,7 @@ private extension CommunityInviteCell {
             make.top.equalTo(progressTitleLabel.snp.bottom).offset(4)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalToSuperview().offset(-16)
+            make.adjustedHeightEqualTo(12)
         }
     }
     
@@ -137,7 +139,7 @@ private extension CommunityInviteCell {
 
 private extension CommunityInviteCell {
     @objc func copyLinkButtonDidTap(_ sender: UIButton) {
-        guard sender.currentTitle == Constant.defaultTitle else { return }
+        guard sender.configuration?.title == Constant.defaultTitle else { return }
         
         copyLinkClosure?()
         
