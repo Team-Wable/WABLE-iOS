@@ -275,6 +275,7 @@ extension ContentCollectionViewCell {
         contentImageView.kf.setImage(with: info.imageURL)
         
         contentTextView.text = info.text
+        contentTextView.isUserInteractionEnabled = cellType == .detail
         
         ghostButton.configureButton(type: .large, status: .normal)
         likeButton.configureButton(isLiked: info.like.status, likeCount: info.like.count, postType: .content)
