@@ -2507,7 +2507,7 @@
 				0547F4A92C60D96B001E3039 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		0547F4AA2C60D96B001E3039 /* Build configuration list for PBXNativeTarget "Wable-iOS" */ = {
 			isa = XCConfigurationList;
@@ -2516,7 +2516,7 @@
 				0547F4AC2C60D96B001E3039 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
