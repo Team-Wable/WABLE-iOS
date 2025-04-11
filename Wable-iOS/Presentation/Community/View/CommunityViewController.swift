@@ -27,10 +27,6 @@ final class CommunityViewController: UIViewController {
     typealias ViewModel = CommunityViewModel
 
     // MARK: - UIComponent
-
-    private let navigationView = NavigationView(type: .hub(title: "커뮤니티", isBeta: true)).then {
-        $0.configureView()
-    }
     
     private lazy var collectionView = UICollectionView(
         frame: .zero,
@@ -53,6 +49,10 @@ final class CommunityViewController: UIViewController {
     private var dataSource: DataSource?
     
     private let viewModel: ViewModel
+    private let viewDidLoadRelay = PassthroughRelay<Void>()
+    private let viewDidRefreshRelay = PassthroughRelay<Void>()
+    private let registerRelay = PassthroughRelay<Int>()
+    private let copyLinkRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
@@ -74,8 +74,12 @@ final class CommunityViewController: UIViewController {
         super.viewDidLoad()
         
         setupView()
-        setupConstraint()
         setupAction()
+        setupNavigationBar()
+        setupDataSource()
+        setupBinding()
+        
+        viewDidLoadRelay.send()
     }
 }
 
@@ -83,14 +87,29 @@ final class CommunityViewController: UIViewController {
 
 private extension CommunityViewController {
     func setupView() {
+        view.backgroundColor = .wableWhite
+        
+        let statusBarBackgroundView = UIView(backgroundColor: .wableBlack)
+        
+        let navigationView = NavigationView(type: .hub(title: "커뮤니티", isBeta: true)).then {
+            $0.configureView()
+        }
+        
+        let underlineView = UIView(backgroundColor: .gray200)
+        
         view.addSubviews(
+            statusBarBackgroundView,
             navigationView,
             collectionView,
-            askButton
+            askButton,
+            underlineView
         )
-    }
-    
-    func setupConstraint() {
+        
+        statusBarBackgroundView.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(safeArea.snp.top)
+        }
+        
         navigationView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(safeArea)
             make.adjustedHeightEqualTo(60)
@@ -98,19 +117,26 @@ private extension CommunityViewController {
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(navigationView.snp.bottom)
-            make.horizontalEdges.equalToSuperview().inset(16)
+            make.horizontalEdges.equalToSuperview()
         }
         
         askButton.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom)
-            make.horizontalEdges.equalTo(collectionView)
+            make.top.equalTo(collectionView.snp.bottom).offset(8)
+            make.horizontalEdges.equalToSuperview().inset(16)
             make.bottom.equalTo(safeArea).offset(-16)
             make.adjustedHeightEqualTo(48)
+        }
+        
+        underlineView.snp.makeConstraints { make in
+            make.bottom.horizontalEdges.equalTo(safeArea)
+            make.height.equalTo(1)
         }
     }
     
     func setupAction() {
         askButton.addTarget(self, action: #selector(askButtonDidTap), for: .touchUpInside)
+        
+        collectionView.refreshControl?.addTarget(self, action: #selector(collectionViewDidRefresh), for: .valueChanged)
     }
     
     func setupNavigationBar() {
@@ -126,6 +152,11 @@ private extension CommunityViewController {
                 title: teamName,
                 isRegistered: item.isRegistered
             )
+            
+            cell.registerCommunityClosure = { [weak self] in
+                WableLogger.log("셀 눌림: \(indexPath.item)", for: .debug)
+                self?.registerRelay.send(indexPath.item)
+            }
         }
         
         let inviteCellRegistration = CellRegistration<CommunityInviteCell, Item> { cell, indexPath, item in
@@ -137,6 +168,10 @@ private extension CommunityViewController {
                 progress: Float(item.community.registrationRate),
                 progressBarColor: UIColor(named: "\(teamName.lowercased())50") ?? .purple50
             )
+            
+            cell.copyLinkClosure = {
+                WableLogger.log("링크 복사 버튼 눌림", for: .debug)
+            }
         }
         
         let headerKind = UICollectionView.elementKindSectionHeader
@@ -174,6 +209,40 @@ private extension CommunityViewController {
             )
         }
     }
+    
+    func setupBinding() {
+        let input = ViewModel.Input(
+            viewDidLoad: viewDidLoadRelay.eraseToAnyPublisher(),
+            viewDidRefresh: viewDidRefreshRelay.eraseToAnyPublisher(),
+            register: registerRelay.eraseToAnyPublisher()
+        )
+        
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.communityItems
+            .sink { [weak self] communityItems in
+                self?.applySnapshot(items: communityItems)
+            }
+            .store(in: cancelBag)
+        
+        output.isLoading
+            .filter { !$0 }
+            .sink { [weak self] _ in
+                self?.collectionView.refreshControl?.endRefreshing()
+            }
+            .store(in: cancelBag)
+    }
+}
+
+// MARK: - Helper Method
+
+private extension CommunityViewController {
+    func applySnapshot(items: [Item]) {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(items, toSection: .main)
+        dataSource?.apply(snapshot, animatingDifferences: true)
+    }
 }
 
 // MARK: - Action Method
@@ -184,6 +253,10 @@ private extension CommunityViewController {
         
         let safariController = SFSafariViewController(url: url)
         present(safariController, animated: true)
+    }
+    
+    @objc func collectionViewDidRefresh() {
+        viewDidRefreshRelay.send()
     }
 }
 
@@ -204,6 +277,7 @@ private extension CommunityViewController {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         
         let headerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
