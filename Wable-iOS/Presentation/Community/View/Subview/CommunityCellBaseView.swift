@@ -72,7 +72,6 @@ private extension CommunityCellBaseView {
         primaryButton.snp.makeConstraints { make in
             make.centerY.equalTo(communityImageView)
             make.trailing.equalToSuperview()
-            make.adjustedWidthEqualTo(104)
             make.adjustedHeightEqualTo(32)
         }
     }

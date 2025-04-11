@@ -66,7 +66,7 @@ private extension CommunityHeaderView {
 private extension CommunityHeaderView {
     enum Constant {
         static let text = """
-                          팀별 커뮤닡티 공간을 준비중이에요. 팀별 일정 이상의
+                          팀별 커뮤니티 공간을 준비중이에요. 팀별 일정 이상의
                           팬이 모여야 팀별 공간이 열립니다.
                           *계정 1개당 1개의 팀별 공간에만 참여 가능해요!
                           """
