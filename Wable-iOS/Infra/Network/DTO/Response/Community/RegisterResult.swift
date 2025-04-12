@@ -1,22 +1,19 @@
 //
-//  FetchCommunites.swift
+//  RegisterResult.swift
 //  Wable-iOS
 //
-//  Created by YOUJIM on 2/20/25.
+//  Created by 김진웅 on 4/10/25.
 //
-
 
 import Foundation
 
-// MARK: - 커뮤니티 목록 조회 (사전 참여)
+// MARK: - 커뮤니티 사전참여 (반환값)
 
 extension DTO.Response {
-    struct FetchCommunites: Decodable {
-        let communityName: String
+    struct RegisterResult: Decodable {
         let registrationRate: Double
         
         enum CodingKeys: String, CodingKey {
-            case communityName
             case registrationRate = "communityNum"
         }
     }

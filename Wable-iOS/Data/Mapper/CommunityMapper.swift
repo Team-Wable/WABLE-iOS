@@ -16,11 +16,17 @@ extension CommunityMapper {
             let name = LCKTeam(rawValue: content.communityName)
             
             return Community(
-                name: name,
-                participantsCount: content.communityNum
+                team: name,
+                registrationRate: content.registrationRate
             )
         }
     }
+    
+    static func toDomain(_ response: DTO.Response.IsUserRegistered) -> CommunityRegistration {
+        guard let teamName = response.commnunityName else {
+            return CommunityRegistration(team: nil, hasRegisteredTeam: false)
+        }
+        
+        return CommunityRegistration(team: LCKTeam(rawValue: teamName), hasRegisteredTeam: true)
+    }
 }
-
-

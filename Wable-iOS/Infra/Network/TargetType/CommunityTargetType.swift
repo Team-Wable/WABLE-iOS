@@ -12,8 +12,9 @@ import Foundation
 import Moya
 
 enum CommunityTargetType {
-    case updatePreRegister(request: DTO.Request.UpdatePreRegister)
+    case updateRegister(request: DTO.Request.UpdateRegister)
     case fetchCommunityList
+    case isUserRegistered
 }
 
 extension CommunityTargetType: BaseTargetType {
@@ -23,10 +24,12 @@ extension CommunityTargetType: BaseTargetType {
     
     var endPoint: String? {
         switch self {
-        case .updatePreRegister:
-            return "/v1/community/prein"
+        case .updateRegister:
+            return "/v2/community/prein"
         case .fetchCommunityList:
             return "/v1/community/list"
+        case .isUserRegistered:
+            return "/v1/community/member"
         }
     }
     
@@ -36,18 +39,22 @@ extension CommunityTargetType: BaseTargetType {
     
     var requestBody: (any Encodable)? {
         switch self {
-        case .updatePreRegister(request: let request):
+        case .updateRegister(request: let request):
             return request
         case .fetchCommunityList:
+            return .none
+        case .isUserRegistered:
             return .none
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .updatePreRegister:
-            return .post
+        case .updateRegister:
+            return .patch
         case .fetchCommunityList:
+            return .get
+        case .isUserRegistered:
             return .get
         }
     }

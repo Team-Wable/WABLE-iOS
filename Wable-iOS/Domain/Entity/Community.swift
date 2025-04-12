@@ -10,6 +10,6 @@ import Foundation
 // MARK: - 커뮤니티 정보
 
 struct Community: Hashable {
-    let name: LCKTeam?
-    let participantsCount: Int
+    let team: LCKTeam?
+    var registrationRate: Double
 }
