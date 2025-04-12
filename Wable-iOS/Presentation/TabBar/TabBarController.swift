@@ -12,7 +12,8 @@ final class TabBarController: UITabBarController {
     
     // MARK: Property
 
-    private let shouldShowLoadingScreen: Bool
+    private var previousIndex: Int = 0
+    private var shouldShowLoadingScreen: Bool
     
     // MARK: - UIComponent
     
@@ -51,7 +52,7 @@ final class TabBarController: UITabBarController {
     
     // MARK: - LifeCycle
 
-    init(shouldShowLoadingScreen: Bool = true) {
+    init(shouldShowLoadingScreen: Bool = false) {
         self.shouldShowLoadingScreen = shouldShowLoadingScreen
         
         super.init(nibName: nil, bundle: nil)
@@ -126,6 +127,8 @@ private extension TabBarController {
 
 extension TabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        let currentIndex = selectedIndex
+        
         if let navigationController = viewController as? UINavigationController {
             if navigationController.viewControllers.first is HomeViewController {
                 if tabBarController.selectedIndex == 0 {
@@ -133,5 +136,11 @@ extension TabBarController: UITabBarControllerDelegate {
                 }
             }
         }
+        
+        if previousIndex == 4 && currentIndex == 0 {
+            homeViewController.showLoadingScreen()
+        }
+        
+        previousIndex = currentIndex
     }
 }
