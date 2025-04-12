@@ -105,6 +105,8 @@ final class HomeDetailViewController: NavigationViewController {
         self.cancelBag = cancelBag
         
         super.init(type: .page(type: .detail, title: "게시글"))
+        
+        hidesBottomBarWhenPushed = true
     }
     
     required init?(coder: NSCoder) {
