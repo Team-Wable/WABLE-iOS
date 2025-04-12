@@ -93,7 +93,7 @@ private extension SceneDelegate {
     }
     
     func configureMainScreen() {
-        self.window?.rootViewController = TabBarController()
+        self.window?.rootViewController = TabBarController(shouldShowLoadingScreen: true)
     }
 }
 
