@@ -30,7 +30,7 @@ final class TabBarController: UITabBarController {
         $0.shouldShowLoadingScreen = self.shouldShowLoadingScreen
     }
     
-    private let communityViewController = CommunityViewController().then {
+    private let communityViewController = CommunityViewController(viewModel: CommunityViewModel(useCase: MockCommunityUseCaseImpl())).then {
         $0.tabBarItem.title = "커뮤니티"
         $0.tabBarItem.image = .icCommunity
     }
