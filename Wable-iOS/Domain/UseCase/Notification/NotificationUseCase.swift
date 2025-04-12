@@ -58,7 +58,7 @@ struct MockNotificationUseCaseImpl: NotificationUseCase {
         return .just(range!.map { id in
             ActivityNotification(
                 id: id,
-                triggerID: Int.random(in: 100...1000),
+                triggerID: 720,
                 type: types.randomElement(),
                 time: getRelativeDate(for: id),
                 targetContentText: "샘플 콘텐츠 \(id)",

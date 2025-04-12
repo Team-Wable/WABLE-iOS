@@ -199,9 +199,10 @@ extension CommentCollectionViewCell {
     }
     
     func configureCommentType(info: CommentInfo, commentType: CommentType) {
+        contentLabel.attributedText = info.text.pretendardString(with: .body4)
+        
         switch commentType {
         case .ripple:
-            contentLabel.attributedText = info.text.pretendardString(with: .body4)
             replyButton.isHidden = false
         case .reply:
             infoView.snp.updateConstraints {
