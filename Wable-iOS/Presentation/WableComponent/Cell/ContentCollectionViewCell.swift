@@ -263,7 +263,7 @@ extension ContentCollectionViewCell {
             userProfileURL: info.author.profileURL,
             userName: info.author.nickname,
             userFanTeam: info.author.fanTeam,
-            opacity: info.opacity.displayedValue,
+            opacity: info.opacity.value,
             createdDate: createdDate,
             postType: .content
         )
