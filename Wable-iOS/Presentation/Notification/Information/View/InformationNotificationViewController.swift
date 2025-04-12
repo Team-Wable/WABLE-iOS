@@ -195,9 +195,23 @@ private extension InformationNotificationViewController {
         output.selectedNotification
             .receive(on: DispatchQueue.main)
             .sink { [weak self] item in
+                let viewController = HomeDetailViewController(
+                    viewModel: HomeDetailViewModel(
+                        contentID: item.id,
+                        contentTitle: "",
+                        fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
+                        createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+                        deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+                        fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
+                        createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),
+                        deleteCommentUseCase: DeleteCommentUseCase(repository: CommentRepositoryImpl()),
+                        createCommentLikedUseCase: CreateCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
+                        deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: CommentLikedRepositoryImpl())
+                    ),
+                    cancelBag: CancelBag()
+                )
                 
-                // TODO: Item에 따른 화면 이동
-                
+                self?.navigationController?.pushViewController(viewController, animated: true)
             }
             .store(in: cancelBag)
         

@@ -217,8 +217,23 @@ private extension ActivityNotificationViewController {
             .sink { contentID in
                 WableLogger.log("게시물 ID: \(contentID)", for: .debug)
                 
-                // TODO: 상세 게시물로 이동
+                let viewController = HomeDetailViewController(
+                    viewModel: HomeDetailViewModel(
+                        contentID: contentID,
+                        contentTitle: "",
+                        fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
+                        createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+                        deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+                        fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
+                        createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),
+                        deleteCommentUseCase: DeleteCommentUseCase(repository: CommentRepositoryImpl()),
+                        createCommentLikedUseCase: CreateCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
+                        deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: CommentLikedRepositoryImpl())
+                    ),
+                    cancelBag: CancelBag()
+                )
                 
+                self.navigationController?.pushViewController(viewController, animated: true)
             }
             .store(in: cancelBag)
         

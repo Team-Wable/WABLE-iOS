@@ -175,7 +175,8 @@ private extension LoginViewController {
             .withUnretained(self)
             .sink { owner, sessionInfo in
                 WableLogger.log("새로운 유저인가요? : \(sessionInfo.isNewUser)", for: .debug)
-                sessionInfo.isNewUser ? owner.navigateToOnboarding() : owner.navigateToHome()
+                // TODO: 서버 밀고 한번 더 확인 필요
+                sessionInfo.isNewUser && sessionInfo.user.nickname != "" ? owner.navigateToOnboarding() : owner.navigateToHome()
             }
             .store(in: cancelBag)
     }

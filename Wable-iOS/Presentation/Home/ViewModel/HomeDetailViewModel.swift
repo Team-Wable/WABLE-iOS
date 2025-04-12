@@ -215,9 +215,9 @@ extension HomeDetailViewModel: ViewModelType {
                     .replaceError(with: [])
                     .eraseToAnyPublisher()
             }
-            .handleEvents(receiveOutput: { content in
+            .handleEvents(receiveOutput: { comments in
                 isLoadingMoreSubject.send(false)
-                isLastViewSubject.send(content.isEmpty || content.count < Constant.defaultContentCountPerPage)
+                isLastViewSubject.send(comments.isEmpty)
             })
             .filter { !$0.isEmpty }
             .sink { comment in
