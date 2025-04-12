@@ -88,7 +88,9 @@ final class HomeViewController: NavigationViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+      
+        shouldShowLoadingScreen ? showLoadingScreen() : nil
+      
         willAppearSubject.send()
         
         scrollToTop()
