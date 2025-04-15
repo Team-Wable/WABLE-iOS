@@ -11,6 +11,10 @@ import Foundation
 
 extension DTO.Response {
     struct IsUserRegistered: Decodable {
-        let commnunityName: String?
+        let communityName: String?
+        
+        enum CodingKeys: String, CodingKey {
+            case communityName = "community"
+        }
     }
 }
