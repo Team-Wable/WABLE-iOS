@@ -169,6 +169,7 @@ private extension CommunityViewController {
         output.completeRegistration
             .compactMap { $0 }
             .sink { [weak self] team in
+                self?.scrollToTopItem()
                 self?.showCompleteSheet(for: team.rawValue)
             }
             .store(in: cancelBag)
@@ -245,6 +246,17 @@ private extension CommunityViewController {
     
     func copyLinkToClipboard() {
         UIPasteboard.general.string = Constant.littlyURLText
+    }
+    
+    func scrollToTopItem() {
+        guard collectionView.numberOfSections > 0,
+                collectionView.numberOfItems(inSection: 0) > 0
+        else {
+            return
+        }
+        
+        let indexPath = IndexPath(item: 0, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
     }
 }
 
