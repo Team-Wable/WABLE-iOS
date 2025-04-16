@@ -174,9 +174,11 @@ private extension LoginViewController {
             .receive(on: DispatchQueue.main)
             .withUnretained(self)
             .sink { owner, sessionInfo in
-                WableLogger.log("새로운 유저인가요? : \(sessionInfo.isNewUser)", for: .debug)
-                // TODO: 서버 밀고 한번 더 확인 필요
-                sessionInfo.isNewUser && sessionInfo.user.nickname != "" ? owner.navigateToOnboarding() : owner.navigateToHome()
+                let condition = sessionInfo.isNewUser && sessionInfo.user.nickname != "" && sessionInfo.user.profileURL != nil
+                
+                WableLogger.log("새로운 유저인가요? : \(sessionInfo.isNewUser && sessionInfo.user.nickname != "")", for: .debug)
+                
+                condition ? owner.navigateToHome() : owner.navigateToOnboarding()
             }
             .store(in: cancelBag)
     }
