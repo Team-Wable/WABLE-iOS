@@ -45,9 +45,12 @@ final class ContentCollectionViewCell: UICollectionViewCell {
         $0.distribution = .fill
     }
     
-    private let titleLabel: UILabel = UILabel().then {
+    private let titleTextView: UITextView = UITextView().then {
+        $0.dataDetectorTypes = [.link]
+        $0.isEditable = false
+        $0.isScrollEnabled = false
+        $0.setPretendard(with: .head2)
         $0.textColor = .wableBlack
-        $0.numberOfLines = 0
     }
     
     private let contentImageView: UIImageView = UIImageView().then {
@@ -58,8 +61,6 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     }
     
     private let contentTextView: UITextView = UITextView().then {
-        $0.textContainerInset = .zero
-        $0.textContainer.lineFragmentPadding = 0
         $0.dataDetectorTypes = [.link]
         $0.isEditable = false
         $0.isScrollEnabled = false
@@ -97,7 +98,7 @@ final class ContentCollectionViewCell: UICollectionViewCell {
         contentImageView.kf.cancelDownloadTask()
         contentImageView.image = nil
         contentTextView.text = nil
-        titleLabel.text = nil
+        titleTextView.text = nil
     }
 }
 
@@ -109,7 +110,7 @@ private extension ContentCollectionViewCell {
 
     func setupView() {
         contentStackView.addArrangedSubviews(
-            titleLabel,
+            titleTextView,
             contentImageView,
             contentTextView
         )
@@ -236,7 +237,7 @@ private extension ContentCollectionViewCell {
         [
             infoView,
             contentImageView,
-            titleLabel,
+            titleTextView,
             contentTextView
         ].forEach {
             $0.alpha = CGFloat(opacity)
@@ -253,7 +254,12 @@ extension ContentCollectionViewCell {
     ///   - postType: 게시물 타입 (.mine 또는 .others)
     ///   - cellType: 셀 타입 (홈 화면 셀 또는 상세 화면 셀)
     ///   - likeButtonTapHandler: 좋아요 버튼을 클릭했을 때 실행될 로직
-    func configureCell(info: ContentInfo, postType: AuthorType, cellType: CellType = .list, likeButtonTapHandler: (() -> Void)?) {
+    func configureCell(
+        info: ContentInfo,
+        postType: AuthorType,
+        cellType: CellType = .list,
+        likeButtonTapHandler: (() -> Void)?
+    ) {
         self.cellType = cellType
         self.likeButtonTapHandler = likeButtonTapHandler
         
@@ -270,7 +276,8 @@ extension ContentCollectionViewCell {
         
         contentStackView.spacing = info.imageURL == nil ? 4 : 10
     
-        titleLabel.attributedText = info.title.pretendardString(with: .head2)
+        titleTextView.text = info.title
+        
         contentImageView.isHidden = info.imageURL == nil
         contentImageView.kf.setImage(with: info.imageURL)
         
@@ -299,7 +306,7 @@ extension ContentCollectionViewCell {
                 self.contentImageView.image = .imgFeedIsBlind
             }
             
-            titleLabel.isHidden = true
+            titleTextView.isHidden = true
             contentTextView.isHidden = true
             contentImageView.snp.updateConstraints {
                 $0.adjustedHeightEqualTo(98)
