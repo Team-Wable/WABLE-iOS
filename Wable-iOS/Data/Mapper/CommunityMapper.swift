@@ -23,7 +23,7 @@ extension CommunityMapper {
     }
     
     static func toDomain(_ response: DTO.Response.IsUserRegistered) -> CommunityRegistration {
-        guard let teamName = response.commnunityName else {
+        guard let teamName = response.communityName else {
             return CommunityRegistration(team: nil, hasRegisteredTeam: false)
         }
         
