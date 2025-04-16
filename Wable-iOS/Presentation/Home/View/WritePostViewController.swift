@@ -241,7 +241,8 @@ private extension WritePostViewController {
             return
         }
         
-        let isEnabled = totalCount > 0 && totalCount <= 500 && titleTextView.text != Constant.titlePlaceholder
+        let isEnabled = totalCount > 0 && totalCount <= 500 && titleTextView.text != Constant.titlePlaceholder && !titleTextView.text.isEmpty
+        
         postButton.isEnabled = isEnabled
         postButton.configuration?.baseBackgroundColor = isEnabled ? .purple50 : .gray400
     }
@@ -344,7 +345,7 @@ extension WritePostViewController: UITextViewDelegate {
             return false
         }
         
-        return (newTextCount - currentCount) + otherCount + currentCount <= 500
+        return (newTextCount - currentCount) + otherCount + currentCount < 500
     }
 }
 
