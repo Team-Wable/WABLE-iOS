@@ -33,6 +33,7 @@ final class HomeDetailViewController: NavigationViewController {
     
     // MARK: - Property
     
+    private var type: CommentType = .ripple
     private var dataSource: DataSource?
     private let viewModel: HomeDetailViewModel
     private let willAppearSubject = PassthroughSubject<Void, Never>()
@@ -41,6 +42,7 @@ final class HomeDetailViewController: NavigationViewController {
     private let didCommentHeartTappedSubject = PassthroughSubject<(Bool, ContentComment), Never>()
     private let didReplyTappedSubject = PassthroughSubject<Int, Never>()
     private let didCommentTappedSubject = PassthroughSubject<Void, Never>()
+    private let didGhostTappedSubject = PassthroughSubject<Int, Never>()
     private let didCreateTappedSubject = PassthroughSubject<String, Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
     private let cancelBag: CancelBag
@@ -103,6 +105,8 @@ final class HomeDetailViewController: NavigationViewController {
         self.cancelBag = cancelBag
         
         super.init(type: .page(type: .detail, title: "게시글"))
+        
+        hidesBottomBarWhenPushed = true
     }
     
     required init?(coder: NSCoder) {
@@ -151,7 +155,6 @@ private extension HomeDetailViewController {
         writeCommentView.snp.makeConstraints {
             $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
             $0.horizontalEdges.equalToSuperview()
-            $0.adjustedHeightEqualTo(64)
         }
         
         commentTextView.snp.makeConstraints {
@@ -161,13 +164,14 @@ private extension HomeDetailViewController {
         }
         
         createCommentButton.snp.makeConstraints {
-            $0.verticalEdges.trailing.equalToSuperview().inset(16)
-            $0.width.equalTo(createCommentButton.snp.height)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(16)
+            $0.size.equalTo(32.adjustedWidth)
         }
         
         loadingIndicator.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(-20)
+            $0.bottom.equalTo(writeCommentView.snp.top)
         }
     }
     
@@ -175,27 +179,47 @@ private extension HomeDetailViewController {
         let contentCellRegistration = UICollectionView.CellRegistration<ContentCollectionViewCell, Content> { [weak self] cell, indexPath, item in
             guard let self = self else { return }
             
-            cell.configureCell(info: item.content.contentInfo, postType: .mine, likeButtonTapHandler: {
+            cell.configureCell(info: item.content.contentInfo, postType: .mine, cellType: .detail, likeButtonTapHandler: {
                 self.didContentHeartTappedSubject.send(cell.likeButton.isLiked)
             })
+            
+            cell.commentButton.addAction(UIAction(handler: { _ in
+                self.didCommentTappedSubject.send()
+                
+                self.commentTextView.text = item.content.contentInfo.author.nickname + Constant.ripplePlaceholder
+                self.commentTextView.textColor = .gray700
+            }), for: .touchUpInside)
+            
+            commentTextView.text = item.content.contentInfo.author.nickname + Constant.ripplePlaceholder
+            self.commentTextView.textColor = .gray700
         }
         
         let commentCellRegistration = UICollectionView.CellRegistration<CommentCollectionViewCell, ContentComment> { cell, indexPath, item in
-            
             self.userInformationUseCase.fetchActiveUserID()
                 .sink { id in
                     cell.configureCell(
                         info: item.comment,
                         commentType: item.parentID == -1 ? .ripple : .reply,
-                        postType: item.comment.author.id == id ? .mine : .others,
+                        authorType: item.comment.author.id == id ? .mine : .others,
                         likeButtonTapHandler: {
                             self.didCommentHeartTappedSubject.send((cell.likeButton.isLiked, item))
-                        },
-                        replyButtonTapHandler: {
-                            self.didReplyTappedSubject.send(indexPath.item)
                         })
                 }
                 .cancel()
+            
+            cell.ghostButton.addAction(UIAction(handler: { _ in
+                self.didGhostTappedSubject.send(indexPath.item)
+            }), for: .touchUpInside)
+            
+            cell.replyButton.addAction(UIAction(handler: { _ in
+                self.didReplyTappedSubject.send(indexPath.item)
+                
+                self.commentTextView.text = item.comment.author.nickname + Constant.replyPlaceholder
+                self.commentTextView.textColor = .gray700
+                
+            }), for: .touchUpInside)
+            
+            cell.infoView.profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.profileImageViewDidTap)))
         }
         
         dataSource = DataSource(collectionView: collectionView) { (collectionView, indexPath, item) -> UICollectionViewCell? in
@@ -218,18 +242,19 @@ private extension HomeDetailViewController {
     }
     
     func setupAction() {
-        createCommentButton.addAction(UIAction(handler: { _ in
-            guard let text = self.commentTextView.text else { return }
+        createCommentButton.addAction(UIAction(handler: { [weak self] _ in
+            guard let text = self?.commentTextView.text else { return }
             
-            self.didCreateTappedSubject.send(text)
+            self?.didCreateTappedSubject.send(text)
         }), for: .touchUpInside)
-        collectionView.refreshControl?.addAction(UIAction(handler: { _ in
-            self.didRefreshSubject.send()
+        collectionView.refreshControl?.addAction(UIAction(handler: { [weak self] _ in
+            self?.didRefreshSubject.send()
         }), for: .valueChanged)
     }
     
     func setupDelegate() {
         collectionView.delegate = self
+        commentTextView.delegate = self
     }
     
     func setupBinding() {
@@ -246,17 +271,13 @@ private extension HomeDetailViewController {
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
         
-//        output.textViewState
-//            .receive(on: DispatchQueue.main)
-//            .sink { commentType in
-//                switch commentType {
-//                case .ripple:
-//                    <#code#>
-//                case .reply:
-//                    <#code#>
-//                }
-//            }
-//            .store(in: cancelBag)
+        output.textViewState
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, commentType in
+                owner.type = commentType
+            }
+            .store(in: cancelBag)
         
         output.content
             .receive(on: DispatchQueue.main)
@@ -315,6 +336,7 @@ private extension HomeDetailViewController {
             .sink { owner, isSucceed in
                 if isSucceed {
                     owner.commentTextView.text = nil
+                    owner.commentTextView.endEditing(true)
                     owner.scrollToTop()
                     
                     let toast = ToastView(status: .complete, message: "댓글을 남겼어요")
@@ -322,6 +344,14 @@ private extension HomeDetailViewController {
                 }
             }
             .store(in: cancelBag)
+    }
+}
+
+// MARK: - @objc Method
+
+private extension HomeDetailViewController {
+    @objc func profileImageViewDidTap() {
+        // TODO: 마이페이지 이동 로직 필요
     }
 }
 
@@ -400,7 +430,17 @@ extension HomeDetailViewController {
     func updateComments(_ comments: [ContentComment]) {
         guard var snapshot = dataSource?.snapshot() else { return }
         
-        let commentItems = comments.map { Item.comment($0) }
+        let commentItems = comments.flatMap { comment -> [Item] in
+            var items: [Item] = [.comment(comment)]
+            
+            if !comment.childs.isEmpty {
+                let childItems = comment.childs.map { Item.comment($0) }
+                
+                items.append(contentsOf: childItems)
+            }
+            
+            return items
+        }
         
         snapshot.deleteItems(snapshot.itemIdentifiers(inSection: .comment))
         snapshot.appendItems(commentItems, toSection: .comment)
@@ -410,5 +450,41 @@ extension HomeDetailViewController {
     
     func scrollToTop() {
         collectionView.setContentOffset(.zero, animated: true)
+    }
+}
+
+// MARK: - UITextViewDelegate
+// TODO: 리팩 시 개선 필요
+
+extension HomeDetailViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text.contains(Constant.replyPlaceholder) || textView.text.contains(Constant.ripplePlaceholder) {
+            textView.text = nil
+            textView.textColor = .wableBlack
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        guard let oldText = textView.text,
+              let stringRange = Range(range, in: oldText) else {
+            return true
+        }
+        
+        let newText = oldText.replacingCharacters(in: stringRange, with: text)
+        
+        return newText.count <= 500
+    }
+}
+
+// MARK: - Constant
+
+extension HomeDetailViewController {
+    enum Constant {
+        static let ripplePlaceholder: String = "에게 댓글 남기기..."
+        static let replyPlaceholder: String = "에게 답글 남기기..."
     }
 }

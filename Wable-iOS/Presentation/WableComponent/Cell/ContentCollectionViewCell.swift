@@ -22,8 +22,17 @@ import UIKit
 /// ```
 final class ContentCollectionViewCell: UICollectionViewCell {
     
-    // MARK: - Property
+    // MARK: - Enum
     
+    enum CellType {
+        case list
+        case detail
+    }
+    
+    // MARK: - Property
+    // TODO: 셀 타입 따라 이미지 크기 설정하는 분기 처리 필요
+    
+    private var cellType: CellType = .list
     var likeButtonTapHandler: (() -> Void)?
     
     // MARK: - UIComponent
@@ -62,7 +71,7 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     
     lazy var likeButton: LikeButton = LikeButton()
     
-    private lazy var commentButton: CommentButton = CommentButton(type: .content)
+    lazy var commentButton: CommentButton = CommentButton(type: .content)
     
     private let divideView: UIView = UIView().then {
         $0.backgroundColor = .gray200
@@ -218,7 +227,7 @@ private extension ContentCollectionViewCell {
     }
 }
 
-// MARK: - Private Function Extension
+// MARK: - Helper Method
 
 private extension ContentCollectionViewCell {
     /// 셀의 투명도 설정
@@ -242,8 +251,10 @@ extension ContentCollectionViewCell {
     /// - Parameters:
     ///   - info: 게시물 정보
     ///   - postType: 게시물 타입 (.mine 또는 .others)
+    ///   - cellType: 셀 타입 (홈 화면 셀 또는 상세 화면 셀)
     ///   - likeButtonTapHandler: 좋아요 버튼을 클릭했을 때 실행될 로직
-    func configureCell(info: ContentInfo, postType: AuthorType, likeButtonTapHandler: (() -> Void)?) {
+    func configureCell(info: ContentInfo, postType: AuthorType, cellType: CellType = .list, likeButtonTapHandler: (() -> Void)?) {
+        self.cellType = cellType
         self.likeButtonTapHandler = likeButtonTapHandler
         
         guard let createdDate = info.createdDate else { return }
@@ -252,7 +263,7 @@ extension ContentCollectionViewCell {
             userProfileURL: info.author.profileURL,
             userName: info.author.nickname,
             userFanTeam: info.author.fanTeam,
-            opacity: info.opacity.displayedValue,
+            opacity: info.opacity.value,
             createdDate: createdDate,
             postType: .content
         )
@@ -264,6 +275,7 @@ extension ContentCollectionViewCell {
         contentImageView.kf.setImage(with: info.imageURL)
         
         contentTextView.text = info.text
+        contentTextView.isUserInteractionEnabled = cellType == .detail
         
         ghostButton.configureButton(type: .large, status: .normal)
         likeButton.configureButton(isLiked: info.like.status, likeCount: info.like.count, postType: .content)

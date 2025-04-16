@@ -174,12 +174,23 @@ extension HomeDetailViewModel: ViewModelType {
                 .asDriver(onErrorJustReturn: ())
             }
             .sink(receiveValue: { [weak self] _ in
-                guard let id = self?.contentID else { return }
+                guard let id = self?.contentID,
+                      let title = contentSubject.value?.title
+                else {
+                    return
+                }
                 
                 self?.fetchContentCommentListUseCase.execute(contentID: id, cursor: -1)
                     .sink(receiveCompletion: { _ in
                     }, receiveValue: { comments in
                         commentsSubject.send(comments)
+                    })
+                    .store(in: cancelBag)
+                
+                self?.fetchContentInfoUseCase.execute(contentID: id, title: title)
+                    .sink(receiveCompletion: { _ in
+                    }, receiveValue: { content in
+                        contentSubject.send(content)
                     })
                     .store(in: cancelBag)
                 
@@ -204,9 +215,9 @@ extension HomeDetailViewModel: ViewModelType {
                     .replaceError(with: [])
                     .eraseToAnyPublisher()
             }
-            .handleEvents(receiveOutput: { content in
+            .handleEvents(receiveOutput: { comments in
                 isLoadingMoreSubject.send(false)
-                isLastViewSubject.send(content.isEmpty || content.count < Constant.defaultContentCountPerPage)
+                isLastViewSubject.send(comments.isEmpty)
             })
             .filter { !$0.isEmpty }
             .sink { comment in
