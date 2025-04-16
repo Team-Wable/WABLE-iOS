@@ -14,7 +14,11 @@ final class HomeViewModel {
     private let createContentLikedUseCase: CreateContentLikedUseCase
     private let deleteContentLikedUseCase: DeleteContentLikedUseCase
     
-    init(fetchContentListUseCase: FetchContentListUseCase, createContentLikedUseCase: CreateContentLikedUseCase, deleteContentLikedUseCase: DeleteContentLikedUseCase) {
+    init(
+        fetchContentListUseCase: FetchContentListUseCase,
+        createContentLikedUseCase: CreateContentLikedUseCase,
+        deleteContentLikedUseCase: DeleteContentLikedUseCase
+    ) {
         self.fetchContentListUseCase = fetchContentListUseCase
         self.createContentLikedUseCase = createContentLikedUseCase
         self.deleteContentLikedUseCase = deleteContentLikedUseCase
@@ -97,16 +101,47 @@ extension HomeViewModel: ViewModelType {
         
         input.didHeartTappedItem
             .withUnretained(self)
-            .flatMap { owner, info -> AnyPublisher<Void, Never> in
-                if info.1 {
-                    return owner.createContentLikedUseCase.execute(contentID: info.0)
-                        .asDriver(onErrorJustReturn: ())
-                } else {
-                    return owner.deleteContentLikedUseCase.execute(contentID: info.0)
-                        .asDriver(onErrorJustReturn: ())
-                }
+            .flatMap { owner, info -> AnyPublisher<(Int, Bool), Never> in
+                return (info.1 ? owner.createContentLikedUseCase.execute(contentID: info.0)
+                        : owner.deleteContentLikedUseCase.execute(contentID: info.0))
+                .map { _ in info }
+                .asDriver(onErrorJustReturn: info)
             }
-            .sink(receiveValue: { _ in })
+            .sink(receiveValue: { contentID, isLiked in
+                var updatedContents = contentsSubject.value
+                        
+                if let index = updatedContents.firstIndex(where: { $0.content.id == contentID }) {
+                    let originalContent = updatedContents[index]
+                    let originalUserContent = originalContent.content
+                    let originalContentInfo = originalUserContent.contentInfo
+                    let originalLike = originalContentInfo.like
+                    
+                    let updatedLike = isLiked
+                    ? Like(status: true, count: originalLike.count + 1)
+                    : Like(status: false, count: max(0, originalLike.count - 1))
+                    
+                    let updatedContent = Content(
+                        content: UserContent(
+                            id: originalUserContent.id,
+                            contentInfo: ContentInfo(
+                                author: originalContentInfo.author,
+                                createdDate: originalContentInfo.createdDate,
+                                title: originalContentInfo.title,
+                                imageURL: originalContentInfo.imageURL,
+                                text: originalContentInfo.text,
+                                status: originalContentInfo.status,
+                                like: updatedLike,
+                                opacity: originalContentInfo.opacity,
+                                commentCount: originalContentInfo.commentCount
+                            )
+                        ),
+                        isDeleted: originalContent.isDeleted
+                    )
+                    
+                    updatedContents[index] = updatedContent
+                    contentsSubject.send(updatedContents)
+                }
+            })
             .store(in: cancelBag)
 
         let selectedContent = input.didSelectedItem
