@@ -30,19 +30,19 @@ enum CommentType {
 ///
 /// // cellForItemAt에서:
 /// let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommentCollectionViewCell.reuseIdentifier, for: indexPath) as! CommentCollectionViewCell
-/// cell.configureCell(info: commentInfo, commentType: .ripple, postType: .others)
+/// cell.configureCell(info: commentInfo, commentType: .ripple, authorType: .others)
 /// return cell
 /// ```
 final class CommentCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Property
+    // TODO: likeButtonTapHandler 다른 버튼처럼 addAction으로 고쳐놓기
     
     var likeButtonTapHandler: (() -> Void)?
-    var replyButtonTapHandler: (() -> Void)?
     
     // MARK: - UIComponent
     
-    private let infoView: PostUserInfoView = PostUserInfoView()
+    let infoView: PostUserInfoView = PostUserInfoView()
     
     private let contentLabel: UILabel = UILabel().then {
         $0.textColor = .gray800
@@ -54,8 +54,8 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     }
     
     lazy var likeButton = LikeButton()
-    private lazy var replyButton = CommentButton(type: .comment)
-    private lazy var ghostButton = GhostButton()
+    lazy var replyButton = CommentButton(type: .comment)
+    lazy var ghostButton = GhostButton()
     
     // MARK: - LifeCycle
 
@@ -118,41 +118,10 @@ private extension CommentCollectionViewCell {
     }
     
     func setupAction() {
-        ghostButton.addTarget(self, action: #selector(ghostButtonDidTap), for: .touchUpInside)
-        infoView.settingButton.addTarget(self, action: #selector(settingButtonDidTap), for: .touchUpInside)
-        replyButton.addTarget(self, action: #selector(replyButtonDidTap), for: .touchUpInside)
-        likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
-        infoView.profileImageView.addGestureRecognizer(
-            UITapGestureRecognizer(
-                target: self,
-                action: #selector(profileImageViewDidTap)
-            )
-        )
+       likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
     }
     
     // MARK: - @objc method
-    
-    @objc func profileImageViewDidTap() {
-        // TODO: 프로필 이동 로직 구현 필요
-        
-        WableLogger.log("profileImageViewDidTap", for: .debug)
-    }
-    
-    @objc func settingButtonDidTap() {
-        // TODO: 바텀시트 올라오는 로직 구현 필요
-        
-        WableLogger.log("settingButtonDidTap", for: .debug)
-    }
-    
-    @objc func ghostButtonDidTap() {
-        // TODO: 내리기 로직 구현 필요
-        
-        WableLogger.log("ghostButtonDidTap", for: .debug)
-    }
-    
-    @objc func replyButtonDidTap() {
-        self.replyButtonTapHandler?()
-    }
     
     @objc func likeButtonDidTap() {
         let newCount = likeButton.isLiked ? likeButton.likeCount - 1 : likeButton.likeCount + 1
@@ -186,12 +155,11 @@ extension CommentCollectionViewCell {
     /// - Parameters:
     ///   - info: 댓글 정보
     ///   - commentType: 댓글 타입 (.ripple 또는 .reply)
-    ///   - postType: 게시물 타입 (.mine 또는 .others)
+    ///   - authorType: 게시물 타입 (.mine 또는 .others)
     ///   - likeButtonTapHandler: 좋아요 버튼을 클릭했을 때 실행될 로직
     ///   - replyButtonTapHandler: 답글쓰기 버튼을 클릭했을 때 실행될 로직
-    func configureCell(info: CommentInfo, commentType: CommentType, postType: AuthorType, likeButtonTapHandler: (() -> Void)?, replyButtonTapHandler: (() -> Void)?) {
+    func configureCell(info: CommentInfo, commentType: CommentType, authorType: AuthorType, likeButtonTapHandler: (() -> Void)?) {
         self.likeButtonTapHandler = likeButtonTapHandler
-        self.replyButtonTapHandler = replyButtonTapHandler
         
         guard let profileURL = info.author.profileURL,
               let fanTeam = info.author.fanTeam,
@@ -199,7 +167,7 @@ extension CommentCollectionViewCell {
                   return
               }
         
-        configurePostType(postType: postType)
+        configurePostType(postType: authorType)
         configureCommentType(info: info, commentType: commentType)
         configurePostStatus(info: info)
         
@@ -231,9 +199,10 @@ extension CommentCollectionViewCell {
     }
     
     func configureCommentType(info: CommentInfo, commentType: CommentType) {
+        contentLabel.attributedText = info.text.pretendardString(with: .body4)
+        
         switch commentType {
         case .ripple:
-            contentLabel.attributedText = info.text.pretendardString(with: .body4)
             replyButton.isHidden = false
         case .reply:
             infoView.snp.updateConstraints {

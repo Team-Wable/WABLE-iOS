@@ -33,7 +33,7 @@ final class HomeViewController: NavigationViewController {
     private let didHeartTappedSubject = PassthroughSubject<(Int, Bool), Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
     private let cancelBag: CancelBag
-    var shouldShowLoadingScreen: Bool = true
+    var shouldShowLoadingScreen: Bool = false
     
     // MARK: - UIComponent
     
@@ -76,7 +76,9 @@ final class HomeViewController: NavigationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
+        shouldShowLoadingScreen ? showLoadingScreen() : nil
+        
+        setupView( )
         setupConstraint()
         setupDataSource()
         setupAction()
@@ -86,10 +88,10 @@ final class HomeViewController: NavigationViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        willAppearSubject.send()
-        
+      
         shouldShowLoadingScreen ? showLoadingScreen() : nil
+      
+        willAppearSubject.send()
         
         scrollToTop()
     }
@@ -125,6 +127,7 @@ extension HomeViewController: UICollectionViewDelegate {
 private extension HomeViewController {
     func setupView() {
         navigationController?.navigationBar.isHidden = true
+        
         
         view.addSubviews(
             collectionView,
@@ -175,6 +178,15 @@ private extension HomeViewController {
             self?.didRefreshSubject.send()
         }), for: .valueChanged)
         plusButton.addTarget(self, action: #selector(plusButtonDidTap), for: .touchUpInside)
+        navigationView.notificationButton.addAction(
+            UIAction(
+                handler: { _ in
+                    let viewController = NotificationPageViewController()
+                    
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                }),
+            for: .touchUpInside
+        )
     }
     
     func setupDelegate() {

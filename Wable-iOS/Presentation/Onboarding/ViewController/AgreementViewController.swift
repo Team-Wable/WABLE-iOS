@@ -187,7 +187,7 @@ private extension AgreementViewController {
                             return
                         }
                         
-                        let tabBarController = TabBarController(shouldShowLoadingScreen: false)
+                        let tabBarController = TabBarController()
                         
                         self?.dismiss(animated: false) {
                             guard let nickname = self?.nickname else { return }

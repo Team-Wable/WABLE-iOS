@@ -5,10 +5,11 @@
 //  Created by YOUJIM on 3/9/25.
 //
 
-
 import UIKit
 
 import Lottie
+import SnapKit
+import Then
 
 // MARK: - Navigation Types
 
@@ -159,8 +160,9 @@ private extension NavigationView {
         }
         
         homeUnderLineView.snp.makeConstraints {
-            $0.bottom.horizontalEdges.equalToSuperview()
-            $0.adjustedHeightEqualTo(2)
+            $0.bottom.equalToSuperview().offset(2)
+            $0.horizontalEdges.equalToSuperview()
+            $0.adjustedHeightEqualTo(4)
         }
         
         pageUnderLineView.snp.makeConstraints {

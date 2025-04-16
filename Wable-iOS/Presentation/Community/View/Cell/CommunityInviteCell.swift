@@ -68,7 +68,7 @@ final class CommunityInviteCell: UICollectionViewCell {
         titleLabel.text = title
         
         progressBar.progressTintColor = progressBarColor
-        progressBar.setProgress(progress, animated: true)
+        progressBar.setProgress(progress, animated: false)
     }
 }
 
