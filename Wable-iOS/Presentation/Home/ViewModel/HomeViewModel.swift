@@ -109,38 +109,35 @@ extension HomeViewModel: ViewModelType {
             }
             .sink(receiveValue: { contentID, isLiked in
                 var updatedContents = contentsSubject.value
-                        
-                if let index = updatedContents.firstIndex(where: { $0.content.id == contentID }) {
-                    let originalContent = updatedContents[index]
-                    let originalUserContent = originalContent.content
-                    let originalContentInfo = originalUserContent.contentInfo
-                    let originalLike = originalContentInfo.like
-                    
-                    let updatedLike = isLiked
-                    ? Like(status: true, count: originalLike.count + 1)
-                    : Like(status: false, count: max(0, originalLike.count - 1))
-                    
-                    let updatedContent = Content(
-                        content: UserContent(
-                            id: originalUserContent.id,
-                            contentInfo: ContentInfo(
-                                author: originalContentInfo.author,
-                                createdDate: originalContentInfo.createdDate,
-                                title: originalContentInfo.title,
-                                imageURL: originalContentInfo.imageURL,
-                                text: originalContentInfo.text,
-                                status: originalContentInfo.status,
-                                like: updatedLike,
-                                opacity: originalContentInfo.opacity,
-                                commentCount: originalContentInfo.commentCount
-                            )
-                        ),
-                        isDeleted: originalContent.isDeleted
-                    )
-                    
-                    updatedContents[index] = updatedContent
-                    contentsSubject.send(updatedContents)
-                }
+                
+                guard let index = updatedContents.firstIndex(where: { $0.content.id == contentID }) else { return }
+                
+                let originalContent = updatedContents[index]
+                let originalUserContent = originalContent.content
+                let originalContentInfo = originalUserContent.contentInfo
+                let originalLike = originalContentInfo.like
+                
+                let updatedLike = isLiked
+                ? Like(status: true, count: originalLike.count + 1)
+                : Like(status: false, count: max(0, originalLike.count - 1))
+                
+                let updatedContent = Content(
+                    content: UserContent(
+                        id: originalUserContent.id,
+                        contentInfo: ContentInfo(
+                            author: originalContentInfo.author,
+                            createdDate: originalContentInfo.createdDate,
+                            title: originalContentInfo.title,
+                            imageURL: originalContentInfo.imageURL,
+                            text: originalContentInfo.text,
+                            status: originalContentInfo.status,
+                            like: updatedLike,
+                            opacity: originalContentInfo.opacity,
+                            commentCount: originalContentInfo.commentCount
+                        )
+                    ),
+                    isDeleted: originalContent.isDeleted
+                )
             })
             .store(in: cancelBag)
 

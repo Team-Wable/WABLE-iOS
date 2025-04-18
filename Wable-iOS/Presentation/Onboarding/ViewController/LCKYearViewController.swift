@@ -16,7 +16,7 @@ final class LCKYearViewController: NavigationViewController {
     
     private var selectedYearIndex: Int?
     private var yearCount: Int {
-        return Calendar.current.component(.year, from: Date()) - 2012 + 1
+        return Calendar.current.component(.year, from: .now) - Constant.startYear + 1
     }
     
     // MARK: - UIComponent
@@ -65,10 +65,10 @@ private extension LCKYearViewController {
     
     func setDefaultYear() {
         let defaultIndex = yearCount - 1
-        let defaultYear = 2012 + defaultIndex
+        let defaultYear = Constant.startYear + defaultIndex
         
         selectedYearIndex = defaultIndex
-        rootView.pullDownButton.configuration?.attributedTitle = String(defaultYear).pretendardString(with: .body1)
+        rootView.pullDownButton.configuration?.attributedTitle = "\(defaultYear)".pretendardString(with: .body1)
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -108,7 +108,7 @@ private extension LCKYearViewController {
             return
         }
         
-        navigationController?.pushViewController(LCKTeamViewController(lckYear: 2012 + selectedIndex), animated: true)
+        navigationController?.pushViewController(LCKTeamViewController(lckYear: Constant.startYear + selectedIndex), animated: true)
     }
 }
 
@@ -141,7 +141,7 @@ extension LCKYearViewController: UICollectionViewDelegate {
         
         updateCellAppearance(indexPath: indexPath)
         
-        rootView.pullDownButton.configuration?.attributedTitle = String(2012 + indexPath.item).pretendardString(with: .body1)
+        rootView.pullDownButton.configuration?.attributedTitle = String(Constant.startYear + indexPath.item).pretendardString(with: .body1)
         
         collectionView.layoutIfNeeded()
     }
@@ -166,10 +166,16 @@ extension LCKYearViewController: UICollectionViewDataSource {
             let condition = indexPath.item == selectedIndex
             
             cell.backgroundColor = condition ? .purple10 : .clear
-            cell.yearLabel.attributedText = String(2012 + indexPath.item).pretendardString(with: condition ? .body1 : .body2)
+            cell.yearLabel.attributedText = String(Constant.startYear + indexPath.item).pretendardString(with: condition ? .body1 : .body2)
             cell.yearLabel.textColor = condition ? .purple50 : .wableBlack
         }
         
         return cell
+    }
+}
+
+private extension LCKYearViewController {
+    enum Constant {
+        static let startYear: Int = 2012
     }
 }
