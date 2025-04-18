@@ -206,10 +206,7 @@ private extension HomeDetailViewController {
         let commentCellRegistration = UICollectionView.CellRegistration<
             CommentCollectionViewCell,
             ContentComment
-        > {
-            [weak self] cell,
-            indexPath,
-            item in
+        > { [weak self] cell, indexPath, item in
             guard let self = self else { return }
             
             self.userInformationUseCase.fetchActiveUserID()
