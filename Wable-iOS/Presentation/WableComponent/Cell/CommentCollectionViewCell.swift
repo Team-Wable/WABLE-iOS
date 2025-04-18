@@ -161,11 +161,7 @@ extension CommentCollectionViewCell {
     func configureCell(info: CommentInfo, commentType: CommentType, authorType: AuthorType, likeButtonTapHandler: (() -> Void)?) {
         self.likeButtonTapHandler = likeButtonTapHandler
         
-        guard let profileURL = info.author.profileURL,
-              let fanTeam = info.author.fanTeam,
-              let createdDate = info.createdDate else {
-                  return
-              }
+        guard let createdDate = info.createdDate else { return }
         
         configurePostType(postType: authorType)
         configureCommentType(info: info, commentType: commentType)
@@ -174,9 +170,9 @@ extension CommentCollectionViewCell {
         contentLabel.attributedText = info.text.pretendardString(with: .body4)
         
         infoView.configureView(
-            userProfileURL: profileURL,
+            userProfileURL: info.author.profileURL,
             userName: info.author.nickname,
-            userFanTeam: fanTeam,
+            userFanTeam: info.author.fanTeam,
             opacity: info.opacity.displayedValue,
             createdDate: createdDate,
             postType: .comment
