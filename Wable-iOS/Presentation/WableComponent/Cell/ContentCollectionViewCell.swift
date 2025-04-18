@@ -286,7 +286,9 @@ extension ContentCollectionViewCell {
         
         ghostButton.configureButton(type: .large, status: .normal)
         likeButton.configureButton(isLiked: info.like.status, likeCount: info.like.count, postType: .content)
+        
         commentButton.configureButton(commentCount: info.commentCount)
+        commentButton.isUserInteractionEnabled = cellType == .detail
         
         switch postType {
         case .mine:
