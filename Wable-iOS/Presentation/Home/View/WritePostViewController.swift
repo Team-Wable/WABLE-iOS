@@ -33,6 +33,7 @@ final class WritePostViewController: NavigationViewController {
         $0.textContainerInset = .zero
         $0.setPretendard(with: .head1, text: Constant.titlePlaceholder)
         $0.textColor = .gray700
+        $0.backgroundColor = .clear
     }
     
     private lazy var contentTextView: UITextView = .init().then {
@@ -40,6 +41,7 @@ final class WritePostViewController: NavigationViewController {
         $0.textContainerInset = .zero
         $0.setPretendard(with: .body2, text: Constant.contentPlaceholder)
         $0.textColor = .gray500
+        $0.backgroundColor = .clear
     }
     
     private lazy var imageView: UIImageView = .init().then {
@@ -239,7 +241,8 @@ private extension WritePostViewController {
             return
         }
         
-        let isEnabled = totalCount > 0 && totalCount <= 500 && titleTextView.text != Constant.titlePlaceholder
+        let isEnabled = totalCount > 0 && totalCount <= 500 && titleTextView.text != Constant.titlePlaceholder && !titleTextView.text.isEmpty
+        
         postButton.isEnabled = isEnabled
         postButton.configuration?.baseBackgroundColor = isEnabled ? .purple50 : .gray400
     }
@@ -342,7 +345,7 @@ extension WritePostViewController: UITextViewDelegate {
             return false
         }
         
-        return (newTextCount - currentCount) + otherCount + currentCount <= 500
+        return (newTextCount - currentCount) + otherCount + currentCount < 500
     }
 }
 

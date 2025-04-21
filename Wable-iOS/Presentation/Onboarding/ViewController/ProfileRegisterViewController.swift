@@ -202,7 +202,7 @@ extension ProfileRegisterViewController: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         guard let text = textField.text else { return }
-        let regex = try? NSRegularExpression(pattern: "^[가-힣a-zA-Z0-9]+$")
+        let regex = try? NSRegularExpression(pattern: "^[ㄱ-ㅎa-zA-Z0-9]+$")
         let range = NSRange(location: 0, length: text.utf16.count)
         let condition = regex?.firstMatch(in: text, options: [], range: range) != nil
         
