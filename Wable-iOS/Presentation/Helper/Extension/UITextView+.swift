@@ -21,14 +21,22 @@ extension UITextView {
     /// ```
     func setPretendard(with style: UIFont.Pretendard, text: String = " ") {
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = (style.lineHeight - style.size) / 1.6
+        paragraphStyle.minimumLineHeight = style.size * 1.8
+        paragraphStyle.maximumLineHeight = style.size * 1.8
         
         let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.pretendard(style),
             .kern: style.kerning,
-            .paragraphStyle: paragraphStyle
+            .paragraphStyle: paragraphStyle,
+            .baselineOffset: style.baselineOffset
         ]
         
         self.attributedText = NSAttributedString(string: text, attributes: attributes)
+        
+        self.textContainerInset = .zero
+        self.textContainer.lineFragmentPadding = 0
+        
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
     }
 }

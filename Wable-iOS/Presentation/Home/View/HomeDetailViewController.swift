@@ -176,10 +176,17 @@ private extension HomeDetailViewController {
     }
     
     func setupDataSource() {
-        let contentCellRegistration = UICollectionView.CellRegistration<ContentCollectionViewCell, Content> { [weak self] cell, indexPath, item in
+        let contentCellRegistration = UICollectionView.CellRegistration<
+            ContentCollectionViewCell,
+            Content
+        > { [weak self] cell, indexPath, item in
             guard let self = self else { return }
             
-            cell.configureCell(info: item.content.contentInfo, postType: .mine, cellType: .detail, likeButtonTapHandler: {
+            cell.configureCell(
+                info: item.content.contentInfo,
+                postType: .mine,
+                cellType: .detail,
+                likeButtonTapHandler: {
                 self.didContentHeartTappedSubject.send(cell.likeButton.isLiked)
             })
             
@@ -188,13 +195,20 @@ private extension HomeDetailViewController {
                 
                 self.commentTextView.text = item.content.contentInfo.author.nickname + Constant.ripplePlaceholder
                 self.commentTextView.textColor = .gray700
+                
+                self.commentTextView.endEditing(true)
             }), for: .touchUpInside)
             
             commentTextView.text = item.content.contentInfo.author.nickname + Constant.ripplePlaceholder
             self.commentTextView.textColor = .gray700
         }
         
-        let commentCellRegistration = UICollectionView.CellRegistration<CommentCollectionViewCell, ContentComment> { cell, indexPath, item in
+        let commentCellRegistration = UICollectionView.CellRegistration<
+            CommentCollectionViewCell,
+            ContentComment
+        > { [weak self] cell, indexPath, item in
+            guard let self = self else { return }
+            
             self.userInformationUseCase.fetchActiveUserID()
                 .sink { id in
                     cell.configureCell(
@@ -217,18 +231,36 @@ private extension HomeDetailViewController {
                 self.commentTextView.text = item.comment.author.nickname + Constant.replyPlaceholder
                 self.commentTextView.textColor = .gray700
                 
+                self.commentTextView.endEditing(true)
             }), for: .touchUpInside)
             
-            cell.infoView.profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.profileImageViewDidTap)))
+            cell.infoView.profileImageView.addGestureRecognizer(
+                UITapGestureRecognizer(
+                    target: self,
+                    action: #selector(self.profileImageViewDidTap)
+                )
+            )
         }
         
-        dataSource = DataSource(collectionView: collectionView) { (collectionView, indexPath, item) -> UICollectionViewCell? in
+        dataSource = DataSource(collectionView: collectionView) { (
+            collectionView,
+            indexPath,
+            item
+        ) -> UICollectionViewCell? in
             let section = Section.allCases[indexPath.section]
             switch (section, item) {
             case (.content, .content(let content)):
-                return collectionView.dequeueConfiguredReusableCell(using: contentCellRegistration, for: indexPath, item: content)
+                return collectionView.dequeueConfiguredReusableCell(
+                    using: contentCellRegistration,
+                    for: indexPath,
+                    item: content
+                )
             case (.comment, .comment(let comment)):
-                return collectionView.dequeueConfiguredReusableCell(using: commentCellRegistration, for: indexPath, item: comment)
+                return collectionView.dequeueConfiguredReusableCell(
+                    using: commentCellRegistration,
+                    for: indexPath,
+                    item: comment
+                )
             default:
                 return nil
             }
@@ -377,7 +409,10 @@ extension HomeDetailViewController: UICollectionViewDelegate {
 
 private extension HomeDetailViewController {
     var collectionViewLayout: UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { [weak self] (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
+        return UICollectionViewCompositionalLayout { [weak self] (
+            sectionIndex,
+            layoutEnvironment
+        ) -> NSCollectionLayoutSection? in
             guard let self = self else { return nil }
             
             let section = Section.allCases[sectionIndex]
