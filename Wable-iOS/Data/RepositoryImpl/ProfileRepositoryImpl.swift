@@ -36,24 +36,24 @@ extension ProfileRepositoryImpl: ProfileRepository {
     }
     
     func updateUserProfile(
-        profile: UserProfile,
-        isPushAlarmAllowed: Bool,
-        isAlarmAllowed: Bool,
+        profile: UserProfile? = nil,
+        isPushAlarmAllowed: Bool? = nil,
+        isAlarmAllowed: Bool? = nil,
         image: UIImage? = nil,
+        fcmToken: String? = nil,
         defaultProfileType: String? = nil
     ) -> AnyPublisher<Void, WableError> {
         return provider.request(
             .updateUserProfile(
                 request: DTO.Request.UpdateUserProfile(
                     info: DTO.Request.ProfileInfo(
-                        nickname: profile.user.nickname,
+                        nickname: profile?.user.nickname,
                         isAlarmAllowed: isAlarmAllowed,
-                        memberIntro: profile.introduction,
+                        memberIntro: profile?.introduction,
                         isPushAlarmAllowed: isPushAlarmAllowed,
-                        // TODO: fcm 토큰 넣어주는 로직 필요
-                        fcmToken: nil,
-                        memberLCKYears: profile.lckYears,
-                        memberFanTeam: profile.user.fanTeam?.rawValue,
+                        fcmToken: fcmToken,
+                        memberLCKYears: profile?.lckYears,
+                        memberFanTeam: profile?.user.fanTeam?.rawValue,
                         memberDefaultProfileImage: defaultProfileType
                     ),
                     file: image?.jpegData(compressionQuality: 0.1)
