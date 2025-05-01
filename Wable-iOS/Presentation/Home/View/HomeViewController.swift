@@ -171,7 +171,10 @@ private extension HomeViewController {
                     
                 },
                 profileImageViewTapHandler: {
+                    // TODO: 프로필 구현되는 대로 추가적인 설정 필요
+                    let viewController = ProfileViewController()
                     
+                    self.navigationController?.pushViewController(viewController, animated: true)
                 },
                 ghostButtonTapHandler: {
                     
