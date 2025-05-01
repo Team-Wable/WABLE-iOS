@@ -128,7 +128,6 @@ private extension HomeViewController {
     func setupView() {
         navigationController?.navigationBar.isHidden = true
         
-        
         view.addSubviews(
             collectionView,
             plusButton,
@@ -159,9 +158,25 @@ private extension HomeViewController {
     
     func setupDataSource() {
         let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> { cell, indexPath, itemID in
-            cell.configureCell(info: itemID.content.contentInfo, postType: .mine, likeButtonTapHandler: {
-                self.didHeartTappedSubject.send((itemID.content.id, cell.likeButton.isLiked))
-            })
+            
+            cell.configureCell(
+                info: itemID.content.contentInfo,
+                // TODO: 작성자 구분 필요
+                postType: .mine,
+                cellType: .list,
+                likeButtonTapHandler: {
+                    self.didHeartTappedSubject.send((itemID.content.id, cell.likeButton.isLiked))
+                },
+                settingButtonTapHandler: {
+                    
+                },
+                profileImageViewTapHandler: {
+                    
+                },
+                ghostButtonTapHandler: {
+                    
+                }
+            )
         }
         
         dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
