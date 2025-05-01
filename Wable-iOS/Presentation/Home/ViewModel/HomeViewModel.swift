@@ -153,6 +153,9 @@ extension HomeViewModel: ViewModelType {
                     ),
                     isDeleted: originalContent.isDeleted
                 )
+                
+                updatedContents[index] = updatedContent
+                contentsSubject.send(updatedContents)
             })
             .store(in: cancelBag)
 
