@@ -21,7 +21,15 @@ final class TabBarController: UITabBarController {
         viewModel: HomeViewModel(
             fetchContentListUseCase: FetchContentListUseCase(repository: ContentRepositoryImpl()),
             createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
-            deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl())
+            deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+            fetchUserInformationUseCase: FetchUserInformationUseCase(
+                repository: UserSessionRepositoryImpl(
+                    userDefaults: UserDefaultsStorage(
+                        jsonEncoder: JSONEncoder(),
+                        jsonDecoder: JSONDecoder()
+                    )
+                )
+            )
         ),
         cancelBag: CancelBag()
     ).then {

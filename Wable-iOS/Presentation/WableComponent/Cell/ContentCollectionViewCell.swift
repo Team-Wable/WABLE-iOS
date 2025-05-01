@@ -281,18 +281,13 @@ extension ContentCollectionViewCell {
         contentTextView.text = info.text
         contentTextView.isUserInteractionEnabled = cellType == .detail
         
-        ghostButton.configureButton(type: .large, status: .normal)
         likeButton.configureButton(isLiked: info.like.status, likeCount: info.like.count, postType: .content)
         
         commentButton.configureButton(commentCount: info.commentCount)
         commentButton.isUserInteractionEnabled = cellType == .detail
         
-        switch postType {
-        case .mine:
-            ghostButton.isHidden = true
-        case .others:
-            break
-        }
+        ghostButton.configureButton(type: .large, status: .normal)
+        ghostButton.isHidden = postType == .mine
         
         switch info.status {
         case .normal:

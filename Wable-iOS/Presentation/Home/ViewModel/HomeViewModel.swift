@@ -13,15 +13,18 @@ final class HomeViewModel {
     private let fetchContentListUseCase: FetchContentListUseCase
     private let createContentLikedUseCase: CreateContentLikedUseCase
     private let deleteContentLikedUseCase: DeleteContentLikedUseCase
+    private let fetchUserInformationUseCase: FetchUserInformationUseCase
     
     init(
         fetchContentListUseCase: FetchContentListUseCase,
         createContentLikedUseCase: CreateContentLikedUseCase,
-        deleteContentLikedUseCase: DeleteContentLikedUseCase
+        deleteContentLikedUseCase: DeleteContentLikedUseCase,
+        fetchUserInformationUseCase: FetchUserInformationUseCase
     ) {
         self.fetchContentListUseCase = fetchContentListUseCase
         self.createContentLikedUseCase = createContentLikedUseCase
         self.deleteContentLikedUseCase = deleteContentLikedUseCase
+        self.fetchUserInformationUseCase = fetchUserInformationUseCase
     }
 }
 
@@ -35,6 +38,7 @@ extension HomeViewModel: ViewModelType {
     }
     
     struct Output {
+        let activeUserID: AnyPublisher<Int?, Never>
         let contents: AnyPublisher<[Content], Never>
         let selectedContent: AnyPublisher<Content, Never>
         let isLoading: AnyPublisher<Bool, Never>
@@ -46,11 +50,22 @@ extension HomeViewModel: ViewModelType {
         let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
         let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
         let isLastViewSubject = CurrentValueSubject<Bool, Never>(false)
+        let activeUserIDSubject = CurrentValueSubject<Int?, Never>(nil)
         
         let loadTrigger = Publishers.Merge(
             input.viewDidRefresh,
             input.viewWillAppear
         )
+        
+        loadTrigger
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<Int?, Never> in
+                return owner.fetchUserInformationUseCase.fetchActiveUserID()
+            }
+            .sink { userID in
+                activeUserIDSubject.send(userID)
+            }
+            .store(in: cancelBag)
         
         loadTrigger
             .handleEvents(receiveOutput: { _ in
@@ -147,6 +162,7 @@ extension HomeViewModel: ViewModelType {
             .eraseToAnyPublisher()
         
         return Output(
+            activeUserID: activeUserIDSubject.eraseToAnyPublisher(),
             contents: contentsSubject.eraseToAnyPublisher(),
             selectedContent: selectedContent,
             isLoading: isLoadingSubject.eraseToAnyPublisher(),
