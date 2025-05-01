@@ -161,7 +161,6 @@ private extension HomeViewController {
     
     func setupDataSource() {
         let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> { cell, indexPath, itemID in
-            
             cell.configureCell(
                 info: itemID.content.contentInfo,
                 postType: itemID.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
@@ -179,7 +178,27 @@ private extension HomeViewController {
                     self.navigationController?.pushViewController(viewController, animated: true)
                 },
                 ghostButtonTapHandler: {
+                    let viewController = WableSheetViewController(title: "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?")
+                    viewController.addActions(
+                        WableSheetAction(
+                            title: "고민할게요",
+                            style: .gray,
+                            handler: {
+                                viewController.dismiss(animated: true)
+                            }
+                        ),
+                        WableSheetAction(
+                            title: "네 맞아요",
+                            style: .primary,
+                            handler: {
+                                viewController.dismiss(animated: true, completion: {
+                                    // TODO: 뷰모델 send 필요
+                                })
+                            }
+                        )
+                    )
                     
+                    self.present(viewController, animated: true)
                 }
             )
         }
