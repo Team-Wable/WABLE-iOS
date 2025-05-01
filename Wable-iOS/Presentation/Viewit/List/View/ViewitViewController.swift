@@ -40,6 +40,7 @@ final class ViewitViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         
         setupDataSource()
+        setupAction()
         loadMockData()
     }
 }
@@ -66,16 +67,24 @@ private extension ViewitViewController {
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
         }
     }
-}
-
-// MARK: - Helper Method
-
-private extension ViewitViewController {
+    
+    func setupAction() {
+        writeButton.addTarget(self, action: #selector(writeButtonDidTap), for: .touchUpInside)
+    }
+    
+    // MARK: - Helper Method
+    
     func applySnapshot(items: [Item]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)
         dataSource?.apply(snapshot, animatingDifferences: true)
+    }
+    
+    // MARK: - Action Method
+
+    @objc func writeButtonDidTap() {
+        present(CreateViewitViewController(viewModel: CreateViewitViewModel()), animated: true)
     }
 }
 
@@ -84,6 +93,7 @@ private extension ViewitViewController {
 private extension ViewitViewController {
     var collectionView: UICollectionView { rootView.collectionView }
     var refreshControl: UIRefreshControl? { rootView.collectionView.refreshControl }
+    var writeButton: UIButton { rootView.writeButton }
 }
 
 // TODO: 추후 삭제

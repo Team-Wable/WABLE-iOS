@@ -19,6 +19,10 @@ final class ViewitView: UIView {
         $0.alwaysBounceVertical = true
     }
     
+    let writeButton = UIButton().then {
+        $0.setImage(.btnWrite, for: .normal)
+    }
+    
     // MARK: - Initializer
 
     override init(frame: CGRect) {
@@ -49,6 +53,7 @@ private extension ViewitView {
             statusBarBackgroundView,
             navigationView,
             collectionView,
+            writeButton,
             underlineView
         )
         
@@ -66,6 +71,11 @@ private extension ViewitView {
             make.top.equalTo(navigationView.snp.bottom)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(underlineView.snp.top)
+        }
+        
+        writeButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-12)
+            make.bottom.equalTo(safeArea).offset(-24)
         }
         
         underlineView.snp.makeConstraints { make in
