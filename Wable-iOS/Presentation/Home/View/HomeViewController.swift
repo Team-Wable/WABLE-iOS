@@ -25,7 +25,8 @@ final class HomeViewController: NavigationViewController {
     
     // MARK: - Property
     
-    private var dataSource: DataSource?
+    var shouldShowLoadingScreen: Bool = false
+    
     private let viewModel: HomeViewModel
     private let willAppearSubject = PassthroughSubject<Void, Never>()
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
@@ -33,7 +34,9 @@ final class HomeViewController: NavigationViewController {
     private let didHeartTappedSubject = PassthroughSubject<(Int, Bool), Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
     private let cancelBag: CancelBag
-    var shouldShowLoadingScreen: Bool = false
+    
+    private var activeUserID: Int?
+    private var dataSource: DataSource?
     
     // MARK: - UIComponent
     
@@ -161,8 +164,7 @@ private extension HomeViewController {
             
             cell.configureCell(
                 info: itemID.content.contentInfo,
-                // TODO: 작성자 구분 필요
-                postType: .mine,
+                postType: itemID.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
                 cellType: .list,
                 likeButtonTapHandler: {
                     self.didHeartTappedSubject.send((itemID.content.id, cell.likeButton.isLiked))
@@ -221,6 +223,13 @@ private extension HomeViewController {
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.activeUserID
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] id in
+                self?.activeUserID = id
+            }
+            .store(in: cancelBag)
         
         output.contents
             .receive(on: DispatchQueue.main)
