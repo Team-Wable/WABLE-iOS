@@ -40,9 +40,9 @@ final class HomeDetailViewController: NavigationViewController {
     private let didCommentHeartTappedSubject = PassthroughSubject<(Bool, ContentComment), Never>()
     private let didReplyTappedSubject = PassthroughSubject<Int, Never>()
     private let didCommentTappedSubject = PassthroughSubject<Void, Never>()
-    private let didGhostTappedSubject = PassthroughSubject<(Int, Int), Never>()
-    private let didDeleteTappedSubject = PassthroughSubject<Int, Never>()
-    private let didBannedTappedSubject = PassthroughSubject<(Int, Int), Never>()
+    private let didGhostTappedSubject = PassthroughSubject<(Int, Int, PostType), Never>()
+    private let didDeleteTappedSubject = PassthroughSubject<(Int, PostType), Never>()
+    private let didBannedTappedSubject = PassthroughSubject<(Int, Int, PostType), Never>()
     private let didReportTappedSubject = PassthroughSubject<(String, String), Never>()
     private let didCreateTappedSubject = PassthroughSubject<String, Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
@@ -179,19 +179,131 @@ private extension HomeDetailViewController {
             
             cell.configureCell(
                 info: item.content.contentInfo,
-                postType: item.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
+                authorType: item.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
                 cellType: .detail,
                 likeButtonTapHandler: {
                     self.didContentHeartTappedSubject.send(cell.likeButton.isLiked)
                 },
                 settingButtonTapHandler: {
+                    let viewController = WableBottomSheetController()
                     
+                    if self.activeUserID == item.content.contentInfo.author.id {
+                        viewController.addActions(WableBottomSheetAction(title: "삭제하기", handler: {
+                            viewController.dismiss(animated: true, completion: {
+                                let viewController = WableSheetViewController(title: "게시글을 삭제하시겠어요?", message: "게시글이 영구히 삭제됩니다.")
+                                
+                                viewController.addActions(
+                                    WableSheetAction(
+                                        title: "취소",
+                                        style: .gray,
+                                        handler: {
+                                            viewController.dismiss(animated: true)
+                                        }
+                                    ),
+                                    WableSheetAction(
+                                        title: "삭제하기",
+                                        style: .primary,
+                                        handler: {
+                                            viewController.dismiss(animated: true, completion: {
+                                                self.didDeleteTappedSubject.send((item.content.id, .content))
+                                            })
+                                        }
+                                    )
+                                )
+                                
+                                self.present(viewController, animated: true)
+                            })
+                        }))
+                    } else if self.isActiveUserAdmin ?? false {
+                        viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
+                            viewController.dismiss(animated: true, completion: {
+                                let viewController = WableSheetViewController(title: "신고하시겠어요?")
+                                
+                                viewController.addActions(
+                                    WableSheetAction(
+                                        title: "취소",
+                                        style: .gray,
+                                        handler: {
+                                            viewController.dismiss(animated: true)
+                                        }
+                                    ),
+                                    WableSheetAction(
+                                        title: "신고하기",
+                                        style: .primary,
+                                        handler: {
+                                            viewController.dismiss(animated: true, completion: {
+                                                self.didReportTappedSubject.send((item.content.contentInfo.author.nickname, item.content.contentInfo.text))
+                                            })
+                                        }
+                                    )
+                                )
+                                
+                                self.present(viewController, animated: true)
+                            })
+                        }), WableBottomSheetAction(title: "밴하기", handler: {
+                            self.didBannedTappedSubject.send((item.content.contentInfo.author.id, item.content.id, .content))
+                        })
+                        )
+                    } else {
+                        viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
+                            viewController.dismiss(animated: true, completion: {
+                                let viewController = WableSheetViewController(title: "신고하시겠어요?")
+                                
+                                viewController.addActions(
+                                    WableSheetAction(
+                                        title: "취소",
+                                        style: .gray,
+                                        handler: {
+                                            viewController.dismiss(animated: true)
+                                        }
+                                    ),
+                                    WableSheetAction(
+                                        title: "신고하기",
+                                        style: .primary,
+                                        handler: {
+                                            viewController.dismiss(animated: true, completion: {
+                                                self.didReportTappedSubject.send((item.content.contentInfo.author.nickname, item.content.contentInfo.text))
+                                            })
+                                        }
+                                    )
+                                )
+                                
+                                self.present(viewController, animated: true)
+                            })
+                        }))
+                    }
+                    
+                    self.present(viewController, animated: true)
                 },
                 profileImageViewTapHandler: {
+                    // TODO: 프로필 구현되는 대로 추가적인 설정 필요
+                    let viewController = ProfileViewController()
                     
+                    self.navigationController?.pushViewController(viewController, animated: true)
                 },
                 ghostButtonTapHandler: {
+                    let viewController = WableSheetViewController(title: "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?")
                     
+                    viewController.addActions(
+                        WableSheetAction(
+                            title: "고민할게요",
+                            style: .gray,
+                            handler: {
+                                viewController.dismiss(animated: true)
+                            }
+                        ),
+                        WableSheetAction(
+                            title: "네 맞아요",
+                            style: .primary,
+                            handler: {
+                                viewController.dismiss(animated: true, completion: {
+                                    self.didGhostTappedSubject.send((item.content.id, item.content.contentInfo.author.id, .content))
+                                })
+                            }
+                        )
+                    )
+                    
+                    self.present(viewController, animated: true)
                 }
             )
             
@@ -213,28 +325,143 @@ private extension HomeDetailViewController {
             ContentComment
         > { [weak self] cell, indexPath, item in
             guard let self = self else { return }
+            
             cell.configureCell(
                 info: item.comment,
                 commentType: item.parentID == -1 ? .ripple : .reply,
                 authorType: item.comment.author.id == activeUserID ? .mine : .others,
                 likeButtonTapHandler: {
                     self.didCommentHeartTappedSubject.send((cell.likeButton.isLiked, item))
-                })
-            
-            cell.replyButton.addAction(UIAction(handler: { _ in
-                self.didReplyTappedSubject.send(indexPath.item)
-                
-                self.commentTextView.text = item.comment.author.nickname + Constant.replyPlaceholder
-                self.commentTextView.textColor = .gray700
-                
-                self.commentTextView.endEditing(true)
-            }), for: .touchUpInside)
-            
-            cell.infoView.profileImageView.addGestureRecognizer(
-                UITapGestureRecognizer(
-                    target: self,
-                    action: #selector(self.profileImageViewDidTap)
-                )
+                },
+                settingButtonTapHandler: {
+                    let viewController = WableBottomSheetController()
+                    
+                    if self.activeUserID == item.comment.author.id {
+                        viewController.addActions(WableBottomSheetAction(title: "삭제하기", handler: {
+                            viewController.dismiss(animated: true, completion: {
+                                let viewController = WableSheetViewController(title: "댓글을 삭제하시겠어요?", message: "댓글이 영구히 삭제됩니다.")
+                                
+                                viewController.addActions(
+                                    WableSheetAction(
+                                        title: "취소",
+                                        style: .gray,
+                                        handler: {
+                                            viewController.dismiss(animated: true)
+                                        }
+                                    ),
+                                    WableSheetAction(
+                                        title: "삭제하기",
+                                        style: .primary,
+                                        handler: {
+                                            viewController.dismiss(animated: true, completion: {
+                                                self.didDeleteTappedSubject.send((item.comment.id, .comment))
+                                            })
+                                        }
+                                    )
+                                )
+                                
+                                self.present(viewController, animated: true)
+                            })
+                        }))
+                    } else if self.isActiveUserAdmin ?? false {
+                        viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
+                            viewController.dismiss(animated: true, completion: {
+                                let viewController = WableSheetViewController(title: "신고하시겠어요?")
+                                
+                                viewController.addActions(
+                                    WableSheetAction(
+                                        title: "취소",
+                                        style: .gray,
+                                        handler: {
+                                            viewController.dismiss(animated: true)
+                                        }
+                                    ),
+                                    WableSheetAction(
+                                        title: "신고하기",
+                                        style: .primary,
+                                        handler: {
+                                            viewController.dismiss(animated: true, completion: {
+                                                self.didReportTappedSubject.send((item.comment.author.nickname, item.comment.text))
+                                            })
+                                        }
+                                    )
+                                )
+                                
+                                self.present(viewController, animated: true)
+                            })
+                        }), WableBottomSheetAction(title: "밴하기", handler: {
+                            self.didBannedTappedSubject.send((item.comment.author.id, item.comment.id, .comment))
+                        })
+                        )
+                    } else {
+                        viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
+                            viewController.dismiss(animated: true, completion: {
+                                let viewController = WableSheetViewController(title: "신고하시겠어요?")
+                                
+                                viewController.addActions(
+                                    WableSheetAction(
+                                        title: "취소",
+                                        style: .gray,
+                                        handler: {
+                                            viewController.dismiss(animated: true)
+                                        }
+                                    ),
+                                    WableSheetAction(
+                                        title: "신고하기",
+                                        style: .primary,
+                                        handler: {
+                                            viewController.dismiss(animated: true, completion: {
+                                                self.didReportTappedSubject.send((item.comment.author.nickname, item.comment.text))
+                                            })
+                                        }
+                                    )
+                                )
+                                
+                                self.present(viewController, animated: true)
+                            })
+                        }))
+                    }
+                    
+                    self.present(viewController, animated: true)
+                },
+                profileImageViewTapHandler: {
+                    // TODO: 프로필 구현되는 대로 추가적인 설정 필요
+                    let viewController = ProfileViewController()
+                    
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                },
+                ghostButtonTapHandler: {
+                    let viewController = WableSheetViewController(title: "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?")
+                    
+                    viewController.addActions(
+                        WableSheetAction(
+                            title: "고민할게요",
+                            style: .gray,
+                            handler: {
+                                viewController.dismiss(animated: true)
+                            }
+                        ),
+                        WableSheetAction(
+                            title: "네 맞아요",
+                            style: .primary,
+                            handler: {
+                                viewController.dismiss(animated: true, completion: {
+                                    self.didGhostTappedSubject.send((item.comment.id, item.comment.author.id, .comment))
+                                })
+                            }
+                        )
+                    )
+                    
+                    self.present(viewController, animated: true)
+                },
+                replyButtonTapHandler: {
+                    self.didReplyTappedSubject.send(indexPath.item)
+                    
+                    self.commentTextView.text = item.comment.author.nickname + Constant.replyPlaceholder
+                    self.commentTextView.textColor = .gray700
+                    
+                    self.commentTextView.endEditing(true)
+                }
             )
         }
         
@@ -329,19 +556,13 @@ private extension HomeDetailViewController {
             .receive(on: DispatchQueue.main)
             .withUnretained(self)
             .sink { owner, contentInfo in
-                
                 guard let contentInfo = contentInfo,
                       let activeUserID = owner.activeUserID
                 else {
                     return
                 }
                 
-                owner.updateContent(
-                    Content(
-                        content: UserContent(id: activeUserID, contentInfo: contentInfo),
-                        isDeleted: false
-                    )
-                )
+                owner.updateContent(Content(content: UserContent(id: activeUserID, contentInfo: contentInfo), isDeleted: false))
             }
             .store(in: cancelBag)
         
@@ -385,17 +606,18 @@ private extension HomeDetailViewController {
                 }
             }
             .store(in: cancelBag)
-    }
-}
-
-// MARK: - @objc Method
-
-private extension HomeDetailViewController {
-    @objc func profileImageViewDidTap() {
-        // TODO: 프로필 구현되는 대로 추가적인 설정 필요
-        let viewController = ProfileViewController()
         
-        self.navigationController?.pushViewController(viewController, animated: true)
+        output.isReportSucceed
+            .receive(on: DispatchQueue.main)
+            .sink { isSucceed in
+                let toast = ToastView(
+                    status: .complete,
+                    message: "신고 접수가 완료되었어요.\n24시간 이내에 조치할 예정이예요."
+                )
+                
+                isSucceed ? toast.show() : nil
+            }
+            .store(in: cancelBag)
     }
 }
 

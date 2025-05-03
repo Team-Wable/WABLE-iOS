@@ -70,9 +70,9 @@ extension HomeDetailViewModel: ViewModelType {
         let didCommentTappedItem: AnyPublisher<Void, Never>
         let didReplyTappedItem: AnyPublisher<Int, Never>
         let didCreateTappedItem: AnyPublisher<String, Never>
-        let didGhostTappedItem: AnyPublisher<(Int, Int), Never>
-        let didDeleteTappedItem: AnyPublisher<Int, Never>
-        let didBannedTappedItem: AnyPublisher<(Int, Int), Never>
+        let didGhostTappedItem: AnyPublisher<(Int, Int, PostType), Never>
+        let didDeleteTappedItem: AnyPublisher<(Int, PostType), Never>
+        let didBannedTappedItem: AnyPublisher<(Int, Int, PostType), Never>
         let didReportTappedItem: AnyPublisher<(String, String), Never>
         let willDisplayLastItem: AnyPublisher<Void, Never>
     }
@@ -211,6 +211,43 @@ extension HomeDetailViewModel: ViewModelType {
             }
             .store(in: cancelBag)
         
+        input.didGhostTappedItem
+            .withUnretained(self)
+            .flatMap { owner, input -> AnyPublisher<Int, Never> in
+                return owner.fetchGhostUseCase.execute(type: input.2, targetID: input.0, userID: input.1)
+                    .map { _ in input.1 }
+                    .asDriver(onErrorJustReturn: input.1)
+            }
+            .sink(receiveValue: { [weak self] userID in
+                guard let self = self,
+                      let contentInfo = contentSubject.value
+                else {
+                    return
+                }
+                
+                let commentInfo = commentsSubject.value
+                let updatedCommentInfo = updateCommentsForUser(comments: commentInfo, userID: userID)
+                
+                commentsSubject.send(updatedCommentInfo)
+                
+                if userID == contentInfo.author.id {
+                    let updatedContent = ContentInfo(
+                        author: contentInfo.author,
+                        createdDate: contentInfo.createdDate,
+                        title: contentInfo.title,
+                        imageURL: contentInfo.imageURL,
+                        text: contentInfo.text,
+                        status: .ghost,
+                        like: contentInfo.like,
+                        opacity: contentInfo.opacity.reduced(),
+                        commentCount: contentInfo.commentCount
+                    )
+                    
+                    contentSubject.send(updatedContent)
+                }
+            })
+            .store(in: cancelBag)
+        
         input.didCreateTappedItem
             .withUnretained(self)
             .flatMap { owner, text -> AnyPublisher<Void, Never> in
@@ -287,6 +324,48 @@ extension HomeDetailViewModel: ViewModelType {
             postSucceed: postSucceedSubject.eraseToAnyPublisher(),
             isReportSucceed: isReportSucceedSubject.eraseToAnyPublisher()
         )
+    }
+}
+
+// MARK: - Helper Method
+
+private extension HomeDetailViewModel {
+    func updateCommentsForUser(comments: [ContentComment], userID: Int) -> [ContentComment] {
+        return comments.map { comment in
+            let updatedComment: ContentComment
+            
+            if comment.comment.author.id == userID {
+                updatedComment = ContentComment(
+                    comment: CommentInfo(
+                        author: comment.comment.author,
+                        id: comment.comment.id,
+                        text: comment.comment.text,
+                        createdDate: comment.comment.createdDate,
+                        status: .ghost,
+                        like: comment.comment.like,
+                        opacity: comment.comment.opacity.reduced()
+                    ),
+                    parentID: comment.parentID,
+                    isDeleted: comment.isDeleted,
+                    childs: comment.childs
+                )
+            } else {
+                updatedComment = comment
+            }
+            
+            if !updatedComment.childs.isEmpty {
+                let updatedChilds = updateCommentsForUser(comments: updatedComment.childs, userID: userID)
+                
+                return ContentComment(
+                    comment: updatedComment.comment,
+                    parentID: updatedComment.parentID,
+                    isDeleted: updatedComment.isDeleted,
+                    childs: updatedChilds
+                )
+            }
+            
+            return updatedComment
+        }
     }
 }
 

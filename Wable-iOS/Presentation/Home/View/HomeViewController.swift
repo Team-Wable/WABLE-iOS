@@ -165,23 +165,24 @@ private extension HomeViewController {
     }
     
     func setupDataSource() {
-        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> { [weak self] cell, indexPath, itemID in
+        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> { [weak self] cell, indexPath, item in
             guard let self = self else { return }
             
             cell.configureCell(
-                info: itemID.content.contentInfo,
-                postType: itemID.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
+                info: item.content.contentInfo,
+                authorType: item.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
                 cellType: .list,
                 likeButtonTapHandler: {
-                    self.didHeartTappedSubject.send((itemID.content.id, cell.likeButton.isLiked))
+                    self.didHeartTappedSubject.send((item.content.id, cell.likeButton.isLiked))
                 },
                 settingButtonTapHandler: {
                     let viewController = WableBottomSheetController()
                     
-                    if self.activeUserID == itemID.content.contentInfo.author.id {
+                    if self.activeUserID == item.content.contentInfo.author.id {
                         viewController.addActions(WableBottomSheetAction(title: "삭제하기", handler: {
                             viewController.dismiss(animated: true, completion: {
                                 let viewController = WableSheetViewController(title: "게시글을 삭제하시겠어요?", message: "게시글이 영구히 삭제됩니다.")
+                                
                                 viewController.addActions(
                                     WableSheetAction(
                                         title: "취소",
@@ -195,7 +196,7 @@ private extension HomeViewController {
                                         style: .primary,
                                         handler: {
                                             viewController.dismiss(animated: true, completion: {
-                                                self.didDeleteTappedSubject.send(itemID.content.id)
+                                                self.didDeleteTappedSubject.send(item.content.id)
                                             })
                                         }
                                     )
@@ -208,6 +209,7 @@ private extension HomeViewController {
                         viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
                             viewController.dismiss(animated: true, completion: {
                                 let viewController = WableSheetViewController(title: "신고하시겠어요?")
+                                
                                 viewController.addActions(
                                     WableSheetAction(
                                         title: "취소",
@@ -221,7 +223,7 @@ private extension HomeViewController {
                                         style: .primary,
                                         handler: {
                                             viewController.dismiss(animated: true, completion: {
-                                                self.didReportTappedSubject.send((itemID.content.contentInfo.title, itemID.content.contentInfo.text))
+                                                self.didReportTappedSubject.send((item.content.contentInfo.author.nickname, item.content.contentInfo.text))
                                             })
                                         }
                                     )
@@ -230,13 +232,14 @@ private extension HomeViewController {
                                 self.present(viewController, animated: true)
                             })
                         }), WableBottomSheetAction(title: "밴하기", handler: {
-                            self.didBannedTappedSubject.send((itemID.content.contentInfo.author.id, itemID.content.id))
+                            self.didBannedTappedSubject.send((item.content.contentInfo.author.id, item.content.id))
                         })
                         )
                     } else {
                         viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
                             viewController.dismiss(animated: true, completion: {
                                 let viewController = WableSheetViewController(title: "신고하시겠어요?")
+                                
                                 viewController.addActions(
                                     WableSheetAction(
                                         title: "취소",
@@ -250,7 +253,7 @@ private extension HomeViewController {
                                         style: .primary,
                                         handler: {
                                             viewController.dismiss(animated: true, completion: {
-                                                self.didReportTappedSubject.send((itemID.content.contentInfo.title, itemID.content.contentInfo.text))
+                                                self.didReportTappedSubject.send((item.content.contentInfo.author.nickname, item.content.contentInfo.text))
                                             })
                                         }
                                     )
@@ -271,6 +274,7 @@ private extension HomeViewController {
                 },
                 ghostButtonTapHandler: {
                     let viewController = WableSheetViewController(title: "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?")
+                    
                     viewController.addActions(
                         WableSheetAction(
                             title: "고민할게요",
@@ -284,7 +288,7 @@ private extension HomeViewController {
                             style: .primary,
                             handler: {
                                 viewController.dismiss(animated: true, completion: {
-                                    self.didGhostTappedSubject.send((itemID.content.id, itemID.content.contentInfo.author.id))
+                                    self.didGhostTappedSubject.send((item.content.id, item.content.contentInfo.author.id))
                                 })
                             }
                         )
