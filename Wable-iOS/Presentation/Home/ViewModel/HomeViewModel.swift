@@ -15,19 +15,28 @@ final class HomeViewModel {
     private let deleteContentLikedUseCase: DeleteContentLikedUseCase
     private let fetchUserInformationUseCase: FetchUserInformationUseCase
     private let fetchGhostUseCase: FetchGhostUseCase
+    private let createReportUseCase: CreateReportUseCase
+    private let createBannedUseCase: CreateBannedUseCase
+    private let deleteContentUseCase: DeleteContentUseCase
     
     init(
         fetchContentListUseCase: FetchContentListUseCase,
         createContentLikedUseCase: CreateContentLikedUseCase,
         deleteContentLikedUseCase: DeleteContentLikedUseCase,
         fetchUserInformationUseCase: FetchUserInformationUseCase,
-        fetchGhostUseCase: FetchGhostUseCase
+        fetchGhostUseCase: FetchGhostUseCase,
+        createReportUseCase: CreateReportUseCase,
+        createBannedUseCase: CreateBannedUseCase,
+        deleteContentUseCase: DeleteContentUseCase
     ) {
         self.fetchContentListUseCase = fetchContentListUseCase
         self.createContentLikedUseCase = createContentLikedUseCase
         self.deleteContentLikedUseCase = deleteContentLikedUseCase
         self.fetchUserInformationUseCase = fetchUserInformationUseCase
         self.fetchGhostUseCase = fetchGhostUseCase
+        self.createReportUseCase = createReportUseCase
+        self.createBannedUseCase = createBannedUseCase
+        self.deleteContentUseCase = deleteContentUseCase
     }
 }
 
@@ -38,15 +47,20 @@ extension HomeViewModel: ViewModelType {
         let didSelectedItem: AnyPublisher<Int, Never>
         let didHeartTappedItem: AnyPublisher<(Int, Bool), Never>
         let didGhostTappedItem: AnyPublisher<(Int, Int), Never>
+        let didDeleteTappedItem: AnyPublisher<Int, Never>
+        let didBannedTappedItem: AnyPublisher<(Int, Int), Never>
+        let didReportTappedItem: AnyPublisher<(String, String), Never>
         let willDisplayLastItem: AnyPublisher<Void, Never>
     }
     
     struct Output {
         let activeUserID: AnyPublisher<Int?, Never>
+        let isAdmin: AnyPublisher<Bool?, Never>
         let contents: AnyPublisher<[Content], Never>
         let selectedContent: AnyPublisher<Content, Never>
         let isLoading: AnyPublisher<Bool, Never>
         let isLoadingMore: AnyPublisher<Bool, Never>
+        let isReportSucceed: AnyPublisher<Bool, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
@@ -55,6 +69,8 @@ extension HomeViewModel: ViewModelType {
         let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
         let isLastViewSubject = CurrentValueSubject<Bool, Never>(false)
         let activeUserIDSubject = CurrentValueSubject<Int?, Never>(nil)
+        let isAdminSubject = CurrentValueSubject<Bool?, Never>(false)
+        let isReportSucceedSubject = CurrentValueSubject<Bool, Never>(false)
         
         let loadTrigger = Publishers.Merge(
             input.viewDidRefresh,
@@ -68,6 +84,18 @@ extension HomeViewModel: ViewModelType {
             }
             .sink { userID in
                 activeUserIDSubject.send(userID)
+            }
+            .store(in: cancelBag)
+        
+        loadTrigger
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<Bool?, Never> in
+                return owner.fetchUserInformationUseCase.fetchActiveUserInfo()
+                    .map { info in info?.isAdmin }
+                    .eraseToAnyPublisher()
+            }
+            .sink { isAdmin in
+                isAdminSubject.send(isAdmin)
             }
             .store(in: cancelBag)
         
@@ -166,7 +194,7 @@ extension HomeViewModel: ViewModelType {
         input.didGhostTappedItem
             .withUnretained(self)
             .flatMap { owner, id -> AnyPublisher<Int, Never> in
-                owner.fetchGhostUseCase.execute(type: .content, targetID: id.0, userID: id.1)
+                return owner.fetchGhostUseCase.execute(type: .content, targetID: id.0, userID: id.1)
                     .map { _ in id.1 }
                     .asDriver(onErrorJustReturn: id.1)
             }
@@ -178,9 +206,8 @@ extension HomeViewModel: ViewModelType {
                 let content = updatedContents[index]
                 let contentInfo = content.content.contentInfo
                 let userContent = content.content
-                
                 let opacity = contentInfo.opacity.reduced()
-
+                
                 let updatedContent = Content(
                     content: UserContent(
                         id: userContent.id,
@@ -198,7 +225,75 @@ extension HomeViewModel: ViewModelType {
                     ),
                     isDeleted: content.isDeleted
                 )
+                
+                updatedContents[index] = updatedContent
+                contentsSubject.send(updatedContents)
+            })
+            .store(in: cancelBag)
+        
+        input.didDeleteTappedItem
+            .withUnretained(self)
+            .flatMap { owner, id -> AnyPublisher<Int, Never> in
+                return owner.deleteContentUseCase.execute(contentID: id)
+                    .map { _ in id }
+                    .asDriver(onErrorJustReturn: id)
+            }
+            .sink(receiveValue: { contentID in
+                var updatedContents = contentsSubject.value
+                
+                guard let index = updatedContents.firstIndex(where: { $0.content.id == contentID }) else { return }
+                
+                updatedContents.remove(at: index)
+                contentsSubject.send(updatedContents)
+            })
+            .store(in: cancelBag)
 
+        input.didReportTappedItem
+            .withUnretained(self)
+            .flatMap { owner, content -> AnyPublisher<Void, Never> in
+                return owner.createReportUseCase.execute(nickname: content.0, text: content.1)
+                    .asDriver(onErrorJustReturn: ())
+            }
+            .sink(receiveValue: { _ in
+                isReportSucceedSubject.send(true)
+            })
+            .store(in: cancelBag)
+        
+        input.didBannedTappedItem
+            .withUnretained(self)
+            .flatMap { owner, content -> AnyPublisher<Int, Never> in
+                return owner.createBannedUseCase.execute(memberID: content.0, triggerType: .content, triggerID: content.1)
+                    .map { _ in content.0 }
+                    .asDriver(onErrorJustReturn: -1)
+            }
+            .sink(receiveValue: { userID in
+                var updatedContents = contentsSubject.value
+                
+                guard let index = updatedContents.firstIndex(where: { $0.content.contentInfo.author.id == userID }) else { return }
+                
+                let content = updatedContents[index]
+                let contentInfo = content.content.contentInfo
+                let userContent = content.content
+                let opacity = contentInfo.opacity.reduced()
+                
+                let updatedContent = Content(
+                    content: UserContent(
+                        id: userContent.id,
+                        contentInfo: ContentInfo(
+                            author: contentInfo.author,
+                            createdDate: contentInfo.createdDate,
+                            title: contentInfo.title,
+                            imageURL: contentInfo.imageURL,
+                            text: contentInfo.text,
+                            status: .blind,
+                            like: contentInfo.like,
+                            opacity: opacity,
+                            commentCount: contentInfo.commentCount
+                        )
+                    ),
+                    isDeleted: content.isDeleted
+                )
+                
                 updatedContents[index] = updatedContent
                 contentsSubject.send(updatedContents)
             })
@@ -211,10 +306,12 @@ extension HomeViewModel: ViewModelType {
         
         return Output(
             activeUserID: activeUserIDSubject.eraseToAnyPublisher(),
+            isAdmin: isAdminSubject.eraseToAnyPublisher(),
             contents: contentsSubject.eraseToAnyPublisher(),
             selectedContent: selectedContent,
             isLoading: isLoadingSubject.eraseToAnyPublisher(),
-            isLoadingMore: isLoadingMoreSubject.eraseToAnyPublisher()
+            isLoadingMore: isLoadingMoreSubject.eraseToAnyPublisher(),
+            isReportSucceed: isReportSucceedSubject.eraseToAnyPublisher()
         )
     }
 }

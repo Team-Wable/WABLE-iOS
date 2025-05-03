@@ -30,7 +30,10 @@ final class TabBarController: UITabBarController {
                     )
                 )
             ),
-            fetchGhostUseCase: FetchGhostUseCase(repository: GhostRepositoryImpl())
+            fetchGhostUseCase: FetchGhostUseCase(repository: GhostRepositoryImpl()),
+            createReportUseCase: CreateReportUseCase(repository: ReportRepositoryImpl()),
+            createBannedUseCase: CreateBannedUseCase(repository: ReportRepositoryImpl()),
+            deleteContentUseCase: DeleteContentUseCase(repository: ContentRepositoryImpl())
         ),
         cancelBag: CancelBag()
     ).then {
