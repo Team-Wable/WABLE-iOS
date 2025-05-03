@@ -29,7 +29,8 @@ final class TabBarController: UITabBarController {
                         jsonDecoder: JSONDecoder()
                     )
                 )
-            )
+            ),
+            fetchGhostUseCase: FetchGhostUseCase(repository: GhostRepositoryImpl())
         ),
         cancelBag: CancelBag()
     ).then {

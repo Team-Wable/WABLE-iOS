@@ -14,17 +14,20 @@ final class HomeViewModel {
     private let createContentLikedUseCase: CreateContentLikedUseCase
     private let deleteContentLikedUseCase: DeleteContentLikedUseCase
     private let fetchUserInformationUseCase: FetchUserInformationUseCase
+    private let fetchGhostUseCase: FetchGhostUseCase
     
     init(
         fetchContentListUseCase: FetchContentListUseCase,
         createContentLikedUseCase: CreateContentLikedUseCase,
         deleteContentLikedUseCase: DeleteContentLikedUseCase,
-        fetchUserInformationUseCase: FetchUserInformationUseCase
+        fetchUserInformationUseCase: FetchUserInformationUseCase,
+        fetchGhostUseCase: FetchGhostUseCase
     ) {
         self.fetchContentListUseCase = fetchContentListUseCase
         self.createContentLikedUseCase = createContentLikedUseCase
         self.deleteContentLikedUseCase = deleteContentLikedUseCase
         self.fetchUserInformationUseCase = fetchUserInformationUseCase
+        self.fetchGhostUseCase = fetchGhostUseCase
     }
 }
 
@@ -34,6 +37,7 @@ extension HomeViewModel: ViewModelType {
         let viewDidRefresh: AnyPublisher<Void, Never>
         let didSelectedItem: AnyPublisher<Int, Never>
         let didHeartTappedItem: AnyPublisher<(Int, Bool), Never>
+        let didGhostTappedItem: AnyPublisher<(Int, Int), Never>
         let willDisplayLastItem: AnyPublisher<Void, Never>
     }
     
@@ -158,7 +162,48 @@ extension HomeViewModel: ViewModelType {
                 contentsSubject.send(updatedContents)
             })
             .store(in: cancelBag)
+        
+        input.didGhostTappedItem
+            .withUnretained(self)
+            .flatMap { owner, id -> AnyPublisher<Int, Never> in
+                owner.fetchGhostUseCase.execute(type: .content, targetID: id.0, userID: id.1)
+                    .map { _ in id.1 }
+                    .asDriver(onErrorJustReturn: id.1)
+            }
+            .sink(receiveValue: { userID in
+                var updatedContents = contentsSubject.value
+                
+                guard let index = updatedContents.firstIndex(where: { $0.content.contentInfo.author.id == userID }) else { return }
+                
+                let content = updatedContents[index]
+                let contentInfo = content.content.contentInfo
+                let userContent = content.content
+                
+                let opacity = contentInfo.opacity.reduced()
 
+                let updatedContent = Content(
+                    content: UserContent(
+                        id: userContent.id,
+                        contentInfo: ContentInfo(
+                            author: contentInfo.author,
+                            createdDate: contentInfo.createdDate,
+                            title: contentInfo.title,
+                            imageURL: contentInfo.imageURL,
+                            text: contentInfo.text,
+                            status: .ghost,
+                            like: contentInfo.like,
+                            opacity: opacity,
+                            commentCount: contentInfo.commentCount
+                        )
+                    ),
+                    isDeleted: content.isDeleted
+                )
+
+                updatedContents[index] = updatedContent
+                contentsSubject.send(updatedContents)
+            })
+            .store(in: cancelBag)
+        
         let selectedContent = input.didSelectedItem
             .filter { $0 < contentsSubject.value.count }
             .map { contentsSubject.value[$0] }

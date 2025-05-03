@@ -32,6 +32,7 @@ final class HomeViewController: NavigationViewController {
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
     private let didSelectedSubject = PassthroughSubject<Int, Never>()
     private let didHeartTappedSubject = PassthroughSubject<(Int, Bool), Never>()
+    private let didGhostTappedSubject = PassthroughSubject<(Int, Int), Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
     private let cancelBag: CancelBag
     
@@ -160,7 +161,9 @@ private extension HomeViewController {
     }
     
     func setupDataSource() {
-        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> { cell, indexPath, itemID in
+        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> { [weak self] cell, indexPath, itemID in
+            guard let self = self else { return }
+            
             cell.configureCell(
                 info: itemID.content.contentInfo,
                 postType: itemID.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
@@ -192,7 +195,7 @@ private extension HomeViewController {
                             style: .primary,
                             handler: {
                                 viewController.dismiss(animated: true, completion: {
-                                    // TODO: 뷰모델 send 필요
+                                    self.didGhostTappedSubject.send((itemID.content.id, itemID.content.contentInfo.author.id))
                                 })
                             }
                         )
@@ -238,6 +241,7 @@ private extension HomeViewController {
             viewDidRefresh: didRefreshSubject.eraseToAnyPublisher(),
             didSelectedItem: didSelectedSubject.eraseToAnyPublisher(),
             didHeartTappedItem: didHeartTappedSubject.eraseToAnyPublisher(),
+            didGhostTappedItem: didGhostTappedSubject.eraseToAnyPublisher(),
             willDisplayLastItem: willDisplayLastItemSubject.eraseToAnyPublisher()
         )
         
