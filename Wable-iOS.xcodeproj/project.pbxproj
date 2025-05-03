@@ -158,6 +158,7 @@
 		DD8326962D95836F0014B62D /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8326952D95836B0014B62D /* HomeViewModel.swift */; };
 		DD8B42A42DA15DB0007DC1CA /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8B42A32DA15DA9007DC1CA /* UITextView+.swift */; };
 		DD8B42A82DA16B1F007DC1CA /* HomeDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8B42A72DA16B1A007DC1CA /* HomeDetailViewModel.swift */; };
+		DD90EEA82DC40D1800338EB2 /* FetchGhostUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD90EEA72DC40D1700338EB2 /* FetchGhostUseCase.swift */; };
 		DD9980DB2D834CA900EBBFBC /* CommentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DA2D834CA900EBBFBC /* CommentInfo.swift */; };
 		DD9980DF2D834F4E00EBBFBC /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */; };
 		DD9980E02D834F4E00EBBFBC /* PostUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */; };
@@ -453,6 +454,7 @@
 		DD8CEF472D6A007900DBE580 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD8CEF482D6A007900DBE580 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DD8CEFF82D6A00BB00DBE580 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "Base.lproj/LaunchScreen 2.storyboard"; sourceTree = "<group>"; };
+		DD90EEA72DC40D1700338EB2 /* FetchGhostUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchGhostUseCase.swift; sourceTree = "<group>"; };
 		DD9980DA2D834CA900EBBFBC /* CommentInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInfo.swift; sourceTree = "<group>"; };
 		DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
 		DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1161,6 +1163,7 @@
 		DD9EAE202D99C58600803A1A /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				DD90EEA72DC40D1700338EB2 /* FetchGhostUseCase.swift */,
 				DD5098192DA519C600F666DE /* FetchUserInformationUseCase.swift */,
 				DD5098132DA2C35C00F666DE /* DeleteCommentLikedUseCase.swift */,
 				DD5098112DA2C34900F666DE /* CreateCommentLikedUseCase.swift */,
@@ -2121,6 +2124,7 @@
 				DD2968462D6DAD2F00143851 /* FetchAccountInfo.swift in Sources */,
 				DD2968472D6DAD2F00143851 /* FetchContent.swift in Sources */,
 				DD2968482D6DAD2F00143851 /* FetchNotificationNumber.swift in Sources */,
+				DD90EEA82DC40D1800338EB2 /* FetchGhostUseCase.swift in Sources */,
 				DD2968492D6DAD2F00143851 /* FetchContents.swift in Sources */,
 				DD5098102DA2C1C500F666DE /* DeleteCommentUseCase.swift in Sources */,
 				DD29684A2D6DAD2F00143851 /* FetchLCKTeamRankings.swift in Sources */,
