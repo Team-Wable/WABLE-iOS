@@ -17,7 +17,7 @@ import UIKit
 ///
 /// // cellForItemAt에서:
 /// let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ContentCollectionViewCell.reuseIdentifier, for: indexPath) as! ContentCollectionViewCell
-/// cell.configureCell(info: contentInfo, postType: .others)
+/// cell.configureCell(info: contentInfo, authorType: .others)
 /// return cell
 /// ```
 final class ContentCollectionViewCell: UICollectionViewCell {
@@ -242,12 +242,12 @@ extension ContentCollectionViewCell {
     /// 게시물 셀 구성 메서드
     /// - Parameters:
     ///   - info: 게시물 정보
-    ///   - postType: 게시물 타입 (.mine 또는 .others)
+    ///   - authorType: 게시물 타입 (.mine 또는 .others)
     ///   - cellType: 셀 타입 (홈 화면 셀 또는 상세 화면 셀)
     ///   - likeButtonTapHandler: 좋아요 버튼을 클릭했을 때 실행될 로직
     func configureCell(
         info: ContentInfo,
-        postType: AuthorType,
+        authorType: AuthorType,
         cellType: CellType = .list,
         likeButtonTapHandler: (() -> Void)?,
         settingButtonTapHandler: (() -> Void)?,
@@ -287,7 +287,7 @@ extension ContentCollectionViewCell {
         commentButton.isUserInteractionEnabled = cellType == .detail
         
         ghostButton.configureButton(type: .large, status: .normal)
-        ghostButton.isHidden = postType == .mine || info.status == .ghost
+        ghostButton.isHidden = authorType == .mine || info.status == .ghost
         
         switch info.status {
         case .normal:
