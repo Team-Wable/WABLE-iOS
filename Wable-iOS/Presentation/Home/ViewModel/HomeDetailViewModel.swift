@@ -13,36 +13,51 @@ final class HomeDetailViewModel {
     private let contentID: Int
     private let contentTitle: String
     private let fetchContentInfoUseCase: FetchContentInfoUseCase
-    private let createContentLikedUseCase: CreateContentLikedUseCase
-    private let deleteContentLikedUseCase: DeleteContentLikedUseCase
     private let fetchContentCommentListUseCase: FetchContentCommentListUseCase
     private let createCommentUseCase: CreateCommentUseCase
     private let deleteCommentUseCase: DeleteCommentUseCase
+    private let createContentLikedUseCase: CreateContentLikedUseCase
+    private let deleteContentLikedUseCase: DeleteContentLikedUseCase
     private let createCommentLikedUseCase: CreateCommentLikedUseCase
     private let deleteCommentLikedUseCase: DeleteCommentLikedUseCase
+    private let fetchUserInformationUseCase: FetchUserInformationUseCase
+    private let fetchGhostUseCase: FetchGhostUseCase
+    private let createReportUseCase: CreateReportUseCase
+    private let createBannedUseCase: CreateBannedUseCase
+    private let deleteContentUseCase: DeleteContentUseCase
     
     init(
         contentID: Int,
         contentTitle: String,
         fetchContentInfoUseCase: FetchContentInfoUseCase,
-        createContentLikedUseCase: CreateContentLikedUseCase,
-        deleteContentLikedUseCase: DeleteContentLikedUseCase,
         fetchContentCommentListUseCase: FetchContentCommentListUseCase,
         createCommentUseCase: CreateCommentUseCase,
         deleteCommentUseCase: DeleteCommentUseCase,
+        createContentLikedUseCase: CreateContentLikedUseCase,
+        deleteContentLikedUseCase: DeleteContentLikedUseCase,
         createCommentLikedUseCase: CreateCommentLikedUseCase,
-        deleteCommentLikedUseCase: DeleteCommentLikedUseCase
+        deleteCommentLikedUseCase: DeleteCommentLikedUseCase,
+        fetchUserInformationUseCase: FetchUserInformationUseCase,
+        fetchGhostUseCase: FetchGhostUseCase,
+        createReportUseCase: CreateReportUseCase,
+        createBannedUseCase: CreateBannedUseCase,
+        deleteContentUseCase: DeleteContentUseCase
     ) {
         self.contentID = contentID
         self.contentTitle = contentTitle
         self.fetchContentInfoUseCase = fetchContentInfoUseCase
-        self.createContentLikedUseCase = createContentLikedUseCase
-        self.deleteContentLikedUseCase = deleteContentLikedUseCase
         self.fetchContentCommentListUseCase = fetchContentCommentListUseCase
         self.createCommentUseCase = createCommentUseCase
         self.deleteCommentUseCase = deleteCommentUseCase
+        self.createContentLikedUseCase = createContentLikedUseCase
+        self.deleteContentLikedUseCase = deleteContentLikedUseCase
         self.createCommentLikedUseCase = createCommentLikedUseCase
         self.deleteCommentLikedUseCase = deleteCommentLikedUseCase
+        self.fetchUserInformationUseCase = fetchUserInformationUseCase
+        self.fetchGhostUseCase = fetchGhostUseCase
+        self.createReportUseCase = createReportUseCase
+        self.createBannedUseCase = createBannedUseCase
+        self.deleteContentUseCase = deleteContentUseCase
     }
 }
 
@@ -55,16 +70,23 @@ extension HomeDetailViewModel: ViewModelType {
         let didCommentTappedItem: AnyPublisher<Void, Never>
         let didReplyTappedItem: AnyPublisher<Int, Never>
         let didCreateTappedItem: AnyPublisher<String, Never>
+        let didGhostTappedItem: AnyPublisher<(Int, Int), Never>
+        let didDeleteTappedItem: AnyPublisher<Int, Never>
+        let didBannedTappedItem: AnyPublisher<(Int, Int), Never>
+        let didReportTappedItem: AnyPublisher<(String, String), Never>
         let willDisplayLastItem: AnyPublisher<Void, Never>
     }
     
     struct Output {
+        let activeUserID: AnyPublisher<Int?, Never>
+        let isAdmin: AnyPublisher<Bool?, Never>
         let content: AnyPublisher<ContentInfo?, Never>
         let comments: AnyPublisher<[ContentComment], Never>
         let isLoading: AnyPublisher<Bool, Never>
         let isLoadingMore: AnyPublisher<Bool, Never>
         let textViewState: AnyPublisher<CommentType, Never>
         let postSucceed: AnyPublisher<Bool, Never>
+        let isReportSucceed: AnyPublisher<Bool, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
@@ -76,11 +98,38 @@ extension HomeDetailViewModel: ViewModelType {
         let replyParentSubject = CurrentValueSubject<(Int, Int), Never>((-1, -1))
         let commentTypeSubject = CurrentValueSubject<CommentType, Never>(.ripple)
         let postSucceedSubject = CurrentValueSubject<Bool, Never>(false)
+        let activeUserIDSubject = CurrentValueSubject<Int?, Never>(nil)
+        let isAdminSubject = CurrentValueSubject<Bool?, Never>(false)
+        let isReportSucceedSubject = CurrentValueSubject<Bool, Never>(false)
         
-        Publishers.Merge<AnyPublisher<Void, Never>, AnyPublisher<Void, Never>>(
-            input.viewWillAppear,
-            input.viewDidRefresh
+        let loadTrigger = Publishers.Merge(
+            input.viewDidRefresh,
+            input.viewWillAppear
         )
+        
+        loadTrigger
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<Int?, Never> in
+                return owner.fetchUserInformationUseCase.fetchActiveUserID()
+            }
+            .sink { userID in
+                activeUserIDSubject.send(userID)
+            }
+            .store(in: cancelBag)
+        
+        loadTrigger
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<Bool?, Never> in
+                return owner.fetchUserInformationUseCase.fetchActiveUserInfo()
+                    .map { info in info?.isAdmin }
+                    .eraseToAnyPublisher()
+            }
+            .sink { isAdmin in
+                isAdminSubject.send(isAdmin)
+            }
+            .store(in: cancelBag)
+        
+        loadTrigger
             .handleEvents(receiveOutput: { _ in
                 isLoadingSubject.send(true)
                 isLastViewSubject.send(false)
@@ -227,13 +276,16 @@ extension HomeDetailViewModel: ViewModelType {
             }
             .store(in: cancelBag)
         
-    return Output(
+        return Output(
+            activeUserID: activeUserIDSubject.eraseToAnyPublisher(),
+            isAdmin: isAdminSubject.eraseToAnyPublisher(),
             content: contentSubject.eraseToAnyPublisher(),
             comments: commentsSubject.eraseToAnyPublisher(),
             isLoading: isLoadingSubject.eraseToAnyPublisher(),
             isLoadingMore: isLoadingMoreSubject.eraseToAnyPublisher(),
             textViewState: commentTypeSubject.eraseToAnyPublisher(),
-            postSucceed: postSucceedSubject.eraseToAnyPublisher()
+            postSucceed: postSucceedSubject.eraseToAnyPublisher(),
+            isReportSucceed: isReportSucceedSubject.eraseToAnyPublisher()
         )
     }
 }

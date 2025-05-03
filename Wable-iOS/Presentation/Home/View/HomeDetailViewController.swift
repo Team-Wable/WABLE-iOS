@@ -33,8 +33,6 @@ final class HomeDetailViewController: NavigationViewController {
     
     // MARK: - Property
     
-    private var type: CommentType = .ripple
-    private var dataSource: DataSource?
     private let viewModel: HomeDetailViewModel
     private let willAppearSubject = PassthroughSubject<Void, Never>()
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
@@ -42,21 +40,18 @@ final class HomeDetailViewController: NavigationViewController {
     private let didCommentHeartTappedSubject = PassthroughSubject<(Bool, ContentComment), Never>()
     private let didReplyTappedSubject = PassthroughSubject<Int, Never>()
     private let didCommentTappedSubject = PassthroughSubject<Void, Never>()
-    private let didGhostTappedSubject = PassthroughSubject<Int, Never>()
+    private let didGhostTappedSubject = PassthroughSubject<(Int, Int), Never>()
+    private let didDeleteTappedSubject = PassthroughSubject<Int, Never>()
+    private let didBannedTappedSubject = PassthroughSubject<(Int, Int), Never>()
+    private let didReportTappedSubject = PassthroughSubject<(String, String), Never>()
     private let didCreateTappedSubject = PassthroughSubject<String, Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
     private let cancelBag: CancelBag
     
-    // TODO: ViewModel로 옮겨야 할 로직
-    
-    private let userInformationUseCase = FetchUserInformationUseCase(
-        repository: UserSessionRepositoryImpl(
-            userDefaults: UserDefaultsStorage(
-                jsonEncoder: JSONEncoder(),
-                jsonDecoder: JSONDecoder()
-            )
-        )
-    )
+    private var activeUserID: Int?
+    private var isActiveUserAdmin: Bool?
+    private var type: CommentType = .ripple
+    private var dataSource: DataSource?
     
     // MARK: - UIComponent
     
@@ -113,12 +108,6 @@ final class HomeDetailViewController: NavigationViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        willAppearSubject.send()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -129,9 +118,15 @@ final class HomeDetailViewController: NavigationViewController {
         setupDelegate()
         setupBinding()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        willAppearSubject.send()
+    }
 }
 
-// MARK: - Setup Extension
+// MARK: - Setup Method
 
 private extension HomeDetailViewController {
     func setupView() {
@@ -184,7 +179,7 @@ private extension HomeDetailViewController {
             
             cell.configureCell(
                 info: item.content.contentInfo,
-                postType: .mine,
+                postType: item.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
                 cellType: .detail,
                 likeButtonTapHandler: {
                     self.didContentHeartTappedSubject.send(cell.likeButton.isLiked)
@@ -218,22 +213,13 @@ private extension HomeDetailViewController {
             ContentComment
         > { [weak self] cell, indexPath, item in
             guard let self = self else { return }
-            
-            self.userInformationUseCase.fetchActiveUserID()
-                .sink { id in
-                    cell.configureCell(
-                        info: item.comment,
-                        commentType: item.parentID == -1 ? .ripple : .reply,
-                        authorType: item.comment.author.id == id ? .mine : .others,
-                        likeButtonTapHandler: {
-                            self.didCommentHeartTappedSubject.send((cell.likeButton.isLiked, item))
-                        })
-                }
-                .cancel()
-            
-            cell.ghostButton.addAction(UIAction(handler: { _ in
-                self.didGhostTappedSubject.send(indexPath.item)
-            }), for: .touchUpInside)
+            cell.configureCell(
+                info: item.comment,
+                commentType: item.parentID == -1 ? .ripple : .reply,
+                authorType: item.comment.author.id == activeUserID ? .mine : .others,
+                likeButtonTapHandler: {
+                    self.didCommentHeartTappedSubject.send((cell.likeButton.isLiked, item))
+                })
             
             cell.replyButton.addAction(UIAction(handler: { _ in
                 self.didReplyTappedSubject.send(indexPath.item)
@@ -308,10 +294,28 @@ private extension HomeDetailViewController {
             didCommentTappedItem: didCommentTappedSubject.eraseToAnyPublisher(),
             didReplyTappedItem: didReplyTappedSubject.eraseToAnyPublisher(),
             didCreateTappedItem: didCreateTappedSubject.eraseToAnyPublisher(),
+            didGhostTappedItem: didGhostTappedSubject.eraseToAnyPublisher(),
+            didDeleteTappedItem: didDeleteTappedSubject.eraseToAnyPublisher(),
+            didBannedTappedItem: didBannedTappedSubject.eraseToAnyPublisher(),
+            didReportTappedItem: didReportTappedSubject.eraseToAnyPublisher(),
             willDisplayLastItem: willDisplayLastItemSubject.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.isAdmin
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isAdmin in
+                self?.isActiveUserAdmin = isAdmin
+            }
+            .store(in: cancelBag)
+        
+        output.activeUserID
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] id in
+                self?.activeUserID = id
+            }
+            .store(in: cancelBag)
         
         output.textViewState
             .receive(on: DispatchQueue.main)
@@ -325,24 +329,19 @@ private extension HomeDetailViewController {
             .receive(on: DispatchQueue.main)
             .withUnretained(self)
             .sink { owner, contentInfo in
-                guard let contentInfo = contentInfo else { return }
                 
-                owner.userInformationUseCase.fetchActiveUserID()
-                    .receive(on: DispatchQueue.main)
-                    .sink { id in
-                        guard let id = id else { return }
-                        
-                        let content = Content(
-                            content: UserContent(
-                                id: id,
-                                contentInfo: contentInfo
-                            ),
-                            isDeleted: false
-                        )
-                        
-                        owner.updateContent(content)
-                    }
-                    .store(in: owner.cancelBag)
+                guard let contentInfo = contentInfo,
+                      let activeUserID = owner.activeUserID
+                else {
+                    return
+                }
+                
+                owner.updateContent(
+                    Content(
+                        content: UserContent(id: activeUserID, contentInfo: contentInfo),
+                        isDeleted: false
+                    )
+                )
             }
             .store(in: cancelBag)
         
@@ -393,7 +392,10 @@ private extension HomeDetailViewController {
 
 private extension HomeDetailViewController {
     @objc func profileImageViewDidTap() {
-        // TODO: 마이페이지 이동 로직 필요
+        // TODO: 프로필 구현되는 대로 추가적인 설정 필요
+        let viewController = ProfileViewController()
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
