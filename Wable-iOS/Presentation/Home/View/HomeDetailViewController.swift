@@ -42,7 +42,7 @@ final class HomeDetailViewController: NavigationViewController {
     private let didCommentTappedSubject = PassthroughSubject<Void, Never>()
     private let didGhostTappedSubject = PassthroughSubject<(Int, Int, PostType), Never>()
     private let didDeleteTappedSubject = PassthroughSubject<(Int, PostType), Never>()
-    private let didBannedTappedSubject = PassthroughSubject<(Int, Int, PostType), Never>()
+    private let didBannedTappedSubject = PassthroughSubject<(Int, Int, TriggerType.Ban), Never>()
     private let didReportTappedSubject = PassthroughSubject<(String, String), Never>()
     private let didCreateTappedSubject = PassthroughSubject<String, Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
@@ -618,6 +618,16 @@ private extension HomeDetailViewController {
                 isSucceed ? toast.show() : nil
             }
             .store(in: cancelBag)
+        
+        output.isContentDeleted
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, isSucceed in
+                if isSucceed {
+                    owner.navigationController?.popViewController(animated: true)
+                }
+            }
+            .store(in: cancelBag)
     }
 }
 
@@ -700,10 +710,14 @@ extension HomeDetailViewController {
         guard var snapshot = dataSource?.snapshot() else { return }
         
         let commentItems = comments.flatMap { comment -> [Item] in
+            guard !comment.isDeleted else { return [] }
+            
             var items: [Item] = [.comment(comment)]
             
             if !comment.childs.isEmpty {
-                let childItems = comment.childs.map { Item.comment($0) }
+                let childItems = comment.childs
+                    .filter { !$0.isDeleted } 
+                    .map { Item.comment($0) }
                 
                 items.append(contentsOf: childItems)
             }

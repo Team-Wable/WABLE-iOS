@@ -72,7 +72,7 @@ extension HomeDetailViewModel: ViewModelType {
         let didCreateTappedItem: AnyPublisher<String, Never>
         let didGhostTappedItem: AnyPublisher<(Int, Int, PostType), Never>
         let didDeleteTappedItem: AnyPublisher<(Int, PostType), Never>
-        let didBannedTappedItem: AnyPublisher<(Int, Int, PostType), Never>
+        let didBannedTappedItem: AnyPublisher<(Int, Int, TriggerType.Ban), Never>
         let didReportTappedItem: AnyPublisher<(String, String), Never>
         let willDisplayLastItem: AnyPublisher<Void, Never>
     }
@@ -87,6 +87,7 @@ extension HomeDetailViewModel: ViewModelType {
         let textViewState: AnyPublisher<CommentType, Never>
         let postSucceed: AnyPublisher<Bool, Never>
         let isReportSucceed: AnyPublisher<Bool, Never>
+        let isContentDeleted: AnyPublisher<Bool, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
@@ -101,10 +102,14 @@ extension HomeDetailViewModel: ViewModelType {
         let activeUserIDSubject = CurrentValueSubject<Int?, Never>(nil)
         let isAdminSubject = CurrentValueSubject<Bool?, Never>(false)
         let isReportSucceedSubject = CurrentValueSubject<Bool, Never>(false)
+        let isContentDeletedSubject = CurrentValueSubject<Bool, Never>(false)
         
-        let loadTrigger = Publishers.Merge(
+        let refreshTriggerSubject = PassthroughSubject<Void, Never>()
+        
+        let loadTrigger = Publishers.Merge3(
             input.viewDidRefresh,
-            input.viewWillAppear
+            input.viewWillAppear,
+            refreshTriggerSubject
         )
         
         loadTrigger
@@ -204,9 +209,9 @@ extension HomeDetailViewModel: ViewModelType {
             .withUnretained(self)
             .sink { owner, index in
                 replyParentSubject.send((
-                        commentsSubject.value[index].comment.id,
-                        commentsSubject.value[index].comment.author.id
-                    ))
+                    commentsSubject.value[index].comment.id,
+                    commentsSubject.value[index].comment.author.id
+                ))
                 commentTypeSubject.send(.reply)
             }
             .store(in: cancelBag)
@@ -225,8 +230,7 @@ extension HomeDetailViewModel: ViewModelType {
                     return
                 }
                 
-                let commentInfo = commentsSubject.value
-                let updatedCommentInfo = updateCommentsForUser(comments: commentInfo, userID: userID)
+                let updatedCommentInfo = updateGhostComments(comments: commentsSubject.value, userID: userID)
                 
                 commentsSubject.send(updatedCommentInfo)
                 
@@ -244,6 +248,48 @@ extension HomeDetailViewModel: ViewModelType {
                     )
                     
                     contentSubject.send(updatedContent)
+                }
+            })
+            .store(in: cancelBag)
+        
+        input.didReportTappedItem
+            .withUnretained(self)
+            .flatMap { owner, content -> AnyPublisher<Void, Never> in
+                return owner.createReportUseCase.execute(nickname: content.0, text: content.1)
+                    .asDriver(onErrorJustReturn: ())
+            }
+            .sink(receiveValue: { _ in
+                isReportSucceedSubject.send(true)
+            })
+            .store(in: cancelBag)
+        
+        input.didBannedTappedItem
+            .withUnretained(self)
+            .flatMap { owner, input -> AnyPublisher<Int, Never> in
+                return owner.createBannedUseCase.execute(memberID: input.0, triggerType: input.2, triggerID: input.1)
+                    .map { _ in input.0 }
+                    .asDriver(onErrorJustReturn: -1)
+            }
+            .sink(receiveValue: { userID in
+                refreshTriggerSubject.send()
+            })
+            .store(in: cancelBag)
+        
+        input.didDeleteTappedItem
+            .withUnretained(self)
+            .flatMap { owner, input -> AnyPublisher<(Int, PostType), Never> in
+                return owner.deleteCommentUseCase.execute(commentID: input.0)
+                    .map { _ in input }
+                    .asDriver(onErrorJustReturn: input)
+            }
+            .withUnretained(self)
+            .sink(receiveValue: { owner, value in
+                if value.1 == .content {
+                    isContentDeletedSubject.send(true)
+                } else {
+                    let updatedCommentInfo = owner.updateDeleteComments(comments: commentsSubject.value, commentID: value.0)
+                    
+                    commentsSubject.send(updatedCommentInfo)
                 }
             })
             .store(in: cancelBag)
@@ -322,7 +368,8 @@ extension HomeDetailViewModel: ViewModelType {
             isLoadingMore: isLoadingMoreSubject.eraseToAnyPublisher(),
             textViewState: commentTypeSubject.eraseToAnyPublisher(),
             postSucceed: postSucceedSubject.eraseToAnyPublisher(),
-            isReportSucceed: isReportSucceedSubject.eraseToAnyPublisher()
+            isReportSucceed: isReportSucceedSubject.eraseToAnyPublisher(),
+            isContentDeleted: isContentDeletedSubject.eraseToAnyPublisher()
         )
     }
 }
@@ -330,7 +377,7 @@ extension HomeDetailViewModel: ViewModelType {
 // MARK: - Helper Method
 
 private extension HomeDetailViewModel {
-    func updateCommentsForUser(comments: [ContentComment], userID: Int) -> [ContentComment] {
+    func updateGhostComments(comments: [ContentComment], userID: Int) -> [ContentComment] {
         return comments.map { comment in
             let updatedComment: ContentComment
             
@@ -354,7 +401,37 @@ private extension HomeDetailViewModel {
             }
             
             if !updatedComment.childs.isEmpty {
-                let updatedChilds = updateCommentsForUser(comments: updatedComment.childs, userID: userID)
+                let updatedChilds = updateGhostComments(comments: updatedComment.childs, userID: userID)
+                
+                return ContentComment(
+                    comment: updatedComment.comment,
+                    parentID: updatedComment.parentID,
+                    isDeleted: updatedComment.isDeleted,
+                    childs: updatedChilds
+                )
+            }
+            
+            return updatedComment
+        }
+    }
+    
+    func updateDeleteComments(comments: [ContentComment], commentID: Int) -> [ContentComment] {
+        return comments.map { comment in
+            let updatedComment: ContentComment
+            
+            if comment.comment.id == commentID {
+                updatedComment = ContentComment(
+                    comment: comment.comment,
+                    parentID: comment.parentID,
+                    isDeleted: true,
+                    childs: comment.childs
+                )
+            } else {
+                updatedComment = comment
+            }
+
+            if !updatedComment.childs.isEmpty {
+                let updatedChilds = updateDeleteComments(comments: updatedComment.childs, commentID: commentID)
                 
                 return ContentComment(
                     comment: updatedComment.comment,
