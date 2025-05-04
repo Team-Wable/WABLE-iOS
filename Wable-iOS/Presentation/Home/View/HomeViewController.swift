@@ -86,7 +86,7 @@ final class HomeViewController: NavigationViewController {
         
         shouldShowLoadingScreen ? showLoadingScreen() : nil
         
-        setupView( )
+        setupView()
         setupConstraint()
         setupDataSource()
         setupAction()
@@ -183,13 +183,7 @@ private extension HomeViewController {
                             viewController.dismiss(animated: true, completion: {
                                 let viewController = WableSheetViewController(title: "게시글을 삭제하시겠어요?", message: "게시글이 영구히 삭제됩니다.")
                                 viewController.addActions(
-                                    WableSheetAction(
-                                        title: "취소",
-                                        style: .gray,
-                                        handler: {
-                                            viewController.dismiss(animated: true)
-                                        }
-                                    ),
+                                    WableSheetAction(title: "취소", style: .gray),
                                     WableSheetAction(
                                         title: "삭제하기",
                                         style: .primary,
@@ -209,13 +203,7 @@ private extension HomeViewController {
                             viewController.dismiss(animated: true, completion: {
                                 let viewController = WableSheetViewController(title: "신고하시겠어요?")
                                 viewController.addActions(
-                                    WableSheetAction(
-                                        title: "취소",
-                                        style: .gray,
-                                        handler: {
-                                            viewController.dismiss(animated: true)
-                                        }
-                                    ),
+                                    WableSheetAction(title: "취소", style: .gray),
                                     WableSheetAction(
                                         title: "신고하기",
                                         style: .primary,
@@ -238,13 +226,7 @@ private extension HomeViewController {
                             viewController.dismiss(animated: true, completion: {
                                 let viewController = WableSheetViewController(title: "신고하시겠어요?")
                                 viewController.addActions(
-                                    WableSheetAction(
-                                        title: "취소",
-                                        style: .gray,
-                                        handler: {
-                                            viewController.dismiss(animated: true)
-                                        }
-                                    ),
+                                    WableSheetAction(title: "취소", style: .gray),
                                     WableSheetAction(
                                         title: "신고하기",
                                         style: .primary,
