@@ -193,13 +193,7 @@ private extension HomeDetailViewController {
                                 let viewController = WableSheetViewController(title: "게시글을 삭제하시겠어요?", message: "게시글이 영구히 삭제됩니다.")
                                 
                                 viewController.addActions(
-                                    WableSheetAction(
-                                        title: "취소",
-                                        style: .gray,
-                                        handler: {
-                                            viewController.dismiss(animated: true)
-                                        }
-                                    ),
+                                    WableSheetAction(title: "취소", style: .gray),
                                     WableSheetAction(
                                         title: "삭제하기",
                                         style: .primary,
@@ -220,13 +214,7 @@ private extension HomeDetailViewController {
                                 let viewController = WableSheetViewController(title: "신고하시겠어요?")
                                 
                                 viewController.addActions(
-                                    WableSheetAction(
-                                        title: "취소",
-                                        style: .gray,
-                                        handler: {
-                                            viewController.dismiss(animated: true)
-                                        }
-                                    ),
+                                    WableSheetAction(title: "취소", style: .gray),
                                     WableSheetAction(
                                         title: "신고하기",
                                         style: .primary,
@@ -250,13 +238,7 @@ private extension HomeDetailViewController {
                                 let viewController = WableSheetViewController(title: "신고하시겠어요?")
                                 
                                 viewController.addActions(
-                                    WableSheetAction(
-                                        title: "취소",
-                                        style: .gray,
-                                        handler: {
-                                            viewController.dismiss(animated: true)
-                                        }
-                                    ),
+                                    WableSheetAction(title: "취소", style: .gray),
                                     WableSheetAction(
                                         title: "신고하기",
                                         style: .primary,
@@ -285,13 +267,7 @@ private extension HomeDetailViewController {
                     let viewController = WableSheetViewController(title: "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?")
                     
                     viewController.addActions(
-                        WableSheetAction(
-                            title: "고민할게요",
-                            style: .gray,
-                            handler: {
-                                viewController.dismiss(animated: true)
-                            }
-                        ),
+                        WableSheetAction(title: "고민할게요", style: .gray),
                         WableSheetAction(
                             title: "네 맞아요",
                             style: .primary,
