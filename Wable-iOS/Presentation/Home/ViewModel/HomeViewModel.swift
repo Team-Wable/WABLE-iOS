@@ -198,10 +198,11 @@ extension HomeViewModel: ViewModelType {
                     .map { _ in id.1 }
                     .asDriver(onErrorJustReturn: id.1)
             }
-            .sink(receiveValue: { userID in
+            .compactMap { userID in
+                return contentsSubject.value.firstIndex(where: { $0.content.contentInfo.author.id == userID })
+            }
+            .sink(receiveValue: { index in
                 var updatedContents = contentsSubject.value
-                
-                guard let index = updatedContents.firstIndex(where: { $0.content.contentInfo.author.id == userID }) else { return }
                 
                 let content = updatedContents[index]
                 let contentInfo = content.content.contentInfo
@@ -238,10 +239,11 @@ extension HomeViewModel: ViewModelType {
                     .map { _ in id }
                     .asDriver(onErrorJustReturn: id)
             }
-            .sink(receiveValue: { contentID in
+            .compactMap { contentID in
+                return contentsSubject.value.firstIndex(where: { $0.content.id == contentID })
+            }
+            .sink(receiveValue: { index in
                 var updatedContents = contentsSubject.value
-                
-                guard let index = updatedContents.firstIndex(where: { $0.content.id == contentID }) else { return }
                 
                 updatedContents.remove(at: index)
                 contentsSubject.send(updatedContents)
@@ -266,10 +268,11 @@ extension HomeViewModel: ViewModelType {
                     .map { _ in content.0 }
                     .asDriver(onErrorJustReturn: -1)
             }
-            .sink(receiveValue: { userID in
+            .compactMap { userID in
+                return contentsSubject.value.firstIndex(where: { $0.content.contentInfo.author.id == userID })
+            }
+            .sink(receiveValue: { index in
                 var updatedContents = contentsSubject.value
-                
-                guard let index = updatedContents.firstIndex(where: { $0.content.contentInfo.author.id == userID }) else { return }
                 
                 let content = updatedContents[index]
                 let contentInfo = content.content.contentInfo
