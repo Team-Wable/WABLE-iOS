@@ -187,8 +187,18 @@ private extension HomeDetailViewController {
                 postType: .mine,
                 cellType: .detail,
                 likeButtonTapHandler: {
-                self.didContentHeartTappedSubject.send(cell.likeButton.isLiked)
-            })
+                    self.didContentHeartTappedSubject.send(cell.likeButton.isLiked)
+                },
+                settingButtonTapHandler: {
+                    
+                },
+                profileImageViewTapHandler: {
+                    
+                },
+                ghostButtonTapHandler: {
+                    
+                }
+            )
             
             cell.commentButton.addAction(UIAction(handler: { _ in
                 self.didCommentTappedSubject.send()
