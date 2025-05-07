@@ -36,9 +36,12 @@ enum CommentType {
 final class CommentCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Property
-    // TODO: likeButtonTapHandler 다른 버튼처럼 addAction으로 고쳐놓기
     
     var likeButtonTapHandler: (() -> Void)?
+    var profileImageViewTapHandler: (() -> Void)?
+    var settingButtonTapHandler: (() -> Void)?
+    var ghostButtonTapHandler: (() -> Void)?
+    var replyButtonTapHandler: (() -> Void)?
     
     // MARK: - UIComponent
     
@@ -54,8 +57,8 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     }
     
     lazy var likeButton = LikeButton()
-    lazy var replyButton = CommentButton(type: .comment)
-    lazy var ghostButton = GhostButton()
+    private lazy var replyButton = CommentButton(type: .comment)
+    private lazy var ghostButton = GhostButton()
     
     // MARK: - LifeCycle
 
@@ -118,10 +121,37 @@ private extension CommentCollectionViewCell {
     }
     
     func setupAction() {
-       likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
+        replyButton.addTarget(self, action: #selector(replyButtonDidTap), for: .touchUpInside)
+        ghostButton.addTarget(self, action: #selector(ghostButtonDidTap), for: .touchUpInside)
+        infoView.settingButton.addTarget(self, action: #selector(settingButtonDidTap), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
+        infoView.profileImageView.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(profileImageViewDidTap)
+            )
+        )
+    }
+}
+
+// MARK: - @objc method
+
+private extension CommentCollectionViewCell {
+    @objc func profileImageViewDidTap() {
+        profileImageViewTapHandler?()
     }
     
-    // MARK: - @objc method
+    @objc func settingButtonDidTap() {
+        settingButtonTapHandler?()
+    }
+    
+    @objc func ghostButtonDidTap() {
+        ghostButtonTapHandler?()
+    }
+    
+    @objc func replyButtonDidTap() {
+        replyButtonTapHandler?()
+    }
     
     @objc func likeButtonDidTap() {
         let newCount = likeButton.isLiked ? likeButton.likeCount - 1 : likeButton.likeCount + 1
@@ -132,7 +162,7 @@ private extension CommentCollectionViewCell {
     }
 }
 
-// MARK: - Private Function Extension
+// MARK: - Helper Method
 
 private extension CommentCollectionViewCell {
     /// 셀 투명도 설정
@@ -148,7 +178,7 @@ private extension CommentCollectionViewCell {
 }
 
 
-// MARK: - Configure Extension
+// MARK: - Configure Method
 
 extension CommentCollectionViewCell {
     /// 댓글 셀 구성 메서드
@@ -158,12 +188,25 @@ extension CommentCollectionViewCell {
     ///   - authorType: 게시물 타입 (.mine 또는 .others)
     ///   - likeButtonTapHandler: 좋아요 버튼을 클릭했을 때 실행될 로직
     ///   - replyButtonTapHandler: 답글쓰기 버튼을 클릭했을 때 실행될 로직
-    func configureCell(info: CommentInfo, commentType: CommentType, authorType: AuthorType, likeButtonTapHandler: (() -> Void)?) {
+    func configureCell(
+        info: CommentInfo,
+        commentType: CommentType,
+        authorType: AuthorType,
+        likeButtonTapHandler: (() -> Void)?,
+        settingButtonTapHandler: (() -> Void)?,
+        profileImageViewTapHandler: (() -> Void)?,
+        ghostButtonTapHandler: (() -> Void)?,
+        replyButtonTapHandler: (() -> Void)?
+    ) {
         self.likeButtonTapHandler = likeButtonTapHandler
+        self.ghostButtonTapHandler = ghostButtonTapHandler
+        self.profileImageViewTapHandler = profileImageViewTapHandler
+        self.settingButtonTapHandler = settingButtonTapHandler
+        self.replyButtonTapHandler = replyButtonTapHandler
         
         guard let createdDate = info.createdDate else { return }
         
-        configurePostType(postType: authorType)
+        ghostButton.isHidden = authorType == .mine || info.status == .ghost
         configureCommentType(info: info, commentType: commentType)
         configurePostStatus(info: info)
         
@@ -177,21 +220,13 @@ extension CommentCollectionViewCell {
             createdDate: createdDate,
             postType: .comment
         )
+        
         replyButton.configureButton()
         likeButton.configureButton(
             isLiked: info.like.status,
             likeCount: info.like.count,
             postType: .comment
         )
-    }
-    
-    func configurePostType(postType: AuthorType) {
-        switch postType {
-        case .mine:
-            ghostButton.isHidden = true
-        case .others:
-            ghostButton.isHidden = false
-        }
     }
     
     func configureCommentType(info: CommentInfo, commentType: CommentType) {

@@ -13,36 +13,51 @@ final class HomeDetailViewModel {
     private let contentID: Int
     private let contentTitle: String
     private let fetchContentInfoUseCase: FetchContentInfoUseCase
-    private let createContentLikedUseCase: CreateContentLikedUseCase
-    private let deleteContentLikedUseCase: DeleteContentLikedUseCase
     private let fetchContentCommentListUseCase: FetchContentCommentListUseCase
     private let createCommentUseCase: CreateCommentUseCase
     private let deleteCommentUseCase: DeleteCommentUseCase
+    private let createContentLikedUseCase: CreateContentLikedUseCase
+    private let deleteContentLikedUseCase: DeleteContentLikedUseCase
     private let createCommentLikedUseCase: CreateCommentLikedUseCase
     private let deleteCommentLikedUseCase: DeleteCommentLikedUseCase
+    private let fetchUserInformationUseCase: FetchUserInformationUseCase
+    private let fetchGhostUseCase: FetchGhostUseCase
+    private let createReportUseCase: CreateReportUseCase
+    private let createBannedUseCase: CreateBannedUseCase
+    private let deleteContentUseCase: DeleteContentUseCase
     
     init(
         contentID: Int,
         contentTitle: String,
         fetchContentInfoUseCase: FetchContentInfoUseCase,
-        createContentLikedUseCase: CreateContentLikedUseCase,
-        deleteContentLikedUseCase: DeleteContentLikedUseCase,
         fetchContentCommentListUseCase: FetchContentCommentListUseCase,
         createCommentUseCase: CreateCommentUseCase,
         deleteCommentUseCase: DeleteCommentUseCase,
+        createContentLikedUseCase: CreateContentLikedUseCase,
+        deleteContentLikedUseCase: DeleteContentLikedUseCase,
         createCommentLikedUseCase: CreateCommentLikedUseCase,
-        deleteCommentLikedUseCase: DeleteCommentLikedUseCase
+        deleteCommentLikedUseCase: DeleteCommentLikedUseCase,
+        fetchUserInformationUseCase: FetchUserInformationUseCase,
+        fetchGhostUseCase: FetchGhostUseCase,
+        createReportUseCase: CreateReportUseCase,
+        createBannedUseCase: CreateBannedUseCase,
+        deleteContentUseCase: DeleteContentUseCase
     ) {
         self.contentID = contentID
         self.contentTitle = contentTitle
         self.fetchContentInfoUseCase = fetchContentInfoUseCase
-        self.createContentLikedUseCase = createContentLikedUseCase
-        self.deleteContentLikedUseCase = deleteContentLikedUseCase
         self.fetchContentCommentListUseCase = fetchContentCommentListUseCase
         self.createCommentUseCase = createCommentUseCase
         self.deleteCommentUseCase = deleteCommentUseCase
+        self.createContentLikedUseCase = createContentLikedUseCase
+        self.deleteContentLikedUseCase = deleteContentLikedUseCase
         self.createCommentLikedUseCase = createCommentLikedUseCase
         self.deleteCommentLikedUseCase = deleteCommentLikedUseCase
+        self.fetchUserInformationUseCase = fetchUserInformationUseCase
+        self.fetchGhostUseCase = fetchGhostUseCase
+        self.createReportUseCase = createReportUseCase
+        self.createBannedUseCase = createBannedUseCase
+        self.deleteContentUseCase = deleteContentUseCase
     }
 }
 
@@ -55,16 +70,24 @@ extension HomeDetailViewModel: ViewModelType {
         let didCommentTappedItem: AnyPublisher<Void, Never>
         let didReplyTappedItem: AnyPublisher<Int, Never>
         let didCreateTappedItem: AnyPublisher<String, Never>
+        let didGhostTappedItem: AnyPublisher<(Int, Int, PostType), Never>
+        let didDeleteTappedItem: AnyPublisher<(Int, PostType), Never>
+        let didBannedTappedItem: AnyPublisher<(Int, Int, TriggerType.Ban), Never>
+        let didReportTappedItem: AnyPublisher<(String, String), Never>
         let willDisplayLastItem: AnyPublisher<Void, Never>
     }
     
     struct Output {
+        let activeUserID: AnyPublisher<Int?, Never>
+        let isAdmin: AnyPublisher<Bool?, Never>
         let content: AnyPublisher<ContentInfo?, Never>
         let comments: AnyPublisher<[ContentComment], Never>
         let isLoading: AnyPublisher<Bool, Never>
         let isLoadingMore: AnyPublisher<Bool, Never>
         let textViewState: AnyPublisher<CommentType, Never>
         let postSucceed: AnyPublisher<Bool, Never>
+        let isReportSucceed: AnyPublisher<Bool, Never>
+        let isContentDeleted: AnyPublisher<Bool, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
@@ -76,11 +99,42 @@ extension HomeDetailViewModel: ViewModelType {
         let replyParentSubject = CurrentValueSubject<(Int, Int), Never>((-1, -1))
         let commentTypeSubject = CurrentValueSubject<CommentType, Never>(.ripple)
         let postSucceedSubject = CurrentValueSubject<Bool, Never>(false)
+        let activeUserIDSubject = CurrentValueSubject<Int?, Never>(nil)
+        let isAdminSubject = CurrentValueSubject<Bool?, Never>(false)
+        let isReportSucceedSubject = CurrentValueSubject<Bool, Never>(false)
+        let isContentDeletedSubject = CurrentValueSubject<Bool, Never>(false)
         
-        Publishers.Merge<AnyPublisher<Void, Never>, AnyPublisher<Void, Never>>(
+        let refreshTriggerSubject = PassthroughSubject<Void, Never>()
+        
+        let loadTrigger = Publishers.Merge3(
+            input.viewDidRefresh,
             input.viewWillAppear,
-            input.viewDidRefresh
+            refreshTriggerSubject
         )
+        
+        loadTrigger
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<Int?, Never> in
+                return owner.fetchUserInformationUseCase.fetchActiveUserID()
+            }
+            .sink { userID in
+                activeUserIDSubject.send(userID)
+            }
+            .store(in: cancelBag)
+        
+        loadTrigger
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<Bool?, Never> in
+                return owner.fetchUserInformationUseCase.fetchActiveUserInfo()
+                    .map { info in info?.isAdmin }
+                    .eraseToAnyPublisher()
+            }
+            .sink { isAdmin in
+                isAdminSubject.send(isAdmin)
+            }
+            .store(in: cancelBag)
+        
+        loadTrigger
             .handleEvents(receiveOutput: { _ in
                 isLoadingSubject.send(true)
                 isLastViewSubject.send(false)
@@ -155,11 +209,89 @@ extension HomeDetailViewModel: ViewModelType {
             .withUnretained(self)
             .sink { owner, index in
                 replyParentSubject.send((
-                        commentsSubject.value[index].comment.id,
-                        commentsSubject.value[index].comment.author.id
-                    ))
+                    commentsSubject.value[index].comment.id,
+                    commentsSubject.value[index].comment.author.id
+                ))
                 commentTypeSubject.send(.reply)
             }
+            .store(in: cancelBag)
+        
+        input.didGhostTappedItem
+            .withUnretained(self)
+            .flatMap { owner, input -> AnyPublisher<Int, Never> in
+                return owner.fetchGhostUseCase.execute(type: input.2, targetID: input.0, userID: input.1)
+                    .map { _ in input.1 }
+                    .asDriver(onErrorJustReturn: input.1)
+            }
+            .sink(receiveValue: { [weak self] userID in
+                guard let self = self,
+                      let contentInfo = contentSubject.value
+                else {
+                    return
+                }
+                
+                let updatedCommentInfo = updateGhostComments(comments: commentsSubject.value, userID: userID)
+                
+                commentsSubject.send(updatedCommentInfo)
+                
+                if userID == contentInfo.author.id {
+                    let updatedContent = ContentInfo(
+                        author: contentInfo.author,
+                        createdDate: contentInfo.createdDate,
+                        title: contentInfo.title,
+                        imageURL: contentInfo.imageURL,
+                        text: contentInfo.text,
+                        status: .ghost,
+                        like: contentInfo.like,
+                        opacity: contentInfo.opacity.reduced(),
+                        commentCount: contentInfo.commentCount
+                    )
+                    
+                    contentSubject.send(updatedContent)
+                }
+            })
+            .store(in: cancelBag)
+        
+        input.didReportTappedItem
+            .withUnretained(self)
+            .flatMap { owner, content -> AnyPublisher<Void, Never> in
+                return owner.createReportUseCase.execute(nickname: content.0, text: content.1)
+                    .asDriver(onErrorJustReturn: ())
+            }
+            .sink(receiveValue: { _ in
+                isReportSucceedSubject.send(true)
+            })
+            .store(in: cancelBag)
+        
+        input.didBannedTappedItem
+            .withUnretained(self)
+            .flatMap { owner, input -> AnyPublisher<Int, Never> in
+                return owner.createBannedUseCase.execute(memberID: input.0, triggerType: input.2, triggerID: input.1)
+                    .map { _ in input.0 }
+                    .asDriver(onErrorJustReturn: -1)
+            }
+            .sink(receiveValue: { userID in
+                refreshTriggerSubject.send()
+            })
+            .store(in: cancelBag)
+        
+        input.didDeleteTappedItem
+            .withUnretained(self)
+            .flatMap { owner, input -> AnyPublisher<(Int, PostType), Never> in
+                return owner.deleteCommentUseCase.execute(commentID: input.0)
+                    .map { _ in input }
+                    .asDriver(onErrorJustReturn: input)
+            }
+            .withUnretained(self)
+            .sink(receiveValue: { owner, value in
+                if value.1 == .content {
+                    isContentDeletedSubject.send(true)
+                } else {
+                    let updatedCommentInfo = owner.updateDeleteComments(comments: commentsSubject.value, commentID: value.0)
+                    
+                    commentsSubject.send(updatedCommentInfo)
+                }
+            })
             .store(in: cancelBag)
         
         input.didCreateTappedItem
@@ -227,14 +359,90 @@ extension HomeDetailViewModel: ViewModelType {
             }
             .store(in: cancelBag)
         
-    return Output(
+        return Output(
+            activeUserID: activeUserIDSubject.eraseToAnyPublisher(),
+            isAdmin: isAdminSubject.eraseToAnyPublisher(),
             content: contentSubject.eraseToAnyPublisher(),
             comments: commentsSubject.eraseToAnyPublisher(),
             isLoading: isLoadingSubject.eraseToAnyPublisher(),
             isLoadingMore: isLoadingMoreSubject.eraseToAnyPublisher(),
             textViewState: commentTypeSubject.eraseToAnyPublisher(),
-            postSucceed: postSucceedSubject.eraseToAnyPublisher()
+            postSucceed: postSucceedSubject.eraseToAnyPublisher(),
+            isReportSucceed: isReportSucceedSubject.eraseToAnyPublisher(),
+            isContentDeleted: isContentDeletedSubject.eraseToAnyPublisher()
         )
+    }
+}
+
+// MARK: - Helper Method
+
+private extension HomeDetailViewModel {
+    func updateGhostComments(comments: [ContentComment], userID: Int) -> [ContentComment] {
+        return comments.map { comment in
+            let updatedComment: ContentComment
+            
+            if comment.comment.author.id == userID {
+                updatedComment = ContentComment(
+                    comment: CommentInfo(
+                        author: comment.comment.author,
+                        id: comment.comment.id,
+                        text: comment.comment.text,
+                        createdDate: comment.comment.createdDate,
+                        status: .ghost,
+                        like: comment.comment.like,
+                        opacity: comment.comment.opacity.reduced()
+                    ),
+                    parentID: comment.parentID,
+                    isDeleted: comment.isDeleted,
+                    childs: comment.childs
+                )
+            } else {
+                updatedComment = comment
+            }
+            
+            if !updatedComment.childs.isEmpty {
+                let updatedChilds = updateGhostComments(comments: updatedComment.childs, userID: userID)
+                
+                return ContentComment(
+                    comment: updatedComment.comment,
+                    parentID: updatedComment.parentID,
+                    isDeleted: updatedComment.isDeleted,
+                    childs: updatedChilds
+                )
+            }
+            
+            return updatedComment
+        }
+    }
+    
+    func updateDeleteComments(comments: [ContentComment], commentID: Int) -> [ContentComment] {
+        return comments.map { comment in
+            let updatedComment: ContentComment
+            
+            if comment.comment.id == commentID {
+                updatedComment = ContentComment(
+                    comment: comment.comment,
+                    parentID: comment.parentID,
+                    isDeleted: true,
+                    childs: comment.childs
+                )
+            } else {
+                updatedComment = comment
+            }
+
+            if !updatedComment.childs.isEmpty {
+                let updatedChilds = updateDeleteComments(comments: updatedComment.childs, commentID: commentID)
+                
+                return ContentComment(
+                    comment: updatedComment.comment,
+                    parentID: updatedComment.parentID,
+                    isDeleted: updatedComment.isDeleted,
+                    childs: updatedChilds
+                )
+            }
+            
+            return updatedComment
+        }
     }
 }
 
