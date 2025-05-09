@@ -64,7 +64,6 @@ final class CreateViewitUseCaseImpl: CreateViewitUseCase {
                 .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
-        
     }
     
     // MARK: - Helper Method
