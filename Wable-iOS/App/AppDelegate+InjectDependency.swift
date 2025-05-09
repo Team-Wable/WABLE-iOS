@@ -11,6 +11,14 @@ extension AppDelegate {
     var diContainer: AppDIContainer { AppDIContainer.shared }
     
     func injectDependency() {
+        
+        // MARK: - Overview
+
         diContainer.register(for: InformationRepository.self, object: InformationRepositoryImpl())
+        
+        // MARK: - Viewit
+
+        diContainer.register(for: ViewitRepository.self, object: ViewitRepositoryImpl())
+        diContainer.register(for: URLPreviewRepository.self, object: URLPreviewRepositoryImpl())
     }
 }

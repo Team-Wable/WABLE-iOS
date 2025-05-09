@@ -236,6 +236,7 @@
 		DE59BBA92D8A9EFD0040ADCB /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */; };
 		DE6459CF2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6459CE2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift */; };
 		DE6459D52D97B8C2005569B8 /* InformationNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6459D42D97B8C2005569B8 /* InformationNotificationViewController.swift */; };
+		DE64D7CA2DCBA2D700F55859 /* CreateViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE64D7C92DCBA2D700F55859 /* CreateViewitUseCase.swift */; };
 		DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EA2D7211070021BDE1 /* Like.swift */; };
 		DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EE2D7213D90021BDE1 /* Opacity.swift */; };
 		DE6C3E3E2D91A8E00046DB30 /* NewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6C3E3D2D91A8E00046DB30 /* NewsViewModel.swift */; };
@@ -258,6 +259,11 @@
 		DE7C531A2D76202B00076E5D /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53192D76202B00076E5D /* UITextField+.swift */; };
 		DE83891B2D906C0C00C089E6 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE83891A2D906C0C00C089E6 /* Types.swift */; };
 		DE83891D2D9071E400C089E6 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE83891C2D9071E400C089E6 /* Date+.swift */; };
+		DE8873B72DC7407C00AB16F8 /* URLPreviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8873B62DC7407C00AB16F8 /* URLPreviewRepository.swift */; };
+		DE8873B92DC7408C00AB16F8 /* URLPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8873B82DC7408C00AB16F8 /* URLPreview.swift */; };
+		DE8873BB2DC7416C00AB16F8 /* URLPreviewRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8873BA2DC7416C00AB16F8 /* URLPreviewRepositoryImpl.swift */; };
+		DE8873BE2DC7419000AB16F8 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = DE8873BD2DC7419000AB16F8 /* SwiftSoup */; };
+		DE8873C32DC7536900AB16F8 /* ViewitInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8873C22DC7536900AB16F8 /* ViewitInputView.swift */; };
 		DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */; };
 		DE8E863B2D918735000A4292 /* RankViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8E863A2D918735000A4292 /* RankViewItem.swift */; };
 		DE8E863D2D918759000A4292 /* RankViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8E863C2D918759000A4292 /* RankViewModel.swift */; };
@@ -280,8 +286,6 @@
 		DEAFE05B2D8C4E930097E91C /* GameScheduleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE05A2D8C4E930097E91C /* GameScheduleHeaderView.swift */; };
 		DECC36DA2DC3A4D800336B7B /* CreateViewitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECC36D92DC3A4D800336B7B /* CreateViewitViewModel.swift */; };
 		DECC36DF2DC3B24000336B7B /* CreateViewitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECC36DE2DC3B24000336B7B /* CreateViewitViewController.swift */; };
-		DECC36E12DC3B27500336B7B /* ViewitURLInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECC36E02DC3B27500336B7B /* ViewitURLInputView.swift */; };
-		DECC36E32DC3B63900336B7B /* ViewitContentInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECC36E22DC3B63900336B7B /* ViewitContentInputView.swift */; };
 		DED4BE3D2D8C531E009B65CB /* GameTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED4BE3C2D8C531E009B65CB /* GameTypeCell.swift */; };
 		DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29132D7208A00073D512 /* GameStatus.swift */; };
 		DEDC29162D72099C0073D512 /* InformationNotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29152D72099C0073D512 /* InformationNotificationType.swift */; };
@@ -526,6 +530,7 @@
 		DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		DE6459CE2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+InjectDependency.swift"; sourceTree = "<group>"; };
 		DE6459D42D97B8C2005569B8 /* InformationNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationViewController.swift; sourceTree = "<group>"; };
+		DE64D7C92DCBA2D700F55859 /* CreateViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewitUseCase.swift; sourceTree = "<group>"; };
 		DE67A9EA2D7211070021BDE1 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		DE67A9EE2D7213D90021BDE1 /* Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opacity.swift; sourceTree = "<group>"; };
 		DE6C3E3D2D91A8E00046DB30 /* NewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewModel.swift; sourceTree = "<group>"; };
@@ -548,6 +553,10 @@
 		DE7C53192D76202B00076E5D /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
 		DE83891A2D906C0C00C089E6 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		DE83891C2D9071E400C089E6 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
+		DE8873B62DC7407C00AB16F8 /* URLPreviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLPreviewRepository.swift; sourceTree = "<group>"; };
+		DE8873B82DC7408C00AB16F8 /* URLPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLPreview.swift; sourceTree = "<group>"; };
+		DE8873BA2DC7416C00AB16F8 /* URLPreviewRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLPreviewRepositoryImpl.swift; sourceTree = "<group>"; };
+		DE8873C22DC7536900AB16F8 /* ViewitInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitInputView.swift; sourceTree = "<group>"; };
 		DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableBottomSheetController.swift; sourceTree = "<group>"; };
 		DE8E863A2D918735000A4292 /* RankViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankViewItem.swift; sourceTree = "<group>"; };
 		DE8E863C2D918759000A4292 /* RankViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankViewModel.swift; sourceTree = "<group>"; };
@@ -569,8 +578,6 @@
 		DEAFE05A2D8C4E930097E91C /* GameScheduleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleHeaderView.swift; sourceTree = "<group>"; };
 		DECC36D92DC3A4D800336B7B /* CreateViewitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewitViewModel.swift; sourceTree = "<group>"; };
 		DECC36DE2DC3B24000336B7B /* CreateViewitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewitViewController.swift; sourceTree = "<group>"; };
-		DECC36E02DC3B27500336B7B /* ViewitURLInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitURLInputView.swift; sourceTree = "<group>"; };
-		DECC36E22DC3B63900336B7B /* ViewitContentInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitContentInputView.swift; sourceTree = "<group>"; };
 		DED4BE3C2D8C531E009B65CB /* GameTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTypeCell.swift; sourceTree = "<group>"; };
 		DEDC29112D7207610073D512 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		DEDC29132D7208A00073D512 /* GameStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStatus.swift; sourceTree = "<group>"; };
@@ -612,6 +619,7 @@
 				DDF2CC9E2D71FECB000F1919 /* FirebaseMessaging in Frameworks */,
 				DDF2CC992D71FC7E000F1919 /* KakaoSDKUser in Frameworks */,
 				DE8E86432D91A0DA000A4292 /* LookinServer in Frameworks */,
+				DE8873BE2DC7419000AB16F8 /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1016,6 +1024,7 @@
 				DD2967C72D6DAC3100143851 /* CommunityRepositoryImpl.swift */,
 				DD2967C82D6DAC3100143851 /* ReportRepositoryImpl.swift */,
 				DD2967C92D6DAC3100143851 /* ViewitRepositoryImpl.swift */,
+				DE8873BA2DC7416C00AB16F8 /* URLPreviewRepositoryImpl.swift */,
 			);
 			path = RepositoryImpl;
 			sourceTree = "<group>";
@@ -1071,6 +1080,7 @@
 				DD2967E22D6DAC3100143851 /* CommunityRepository.swift */,
 				DD2967E32D6DAC3100143851 /* ReportRepository.swift */,
 				DD2967E42D6DAC3100143851 /* ViewitRepository.swift */,
+				DE8873B62DC7407C00AB16F8 /* URLPreviewRepository.swift */,
 			);
 			path = RepositoryInterface;
 			sourceTree = "<group>";
@@ -1095,6 +1105,7 @@
 				DD2967F52D6DAC3100143851 /* Community.swift */,
 				DEF148532DA7EF7B003B2AD8 /* CommunityRegistration.swift */,
 				DD2967F62D6DAC3100143851 /* Viewit.swift */,
+				DE8873B82DC7408C00AB16F8 /* URLPreview.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -1306,6 +1317,7 @@
 				DDED59822D79614E00A0BEF1 /* Overview */,
 				DDED59812D79612600A0BEF1 /* Notification */,
 				DDED59802D79611F00A0BEF1 /* Profile */,
+				DE64D7C82DCBA2BC00F55859 /* Viewit */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -1593,6 +1605,14 @@
 				DE6459D42D97B8C2005569B8 /* InformationNotificationViewController.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DE64D7C82DCBA2BC00F55859 /* Viewit */ = {
+			isa = PBXGroup;
+			children = (
+				DE64D7C92DCBA2D700F55859 /* CreateViewitUseCase.swift */,
+			);
+			path = Viewit;
 			sourceTree = "<group>";
 		};
 		DE6C3E3C2D91A8D50046DB30 /* ViewModel */ = {
@@ -1884,8 +1904,7 @@
 		DECC36DD2DC3B23400336B7B /* Subview */ = {
 			isa = PBXGroup;
 			children = (
-				DECC36E02DC3B27500336B7B /* ViewitURLInputView.swift */,
-				DECC36E22DC3B63900336B7B /* ViewitContentInputView.swift */,
+				DE8873C22DC7536900AB16F8 /* ViewitInputView.swift */,
 			);
 			path = Subview;
 			sourceTree = "<group>";
@@ -2021,6 +2040,7 @@
 				DDF2CCA02D71FF27000F1919 /* AmplitudeSwift */,
 				DDED598C2D79957700A0BEF1 /* CombineCocoa */,
 				DE8E86422D91A0DA000A4292 /* LookinServer */,
+				DE8873BD2DC7419000AB16F8 /* SwiftSoup */,
 			);
 			productName = "Wable-iOS";
 			productReference = 0547F4962C60D968001E3039 /* Wable-iOS.app */;
@@ -2061,6 +2081,7 @@
 				DDF2CC9F2D71FF27000F1919 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
 				DDED598B2D79957700A0BEF1 /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 				DE8E86412D91A0DA000A4292 /* XCRemoteSwiftPackageReference "LookinServer" */,
+				DE8873BC2DC7419000AB16F8 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			productRefGroup = 0547F4972C60D968001E3039 /* Products */;
 			projectDirPath = "";
@@ -2099,12 +2120,14 @@
 				DD2968072D6DACF700143851 /* LCKTeam.swift in Sources */,
 				DD2968092D6DACF700143851 /* AccountDeleteReason.swift in Sources */,
 				DDED597E2D79578C00A0BEF1 /* AuthProvider.swift in Sources */,
+				DE8873BB2DC7416C00AB16F8 /* URLPreviewRepositoryImpl.swift in Sources */,
 				DD29680A2D6DACF700143851 /* User.swift in Sources */,
 				DD29680B2D6DACF700143851 /* UserProfile.swift in Sources */,
 				DE54B03E2D82CD82009A7C34 /* NotFoundViewController.swift in Sources */,
 				DD29680C2D6DACF700143851 /* LCKTeamRank.swift in Sources */,
 				DD29680D2D6DACF700143851 /* Content.swift in Sources */,
 				DE277A882D8C09AD006D2B53 /* OverviewPageViewController.swift in Sources */,
+				DE8873B72DC7407C00AB16F8 /* URLPreviewRepository.swift in Sources */,
 				DD29680E2D6DACF700143851 /* Token.swift in Sources */,
 				DD29680F2D6DACF700143851 /* SocialPlatform.swift in Sources */,
 				DD2968102D6DACF700143851 /* Notification.swift in Sources */,
@@ -2170,6 +2193,7 @@
 				DDCD66EC2D7DE5E000EF4C28 /* ConstraintMaker+.swift in Sources */,
 				DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */,
 				DE7C530C2D761DCA00076E5D /* ViewModelType.swift in Sources */,
+				DE8873C32DC7536900AB16F8 /* ViewitInputView.swift in Sources */,
 				DDCD66EA2D7DD72F00EF4C28 /* LottieType.swift in Sources */,
 				DD29683B2D6DAD2F00143851 /* CreateAccountResponse.swift in Sources */,
 				DD29683C2D6DAD2F00143851 /* FetchGameCategory.swift in Sources */,
@@ -2218,7 +2242,6 @@
 				DEDC29162D72099C0073D512 /* InformationNotificationType.swift in Sources */,
 				DD9EAE262D99C75F00803A1A /* CreateContentUseCase.swift in Sources */,
 				DD29684B2D6DAD2F00143851 /* CreateViewitPostResponse.swift in Sources */,
-				DECC36E12DC3B27500336B7B /* ViewitURLInputView.swift in Sources */,
 				DDED59782D78F1E500A0BEF1 /* CreateUserProfileUseCase.swift in Sources */,
 				DD29684C2D6DAD2F00143851 /* FetchNews.swift in Sources */,
 				DD29684D2D6DAD2F00143851 /* FetchContentComments.swift in Sources */,
@@ -2250,7 +2273,6 @@
 				DD2968612D6DAD5500143851 /* ViewitTargetType.swift in Sources */,
 				DD2968622D6DAD5500143851 /* CommentLikedTargetType.swift in Sources */,
 				DD2968632D6DAD5500143851 /* ContentTargetType.swift in Sources */,
-				DECC36E32DC3B63900336B7B /* ViewitContentInputView.swift in Sources */,
 				DD547AB92D7E43A600B8BA5A /* GhostButton.swift in Sources */,
 				DD2968642D6DAD5500143851 /* NotificationTargetType.swift in Sources */,
 				DD2968652D6DAD5500143851 /* ReportTargetType.swift in Sources */,
@@ -2325,6 +2347,7 @@
 				DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */,
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
 				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
+				DE64D7CA2DCBA2D700F55859 /* CreateViewitUseCase.swift in Sources */,
 				DD29681D2D6DAD0200143851 /* CommentRepository.swift in Sources */,
 				DE72BB1A2D93DC8C008E5774 /* ActivityNotificationViewController.swift in Sources */,
 				DEAFE0592D8C4E0B0097E91C /* GameStatus+.swift in Sources */,
@@ -2338,6 +2361,7 @@
 				DEF6A3C32DA98E4A0044ACAB /* ViewitView.swift in Sources */,
 				DE7C531A2D76202B00076E5D /* UITextField+.swift in Sources */,
 				DEF1485E2DA81571003B2AD8 /* CommunityHeaderView.swift in Sources */,
+				DE8873B92DC7408C00AB16F8 /* URLPreview.swift in Sources */,
 				DE9C3BFC2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift in Sources */,
 				DD2968212D6DAD0200143851 /* ContentLikedRepository.swift in Sources */,
 				DD2968222D6DAD0200143851 /* CommentLikedRepository.swift in Sources */,
@@ -2689,6 +2713,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		DE8873BC2DC7419000AB16F8 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.7;
+			};
+		};
 		DE8E86412D91A0DA000A4292 /* XCRemoteSwiftPackageReference "LookinServer" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/QMUI/LookinServer";
@@ -2764,6 +2796,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DDF2CC9F2D71FF27000F1919 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */;
 			productName = AmplitudeSwift;
+		};
+		DE8873BD2DC7419000AB16F8 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DE8873BC2DC7419000AB16F8 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
 		};
 		DE8E86422D91A0DA000A4292 /* LookinServer */ = {
 			isa = XCSwiftPackageProductDependency;

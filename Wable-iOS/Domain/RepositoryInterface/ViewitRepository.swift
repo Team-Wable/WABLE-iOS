@@ -14,5 +14,10 @@ protocol ViewitRepository {
     func deleteViewitLiked(viewitID: Int) -> AnyPublisher<Void, WableError>
     func createViewitLiked(viewitID: Int) -> AnyPublisher<Void, WableError>
     func fetchViewitList(cursor: Int) -> AnyPublisher<[Viewit], WableError>
-    func createViewitPost(thumbnailURL: URL, videoURL: URL, title: String, text: String) -> AnyPublisher<Void, WableError>
+    func createViewitPost(
+        thumbnailImageURLString: String,
+        urlString: String,
+        title: String,
+        text: String
+    ) -> AnyPublisher<Void, WableError>
 }

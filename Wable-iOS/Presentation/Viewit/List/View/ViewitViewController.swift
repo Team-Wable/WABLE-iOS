@@ -84,7 +84,9 @@ private extension ViewitViewController {
     // MARK: - Action Method
 
     @objc func writeButtonDidTap() {
-        present(CreateViewitViewController(viewModel: CreateViewitViewModel()), animated: true)
+        let useCase = CreateViewitUseCaseImpl()
+        let writeViewController = CreateViewitViewController(viewModel: .init(useCase: useCase))
+        present(writeViewController, animated: true)
     }
 }
 
