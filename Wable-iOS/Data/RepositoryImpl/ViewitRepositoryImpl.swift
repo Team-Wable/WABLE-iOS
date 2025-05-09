@@ -54,16 +54,16 @@ extension ViewitRepositoryImpl: ViewitRepository {
     }
     
     func createViewitPost(
-        thumbnailURL: URL,
-        videoURL: URL,
+        thumbnailImageURLString: String,
+        urlString: String,
         title: String,
         text: String
     ) -> AnyPublisher<Void, WableError> {
         return provider.request(
             .createViewitPost(
                 request: DTO.Request.CreateViewitPost(
-                    viewitImageURL: thumbnailURL.absoluteString,
-                    viewitURL: videoURL.absoluteString,
+                    viewitImageURL: thumbnailImageURLString,
+                    viewitURL: urlString,
                     viewitTitle: title,
                     viewitText: text
                 )
