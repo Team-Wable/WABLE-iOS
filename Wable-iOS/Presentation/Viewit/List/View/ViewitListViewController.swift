@@ -84,6 +84,8 @@ private extension ViewitListViewController {
             
             cell.profileInfoDidTapClosure = {
                 WableLogger.log("프로필 정보 눌림", for: .debug)
+                
+                // TODO: 프로필(상대/나)로 이동
             }
             
             cell.etcDidTapClosure = { [weak self] in
@@ -97,7 +99,6 @@ private extension ViewitListViewController {
             }
             
             cell.likeDidTap = { [weak self] in
-                WableLogger.log("좋아요 눌림", for: .debug)
                 self?.likeRelay.send(indexPath.item)
             }
         }
@@ -129,6 +130,7 @@ private extension ViewitListViewController {
         
         output.viewitList
             .sink { [weak self] items in
+                self?.rootView.emptyLabel.isHidden = !items.isEmpty
                 self?.applySnapshot(items: items)
             }
             .store(in: cancelBag)
@@ -136,7 +138,7 @@ private extension ViewitListViewController {
         output.errorMessage
             .sink { [weak self] message in
                 let alertController = UIAlertController(
-                    title: "에러가 발생했어요.",
+                    title: "오류가 발생했어요.",
                     message: message,
                     preferredStyle: .alert
                 )
@@ -153,7 +155,7 @@ private extension ViewitListViewController {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)
-        dataSource?.apply(snapshot, animatingDifferences: true)
+        dataSource?.apply(snapshot)
     }
     
     // MARK: - Action Method

@@ -91,7 +91,8 @@ private extension ViewitContentView {
         }
         
         likeButton.snp.makeConstraints { make in
-            make.trailing.bottom.equalTo(viewitCardButton).inset(4)
+            make.trailing.equalTo(viewitCardButton).inset(8)
+            make.bottom.equalTo(viewitCardButton).inset(4)
         }
     }
 }
