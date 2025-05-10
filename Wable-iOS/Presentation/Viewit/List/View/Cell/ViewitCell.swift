@@ -19,10 +19,12 @@ final class ViewitCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFit
         $0.layer.cornerRadius = Constant.profileImageViewSize / 2
         $0.clipsToBounds = true
+        $0.isUserInteractionEnabled = true
     }
     
     private let usernameLabel = UILabel().then {
         $0.attributedText = "이름".pretendardString(with: .body3)
+        $0.isUserInteractionEnabled = true
     }
     
     private let etcButton = UIButton().then {
@@ -36,12 +38,20 @@ final class ViewitCell: UICollectionViewCell {
         $0.isHidden = true
     }
     
+    // MARK: - Property
+
+    var profileInfoDidTapClosure: VoidClosure?
+    var etcDidTapClosure: VoidClosure?
+    var cardDidTapClosure: VoidClosure?
+    var likeDidTap: VoidClosure?
+    
     // MARK: - Initializer
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupCell()
+        setupAction()
     }
     
     @available(*, unavailable)
@@ -51,6 +61,8 @@ final class ViewitCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        
+        blindImageView.isHidden = true
         
         configure(profileImageURL: nil, username: "이름")
         configure(
@@ -62,7 +74,7 @@ final class ViewitCell: UICollectionViewCell {
             likeCount: 0
         )
         
-        blindImageView.isHidden = true
+        resetClosures()
     }
     
     func configure(profileImageURL: URL?, username: String) {
@@ -96,9 +108,10 @@ final class ViewitCell: UICollectionViewCell {
     }
 }
 
-// MARK: - Setup Method
-
 private extension ViewitCell {
+    
+    // MARK: - Setup Method
+    
     func setupCell() {
         let underlineView = UIView(backgroundColor: .gray200)
         
@@ -153,11 +166,48 @@ private extension ViewitCell {
             make.height.equalTo(1)
         }
     }
-}
+    
+    func setupAction() {
+        let profileImageTapGesture = UITapGestureRecognizer(target: self, action: #selector(profileInfoDidTap))
+        profileImageView.addGestureRecognizer(profileImageTapGesture)
+        
+        let userNameTapGesture = UITapGestureRecognizer(target: self, action: #selector(profileInfoDidTap))
+        usernameLabel.addGestureRecognizer(userNameTapGesture)
+        
+        viewitContentView.viewitCardButton.addTarget(self, action: #selector(cardButtonDidTap), for: .touchUpInside)
+        
+        viewitContentView.likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
+    }
+    
+    // MARK: - Action Method
 
-// MARK: - Constant
+    @objc func profileInfoDidTap() {
+        profileInfoDidTapClosure?()
+    }
+    
+    @objc func etcButtonDidTap() {
+        etcDidTapClosure?()
+    }
+    
+    @objc func cardButtonDidTap() {
+        cardDidTapClosure?()
+    }
+    
+    @objc func likeButtonDidTap() {
+        likeDidTap?()
+    }
+    
+    // MARK: - Helper Method
 
-private extension ViewitCell {
+    func resetClosures() {
+        profileInfoDidTapClosure = nil
+        etcDidTapClosure = nil
+        cardDidTapClosure = nil
+        likeDidTap = nil
+    }
+
+    // MARK: - Constant
+
     enum Constant {
         static let profileImageViewSize: CGFloat = 28
         static let etcButtonSize: CGFloat = 32
