@@ -71,12 +71,9 @@ extension ViewitListViewModel: ViewModelType {
                     .map { (index, $0) }
                     .eraseToAnyPublisher()
             }
-            .map { index, viewit -> [Viewit] in
-                var updatedViewitList = viewitListRelay.value
-                updatedViewitList[index] = viewit
-                return updatedViewitList
+            .sink { index, viewit in
+                viewitListRelay.value[index] = viewit
             }
-            .sink { viewitListRelay.send($0) }
             .store(in: cancelBag)
         
         return Output(

@@ -91,7 +91,7 @@ final class ViewitCell: UICollectionViewCell {
         likeCount: Int,
         isBlind: Bool = false
     ) {
-        guard !isBlind else {
+        if isBlind {
             viewitContentView.isHidden = isBlind
             blindImageView.isHidden = !isBlind
             return
@@ -173,6 +173,8 @@ private extension ViewitCell {
         
         let userNameTapGesture = UITapGestureRecognizer(target: self, action: #selector(profileInfoDidTap))
         usernameLabel.addGestureRecognizer(userNameTapGesture)
+        
+        etcButton.addTarget(self, action: #selector(etcButtonDidTap), for: .touchUpInside)
         
         viewitContentView.viewitCardButton.addTarget(self, action: #selector(cardButtonDidTap), for: .touchUpInside)
         

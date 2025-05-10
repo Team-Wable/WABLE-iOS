@@ -13,10 +13,15 @@ import Then
 final class ViewitListView: UIView {
     
     // MARK: - UIComponent
-
+    
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout).then {
         $0.refreshControl = UIRefreshControl()
         $0.alwaysBounceVertical = true
+    }
+    
+    let emptyLabel = UILabel().then {
+        $0.attributedText = "아직 작성된 글이 없어요".pretendardString(with: .body2)
+        $0.textColor = .gray500
     }
     
     let createButton = UIButton().then {
@@ -53,6 +58,7 @@ private extension ViewitListView {
             statusBarBackgroundView,
             navigationView,
             collectionView,
+            emptyLabel,
             createButton,
             underlineView
         )
@@ -71,6 +77,10 @@ private extension ViewitListView {
             make.top.equalTo(navigationView.snp.bottom)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(underlineView.snp.top)
+        }
+        
+        emptyLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
         
         createButton.snp.makeConstraints { make in
