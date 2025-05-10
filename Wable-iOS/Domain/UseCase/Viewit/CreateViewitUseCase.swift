@@ -55,7 +55,7 @@ final class CreateViewitUseCaseImpl: CreateViewitUseCase {
                     return .fail(.unknownError)
                 }
                 
-                return viewitRepository.createViewitPost(
+                return viewitRepository.createViewit(
                     thumbnailImageURLString: preview.imageURLString,
                     urlString: preview.urlString,
                     title: preview.title,

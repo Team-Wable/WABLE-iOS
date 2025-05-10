@@ -16,9 +16,28 @@ extension AppDelegate {
 
         diContainer.register(for: InformationRepository.self, object: InformationRepositoryImpl())
         
+        
+        // MARK: - Report
+        
+        diContainer.register(for: ReportRepository.self) { config in
+            switch config {
+            case .debug:
+                return MockReportRepository()
+            case .release:
+                return ReportRepositoryImpl()
+            }
+        }
+        
         // MARK: - Viewit
 
-        diContainer.register(for: ViewitRepository.self, object: ViewitRepositoryImpl())
+        diContainer.register(for: ViewitRepository.self) { config in
+            switch config {
+            case .debug:
+                return MockViewitRepository()
+            case .release:
+                return ViewitRepositoryImpl()
+            }
+        }
         diContainer.register(for: URLPreviewRepository.self, object: URLPreviewRepositoryImpl())
     }
 }

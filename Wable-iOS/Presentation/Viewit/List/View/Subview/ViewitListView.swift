@@ -1,5 +1,5 @@
 //
-//  ViewitView.swift
+//  ViewitListView.swift
 //  Wable-iOS
 //
 //  Created by 김진웅 on 4/12/25.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class ViewitView: UIView {
+final class ViewitListView: UIView {
     
     // MARK: - UIComponent
 
@@ -19,7 +19,7 @@ final class ViewitView: UIView {
         $0.alwaysBounceVertical = true
     }
     
-    let writeButton = UIButton().then {
+    let createButton = UIButton().then {
         $0.setImage(.btnWrite, for: .normal)
     }
     
@@ -39,7 +39,7 @@ final class ViewitView: UIView {
 
 // MARK: - Setup Method
 
-private extension ViewitView {
+private extension ViewitListView {
     func setupView() {
         backgroundColor = .wableWhite
         
@@ -53,7 +53,7 @@ private extension ViewitView {
             statusBarBackgroundView,
             navigationView,
             collectionView,
-            writeButton,
+            createButton,
             underlineView
         )
         
@@ -73,7 +73,7 @@ private extension ViewitView {
             make.bottom.equalTo(underlineView.snp.top)
         }
         
-        writeButton.snp.makeConstraints { make in
+        createButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-12)
             make.bottom.equalTo(safeArea).offset(-24)
         }
@@ -87,7 +87,7 @@ private extension ViewitView {
 
 // MARK: - Computed Property
 
-private extension ViewitView {
+private extension ViewitListView {
     var collectionViewLayout: UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),

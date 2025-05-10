@@ -46,3 +46,21 @@ extension ReportRepositoryImpl: ReportRepository {
         .mapWableError()
     }
 }
+
+// MARK: - Mock
+
+struct MockReportRepository: ReportRepository {
+    private var delaySeconds: TimeInterval { return .random(in: 1...3) }
+    
+    func createReport(nickname: String, text: String) -> AnyPublisher<Void, WableError> {
+        return .just(())
+            .delay(for: .seconds(delaySeconds), scheduler: RunLoop.main)
+            .eraseToAnyPublisher()
+    }
+    
+    func createBan(memberID: Int, triggerType: TriggerType.Ban, triggerID: Int) -> AnyPublisher<Void, WableError> {
+        return .just(())
+            .delay(for: .seconds(delaySeconds), scheduler: RunLoop.main)
+            .eraseToAnyPublisher()
+    }
+}

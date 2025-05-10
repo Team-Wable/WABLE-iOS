@@ -14,15 +14,15 @@ final class ViewitContentView: UIView {
     
     // MARK: - UIComponent
 
-    private let viewitTextLabel = UILabel().then {
+    let viewitTextLabel = UILabel().then {
         $0.attributedText = "뷰잇 멘트는 최대 50자만 가능해요.".pretendardString(with: .body4)
         $0.textColor = UIColor("4a4a4a")
         $0.numberOfLines = 2
     }
     
-    private let viewitCardButton = ViewitCardButton()
+    let viewitCardButton = ViewitCardButton()
     
-    private let likeButton = LikeButton()
+    let likeButton = LikeButton()
     
     // MARK: - Initializer
 
@@ -91,7 +91,7 @@ private extension ViewitContentView {
         }
         
         likeButton.snp.makeConstraints { make in
-            make.trailing.bottom.equalTo(viewitCardButton).inset(8)
+            make.trailing.bottom.equalTo(viewitCardButton).inset(4)
         }
     }
 }
