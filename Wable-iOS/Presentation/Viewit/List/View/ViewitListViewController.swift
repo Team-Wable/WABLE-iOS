@@ -16,7 +16,7 @@ final class ViewitListViewController: UIViewController {
         case main
     }
     
-    // MARK: - typealias
+    // MARK: - Typealias
     
     typealias Item = Viewit
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
