@@ -25,15 +25,23 @@ final class HomeViewController: NavigationViewController {
     
     // MARK: - Property
     
-    private var dataSource: DataSource?
+    var shouldShowLoadingScreen: Bool = false
+    
     private let viewModel: HomeViewModel
     private let willAppearSubject = PassthroughSubject<Void, Never>()
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
     private let didSelectedSubject = PassthroughSubject<Int, Never>()
     private let didHeartTappedSubject = PassthroughSubject<(Int, Bool), Never>()
+    private let didGhostTappedSubject = PassthroughSubject<(Int, Int), Never>()
+    private let didDeleteTappedSubject = PassthroughSubject<Int, Never>()
+    private let didBannedTappedSubject = PassthroughSubject<(Int, Int), Never>()
+    private let didReportTappedSubject = PassthroughSubject<(String, String), Never>()
     private let willDisplayLastItemSubject = PassthroughSubject<Void, Never>()
     private let cancelBag: CancelBag
-    var shouldShowLoadingScreen: Bool = false
+    
+    private var activeUserID: Int?
+    private var isActiveUserAdmin: Bool?
+    private var dataSource: DataSource?
     
     // MARK: - UIComponent
     
@@ -78,7 +86,7 @@ final class HomeViewController: NavigationViewController {
         
         shouldShowLoadingScreen ? showLoadingScreen() : nil
         
-        setupView( )
+        setupView()
         setupConstraint()
         setupDataSource()
         setupAction()
@@ -128,7 +136,6 @@ private extension HomeViewController {
     func setupView() {
         navigationController?.navigationBar.isHidden = true
         
-        
         view.addSubviews(
             collectionView,
             plusButton,
@@ -158,10 +165,120 @@ private extension HomeViewController {
     }
     
     func setupDataSource() {
-        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> { cell, indexPath, itemID in
-            cell.configureCell(info: itemID.content.contentInfo, postType: .mine, likeButtonTapHandler: {
-                self.didHeartTappedSubject.send((itemID.content.id, cell.likeButton.isLiked))
-            })
+        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> { [weak self] cell, indexPath, item in
+            guard let self = self else { return }
+            
+            cell.configureCell(
+                info: item.content.contentInfo,
+                authorType: item.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
+                cellType: .list,
+                likeButtonTapHandler: {
+                    self.didHeartTappedSubject.send((item.content.id, cell.likeButton.isLiked))
+                },
+                settingButtonTapHandler: {
+                    let viewController = WableBottomSheetController()
+                    
+                    if self.activeUserID == item.content.contentInfo.author.id {
+                        viewController.addActions(WableBottomSheetAction(title: "삭제하기", handler: {
+                            viewController.dismiss(animated: true, completion: {
+                                let viewController = WableSheetViewController(title: "게시글을 삭제하시겠어요?", message: "게시글이 영구히 삭제됩니다.")
+                                
+                                viewController.addActions(
+                                    WableSheetAction(title: "취소", style: .gray),
+                                    WableSheetAction(
+                                        title: "삭제하기",
+                                        style: .primary,
+                                        handler: {
+                                            viewController.dismiss(animated: true, completion: {
+                                                self.didDeleteTappedSubject.send(item.content.id)
+                                            })
+                                        }
+                                    )
+                                )
+                                
+                                self.present(viewController, animated: true)
+                            })
+                        }))
+                    } else if self.isActiveUserAdmin ?? false {
+                        viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
+                            viewController.dismiss(animated: true, completion: {
+                                let viewController = WableSheetViewController(title: "신고하시겠어요?")
+                                
+                                viewController.addActions(
+                                    WableSheetAction(title: "취소", style: .gray),
+                                    WableSheetAction(
+                                        title: "신고하기",
+                                        style: .primary,
+                                        handler: {
+                                            viewController.dismiss(animated: true, completion: {
+                                                self.didReportTappedSubject.send((item.content.contentInfo.author.nickname, item.content.contentInfo.text))
+                                            })
+                                        }
+                                    )
+                                )
+                                
+                                self.present(viewController, animated: true)
+                            })
+                        }), WableBottomSheetAction(title: "밴하기", handler: {
+                            self.didBannedTappedSubject.send((item.content.contentInfo.author.id, item.content.id))
+                        })
+                        )
+                    } else {
+                        viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
+                            viewController.dismiss(animated: true, completion: {
+                                let viewController = WableSheetViewController(title: "신고하시겠어요?")
+                                
+                                viewController.addActions(
+                                    WableSheetAction(title: "취소", style: .gray),
+                                    WableSheetAction(
+                                        title: "신고하기",
+                                        style: .primary,
+                                        handler: {
+                                            viewController.dismiss(animated: true, completion: {
+                                                self.didReportTappedSubject.send((item.content.contentInfo.author.nickname, item.content.contentInfo.text))
+                                            })
+                                        }
+                                    )
+                                )
+                                
+                                self.present(viewController, animated: true)
+                            })
+                        }))
+                    }
+                    
+                    self.present(viewController, animated: true)
+                },
+                profileImageViewTapHandler: {
+                    // TODO: 프로필 구현되는 대로 추가적인 설정 필요
+                    let viewController = ProfileViewController()
+                    
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                },
+                ghostButtonTapHandler: {
+                    let viewController = WableSheetViewController(title: "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?")
+                    
+                    viewController.addActions(
+                        WableSheetAction(
+                            title: "고민할게요",
+                            style: .gray,
+                            handler: {
+                                viewController.dismiss(animated: true)
+                            }
+                        ),
+                        WableSheetAction(
+                            title: "네 맞아요",
+                            style: .primary,
+                            handler: {
+                                viewController.dismiss(animated: true, completion: {
+                                    self.didGhostTappedSubject.send((item.content.id, item.content.contentInfo.author.id))
+                                })
+                            }
+                        )
+                    )
+                    
+                    self.present(viewController, animated: true)
+                }
+            )
         }
         
         dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
@@ -199,10 +316,28 @@ private extension HomeViewController {
             viewDidRefresh: didRefreshSubject.eraseToAnyPublisher(),
             didSelectedItem: didSelectedSubject.eraseToAnyPublisher(),
             didHeartTappedItem: didHeartTappedSubject.eraseToAnyPublisher(),
+            didGhostTappedItem: didGhostTappedSubject.eraseToAnyPublisher(),
+            didDeleteTappedItem: didDeleteTappedSubject.eraseToAnyPublisher(),
+            didBannedTappedItem: didBannedTappedSubject.eraseToAnyPublisher(),
+            didReportTappedItem: didReportTappedSubject.eraseToAnyPublisher(),
             willDisplayLastItem: willDisplayLastItemSubject.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.isAdmin
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isAdmin in
+                self?.isActiveUserAdmin = isAdmin
+            }
+            .store(in: cancelBag)
+        
+        output.activeUserID
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] id in
+                self?.activeUserID = id
+            }
+            .store(in: cancelBag)
         
         output.contents
             .receive(on: DispatchQueue.main)
@@ -220,13 +355,25 @@ private extension HomeViewController {
                         contentID: content.content.id,
                         contentTitle: content.content.contentInfo.title,
                         fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
-                        createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
-                        deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
                         fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
                         createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),
                         deleteCommentUseCase: DeleteCommentUseCase(repository: CommentRepositoryImpl()),
+                        createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+                        deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
                         createCommentLikedUseCase: CreateCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
-                        deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: CommentLikedRepositoryImpl())
+                        deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
+                        fetchUserInformationUseCase: FetchUserInformationUseCase(
+                            repository: UserSessionRepositoryImpl(
+                                userDefaults: UserDefaultsStorage(
+                                    jsonEncoder: JSONEncoder(),
+                                    jsonDecoder: JSONDecoder()
+                                )
+                            )
+                        ),
+                        fetchGhostUseCase: FetchGhostUseCase(repository: GhostRepositoryImpl()),
+                        createReportUseCase: CreateReportUseCase(repository: ReportRepositoryImpl()),
+                        createBannedUseCase: CreateBannedUseCase(repository: ReportRepositoryImpl()),
+                        deleteContentUseCase: DeleteContentUseCase(repository: ContentRepositoryImpl())
                     ),
                     cancelBag: CancelBag()
                 )
@@ -248,6 +395,18 @@ private extension HomeViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoadingMore in
                 isLoadingMore ? self?.loadingIndicator.startAnimating() : self?.loadingIndicator.stopAnimating()
+            }
+            .store(in: cancelBag)
+        
+        output.isReportSucceed
+            .receive(on: DispatchQueue.main)
+            .sink { isSucceed in
+                let toast = ToastView(
+                    status: .complete,
+                    message: "신고 접수가 완료되었어요.\n24시간 이내에 조치할 예정이예요."
+                )
+                
+                isSucceed ? toast.show() : nil
             }
             .store(in: cancelBag)
     }
