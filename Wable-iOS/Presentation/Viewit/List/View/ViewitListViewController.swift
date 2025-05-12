@@ -31,6 +31,7 @@ final class ViewitListViewController: UIViewController {
     private let didLoadRelay = PassthroughRelay<Void>()
     private let etcRelay = PassthroughRelay<Int>()
     private let likeRelay = PassthroughRelay<Int>()
+    private let willLastDisplayRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
     private let rootView = ViewitListView()
     
@@ -60,9 +61,28 @@ final class ViewitListViewController: UIViewController {
         
         setupDataSource()
         setupAction()
+        setupDelegate()
         setupBinding()
         
         didLoadRelay.send()
+    }
+}
+
+extension ViewitListViewController: UICollectionViewDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemCount = dataSource?.snapshot().itemIdentifiers.count,
+              itemCount > .zero
+        else {
+            return
+        }
+        
+        if indexPath.item >= itemCount - 2 {
+            willLastDisplayRelay.send()
+        }
     }
 }
 
@@ -113,10 +133,15 @@ private extension ViewitListViewController {
         refreshControl?.addTarget(self, action: #selector(viewDidRefresh), for: .valueChanged)
     }
     
+    func setupDelegate() {
+        rootView.collectionView.delegate = self
+    }
+    
     func setupBinding() {
         let input = ViewModel.Input(
             load: didLoadRelay.eraseToAnyPublisher(),
-            like: likeRelay.eraseToAnyPublisher()
+            like: likeRelay.eraseToAnyPublisher(),
+            willLastDisplay: willLastDisplayRelay.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
@@ -132,6 +157,13 @@ private extension ViewitListViewController {
             .sink { [weak self] items in
                 self?.rootView.emptyLabel.isHidden = !items.isEmpty
                 self?.applySnapshot(items: items)
+            }
+            .store(in: cancelBag)
+        
+        output.isMoreLoading
+            .sink { [weak self] isMoreLoading in
+                let loadingIndicator = self?.rootView.loadingIndicator
+                isMoreLoading ? loadingIndicator?.startAnimating() : loadingIndicator?.stopAnimating()
             }
             .store(in: cancelBag)
         
