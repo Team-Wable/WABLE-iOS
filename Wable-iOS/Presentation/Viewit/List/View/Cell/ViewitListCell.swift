@@ -158,7 +158,7 @@ private extension ViewitListCell {
     // MARK: - Setup Method
 
     func setupCell() {
-        let underline = UIView(backgroundColor: .gray200)
+        let underlineView = UIView(backgroundColor: .gray200)
         
         let stackView = UIStackView(arrangedSubviews: [headerView, descriptionView, cardView, blindImageView]).then {
             $0.axis = .vertical
@@ -167,7 +167,7 @@ private extension ViewitListCell {
             $0.distribution = .fill
         }
         
-        contentView.addSubviews(stackView, underline)
+        contentView.addSubviews(stackView, underlineView)
         
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(16)
@@ -177,7 +177,7 @@ private extension ViewitListCell {
             make.adjustedHeightEqualTo(100)
         }
         
-        underline.snp.makeConstraints { make in
+        underlineView.snp.makeConstraints { make in
             make.horizontalEdges.bottom.equalToSuperview()
             make.height.equalTo(1)
         }
