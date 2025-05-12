@@ -68,6 +68,8 @@ final class ViewitListViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDelegate
+
 extension ViewitListViewController: UICollectionViewDelegate {
     func collectionView(
         _ collectionView: UICollectionView,
@@ -83,6 +85,15 @@ extension ViewitListViewController: UICollectionViewDelegate {
         if indexPath.item >= itemCount - 2 {
             willLastDisplayRelay.send()
         }
+    }
+}
+
+
+// MARK: - CreateViewitViewDelegate
+
+extension ViewitListViewController: CreateViewitViewDelegate {
+    func finishCreateViewit() {
+        didLoadRelay.send()
     }
 }
 
