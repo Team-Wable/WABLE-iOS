@@ -15,12 +15,10 @@ final class AccountInfoViewModel {
 extension AccountInfoViewModel: ViewModelType {
     struct Input {
         let load: Driver<Void>
-        let withdraw: Driver<Void>
     }
     
     struct Output {
         let items: Driver<[AccountInfoCellItem]>
-        let isWithdrawSuccess: Driver<Bool>
         let errorMessage: Driver<String>
     }
     
@@ -35,17 +33,8 @@ extension AccountInfoViewModel: ViewModelType {
 //            }
 //            .asDriver()
         
-//        let isWithdrawSuccess = input.withdrawl
-//            .flatMap { _ in
-//                
-//                // TODO: 계정 삭제
-//                
-//            }
-//            .asDriver()
-        
         return Output(
             items: .just([]),
-            isWithdrawSuccess: .just(false),
             errorMessage: errorMessageRelay.asDriver()
         )
     }
