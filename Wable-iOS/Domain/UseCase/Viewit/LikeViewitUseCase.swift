@@ -14,7 +14,7 @@ protocol LikeViewitUseCase {
 }
 
 final class LikeViewitUseCaseImpl: LikeViewitUseCase {
-    @Injected(config: .debug) private var repository: ViewitRepository
+    @Injected private var repository: ViewitRepository
     
     func like(viewit: Viewit) -> AnyPublisher<Viewit?, WableError> {
         return repository.postViewitLiked(viewitID: viewit.id)

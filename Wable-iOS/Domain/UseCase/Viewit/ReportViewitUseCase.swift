@@ -14,7 +14,7 @@ protocol ReportViewitUseCase {
 }
 
 final class ReportViewitUseCaseImpl: ReportViewitUseCase {
-    @Injected(config: .debug) private var repository: ReportRepository
+    @Injected private var repository: ReportRepository
     
     func report(viewit: Viewit) -> AnyPublisher<Viewit?, WableError> {
         return repository.createReport(nickname: viewit.userNickname, text: viewit.text)
