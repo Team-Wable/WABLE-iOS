@@ -81,7 +81,9 @@ struct MockViewitRepository: ViewitRepository {
     private var delaySeconds: Double { return .random(in: 1...3) }
     
     func deleteViewit(viewitID: Int) -> AnyPublisher<Void, WableError> {
-        return .fail(.networkError)
+        return .just(())
+            .delay(for: .seconds(delaySeconds), scheduler: RunLoop.main)
+            .eraseToAnyPublisher()
     }
     
     func deleteViewitLiked(viewitID: Int) -> AnyPublisher<Void, WableError> {

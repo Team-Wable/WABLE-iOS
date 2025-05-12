@@ -10,9 +10,20 @@ import Foundation
 
 final class ViewitListViewModel {
     private let useCase: ViewitUseCase
+    private let likeUseCase: LikeViewitUseCase
+    private let reportUseCase: ReportViewitUseCase
+    private let checkUserRoleUseCase: CheckUserRoleUseCase
     
-    init(useCase: ViewitUseCase) {
+    init(
+        useCase: ViewitUseCase,
+        likeUseCase: LikeViewitUseCase,
+        reportUseCase: ReportViewitUseCase,
+        checkUserRoleUseCase: CheckUserRoleUseCase
+    ) {
         self.useCase = useCase
+        self.likeUseCase = likeUseCase
+        self.reportUseCase = reportUseCase
+        self.checkUserRoleUseCase = checkUserRoleUseCase
     }
 }
 
@@ -21,12 +32,16 @@ extension ViewitListViewModel: ViewModelType {
         let load: Driver<Void>
         let like: Driver<Int>
         let willLastDisplay: Driver<Void>
+        let etc: Driver<Int>
+        let bottomSheetAction: Driver<ViewitBottomSheetActionKind>
     }
     
     struct Output {
         let isLoading: Driver<Bool>
         let viewitList: Driver<[Viewit]>
         let isMoreLoading: Driver<Bool>
+        let userRole: Driver<UserRole>
+        let isReportSucces: Driver<Bool>
         let errorMessage: Driver<String>
     }
     
@@ -36,6 +51,8 @@ extension ViewitListViewModel: ViewModelType {
         let errorMessageRelay = PassthroughRelay<String>()
         let isMoreLoadingRelay = CurrentValueRelay<Bool>(false)
         let isLastPageRelay = CurrentValueRelay<Bool>(false)
+        let etcIndexRelay = CurrentValueRelay<Int>(0)
+        let isReportSuccess = CurrentValueRelay<Bool>(false)
         
         let viewitList = viewitListRelay
             .removeDuplicates()
@@ -69,8 +86,8 @@ extension ViewitListViewModel: ViewModelType {
                 let viewit = viewitListRelay.value[index]
                 
                 let publisher = viewit.like.status
-                ? owner.useCase.unlinke(viewit: viewit)
-                : owner.useCase.like(viewit: viewit)
+                ? owner.likeUseCase.unlike(viewit: viewit)
+                : owner.likeUseCase.like(viewit: viewit)
                 
                 return publisher
                     .catch { error -> AnyPublisher<Viewit?, Never> in
@@ -108,10 +125,85 @@ extension ViewitListViewModel: ViewModelType {
             .sink { viewitListRelay.send($0) }
             .store(in: cancelBag)
         
+        let userRole = input.etc
+            .handleEvents(receiveOutput: { index in
+                etcIndexRelay.send(index)
+            })
+            .compactMap { [weak self] index in
+                let userID = viewitListRelay.value[index].userID
+                return self?.checkUserRoleUseCase.execute(userID: userID)
+            }
+            .asDriver()
+        
+        input.bottomSheetAction
+            .filter { $0 == .ban }
+            .map { _ in etcIndexRelay.value }
+            .withUnretained(self)
+            .flatMap { owner, index in
+                let viewit = viewitListRelay.value[index]
+                return owner.reportUseCase.ban(viewit: viewit)
+                    .catch { error -> AnyPublisher<Viewit?, Never>  in
+                        errorMessageRelay.send(error.localizedDescription)
+                        return .just(nil)
+                    }
+                    .compactMap { $0 }
+                    .map { (index, $0) }
+                    .eraseToAnyPublisher()
+            }
+            .sink { index, viewit in
+                viewitListRelay.value[index] = viewit
+            }
+            .store(in: cancelBag)
+        
+        input.bottomSheetAction
+            .filter { $0 == .delete }
+            .map { _ in etcIndexRelay.value }
+            .withUnretained(self)
+            .flatMap { owner, index in
+                let viewit = viewitListRelay.value[index]
+                return owner.useCase.delete(viewit: viewit)
+                    .catch { error -> AnyPublisher<Viewit?, Never>  in
+                        errorMessageRelay.send(error.localizedDescription)
+                        return .just(nil)
+                    }
+                    .compactMap { $0 }
+                    .map { (index, $0) }
+                    .eraseToAnyPublisher()
+            }
+            .sink { index, viewit in
+                viewitListRelay.value.remove(at: index)
+            }
+            .store(in: cancelBag)
+        
+        input.bottomSheetAction
+            .filter { $0 == .report }
+            .map { _ in etcIndexRelay.value }
+            .withUnretained(self)
+            .flatMap { owner, index in
+                let viewit = viewitListRelay.value[index]
+                return owner.reportUseCase.report(viewit: viewit)
+                    .catch { error -> AnyPublisher<Viewit?, Never>  in
+                        errorMessageRelay.send(error.localizedDescription)
+                        return .just(nil)
+                    }
+                    .compactMap { $0 }
+                    .map { (index, $0) }
+                    .eraseToAnyPublisher()
+            }
+            .handleEvents(receiveOutput: { _ in
+                isReportSuccess.send(true)
+            })
+            .sink { index, viewit in
+                viewitListRelay.value.remove(at: index)
+            }
+            .store(in: cancelBag)
+        
         return Output(
             isLoading: isLoadingRelay.asDriver(),
             viewitList: viewitList,
             isMoreLoading: isMoreLoadingRelay.asDriver(),
+            userRole: userRole,
+            isReportSucces: isReportSuccess.asDriver(),
             errorMessage: errorMessageRelay.asDriver()
         )
     }

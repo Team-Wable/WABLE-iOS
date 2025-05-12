@@ -48,7 +48,17 @@ final class TabBarController: UITabBarController {
     
     private let viewitViewController = ViewitListViewController(
         viewModel: .init(
-            useCase: ViewitUseCaseImpl()
+            useCase: ViewitUseCaseImpl(),
+            likeUseCase: LikeViewitUseCaseImpl(),
+            reportUseCase: ReportViewitUseCaseImpl(),
+            checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
+                repository: UserSessionRepositoryImpl(
+                    userDefaults: UserDefaultsStorage(
+                        jsonEncoder: JSONEncoder(),
+                        jsonDecoder: JSONDecoder()
+                    )
+                )
+            )
         )
     ).then {
         $0.tabBarItem.title = "뷰잇"
