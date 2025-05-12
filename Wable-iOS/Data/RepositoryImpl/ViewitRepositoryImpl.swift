@@ -178,6 +178,8 @@ struct MockViewitRepository: ViewitRepository {
         title: String,
         text: String
     ) -> AnyPublisher<Void, WableError> {
-        return .fail(.networkError)
+        return .just(())
+            .delay(for: .seconds(delaySeconds), scheduler: RunLoop.main)
+            .eraseToAnyPublisher()
     }
 }

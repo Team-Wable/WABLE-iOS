@@ -10,6 +10,10 @@ import UIKit
 import SnapKit
 import Then
 
+protocol CreateViewitViewDelegate: AnyObject {
+    func finishCreateViewit()
+}
+
 final class CreateViewitViewController: UIViewController {
     
     // MARK: - typealias
@@ -23,6 +27,8 @@ final class CreateViewitViewController: UIViewController {
     private let viewitInputView = ViewitInputView()
     
     // MARK: - Property
+    
+    weak var delegate: CreateViewitViewDelegate?
     
     private let viewModel: ViewModel
     private let urlTextRelay = PassthroughRelay<String>()
@@ -126,12 +132,10 @@ private extension CreateViewitViewController {
         viewitInputView.nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
         viewitInputView.descriptionTextField.addTarget(
             self,
-            action: #selector(contentTextFieldDidChange(_:)),
+            action: #selector(descriptionTextFieldDidChange(_:)),
             for: .editingChanged
         )
-        
-        // TODO: Upload버튼 액션 설정
-        
+        viewitInputView.uploadButton.addTarget(self, action: #selector(uploadButtonDidTap), for: .touchUpInside)
     }
     
     func setupDelegate() {
@@ -158,7 +162,9 @@ private extension CreateViewitViewController {
         
         output.successUpload
             .sink { [weak self] _ in
-                self?.dismiss(animated: true)
+                self?.dismiss(animated: true) {
+                    self?.delegate?.finishCreateViewit()
+                }
             }
             .store(in: cancelBag)
         
@@ -194,7 +200,7 @@ private extension CreateViewitViewController {
         viewitInputView.descriptionTextField.becomeFirstResponder()
     }
     
-    @objc func contentTextFieldDidChange(_ sender: UITextField) {
+    @objc func descriptionTextFieldDidChange(_ sender: UITextField) {
         guard let text = sender.text else { return }
         sender.backgroundColor = text.isEmpty ? .gray100 : .wableWhite
         contentTextRelay.send(text)

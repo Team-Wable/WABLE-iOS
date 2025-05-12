@@ -72,7 +72,7 @@ extension CreateViewitViewModel: ViewModelType {
             enableNext: nextButtonIsEnabled,
             enableUpload: writeButtonIsEnabled,
             successUpload: successUpload,
-            errorMessage: errorMessageRelay.eraseToAnyPublisher()
+            errorMessage: errorMessageRelay.asDriver()
         )
     }
 }
