@@ -313,8 +313,6 @@
 		DEF148572DA8019B003B2AD8 /* CommunityItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148562DA8019B003B2AD8 /* CommunityItem.swift */; };
 		DEF1485A2DA801D4003B2AD8 /* CommunityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148592DA801D4003B2AD8 /* CommunityViewModel.swift */; };
 		DEF1485E2DA81571003B2AD8 /* CommunityHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF1485D2DA81571003B2AD8 /* CommunityHeaderView.swift */; };
-		DEF6A3BC2DA97F8D0044ACAB /* ViewitCardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF6A3BB2DA97F8D0044ACAB /* ViewitCardButton.swift */; };
-		DEF6A3C12DA988DE0044ACAB /* ViewitContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF6A3C02DA988DE0044ACAB /* ViewitContentView.swift */; };
 		DEF6A3C32DA98E4A0044ACAB /* ViewitListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF6A3C22DA98E4A0044ACAB /* ViewitListView.swift */; };
 /* End PBXBuildFile section */
 
@@ -617,8 +615,6 @@
 		DEF148562DA8019B003B2AD8 /* CommunityItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityItem.swift; sourceTree = "<group>"; };
 		DEF148592DA801D4003B2AD8 /* CommunityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewModel.swift; sourceTree = "<group>"; };
 		DEF1485D2DA81571003B2AD8 /* CommunityHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHeaderView.swift; sourceTree = "<group>"; };
-		DEF6A3BB2DA97F8D0044ACAB /* ViewitCardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitCardButton.swift; sourceTree = "<group>"; };
-		DEF6A3C02DA988DE0044ACAB /* ViewitContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitContentView.swift; sourceTree = "<group>"; };
 		DEF6A3C22DA98E4A0044ACAB /* ViewitListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2052,8 +2048,6 @@
 			isa = PBXGroup;
 			children = (
 				DEF6A3C22DA98E4A0044ACAB /* ViewitListView.swift */,
-				DEF6A3C02DA988DE0044ACAB /* ViewitContentView.swift */,
-				DEF6A3BB2DA97F8D0044ACAB /* ViewitCardButton.swift */,
 			);
 			path = Subview;
 			sourceTree = "<group>";
@@ -2193,7 +2187,6 @@
 				DDFB22442D8BB8D500FEA24A /* LCKTeamView.swift in Sources */,
 				DD2968112D6DACF700143851 /* Viewit.swift in Sources */,
 				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
-				DEF6A3C12DA988DE0044ACAB /* ViewitContentView.swift in Sources */,
 				DD514D082D8C83560095021D /* AgreementViewController.swift in Sources */,
 				DDFB22482D8BBCB300FEA24A /* ProfileRegisterView.swift in Sources */,
 				DD2968122D6DACF700143851 /* Community.swift in Sources */,
@@ -2457,7 +2450,6 @@
 				DE0D0CA22DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift in Sources */,
 				DD2968232D6DAD0200143851 /* NotificationRepository.swift in Sources */,
 				DD2968002D6DAC8900143851 /* AppDelegate.swift in Sources */,
-				DEF6A3BC2DA97F8D0044ACAB /* ViewitCardButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
