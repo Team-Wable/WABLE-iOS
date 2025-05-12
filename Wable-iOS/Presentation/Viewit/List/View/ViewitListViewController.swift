@@ -29,7 +29,7 @@ final class ViewitListViewController: UIViewController {
     
     private let viewModel: ViewModel
     private let didLoadRelay = PassthroughRelay<Void>()
-    private let etcRelay = PassthroughRelay<Int>()
+    private let meatballRelay = PassthroughRelay<Int>()
     private let likeRelay = PassthroughRelay<Int>()
     private let willLastDisplayRelay = PassthroughRelay<Void>()
     private let bottomSheetActionRelay = PassthroughRelay<ViewitBottomSheetActionKind>()
@@ -102,14 +102,14 @@ extension ViewitListViewController: CreateViewitViewDelegate {
 
 private extension ViewitListViewController {
     func setupDataSource() {
-        let cellRegistration = CellRegistration<ViewitCell, Item> { cell, indexPath, item in
-            let siteName = item.siteName ?? item.siteURL?.absoluteString ?? "없음"
-            cell.configure(profileImageURL: item.userProfileURL, username: item.userNickname)
+        let cellRegistration = CellRegistration<ViewitListCell, Item> { cell, indexPath, item in
             cell.configure(
-                viewitText: item.text,
-                videoThumbnailImageURL: item.thumbnailURL,
-                videoTitle: item.title,
-                siteName: siteName,
+                profileImageURL: item.userProfileURL,
+                userName: item.userNickname,
+                description: item.text,
+                thumbnailImageURL: item.thumbnailURL,
+                title: item.title,
+                siteName: item.siteName,
                 isLiked: item.like.status,
                 likeCount: item.like.count,
                 isBlind: item.status == .blind
@@ -121,8 +121,8 @@ private extension ViewitListViewController {
                 // TODO: 프로필(상대/나)로 이동
             }
             
-            cell.etcDidTapClosure = { [weak self] in
-                self?.etcRelay.send(indexPath.item)
+            cell.meatballDidTapClosure = { [weak self] in
+                self?.meatballRelay.send(indexPath.item)
             }
             
             cell.cardDidTapClosure = { [weak self] in
@@ -130,7 +130,7 @@ private extension ViewitListViewController {
                 self?.present(SFSafariViewController(url: url), animated: true)
             }
             
-            cell.likeDidTap = { [weak self] in
+            cell.likeDidTapClosure = { [weak self] in
                 self?.likeRelay.send(indexPath.item)
             }
         }
@@ -154,7 +154,7 @@ private extension ViewitListViewController {
             load: didLoadRelay.eraseToAnyPublisher(),
             like: likeRelay.eraseToAnyPublisher(),
             willLastDisplay: willLastDisplayRelay.eraseToAnyPublisher(),
-            etc: etcRelay.eraseToAnyPublisher(),
+            meatball: meatballRelay.eraseToAnyPublisher(),
             bottomSheetAction: bottomSheetActionRelay.eraseToAnyPublisher()
         )
         
