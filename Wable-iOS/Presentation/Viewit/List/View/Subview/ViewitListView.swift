@@ -86,7 +86,7 @@ private extension ViewitListView {
         }
         
         emptyLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.center.equalTo(safeArea)
         }
         
         createButton.snp.makeConstraints { make in
