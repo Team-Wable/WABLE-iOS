@@ -28,6 +28,11 @@ final class ViewitListView: UIView {
         $0.setImage(.btnWrite, for: .normal)
     }
     
+    let loadingIndicator = UIActivityIndicatorView(style: .large).then {
+        $0.hidesWhenStopped = true
+        $0.color = .gray600
+    }
+    
     // MARK: - Initializer
 
     override init(frame: CGRect) {
@@ -60,6 +65,7 @@ private extension ViewitListView {
             collectionView,
             emptyLabel,
             createButton,
+            loadingIndicator,
             underlineView
         )
         
@@ -86,6 +92,11 @@ private extension ViewitListView {
         createButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-12)
             make.bottom.equalTo(safeArea).offset(-24)
+        }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-20)
         }
         
         underlineView.snp.makeConstraints { make in
