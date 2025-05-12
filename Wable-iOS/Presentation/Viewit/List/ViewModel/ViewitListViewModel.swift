@@ -32,7 +32,7 @@ extension ViewitListViewModel: ViewModelType {
         let load: Driver<Void>
         let like: Driver<Int>
         let willLastDisplay: Driver<Void>
-        let etc: Driver<Int>
+        let meatball: Driver<Int>
         let bottomSheetAction: Driver<ViewitBottomSheetActionKind>
     }
     
@@ -125,7 +125,7 @@ extension ViewitListViewModel: ViewModelType {
             .sink { viewitListRelay.value.append(contentsOf: $0) }
             .store(in: cancelBag)
         
-        let userRole = input.etc
+        let userRole = input.meatball
             .handleEvents(receiveOutput: { index in
                 etcIndexRelay.send(index)
             })
