@@ -19,13 +19,13 @@ final class CheckUserRoleUseCaseImpl: CheckUserRoleUseCase {
     }
     
     func execute(userID: Int) -> UserRole? {
-        guard let userSession = repository.fetchUserSession(forUserID: userID) else {
+        guard let activeUserSession = repository.fetchActiveUserSession() else {
             return nil
         }
         
-        if userSession.id == userID { return .owner }
+        if activeUserSession.id == userID { return .owner }
         
-        if userSession.isAdmin { return .admin }
+        if activeUserSession.isAdmin { return .admin }
         
         return .viewer
     }
