@@ -62,7 +62,7 @@ final class WableSheetViewController: UIViewController {
     }
     
     private lazy var titleLabel = UILabel().then {
-        $0.attributedText = self.sheetTitle.pretendardString(with: .head1)
+        $0.attributedText = self.sheetTitle.pretendardString(with: .head2)
         $0.numberOfLines = 0
         $0.textAlignment = .center
     }
