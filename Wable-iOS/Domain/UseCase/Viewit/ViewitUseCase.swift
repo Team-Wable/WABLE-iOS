@@ -14,7 +14,7 @@ protocol ViewitUseCase {
 }
 
 final class ViewitUseCaseImpl: ViewitUseCase {
-    @Injected(config: .debug) private var viewitRepository: ViewitRepository
+    @Injected private var viewitRepository: ViewitRepository
     
     func fetchViewitList(last viewitID: Int) -> AnyPublisher<[Viewit], WableError> {
         return viewitRepository.fetchViewitList(cursor: viewitID)

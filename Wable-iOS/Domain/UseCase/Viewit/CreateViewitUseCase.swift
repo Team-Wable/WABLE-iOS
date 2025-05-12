@@ -24,7 +24,7 @@ final class CreateViewitUseCaseImpl: CreateViewitUseCase {
     }()
     
     @Injected private var urlPreviewRepository: URLPreviewRepository
-    @Injected(config: .debug) private var viewitRepository: ViewitRepository
+    @Injected private var viewitRepository: ViewitRepository
     
     func validate(_ urlString: String) -> Bool {
         guard let detector = Self.urlDetector else {
