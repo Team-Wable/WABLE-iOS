@@ -122,7 +122,7 @@ extension ViewitListViewModel: ViewModelType {
             .handleEvents(receiveOutput: { _ in
                 isMoreLoadingRelay.send(false)
             })
-            .sink { viewitListRelay.send($0) }
+            .sink { viewitListRelay.value.append(contentsOf: $0) }
             .store(in: cancelBag)
         
         let userRole = input.etc

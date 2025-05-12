@@ -16,7 +16,8 @@ struct Viewit: Identifiable, Hashable {
     let userProfileURL: URL?
     let id: Int
     let thumbnailURL: URL?
-    let linkURL: URL?
+    let siteURL: URL?
+    let siteName: String?
     let title: String
     let text: String
     let time: Date?

@@ -103,12 +103,13 @@ extension ViewitListViewController: CreateViewitViewDelegate {
 private extension ViewitListViewController {
     func setupDataSource() {
         let cellRegistration = CellRegistration<ViewitCell, Item> { cell, indexPath, item in
+            let siteName = item.siteName ?? item.siteURL?.absoluteString ?? "없음"
             cell.configure(profileImageURL: item.userProfileURL, username: item.userNickname)
             cell.configure(
                 viewitText: item.text,
                 videoThumbnailImageURL: item.thumbnailURL,
                 videoTitle: item.title,
-                siteName: item.linkURL?.absoluteString ?? "",
+                siteName: siteName,
                 isLiked: item.like.status,
                 likeCount: item.like.count,
                 isBlind: item.status == .blind
@@ -125,7 +126,7 @@ private extension ViewitListViewController {
             }
             
             cell.cardDidTapClosure = { [weak self] in
-                guard let url = item.linkURL else { return }
+                guard let url = item.siteURL else { return }
                 self?.present(SFSafariViewController(url: url), animated: true)
             }
             
@@ -277,6 +278,7 @@ private extension ViewitListViewController {
     @objc func createButtonDidTap() {
         let useCase = CreateViewitUseCaseImpl()
         let writeViewController = CreateViewitViewController(viewModel: .init(useCase: useCase))
+        writeViewController.delegate = self
         present(writeViewController, animated: true)
     }
     

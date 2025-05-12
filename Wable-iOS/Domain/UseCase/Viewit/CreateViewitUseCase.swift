@@ -59,7 +59,7 @@ final class CreateViewitUseCaseImpl: CreateViewitUseCase {
                     thumbnailImageURLString: preview.imageURLString,
                     urlString: preview.urlString,
                     title: preview.title,
-                    text: preview.description
+                    text: description
                 )
                 .eraseToAnyPublisher()
             }
