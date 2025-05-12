@@ -44,7 +44,6 @@ final class AccountInfoViewController: UIViewController {
     
     private let viewModel: ViewModel
     private let loadRelay = PassthroughRelay<Void>()
-    private let withdrawRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
@@ -119,6 +118,8 @@ private extension AccountInfoViewController {
     
     func setupAction() {
         navigationView.backButton.addTarget(self, action: #selector(backButtonDidTap), for: .touchUpInside)
+        
+        withdrawButton.addTarget(self, action: #selector(withdrawButtonDidTap), for: .touchUpInside)
     }
     
     func setupDelegate() {
@@ -146,8 +147,7 @@ private extension AccountInfoViewController {
     
     func setupBinding() {
         let input = ViewModel.Input(
-            load: loadRelay.eraseToAnyPublisher(),
-            withdraw: withdrawRelay.eraseToAnyPublisher()
+            load: loadRelay.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
@@ -155,15 +155,6 @@ private extension AccountInfoViewController {
         output.items
             .sink { [weak self] items in
                 self?.applySnapshot(items: items)
-            }
-            .store(in: cancelBag)
-        
-        output.isWithdrawSuccess
-            .filter { $0 }
-            .sink { _ in
-                
-                // TODO: 로그인 화면으로 돌아가기
-                
             }
             .store(in: cancelBag)
         
@@ -180,6 +171,13 @@ private extension AccountInfoViewController {
 
     @objc func backButtonDidTap() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func withdrawButtonDidTap() {
+        
+        // TODO: 탈퇴 시퀀스로 이동
+        
+        WableLogger.log("탈퇴하기 버튼 눌렸다.", for: .debug)
     }
     
     // MARK: - Helper Method
