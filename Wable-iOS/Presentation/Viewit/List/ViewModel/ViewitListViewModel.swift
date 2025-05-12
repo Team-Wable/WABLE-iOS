@@ -41,7 +41,7 @@ extension ViewitListViewModel: ViewModelType {
         let viewitList: Driver<[Viewit]>
         let isMoreLoading: Driver<Bool>
         let userRole: Driver<UserRole>
-        let isReportSucces: Driver<Bool>
+        let isReportSuccess: Driver<Bool>
         let errorMessage: Driver<String>
     }
     
@@ -203,7 +203,7 @@ extension ViewitListViewModel: ViewModelType {
             viewitList: viewitList,
             isMoreLoading: isMoreLoadingRelay.asDriver(),
             userRole: userRole,
-            isReportSucces: isReportSuccess.asDriver(),
+            isReportSuccess: isReportSuccess.asDriver(),
             errorMessage: errorMessageRelay.asDriver()
         )
     }
