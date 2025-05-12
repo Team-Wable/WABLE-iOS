@@ -187,7 +187,7 @@ private extension ViewitListViewController {
             }
             .store(in: cancelBag)
         
-        output.isReportSucces
+        output.isReportSuccess
             .filter { $0 }
             .sink { _ in ToastView(status: .complete, message: Constant.reportSuccessMessage).show() }
             .store(in: cancelBag)
