@@ -224,6 +224,11 @@
 		DE0BFB5E2DA4EC4D00F06656 /* CommunityRegisterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BFB5D2DA4EC4D00F06656 /* CommunityRegisterCell.swift */; };
 		DE0BFB602DA4F63800F06656 /* CommunityInviteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BFB5F2DA4F63800F06656 /* CommunityInviteCell.swift */; };
 		DE0BFB632DA4F7FA00F06656 /* CommunityCellBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */; };
+		DE0D0C9C2DD1E35B00FB64DC /* UserRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0C9B2DD1E35B00FB64DC /* UserRole.swift */; };
+		DE0D0CA22DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CA12DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift */; };
+		DE0D0CA52DD2013A00FB64DC /* CheckUserRoleUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CA42DD2013A00FB64DC /* CheckUserRoleUseCase.swift */; };
+		DE0D0CAA2DD2041100FB64DC /* LikeViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CA92DD2041100FB64DC /* LikeViewitUseCase.swift */; };
+		DE0D0CAC2DD204D000FB64DC /* ReportViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CAB2DD204D000FB64DC /* ReportViewitUseCase.swift */; };
 		DE20BAD72D903985000126A4 /* AnnouncementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE20BAD62D903985000126A4 /* AnnouncementDetailView.swift */; };
 		DE277A882D8C09AD006D2B53 /* OverviewPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */; };
 		DE33902E2D8EC3B700638BB4 /* NoticeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE33902D2D8EC3B700638BB4 /* NoticeCell.swift */; };
@@ -521,6 +526,11 @@
 		DE0BFB5D2DA4EC4D00F06656 /* CommunityRegisterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegisterCell.swift; sourceTree = "<group>"; };
 		DE0BFB5F2DA4F63800F06656 /* CommunityInviteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityInviteCell.swift; sourceTree = "<group>"; };
 		DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityCellBaseView.swift; sourceTree = "<group>"; };
+		DE0D0C9B2DD1E35B00FB64DC /* UserRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRole.swift; sourceTree = "<group>"; };
+		DE0D0CA12DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitBottomSheetActionKind.swift; sourceTree = "<group>"; };
+		DE0D0CA42DD2013A00FB64DC /* CheckUserRoleUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckUserRoleUseCase.swift; sourceTree = "<group>"; };
+		DE0D0CA92DD2041100FB64DC /* LikeViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewitUseCase.swift; sourceTree = "<group>"; };
+		DE0D0CAB2DD204D000FB64DC /* ReportViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewitUseCase.swift; sourceTree = "<group>"; };
 		DE20BAD62D903985000126A4 /* AnnouncementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementDetailView.swift; sourceTree = "<group>"; };
 		DE277A872D8C09AD006D2B53 /* OverviewPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPageViewController.swift; sourceTree = "<group>"; };
 		DE33902D2D8EC3B700638BB4 /* NoticeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeCell.swift; sourceTree = "<group>"; };
@@ -1318,6 +1328,7 @@
 			isa = PBXGroup;
 			children = (
 				DDED59552D78BF5800A0BEF1 /* Login */,
+				DE0D0CA32DD2012900FB64DC /* UserRole */,
 				DDED59732D78EFCF00A0BEF1 /* Onboarding */,
 				DD9EAE202D99C58600803A1A /* Home */,
 				DDED596E2D78EB9200A0BEF1 /* Community */,
@@ -1456,6 +1467,22 @@
 				DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */,
 			);
 			path = Subview;
+			sourceTree = "<group>";
+		};
+		DE0D0CA02DD1EF7900FB64DC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DE0D0CA12DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DE0D0CA32DD2012900FB64DC /* UserRole */ = {
+			isa = PBXGroup;
+			children = (
+				DE0D0CA42DD2013A00FB64DC /* CheckUserRoleUseCase.swift */,
+			);
+			path = UserRole;
 			sourceTree = "<group>";
 		};
 		DE20BAD52D903964000126A4 /* Subview */ = {
@@ -1619,6 +1646,8 @@
 			children = (
 				DE00E09F2DCE47C7004CB455 /* ViewitUseCase.swift */,
 				DE64D7C92DCBA2D700F55859 /* CreateViewitUseCase.swift */,
+				DE0D0CA92DD2041100FB64DC /* LikeViewitUseCase.swift */,
+				DE0D0CAB2DD204D000FB64DC /* ReportViewitUseCase.swift */,
 			);
 			path = Viewit;
 			sourceTree = "<group>";
@@ -1904,6 +1933,7 @@
 		DECC36DC2DC3B20600336B7B /* List */ = {
 			isa = PBXGroup;
 			children = (
+				DE0D0CA02DD1EF7900FB64DC /* Model */,
 				DED1344C2DCF6B4B008463BD /* ViewModel */,
 				DEF6A3B92DA97F6E0044ACAB /* View */,
 			);
@@ -1936,6 +1966,7 @@
 				DD2967F42D6DAC3100143851 /* TriggerType.swift */,
 				DEDC29152D72099C0073D512 /* InformationNotificationType.swift */,
 				DEDC29132D7208A00073D512 /* GameStatus.swift */,
+				DE0D0C9B2DD1E35B00FB64DC /* UserRole.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -2178,6 +2209,7 @@
 				DD2968552D6DAD4400143851 /* CreateComment.swift in Sources */,
 				DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */,
 				DD2968562D6DAD4400143851 /* UpdateUserBadge.swift in Sources */,
+				DE0D0CA52DD2013A00FB64DC /* CheckUserRoleUseCase.swift in Sources */,
 				DDCD66E52D7DC0EB00EF4C28 /* NavigationView.swift in Sources */,
 				DE8E863F2D91A032000A4292 /* AmplitudeManager.swift in Sources */,
 				DD2968572D6DAD4400143851 /* CreateReport.swift in Sources */,
@@ -2215,6 +2247,8 @@
 				DD29683B2D6DAD2F00143851 /* CreateAccountResponse.swift in Sources */,
 				DD29683C2D6DAD2F00143851 /* FetchGameCategory.swift in Sources */,
 				DDA2098D2D9BFB9F008042DA /* WritePostViewModel.swift in Sources */,
+				DE0D0C9C2DD1E35B00FB64DC /* UserRole.swift in Sources */,
+				DE0D0CAA2DD2041100FB64DC /* LikeViewitUseCase.swift in Sources */,
 				DD29683D2D6DAD2F00143851 /* FetchUserContents.swift in Sources */,
 				DD29683E2D6DAD2F00143851 /* UpdateToken.swift in Sources */,
 				DE20BAD72D903985000126A4 /* AnnouncementDetailView.swift in Sources */,
@@ -2341,6 +2375,7 @@
 				DD2967FD2D6DAC4800143851 /* CancelBag.swift in Sources */,
 				DEF148422DA7B7E5003B2AD8 /* IsUserRegistered.swift in Sources */,
 				DD2967FE2D6DAC4800143851 /* WableLogger.swift in Sources */,
+				DE0D0CAC2DD204D000FB64DC /* ReportViewitUseCase.swift in Sources */,
 				DE59BBA92D8A9EFD0040ADCB /* UIViewController+.swift in Sources */,
 				DE7C53142D761EE500076E5D /* UIView+.swift in Sources */,
 				DDCCA3932D738CD500658122 /* UserSessionRepository.swift in Sources */,
@@ -2407,6 +2442,7 @@
 				DEF6A3BF2DA9849A0044ACAB /* ViewitCell.swift in Sources */,
 				DD29682D2D6DAD0B00143851 /* NotificationMapper.swift in Sources */,
 				DE3390302D8EC6C400638BB4 /* NoticeViewController.swift in Sources */,
+				DE0D0CA22DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift in Sources */,
 				DD2968232D6DAD0200143851 /* NotificationRepository.swift in Sources */,
 				DD2968002D6DAC8900143851 /* AppDelegate.swift in Sources */,
 				DEF6A3BC2DA97F8D0044ACAB /* ViewitCardButton.swift in Sources */,
