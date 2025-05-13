@@ -27,10 +27,16 @@ extension AppDelegate {
 extension AppDelegate {
     func configureFirebase(application: UIApplication) {
         FirebaseApp.configure()
+        FirebaseConfiguration.shared.setLoggerLevel(.min)
         Messaging.messaging().delegate = self
         Messaging.messaging().isAutoInitEnabled = true
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
+        
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: [.alert, .sound, .badge],
+            completionHandler: { _, _ in }
+        )
     }
     
     private func saveFCMToken(token: String?) {
