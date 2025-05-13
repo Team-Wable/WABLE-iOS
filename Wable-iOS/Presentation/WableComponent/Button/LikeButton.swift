@@ -28,10 +28,11 @@ enum PostType {
 /// ```
 final class LikeButton: UIButton {
     
-    // MARK: Property
+    // MARK: - Property
     
     var isLiked: Bool = false
     var likeCount: Int = 0
+    
     private var postType: PostType = .content
     
     // MARK: - LifeCycle

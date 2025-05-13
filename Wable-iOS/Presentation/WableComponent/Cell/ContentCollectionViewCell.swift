@@ -17,7 +17,7 @@ import UIKit
 ///
 /// // cellForItemAt에서:
 /// let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ContentCollectionViewCell.reuseIdentifier, for: indexPath) as! ContentCollectionViewCell
-/// cell.configureCell(info: contentInfo, postType: .others)
+/// cell.configureCell(info: contentInfo, authorType: .others)
 /// return cell
 /// ```
 final class ContentCollectionViewCell: UICollectionViewCell {
@@ -32,8 +32,12 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     // MARK: - Property
     // TODO: 셀 타입 따라 이미지 크기 설정하는 분기 처리 필요
     
-    private var cellType: CellType = .list
     var likeButtonTapHandler: (() -> Void)?
+    var profileImageViewTapHandler: (() -> Void)?
+    var settingButtonTapHandler: (() -> Void)?
+    var ghostButtonTapHandler: (() -> Void)?
+    
+    private var cellType: CellType = .list
     
     // MARK: - UIComponent
     
@@ -166,7 +170,6 @@ private extension ContentCollectionViewCell {
     func setupAction() {
         ghostButton.addTarget(self, action: #selector(ghostButtonDidTap), for: .touchUpInside)
         infoView.settingButton.addTarget(self, action: #selector(settingButtonDidTap), for: .touchUpInside)
-        commentButton.addTarget(self, action: #selector(commentButtonDidTap), for: .touchUpInside)
         likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
         contentImageView.addGestureRecognizer(
             UITapGestureRecognizer(
@@ -196,27 +199,15 @@ private extension ContentCollectionViewCell {
     }
     
     @objc func profileImageViewDidTap() {
-        // TODO: 프로필 이동 로직 구현 필요
-        
-        WableLogger.log("profileImageViewDidTap", for: .debug)
+        profileImageViewTapHandler?()
     }
     
     @objc func settingButtonDidTap() {
-        // TODO: 바텀시트 올라오는 로직 구현 필요
-        
-        WableLogger.log("settingButtonDidTap", for: .debug)
+        settingButtonTapHandler?()
     }
     
     @objc func ghostButtonDidTap() {
-        // TODO: 내리기 로직 구현 필요
-        
-        WableLogger.log("ghostButtonDidTap", for: .debug)
-    }
-    
-    @objc func commentButtonDidTap() {
-        // TODO: 상세 화면으로 이동 로직 구현 필요
-        
-        WableLogger.log("commentButtonDidTap", for: .debug)
+        ghostButtonTapHandler?()
     }
     
     @objc func likeButtonDidTap() {
@@ -251,17 +242,23 @@ extension ContentCollectionViewCell {
     /// 게시물 셀 구성 메서드
     /// - Parameters:
     ///   - info: 게시물 정보
-    ///   - postType: 게시물 타입 (.mine 또는 .others)
+    ///   - authorType: 게시물 타입 (.mine 또는 .others)
     ///   - cellType: 셀 타입 (홈 화면 셀 또는 상세 화면 셀)
     ///   - likeButtonTapHandler: 좋아요 버튼을 클릭했을 때 실행될 로직
     func configureCell(
         info: ContentInfo,
-        postType: AuthorType,
+        authorType: AuthorType,
         cellType: CellType = .list,
-        likeButtonTapHandler: (() -> Void)?
+        likeButtonTapHandler: (() -> Void)?,
+        settingButtonTapHandler: (() -> Void)?,
+        profileImageViewTapHandler: (() -> Void)?,
+        ghostButtonTapHandler: (() -> Void)?
     ) {
         self.cellType = cellType
         self.likeButtonTapHandler = likeButtonTapHandler
+        self.ghostButtonTapHandler = ghostButtonTapHandler
+        self.profileImageViewTapHandler = profileImageViewTapHandler
+        self.settingButtonTapHandler = settingButtonTapHandler
         
         guard let createdDate = info.createdDate else { return }
         
@@ -284,18 +281,13 @@ extension ContentCollectionViewCell {
         contentTextView.text = info.text
         contentTextView.isUserInteractionEnabled = cellType == .detail
         
-        ghostButton.configureButton(type: .large, status: .normal)
         likeButton.configureButton(isLiked: info.like.status, likeCount: info.like.count, postType: .content)
         
         commentButton.configureButton(commentCount: info.commentCount)
         commentButton.isUserInteractionEnabled = cellType == .detail
         
-        switch postType {
-        case .mine:
-            ghostButton.isHidden = true
-        case .others:
-            break
-        }
+        ghostButton.configureButton(type: .large, status: .normal)
+        ghostButton.isHidden = authorType == .mine || info.status == .ghost
         
         switch info.status {
         case .normal:

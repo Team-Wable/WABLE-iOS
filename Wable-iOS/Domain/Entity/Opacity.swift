@@ -68,4 +68,12 @@ struct Opacity: Hashable {
             value -= 1
         }
     }
+    
+    func reduced() -> Opacity {
+        var newValue = value
+        if newValue > Self.minValue {
+            newValue -= 1
+        }
+        return Opacity(value: newValue)
+    }
 }
