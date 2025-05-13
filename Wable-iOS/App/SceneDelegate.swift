@@ -19,6 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private let tokenProvider = OAuthTokenProvider()
     
     private let loginRepository = LoginRepositoryImpl()
+    private let profileRepository = ProfileRepositoryImpl()
     private let userSessionRepository = UserSessionRepositoryImpl(
         userDefaults: UserDefaultsStorage(
             userDefaults: UserDefaults.standard,
@@ -96,6 +97,33 @@ private extension SceneDelegate {
     }
     
     func configureMainScreen() {
+        if let id = userSessionRepository.fetchActiveUserID() {
+            profileRepository.fetchUserProfile(memberID: id)
+                .receive(on: DispatchQueue.main)
+                .compactMap { return $0.user.nickname }
+                .sink { _ in
+                } receiveValue: { [weak self] nickname in
+                    guard let self = self else { return }
+                    let token = self.profileRepository.fetchFCMToken()
+                    
+                    self.profileRepository.updateUserProfile(nickname: nickname, fcmToken: token)
+                        .sink { completion in
+                            switch completion {
+                            case .failure(let error):
+                                WableLogger.log("토큰 업데이트 실패: \(error)", for: .error)
+                            default:
+                                break
+                            }
+                        } receiveValue: { _ in
+                            WableLogger.log("토큰 업데이트 성공", for: .debug)
+                        }
+                        .store(in: cancelBag)
+
+                }
+                .store(in: cancelBag)
+            
+        }
+        
         self.window?.rootViewController = TabBarController(shouldShowLoadingScreen: true)
     }
 }

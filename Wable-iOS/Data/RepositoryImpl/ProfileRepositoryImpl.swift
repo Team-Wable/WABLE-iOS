@@ -23,7 +23,7 @@ extension ProfileRepositoryImpl: ProfileRepository {
             .updateUserProfile(
                 request: DTO.Request.UpdateUserProfile(
                     info: DTO.Request.ProfileInfo(
-                        nickname: nil,
+                        nickname: nickname,
                         isAlarmAllowed: nil,
                         memberIntro: nil,
                         isPushAlarmAllowed: nil,
@@ -52,6 +52,7 @@ extension ProfileRepositoryImpl: ProfileRepository {
     func updateFCMToken(token: String) {
         do {
             try tokenStorage.save(token, for: .fcmToken)
+            WableLogger.log("FCM 토큰 업데이트 성공", for: .debug)
         } catch {
             WableLogger.log("FCM 토큰 업데이트에 실패했습니다.", for: .error)
         }
