@@ -105,17 +105,19 @@ private extension WithdrawalReasonViewController {
         )
         
         navigationView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(safeArea.snp.top)
+            make.top.horizontalEdges.equalTo(safeArea)
+            make.adjustedHeightEqualTo(56)
         }
         
         labelStackView.snp.makeConstraints { make in
-            make.top.leading.equalTo(safeArea).inset(16)
+            make.top.equalTo(navigationView.snp.bottom).offset(16)
+            make.leading.equalToSuperview().inset(16)
             make.bottom.equalTo(collectionView.snp.top).offset(-32)
         }
         
         collectionView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(16)
+            make.bottom.equalTo(nextButton.snp.top).offset(-64)
         }
         
         nextButton.snp.makeConstraints { make in
@@ -154,6 +156,7 @@ private extension WithdrawalReasonViewController {
         
         output
             .map(\.items)
+            .removeDuplicates()
             .sink { [weak self] items in
                 self?.applySnapshot(items: items)
             }
@@ -161,6 +164,7 @@ private extension WithdrawalReasonViewController {
         
         output
             .map(\.isNextEnabled)
+            .removeDuplicates()
             .handleEvents(receiveOutput: { [weak self] isEnabled in
                 isEnabled ? self?.nextButton.updateStyle(.primary) : self?.nextButton.updateStyle(.gray)
             })
