@@ -84,17 +84,19 @@ private extension AccountInfoViewController {
         view.addSubviews(navigationView, collectionView, withdrawButton)
         
         navigationView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(safeArea.snp.top)
+            make.top.horizontalEdges.equalTo(safeArea)
+            make.adjustedHeightEqualTo(56)
         }
         
         collectionView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(safeArea)
+            make.top.equalTo(navigationView.snp.bottom)
+            make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(withdrawButton.snp.top)
         }
         
         withdrawButton.snp.makeConstraints { make in
-            make.bottom.horizontalEdges.equalTo(safeArea)
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(safeArea).offset(-12)
             make.adjustedHeightEqualTo(52)
         }
     }
@@ -113,7 +115,7 @@ private extension AccountInfoViewController {
     
     func setupDataSource() {
         let cellRegistration = CellRegistration<AccountInfoCell, Item> { cell, indexPath, item in
-            guard indexPath.item == 4 else {
+            guard item.isUserInteractive else {
                 cell.configure(title: item.title, description: item.description)
                 return
             }

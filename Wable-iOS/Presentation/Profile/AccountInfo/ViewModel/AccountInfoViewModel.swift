@@ -32,6 +32,18 @@ final class AccountInfoViewModel {
 //            .sink { }
 //            .store(in: cancelBag)
         
+        input.load
+            .sink { _ in
+                outputSubject.value.items = [
+                    .init(title: "소셜 로그인", description: "kakao"),
+                    .init(title: "버전 정보", description: "ㅏ민얼이ㅏㄴ머"),
+                    .init(title: "아이디", description: "adskljfdsalk"),
+                    .init(title: "가입일", description: "asdlkdsajlk"),
+                    .init(title: "이용약관", description: "자세히 보기", isUserInteractive: true)
+                ]
+            }
+            .store(in: cancelBag)
+        
         return outputSubject
             .removeDuplicates()
             .asDriver()
