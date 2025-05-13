@@ -122,7 +122,7 @@ private extension ViewitListViewController {
             }
             
             cell.meatballDidTapClosure = { [weak self] in
-                self?.meatballRelay.send(indexPath.item)
+                self?.meatballRelay.send(item.id)
             }
             
             cell.cardDidTapClosure = { [weak self] in
@@ -131,7 +131,7 @@ private extension ViewitListViewController {
             }
             
             cell.likeDidTapClosure = { [weak self] in
-                self?.likeRelay.send(indexPath.item)
+                self?.likeRelay.send(item.id)
             }
         }
         

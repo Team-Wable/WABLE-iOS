@@ -51,7 +51,7 @@ extension ViewitListViewModel: ViewModelType {
         let errorMessageRelay = PassthroughRelay<String>()
         let isMoreLoadingRelay = CurrentValueRelay<Bool>(false)
         let isLastPageRelay = CurrentValueRelay<Bool>(false)
-        let etcIndexRelay = CurrentValueRelay<Int>(0)
+        let indexMeatballDidTapRelay = CurrentValueRelay<Int>(0)
         let isReportSuccess = CurrentValueRelay<Bool>(false)
         
         let viewitList = viewitListRelay
@@ -81,6 +81,9 @@ extension ViewitListViewModel: ViewModelType {
         
         input.like
             .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .compactMap { viewitID in
+                return viewitListRelay.value.firstIndex { $0.id == viewitID }
+            }
             .withUnretained(self)
             .flatMap { owner, index -> AnyPublisher<(Int, Viewit), Never> in
                 let viewit = viewitListRelay.value[index]
@@ -126,8 +129,11 @@ extension ViewitListViewModel: ViewModelType {
             .store(in: cancelBag)
         
         let userRole = input.meatball
+            .compactMap { viewitID in
+                return viewitListRelay.value.firstIndex { $0.id == viewitID }
+            }
             .handleEvents(receiveOutput: { index in
-                etcIndexRelay.send(index)
+                indexMeatballDidTapRelay.send(index)
             })
             .compactMap { [weak self] index in
                 let userID = viewitListRelay.value[index].userID
@@ -137,7 +143,7 @@ extension ViewitListViewModel: ViewModelType {
         
         input.bottomSheetAction
             .filter { $0 == .ban }
-            .map { _ in etcIndexRelay.value }
+            .map { _ in indexMeatballDidTapRelay.value }
             .withUnretained(self)
             .flatMap { owner, index in
                 let viewit = viewitListRelay.value[index]
@@ -157,7 +163,7 @@ extension ViewitListViewModel: ViewModelType {
         
         input.bottomSheetAction
             .filter { $0 == .delete }
-            .map { _ in etcIndexRelay.value }
+            .map { _ in indexMeatballDidTapRelay.value }
             .withUnretained(self)
             .flatMap { owner, index in
                 let viewit = viewitListRelay.value[index]
@@ -177,7 +183,7 @@ extension ViewitListViewModel: ViewModelType {
         
         input.bottomSheetAction
             .filter { $0 == .report }
-            .map { _ in etcIndexRelay.value }
+            .map { _ in indexMeatballDidTapRelay.value }
             .withUnretained(self)
             .flatMap { owner, index in
                 let viewit = viewitListRelay.value[index]
@@ -194,7 +200,9 @@ extension ViewitListViewModel: ViewModelType {
                 isReportSuccess.send(true)
             })
             .sink { index, viewit in
-                viewitListRelay.value.remove(at: index)
+                var viewitList = viewitListRelay.value
+                viewitList.remove(at: index)
+                viewitListRelay.send(viewitList)
             }
             .store(in: cancelBag)
         
