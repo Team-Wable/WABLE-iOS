@@ -161,6 +161,6 @@ private extension AlarmSettingViewController {
     }
     
     @objc func appDidBecomActive() {
-        viewModel.checkAlarmAuthorization()
+        viewModel.input.checkAlarmAuthorization.send()
     }
 }
