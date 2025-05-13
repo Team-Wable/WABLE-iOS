@@ -12,15 +12,18 @@ import Foundation
 
 extension DTO.Request {
     struct CreateViewitPost: Encodable {
-        let viewitImageURL: String
-        let viewitURL: String
+        let viewitImageURLString: String
+        let viewitURLString: String
         let viewitTitle: String
         let viewitText: String
+        let viewitName: String
         
-        enum CreateViewitPost: String, CodingKey {
-            case viewitImageURL = "viewitImage"
-            case viewitURL = "viewitLink"
-            case viewitTitle, viewitText
+        enum CodingKeys: String, CodingKey {
+            case viewitImageURLString = "viewitImage"
+            case viewitURLString = "viewitLink"
+            case viewitTitle = "viewitTitle"
+            case viewitText = "viewitText"
+            case viewitName = "viewitName"
         }
     }
 }

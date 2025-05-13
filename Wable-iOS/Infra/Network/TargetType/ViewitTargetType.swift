@@ -27,9 +27,9 @@ extension ViewitTargetType: BaseTargetType {
     var endPoint: String? {
         switch self {
         case .deleteViewit(viewitID: let viewitID):
-            return "~/api/v1/viewit/\(viewitID)"
+            return "/v1/viewit/\(viewitID)"
         case .deleteViewitLiked(viewitID: let viewitID):
-            return "~/api/v1/viewit/\(viewitID)/unliked"
+            return "/v1/viewit/\(viewitID)/unliked"
         case .createViewitLiked(viewitID: let viewitID):
             return "/v1/viewit/\(viewitID)/liked"
         case .fetchViewitList:
