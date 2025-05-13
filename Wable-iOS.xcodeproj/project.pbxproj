@@ -1971,15 +1971,6 @@
 			children = (
 				DEB60AED2DD20B8F00FE8BFD /* AccountInfoViewController.swift */,
 				DEB60AF02DD20C2600FE8BFD /* Cell */,
-            );
-			path = View;
-			sourceTree = "<group>";
-		};
-		DECC36D52DC39F8A00336B7B /* View */ = {
-			isa = PBXGroup;
-			children = (
-				DECC36DE2DC3B24000336B7B /* CreateViewitViewController.swift */,
-				DECC36DD2DC3B23400336B7B /* Subview */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1996,8 +1987,17 @@
 			isa = PBXGroup;
 			children = (
 				DEB60AF82DD2158A00FE8BFD /* AccountInfoViewModel.swift */,
-            );
+			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DECC36D52DC39F8A00336B7B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DECC36DE2DC3B24000336B7B /* CreateViewitViewController.swift */,
+				DECC36DD2DC3B23400336B7B /* Subview */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		DECC36D82DC3A4B400336B7B /* ViewModel */ = {
