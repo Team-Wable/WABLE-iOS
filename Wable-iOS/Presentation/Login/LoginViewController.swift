@@ -174,7 +174,7 @@ private extension LoginViewController {
             .receive(on: DispatchQueue.main)
             .withUnretained(self)
             .sink { owner, sessionInfo in
-                let condition = sessionInfo.isNewUser && sessionInfo.user.nickname != "" && sessionInfo.user.profileURL != nil
+                let condition = sessionInfo.isNewUser && sessionInfo.user.nickname.isEmpty
                 
                 WableLogger.log("새로운 유저인가요? : \(sessionInfo.isNewUser && sessionInfo.user.nickname != "")", for: .debug)
                 
