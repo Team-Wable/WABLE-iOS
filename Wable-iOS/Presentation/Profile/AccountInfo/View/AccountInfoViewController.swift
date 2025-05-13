@@ -83,8 +83,6 @@ extension AccountInfoViewController: UIGestureRecognizerDelegate {
     }
 }
 
-// MARK: - Private
-
 private extension AccountInfoViewController {
     
     // MARK: - Setup Method
