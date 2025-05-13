@@ -30,7 +30,7 @@
 		DD2968022D6DAC9B00143851 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8CEF452D6A007900DBE580 /* ViewController.swift */; };
 		DD2968062D6DACF700143851 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967E92D6DAC3100143851 /* Account.swift */; };
 		DD2968072D6DACF700143851 /* LCKTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967E62D6DAC3100143851 /* LCKTeam.swift */; };
-		DD2968092D6DACF700143851 /* AccountDeleteReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967EB2D6DAC3100143851 /* AccountDeleteReason.swift */; };
+		DD2968092D6DACF700143851 /* WithdrawalReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967EB2D6DAC3100143851 /* WithdrawalReason.swift */; };
 		DD29680A2D6DACF700143851 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967E72D6DAC3100143851 /* User.swift */; };
 		DD29680B2D6DACF700143851 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967ED2D6DAC3100143851 /* UserProfile.swift */; };
 		DD29680C2D6DACF700143851 /* LCKTeamRank.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967F22D6DAC3100143851 /* LCKTeamRank.swift */; };
@@ -438,7 +438,7 @@
 		DD2967E82D6DAC3100143851 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		DD2967E92D6DAC3100143851 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		DD2967EA2D6DAC3100143851 /* AccountInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfo.swift; sourceTree = "<group>"; };
-		DD2967EB2D6DAC3100143851 /* AccountDeleteReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeleteReason.swift; sourceTree = "<group>"; };
+		DD2967EB2D6DAC3100143851 /* WithdrawalReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalReason.swift; sourceTree = "<group>"; };
 		DD2967EC2D6DAC3100143851 /* SocialPlatform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialPlatform.swift; sourceTree = "<group>"; };
 		DD2967ED2D6DAC3100143851 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		DD2967EF2D6DAC3100143851 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
@@ -1643,6 +1643,7 @@
 				DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */,
 				DE3908CA2DD2622400997ABE /* AlarmSetting */,
 				DEB60AEC2DD20B7E00FE8BFD /* AccountInfo */,
+				DEA10B282DD38C48001EBBA9 /* Withdraw */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1911,6 +1912,21 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		DEA10B282DD38C48001EBBA9 /* Withdraw */ = {
+			isa = PBXGroup;
+			children = (
+				DEA10B292DD38C5A001EBBA9 /* New Group */,
+			);
+			path = Withdraw;
+			sourceTree = "<group>";
+		};
+		DEA10B292DD38C5A001EBBA9 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		DEAFE04F2D8C43D90097E91C /* GameSchedule */ = {
 			isa = PBXGroup;
 			children = (
@@ -2049,7 +2065,7 @@
 				DD2967E62D6DAC3100143851 /* LCKTeam.swift */,
 				DEDC29172D720D030073D512 /* PostStatus.swift */,
 				DD2967EC2D6DAC3100143851 /* SocialPlatform.swift */,
-				DD2967EB2D6DAC3100143851 /* AccountDeleteReason.swift */,
+				DD2967EB2D6DAC3100143851 /* WithdrawalReason.swift */,
 				DD2967F42D6DAC3100143851 /* TriggerType.swift */,
 				DEDC29152D72099C0073D512 /* InformationNotificationType.swift */,
 				DEDC29132D7208A00073D512 /* GameStatus.swift */,
@@ -2251,7 +2267,7 @@
 			files = (
 				DD2968062D6DACF700143851 /* Account.swift in Sources */,
 				DD2968072D6DACF700143851 /* LCKTeam.swift in Sources */,
-				DD2968092D6DACF700143851 /* AccountDeleteReason.swift in Sources */,
+				DD2968092D6DACF700143851 /* WithdrawalReason.swift in Sources */,
 				DDED597E2D79578C00A0BEF1 /* AuthProvider.swift in Sources */,
 				DE8873BB2DC7416C00AB16F8 /* URLPreviewRepositoryImpl.swift in Sources */,
 				DD29680A2D6DACF700143851 /* User.swift in Sources */,
