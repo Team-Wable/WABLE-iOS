@@ -58,6 +58,7 @@ final class CreateViewitUseCaseImpl: CreateViewitUseCase {
                 return viewitRepository.createViewit(
                     thumbnailImageURLString: preview.imageURLString,
                     urlString: updatedURLString,
+                    siteName: preview.siteName,
                     title: preview.title,
                     text: description
                 )

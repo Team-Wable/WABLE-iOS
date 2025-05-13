@@ -16,8 +16,8 @@ extension DTO.Response {
         let memberProfileURL: String
         let memberNickname: String
         let viewitID: Int
-        let viewitImageURL: String?
-        let viewitURL: String?
+        let viewitImage: String?
+        let viewitLink: String?
         let viewitTitle: String
         let viewitText: String
         let viewitName: String?
@@ -31,9 +31,7 @@ extension DTO.Response {
             case memberProfileURL = "memberProfileUrl"
             case memberNickname
             case viewitID = "viewitId"
-            case viewitImageURL = "viewitImage"
-            case viewitURL = "viewitLink"
-            case viewitTitle, viewitText, viewitName, time, isLiked, likedNumber, isBlind
+            case viewitImage, viewitLink, viewitTitle, viewitText, viewitName, time, isLiked, likedNumber, isBlind
         }
     }
 }
