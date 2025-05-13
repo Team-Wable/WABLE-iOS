@@ -297,6 +297,7 @@
 		DEA10B472DD3B9BA001EBBA9 /* WithdrawalGuideDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B462DD3B9BA001EBBA9 /* WithdrawalGuideDescriptionView.swift */; };
 		DEA10B492DD3C3BA001EBBA9 /* WithdrawalGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B482DD3C3BA001EBBA9 /* WithdrawalGuideView.swift */; };
 		DEA10B4C2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B4B2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift */; };
+		DEA10B512DD3D995001EBBA9 /* ProfileInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B502DD3D995001EBBA9 /* ProfileInfoCell.swift */; };
 		DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7142DA92E7100D35646 /* CommunityView.swift */; };
 		DEA9E7172DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
@@ -612,6 +613,7 @@
 		DEA10B462DD3B9BA001EBBA9 /* WithdrawalGuideDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalGuideDescriptionView.swift; sourceTree = "<group>"; };
 		DEA10B482DD3C3BA001EBBA9 /* WithdrawalGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalGuideView.swift; sourceTree = "<group>"; };
 		DEA10B4B2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalGuideViewModel.swift; sourceTree = "<group>"; };
+		DEA10B502DD3D995001EBBA9 /* ProfileInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoCell.swift; sourceTree = "<group>"; };
 		DEA9E7142DA92E7100D35646 /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
 		DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegisterCompleteViewController.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
@@ -1656,6 +1658,7 @@
 		DE59BBA52D8A9DD50040ADCB /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				DEA10B4F2DD3D987001EBBA9 /* ProfileInfoCell */,
 				DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */,
 				DE3908CA2DD2622400997ABE /* AlarmSetting */,
 				DEB60AEC2DD20B7E00FE8BFD /* AccountInfo */,
@@ -2013,6 +2016,14 @@
 				DEA10B4B2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DEA10B4F2DD3D987001EBBA9 /* ProfileInfoCell */ = {
+			isa = PBXGroup;
+			children = (
+				DEA10B502DD3D995001EBBA9 /* ProfileInfoCell.swift */,
+			);
+			path = ProfileInfoCell;
 			sourceTree = "<group>";
 		};
 		DEAFE04F2D8C43D90097E91C /* GameSchedule */ = {
@@ -2578,6 +2589,7 @@
 				DEF148422DA7B7E5003B2AD8 /* IsUserRegistered.swift in Sources */,
 				DD2967FE2D6DAC4800143851 /* WableLogger.swift in Sources */,
 				DE0D0CAC2DD204D000FB64DC /* ReportViewitUseCase.swift in Sources */,
+				DEA10B512DD3D995001EBBA9 /* ProfileInfoCell.swift in Sources */,
 				DE59BBA92D8A9EFD0040ADCB /* UIViewController+.swift in Sources */,
 				DE7C53142D761EE500076E5D /* UIView+.swift in Sources */,
 				DDCCA3932D738CD500658122 /* UserSessionRepository.swift in Sources */,
