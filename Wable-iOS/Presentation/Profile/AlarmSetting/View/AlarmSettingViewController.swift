@@ -12,10 +12,6 @@ import SnapKit
 import Then
 
 final class AlarmSettingViewController: UIViewController {
-    
-    // MARK: - Typealias
-    
-    typealias ViewModel = AlarmSettingViewModel
 
     // MARK: - UIComponent
 
@@ -36,12 +32,12 @@ final class AlarmSettingViewController: UIViewController {
     
     // MARK: - Property
 
-    private let viewModel: ViewModel
+    private let viewModel: AlarmSettingViewModel
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
 
-    init(viewModel: ViewModel) {
+    init(viewModel: AlarmSettingViewModel) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -71,7 +67,7 @@ final class AlarmSettingViewController: UIViewController {
             object: nil
         )
         
-        viewModel.checkAlarmAuthorization()
+        viewModel.input.checkAlarmAuthorization.send()
     }
     
     deinit {
@@ -132,9 +128,10 @@ private extension AlarmSettingViewController {
     }
     
     func setupBinding() {
-        viewModel.$isAuthorized
-            .map { $0 ? "on" : "off" }
-            .receive(on: RunLoop.main)
+        let output = viewModel.bind(with: cancelBag)
+        
+        output
+            .map { $0.isAuthorized ? "on" : "off" }
             .assign(to: \.text, on: statusLabel)
             .store(in: cancelBag)
     }

@@ -21,7 +21,7 @@ final class AccountInfoViewModel {
     let input = Input()
     
     func bind(with cancelBag: CancelBag) -> AnyPublisher<Output, Never> {
-        let stateSubject = CurrentValueSubject<Output, Never>(Output())
+        let outputSubject = CurrentValueSubject<Output, Never>(Output())
         
 //        input.load
 //            .flatMap { _ in
@@ -32,7 +32,7 @@ final class AccountInfoViewModel {
 //            .sink { }
 //            .store(in: cancelBag)
         
-        return stateSubject
+        return outputSubject
             .removeDuplicates()
             .asDriver()
     }
