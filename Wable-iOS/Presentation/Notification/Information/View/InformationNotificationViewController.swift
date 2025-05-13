@@ -198,7 +198,6 @@ private extension InformationNotificationViewController {
                 let viewController = HomeDetailViewController(
                     viewModel: HomeDetailViewModel(
                         contentID: item.id,
-                        contentTitle: "",
                         fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
                         fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
                         createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),

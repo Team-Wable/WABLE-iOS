@@ -90,29 +90,35 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             return
         }
         
-        rootViewController.present(
-            HomeDetailViewController(
-                viewModel: HomeDetailViewModel(
-                    contentID: contentID,
-                    contentTitle: "",
-                    fetchContentInfoUseCase: FetchContentInfoUseCase(repository: contentRepository),
-                    fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: commentRepository),
-                    createCommentUseCase: CreateCommentUseCase(repository: commentRepository),
-                    deleteCommentUseCase: DeleteCommentUseCase(repository: commentRepository),
-                    createContentLikedUseCase: CreateContentLikedUseCase(repository: contentLikedRepository),
-                    deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: contentLikedRepository),
-                    createCommentLikedUseCase: CreateCommentLikedUseCase(repository: commentLikedRepository),
-                    deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: commentLikedRepository),
-                    fetchUserInformationUseCase: FetchUserInformationUseCase(repository: userSessionRepository),
-                    fetchGhostUseCase: FetchGhostUseCase(repository: GhostRepositoryImpl()),
-                    createReportUseCase: CreateReportUseCase(repository: reportRepository),
-                    createBannedUseCase: CreateBannedUseCase(repository: reportRepository),
-                    deleteContentUseCase: DeleteContentUseCase(repository: contentRepository)
-                ),
-                cancelBag: CancelBag()
+        let detailViewController = HomeDetailViewController(
+            viewModel: HomeDetailViewModel(
+                contentID: contentID,
+                fetchContentInfoUseCase: FetchContentInfoUseCase(repository: contentRepository),
+                fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: commentRepository),
+                createCommentUseCase: CreateCommentUseCase(repository: commentRepository),
+                deleteCommentUseCase: DeleteCommentUseCase(repository: commentRepository),
+                createContentLikedUseCase: CreateContentLikedUseCase(repository: contentLikedRepository),
+                deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: contentLikedRepository),
+                createCommentLikedUseCase: CreateCommentLikedUseCase(repository: commentLikedRepository),
+                deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: commentLikedRepository),
+                fetchUserInformationUseCase: FetchUserInformationUseCase(repository: userSessionRepository),
+                fetchGhostUseCase: FetchGhostUseCase(repository: GhostRepositoryImpl()),
+                createReportUseCase: CreateReportUseCase(repository: reportRepository),
+                createBannedUseCase: CreateBannedUseCase(repository: reportRepository),
+                deleteContentUseCase: DeleteContentUseCase(repository: contentRepository)
             ),
-            animated: true
+            cancelBag: CancelBag()
         )
+        
+        if let tabBarController = rootViewController as? TabBarController {
+            guard let viewController = tabBarController.selectedViewController as? UINavigationController else { return }
+            
+            tabBarController.selectedIndex = 0
+            viewController.pushViewController(detailViewController, animated: true)
+        } else
+        if let viewController = rootViewController as? UINavigationController {
+            viewController.pushViewController(detailViewController, animated: true)
+        }
     }
     
     func userNotificationCenter(

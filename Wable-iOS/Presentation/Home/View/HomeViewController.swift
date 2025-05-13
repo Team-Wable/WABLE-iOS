@@ -360,7 +360,6 @@ private extension HomeViewController {
                 let viewController = HomeDetailViewController(
                     viewModel: HomeDetailViewModel(
                         contentID: content.content.id,
-                        contentTitle: content.content.contentInfo.title,
                         fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
                         fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
                         createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),
