@@ -12,7 +12,7 @@ import Foundation
 protocol ContentRepository {
     func createContent(title: String, text: String, image: Data?) -> AnyPublisher<Void, WableError>
     func deleteContent(contentID: Int) -> AnyPublisher<Void, WableError>
-    func fetchContentInfo(contentID: Int, title: String) -> AnyPublisher<ContentInfo, WableError>
+    func fetchContentInfo(contentID: Int) -> AnyPublisher<ContentInfo, WableError>
     func fetchContentList(cursor: Int) -> AnyPublisher<[Content], WableError>
     func fetchUserContentList(memberID: Int, cursor: Int) -> AnyPublisher<[UserContent], WableError>
 }

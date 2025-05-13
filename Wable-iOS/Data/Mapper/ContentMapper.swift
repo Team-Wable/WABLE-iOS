@@ -10,7 +10,7 @@ import Foundation
 enum ContentMapper { }
 
 extension ContentMapper {
-    static func toDomain(_ response: DTO.Response.FetchContent, _ title: String) -> ContentInfo {
+    static func toDomain(_ response: DTO.Response.FetchContent) -> ContentInfo {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:SS"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
@@ -37,7 +37,7 @@ extension ContentMapper {
                 fanTeam: fanTeam
             ),
             createdDate: date,
-            title: title,
+            title: response.contentTitle,
             imageURL: contentImageURL,
             text: response.contentText,
             status: postStatus,

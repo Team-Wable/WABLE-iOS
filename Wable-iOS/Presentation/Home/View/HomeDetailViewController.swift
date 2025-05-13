@@ -102,6 +102,7 @@ final class HomeDetailViewController: NavigationViewController {
         super.init(type: .page(type: .detail, title: "게시글"))
         
         hidesBottomBarWhenPushed = true
+        modalPresentationStyle = .fullScreen
     }
     
     required init?(coder: NSCoder) {

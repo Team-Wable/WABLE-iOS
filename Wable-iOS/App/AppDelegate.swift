@@ -18,6 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let userBadgeUseCase = UpdateUserBadgeUseCase(repository: AccountRepositoryImpl())
     let userSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage(jsonEncoder: JSONEncoder(), jsonDecoder: JSONDecoder()))
     let profileRepository = ProfileRepositoryImpl()
+    let contentRepository = ContentRepositoryImpl()
+    let commentRepository = CommentRepositoryImpl()
+    let contentLikedRepository = ContentLikedRepositoryImpl()
+    let commentLikedRepository = CommentLikedRepositoryImpl()
+    let reportRepository = ReportRepositoryImpl()
     let cancelBag = CancelBag()
     
     var activeID = -1

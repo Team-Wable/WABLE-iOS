@@ -141,10 +141,7 @@ extension HomeDetailViewModel: ViewModelType {
             })
             .withUnretained(self)
             .flatMap({ owner, _ -> AnyPublisher<(ContentInfo?, [ContentComment]), Never> in
-                let contentPublisher = owner.fetchContentInfoUseCase.execute(
-                    contentID: owner.contentID,
-                    title: owner.contentTitle
-                )
+                let contentPublisher = owner.fetchContentInfoUseCase.execute(contentID: owner.contentID)
                     .map { contentInfo -> ContentInfo? in
                         return contentInfo
                     }
@@ -306,11 +303,7 @@ extension HomeDetailViewModel: ViewModelType {
                 .asDriver(onErrorJustReturn: ())
             }
             .sink(receiveValue: { [weak self] _ in
-                guard let id = self?.contentID,
-                      let title = contentSubject.value?.title
-                else {
-                    return
-                }
+                guard let id = self?.contentID else { return }
                 
                 self?.fetchContentCommentListUseCase.execute(contentID: id, cursor: -1)
                     .sink(receiveCompletion: { _ in
@@ -319,7 +312,7 @@ extension HomeDetailViewModel: ViewModelType {
                     })
                     .store(in: cancelBag)
                 
-                self?.fetchContentInfoUseCase.execute(contentID: id, title: title)
+                self?.fetchContentInfoUseCase.execute(contentID: id)
                     .sink(receiveCompletion: { _ in
                     }, receiveValue: { content in
                         contentSubject.send(content)
