@@ -74,6 +74,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 guard let self = self else { return }
                 
                 self.userSessionRepository.updateUserSession(userID: activeID, notificationBadgeCount: badge)
+                WableLogger.log("뱃지 수정 완료: \(badge)개", for: .debug)
             }
             .store(in: cancelBag)
         
