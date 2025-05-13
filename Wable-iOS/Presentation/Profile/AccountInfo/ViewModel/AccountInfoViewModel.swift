@@ -9,33 +9,31 @@ import Combine
 import Foundation
 
 final class AccountInfoViewModel {
-    
-}
-
-extension AccountInfoViewModel: ViewModelType {
     struct Input {
-        let load: Driver<Void>
+        let load = PassthroughSubject<Void, Never>()
     }
     
-    struct Output {
-        let items: Driver<[AccountInfoCellItem]>
-        let errorMessage: Driver<String>
+    struct Output: Equatable {
+        var items: [AccountInfoCellItem] = []
+        var errorMessage: String?
     }
     
-    func transform(input: Input, cancelBag: CancelBag) -> Output {
-        let errorMessageRelay = PassthroughRelay<String>()
+    let input = Input()
+    
+    func bind(with cancelBag: CancelBag) -> AnyPublisher<Output, Never> {
+        let stateSubject = CurrentValueSubject<Output, Never>(Output())
         
-//        let items = input.load
+//        input.load
 //            .flatMap { _ in
-//                
+//
 //                // TODO: 유저 정보 조회
-//                
+//
 //            }
-//            .asDriver()
+//            .sink { }
+//            .store(in: cancelBag)
         
-        return Output(
-            items: .just([]),
-            errorMessage: errorMessageRelay.asDriver()
-        )
+        return stateSubject
+            .removeDuplicates()
+            .asDriver()
     }
 }
