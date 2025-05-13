@@ -222,13 +222,25 @@ private extension ActivityNotificationViewController {
                         contentID: contentID,
                         contentTitle: "",
                         fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
-                        createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
-                        deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
                         fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
                         createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),
                         deleteCommentUseCase: DeleteCommentUseCase(repository: CommentRepositoryImpl()),
+                        createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+                        deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
                         createCommentLikedUseCase: CreateCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
-                        deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: CommentLikedRepositoryImpl())
+                        deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
+                        fetchUserInformationUseCase: FetchUserInformationUseCase(
+                            repository: UserSessionRepositoryImpl(
+                                userDefaults: UserDefaultsStorage(
+                                    jsonEncoder: JSONEncoder(),
+                                    jsonDecoder: JSONDecoder()
+                                )
+                            )
+                        ),
+                        fetchGhostUseCase: FetchGhostUseCase(repository: GhostRepositoryImpl()),
+                        createReportUseCase: CreateReportUseCase(repository: ReportRepositoryImpl()),
+                        createBannedUseCase: CreateBannedUseCase(repository: ReportRepositoryImpl()),
+                        deleteContentUseCase: DeleteContentUseCase(repository: ContentRepositoryImpl())
                     ),
                     cancelBag: CancelBag()
                 )
