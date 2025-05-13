@@ -298,6 +298,11 @@
 		DEA10B492DD3C3BA001EBBA9 /* WithdrawalGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B482DD3C3BA001EBBA9 /* WithdrawalGuideView.swift */; };
 		DEA10B4C2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B4B2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift */; };
 		DEA10B512DD3D995001EBBA9 /* ProfileInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B502DD3D995001EBBA9 /* ProfileInfoCell.swift */; };
+		DEA10B582DD3E53A001EBBA9 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B572DD3E53A001EBBA9 /* MyProfileViewController.swift */; };
+		DEA10B5A2DD3E8E9001EBBA9 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B592DD3E8E9001EBBA9 /* ProfileModel.swift */; };
+		DEA10B5C2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */; };
+		DEA10B5E2DD3F48E001EBBA9 /* ProfileSegmentKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B5D2DD3F48E001EBBA9 /* ProfileSegmentKind.swift */; };
+		DEA10B612DD3FE6C001EBBA9 /* MyProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B602DD3FE6C001EBBA9 /* MyProfileView.swift */; };
 		DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7142DA92E7100D35646 /* CommunityView.swift */; };
 		DEA9E7172DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
@@ -614,6 +619,11 @@
 		DEA10B482DD3C3BA001EBBA9 /* WithdrawalGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalGuideView.swift; sourceTree = "<group>"; };
 		DEA10B4B2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalGuideViewModel.swift; sourceTree = "<group>"; };
 		DEA10B502DD3D995001EBBA9 /* ProfileInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoCell.swift; sourceTree = "<group>"; };
+		DEA10B572DD3E53A001EBBA9 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
+		DEA10B592DD3E8E9001EBBA9 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
+		DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSegmentedHeaderView.swift; sourceTree = "<group>"; };
+		DEA10B5D2DD3F48E001EBBA9 /* ProfileSegmentKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSegmentKind.swift; sourceTree = "<group>"; };
+		DEA10B602DD3FE6C001EBBA9 /* MyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileView.swift; sourceTree = "<group>"; };
 		DEA9E7142DA92E7100D35646 /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
 		DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegisterCompleteViewController.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
@@ -1658,8 +1668,12 @@
 		DE59BBA52D8A9DD50040ADCB /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				DEA10B4F2DD3D987001EBBA9 /* ProfileInfoCell */,
 				DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */,
+				DEA10B592DD3E8E9001EBBA9 /* ProfileModel.swift */,
+				DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */,
+				DEA10B5D2DD3F48E001EBBA9 /* ProfileSegmentKind.swift */,
+				DEA10B502DD3D995001EBBA9 /* ProfileInfoCell.swift */,
+				DEA10B522DD3E43A001EBBA9 /* My */,
 				DE3908CA2DD2622400997ABE /* AlarmSetting */,
 				DEB60AEC2DD20B7E00FE8BFD /* AccountInfo */,
 				DEA10B282DD38C48001EBBA9 /* Withdrawal */,
@@ -2018,12 +2032,29 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		DEA10B4F2DD3D987001EBBA9 /* ProfileInfoCell */ = {
+		DEA10B522DD3E43A001EBBA9 /* My */ = {
 			isa = PBXGroup;
 			children = (
-				DEA10B502DD3D995001EBBA9 /* ProfileInfoCell.swift */,
+				DEA10B532DD3E449001EBBA9 /* View */,
 			);
-			path = ProfileInfoCell;
+			path = My;
+			sourceTree = "<group>";
+		};
+		DEA10B532DD3E449001EBBA9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DEA10B572DD3E53A001EBBA9 /* MyProfileViewController.swift */,
+				DEA10B5F2DD3FE4F001EBBA9 /* Subview */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DEA10B5F2DD3FE4F001EBBA9 /* Subview */ = {
+			isa = PBXGroup;
+			children = (
+				DEA10B602DD3FE6C001EBBA9 /* MyProfileView.swift */,
+			);
+			path = Subview;
 			sourceTree = "<group>";
 		};
 		DEAFE04F2D8C43D90097E91C /* GameSchedule */ = {
@@ -2383,6 +2414,7 @@
 				DD514D0A2D8C958B0095021D /* AgreementItemView.swift in Sources */,
 				DEE5D6112D9121E5009E5A25 /* OverviewPageView.swift in Sources */,
 				DDFB22442D8BB8D500FEA24A /* LCKTeamView.swift in Sources */,
+				DEA10B612DD3FE6C001EBBA9 /* MyProfileView.swift in Sources */,
 				DD2968112D6DACF700143851 /* Viewit.swift in Sources */,
 				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
 				DD514D082D8C83560095021D /* AgreementViewController.swift in Sources */,
@@ -2398,6 +2430,7 @@
 				DD2968152D6DACF700143851 /* Announcement.swift in Sources */,
 				DE3908D02DD2663200997ABE /* AlarmSettingViewModel.swift in Sources */,
 				DDCA70932D88316200A988B8 /* LCKYearView.swift in Sources */,
+				DEA10B5A2DD3E8E9001EBBA9 /* ProfileModel.swift in Sources */,
 				DD2968512D6DAD4400143851 /* UpdateUserProfile.swift in Sources */,
 				DD2968522D6DAD4400143851 /* DTO.swift in Sources */,
 				DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */,
@@ -2520,6 +2553,7 @@
 				DD765D9A2D8746E30029A317 /* LoginViewController.swift in Sources */,
 				DEA10B342DD39D9E001EBBA9 /* WithdrawalReasonCell.swift in Sources */,
 				DD9EAE282D99C7DE00803A1A /* DeleteContentUseCase.swift in Sources */,
+				DEA10B582DD3E53A001EBBA9 /* MyProfileViewController.swift in Sources */,
 				DE33902E2D8EC3B700638BB4 /* NoticeCell.swift in Sources */,
 				DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */,
 				DD2968372D6DAD1700143851 /* ProfileRepositoryImpl.swift in Sources */,
@@ -2644,12 +2678,14 @@
 				DE7004842D8E87DC00B7AB71 /* RankListViewController.swift in Sources */,
 				DD2968272D6DAD0B00143851 /* LoginMapper.swift in Sources */,
 				DDED594F2D784EC000A0BEF1 /* LocalKeyValueProvider.swift in Sources */,
+				DEA10B5C2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift in Sources */,
 				DE00E0A02DCE47C7004CB455 /* ViewitUseCase.swift in Sources */,
 				DD514D0E2D8C99DC0095021D /* AgreementView.swift in Sources */,
 				DDED59752D78F16400A0BEF1 /* FetchNicknameDuplicationUseCase.swift in Sources */,
 				DE54B0402D832E78009A7C34 /* LoadingViewController.swift in Sources */,
 				DD2968282D6DAD0B00143851 /* InformationMapper.swift in Sources */,
 				DD2968292D6DAD0B00143851 /* WableError.swift in Sources */,
+				DEA10B5E2DD3F48E001EBBA9 /* ProfileSegmentKind.swift in Sources */,
 				DD29682A2D6DAD0B00143851 /* ErrorMapper.swift in Sources */,
 				DD9EAE302D9A64A800803A1A /* HomeDetailViewController.swift in Sources */,
 				DD29682B2D6DAD0B00143851 /* CommentMapper.swift in Sources */,

@@ -62,8 +62,9 @@ final class ProfileInfoCell: UICollectionViewCell {
         $0.attributedText = "50%".pretendardString(with: .body3)
     }
     
-    private let ghostProgressBar = UIProgressView(progressViewStyle: .bar).then {
-        $0.trackTintColor = .purple50
+    private let ghostProgressBar = UIProgressView(progressViewStyle: .default).then {
+        $0.progressTintColor = .purple50
+        $0.trackTintColor = .gray200
         $0.layer.cornerRadius = 8
         $0.setProgress(0.0, animated: false)
         $0.clipsToBounds = true
@@ -102,7 +103,7 @@ final class ProfileInfoCell: UICollectionViewCell {
         level: String,
         nickname: String,
         introduction: String,
-        ghostValue: Double
+        ghostValue: Int
     ) {
         editButton.isHidden = !isMyProfile
         
@@ -110,6 +111,7 @@ final class ProfileInfoCell: UICollectionViewCell {
         nicknameLabel.text = nickname
         introductionLabel.text = introduction
         ghostValueLabel.text = "\(ghostValue)%"
+        ghostProgressBar.setProgress(Float(100 + ghostValue), animated: false)
         
         let randomProfileImage = [
             UIImage.imgProfilePurple,
@@ -167,7 +169,7 @@ private extension ProfileInfoCell {
         headerView.addSubviews(profileImageView, levelLabel, nicknameLabel, editButton)
         
         profileImageView.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
+            make.verticalEdges.leading.equalToSuperview()
             make.size.equalTo(Constant.profileImageViewSize)
         }
         
@@ -211,7 +213,7 @@ private extension ProfileInfoCell {
         
         ghostValueLabel.snp.makeConstraints { make in
             make.top.trailing.equalToSuperview()
-            make.bottom.equalTo(ghostProgressBar.snp.bottom).offset(-4)
+            make.bottom.equalTo(ghostProgressBar.snp.top).offset(-4)
         }
         
         ghostProgressBar.snp.makeConstraints { make in
