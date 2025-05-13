@@ -21,3 +21,7 @@ typealias Driver<T> = AnyPublisher<T, Never>
 
 typealias PassthroughRelay<T> = PassthroughSubject<T, Never>
 typealias CurrentValueRelay<T> = CurrentValueSubject<T, Never>
+
+// MARK: - Closure
+
+typealias VoidClosure = () -> Void

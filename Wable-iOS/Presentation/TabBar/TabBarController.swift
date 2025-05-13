@@ -58,7 +58,21 @@ final class TabBarController: UITabBarController {
         $0.tabBarItem.image = .icInfoPress
     }
     
-    private let viewitViewController = ViewitViewController().then {
+    private let viewitViewController = ViewitListViewController(
+        viewModel: .init(
+            useCase: ViewitUseCaseImpl(),
+            likeUseCase: LikeViewitUseCaseImpl(),
+            reportUseCase: ReportViewitUseCaseImpl(),
+            checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
+                repository: UserSessionRepositoryImpl(
+                    userDefaults: UserDefaultsStorage(
+                        jsonEncoder: JSONEncoder(),
+                        jsonDecoder: JSONDecoder()
+                    )
+                )
+            )
+        )
+    ).then {
         $0.tabBarItem.title = "뷰잇"
         $0.tabBarItem.image = .icViewit
     }
