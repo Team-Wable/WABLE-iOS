@@ -477,7 +477,6 @@
 		DD8CEF452D6A007900DBE580 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DD8CEF472D6A007900DBE580 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD8CEF482D6A007900DBE580 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		DD8CEFF82D6A00BB00DBE580 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "Base.lproj/LaunchScreen 2.storyboard"; sourceTree = "<group>"; };
 		DD90EEA72DC40D1700338EB2 /* FetchGhostUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchGhostUseCase.swift; sourceTree = "<group>"; };
 		DD90EEAA2DC5F65100338EB2 /* CreateBannedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBannedUseCase.swift; sourceTree = "<group>"; };
 		DD90EEAC2DC5F6BB00338EB2 /* CreateReportUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReportUseCase.swift; sourceTree = "<group>"; };
@@ -2467,7 +2466,6 @@
 		DD8CEFF92D6A00BB00DBE580 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DD8CEFF82D6A00BB00DBE580 /* LaunchScreen.storyboard */,
 				DEDC29112D7207610073D512 /* ko */,
 			);
 			name = LaunchScreen.storyboard;
