@@ -110,8 +110,23 @@ extension NotificationPageViewController: UIPageViewControllerDataSource {
 private extension NotificationPageViewController {
     func setupViewControllers() {
         let useCase = NotificationUseCaseImpl(notificationRepository: NotificationRepositoryImpl())
-        let activityNotiViewController = ActivityNotificationViewController(viewModel: .init(useCase: useCase))
+        let userBadgeUseCase = UpdateUserBadgeUseCase(repository: AccountRepositoryImpl())
+        let userInformationUseCase = FetchUserInformationUseCase(
+            repository: UserSessionRepositoryImpl(
+                userDefaults: UserDefaultsStorage(
+                    jsonEncoder: JSONEncoder(),
+                    jsonDecoder: JSONDecoder()
+                )
+            )
+        )
         
+        let activityNotiViewController = ActivityNotificationViewController(
+            viewModel: .init(
+                useCase: useCase,
+                userBadgeUseCase: userBadgeUseCase,
+                userInformationUseCase: userInformationUseCase
+            )
+        )
         let informationNotiViewController = InformationNotificationViewController(viewModel: .init(useCase: useCase))
         
         viewControllers.append(activityNotiViewController)
