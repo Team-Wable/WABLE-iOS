@@ -68,18 +68,9 @@ final class AccountInfoViewController: UIViewController {
         setupNavigationBar()
         setupAction()
         setupDataSource()
-        setupDelegate()
         setupBinding()
         
         viewModel.input.load.send()
-    }
-}
-
-// MARK: - UIGestureRecognizerDelegate
-
-extension AccountInfoViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return navigationController?.viewControllers.count ?? 0 > 1
     }
 }
 
@@ -110,16 +101,14 @@ private extension AccountInfoViewController {
     
     func setupNavigationBar() {
         navigationController?.navigationBar.isHidden = true
+        
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
     func setupAction() {
         navigationView.backButton.addTarget(self, action: #selector(backButtonDidTap), for: .touchUpInside)
         
         withdrawButton.addTarget(self, action: #selector(withdrawButtonDidTap), for: .touchUpInside)
-    }
-    
-    func setupDelegate() {
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     func setupDataSource() {
