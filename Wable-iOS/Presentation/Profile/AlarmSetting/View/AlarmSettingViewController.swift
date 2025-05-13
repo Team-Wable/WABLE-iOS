@@ -59,7 +59,6 @@ final class AlarmSettingViewController: UIViewController {
         setupDelegate()
         setupBinding()
         
-        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(appDidBecomActive),
@@ -93,12 +92,13 @@ private extension AlarmSettingViewController {
         view.addSubviews(navigationView, titleLabel, statusLabel, openSettingbutton)
         
         navigationView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(safeArea.snp.top)
+            make.top.horizontalEdges.equalTo(safeArea)
+            make.adjustedHeightEqualTo(56)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview().inset(24)
+            make.top.equalTo(navigationView.snp.bottom).offset(24)
+            make.leading.equalToSuperview().offset(24)
         }
         
         statusLabel.snp.makeConstraints { make in
