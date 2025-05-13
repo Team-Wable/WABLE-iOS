@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - 유저 프로필
 
-struct UserProfile {
+struct UserProfile: Hashable {
     let user: User
     let introduction: String
     let ghostCount: Int

@@ -1,0 +1,293 @@
+//
+//  MyProfileViewController.swift
+//  Wable-iOS
+//
+//  Created by 김진웅 on 5/14/25.
+//
+
+import UIKit
+import SafariServices
+
+import SnapKit
+import Then
+
+final class MyProfileViewController: UIViewController {
+    
+    enum Section: CaseIterable {
+        case profile
+        case post
+    }
+    
+    enum Item: Hashable {
+        case profile(UserProfile)
+        case content(UserContent)
+        case comment(UserComment)
+    }
+    
+    // MARK: - Typealias
+    
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    
+    // MARK: - Property
+
+    private var dataSource: DataSource?
+    
+    private let rootView = MyProfileView()
+    
+    // MARK: - Life Cycle
+    
+    override func loadView() {
+        view = rootView
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupCollectionViewLayout()
+        setupNavigationBar()
+        setupDataSource()
+        setupAction()
+        
+        applyMockProfileSnapshot()
+    }
+    
+    func applyMockProfileSnapshot() {
+        var snapshot = Snapshot()
+        
+        // 프로필 섹션만 추가
+        snapshot.appendSections([.profile, .post])
+        
+        // Mock 데이터 추가
+        let mockProfile = UserProfile(
+            user: .init(id: 134, nickname: "하하", profileURL: URL(string: "https://example.com/profile.png"), fanTeam: .t1),
+            introduction: "히히히",
+            ghostCount: -14,
+            lckYears: 2023,
+            userLevel: 1000
+        )
+        
+        snapshot.appendItems([.profile(mockProfile)], toSection: .profile)
+        snapshot.appendItems([], toSection: .post)
+        
+        // Snapshot 적용
+        dataSource?.apply(snapshot, animatingDifferences: true)
+    }
+}
+
+private extension MyProfileViewController {
+    
+    // MARK: - Setup
+    
+    func setupCollectionViewLayout() {
+        rootView.collectionView.collectionViewLayout = collectionViewLayout
+    }
+    
+    func setupNavigationBar() {
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    func setupDataSource() {
+        let profileInfoCellRegistration = CellRegistration<ProfileInfoCell, UserProfile> { cell, indexPath, item in
+            cell.configure(
+                isMyProfile: true,
+                profileImageURL: item.user.profileURL,
+                level: "\(item.userLevel)",
+                nickname: item.user.nickname,
+                introduction: "\(item.user.fanTeam?.rawValue ?? "LCK")을(를) 응원하고 있어요.\n\(item.lckYears)부터 LCK를 보기 시작했어요.",
+                ghostValue: item.ghostCount
+            )
+        }
+        
+        let contentCellRegistration = CellRegistration<ContentCollectionViewCell, UserContent> {
+            cell, indexPath, item in
+            cell.configureCell(
+                info: item.contentInfo,
+                authorType: .mine,
+                cellType: .list,
+                likeButtonTapHandler: {
+                    WableLogger.log("좋아요 눌림", for: .debug)
+                    
+                    // TODO: 추후 기능 연결
+                },
+                settingButtonTapHandler: nil,
+                profileImageViewTapHandler: nil,
+                ghostButtonTapHandler: nil
+            )
+        }
+        
+        let commentCellRegistration = CellRegistration<CommentCollectionViewCell, UserComment> {
+            cell, indexPath, item in
+            
+            cell.configureCell(
+                info: item.comment,
+                commentType: .ripple,
+                authorType: .mine,
+                likeButtonTapHandler: {
+                    WableLogger.log("좋아요 눌림", for: .debug)
+                    
+                    // TODO: 추후 기능 연결
+                },
+                settingButtonTapHandler: nil,
+                profileImageViewTapHandler: nil,
+                ghostButtonTapHandler: nil,
+                replyButtonTapHandler: nil
+            )
+        }
+        
+        let headerRegistration = SupplementaryRegistration<ProfileSegmentedHeaderView>(
+            elementKind: UICollectionView.elementKindSectionHeader
+        ) { supplementaryView, elementKind, indexPath in
+            supplementaryView.segmentDidChangeClosure = { [weak self] selectedIndex in
+                WableLogger.log("세그먼트 변경됨: \(selectedIndex)", for: .debug)
+                
+                // TODO: 추후 기능 연결
+            }
+        }
+        
+        dataSource = DataSource(collectionView: rootView.collectionView, cellProvider: {
+            collectionView, indexPath, item in
+            switch item {
+            case .profile(let profileInfo):
+                return collectionView.dequeueConfiguredReusableCell(
+                    using: profileInfoCellRegistration,
+                    for: indexPath,
+                    item: profileInfo
+                )
+            case .content(let content):
+                return collectionView.dequeueConfiguredReusableCell(
+                    using: contentCellRegistration,
+                    for: indexPath,
+                    item: content
+                )
+            case .comment(let comment):
+                return collectionView.dequeueConfiguredReusableCell(
+                    using: commentCellRegistration,
+                    for: indexPath,
+                    item: comment
+                )
+            }
+        })
+        
+        dataSource?.supplementaryViewProvider = { collectionView, kind, indexPath in
+            let section = Section.allCases[indexPath.section]
+            switch section {
+            case .post:
+                return collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
+            default:
+                return nil
+            }
+        }
+    }
+
+    func setupAction() {
+        rootView.navigationView.menuButton.addTarget(self, action: #selector(menuButtonDidTap), for: .touchUpInside)
+    }
+    
+    // MARK: - Action
+
+    @objc func menuButtonDidTap() {
+        let bottomSheet = WableBottomSheetController()
+        let accountInfoAction = WableBottomSheetAction(title: "계정 정보") { [weak self] in self?.navigateToAccountInfo() }
+        let alarmSettingAction = WableBottomSheetAction(title: "알림 설정") { [weak self] in self?.navigateToAlarmSetting() }
+        let feedbackAction = WableBottomSheetAction(title: "피드백 남기기") { [weak self] in self?.presentGoogleForm() }
+        let helpAction = WableBottomSheetAction(title: "고객센터") { [weak self] in self?.presentGoogleForm() }
+        let logoutAction = WableBottomSheetAction(title: "로그아웃") { [weak self] in self?.presentLogoutActionSheet() }
+        bottomSheet.addActions(
+            accountInfoAction,
+            alarmSettingAction,
+            feedbackAction,
+            helpAction,
+            logoutAction
+        )
+        present(bottomSheet, animated: true)
+    }
+    
+    // MARK: - Helper
+
+    func navigateToAccountInfo() {
+        let viewModel = AccountInfoViewModel()
+        let viewController = AccountInfoViewController(viewModel: viewModel)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func navigateToAlarmSetting() {
+        let viewModel = AlarmSettingViewModel()
+        let viewController = AlarmSettingViewController(viewModel: viewModel)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func presentGoogleForm() {
+        guard let url = URL(string: Constant.googleFormURLString) else { return }
+        present(SFSafariViewController(url: url), animated: true)
+    }
+    
+    func presentLogoutActionSheet() {
+        let actionSheet = WableSheetViewController(title: "로그아웃하시겠어요?")
+        let cancelAction = WableSheetAction(title: "취소", style: .gray)
+        let logoutAction = WableSheetAction(title: "로그아웃하기", style: .primary) {
+            WableLogger.log("로그아웃 눌림.", for: .debug)
+            
+            // TODO: 추후 기능 연결
+        }
+        actionSheet.addActions(cancelAction, logoutAction)
+        present(actionSheet, animated: true)
+    }
+    
+    // MARK: - Computed Property
+
+    var collectionViewLayout: UICollectionViewCompositionalLayout {
+        return UICollectionViewCompositionalLayout { sectionIndex, environment in
+            let sectionKind = Section.allCases[sectionIndex]
+            
+            switch sectionKind {
+            case .profile:
+                let itemSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(336)
+                )
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(336)
+                )
+                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                
+                return section
+                
+            case .post:
+                let itemSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(500)
+                )
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(500)
+                )
+                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                
+                let headerSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(48)
+                )
+                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top
+                )
+                sectionHeader.pinToVisibleBounds = true
+                section.boundarySupplementaryItems = [sectionHeader]
+                
+                return section
+            }
+        }
+    }
+    
+    // MARK: - Constant
+
+    enum Constant {
+        static let googleFormURLString = "https://docs.google.com/forms/d/e/1FAIpQLSf3JlBkVRPaPFSreQHaEv-u5pqZWZzk7Y4Qll9lRP0htBZs-Q/viewform"
+    }
+}
