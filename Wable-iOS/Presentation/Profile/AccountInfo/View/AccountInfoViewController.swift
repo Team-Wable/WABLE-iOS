@@ -23,7 +23,6 @@ final class AccountInfoViewController: UIViewController {
     typealias Item = AccountInfoCellItem
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
-    typealias ViewModel = AccountInfoViewModel
     
     // MARK: - UIComponent
     
@@ -42,13 +41,12 @@ final class AccountInfoViewController: UIViewController {
     
     private var dataSource: DataSource?
     
-    private let viewModel: ViewModel
-    private let loadRelay = PassthroughRelay<Void>()
+    private let viewModel: AccountInfoViewModel
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
     
-    init(viewModel: ViewModel) {
+    init(viewModel: AccountInfoViewModel) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -73,7 +71,7 @@ final class AccountInfoViewController: UIViewController {
         setupDelegate()
         setupBinding()
         
-        loadRelay.send()
+        viewModel.input.load.send()
     }
 }
 
@@ -146,19 +144,18 @@ private extension AccountInfoViewController {
     }
     
     func setupBinding() {
-        let input = ViewModel.Input(
-            load: loadRelay.eraseToAnyPublisher()
-        )
+        let output = viewModel.bind(with: cancelBag).share()
         
-        let output = viewModel.transform(input: input, cancelBag: cancelBag)
-        
-        output.items
+        output
+            .map(\.items)
+            .removeDuplicates()
             .sink { [weak self] items in
                 self?.applySnapshot(items: items)
             }
             .store(in: cancelBag)
         
-        output.errorMessage
+        output
+            .compactMap(\.errorMessage)
             .sink { [weak self] message in
                 let alert = UIAlertController(title: "에러가 발생했습니다.", message: message, preferredStyle: .alert)
                 alert.addAction(.init(title: "확인", style: .default))
