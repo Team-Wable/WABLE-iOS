@@ -11,7 +11,6 @@ import Foundation
 
 final class HomeDetailViewModel {
     private let contentID: Int
-    private let contentTitle: String
     private let fetchContentInfoUseCase: FetchContentInfoUseCase
     private let fetchContentCommentListUseCase: FetchContentCommentListUseCase
     private let createCommentUseCase: CreateCommentUseCase
@@ -28,7 +27,6 @@ final class HomeDetailViewModel {
     
     init(
         contentID: Int,
-        contentTitle: String,
         fetchContentInfoUseCase: FetchContentInfoUseCase,
         fetchContentCommentListUseCase: FetchContentCommentListUseCase,
         createCommentUseCase: CreateCommentUseCase,
@@ -44,7 +42,6 @@ final class HomeDetailViewModel {
         deleteContentUseCase: DeleteContentUseCase
     ) {
         self.contentID = contentID
-        self.contentTitle = contentTitle
         self.fetchContentInfoUseCase = fetchContentInfoUseCase
         self.fetchContentCommentListUseCase = fetchContentCommentListUseCase
         self.createCommentUseCase = createCommentUseCase
