@@ -17,8 +17,8 @@ extension ViewitMapper {
         
         return response.map { content in
             let userProfileURL = URL(string: content.memberProfileURL)
-            let thumbnailURL = URL(string: content.viewitImageURL ?? "")
-            let videoURL = URL(string: content.viewitURL ?? "")
+            let thumbnailURL = URL(string: content.viewitImage ?? "")
+            let videoURL = URL(string: content.viewitLink ?? "")
             let time = dateFormatter.date(from: content.time)
             
             let postStatus: PostStatus
