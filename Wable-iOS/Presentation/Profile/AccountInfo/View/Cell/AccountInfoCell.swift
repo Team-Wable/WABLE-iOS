@@ -22,6 +22,8 @@ final class AccountInfoCell: UICollectionViewCell {
         $0.textColor = .wableBlack
     }
     
+    private var userInteractionClosure: VoidClosure?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -41,8 +43,13 @@ final class AccountInfoCell: UICollectionViewCell {
             return
         }
         
-        descriptionLabel.isUserInteractionEnabled = true
+        userInteractionClosure = userInteraction
         descriptionLabel.attributedText = description.pretendardString(with: .body2).addUnderline()
+        
+        descriptionLabel.isUserInteractionEnabled = true
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(descriptionDidTap))
+        descriptionLabel.addGestureRecognizer(tapGesture)
     }
 }
 
@@ -60,5 +67,9 @@ private extension AccountInfoCell {
             make.leading.equalToSuperview().offset(160)
             make.trailing.equalToSuperview().offset(-24)
         }
+    }
+    
+    @objc func descriptionDidTap() {
+        userInteractionClosure?()
     }
 }
