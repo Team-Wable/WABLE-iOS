@@ -293,6 +293,10 @@
 		DEA10B2E2DD39A08001EBBA9 /* WithdrawalReasonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B2D2DD39A08001EBBA9 /* WithdrawalReasonViewModel.swift */; };
 		DEA10B342DD39D9E001EBBA9 /* WithdrawalReasonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B332DD39D9E001EBBA9 /* WithdrawalReasonCell.swift */; };
 		DEA10B372DD3A45C001EBBA9 /* WithdrawalReasonCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B362DD3A45C001EBBA9 /* WithdrawalReasonCellItem.swift */; };
+		DEA10B442DD3B7ED001EBBA9 /* WithdrawalGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B432DD3B7ED001EBBA9 /* WithdrawalGuideViewController.swift */; };
+		DEA10B472DD3B9BA001EBBA9 /* WithdrawalGuideDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B462DD3B9BA001EBBA9 /* WithdrawalGuideDescriptionView.swift */; };
+		DEA10B492DD3C3BA001EBBA9 /* WithdrawalGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B482DD3C3BA001EBBA9 /* WithdrawalGuideView.swift */; };
+		DEA10B4C2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B4B2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift */; };
 		DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7142DA92E7100D35646 /* CommunityView.swift */; };
 		DEA9E7172DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
@@ -604,6 +608,10 @@
 		DEA10B2D2DD39A08001EBBA9 /* WithdrawalReasonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalReasonViewModel.swift; sourceTree = "<group>"; };
 		DEA10B332DD39D9E001EBBA9 /* WithdrawalReasonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalReasonCell.swift; sourceTree = "<group>"; };
 		DEA10B362DD3A45C001EBBA9 /* WithdrawalReasonCellItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalReasonCellItem.swift; sourceTree = "<group>"; };
+		DEA10B432DD3B7ED001EBBA9 /* WithdrawalGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalGuideViewController.swift; sourceTree = "<group>"; };
+		DEA10B462DD3B9BA001EBBA9 /* WithdrawalGuideDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalGuideDescriptionView.swift; sourceTree = "<group>"; };
+		DEA10B482DD3C3BA001EBBA9 /* WithdrawalGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalGuideView.swift; sourceTree = "<group>"; };
+		DEA10B4B2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalGuideViewModel.swift; sourceTree = "<group>"; };
 		DEA9E7142DA92E7100D35646 /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
 		DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegisterCompleteViewController.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
@@ -1924,6 +1932,7 @@
 			isa = PBXGroup;
 			children = (
 				DEA10B402DD3B7A2001EBBA9 /* Reason */,
+				DEA10B412DD3B7D3001EBBA9 /* Guide */,
 			);
 			path = Withdrawal;
 			sourceTree = "<group>";
@@ -1969,6 +1978,41 @@
 				DEA10B292DD38C5A001EBBA9 /* View */,
 			);
 			path = Reason;
+			sourceTree = "<group>";
+		};
+		DEA10B412DD3B7D3001EBBA9 /* Guide */ = {
+			isa = PBXGroup;
+			children = (
+				DEA10B4A2DD3C4F4001EBBA9 /* ViewModel */,
+				DEA10B422DD3B7E2001EBBA9 /* View */,
+			);
+			path = Guide;
+			sourceTree = "<group>";
+		};
+		DEA10B422DD3B7E2001EBBA9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DEA10B432DD3B7ED001EBBA9 /* WithdrawalGuideViewController.swift */,
+				DEA10B452DD3B984001EBBA9 /* Subview */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DEA10B452DD3B984001EBBA9 /* Subview */ = {
+			isa = PBXGroup;
+			children = (
+				DEA10B482DD3C3BA001EBBA9 /* WithdrawalGuideView.swift */,
+				DEA10B462DD3B9BA001EBBA9 /* WithdrawalGuideDescriptionView.swift */,
+			);
+			path = Subview;
+			sourceTree = "<group>";
+		};
+		DEA10B4A2DD3C4F4001EBBA9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DEA10B4B2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		DEAFE04F2D8C43D90097E91C /* GameSchedule */ = {
@@ -2417,6 +2461,8 @@
 				DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */,
 				DE0BFB602DA4F63800F06656 /* CommunityInviteCell.swift in Sources */,
 				DE0BFB5E2DA4EC4D00F06656 /* CommunityRegisterCell.swift in Sources */,
+				DEA10B492DD3C3BA001EBBA9 /* WithdrawalGuideView.swift in Sources */,
+				DEA10B442DD3B7ED001EBBA9 /* WithdrawalGuideViewController.swift in Sources */,
 				DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */,
 				DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */,
 				DE83891D2D9071E400C089E6 /* Date+.swift in Sources */,
@@ -2558,6 +2604,7 @@
 				DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */,
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
 				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
+				DEA10B472DD3B9BA001EBBA9 /* WithdrawalGuideDescriptionView.swift in Sources */,
 				DE64D7CA2DCBA2D700F55859 /* CreateViewitUseCase.swift in Sources */,
 				DD29681D2D6DAD0200143851 /* CommentRepository.swift in Sources */,
 				DE72BB1A2D93DC8C008E5774 /* ActivityNotificationViewController.swift in Sources */,
@@ -2579,6 +2626,7 @@
 				DDFF126F2D7EE39500980BA7 /* UIColor+.swift in Sources */,
 				DD2968242D6DAD0B00143851 /* ProfileMapper.swift in Sources */,
 				DD2968252D6DAD0B00143851 /* ViewitMapper.swift in Sources */,
+				DEA10B4C2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift in Sources */,
 				DEA10B2B2DD399F4001EBBA9 /* WithdrawalReasonViewController.swift in Sources */,
 				DD2968262D6DAD0B00143851 /* CommunityMapper.swift in Sources */,
 				DE7004842D8E87DC00B7AB71 /* RankListViewController.swift in Sources */,

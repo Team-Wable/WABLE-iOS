@@ -30,10 +30,11 @@ final class WithdrawalReasonViewController: UIViewController {
         $0.isScrollEnabled = false
     }
     
-    private let nextButton = WableButton(style: .primary).then {
+    private let nextButton = WableButton(style: .gray).then {
         var configuration = $0.configuration
         configuration?.title = "계속"
         $0.configuration = configuration
+        $0.isEnabled = false
     }
     
     // MARK: - Property
@@ -80,10 +81,12 @@ private extension WithdrawalReasonViewController {
         
         let titleLabel = UILabel().then {
             $0.attributedText = Constant.title.pretendardString(with: .head0)
+            $0.numberOfLines = 0
         }
         
         let descriptionLabel = UILabel().then {
             $0.attributedText = Constant.description.pretendardString(with: .body2)
+            $0.numberOfLines = 0
             $0.textColor = .gray600
         }
         
@@ -117,6 +120,7 @@ private extension WithdrawalReasonViewController {
         
         nextButton.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(16)
+            make.bottom.equalTo(safeArea).offset(-24)
             make.adjustedHeightEqualTo(56)
         }
     }
@@ -157,6 +161,9 @@ private extension WithdrawalReasonViewController {
         
         output
             .map(\.isNextEnabled)
+            .handleEvents(receiveOutput: { [weak self] isEnabled in
+                isEnabled ? self?.nextButton.updateStyle(.primary) : self?.nextButton.updateStyle(.gray)
+            })
             .assign(to: \.isEnabled, on: nextButton)
             .store(in: cancelBag)
         

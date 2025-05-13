@@ -25,6 +25,7 @@ final class WithdrawalReasonViewModel {
     
     func bind(with cancelBag: CancelBag) -> AnyPublisher<Output, Never> {
         let outputSubject = CurrentValueSubject<Output, Never>(Output())
+        let selectedReasons = CurrentValueSubject<Set<WithdrawalReason>, Never>([])
         
         input.load
             .flatMap { _ -> AnyPublisher<[WithdrawalReasonCellItem], Never>  in
@@ -34,14 +35,26 @@ final class WithdrawalReasonViewModel {
             .store(in: cancelBag)
         
         input.checkbox
+            .handleEvents(receiveOutput: { reason in
+                if selectedReasons.value.contains(reason) {
+                    selectedReasons.value.remove(reason)
+                } else {
+                    selectedReasons.value.insert(reason)
+                }
+            })
             .compactMap { reason in
                 return outputSubject.value.items.firstIndex { $0.reason == reason }
             }
             .sink { outputSubject.value.items[$0].isSelected.toggle() }
             .store(in: cancelBag)
         
+        selectedReasons
+            .map { $0.isEmpty }
+            .sink { outputSubject.value.isNextEnabled = !$0 }
+            .store(in: cancelBag)
+        
         input.next
-            .map { outputSubject.value.items.compactMap { $0.isSelected ? $0.reason : nil } }
+            .map { Array(selectedReasons.value) }
             .sink { outputSubject.value.selectedReasons = $0 }
             .store(in: cancelBag)
         
