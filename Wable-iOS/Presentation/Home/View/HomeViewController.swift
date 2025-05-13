@@ -172,6 +172,14 @@ private extension HomeViewController {
                 info: item.content.contentInfo,
                 authorType: item.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
                 cellType: .list,
+                contentImageViewTapHandler: {
+                    guard let image = cell.contentImageView.image else {
+                        WableLogger.log(">>> 조ㅕㅅ다", for: .error)
+                        return
+                    }
+                    
+                    self.present(PhotoDetailViewController(image: image), animated: true)
+                },
                 likeButtonTapHandler: {
                     self.didHeartTappedSubject.send((item.content.id, cell.likeButton.isLiked))
                 },

@@ -181,6 +181,11 @@ private extension HomeDetailViewController {
                 info: item.content.contentInfo,
                 authorType: item.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
                 cellType: .detail,
+                contentImageViewTapHandler: {
+                    guard let image = cell.contentImageView.image else { return }
+                    
+                    self.present(PhotoDetailViewController(image: image), animated: true)
+                },
                 likeButtonTapHandler: {
                     self.didContentHeartTappedSubject.send(cell.likeButton.isLiked)
                 },
