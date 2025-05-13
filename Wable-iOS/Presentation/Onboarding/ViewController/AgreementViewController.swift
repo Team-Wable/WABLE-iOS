@@ -155,7 +155,7 @@ private extension AgreementViewController {
                         lckYears: owner.lckYear,
                         userLevel: 1
                     ),
-                    isPushAlarmAllowed: false,
+                    isPushAlarmAllowed: owner.rootView.marketingAgreementItemView.checkButton.isSelected,
                     isAlarmAllowed: owner.rootView.marketingAgreementItemView.checkButton.isSelected,
                     image: owner.profileImage,
                     defaultProfileType: owner.defaultImage
