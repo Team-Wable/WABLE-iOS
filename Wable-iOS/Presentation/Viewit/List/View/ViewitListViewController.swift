@@ -125,9 +125,14 @@ private extension ViewitListViewController {
                 self?.meatballRelay.send(item.id)
             }
             
-            cell.cardDidTapClosure = { [weak self] in
-                guard let url = item.siteURL else { return }
-                self?.present(SFSafariViewController(url: url), animated: true)
+            cell.cardDidTapClosure = {
+                guard let url = item.siteURL,
+                      UIApplication.shared.canOpenURL(url)
+                else {
+                    return WableLogger.log("사이트를 열 수 없습니다: \(item.siteURL?.absoluteString ?? "")", for: .error)
+                }
+                
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
             
             cell.likeDidTapClosure = { [weak self] in

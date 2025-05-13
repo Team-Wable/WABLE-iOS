@@ -17,8 +17,8 @@ protocol ViewitRepository {
     func createViewit(
         thumbnailImageURLString: String,
         urlString: String,
-        siteName: String,
         title: String,
-        text: String
+        text: String,
+        siteName: String
     ) -> AnyPublisher<Void, WableError>
 }

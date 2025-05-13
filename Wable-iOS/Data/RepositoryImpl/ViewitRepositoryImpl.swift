@@ -56,18 +56,18 @@ extension ViewitRepositoryImpl: ViewitRepository {
     func createViewit(
         thumbnailImageURLString: String,
         urlString: String,
-        siteName: String,
         title: String,
-        text: String
+        text: String,
+        siteName: String
     ) -> AnyPublisher<Void, WableError> {
         return provider.request(
             .createViewitPost(
                 request: DTO.Request.CreateViewitPost(
-                    viewitImage: thumbnailImageURLString,
-                    viewitLink: urlString,
-                    viewitTitle: siteName,
-                    viewitText: title,
-                    viewitName: text
+                    viewitImageURLString: thumbnailImageURLString,
+                    viewitURLString: urlString,
+                    viewitTitle: title,
+                    viewitText: text,
+                    viewitName: siteName
                 )
             ),
             for: DTO.Response.Empty.self
@@ -184,9 +184,9 @@ struct MockViewitRepository: ViewitRepository {
     func createViewit(
         thumbnailImageURLString: String,
         urlString: String,
-        siteName: String,
         title: String,
-        text: String
+        text: String,
+        siteName: String
     ) -> AnyPublisher<Void, WableError> {
         return .just(())
             .delay(for: .seconds(delaySeconds), scheduler: RunLoop.main)
