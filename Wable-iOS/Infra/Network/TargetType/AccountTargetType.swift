@@ -13,7 +13,7 @@ import Moya
 enum AccountTargetType {
     case deleteAccount(request: DTO.Request.DeleteAccount)
     case fetchNicknameDuplication(nickname: String)
-    case updateUserBadge(badge: Int)
+    case updateUserBadge(request: DTO.Request.UpdateUserBadge)
 }
 
 extension AccountTargetType: BaseTargetType {
@@ -44,6 +44,8 @@ extension AccountTargetType: BaseTargetType {
     var requestBody: (any Encodable)? {
         switch self {
         case .deleteAccount(request: let request):
+            return request
+        case .updateUserBadge(request: let request):
             return request
         default:
             return .none

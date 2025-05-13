@@ -81,6 +81,38 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 self.userSessionRepository.updateNotificationBadge(count: badge, forUserID: activeID)
             }
             .store(in: cancelBag)
+        
+        guard let relateContentID = response.notification.request.content.userInfo["relateContentId"] as? String,
+              let contentID = Int(relateContentID),
+              let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController = windowScene.windows.first?.rootViewController
+        else {
+            return
+        }
+        
+        rootViewController.present(
+            HomeDetailViewController(
+                viewModel: HomeDetailViewModel(
+                    contentID: contentID,
+                    contentTitle: "",
+                    fetchContentInfoUseCase: FetchContentInfoUseCase(repository: contentRepository),
+                    fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: commentRepository),
+                    createCommentUseCase: CreateCommentUseCase(repository: commentRepository),
+                    deleteCommentUseCase: DeleteCommentUseCase(repository: commentRepository),
+                    createContentLikedUseCase: CreateContentLikedUseCase(repository: contentLikedRepository),
+                    deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: contentLikedRepository),
+                    createCommentLikedUseCase: CreateCommentLikedUseCase(repository: commentLikedRepository),
+                    deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: commentLikedRepository),
+                    fetchUserInformationUseCase: FetchUserInformationUseCase(repository: userSessionRepository),
+                    fetchGhostUseCase: FetchGhostUseCase(repository: GhostRepositoryImpl()),
+                    createReportUseCase: CreateReportUseCase(repository: reportRepository),
+                    createBannedUseCase: CreateBannedUseCase(repository: reportRepository),
+                    deleteContentUseCase: DeleteContentUseCase(repository: contentRepository)
+                ),
+                cancelBag: CancelBag()
+            ),
+            animated: true
+        )
     }
     
     func userNotificationCenter(

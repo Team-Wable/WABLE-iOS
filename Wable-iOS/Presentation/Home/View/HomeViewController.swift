@@ -174,7 +174,6 @@ private extension HomeViewController {
                 cellType: .list,
                 contentImageViewTapHandler: {
                     guard let image = cell.contentImageView.image else {
-                        WableLogger.log(">>> 조ㅕㅅ다", for: .error)
                         return
                     }
                     
