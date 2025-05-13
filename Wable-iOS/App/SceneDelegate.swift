@@ -83,6 +83,9 @@ private extension SceneDelegate {
     func configureLoginScreen() {
         self.window?.rootViewController = LoginViewController(
             viewModel: LoginViewModel(
+                updateFCMTokenUseCase: UpdateFCMTokenUseCase(
+                    repository: ProfileRepositoryImpl()
+                ),
                 fetchUserAuthUseCase: FetchUserAuthUseCase(
                     loginRepository: loginRepository,
                     userSessionRepository: userSessionRepository

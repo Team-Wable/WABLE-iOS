@@ -13,6 +13,7 @@ struct TokenStorage {
         case loginAccessToken = "loginAccessToken"
         case wableAccessToken = "accessToken"
         case wableRefreshToken = "refreshToken"
+        case fcmToken = "fcmToken"
     }
     
     private let keychainStorage: KeychainStorage

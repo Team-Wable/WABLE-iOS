@@ -24,7 +24,7 @@ extension CreateUserProfileUseCase {
             isPushAlarmAllowed: isPushAlarmAllowed,
             isAlarmAllowed: isAlarmAllowed,
             image: image,
-            fcmToken: nil,
+            fcmToken: repository.fetchFCMToken(),
             defaultProfileType: defaultProfileType
         )
     }

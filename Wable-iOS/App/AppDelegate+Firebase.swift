@@ -40,14 +40,9 @@ extension AppDelegate {
     }
     
     private func saveFCMToken(token: String?) {
-        profileRepository.updateUserProfile(fcmToken: token)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    WableLogger.log("FCMToken 업데이트 중 오류 발생: \(error)", for: .error)
-                }
-            } receiveValue: { _ in
-            }
-            .store(in: cancelBag)
+        guard let token = token else { return }
+        
+        self.profileRepository.updateFCMToken(token: token)
     }
 }
 
@@ -78,7 +73,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             } receiveValue: { [weak self] _ in
                 guard let self = self else { return }
                 
-                self.userSessionRepository.updateNotificationBadge(count: badge, forUserID: activeID)
+                self.userSessionRepository.updateUserSession(userID: activeID, notificationBadgeCount: badge)
             }
             .store(in: cancelBag)
         
