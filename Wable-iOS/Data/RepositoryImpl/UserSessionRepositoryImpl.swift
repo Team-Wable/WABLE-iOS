@@ -47,34 +47,31 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         return try? userDefaults.getValue(for: Keys.activeUserID)
     }
     
-    func updateUserSession(_ session: UserSession) {
+    func updateUserSession(
+        userID: Int,
+        nickname: String? = nil,
+        profileURL: URL? = nil,
+        isPushAlarmAllowed: Bool? = nil,
+        isAdmin: Bool? = nil,
+        isAutoLoginEnabled: Bool? = nil,
+        notificationBadgeCount: Int? = nil
+    ) {
         var sessions = fetchAllUserSessions()
         
-        sessions[session.id] = session
+        guard let existingSession = sessions[userID] else { return }
         
+        let updatedSession = UserSession(
+            id: existingSession.id,
+            nickname: nickname ?? existingSession.nickname,
+            profileURL: profileURL ?? existingSession.profileURL,
+            isPushAlarmAllowed: isPushAlarmAllowed ?? existingSession.isPushAlarmAllowed,
+            isAdmin: isAdmin ?? existingSession.isAdmin,
+            isAutoLoginEnabled: isAutoLoginEnabled ?? existingSession.isAutoLoginEnabled,
+            notificationBadgeCount: notificationBadgeCount ?? existingSession.notificationBadgeCount
+        )
+        
+        sessions[userID] = updatedSession
         try? userDefaults.setValue(sessions, for: Keys.userSessions)
-        
-        if fetchActiveUserID() == nil {
-            updateActiveUserID(session.id)
-        }
-    }
-    
-    func updateNotificationBadge(count: Int, forUserID userID: Int) {
-        var sessions = fetchAllUserSessions()
-        
-        if let session = sessions[userID] {
-            let updatedSession = UserSession(
-                id: session.id,
-                nickname: session.nickname,
-                profileURL: session.profileURL,
-                isPushAlarmAllowed: session.isPushAlarmAllowed,
-                isAdmin: session.isAdmin,
-                isAutoLoginEnabled: session.isAutoLoginEnabled,
-                notificationBadgeCount: count
-            )
-            sessions[userID] = updatedSession
-            try? userDefaults.setValue(sessions, for: Keys.userSessions)
-        }
     }
     
     func updateActiveUserID(_ userID: Int?) {

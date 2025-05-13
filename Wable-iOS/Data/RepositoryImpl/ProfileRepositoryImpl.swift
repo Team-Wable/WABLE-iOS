@@ -14,9 +14,49 @@ import Moya
 
 final class ProfileRepositoryImpl {
     private let provider = APIProvider<ProfileTargetType>()
+    private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
 }
 
 extension ProfileRepositoryImpl: ProfileRepository {
+    func updateUserProfile(nickname: String, fcmToken: String?) -> AnyPublisher<Void, WableError> {
+        return provider.request(
+            .updateUserProfile(
+                request: DTO.Request.UpdateUserProfile(
+                    info: DTO.Request.ProfileInfo(
+                        nickname: nil,
+                        isAlarmAllowed: nil,
+                        memberIntro: nil,
+                        isPushAlarmAllowed: nil,
+                        fcmToken: fcmToken,
+                        memberLCKYears: nil,
+                        memberFanTeam: nil,
+                        memberDefaultProfileImage: nil
+                    ),
+                    file: nil
+                )
+            ),
+            for: DTO.Response.Empty.self
+        )
+        .asVoid()
+        .mapWableError()
+    }
+    
+    func fetchFCMToken() -> String? {
+        do {
+            return try tokenStorage.load(.fcmToken)
+        } catch {
+            return nil
+        }
+    }
+    
+    func updateFCMToken(token: String) {
+        do {
+            try tokenStorage.save(token, for: .fcmToken)
+        } catch {
+            WableLogger.log("FCM 토큰 업데이트에 실패했습니다.", for: .error)
+        }
+    }
+    
     func fetchUserInfo() -> AnyPublisher<AccountInfo, WableError> {
         return provider.request(
             .fetchUserInfo,

@@ -71,17 +71,7 @@ private extension AppDelegate {
             guard let self = self,
                   let activeSession = userSessionRepository.fetchActiveUserSession() else { return }
             
-            self.userSessionRepository.updateUserSession(
-                UserSession(
-                    id: activeSession.id,
-                    nickname: activeSession.nickname,
-                    profileURL: activeSession.profileURL,
-                    isPushAlarmAllowed: granted,
-                    isAdmin: activeSession.isAdmin,
-                    isAutoLoginEnabled: activeSession.isAutoLoginEnabled,
-                    notificationBadgeCount: activeSession.notificationBadgeCount
-                )
-            )
+            self.userSessionRepository.updateUserSession(userID: activeSession.id, isPushAlarmAllowed: granted)
         }
     }
 }

@@ -20,6 +20,7 @@ final class AgreementViewController: NavigationViewController {
     private let lckYear: Int
     private let profileImage: UIImage?
     private let defaultImage: String?
+    private let updateFCMTokenUseCase = UpdateFCMTokenUseCase(repository: ProfileRepositoryImpl())
     private let profileUseCase = CreateUserProfileUseCase(repository: ProfileRepositoryImpl())
     private let userInformationUseCase = FetchUserInformationUseCase(
         repository: UserSessionRepositoryImpl(
@@ -163,19 +164,25 @@ private extension AgreementViewController {
                 .receive(on: DispatchQueue.main)
                 .sink { _ in
                 } receiveValue: { [weak self] _ in
-                    guard let cancelBag = self?.cancelBag else { return }
+                    guard let self = self else { return }
                     
-                    self?.userInformationUseCase.updateUserSession(
-                        session: UserSession(
-                            id: userSession.id,
-                            nickname: userSession.nickname,
-                            profileURL: userSession.profileURL,
-                            isPushAlarmAllowed: userSession.isPushAlarmAllowed,
-                            isAdmin: userSession.isAdmin,
-                            isAutoLoginEnabled: true,
-                            // TODO: FCM 구현 이후 바꿔줘야 함
-                            notificationBadgeCount: 0
-                        )
+                    self.updateFCMTokenUseCase.execute(nickname: owner.nickname)
+                        .sink { completion in
+                            if case .failure(let error) = completion {
+                                WableLogger.log("FCM 토큰 저장 중 에러 발생: \(error)", for: .error)
+                            }
+                        } receiveValue: { () in
+                        }
+                        .store(in: cancelBag)
+                    
+                    self.userInformationUseCase.updateUserSession(
+                        userID: userSession.id,
+                        nickname: userSession.nickname,
+                        profileURL: userSession.profileURL,
+                        isPushAlarmAllowed: userSession.isPushAlarmAllowed,
+                        isAdmin: userSession.isAdmin,
+                        isAutoLoginEnabled: true,
+                        notificationBadgeCount: userSession.notificationBadgeCount
                     )
                     .sink(receiveCompletion: { _ in
                     }, receiveValue: { _ in
@@ -189,13 +196,11 @@ private extension AgreementViewController {
                         
                         let tabBarController = TabBarController()
                         
-                        self?.dismiss(animated: false) {
-                            guard let nickname = self?.nickname else { return }
-                            
+                        self.dismiss(animated: false) {
                             loginViewController.present(tabBarController, animated: true) {
                                 let noticeViewController = WableSheetViewController(
                                     title: "와블과 함께해 주셔서 감사합니다!",
-                                    message: "\(nickname)님\n와블의 일원이 되신 것을 환영해요.\nLCK 함께 보며 같이 즐겨요 :)"
+                                    message: "\(self.nickname)님\n와블의 일원이 되신 것을 환영해요.\nLCK 함께 보며 같이 즐겨요 :)"
                                 )
                                 
                                 noticeViewController.addAction(.init(title: "와블 즐기러 가기", style: .primary))
