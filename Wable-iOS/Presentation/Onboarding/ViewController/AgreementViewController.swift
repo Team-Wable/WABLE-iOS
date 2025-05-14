@@ -106,6 +106,11 @@ private extension AgreementViewController {
     @objc func checkButtonDidTap(_ sender: UIButton) {
         sender.isSelected.toggle()
         
+        if sender.isSelected == false {
+            rootView.allAgreementItemView.checkButton.isSelected = false
+        }
+        
+        checkAllAgreeCondition()
         configureNextButton()
     }
     
@@ -225,5 +230,13 @@ private extension AgreementViewController {
         
         rootView.nextButton.isUserInteractionEnabled = condition
         rootView.nextButton.updateStyle(condition ? .primary : .gray)
+    }
+    
+    func checkAllAgreeCondition() {
+        rootView.allAgreementItemView.checkButton.isSelected =
+        rootView.personalInfoAgreementItemView.checkButton.isSelected &&
+        rootView.privacyPolicyAgreementItemView.checkButton.isSelected &&
+        rootView.ageAgreementItemView.checkButton.isSelected &&
+        rootView.marketingAgreementItemView.checkButton.isSelected
     }
 }

@@ -575,7 +575,6 @@ private extension HomeDetailViewController {
                 if isSucceed {
                     owner.commentTextView.text = nil
                     owner.commentTextView.endEditing(true)
-                    owner.scrollToTop()
                     
                     let toast = ToastView(status: .complete, message: "댓글을 남겼어요")
                     toast.show()
