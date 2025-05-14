@@ -8,44 +8,60 @@
 import Combine
 import Foundation
 
-final class AccountInfoViewModel {
+final class AccountInfoViewModel: ViewModelType {
     struct Input {
-        let load = PassthroughSubject<Void, Never>()
+        let load: AnyPublisher<Void, Never>
     }
     
-    struct Output: Equatable {
-        var items: [AccountInfoCellItem] = []
-        var errorMessage: String?
+    struct Output {
+        let items: AnyPublisher<[AccountInfoCellItem], Never>
+        let errorMessage: AnyPublisher<String, Never>
     }
     
-    let input = Input()
+    private let useCase: FetchAccountInfoUseCase
     
-    func bind(with cancelBag: CancelBag) -> AnyPublisher<Output, Never> {
-        let outputSubject = CurrentValueSubject<Output, Never>(Output())
+    init(useCase: FetchAccountInfoUseCase) {
+        self.useCase = useCase
+    }
+    
+    func transform(input: Input, cancelBag: CancelBag) -> Output {
+        let errorSubject = PassthroughSubject<String, Never>()
         
-//        input.load
-//            .flatMap { _ in
-//
-//                // TODO: 유저 정보 조회
-//
-//            }
-//            .sink { }
-//            .store(in: cancelBag)
-        
-        input.load
-            .sink { _ in
-                outputSubject.value.items = [
-                    .init(title: "소셜 로그인", description: "kakao"),
-                    .init(title: "버전 정보", description: "ㅏ민얼이ㅏㄴ머"),
-                    .init(title: "아이디", description: "adskljfdsalk"),
-                    .init(title: "가입일", description: "asdlkdsajlk"),
-                    .init(title: "이용약관", description: "자세히 보기", isUserInteractive: true)
+        let itemsPublisher = input.load
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.useCase.execute()
+                    .catch { error -> AnyPublisher<AccountInfo?, Never> in
+                        errorSubject.send(error.localizedDescription)
+                        return Just(nil).eraseToAnyPublisher()
+                    }
+            }
+            .compactMap { $0 }
+            .map { [weak self] accountInfo -> [AccountInfoCellItem] in
+                guard let self else {
+                    return []
+                }
+                
+                return [
+                    .init(title: "소셜 로그인", description: accountInfo.socialPlatform?.rawValue ?? ""),
+                    .init(title: "버전 정보", description: accountInfo.version),
+                    .init(title: "아이디", description: accountInfo.displayMemberID),
+                    .init(title: "가입일", description: self.formatDate(accountInfo.createdDate ?? .now)),
+                    .init(title: "이용약관", description: "자세히 보기", isUserInteractive: true),
                 ]
             }
-            .store(in: cancelBag)
-        
-        return outputSubject
             .removeDuplicates()
             .asDriver()
+        
+        return Output(
+            items: itemsPublisher,
+            errorMessage: errorSubject.asDriver()
+        )
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: date)
     }
 }

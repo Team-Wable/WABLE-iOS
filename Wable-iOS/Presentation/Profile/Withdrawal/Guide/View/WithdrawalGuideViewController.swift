@@ -10,6 +10,8 @@ import UIKit
 final class WithdrawalGuideViewController: UIViewController {
     
     private let viewModel: WithdrawalGuideViewModel
+    private let checkboxRelay = PassthroughRelay<Void>()
+    private let withdrawRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
     private let rootView = WithdrawalGuideView()
     
@@ -53,10 +55,14 @@ private extension WithdrawalGuideViewController {
     }
     
     func setupBinding() {
-        let output = viewModel.bind(with: cancelBag).share()
+        let input = WithdrawalGuideViewModel.Input(
+            checkbox: checkboxRelay.eraseToAnyPublisher(),
+            withdraw: withdrawRelay.eraseToAnyPublisher()
+        )
         
-        output
-            .map(\.isNextEnabled)
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.isNextEnabled
             .handleEvents(receiveOutput: { [weak self] isEnabled in
                 self?.rootView.checkboxButton.setImage(
                     isEnabled ? .btnCheckboxActive : .btnCheckboxDefault,
@@ -70,10 +76,17 @@ private extension WithdrawalGuideViewController {
             .assign(to: \.isEnabled, on: rootView.nextButton)
             .store(in: cancelBag)
         
-        output
-            .map(\.isWithdrawSuccess)
+        output.isWithdrawSuccess
             .filter { $0 }
             .sink { [weak self] _ in self?.presentLoginView() }
+            .store(in: cancelBag)
+        
+        output.errorMessage
+            .sink { [weak self] message in
+                let alert = UIAlertController(title: "에러가 발생했습니다.", message: message, preferredStyle: .alert)
+                alert.addAction(.init(title: "확인", style: .default))
+                self?.present(alert, animated: true)
+            }
             .store(in: cancelBag)
     }
     
@@ -94,14 +107,14 @@ private extension WithdrawalGuideViewController {
     }
     
     @objc func checkboxButtonDidTap() {
-        viewModel.input.checkbox.send()
+        checkboxRelay.send()
     }
     
     @objc func nextButtonDidTap() {
         let wableSheet = WableSheetViewController(title: "계정을 삭제하시겠어요?")
         let cancelAction = WableSheetAction(title: "취소", style: .gray)
         let withdrawAction = WableSheetAction(title: "삭제하기", style: .primary) { [weak self] in
-            self?.viewModel.input.withdraw.send()
+            self?.withdrawRelay.send()
         }
         wableSheet.addActions(cancelAction, withdrawAction)
         present(wableSheet, animated: true)

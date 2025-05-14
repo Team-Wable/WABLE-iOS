@@ -42,6 +42,7 @@ final class AccountInfoViewController: UIViewController {
     private var dataSource: DataSource?
     
     private let viewModel: AccountInfoViewModel
+    private let didLoadRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
@@ -70,7 +71,7 @@ final class AccountInfoViewController: UIViewController {
         setupDataSource()
         setupBinding()
         
-        viewModel.input.load.send()
+        didLoadRelay.send()
     }
 }
 
@@ -133,18 +134,15 @@ private extension AccountInfoViewController {
     }
     
     func setupBinding() {
-        let output = viewModel.bind(with: cancelBag).share()
+        let input = AccountInfoViewModel.Input(load: didLoadRelay.eraseToAnyPublisher())
         
-        output
-            .map(\.items)
-            .removeDuplicates()
-            .sink { [weak self] items in
-                self?.applySnapshot(items: items)
-            }
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.items
+            .sink { [weak self] in self?.applySnapshot(items: $0) }
             .store(in: cancelBag)
         
-        output
-            .compactMap(\.errorMessage)
+        output.errorMessage
             .sink { [weak self] message in
                 let alert = UIAlertController(title: "에러가 발생했습니다.", message: message, preferredStyle: .alert)
                 alert.addAction(.init(title: "확인", style: .default))
@@ -160,10 +158,8 @@ private extension AccountInfoViewController {
     }
     
     @objc func withdrawButtonDidTap() {
-        
-        // TODO: 탈퇴 시퀀스로 이동
-        
-        WableLogger.log("탈퇴하기 버튼 눌렸다.", for: .debug)
+        let viewController = WithdrawalReasonViewController()
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     // MARK: - Helper Method

@@ -243,7 +243,7 @@ private extension MyProfileViewController {
     }
 
     func navigateToAccountInfo() {
-        let viewModel = AccountInfoViewModel()
+        let viewModel = AccountInfoViewModel(useCase: FetchAccountInfoUseCaseImpl(repository: ProfileRepositoryImpl()))
         let viewController = AccountInfoViewController(viewModel: viewModel)
         navigationController?.pushViewController(viewController, animated: true)
     }

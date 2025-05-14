@@ -16,7 +16,8 @@ extension ProfileMapper {
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
         
         let createdDate = dateFormatter.date(from: response.joinDate)
-        let socialPlatform = SocialPlatform(rawValue: response.socialPlatform)
+        let splitKeyword = response.socialPlatform.split(separator: " ").map { "\($0)" }.first
+        let socialPlatform = SocialPlatform(rawValue: splitKeyword ?? response.socialPlatform)
         
         return AccountInfo(
             memberID: response.memberID,

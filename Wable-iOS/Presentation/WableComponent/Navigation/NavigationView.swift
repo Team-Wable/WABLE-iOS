@@ -268,5 +268,6 @@ extension NavigationView {
     
     func setNavigationTitle(text: String) {
         hubTitleLabel.attributedText = text.pretendardString(with: .head2)
+        pageTitleLabel.attributedText = text.pretendardString(with: .head2)
     }
 }

@@ -8,19 +8,17 @@
 import Combine
 import Foundation
 
-final class WithdrawalGuideViewModel {
+final class WithdrawalGuideViewModel: ViewModelType {
     struct Input {
-        let checkbox = PassthroughSubject<Void, Never>()
-        let withdraw = PassthroughSubject<Void, Never>()
+        let checkbox: Driver<Void>
+        let withdraw: Driver<Void>
     }
     
-    struct Output: Equatable {
-        var isNextEnabled = false
-        var isWithdrawSuccess = false
-        var errorMessage: String?
+    struct Output {
+        let isNextEnabled: Driver<Bool>
+        let isWithdrawSuccess: Driver<Bool>
+        let errorMessage: Driver<String>
     }
-    
-    let input = Input()
     
     private let selectedReasons: [WithdrawalReason]
     
@@ -28,26 +26,19 @@ final class WithdrawalGuideViewModel {
         self.selectedReasons = selectedReasons
     }
     
-    func bind(with cancelBag: CancelBag) -> AnyPublisher<Output, Never> {
-        let output = CurrentValueSubject<Output, Never>(Output())
+    func transform(input: Input, cancelBag: CancelBag) -> Output {
+        let isNextEnabledRelay = CurrentValueRelay<Bool>(false)
+        let isWithdrawSuccess = CurrentValueRelay<Bool>(false)
+        let errorMessageRelay = PassthroughRelay<String>()
         
         input.checkbox
-            .sink { _ in output.value.isNextEnabled.toggle() }
+            .sink { _ in isNextEnabledRelay.value.toggle() }
             .store(in: cancelBag)
         
-        input.withdraw
-//            .flatMap { _ in
-//                
-//                // TODO: 탈퇴 과정 실행
-//                
-//            }
-            .sink { _ in
-                output.value.isWithdrawSuccess = true
-            }
-            .store(in: cancelBag)
-        
-        return output
-            .removeDuplicates()
-            .asDriver()
+        return Output(
+            isNextEnabled: isNextEnabledRelay.asDriver(),
+            isWithdrawSuccess: isWithdrawSuccess.asDriver(),
+            errorMessage: errorMessageRelay.asDriver()
+        )
     }
 }
