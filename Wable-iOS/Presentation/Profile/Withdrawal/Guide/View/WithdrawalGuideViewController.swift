@@ -99,6 +99,7 @@ private extension WithdrawalGuideViewController {
         
         sceneDelegate.window?.rootViewController = LoginViewController(
             viewModel: .init(
+                updateFCMTokenUseCase: UpdateFCMTokenUseCase(repository: ProfileRepositoryImpl()),
                 fetchUserAuthUseCase: FetchUserAuthUseCase(
                     loginRepository: LoginRepositoryImpl(),
                     userSessionRepository: UserSessionRepositoryImpl(
