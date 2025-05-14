@@ -15,12 +15,12 @@ class UserSessionRepositoryImpl {
         static let activeUserID = "activeID"
     }
     
-    private let userDefaults: LocalKeyValueProvider
+    private let userDefaults: UserDefaultsStorage
     private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
     
     // MARK: - LifeCycle
 
-    init(userDefaults: LocalKeyValueProvider) {
+    init(userDefaults: UserDefaultsStorage) {
         self.userDefaults = userDefaults
     }
 }
@@ -57,21 +57,24 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         notificationBadgeCount: Int? = nil
     ) {
         var sessions = fetchAllUserSessions()
-        
-        guard let existingSession = sessions[userID] else { return }
+        let existingSession = sessions[userID]
         
         let updatedSession = UserSession(
-            id: existingSession.id,
-            nickname: nickname ?? existingSession.nickname,
-            profileURL: profileURL ?? existingSession.profileURL,
-            isPushAlarmAllowed: isPushAlarmAllowed ?? existingSession.isPushAlarmAllowed,
-            isAdmin: isAdmin ?? existingSession.isAdmin,
-            isAutoLoginEnabled: isAutoLoginEnabled ?? existingSession.isAutoLoginEnabled,
-            notificationBadgeCount: notificationBadgeCount ?? existingSession.notificationBadgeCount
+            id: userID,
+            nickname: nickname ?? existingSession?.nickname ?? "사용자",
+            profileURL: profileURL ?? existingSession?.profileURL,
+            isPushAlarmAllowed: isPushAlarmAllowed ?? existingSession?.isPushAlarmAllowed ?? false,
+            isAdmin: isAdmin ?? existingSession?.isAdmin ?? false,
+            isAutoLoginEnabled: isAutoLoginEnabled ?? existingSession?.isAutoLoginEnabled ?? true,
+            notificationBadgeCount: notificationBadgeCount ?? existingSession?.notificationBadgeCount ?? 0
         )
         
         sessions[userID] = updatedSession
         try? userDefaults.setValue(sessions, for: Keys.userSessions)
+        
+        if fetchActiveUserID() == nil {
+            updateActiveUserID(userID)
+        }
     }
     
     func updateActiveUserID(_ userID: Int?) {

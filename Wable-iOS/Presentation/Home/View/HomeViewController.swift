@@ -339,6 +339,19 @@ private extension HomeViewController {
             }
             .store(in: cancelBag)
         
+        output.badgeCount
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] count in
+                guard let self = self,
+                      let count = count
+                else {
+                    return
+                }
+                
+                self.navigationView.updateNotificationStatus(hasNewNotification: count > 0)
+            }
+            .store(in: cancelBag)
+        
         output.activeUserID
             .receive(on: DispatchQueue.main)
             .sink { [weak self] id in

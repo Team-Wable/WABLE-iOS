@@ -100,13 +100,19 @@ private extension SceneDelegate {
         if let id = userSessionRepository.fetchActiveUserID() {
             profileRepository.fetchUserProfile(memberID: id)
                 .receive(on: DispatchQueue.main)
-                .compactMap { return $0.user.nickname }
                 .sink { _ in
-                } receiveValue: { [weak self] nickname in
+                } receiveValue: { [weak self] info in
                     guard let self = self else { return }
                     let token = self.profileRepository.fetchFCMToken()
                     
-                    self.profileRepository.updateUserProfile(nickname: nickname, fcmToken: token)
+                    self.userSessionRepository.updateUserSession(
+                        userID: id,
+                        nickname: info.user.nickname,
+                        profileURL: info.user.profileURL,
+                        isAutoLoginEnabled: true
+                    )
+                    
+                    self.profileRepository.updateUserProfile(nickname: info.user.nickname, fcmToken: token)
                         .sink { completion in
                             switch completion {
                             case .failure(let error):
