@@ -77,7 +77,31 @@ final class TabBarController: UITabBarController {
         $0.tabBarItem.image = .icViewit
     }
     
-    private let profileViewController = ProfileViewController().then {
+    private let profileViewController = MyProfileViewController(
+        viewModel: .init(
+            userinformationUseCase: FetchUserInformationUseCase(
+                repository: UserSessionRepositoryImpl(
+                    userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
+                )
+            ),
+            fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(
+                repository: ProfileRepositoryImpl()
+            ),
+            fetchUserCommentListUseCase: FetchUserCommentListUseCaseImpl(
+                repository: CommentRepositoryImpl()
+            ),
+            fetchUserContentListUseCase: FetchUserContentUseCaseImpl(
+                repository: ContentRepositoryImpl()
+            ),
+            removeUserSessionUseCase: RemoveUserSessionUseCaseImpl(
+                repository: UserSessionRepositoryImpl(
+                    userDefaults: UserDefaultsStorage(
+                        jsonEncoder: .init(), jsonDecoder: .init()
+                    )
+                )
+            )
+        )
+    ).then {
         $0.tabBarItem.title = "마이"
         $0.tabBarItem.image = .icMyPress
     }
