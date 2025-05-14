@@ -37,6 +37,7 @@ final class MyProfileViewController: UIViewController {
     private let viewModel: ViewModel
     private let didLoadRelay = PassthroughRelay<Void>()
     private let selectedIndexRelay = PassthroughRelay<Int>()
+    private let logoutRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
     private let rootView = MyProfileView()
     
@@ -182,7 +183,8 @@ private extension MyProfileViewController {
     func setupBinding() {
         let input = ViewModel.Input(
             load: didLoadRelay.eraseToAnyPublisher(),
-            selectedIndex: selectedIndexRelay.eraseToAnyPublisher()
+            selectedIndex: selectedIndexRelay.eraseToAnyPublisher(),
+            logout: logoutRelay.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
@@ -200,6 +202,30 @@ private extension MyProfileViewController {
                 let alert = UIAlertController(title: "에러 발생!", message: message, preferredStyle: .alert)
                 alert.addAction(.init(title: "확인", style: .default))
                 self?.present(alert, animated: true)
+            }
+            .store(in: cancelBag)
+        
+        output.shouldBeLogin
+            .sink { _ in
+                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+                    return WableLogger.log("SceneDelegate 찾을 수 없음.", for: .debug)
+                }
+                
+                sceneDelegate.window?.rootViewController = LoginViewController(
+                    viewModel: .init(
+                        fetchUserAuthUseCase: FetchUserAuthUseCase(
+                            loginRepository: LoginRepositoryImpl(),
+                            userSessionRepository: UserSessionRepositoryImpl(
+                                userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
+                            )
+                        ),
+                        updateUserSessionUseCase: FetchUserInformationUseCase(
+                            repository: UserSessionRepositoryImpl(
+                                userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
+                            )
+                        )
+                    )
+                )
             }
             .store(in: cancelBag)
     }
@@ -262,10 +288,10 @@ private extension MyProfileViewController {
     func presentLogoutActionSheet() {
         let actionSheet = WableSheetViewController(title: "로그아웃하시겠어요?")
         let cancelAction = WableSheetAction(title: "취소", style: .gray)
-        let logoutAction = WableSheetAction(title: "로그아웃하기", style: .primary) {
+        let logoutAction = WableSheetAction(title: "로그아웃하기", style: .primary) { [weak self] in
             WableLogger.log("로그아웃 눌림.", for: .debug)
             
-            // TODO: 추후 기능 연결
+            self?.logoutRelay.send()
         }
         actionSheet.addActions(cancelAction, logoutAction)
         present(actionSheet, animated: true)

@@ -167,7 +167,17 @@ private extension WithdrawalReasonViewController {
         
         output.selectedReasons
             .sink { [weak self] selectedReasons in
-                let viewModel = WithdrawalGuideViewModel(selectedReasons: selectedReasons)
+                let viewModel = WithdrawalGuideViewModel(
+                    selectedReasons: selectedReasons,
+                    withdrawUseCase: WithdrawUseCaseImpl(
+                        repository: AccountRepositoryImpl()
+                    ),
+                    removeUserSessionUseCase: RemoveUserSessionUseCaseImpl(
+                        repository: UserSessionRepositoryImpl(
+                            userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
+                        )
+                    )
+                )
                 let viewController = WithdrawalGuideViewController(viewModel: viewModel)
                 self?.navigationController?.pushViewController(viewController, animated: true)
             }

@@ -97,7 +97,21 @@ private extension WithdrawalGuideViewController {
             return WableLogger.log("SceneDelegate 찾을 수 없음.", for: .debug)
         }
         
-        // TODO: SceneDelegate의 루트뷰컨 설정
+        sceneDelegate.window?.rootViewController = LoginViewController(
+            viewModel: .init(
+                fetchUserAuthUseCase: FetchUserAuthUseCase(
+                    loginRepository: LoginRepositoryImpl(),
+                    userSessionRepository: UserSessionRepositoryImpl(
+                        userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
+                    )
+                ),
+                updateUserSessionUseCase: FetchUserInformationUseCase(
+                    repository: UserSessionRepositoryImpl(
+                        userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
+                    )
+                )
+            )
+        )
     }
     
     // MARK: - Action
