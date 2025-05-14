@@ -92,6 +92,13 @@ final class TabBarController: UITabBarController {
             ),
             fetchUserContentListUseCase: FetchUserContentUseCaseImpl(
                 repository: ContentRepositoryImpl()
+            ),
+            removeUserSessionUseCase: RemoveUserSessionUseCaseImpl(
+                repository: UserSessionRepositoryImpl(
+                    userDefaults: UserDefaultsStorage(
+                        jsonEncoder: .init(), jsonDecoder: .init()
+                    )
+                )
             )
         )
     ).then {

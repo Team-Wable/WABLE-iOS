@@ -15,6 +15,7 @@ final class MyProfileViewModel {
     private let fetchUserProfileUseCase: FetchUserProfileUseCase
     private let fetchUserCommentListUseCase: FetchUserCommentListUseCase
     private let fetchUserContentListUseCase: FetchUserContentListUseCase
+    private let removeUserSessionUseCase: RemoveUserSessionUseCase
     
     private let userSessionRelay = CurrentValueRelay<UserSession?>(nil)
     private let profileViewItemRelay = CurrentValueRelay<ProfileViewItem>(.init(
@@ -26,12 +27,14 @@ final class MyProfileViewModel {
         userinformationUseCase: FetchUserInformationUseCase,
         fetchUserProfileUseCase: FetchUserProfileUseCase,
         fetchUserCommentListUseCase: FetchUserCommentListUseCase,
-        fetchUserContentListUseCase: FetchUserContentListUseCase
+        fetchUserContentListUseCase: FetchUserContentListUseCase,
+        removeUserSessionUseCase: RemoveUserSessionUseCase
     ) {
         self.userSessionUseCase = userinformationUseCase
         self.fetchUserProfileUseCase = fetchUserProfileUseCase
         self.fetchUserCommentListUseCase = fetchUserCommentListUseCase
         self.fetchUserContentListUseCase = fetchUserContentListUseCase
+        self.removeUserSessionUseCase = removeUserSessionUseCase
     }
 }
 
@@ -39,12 +42,14 @@ extension MyProfileViewModel: ViewModelType {
     struct Input {
         let load: Driver<Void>
         let selectedIndex: Driver<Int>
+        let logout: Driver<Void>
     }
     
     struct Output {
         let nickname: Driver<String>
         let item: Driver<ProfileViewItem>
         let errorMessage: Driver<String>
+        let shouldBeLogin: Driver<Void>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
@@ -73,10 +78,15 @@ extension MyProfileViewModel: ViewModelType {
             .sink { [weak self] in self?.profileViewItemRelay.send($0) }
             .store(in: cancelBag)
         
+        let shouldBeLogin = input.logout
+            .handleEvents(receiveOutput: { [weak self] _ in self?.removeUserSessionUseCase.removeUserSession() })
+            .asDriver()
+        
         return Output(
             nickname: nickname,
             item: profileViewItemRelay.asDriver(),
-            errorMessage: errorMessageRelay.asDriver()
+            errorMessage: errorMessageRelay.asDriver(),
+            shouldBeLogin: shouldBeLogin
         )
     }
 }
