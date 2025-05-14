@@ -26,6 +26,7 @@ final class HomeViewController: NavigationViewController {
     // MARK: - Property
     
     var shouldShowLoadingScreen: Bool = false
+    private static var hasShownLoadingScreen = false
     
     private let viewModel: HomeViewModel
     private let willAppearSubject = PassthroughSubject<Void, Never>()
@@ -84,8 +85,6 @@ final class HomeViewController: NavigationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        shouldShowLoadingScreen ? showLoadingScreen() : nil
-        
         setupView()
         setupConstraint()
         setupDataSource()
@@ -96,8 +95,11 @@ final class HomeViewController: NavigationViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-      
-        shouldShowLoadingScreen ? showLoadingScreen() : nil
+        
+        if shouldShowLoadingScreen && !HomeViewController.hasShownLoadingScreen {
+            showLoadingScreen()
+            HomeViewController.hasShownLoadingScreen = true
+        }
       
         willAppearSubject.send()
         
