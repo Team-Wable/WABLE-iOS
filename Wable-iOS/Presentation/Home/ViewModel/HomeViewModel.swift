@@ -55,6 +55,7 @@ extension HomeViewModel: ViewModelType {
     
     struct Output {
         let activeUserID: AnyPublisher<Int?, Never>
+        let badgeCount: AnyPublisher<Int?, Never>
         let isAdmin: AnyPublisher<Bool?, Never>
         let contents: AnyPublisher<[Content], Never>
         let selectedContent: AnyPublisher<Content, Never>
@@ -71,6 +72,7 @@ extension HomeViewModel: ViewModelType {
         let activeUserIDSubject = CurrentValueSubject<Int?, Never>(nil)
         let isAdminSubject = CurrentValueSubject<Bool?, Never>(false)
         let isReportSucceedSubject = CurrentValueSubject<Bool, Never>(false)
+        let badgeCountSubject = CurrentValueSubject<Int?, Never>(nil)
         
         let loadTrigger = Publishers.Merge(
             input.viewDidRefresh,
@@ -89,13 +91,14 @@ extension HomeViewModel: ViewModelType {
         
         loadTrigger
             .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<Bool?, Never> in
+            .flatMap { owner, _ -> AnyPublisher<UserSession?, Never> in
                 return owner.fetchUserInformationUseCase.fetchActiveUserInfo()
-                    .map { info in info?.isAdmin }
                     .eraseToAnyPublisher()
             }
-            .sink { isAdmin in
-                isAdminSubject.send(isAdmin)
+            .sink { info in
+                isAdminSubject.send(info?.isAdmin)
+                
+                badgeCountSubject.send(info?.notificationBadgeCount)
             }
             .store(in: cancelBag)
         
@@ -309,6 +312,7 @@ extension HomeViewModel: ViewModelType {
         
         return Output(
             activeUserID: activeUserIDSubject.eraseToAnyPublisher(),
+            badgeCount: badgeCountSubject.eraseToAnyPublisher(),
             isAdmin: isAdminSubject.eraseToAnyPublisher(),
             contents: contentsSubject.eraseToAnyPublisher(),
             selectedContent: selectedContent,
