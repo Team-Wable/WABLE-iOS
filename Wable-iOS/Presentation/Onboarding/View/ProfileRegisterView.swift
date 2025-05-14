@@ -116,8 +116,6 @@ private extension ProfileRegisterView {
             conditiionLabel,
             nextButton
         )
-        
-        configureView()
     }
     
     func setupConstraint() {
@@ -174,10 +172,36 @@ private extension ProfileRegisterView {
             $0.adjustedHeightEqualTo(56)
         }
     }
+}
+
+extension ProfileRegisterView {
     
     // MARK: Configure Method
     
     func configureView(profileImageURL: URL? = .none) {
+        guard let profileImageURL = profileImageURL else {
+            configureDefaultImage()
+            
+            return
+        }
+        
+        profileImageView.kf.setImage(with: profileImageURL)
+    }
+    
+    func configureProfileView(profileImageURL: URL? = .none) {
+        titleLabel.snp.makeConstraints() { make in
+            make.top.equalToSuperview().offset(28)
+            make.leading.equalToSuperview().offset(16)
+        }
+        
+        profileImageView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(62)
+            make.centerX.equalToSuperview()
+            make.size.equalTo(166.adjustedWidth)
+        }
+        
+        descriptionLabel.isHidden = true
+        
         guard let profileImageURL = profileImageURL else {
             configureDefaultImage()
             
