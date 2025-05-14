@@ -15,12 +15,12 @@ class UserSessionRepositoryImpl {
         static let activeUserID = "activeID"
     }
     
-    private let userDefaults: LocalKeyValueProvider
+    private let userDefaults: UserDefaultsStorage
     private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
     
     // MARK: - LifeCycle
 
-    init(userDefaults: LocalKeyValueProvider) {
+    init(userDefaults: UserDefaultsStorage) {
         self.userDefaults = userDefaults
     }
 }
@@ -47,33 +47,33 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         return try? userDefaults.getValue(for: Keys.activeUserID)
     }
     
-    func updateUserSession(_ session: UserSession) {
+    func updateUserSession(
+        userID: Int,
+        nickname: String? = nil,
+        profileURL: URL? = nil,
+        isPushAlarmAllowed: Bool? = nil,
+        isAdmin: Bool? = nil,
+        isAutoLoginEnabled: Bool? = nil,
+        notificationBadgeCount: Int? = nil
+    ) {
         var sessions = fetchAllUserSessions()
+        let existingSession = sessions[userID]
         
-        sessions[session.id] = session
+        let updatedSession = UserSession(
+            id: userID,
+            nickname: nickname ?? existingSession?.nickname ?? "사용자",
+            profileURL: profileURL ?? existingSession?.profileURL,
+            isPushAlarmAllowed: isPushAlarmAllowed ?? existingSession?.isPushAlarmAllowed ?? false,
+            isAdmin: isAdmin ?? existingSession?.isAdmin ?? false,
+            isAutoLoginEnabled: isAutoLoginEnabled ?? existingSession?.isAutoLoginEnabled ?? true,
+            notificationBadgeCount: notificationBadgeCount ?? existingSession?.notificationBadgeCount ?? 0
+        )
         
+        sessions[userID] = updatedSession
         try? userDefaults.setValue(sessions, for: Keys.userSessions)
         
         if fetchActiveUserID() == nil {
-            updateActiveUserID(session.id)
-        }
-    }
-    
-    func updateNotificationBadge(count: Int, forUserID userID: Int) {
-        var sessions = fetchAllUserSessions()
-        
-        if let session = sessions[userID] {
-            let updatedSession = UserSession(
-                id: session.id,
-                nickname: session.nickname,
-                profileURL: session.profileURL,
-                isPushAlarmAllowed: session.isPushAlarmAllowed,
-                isAdmin: session.isAdmin,
-                isAutoLoginEnabled: session.isAutoLoginEnabled,
-                notificationBadgeCount: count
-            )
-            sessions[userID] = updatedSession
-            try? userDefaults.setValue(sessions, for: Keys.userSessions)
+            updateActiveUserID(userID)
         }
     }
     

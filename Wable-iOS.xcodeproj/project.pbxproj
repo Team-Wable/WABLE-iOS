@@ -151,10 +151,13 @@
 		DD514D0A2D8C958B0095021D /* AgreementItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D092D8C957E0095021D /* AgreementItemView.swift */; };
 		DD514D0E2D8C99DC0095021D /* AgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D0D2D8C99DC0095021D /* AgreementView.swift */; };
 		DD514D102D8CA3780095021D /* AttributedString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D0F2D8CA36D0095021D /* AttributedString+.swift */; };
+		DD51A43B2DD3BE10004295B6 /* UpdateFCMTokenUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD51A43A2DD3BE08004295B6 /* UpdateFCMTokenUseCase.swift */; };
 		DD547AB92D7E43A600B8BA5A /* GhostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD547AB82D7E439E00B8BA5A /* GhostButton.swift */; };
 		DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */; };
 		DD765D9A2D8746E30029A317 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D992D8746DD0029A317 /* LoginViewController.swift */; };
 		DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D9C2D8747900029A317 /* SplashViewController.swift */; };
+		DD7E797E2DBF6D1E00570C23 /* AppDelegate+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7E797D2DBF6D0500570C23 /* AppDelegate+Firebase.swift */; };
+		DD7E79822DBFA48300570C23 /* UpdateUserBadgeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7E79812DBFA47000570C23 /* UpdateUserBadgeUseCase.swift */; };
 		DD8326962D95836F0014B62D /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8326952D95836B0014B62D /* HomeViewModel.swift */; };
 		DD8B42A42DA15DB0007DC1CA /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8B42A32DA15DA9007DC1CA /* UITextView+.swift */; };
 		DD8B42A82DA16B1F007DC1CA /* HomeDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8B42A72DA16B1A007DC1CA /* HomeDetailViewModel.swift */; };
@@ -459,10 +462,13 @@
 		DD514D092D8C957E0095021D /* AgreementItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementItemView.swift; sourceTree = "<group>"; };
 		DD514D0D2D8C99DC0095021D /* AgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementView.swift; sourceTree = "<group>"; };
 		DD514D0F2D8CA36D0095021D /* AttributedString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedString+.swift"; sourceTree = "<group>"; };
+		DD51A43A2DD3BE08004295B6 /* UpdateFCMTokenUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFCMTokenUseCase.swift; sourceTree = "<group>"; };
 		DD547AB82D7E439E00B8BA5A /* GhostButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostButton.swift; sourceTree = "<group>"; };
 		DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenProvider.swift; sourceTree = "<group>"; };
 		DD765D992D8746DD0029A317 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DD765D9C2D8747900029A317 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		DD7E797D2DBF6D0500570C23 /* AppDelegate+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Firebase.swift"; sourceTree = "<group>"; };
+		DD7E79812DBFA47000570C23 /* UpdateUserBadgeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserBadgeUseCase.swift; sourceTree = "<group>"; };
 		DD8326952D95836B0014B62D /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		DD8B42A32DA15DA9007DC1CA /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
 		DD8B42A72DA16B1A007DC1CA /* HomeDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailViewModel.swift; sourceTree = "<group>"; };
@@ -473,7 +479,6 @@
 		DD8CEF452D6A007900DBE580 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DD8CEF472D6A007900DBE580 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD8CEF482D6A007900DBE580 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		DD8CEFF82D6A00BB00DBE580 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "Base.lproj/LaunchScreen 2.storyboard"; sourceTree = "<group>"; };
 		DD90EEA72DC40D1700338EB2 /* FetchGhostUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchGhostUseCase.swift; sourceTree = "<group>"; };
 		DD90EEAA2DC5F65100338EB2 /* CreateBannedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBannedUseCase.swift; sourceTree = "<group>"; };
 		DD90EEAC2DC5F6BB00338EB2 /* CreateReportUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReportUseCase.swift; sourceTree = "<group>"; };
@@ -1198,6 +1203,7 @@
 			isa = PBXGroup;
 			children = (
 				DD8CEF472D6A007900DBE580 /* AppDelegate.swift */,
+				DD7E797D2DBF6D0500570C23 /* AppDelegate+Firebase.swift */,
 				DE6459CE2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift */,
 				DD8CEF482D6A007900DBE580 /* SceneDelegate.swift */,
 			);
@@ -1375,6 +1381,7 @@
 			children = (
 				DDED59772D78F1DA00A0BEF1 /* CreateUserProfileUseCase.swift */,
 				DDED59742D78F15000A0BEF1 /* FetchNicknameDuplicationUseCase.swift */,
+				DD51A43A2DD3BE08004295B6 /* UpdateFCMTokenUseCase.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -1391,6 +1398,7 @@
 		DDED59802D79611F00A0BEF1 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				DD7E79812DBFA47000570C23 /* UpdateUserBadgeUseCase.swift */,
 				DD9EAE232D99C66200803A1A /* FetchContentInfoUseCase.swift */,
 			);
 			path = Profile;
@@ -2267,6 +2275,7 @@
 				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,
 				DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */,
 				DD29686F2D6DAD5F00143851 /* MoyaLoggingPlugin.swift in Sources */,
+				DD7E797E2DBF6D1E00570C23 /* AppDelegate+Firebase.swift in Sources */,
 				DE98919B2D993D7200D538D8 /* InformationNotificationViewModel.swift in Sources */,
 				DD2968702D6DAD5F00143851 /* TokenStorage.swift in Sources */,
 				DE8E863D2D918759000A4292 /* RankViewModel.swift in Sources */,
@@ -2297,6 +2306,7 @@
 				DD8B42A82DA16B1F007DC1CA /* HomeDetailViewModel.swift in Sources */,
 				DEDC29162D72099C0073D512 /* InformationNotificationType.swift in Sources */,
 				DD9EAE262D99C75F00803A1A /* CreateContentUseCase.swift in Sources */,
+				DD7E79822DBFA48300570C23 /* UpdateUserBadgeUseCase.swift in Sources */,
 				DD29684B2D6DAD2F00143851 /* CreateViewitPostResponse.swift in Sources */,
 				DDED59782D78F1E500A0BEF1 /* CreateUserProfileUseCase.swift in Sources */,
 				DD29684C2D6DAD2F00143851 /* FetchNews.swift in Sources */,
@@ -2396,6 +2406,7 @@
 				DEF148402DA7B586003B2AD8 /* CommunityUseCase.swift in Sources */,
 				DDED597C2D794F0D00A0BEF1 /* FetchUserAuthUseCase.swift in Sources */,
 				DE7C53102D761E3300076E5D /* String+.swift in Sources */,
+				DD51A43B2DD3BE10004295B6 /* UpdateFCMTokenUseCase.swift in Sources */,
 				DD9EAE222D99C59900803A1A /* FetchContentListUseCase.swift in Sources */,
 				DD2968192D6DAD0200143851 /* ReportRepository.swift in Sources */,
 				DE6C3E3E2D91A8E00046DB30 /* NewsViewModel.swift in Sources */,
@@ -2459,7 +2470,6 @@
 		DD8CEFF92D6A00BB00DBE580 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DD8CEFF82D6A00BB00DBE580 /* LaunchScreen.storyboard */,
 				DEDC29112D7207610073D512 /* ko */,
 			);
 			name = LaunchScreen.storyboard;
