@@ -20,7 +20,7 @@ final class WithdrawalGuideView: UIView {
     
     let nextButton = WableButton(style: .gray).then {
         var config = $0.configuration
-        config?.title = "계속"
+        config?.attributedTitle = "계속".pretendardString(with: .head2)
         $0.configuration = config
         $0.isEnabled = false
     }

@@ -242,6 +242,7 @@
 		DE3CA2812DD43D0F00BF5E87 /* FetchUserProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3CA2802DD43D0F00BF5E87 /* FetchUserProfileUseCase.swift */; };
 		DE3CA2832DD4464E00BF5E87 /* FetchUserCommentListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3CA2822DD4464E00BF5E87 /* FetchUserCommentListUseCase.swift */; };
 		DE3CA2852DD448D900BF5E87 /* FetchUserContentListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3CA2842DD448D900BF5E87 /* FetchUserContentListUseCase.swift */; };
+		DE3CA2872DD4571E00BF5E87 /* FetchAccountInfoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3CA2862DD4571E00BF5E87 /* FetchAccountInfoUseCase.swift */; };
 		DE54B03C2D82C43F009A7C34 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */; };
 		DE54B03E2D82CD82009A7C34 /* NotFoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */; };
 		DE54B0402D832E78009A7C34 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */; };
@@ -568,6 +569,7 @@
 		DE3CA2802DD43D0F00BF5E87 /* FetchUserProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserProfileUseCase.swift; sourceTree = "<group>"; };
 		DE3CA2822DD4464E00BF5E87 /* FetchUserCommentListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserCommentListUseCase.swift; sourceTree = "<group>"; };
 		DE3CA2842DD448D900BF5E87 /* FetchUserContentListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserContentListUseCase.swift; sourceTree = "<group>"; };
+		DE3CA2862DD4571E00BF5E87 /* FetchAccountInfoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchAccountInfoUseCase.swift; sourceTree = "<group>"; };
 		DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFoundViewController.swift; sourceTree = "<group>"; };
 		DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
@@ -1440,6 +1442,7 @@
 				DE3CA2802DD43D0F00BF5E87 /* FetchUserProfileUseCase.swift */,
 				DE3CA2822DD4464E00BF5E87 /* FetchUserCommentListUseCase.swift */,
 				DE3CA2842DD448D900BF5E87 /* FetchUserContentListUseCase.swift */,
+				DE3CA2862DD4571E00BF5E87 /* FetchAccountInfoUseCase.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -2672,6 +2675,7 @@
 				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
 				DEA10B472DD3B9BA001EBBA9 /* WithdrawalGuideDescriptionView.swift in Sources */,
 				DE64D7CA2DCBA2D700F55859 /* CreateViewitUseCase.swift in Sources */,
+				DE3CA2872DD4571E00BF5E87 /* FetchAccountInfoUseCase.swift in Sources */,
 				DD29681D2D6DAD0200143851 /* CommentRepository.swift in Sources */,
 				DE72BB1A2D93DC8C008E5774 /* ActivityNotificationViewController.swift in Sources */,
 				DEAFE0592D8C4E0B0097E91C /* GameStatus+.swift in Sources */,

@@ -66,7 +66,7 @@ final class AlarmSettingViewController: UIViewController {
             object: nil
         )
         
-        viewModel.input.checkAlarmAuthorization.send()
+        viewModel.checkAlarmAuthorization()
     }
     
     deinit {
@@ -128,10 +128,8 @@ private extension AlarmSettingViewController {
     }
     
     func setupBinding() {
-        let output = viewModel.bind(with: cancelBag)
-        
-        output
-            .map { $0.isAuthorized ? "on" : "off" }
+        viewModel.$isAuthorized
+            .map { $0 ? "on" : "off" }
             .assign(to: \.text, on: statusLabel)
             .store(in: cancelBag)
     }
@@ -161,6 +159,6 @@ private extension AlarmSettingViewController {
     }
     
     @objc func appDidBecomActive() {
-        viewModel.input.checkAlarmAuthorization.send()
+        viewModel.checkAlarmAuthorization()
     }
 }

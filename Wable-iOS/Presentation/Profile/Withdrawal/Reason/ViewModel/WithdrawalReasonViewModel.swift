@@ -8,58 +8,60 @@
 import Combine
 import Foundation
 
-final class WithdrawalReasonViewModel {
+struct WithdrawalReasonViewModel: ViewModelType {
     struct Input {
-        let load = PassthroughSubject<Void, Never>()
-        let checkbox = PassthroughSubject<WithdrawalReason, Never>()
-        let next = PassthroughSubject<Void, Never>()
+        let load: Driver<Void>
+        let checkbox: Driver<WithdrawalReason>
+        let next: Driver<Void>
     }
     
-    struct Output: Equatable {
-        var items: [WithdrawalReasonCellItem] = []
-        var isNextEnabled: Bool = false
-        var selectedReasons: [WithdrawalReason] = []
+    struct Output {
+        let items: Driver<[WithdrawalReasonCellItem]>
+        let isNextEnabled: Driver<Bool>
+        let selectedReasons: Driver<[WithdrawalReason]>
     }
     
-    let input = Input()
-    
-    func bind(with cancelBag: CancelBag) -> AnyPublisher<Output, Never> {
-        let outputSubject = CurrentValueSubject<Output, Never>(Output())
-        let selectedReasons = CurrentValueSubject<Set<WithdrawalReason>, Never>([])
+    func transform(input: Input, cancelBag: CancelBag) -> Output {
+        let itemsRelay = CurrentValueRelay<[WithdrawalReasonCellItem]>([])
+        let selectedReasonsRelay = CurrentValueRelay<Set<WithdrawalReason>>([])
+        let isNextEnabledRelay = CurrentValueRelay<Bool>(false)
         
         input.load
             .flatMap { _ -> AnyPublisher<[WithdrawalReasonCellItem], Never>  in
                 return .just(WithdrawalReason.allCases.map { WithdrawalReasonCellItem(reason: $0, isSelected: false) })
             }
-            .sink { outputSubject.value.items = $0 }
+            .sink { itemsRelay.send($0) }
             .store(in: cancelBag)
         
         input.checkbox
-            .handleEvents(receiveOutput: { reason in
-                if selectedReasons.value.contains(reason) {
-                    selectedReasons.value.remove(reason)
+            .sink { reason in
+                guard let index = itemsRelay.value.firstIndex(where: { $0.reason == reason }) else { return }
+                
+                var item = itemsRelay.value[index]
+                item.isSelected.toggle()
+                itemsRelay.value[index] = item
+                
+                if item.isSelected {
+                    selectedReasonsRelay.value.insert(reason)
                 } else {
-                    selectedReasons.value.insert(reason)
+                    selectedReasonsRelay.value.remove(reason)
                 }
-            })
-            .compactMap { reason in
-                return outputSubject.value.items.firstIndex { $0.reason == reason }
             }
-            .sink { outputSubject.value.items[$0].isSelected.toggle() }
             .store(in: cancelBag)
         
-        selectedReasons
-            .map { $0.isEmpty }
-            .sink { outputSubject.value.isNextEnabled = !$0 }
+        selectedReasonsRelay
+            .map { !$0.isEmpty }
+            .sink { isNextEnabledRelay.send($0) }
             .store(in: cancelBag)
-        
-        input.next
-            .map { Array(selectedReasons.value) }
-            .sink { outputSubject.value.selectedReasons = $0 }
-            .store(in: cancelBag)
-        
-        return outputSubject
-            .removeDuplicates()
+            
+        let selectedReasons = input.next
+            .map { Array(selectedReasonsRelay.value) }
             .asDriver()
+        
+        return Output(
+            items: itemsRelay.asDriver(),
+            isNextEnabled: isNextEnabledRelay.asDriver(),
+            selectedReasons: selectedReasons
+        )
     }
 }

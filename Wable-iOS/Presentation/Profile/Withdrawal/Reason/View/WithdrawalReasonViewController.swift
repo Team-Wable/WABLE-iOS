@@ -41,21 +41,11 @@ final class WithdrawalReasonViewController: UIViewController {
 
     private var dataSource: DataSource?
     
-    private let viewModel: WithdrawalReasonViewModel
+    private let viewModel = WithdrawalReasonViewModel()
+    private let didLoadRelay = PassthroughRelay<Void>()
+    private let checkboxRelay = PassthroughRelay<WithdrawalReason>()
+    private let nextRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
-    
-    // MARK: - Initializer
-
-    init(viewModel: WithdrawalReasonViewModel) {
-        self.viewModel = viewModel
-        
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     // MARK: - Life Cycle
 
@@ -68,7 +58,7 @@ final class WithdrawalReasonViewController: UIViewController {
         setupAction()
         setupBinding()
         
-        viewModel.input.load.send()
+        didLoadRelay.send()
     }
 }
 
@@ -132,7 +122,7 @@ private extension WithdrawalReasonViewController {
             cell.configure(isSelected: item.isSelected, description: item.reason.rawValue)
             
             cell.checkboxDidTapClosure = { [weak self] in
-                self?.viewModel.input.checkbox.send(item.reason)
+                self?.checkboxRelay.send(item.reason)
             }
         }
         
@@ -149,34 +139,37 @@ private extension WithdrawalReasonViewController {
     
     func setupAction() {
         navigationView.backButton.addTarget(self, action: #selector(backButtonDidTap), for: .touchUpInside)
+        
+        nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
     }
     
     func setupBinding() {
-        let output = viewModel.bind(with: cancelBag).share()
+        let input = WithdrawalReasonViewModel.Input(
+            load: didLoadRelay.eraseToAnyPublisher(),
+            checkbox: checkboxRelay.eraseToAnyPublisher(),
+            next: nextRelay.eraseToAnyPublisher()
+        )
         
-        output
-            .map(\.items)
-            .removeDuplicates()
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.items
             .sink { [weak self] items in
                 self?.applySnapshot(items: items)
             }
             .store(in: cancelBag)
         
-        output
-            .map(\.isNextEnabled)
-            .removeDuplicates()
+        output.isNextEnabled
             .handleEvents(receiveOutput: { [weak self] isEnabled in
                 isEnabled ? self?.nextButton.updateStyle(.primary) : self?.nextButton.updateStyle(.gray)
             })
             .assign(to: \.isEnabled, on: nextButton)
             .store(in: cancelBag)
         
-        output
-            .map(\.selectedReasons)
-            .sink { selectedReasons in
-                
-                // TODO: 다음 화면으로 넘어가기
-                
+        output.selectedReasons
+            .sink { [weak self] selectedReasons in
+                let viewModel = WithdrawalGuideViewModel(selectedReasons: selectedReasons)
+                let viewController = WithdrawalGuideViewController(viewModel: viewModel)
+                self?.navigationController?.pushViewController(viewController, animated: true)
             }
             .store(in: cancelBag)
     }
@@ -185,6 +178,10 @@ private extension WithdrawalReasonViewController {
 
     @objc func backButtonDidTap() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func nextButtonDidTap() {
+        nextRelay.send()
     }
     
     // MARK: - Helper
