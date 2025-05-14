@@ -1,5 +1,5 @@
 //
-//  AccountDeleteReason.swift
+//  WithdrawalReason.swift
 //  Wable-iOS
 //
 //  Created by 김진웅 on 2/16/25.
@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - 계정 삭제 이유
 
-enum AccountDeleteReason: String {
+enum WithdrawalReason: String, CaseIterable {
     case inappropriateContent = "온화하지 못한 내용이 많이 보여요."
     case noDesiredContent = "원하는 콘텐츠가 없어요."
     case missingCommunityFeatures = "필요한 커뮤니티 기능이 없어요."
