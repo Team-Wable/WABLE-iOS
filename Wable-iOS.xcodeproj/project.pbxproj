@@ -190,7 +190,6 @@
 		DDCD66F32D7DF5AB00EF4C28 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */; };
 		DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */; };
 		DDCD66FB2D7DF6CF00EF4C28 /* ViewitListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FA2D7DF6C600EF4C28 /* ViewitListViewController.swift */; };
-		DDCD66FD2D7DF6D900EF4C28 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */; };
 		DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD67042D7E271C00EF4C28 /* ToastView.swift */; };
 		DDE966102D8C62A4004E899B /* DefaultProfileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE9660F2D8C629A004E899B /* DefaultProfileType.swift */; };
 		DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */; };
@@ -535,7 +534,6 @@
 		DDCD66F22D7DF5A500EF4C28 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		DDCD66FA2D7DF6C600EF4C28 /* ViewitListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitListViewController.swift; sourceTree = "<group>"; };
-		DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		DDCD67042D7E271C00EF4C28 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		DDE9660F2D8C629A004E899B /* DefaultProfileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultProfileType.swift; sourceTree = "<group>"; };
 		DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
@@ -1704,7 +1702,6 @@
 			isa = PBXGroup;
 			children = (
 				DD51A44B2DD458A8004295B6 /* ProfileEditViewController.swift */,
-				DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */,
 				DEA10B592DD3E8E9001EBBA9 /* ProfileViewItem.swift */,
 				DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */,
 				DEA10B5D2DD3F48E001EBBA9 /* ProfileSegmentKind.swift */,
@@ -2650,7 +2647,6 @@
 				DD2968022D6DAC9B00143851 /* ViewController.swift in Sources */,
 				DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */,
 				DE3390352D8EF40B00638BB4 /* AnnouncementDetailViewController.swift in Sources */,
-				DDCD66FD2D7DF6D900EF4C28 /* ProfileViewController.swift in Sources */,
 				DEE5D6132D9126D8009E5A25 /* WableBadgeSegmentedControl.swift in Sources */,
 				DD90EEAD2DC5F6CC00338EB2 /* CreateReportUseCase.swift in Sources */,
 				DE3CA2892DD466F100BF5E87 /* WithdrawUseCase.swift in Sources */,

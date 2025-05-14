@@ -93,7 +93,10 @@ private extension MyProfileViewController {
                 level: "\(item.userLevel)",
                 nickname: item.user.nickname,
                 introduction: "\(item.user.fanTeam?.rawValue ?? "LCK")을(를) 응원하고 있어요.\n\(item.lckYears)부터 LCK를 보기 시작했어요.",
-                ghostValue: item.ghostCount
+                ghostValue: item.ghostCount,
+                editButtonTapHandler: {
+                    self.navigationController?.pushViewController(ProfileEditViewController(), animated: true)
+                }
             )
         }
         
