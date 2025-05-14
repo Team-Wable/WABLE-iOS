@@ -127,7 +127,6 @@ private extension SceneDelegate {
 
                 }
                 .store(in: cancelBag)
-            
         }
         
         self.window?.rootViewController = TabBarController(shouldShowLoadingScreen: true)

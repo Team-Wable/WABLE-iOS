@@ -152,6 +152,7 @@
 		DD514D0E2D8C99DC0095021D /* AgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D0D2D8C99DC0095021D /* AgreementView.swift */; };
 		DD514D102D8CA3780095021D /* AttributedString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D0F2D8CA36D0095021D /* AttributedString+.swift */; };
 		DD51A43B2DD3BE10004295B6 /* UpdateFCMTokenUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD51A43A2DD3BE08004295B6 /* UpdateFCMTokenUseCase.swift */; };
+		DD51A44C2DD458A8004295B6 /* ProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD51A44B2DD458A8004295B6 /* ProfileEditViewController.swift */; };
 		DD547AB92D7E43A600B8BA5A /* GhostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD547AB82D7E439E00B8BA5A /* GhostButton.swift */; };
 		DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */; };
 		DD765D9A2D8746E30029A317 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D992D8746DD0029A317 /* LoginViewController.swift */; };
@@ -463,6 +464,7 @@
 		DD514D0D2D8C99DC0095021D /* AgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementView.swift; sourceTree = "<group>"; };
 		DD514D0F2D8CA36D0095021D /* AttributedString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedString+.swift"; sourceTree = "<group>"; };
 		DD51A43A2DD3BE08004295B6 /* UpdateFCMTokenUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFCMTokenUseCase.swift; sourceTree = "<group>"; };
+		DD51A44B2DD458A8004295B6 /* ProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditViewController.swift; sourceTree = "<group>"; };
 		DD547AB82D7E439E00B8BA5A /* GhostButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostButton.swift; sourceTree = "<group>"; };
 		DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenProvider.swift; sourceTree = "<group>"; };
 		DD765D992D8746DD0029A317 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -1611,6 +1613,7 @@
 		DE59BBA52D8A9DD50040ADCB /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				DD51A44B2DD458A8004295B6 /* ProfileEditViewController.swift */,
 				DDCD66FC2D7DF6D500EF4C28 /* ProfileViewController.swift */,
 			);
 			path = Profile;
@@ -2397,6 +2400,7 @@
 				DD005BA92D7FFFE400B1661F /* LikeButton.swift in Sources */,
 				DEB60AFF2DD238AF00FE8BFD /* ViewitListCell.swift in Sources */,
 				DD9EAE2E2D9A63FD00803A1A /* WritePostViewController.swift in Sources */,
+				DD51A44C2DD458A8004295B6 /* ProfileEditViewController.swift in Sources */,
 				DD2967FF2D6DAC8900143851 /* SceneDelegate.swift in Sources */,
 				DD2968172D6DAD0200143851 /* ContentRepository.swift in Sources */,
 				DDED595E2D78C3E000A0BEF1 /* KakaoAuthProvider.swift in Sources */,
