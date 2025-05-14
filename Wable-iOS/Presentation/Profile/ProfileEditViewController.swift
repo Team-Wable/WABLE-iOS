@@ -15,7 +15,7 @@ final class ProfileEditViewController: NavigationViewController {
     // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
     
     private var defaultImage: String? = nil
-    private let profileUseCase = CreateUserProfileUseCase(repository: ProfileRepositoryImpl())
+    private let profileUseCase = userProfileUseCase(repository: ProfileRepositoryImpl())
     private let nicknameUseCase = FetchNicknameDuplicationUseCase(repository: AccountRepositoryImpl())
     private let userSessionUseCase = FetchUserInformationUseCase(
         repository: UserSessionRepositoryImpl(
@@ -27,7 +27,7 @@ final class ProfileEditViewController: NavigationViewController {
     )
     private let cancelBag = CancelBag()
     
-    private var sessionInfo: UserSession? = nil
+    private var sessionProfile: UserProfile? = nil
     
     // MARK: - UIComponent
     
@@ -52,6 +52,13 @@ final class ProfileEditViewController: NavigationViewController {
         setupAction()
         setupTapGesture()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.updateSessionInfo()
+        rootView.nickNameTextField.text = nil
+    }
 }
 
 // MARK: - Priviate Extension
@@ -61,13 +68,10 @@ private extension ProfileEditViewController {
     // MARK: - Setup Method
     
     func setupView() {
+        self.navigationController?.navigationBar.isHidden = true
         view.addSubview(rootView)
         
-        defaultImage = rootView.defaultImageList[0].uppercased
-        
-        updateSessionInfo()
-        
-        self.rootView.configureProfileView(profileImageURL: sessionInfo?.profileURL)
+        hidesBottomBarWhenPushed = true
     }
     
     func setupConstraint() {
@@ -140,15 +144,35 @@ private extension ProfileEditViewController {
     }
     
     @objc func nextButtonDidTap() {
-        guard let name = rootView.nickNameTextField.text,
-              let session = sessionInfo
-        else {
+        guard let profile = sessionProfile else { return }
+        
+        guard let text = rootView.nickNameTextField.text,
+              text != "" else {
             return
         }
         
-        
-        
-        navigationController?.popViewController(animated: true)
+        profileUseCase.execute(
+            profile: UserProfile(
+                user: User(
+                    id: profile.user.id,
+                    nickname: text,
+                    profileURL: profile.user.profileURL,
+                    fanTeam: profile.user.fanTeam
+                ),
+                introduction: profile.introduction,
+                ghostCount: profile.ghostCount,
+                lckYears: profile.lckYears,
+                userLevel: profile.userLevel
+            ),
+            image: defaultImage == nil ? rootView.profileImageView.image : nil,
+            defaultProfileType: defaultImage
+        )
+        .withUnretained(self)
+        .sink { _ in
+        } receiveValue: { owner, _ in
+            owner.navigationController?.popViewController(animated: true)
+        }
+        .store(in: cancelBag)
     }
     
     // MARK: - Function Method
@@ -183,12 +207,22 @@ private extension ProfileEditViewController {
 
 extension ProfileEditViewController {
     func updateSessionInfo() {
-        userSessionUseCase.fetchActiveUserInfo()
+        userSessionUseCase.fetchActiveUserID()
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] session in
-                guard let self = self else { return }
+            .sink { [weak self] sessionID in
+                guard let self = self,
+                      let sessionID = sessionID else { return }
                 
-                sessionInfo = session
+                profileUseCase.execute(userID: sessionID)
+                    .receive(on: DispatchQueue.main)
+                    .sink { _ in } receiveValue: { [weak self] profile in
+                        guard let self = self else { return }
+                        
+                        self.sessionProfile = profile
+                        
+                        self.rootView.configureProfileView(profileImageURL: profile.user.profileURL)
+                    }
+                    .store(in: cancelBag)
             }
             .store(in: cancelBag)
     }
