@@ -13,6 +13,10 @@ import Kingfisher
 
 final class ProfileInfoCell: UICollectionViewCell {
     
+    // MARK: - Property
+    
+    private var editButtonTapHandler: VoidClosure?
+
     // MARK: - Header UIComponent
 
     private let headerView = UIView()
@@ -90,6 +94,7 @@ final class ProfileInfoCell: UICollectionViewCell {
         setupIntroductionView()
         setupGhostView()
         setupBadgeView()
+        setupAction()
     }
     
     @available(*, unavailable)
@@ -103,8 +108,10 @@ final class ProfileInfoCell: UICollectionViewCell {
         level: String,
         nickname: String,
         introduction: String,
-        ghostValue: Int
+        ghostValue: Int,
+        editButtonTapHandler: VoidClosure?
     ) {
+        self.editButtonTapHandler = editButtonTapHandler
         editButton.isHidden = !isMyProfile
         
         levelLabel.text = "LV. \(level)"
@@ -234,6 +241,14 @@ private extension ProfileInfoCell {
             make.leading.equalTo(badgeTitleLabel)
             make.adjustedHeightEqualTo(Constant.badgeImageViewHeight)
         }
+    }
+    
+    func setupAction() {
+        editButton.addAction(UIAction(handler: { [weak self] _ in
+            guard let self = self else { return }
+            
+            editButtonTapHandler?()
+        }), for: .touchUpInside)
     }
     
     enum Constant {
