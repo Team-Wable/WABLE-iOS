@@ -103,6 +103,7 @@ private extension MyProfileViewController {
                 info: item.contentInfo,
                 authorType: .mine,
                 cellType: .list,
+                contentImageViewTapHandler: nil,
                 likeButtonTapHandler: {
                     WableLogger.log("좋아요 눌림", for: .debug)
                     
@@ -213,6 +214,9 @@ private extension MyProfileViewController {
                 
                 sceneDelegate.window?.rootViewController = LoginViewController(
                     viewModel: .init(
+                        updateFCMTokenUseCase: UpdateFCMTokenUseCase(
+                            repository: ProfileRepositoryImpl()
+                        ),
                         fetchUserAuthUseCase: FetchUserAuthUseCase(
                             loginRepository: LoginRepositoryImpl(),
                             userSessionRepository: UserSessionRepositoryImpl(
