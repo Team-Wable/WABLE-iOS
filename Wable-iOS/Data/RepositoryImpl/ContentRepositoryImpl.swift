@@ -43,12 +43,12 @@ extension ContentRepositoryImpl: ContentRepository {
         .mapWableError()
     }
     
-    func fetchContentInfo(contentID: Int, title: String) -> AnyPublisher<ContentInfo, WableError> {
+    func fetchContentInfo(contentID: Int) -> AnyPublisher<ContentInfo, WableError> {
         provider.request(
             .fetchContentInfo(contentID: contentID),
             for: DTO.Response.FetchContent.self
         )
-        .map { ContentMapper.toDomain($0, title) }
+        .map { ContentMapper.toDomain($0) }
         .mapWableError()
     }
     

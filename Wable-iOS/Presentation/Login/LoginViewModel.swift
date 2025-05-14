@@ -12,7 +12,8 @@ import Foundation
 final class LoginViewModel {
     
     // MARK: Property
-
+    
+    private let updateFCMTokenUseCase: UpdateFCMTokenUseCase
     private let fetchUserAuthUseCase: FetchUserAuthUseCase
     private let updateUserSessionUseCase: FetchUserInformationUseCase
     private let loginSuccessSubject = PassthroughSubject<Account, Never>()
@@ -20,7 +21,12 @@ final class LoginViewModel {
     
     // MARK: - LifeCycle
 
-    init(fetchUserAuthUseCase: FetchUserAuthUseCase, updateUserSessionUseCase: FetchUserInformationUseCase) {
+    init(
+        updateFCMTokenUseCase: UpdateFCMTokenUseCase,
+        fetchUserAuthUseCase: FetchUserAuthUseCase,
+        updateUserSessionUseCase: FetchUserInformationUseCase
+    ) {
+        self.updateFCMTokenUseCase = updateFCMTokenUseCase
         self.fetchUserAuthUseCase = fetchUserAuthUseCase
         self.updateUserSessionUseCase = updateUserSessionUseCase
     }
@@ -63,17 +69,24 @@ extension LoginViewModel: ViewModelType {
                     WableLogger.log("로그인 작업 완료", for: .debug)
                 },
                 receiveValue: { [weak self] account in
-                    self?.updateUserSessionUseCase.updateUserSession(
-                        session: UserSession(
-                            id: account.user.id,
-                            nickname: account.user.nickname,
-                            profileURL: account.user.profileURL,
-                            isPushAlarmAllowed: account.isPushAlarmAllowed ?? false,
-                            isAdmin: account.isAdmin,
-                            isAutoLoginEnabled: true,
-                            // TODO: FCM 구현 이후 바꿔줘야 함
-                            notificationBadgeCount: 0
-                        )
+                    guard let self = self else { return }
+                    
+                    self.updateFCMTokenUseCase.execute(nickname: account.user.nickname)
+                        .sink { completion in
+                            if case .failure(let error) = completion {
+                                WableLogger.log("FCM 토큰 저장 중 에러 발생: \(error)", for: .error)
+                            }
+                        } receiveValue: { () in
+                        }
+                        .store(in: cancelBag)
+                    
+                    self.updateUserSessionUseCase.updateUserSession(
+                        userID: account.user.id,
+                        nickname: account.user.nickname,
+                        profileURL: account.user.profileURL,
+                        isPushAlarmAllowed: account.isPushAlarmAllowed,
+                        isAdmin: account.isAdmin,
+                        isAutoLoginEnabled: true
                     )
                     .sink(receiveCompletion: { _ in
                     }, receiveValue: { _ in
@@ -81,7 +94,7 @@ extension LoginViewModel: ViewModelType {
                     })
                     .store(in: cancelBag)
                     
-                    self?.loginSuccessSubject.send(account)
+                    self.loginSuccessSubject.send(account)
                 }
             )
             .store(in: cancelBag)

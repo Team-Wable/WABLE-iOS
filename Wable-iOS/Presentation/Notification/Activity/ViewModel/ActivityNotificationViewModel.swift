@@ -10,9 +10,17 @@ import Foundation
 
 final class ActivityNotificationViewModel {
     private let useCase: NotificationUseCase
+    private let userBadgeUseCase: UpdateUserBadgeUseCase
+    private let userInformationUseCase: FetchUserInformationUseCase
     
-    init(useCase: NotificationUseCase) {
+    init(
+        useCase: NotificationUseCase,
+        userBadgeUseCase: UpdateUserBadgeUseCase,
+        userInformationUseCase: FetchUserInformationUseCase
+    ) {
         self.useCase = useCase
+        self.userBadgeUseCase = userBadgeUseCase
+        self.userInformationUseCase = userInformationUseCase
     }
 }
 
@@ -40,8 +48,9 @@ extension ActivityNotificationViewModel: ViewModelType {
         let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
         let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
         let isLastPageSubject = CurrentValueSubject<Bool, Never>(false)
+        let loadTrigger = Publishers.Merge(input.viewDidLoad, input.viewDidRefresh)
         
-        Publishers.Merge(input.viewDidLoad, input.viewDidRefresh)
+        loadTrigger
             .handleEvents(receiveOutput: { _ in
                 isLoadingSubject.send(true)
                 isLastPageSubject.send(false)
@@ -55,6 +64,35 @@ extension ActivityNotificationViewModel: ViewModelType {
                 isLastPageSubject.send(self?.isLastPage(notifications) ?? false)
             })
             .sink { notificationsSubject.send($0) }
+            .store(in: cancelBag)
+        
+        loadTrigger
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.userBadgeUseCase.execute(number: 0)
+                    .sink { completion in
+                        if case .failure(let error) = completion {
+                            WableLogger.log("뱃지 수정 중 오류 발생: \(error)", for: .error)
+                        }
+                    } receiveValue: { [weak self] _ in
+                        guard let self = self else { return }
+                        
+                        self.userInformationUseCase.fetchActiveUserID()
+                            .sink { [weak self] id in
+                                guard let self = self,
+                                      let id = id
+                                else {
+                                    return
+                                }
+                                
+                                self.userInformationUseCase.updateUserSession(userID: id, notificationBadgeCount: 0)
+                                    .sink { _ in }
+                                    .store(in: cancelBag)
+                            }
+                            .store(in: cancelBag)
+                    }
+                    .store(in: cancelBag)
+            }
             .store(in: cancelBag)
         
         input.willDisplayLastItem

@@ -32,6 +32,7 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     // MARK: - Property
     // TODO: 셀 타입 따라 이미지 크기 설정하는 분기 처리 필요
     
+    var contentImageViewHandler: (() -> Void)?
     var likeButtonTapHandler: (() -> Void)?
     var profileImageViewTapHandler: (() -> Void)?
     var settingButtonTapHandler: (() -> Void)?
@@ -57,7 +58,7 @@ final class ContentCollectionViewCell: UICollectionViewCell {
         $0.textColor = .wableBlack
     }
     
-    private let contentImageView: UIImageView = UIImageView().then {
+    let contentImageView: UIImageView = UIImageView().then {
         $0.isUserInteractionEnabled = true
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
@@ -188,14 +189,7 @@ private extension ContentCollectionViewCell {
     // MARK: - @objc Method
     
     @objc func contentImageViewDidTap() {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let rootViewController = windowScene.windows.first?.rootViewController,
-              let image = contentImageView.image
-        else {
-            return
-        }
-        
-        rootViewController.present(PhotoDetailViewController(image: image), animated: true)
+        contentImageViewHandler?()
     }
     
     @objc func profileImageViewDidTap() {
@@ -249,12 +243,14 @@ extension ContentCollectionViewCell {
         info: ContentInfo,
         authorType: AuthorType,
         cellType: CellType = .list,
+        contentImageViewTapHandler: (() -> Void)?,
         likeButtonTapHandler: (() -> Void)?,
         settingButtonTapHandler: (() -> Void)?,
         profileImageViewTapHandler: (() -> Void)?,
         ghostButtonTapHandler: (() -> Void)?
     ) {
         self.cellType = cellType
+        self.contentImageViewHandler = contentImageViewTapHandler
         self.likeButtonTapHandler = likeButtonTapHandler
         self.ghostButtonTapHandler = ghostButtonTapHandler
         self.profileImageViewTapHandler = profileImageViewTapHandler

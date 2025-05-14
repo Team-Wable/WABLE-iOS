@@ -265,8 +265,18 @@ extension NavigationView {
         
         visibleViewList.forEach { $0.isHidden = false }
     }
-    
+}
+
+// MARK: - Helper Method
+
+extension NavigationView {
     func setNavigationTitle(text: String) {
         hubTitleLabel.attributedText = text.pretendardString(with: .head2)
+    }
+    
+    func updateNotificationStatus(hasNewNotification: Bool) {
+        if case .home = type {
+            notificationButton.setImage(hasNewNotification ? .icNotiBadge : .icNotiDefault, for: .normal)
+        }
     }
 }

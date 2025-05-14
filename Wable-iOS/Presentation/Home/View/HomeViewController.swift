@@ -26,6 +26,7 @@ final class HomeViewController: NavigationViewController {
     // MARK: - Property
     
     var shouldShowLoadingScreen: Bool = false
+    private static var hasShownLoadingScreen = false
     
     private let viewModel: HomeViewModel
     private let willAppearSubject = PassthroughSubject<Void, Never>()
@@ -84,8 +85,6 @@ final class HomeViewController: NavigationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        shouldShowLoadingScreen ? showLoadingScreen() : nil
-        
         setupView()
         setupConstraint()
         setupDataSource()
@@ -96,8 +95,11 @@ final class HomeViewController: NavigationViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-      
-        shouldShowLoadingScreen ? showLoadingScreen() : nil
+        
+        if shouldShowLoadingScreen && !HomeViewController.hasShownLoadingScreen {
+            showLoadingScreen()
+            HomeViewController.hasShownLoadingScreen = true
+        }
       
         willAppearSubject.send()
         
@@ -172,6 +174,13 @@ private extension HomeViewController {
                 info: item.content.contentInfo,
                 authorType: item.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
                 cellType: .list,
+                contentImageViewTapHandler: {
+                    guard let image = cell.contentImageView.image else {
+                        return
+                    }
+                    
+                    self.present(PhotoDetailViewController(image: image), animated: true)
+                },
                 likeButtonTapHandler: {
                     self.didHeartTappedSubject.send((item.content.id, cell.likeButton.isLiked))
                 },
@@ -332,6 +341,19 @@ private extension HomeViewController {
             }
             .store(in: cancelBag)
         
+        output.badgeCount
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] count in
+                guard let self = self,
+                      let count = count
+                else {
+                    return
+                }
+                
+                self.navigationView.updateNotificationStatus(hasNewNotification: count > 0)
+            }
+            .store(in: cancelBag)
+        
         output.activeUserID
             .receive(on: DispatchQueue.main)
             .sink { [weak self] id in
@@ -353,7 +375,6 @@ private extension HomeViewController {
                 let viewController = HomeDetailViewController(
                     viewModel: HomeDetailViewModel(
                         contentID: content.content.id,
-                        contentTitle: content.content.contentInfo.title,
                         fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
                         fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
                         createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),

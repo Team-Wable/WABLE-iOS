@@ -11,7 +11,6 @@ import Foundation
 
 final class HomeDetailViewModel {
     private let contentID: Int
-    private let contentTitle: String
     private let fetchContentInfoUseCase: FetchContentInfoUseCase
     private let fetchContentCommentListUseCase: FetchContentCommentListUseCase
     private let createCommentUseCase: CreateCommentUseCase
@@ -28,7 +27,6 @@ final class HomeDetailViewModel {
     
     init(
         contentID: Int,
-        contentTitle: String,
         fetchContentInfoUseCase: FetchContentInfoUseCase,
         fetchContentCommentListUseCase: FetchContentCommentListUseCase,
         createCommentUseCase: CreateCommentUseCase,
@@ -44,7 +42,6 @@ final class HomeDetailViewModel {
         deleteContentUseCase: DeleteContentUseCase
     ) {
         self.contentID = contentID
-        self.contentTitle = contentTitle
         self.fetchContentInfoUseCase = fetchContentInfoUseCase
         self.fetchContentCommentListUseCase = fetchContentCommentListUseCase
         self.createCommentUseCase = createCommentUseCase
@@ -141,10 +138,7 @@ extension HomeDetailViewModel: ViewModelType {
             })
             .withUnretained(self)
             .flatMap({ owner, _ -> AnyPublisher<(ContentInfo?, [ContentComment]), Never> in
-                let contentPublisher = owner.fetchContentInfoUseCase.execute(
-                    contentID: owner.contentID,
-                    title: owner.contentTitle
-                )
+                let contentPublisher = owner.fetchContentInfoUseCase.execute(contentID: owner.contentID)
                     .map { contentInfo -> ContentInfo? in
                         return contentInfo
                     }
@@ -306,11 +300,7 @@ extension HomeDetailViewModel: ViewModelType {
                 .asDriver(onErrorJustReturn: ())
             }
             .sink(receiveValue: { [weak self] _ in
-                guard let id = self?.contentID,
-                      let title = contentSubject.value?.title
-                else {
-                    return
-                }
+                guard let id = self?.contentID else { return }
                 
                 self?.fetchContentCommentListUseCase.execute(contentID: id, cursor: -1)
                     .sink(receiveCompletion: { _ in
@@ -319,7 +309,7 @@ extension HomeDetailViewModel: ViewModelType {
                     })
                     .store(in: cancelBag)
                 
-                self?.fetchContentInfoUseCase.execute(contentID: id, title: title)
+                self?.fetchContentInfoUseCase.execute(contentID: id)
                     .sink(receiveCompletion: { _ in
                     }, receiveValue: { content in
                         contentSubject.send(content)

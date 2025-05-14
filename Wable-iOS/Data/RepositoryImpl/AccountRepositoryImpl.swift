@@ -41,7 +41,7 @@ extension AccountRepositoryImpl: AccountRepository {
     
     func updateUserBadge(badge: Int) -> AnyPublisher<Void, WableError> {
         return provider.request(
-            .updateUserBadge(badge: badge),
+            .updateUserBadge(request: DTO.Request.UpdateUserBadge(fcmBadge: badge)),
             for: DTO.Response.Empty.self
         )
         .asVoid()

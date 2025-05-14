@@ -220,7 +220,6 @@ private extension ActivityNotificationViewController {
                 let viewController = HomeDetailViewController(
                     viewModel: HomeDetailViewModel(
                         contentID: contentID,
-                        contentTitle: "",
                         fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
                         fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
                         createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),

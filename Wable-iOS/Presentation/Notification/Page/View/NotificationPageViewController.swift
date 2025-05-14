@@ -109,9 +109,24 @@ extension NotificationPageViewController: UIPageViewControllerDataSource {
 
 private extension NotificationPageViewController {
     func setupViewControllers() {
-        let useCase = MockNotificationUseCaseImpl()
-        let activityNotiViewController = ActivityNotificationViewController(viewModel: .init(useCase: useCase))
+        let useCase = NotificationUseCaseImpl(notificationRepository: NotificationRepositoryImpl())
+        let userBadgeUseCase = UpdateUserBadgeUseCase(repository: AccountRepositoryImpl())
+        let userInformationUseCase = FetchUserInformationUseCase(
+            repository: UserSessionRepositoryImpl(
+                userDefaults: UserDefaultsStorage(
+                    jsonEncoder: JSONEncoder(),
+                    jsonDecoder: JSONDecoder()
+                )
+            )
+        )
         
+        let activityNotiViewController = ActivityNotificationViewController(
+            viewModel: .init(
+                useCase: useCase,
+                userBadgeUseCase: userBadgeUseCase,
+                userInformationUseCase: userInformationUseCase
+            )
+        )
         let informationNotiViewController = InformationNotificationViewController(viewModel: .init(useCase: useCase))
         
         viewControllers.append(activityNotiViewController)
@@ -123,7 +138,8 @@ private extension NotificationPageViewController {
         
         pagingContainerView.addSubview(pagingView)
         pagingView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalToSuperview().offset(10)
+            make.horizontalEdges.bottom.equalToSuperview()
         }
         
         pageViewController.didMove(toParent: self)

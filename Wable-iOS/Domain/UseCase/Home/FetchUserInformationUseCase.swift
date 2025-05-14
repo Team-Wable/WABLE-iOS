@@ -30,8 +30,26 @@ extension FetchUserInformationUseCase {
             .eraseToAnyPublisher()
     }
     
-    func updateUserSession(session: UserSession) -> AnyPublisher<Void, Never> {
-        return Just(repository.updateUserSession(session))
-            .eraseToAnyPublisher()
+    func updateUserSession(
+        userID: Int,
+        nickname: String? = nil,
+        profileURL: URL? = nil,
+        isPushAlarmAllowed: Bool? = nil,
+        isAdmin: Bool? = nil,
+        isAutoLoginEnabled: Bool? = nil,
+        notificationBadgeCount: Int? = nil
+    ) -> AnyPublisher<Void, Never> {
+        return Just(
+            repository.updateUserSession(
+                userID: userID,
+                nickname: nickname,
+                profileURL: profileURL,
+                isPushAlarmAllowed: isPushAlarmAllowed,
+                isAdmin: isAdmin,
+                isAutoLoginEnabled: isAutoLoginEnabled,
+                notificationBadgeCount: notificationBadgeCount
+            )
+        )
+        .eraseToAnyPublisher()
     }
 }

@@ -50,14 +50,6 @@ final class LoginViewController: UIViewController {
         $0.clipsToBounds = true
     }
     
-    // TODO: - 자동 로그인 구현 이후 삭제 필요
-    
-    private lazy var tempButton: UIButton = UIButton(configuration: .filled()).then {
-        $0.configuration?.attributedTitle = "하하 우리 인생 화이팅".pretendardString(with: .body3)
-        $0.configuration?.baseBackgroundColor = .sky50
-        $0.configuration?.baseForegroundColor = .wableWhite
-    }
-    
     // MARK: - LifeCycle
     
     init(viewModel: LoginViewModel) {
@@ -75,7 +67,6 @@ final class LoginViewController: UIViewController {
         
         setupView()
         setupConstraint()
-        setupAction()
         setupBinding()
     }
 }
@@ -93,8 +84,7 @@ private extension LoginViewController {
             loginImageView,
             titleLabel,
             kakaoButton,
-            appleButton,
-            tempButton
+            appleButton
         )
     }
     
@@ -131,24 +121,6 @@ private extension LoginViewController {
             $0.horizontalEdges.equalToSuperview().inset(16)
             $0.height.equalTo(50)
         }
-        
-        tempButton.snp.makeConstraints {
-            $0.bottom.equalTo(kakaoButton.snp.top).offset(-20)
-            $0.horizontalEdges.equalToSuperview().inset(16)
-            $0.height.equalTo(50)
-        }
-    }
-    
-    func setupAction() {
-        tempButton.addAction(
-            .init(
-                handler: { _ in
-                    let tabBarController = TabBarController()
-                    
-                    self.present(tabBarController, animated: true)
-                }),
-            for: .touchUpInside
-        )
     }
     
     func setupBinding() {

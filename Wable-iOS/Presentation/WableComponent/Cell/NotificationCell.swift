@@ -19,6 +19,7 @@ final class NotificationCell: UICollectionViewCell {
         $0.image = .imgProfileSmall
         $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
+        $0.layer.cornerRadius = 36 / 2
         $0.isUserInteractionEnabled = false
     }
     

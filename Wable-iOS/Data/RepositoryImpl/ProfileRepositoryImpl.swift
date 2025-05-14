@@ -14,9 +14,50 @@ import Moya
 
 final class ProfileRepositoryImpl {
     private let provider = APIProvider<ProfileTargetType>()
+    private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
 }
 
 extension ProfileRepositoryImpl: ProfileRepository {
+    func updateUserProfile(nickname: String, fcmToken: String?) -> AnyPublisher<Void, WableError> {
+        return provider.request(
+            .updateUserProfile(
+                request: DTO.Request.UpdateUserProfile(
+                    info: DTO.Request.ProfileInfo(
+                        nickname: nickname,
+                        isAlarmAllowed: nil,
+                        memberIntro: nil,
+                        isPushAlarmAllowed: nil,
+                        fcmToken: fcmToken,
+                        memberLCKYears: nil,
+                        memberFanTeam: nil,
+                        memberDefaultProfileImage: nil
+                    ),
+                    file: nil
+                )
+            ),
+            for: DTO.Response.Empty.self
+        )
+        .asVoid()
+        .mapWableError()
+    }
+    
+    func fetchFCMToken() -> String? {
+        do {
+            return try tokenStorage.load(.fcmToken)
+        } catch {
+            return nil
+        }
+    }
+    
+    func updateFCMToken(token: String) {
+        do {
+            try tokenStorage.save(token, for: .fcmToken)
+            WableLogger.log("FCM 토큰 업데이트 성공", for: .debug)
+        } catch {
+            WableLogger.log("FCM 토큰 업데이트에 실패했습니다.", for: .error)
+        }
+    }
+    
     func fetchUserInfo() -> AnyPublisher<AccountInfo, WableError> {
         return provider.request(
             .fetchUserInfo,
@@ -36,24 +77,24 @@ extension ProfileRepositoryImpl: ProfileRepository {
     }
     
     func updateUserProfile(
-        profile: UserProfile,
-        isPushAlarmAllowed: Bool,
-        isAlarmAllowed: Bool,
+        profile: UserProfile? = nil,
+        isPushAlarmAllowed: Bool? = nil,
+        isAlarmAllowed: Bool? = nil,
         image: UIImage? = nil,
+        fcmToken: String? = nil,
         defaultProfileType: String? = nil
     ) -> AnyPublisher<Void, WableError> {
         return provider.request(
             .updateUserProfile(
                 request: DTO.Request.UpdateUserProfile(
                     info: DTO.Request.ProfileInfo(
-                        nickname: profile.user.nickname,
+                        nickname: profile?.user.nickname,
                         isAlarmAllowed: isAlarmAllowed,
-                        memberIntro: profile.introduction,
+                        memberIntro: profile?.introduction,
                         isPushAlarmAllowed: isPushAlarmAllowed,
-                        // TODO: fcm 토큰 넣어주는 로직 필요
-                        fcmToken: nil,
-                        memberLCKYears: profile.lckYears,
-                        memberFanTeam: profile.user.fanTeam?.rawValue,
+                        fcmToken: fcmToken,
+                        memberLCKYears: profile?.lckYears,
+                        memberFanTeam: profile?.user.fanTeam?.rawValue,
                         memberDefaultProfileImage: defaultProfileType
                     ),
                     file: image?.jpegData(compressionQuality: 0.1)

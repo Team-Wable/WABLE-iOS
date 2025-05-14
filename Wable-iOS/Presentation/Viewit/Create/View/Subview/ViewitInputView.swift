@@ -21,7 +21,7 @@ final class ViewitInputView: UIView {
         $0.isHidden = true
     }
     
-    let urlIconImageView = UIImageView(image: .icLink)
+    let urlIconImageView = UIImageView(image: .add)
     
     let urlTextField = UITextField(pretendard: .body4, placeholder: Constant.urlPlaceholder).then {
         $0.tintColor = .purple50
