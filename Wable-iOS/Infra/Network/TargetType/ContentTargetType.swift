@@ -65,7 +65,7 @@ extension ContentTargetType: BaseTargetType {
             return "/v3/content/\(contentID)"
         case .fetchContentList:
             return "/v3/contents"
-        case .fetchUserContentList(memberID: let memberID):
+        case .fetchUserContentList(memberID: let memberID, _):
             return "/v3/member/\(memberID)/contents"
         }
     }
@@ -74,7 +74,7 @@ extension ContentTargetType: BaseTargetType {
         switch self {
         case .fetchContentList(cursor: let cursor):
             return ["cursor" : cursor]
-        case .fetchUserContentList(cursor: let cursor):
+        case .fetchUserContentList(_, cursor: let cursor):
             return ["cursor" : cursor]
         default:
             return .none

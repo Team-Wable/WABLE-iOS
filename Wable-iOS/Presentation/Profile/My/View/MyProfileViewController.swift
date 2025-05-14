@@ -28,12 +28,30 @@ final class MyProfileViewController: UIViewController {
     
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    typealias ViewModel = MyProfileViewModel
     
     // MARK: - Property
 
     private var dataSource: DataSource?
     
+    private let viewModel: ViewModel
+    private let didLoadRelay = PassthroughRelay<Void>()
+    private let selectedIndexRelay = PassthroughRelay<Int>()
+    private let cancelBag = CancelBag()
     private let rootView = MyProfileView()
+    
+    // MARK: - Initializer
+
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Life Cycle
     
@@ -48,30 +66,9 @@ final class MyProfileViewController: UIViewController {
         setupNavigationBar()
         setupDataSource()
         setupAction()
+        setupBinding()
         
-        applyMockProfileSnapshot()
-    }
-    
-    func applyMockProfileSnapshot() {
-        var snapshot = Snapshot()
-        
-        // 프로필 섹션만 추가
-        snapshot.appendSections([.profile, .post])
-        
-        // Mock 데이터 추가
-        let mockProfile = UserProfile(
-            user: .init(id: 134, nickname: "하하", profileURL: URL(string: "https://example.com/profile.png"), fanTeam: .t1),
-            introduction: "히히히",
-            ghostCount: -14,
-            lckYears: 2023,
-            userLevel: 1000
-        )
-        
-        snapshot.appendItems([.profile(mockProfile)], toSection: .profile)
-        snapshot.appendItems([], toSection: .post)
-        
-        // Snapshot 적용
-        dataSource?.apply(snapshot, animatingDifferences: true)
+        didLoadRelay.send()
     }
 }
 
@@ -139,9 +136,7 @@ private extension MyProfileViewController {
             elementKind: UICollectionView.elementKindSectionHeader
         ) { supplementaryView, elementKind, indexPath in
             supplementaryView.segmentDidChangeClosure = { [weak self] selectedIndex in
-                WableLogger.log("세그먼트 변경됨: \(selectedIndex)", for: .debug)
-                
-                // TODO: 추후 기능 연결
+                self?.selectedIndexRelay.send(selectedIndex)
             }
         }
         
@@ -184,6 +179,31 @@ private extension MyProfileViewController {
         rootView.navigationView.menuButton.addTarget(self, action: #selector(menuButtonDidTap), for: .touchUpInside)
     }
     
+    func setupBinding() {
+        let input = ViewModel.Input(
+            load: didLoadRelay.eraseToAnyPublisher(),
+            selectedIndex: selectedIndexRelay.eraseToAnyPublisher()
+        )
+        
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.nickname
+            .sink { [weak self] in self?.rootView.navigationView.setNavigationTitle(text: $0) }
+            .store(in: cancelBag)
+        
+        output.item
+            .sink { [weak self] in self?.applySnapshot(item: $0) }
+            .store(in: cancelBag)
+        
+        output.errorMessage
+            .sink { [weak self] message in
+                let alert = UIAlertController(title: "에러 발생!", message: message, preferredStyle: .alert)
+                alert.addAction(.init(title: "확인", style: .default))
+                self?.present(alert, animated: true)
+            }
+            .store(in: cancelBag)
+    }
+    
     // MARK: - Action
 
     @objc func menuButtonDidTap() {
@@ -204,6 +224,23 @@ private extension MyProfileViewController {
     }
     
     // MARK: - Helper
+    
+    func applySnapshot(item: ProfileViewItem) {
+        guard let profileInfo = item.profileInfo else {
+            return WableLogger.log("프로필 없음.", for: .debug)
+        }
+        
+        var snapshot = Snapshot()
+        snapshot.appendSections([.profile, .post])
+        snapshot.appendItems([.profile(profileInfo)], toSection: .profile)
+        
+        if viewModel.selectedSegment == .content {
+            snapshot.appendItems(item.content.map { Item.content($0) }, toSection: .post)
+        } else {
+            snapshot.appendItems(item.comment.map { Item.comment($0) }, toSection: .post)
+        }
+        dataSource?.apply(snapshot)
+    }
 
     func navigateToAccountInfo() {
         let viewModel = AccountInfoViewModel()
