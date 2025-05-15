@@ -154,7 +154,7 @@ private extension LoginViewController {
                 
                 WableLogger.log("새로운 유저인가요? : \(sessionInfo.isNewUser || sessionInfo.user.nickname != "")", for: .debug)
                 
-                condition ? owner.navigateToOnboarding() : owner.navigateToOnboarding()
+                condition ? owner.navigateToOnboarding() : owner.navigateToHome()
             }
             .store(in: cancelBag)
     }
