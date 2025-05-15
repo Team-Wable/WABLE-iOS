@@ -160,6 +160,8 @@ private extension WritePostViewController {
     }
     
     func setupAction() {
+        navigationView.backButton.removeTarget(nil, action: nil, for: .touchUpInside)
+        navigationView.backButton.addTarget(self, action: #selector(popButtonDidTap), for: .touchUpInside)
         postButton.addTarget(self, action: #selector(postButtonDidTap), for: .touchUpInside)
         imageButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
         deleteButton.addAction(UIAction(handler: { [weak self] _ in
@@ -218,6 +220,25 @@ private extension WritePostViewController {
         
         postButtonTapRelay.send((title: title, content: content, image: imageView.image))
         WableLogger.log("postButtonTapRelay 실행 완료", for: .debug)
+    }
+    
+    @objc func popButtonDidTap() {
+        if (contentTextView.text == Constant.contentPlaceholder || contentTextView.text == "")
+            && (titleTextView.text == Constant.titlePlaceholder || titleTextView.text == "")
+            && imageView.image == nil {
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            let popup = WableSheetViewController(title: "작성중인 글에서 나가실건가요?\n작성하셨던 내용은 삭제돼요")
+            
+            popup.addActions(
+                WableSheetAction(title: "취소", style: .gray),
+                WableSheetAction(title: "나가기", style: .primary, handler: {
+                    self.navigationController?.popViewController(animated: true)
+                })
+            )
+            
+            self.present(popup, animated: true)
+        }
     }
 }
 
