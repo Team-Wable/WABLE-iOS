@@ -25,9 +25,13 @@ final class LoginViewController: UIViewController {
         $0.contentMode = .scaleAspectFill
     }
     
-    private let logoImageView: UIImageView = UIImageView(image: .logoType)
+    private let logoImageView: UIImageView = UIImageView(image: .logoType).then {
+        $0.contentMode = .scaleAspectFit
+    }
     
-    private let loginImageView: UIImageView = UIImageView(image: .imgLogin)
+    private let loginImageView: UIImageView = UIImageView(image: .imgLogin).then {
+        $0.contentMode = .scaleAspectFit
+    }
     
     private let titleLabel: UILabel = UILabel().then {
         $0.attributedText = "클린 LCK 팬 커뮤니티\n와블에서 함께 해요".pretendardString(with: .head0)
@@ -146,9 +150,9 @@ private extension LoginViewController {
             .receive(on: DispatchQueue.main)
             .withUnretained(self)
             .sink { owner, sessionInfo in
-                let condition = sessionInfo.isNewUser && sessionInfo.user.nickname.isEmpty
+                let condition = sessionInfo.isNewUser || sessionInfo.user.nickname.isEmpty
                 
-                WableLogger.log("새로운 유저인가요? : \(sessionInfo.isNewUser && sessionInfo.user.nickname != "")", for: .debug)
+                WableLogger.log("새로운 유저인가요? : \(sessionInfo.isNewUser || sessionInfo.user.nickname != "")", for: .debug)
                 
                 condition ? owner.navigateToOnboarding() : owner.navigateToHome()
             }
