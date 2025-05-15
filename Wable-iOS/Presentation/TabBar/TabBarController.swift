@@ -160,7 +160,6 @@ private extension TabBarController {
 private extension TabBarController {
     func configureTabBar() {
         let tabBarAppearance = UITabBarAppearance()
-        tabBarAppearance.configureWithTransparentBackground()
         
         tabBar.do {
             $0.unselectedItemTintColor = .gray400
