@@ -35,6 +35,8 @@ final class MyProfileView: UIView {
         $0.configuration = config
     }
     
+    private let divisionLine = UIView(backgroundColor: .gray200)
+    
     // MARK: - Initializer
 
     override init(frame: CGRect) {
@@ -54,7 +56,7 @@ private extension MyProfileView {
     func setupView() {
         contentEmptyView.addSubviews(contentEmptyLabel, contentEmptyWriteButton)
         
-        addSubviews(navigationView, collectionView, contentEmptyView)
+        addSubviews(navigationView, collectionView, contentEmptyView, divisionLine)
         
         navigationView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(safeArea)
@@ -81,6 +83,11 @@ private extension MyProfileView {
         contentEmptyView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalTo(safeArea).offset(-48)
+        }
+        
+        divisionLine.snp.makeConstraints { make in
+            make.horizontalEdges.bottom.equalTo(safeArea)
+            make.height.equalTo(1)
         }
     }
 }
