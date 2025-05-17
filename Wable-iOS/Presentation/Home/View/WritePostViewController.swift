@@ -56,6 +56,8 @@ final class WritePostViewController: NavigationViewController {
         $0.isHidden = true
     }
     
+    private let divideView: UIView = .init(backgroundColor: .gray100)
+    
     private lazy var imageButton: UIButton = .init(configuration: .plain()).then {
         $0.configuration?.image = .icPhoto
     }
@@ -113,7 +115,7 @@ private extension WritePostViewController {
         
         scrollView.addSubviews(stackView, deleteButton)
         
-        stackView.addArrangedSubviews(titleTextView, imageView, contentTextView)
+        stackView.addArrangedSubviews(titleTextView, divideView, imageView, contentTextView)
     }
     
     func setupConstraint() {
@@ -138,6 +140,12 @@ private extension WritePostViewController {
             $0.top.equalTo(imageView).offset(16)
             $0.trailing.equalTo(imageView).inset(16)
             $0.size.equalTo(44.adjustedWidth)
+        }
+        
+        divideView.snp.makeConstraints {
+            $0.bottom.equalTo(imageButton.snp.top).offset(-8)
+            $0.horizontalEdges.equalToSuperview()
+            $0.adjustedHeightEqualTo(2)
         }
         
         imageButton.snp.makeConstraints {
