@@ -32,7 +32,7 @@ final class WritePostViewController: NavigationViewController {
         $0.isScrollEnabled = false
         $0.textContainerInset = .zero
         $0.setPretendard(with: .head1, text: Constant.titlePlaceholder)
-        $0.textColor = .gray700
+        $0.textColor = .gray500
         $0.backgroundColor = .clear
     }
     
@@ -332,7 +332,7 @@ extension WritePostViewController: UITextViewDelegate {
         
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             textView.text = placeholder
-            textView.textColor = textView == titleTextView ? .gray700 : .gray500
+            textView.textColor = .gray500
             updateCharacterCount()
         }
     }
@@ -342,14 +342,13 @@ extension WritePostViewController: UITextViewDelegate {
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        let isPlaceholder = (textView == titleTextView && textView.textColor == .gray700) ||
-        (textView == contentTextView && textView.textColor == .gray500)
-        
+        let isPlaceholder = textView == titleTextView || textView == contentTextView 
+         
         if isPlaceholder {
             return true
         }
         
-        let titleCount = titleTextView.textColor == .gray700 ? 0 : titleTextView.text.count
+        let titleCount = titleTextView.textColor == .gray500 ? 0 : titleTextView.text.count
         let contentCount = contentTextView.textColor == .gray500 ? 0 : contentTextView.text.count
         let currentCount = textView == titleTextView ? titleCount : contentCount
         let otherCount = textView == titleTextView ? contentCount : titleCount
