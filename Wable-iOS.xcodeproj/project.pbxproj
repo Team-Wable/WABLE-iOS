@@ -139,6 +139,7 @@
 		DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD2968772D6DAE2200143851 /* GoogleService-Info.plist */; };
 		DD29687C2D6DB27F00143851 /* OAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687B2D6DB27200143851 /* OAuthenticator.swift */; };
 		DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687D2D6DC70100143851 /* OAuthCredential.swift */; };
+		DD3935B62DDDB9F700B6CA94 /* MyProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3935B42DDDB9F700B6CA94 /* MyProfileView.swift */; };
 		DD4AFD452D8FF19F00D56B94 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */; };
 		DD4AFD472D90264500D56B94 /* OAuthEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AFD462D90263400D56B94 /* OAuthEventManager.swift */; };
 		DD50980C2DA2C1A300F666DE /* FetchContentCommentListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD50980B2DA2C18F00F666DE /* FetchContentCommentListUseCase.swift */; };
@@ -480,6 +481,7 @@
 		DD29687A2D6DAE8E00143851 /* Wable-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wable-iOS.entitlements"; sourceTree = "<group>"; };
 		DD29687B2D6DB27200143851 /* OAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthenticator.swift; sourceTree = "<group>"; };
 		DD29687D2D6DC70100143851 /* OAuthCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthCredential.swift; sourceTree = "<group>"; };
+		DD3935B42DDDB9F700B6CA94 /* MyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileView.swift; sourceTree = "<group>"; };
 		DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		DD4AFD462D90263400D56B94 /* OAuthEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthEventManager.swift; sourceTree = "<group>"; };
 		DD50980B2DA2C18F00F666DE /* FetchContentCommentListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchContentCommentListUseCase.swift; sourceTree = "<group>"; };
@@ -1204,6 +1206,14 @@
 				DD2967D72D6DAC3100143851 /* Error */,
 			);
 			path = Domain;
+			sourceTree = "<group>";
+		};
+		DD3935B52DDDB9F700B6CA94 /* Subview */ = {
+			isa = PBXGroup;
+			children = (
+				DD3935B42DDDB9F700B6CA94 /* MyProfileView.swift */,
+			);
+			path = Subview;
 			sourceTree = "<group>";
 		};
 		DD765D982D8746D30029A317 /* Login */ = {
@@ -2086,6 +2096,7 @@
 			children = (
 				DEA10B572DD3E53A001EBBA9 /* MyProfileViewController.swift */,
 				DEF08E242DDB46920024B33C /* Cell */,
+				DD3935B52DDDB9F700B6CA94 /* Subview */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2796,6 +2807,7 @@
 				DD9EAE302D9A64A800803A1A /* HomeDetailViewController.swift in Sources */,
 				DD29682B2D6DAD0B00143851 /* CommentMapper.swift in Sources */,
 				DDCD66F32D7DF5AB00EF4C28 /* HomeViewController.swift in Sources */,
+				DD3935B62DDDB9F700B6CA94 /* MyProfileView.swift in Sources */,
 				DE3CA28B2DD4697700BF5E87 /* RemoveUserSessionUseCase.swift in Sources */,
 				DD29682C2D6DAD0B00143851 /* ContentMapper.swift in Sources */,
 				DE83891B2D906C0C00C089E6 /* Types.swift in Sources */,
