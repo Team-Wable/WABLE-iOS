@@ -166,11 +166,16 @@ private extension TabBarController {
 private extension TabBarController {
     func configureTabBar() {
         let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithOpaqueBackground()
+        tabBarAppearance.backgroundColor = .wableWhite
+        
+        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = .gray400
+        tabBarAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.gray400]
+        
+        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = .wableBlack
+        tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.wableBlack]
         
         tabBar.do {
-            $0.unselectedItemTintColor = .gray400
-            $0.tintColor = .wableBlack
-            $0.backgroundColor = .wableWhite
             $0.isTranslucent = false
             $0.standardAppearance = tabBarAppearance
             $0.scrollEdgeAppearance = tabBarAppearance
