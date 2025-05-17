@@ -69,6 +69,8 @@ final class HomeViewController: NavigationViewController {
         $0.color = .gray600
     }
     
+    private let divisionLine = UIView(backgroundColor: .gray200)
+    
     // MARK: - LifeCycle
     
     init(viewModel: HomeViewModel, cancelBag: CancelBag) {
@@ -142,7 +144,8 @@ private extension HomeViewController {
             collectionView,
             plusButton,
             emptyLabel,
-            loadingIndicator
+            loadingIndicator,
+            divisionLine
         )
     }
     
@@ -163,6 +166,11 @@ private extension HomeViewController {
         loadingIndicator.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().offset(-20)
+        }
+        
+        divisionLine.snp.makeConstraints {
+            $0.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(1)
         }
     }
     
