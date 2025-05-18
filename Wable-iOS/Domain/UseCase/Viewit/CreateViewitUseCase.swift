@@ -21,6 +21,8 @@ final class CreateViewitUseCaseImpl: CreateViewitUseCase {
     private var urlPreview: URLPreview?
     
     func validate(_ urlString: String) -> AnyPublisher<Bool, WableError> {
+        urlPreview = nil
+        
         let updatedURLString = checkURLScheme(urlString)
         
         guard let url = URL(string: updatedURLString) else {
@@ -30,7 +32,7 @@ final class CreateViewitUseCaseImpl: CreateViewitUseCase {
         guard let scheme = url.scheme, !scheme.isEmpty,
               let host = url.host, !host.isEmpty
         else {
-            return .fail(.unknownError)
+            return .fail(.validationException)
         }
         
         return urlPreviewRepository.fetchPreview(url: url)
