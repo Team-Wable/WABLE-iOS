@@ -21,12 +21,14 @@ extension CreateViewitViewModel: ViewModelType {
         let urlStringChanged: Driver<String>
         let descriptionChanged: Driver<String>
         let upload: Driver<Void>
+        let backgroundTap: Driver<Void>
     }
     
     struct Output {
         let enableNext: Driver<Bool>
         let enableUpload: Driver<Bool>
         let successUpload: Driver<Void>
+        let showSheetBeforeDismiss: Driver<Bool>
         let errorMessage: Driver<String>
     }
     
@@ -68,10 +70,15 @@ extension CreateViewitViewModel: ViewModelType {
             }
             .asDriver()
         
+        let showSheetBeforeDismiss = input.backgroundTap
+            .map { _ in !urlStringRelay.value.isEmpty || !descriptionRelay.value.isEmpty }
+            .asDriver()
+        
         return Output(
             enableNext: nextButtonIsEnabled,
             enableUpload: writeButtonIsEnabled,
             successUpload: successUpload,
+            showSheetBeforeDismiss: showSheetBeforeDismiss,
             errorMessage: errorMessageRelay.asDriver()
         )
     }
