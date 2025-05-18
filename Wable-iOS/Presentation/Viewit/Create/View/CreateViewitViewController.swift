@@ -34,6 +34,7 @@ final class CreateViewitViewController: UIViewController {
     private let urlTextRelay = PassthroughRelay<String>()
     private let contentTextRelay = PassthroughRelay<String>()
     private let uploadButtonRelay = PassthroughRelay<Void>()
+    private let backgroundTapRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
@@ -147,7 +148,8 @@ private extension CreateViewitViewController {
         let input = ViewModel.Input(
             urlStringChanged: urlTextRelay.eraseToAnyPublisher(),
             descriptionChanged: contentTextRelay.eraseToAnyPublisher(),
-            upload: uploadButtonRelay.eraseToAnyPublisher()
+            upload: uploadButtonRelay.eraseToAnyPublisher(),
+            backgroundTap: backgroundTapRelay.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
@@ -168,6 +170,12 @@ private extension CreateViewitViewController {
             }
             .store(in: cancelBag)
         
+        output.showSheetBeforeDismiss
+            .sink { [weak self] in
+                $0 ? self?.presentExitSheet() : self?.dismiss(animated: true)
+            }
+            .store(in: cancelBag)
+        
         output.errorMessage
             .sink { [weak self] message in
                 let alertController = UIAlertController(title: "에러 발생!", message: message, preferredStyle: .alert)
@@ -181,13 +189,7 @@ private extension CreateViewitViewController {
     // MARK: - Action Method
     
     @objc func backgroundViewDidTap() {
-        let wableSheetViewController = WableSheetViewController(title: Constant.wableSheetTitle, message: nil)
-        let cancelAction = WableSheetAction(title: "취소", style: .gray)
-        let confirmAction = WableSheetAction(title: "나가기", style: .primary) { [weak self] in
-            self?.dismiss(animated: true)
-        }
-        wableSheetViewController.addActions(cancelAction, confirmAction)
-        present(wableSheetViewController, animated: true)
+        backgroundTapRelay.send()
     }
     
     @objc func urlTextFieldDidChange(_ sender: UITextField) {
@@ -230,6 +232,16 @@ private extension CreateViewitViewController {
         UIView.animate(withDuration: 0.2) {
             self.viewitInputView.descriptionInputContainerView.isHidden = isURLEditing
         }
+    }
+    
+    func presentExitSheet() {
+        let wableSheetViewController = WableSheetViewController(title: Constant.wableSheetTitle, message: nil)
+        let cancelAction = WableSheetAction(title: "취소", style: .gray)
+        let confirmAction = WableSheetAction(title: "나가기", style: .primary) { [weak self] in
+            self?.dismiss(animated: true)
+        }
+        wableSheetViewController.addActions(cancelAction, confirmAction)
+        present(wableSheetViewController, animated: true)
     }
     
     // MARK: - Constant
