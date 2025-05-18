@@ -310,6 +310,10 @@ private extension ViewitListCell {
     }
     
     @objc func likeDidTap() {
+        let newCount = likeButton.isLiked ? likeButton.likeCount - 1 : likeButton.likeCount + 1
+        
+        likeButton.configureButton(isLiked: !likeButton.isLiked, likeCount: newCount, postType: .content)
+        
         likeDidTapClosure?()
     }
     
