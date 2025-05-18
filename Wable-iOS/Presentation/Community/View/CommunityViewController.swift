@@ -35,6 +35,7 @@ final class CommunityViewController: UIViewController {
     private let viewDidRefreshRelay = PassthroughRelay<Void>()
     private let registerRelay = PassthroughRelay<Int>()
     private let copyLinkRelay = PassthroughRelay<Void>()
+    private let checkNotificationAuthorizationRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
     private let rootView = CommunityView()
     
@@ -148,13 +149,15 @@ private extension CommunityViewController {
         let input = ViewModel.Input(
             viewDidLoad: viewDidLoadRelay.eraseToAnyPublisher(),
             viewDidRefresh: viewDidRefreshRelay.eraseToAnyPublisher(),
-            register: registerRelay.eraseToAnyPublisher()
+            register: registerRelay.eraseToAnyPublisher(),
+            checkNotificationAuthorization: checkNotificationAuthorizationRelay.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
         
         output.communityItems
             .sink { [weak self] communityItems in
+                WableLogger.log("커뮤니티 아이템: \(communityItems)", for: .debug)
                 self?.applySnapshot(items: communityItems)
             }
             .store(in: cancelBag)
@@ -171,6 +174,13 @@ private extension CommunityViewController {
             .sink { [weak self] team in
                 self?.scrollToTopItem()
                 self?.showCompleteSheet(for: team.rawValue)
+            }
+            .store(in: cancelBag)
+        
+        output.isNotificationAuthorized
+            .filter { !$0 }
+            .sink { [weak self] _ in
+                self?.showAlarmSettingSheet()
             }
             .store(in: cancelBag)
     }
@@ -206,7 +216,7 @@ private extension CommunityViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             completeSheet.dismiss(animated: true) { [weak self] in
-                self?.showAlarmSettingSheet()
+                self?.checkNotificationAuthorizationRelay.send()
             }
         }
     }
@@ -222,8 +232,7 @@ private extension CommunityViewController {
             guard let settingURL = URL(string: UIApplication.openSettingsURLString),
                   UIApplication.shared.canOpenURL(settingURL)
             else {
-                WableLogger.log("설정 창을 열 수 없습니다!", for: .error)
-                return
+                return WableLogger.log("설정 창을 열 수 없습니다!", for: .error)
             }
             UIApplication.shared.open(settingURL)
         }
