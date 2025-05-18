@@ -86,6 +86,7 @@ final class HomeDetailViewController: NavigationViewController {
     private lazy var createCommentButton: UIButton = UIButton().then {
         $0.setImage(.btnRippleDefault, for: .disabled)
         $0.setImage(.btnRipplePress, for: .normal)
+        $0.isEnabled = false
     }
     
     private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
@@ -287,6 +288,7 @@ private extension HomeDetailViewController {
             )
             
             cell.commentButton.addAction(UIAction(handler: { _ in
+                self.createCommentButton.isEnabled = false
                 self.didCommentTappedSubject.send()
                 
                 self.commentTextView.text = item.content.contentInfo.author.nickname + Constant.ripplePlaceholder
@@ -431,6 +433,7 @@ private extension HomeDetailViewController {
                     self.present(viewController, animated: true)
                 },
                 replyButtonTapHandler: {
+                    self.createCommentButton.isEnabled = false
                     self.didReplyTappedSubject.send(indexPath.item)
                     
                     self.commentTextView.text = item.comment.author.nickname + Constant.replyPlaceholder
@@ -476,6 +479,9 @@ private extension HomeDetailViewController {
         createCommentButton.addAction(UIAction(handler: { [weak self] _ in
             guard let text = self?.commentTextView.text else { return }
             
+            if !text.contains(Constant.replyPlaceholder) && !text.contains(Constant.ripplePlaceholder) {
+                
+            }
             self?.didCreateTappedSubject.send(text)
         }), for: .touchUpInside)
         collectionView.refreshControl?.addAction(UIAction(handler: { [weak self] _ in
@@ -709,6 +715,14 @@ extension HomeDetailViewController {
     func scrollToTop() {
         collectionView.setContentOffset(.zero, animated: true)
     }
+    
+    func checkCreateCondition(text: String?) -> Bool {
+        guard let text = text else {
+            return false
+        }
+        
+        return !(text == "" || text.contains(Constant.ripplePlaceholder) || text.contains(Constant.ripplePlaceholder))
+    }
 }
 
 // MARK: - UITextViewDelegate
@@ -728,13 +742,18 @@ extension HomeDetailViewController: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         guard let oldText = textView.text,
-              let stringRange = Range(range, in: oldText) else {
+              let stringRange = Range(range, in: oldText)
+        else {
             return true
         }
         
         let newText = oldText.replacingCharacters(in: stringRange, with: text)
         
         return newText.count <= 500
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        createCommentButton.isEnabled = checkCreateCondition(text: textView.text)
     }
 }
 
