@@ -32,6 +32,7 @@ final class CreateViewitViewController: UIViewController {
     
     private let viewModel: ViewModel
     private let urlTextRelay = PassthroughRelay<String>()
+    private let nextRelay = PassthroughRelay<Void>()
     private let contentTextRelay = PassthroughRelay<String>()
     private let uploadButtonRelay = PassthroughRelay<Void>()
     private let backgroundTapRelay = PassthroughRelay<Void>()
@@ -147,6 +148,7 @@ private extension CreateViewitViewController {
     func setupBinding() {
         let input = ViewModel.Input(
             urlStringChanged: urlTextRelay.eraseToAnyPublisher(),
+            next: nextRelay.eraseToAnyPublisher(),
             descriptionChanged: contentTextRelay.eraseToAnyPublisher(),
             upload: uploadButtonRelay.eraseToAnyPublisher(),
             backgroundTap: backgroundTapRelay.eraseToAnyPublisher()
@@ -156,6 +158,13 @@ private extension CreateViewitViewController {
         
         output.enableNext
             .assign(to: \.isEnabled, on: viewitInputView.nextButton)
+            .store(in: cancelBag)
+        
+        output.isPossibleToURLUpload
+            .filter { $0 }
+            .sink { [weak self] _ in
+                self?.viewitInputView.descriptionTextField.becomeFirstResponder()
+            }
             .store(in: cancelBag)
         
         output.enableUpload
@@ -199,7 +208,7 @@ private extension CreateViewitViewController {
     }
     
     @objc func nextButtonDidTap() {
-        viewitInputView.descriptionTextField.becomeFirstResponder()
+        nextRelay.send()
     }
     
     @objc func descriptionTextFieldDidChange(_ sender: UITextField) {
