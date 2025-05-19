@@ -1,5 +1,5 @@
 //
-//  CreateUserProfileUseCase.swift
+//  UserProfileUseCase.swift
 //  Wable-iOS
 //
 //  Created by YOUJIM on 3/6/25.
@@ -9,7 +9,7 @@
 import Combine
 import UIKit
 
-final class userProfileUseCase {
+final class UserProfileUseCase {
     let repository: ProfileRepository
     
     init(repository: ProfileRepository) {
@@ -17,7 +17,7 @@ final class userProfileUseCase {
     }
 }
 
-extension userProfileUseCase {
+extension UserProfileUseCase {
     func execute(profile: UserProfile? = nil, isPushAlarmAllowed: Bool? = nil, isAlarmAllowed: Bool? = nil, image: UIImage? = nil, defaultProfileType: String? = nil) -> AnyPublisher<Void, WableError> {
         return repository.updateUserProfile(
             profile: profile,

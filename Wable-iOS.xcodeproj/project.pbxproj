@@ -200,7 +200,7 @@
 		DDED595C2D78C3B700A0BEF1 /* AppleAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED595B2D78C3B600A0BEF1 /* AppleAuthProvider.swift */; };
 		DDED595E2D78C3E000A0BEF1 /* KakaoAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED595D2D78C3D900A0BEF1 /* KakaoAuthProvider.swift */; };
 		DDED59752D78F16400A0BEF1 /* FetchNicknameDuplicationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59742D78F15000A0BEF1 /* FetchNicknameDuplicationUseCase.swift */; };
-		DDED59782D78F1E500A0BEF1 /* userProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59772D78F1DA00A0BEF1 /* userProfileUseCase.swift */; };
+		DDED59782D78F1E500A0BEF1 /* UserProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59772D78F1DA00A0BEF1 /* UserProfileUseCase.swift */; };
 		DDED597C2D794F0D00A0BEF1 /* FetchUserAuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED597B2D794F0600A0BEF1 /* FetchUserAuthUseCase.swift */; };
 		DDED597E2D79578C00A0BEF1 /* AuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED597D2D79578800A0BEF1 /* AuthProvider.swift */; };
 		DDED59862D7965E900A0BEF1 /* OverviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59852D7965DB00A0BEF1 /* OverviewUseCase.swift */; };
@@ -544,7 +544,7 @@
 		DDED595B2D78C3B600A0BEF1 /* AppleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthProvider.swift; sourceTree = "<group>"; };
 		DDED595D2D78C3D900A0BEF1 /* KakaoAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthProvider.swift; sourceTree = "<group>"; };
 		DDED59742D78F15000A0BEF1 /* FetchNicknameDuplicationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchNicknameDuplicationUseCase.swift; sourceTree = "<group>"; };
-		DDED59772D78F1DA00A0BEF1 /* userProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userProfileUseCase.swift; sourceTree = "<group>"; };
+		DDED59772D78F1DA00A0BEF1 /* UserProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileUseCase.swift; sourceTree = "<group>"; };
 		DDED597B2D794F0600A0BEF1 /* FetchUserAuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserAuthUseCase.swift; sourceTree = "<group>"; };
 		DDED597D2D79578800A0BEF1 /* AuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthProvider.swift; sourceTree = "<group>"; };
 		DDED59852D7965DB00A0BEF1 /* OverviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewUseCase.swift; sourceTree = "<group>"; };
@@ -1430,7 +1430,7 @@
 		DDED59732D78EFCF00A0BEF1 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				DDED59772D78F1DA00A0BEF1 /* userProfileUseCase.swift */,
+				DDED59772D78F1DA00A0BEF1 /* UserProfileUseCase.swift */,
 				DDED59742D78F15000A0BEF1 /* FetchNicknameDuplicationUseCase.swift */,
 				DD51A43A2DD3BE08004295B6 /* UpdateFCMTokenUseCase.swift */,
 			);
@@ -2572,7 +2572,7 @@
 				DD9EAE262D99C75F00803A1A /* CreateContentUseCase.swift in Sources */,
 				DD7E79822DBFA48300570C23 /* UpdateUserBadgeUseCase.swift in Sources */,
 				DD29684B2D6DAD2F00143851 /* CreateViewitPostResponse.swift in Sources */,
-				DDED59782D78F1E500A0BEF1 /* userProfileUseCase.swift in Sources */,
+				DDED59782D78F1E500A0BEF1 /* UserProfileUseCase.swift in Sources */,
 				DD29684C2D6DAD2F00143851 /* FetchNews.swift in Sources */,
 				DD29684D2D6DAD2F00143851 /* FetchContentComments.swift in Sources */,
 				DD29684E2D6DAD2F00143851 /* FetchUserNotifications.swift in Sources */,

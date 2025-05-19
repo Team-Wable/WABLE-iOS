@@ -15,7 +15,7 @@ final class ProfileEditViewController: NavigationViewController {
     // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
     
     private var defaultImage: String? = nil
-    private let profileUseCase = userProfileUseCase(repository: ProfileRepositoryImpl())
+    private let profileUseCase = UserProfileUseCase(repository: ProfileRepositoryImpl())
     private let nicknameUseCase = FetchNicknameDuplicationUseCase(repository: AccountRepositoryImpl())
     private let userSessionUseCase = FetchUserInformationUseCase(
         repository: UserSessionRepositoryImpl(
