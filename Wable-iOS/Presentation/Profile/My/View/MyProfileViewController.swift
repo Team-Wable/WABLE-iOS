@@ -23,7 +23,7 @@ final class MyProfileViewController: UIViewController {
         case profile(UserProfile)
         case content(UserContent)
         case comment(UserComment)
-        case empty(ProfileSegmentKind)
+        case empty(ProfileEmptyCellItem)
     }
     
     // MARK: - Typealias
@@ -70,8 +70,66 @@ final class MyProfileViewController: UIViewController {
         setupDataSource()
         setupAction()
         setupBinding()
+        setupDelegate()
         
         viewModel.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel.viewDidRefresh()
+    }
+}
+
+extension MyProfileViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let contentID = viewModel.didSelect(index: indexPath.item)
+        
+        let viewController = HomeDetailViewController(
+            viewModel: HomeDetailViewModel(
+                contentID: contentID,
+                fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
+                fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
+                createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),
+                deleteCommentUseCase: DeleteCommentUseCase(repository: CommentRepositoryImpl()),
+                createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+                deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+                createCommentLikedUseCase: CreateCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
+                deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
+                fetchUserInformationUseCase: FetchUserInformationUseCase(
+                    repository: UserSessionRepositoryImpl(
+                        userDefaults: UserDefaultsStorage(
+                            jsonEncoder: JSONEncoder(),
+                            jsonDecoder: JSONDecoder()
+                        )
+                    )
+                ),
+                fetchGhostUseCase: FetchGhostUseCase(repository: GhostRepositoryImpl()),
+                createReportUseCase: CreateReportUseCase(repository: ReportRepositoryImpl()),
+                createBannedUseCase: CreateBannedUseCase(repository: ReportRepositoryImpl()),
+                deleteContentUseCase: DeleteContentUseCase(repository: ContentRepositoryImpl())
+            ),
+            cancelBag: CancelBag()
+        )
+        
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemCount = dataSource?.snapshot().itemIdentifiers.count,
+              itemCount > .zero
+        else {
+            return
+        }
+        
+        if indexPath.item >= itemCount - 5 {
+            viewModel.willDisplayLast()
+        }
     }
 }
 
@@ -149,12 +207,20 @@ private extension MyProfileViewController {
             }
         }
         
-        let emptyCellRegistration = CellRegistration<MyProfileEmptyCell, ProfileSegmentKind> {
+        let emptyCellRegistration = CellRegistration<MyProfileEmptyCell, ProfileEmptyCellItem> {
             [weak self] cell, indexPath, item in
-            cell.configure(currentSegment: item, nickname: self?.viewModel.nickname)
+            cell.configure(currentSegment: item.segment, nickname: item.nickname)
             
-            cell.writeButtonDidTapClosure = {
-                WableLogger.log("작성하러 가기 버튼 눌림.", for: .debug)
+            cell.writeButtonDidTapClosure = { [weak self] in
+                let viewController = WritePostViewController(
+                    viewModel: WritePostViewModel(
+                        createContentUseCase: CreateContentUseCase(
+                            repository: ContentRepositoryImpl()
+                        )
+                    )
+                )
+                
+                self?.navigationController?.pushViewController(viewController, animated: true)
             }
         }
         
@@ -207,10 +273,16 @@ private extension MyProfileViewController {
         )
     }
     
-    func setupBinding() {        
+    func setupBinding() {
+        viewModel.$nickname
+            .receive(on: RunLoop.main)
+            .sink { [weak self] in
+                self?.rootView.navigationView.setNavigationTitle(text: $0 ?? "알 수 없는 유저")
+            }
+            .store(in: cancelBag)
+        
         viewModel.$item
             .receive(on: RunLoop.main)
-            .compactMap { $0 }
             .sink { [weak self] in
                 self?.applySnapshot(item: $0)
             }
@@ -225,6 +297,14 @@ private extension MyProfileViewController {
             }
             .store(in: cancelBag)
         
+        viewModel.$isLoadingMore
+            .receive(on: RunLoop.main)
+            .sink { [weak self] in
+                let loadingIndicator = self?.rootView.loadingIndicator
+                $0 ? loadingIndicator?.startAnimating() : loadingIndicator?.stopAnimating()
+            }
+            .store(in: cancelBag)
+        
         viewModel.$errorMessage
             .receive(on: RunLoop.main)
             .compactMap { $0 }
@@ -234,6 +314,10 @@ private extension MyProfileViewController {
                 self?.present(alert, animated: true)
             }
             .store(in: cancelBag)
+    }
+    
+    func setupDelegate() {
+        rootView.collectionView.delegate = self
     }
     
     // MARK: - Action
@@ -275,14 +359,20 @@ private extension MyProfileViewController {
             
             if item.contentList.isEmpty {
                 snapshot.appendSections([.empty])
-                snapshot.appendItems([Item.empty(.content)], toSection: .empty)
+                snapshot.appendItems(
+                    [Item.empty(.init(segment: .content, nickname: viewModel.nickname))],
+                    toSection: .empty
+                )
             }
         } else {
             snapshot.appendItems(item.commentList.map { Item.comment($0) }, toSection: .post)
             
             if item.commentList.isEmpty {
                 snapshot.appendSections([.empty])
-                snapshot.appendItems([Item.empty(.comment)], toSection: .empty)
+                snapshot.appendItems(
+                    [Item.empty(.init(segment: .comment, nickname: viewModel.nickname))],
+                    toSection: .empty
+                )
             }
         }
         
