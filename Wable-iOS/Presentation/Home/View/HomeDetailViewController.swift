@@ -191,6 +191,10 @@ private extension HomeDetailViewController {
         > { [weak self] cell, indexPath, item in
             guard let self = self else { return }
             
+            cell.divideView.snp.updateConstraints { make in
+                make.height.equalTo(8)
+            }
+            
             cell.configureCell(
                 info: item.content.contentInfo,
                 authorType: item.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
