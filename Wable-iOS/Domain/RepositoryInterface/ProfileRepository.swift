@@ -5,13 +5,12 @@
 //  Created by YOUJIM on 2/18/25.
 //
 
-
 import Combine
 import Foundation
 import UIKit
 
 protocol ProfileRepository {
-    func fetchUserInfo() -> AnyPublisher<AccountInfo, WableError>
+    func fetchAccountInfo() async throws -> AccountInfo
     func fetchUserProfile(memberID: Int) -> AnyPublisher<UserProfile, WableError>
     func fetchFCMToken() -> String?
     func updateFCMToken(token: String)

@@ -24,3 +24,21 @@ extension Publisher where Failure == NetworkError {
         .eraseToAnyPublisher()
     }
 }
+
+enum ErrorMapper {
+    static func map(_ error: Error) -> WableError {
+        WableLogger.log(error.localizedDescription, for: .network)
+        WableLogger.log("\(error)", for: .network)
+        
+        if let networkError = error as? NetworkError {
+            switch networkError {
+            case .statusError(_, let message):
+                return WableError(rawValue: message) ?? .networkError
+            default:
+                return .unknownError
+            }
+        }
+        
+        return .unknownError
+    }
+}

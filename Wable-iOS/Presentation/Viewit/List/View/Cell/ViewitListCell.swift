@@ -262,13 +262,29 @@ private extension ViewitListCell {
     func configureHeaderView(profileImageURL: URL?, userName: String?) {
         userNameLabel.text = userName
                 
+        let randomProfileImage = [
+            UIImage.imgProfilePurple,
+            UIImage.imgProfileBlue,
+            UIImage.imgProfileGreen
+        ].randomElement()
+        
         guard let profileImageURL,
               !profileImageURL.absoluteString.isEmpty
         else {
-             return
+            profileImageView.image = randomProfileImage
+            return
         }
         
-        profileImageView.kf.setImage(with: profileImageURL, placeholder: UIImage(resource: .imgProfilePurple))
+        switch profileImageURL.absoluteString {
+        case "PURPLE":
+            profileImageView.image = .imgProfilePurple
+        case "GREEN":
+            profileImageView.image = .imgProfileGreen
+        case "BLUE":
+            profileImageView.image = .imgProfileBlue
+        default:
+            profileImageView.kf.setImage(with: profileImageURL, placeholder: randomProfileImage)
+        }
     }
     
     func configureDescriptionView(description: String?) {

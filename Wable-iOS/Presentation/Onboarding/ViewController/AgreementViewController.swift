@@ -21,7 +21,7 @@ final class AgreementViewController: NavigationViewController {
     private let profileImage: UIImage?
     private let defaultImage: String?
     private let updateFCMTokenUseCase = UpdateFCMTokenUseCase(repository: ProfileRepositoryImpl())
-    private let profileUseCase = CreateUserProfileUseCase(repository: ProfileRepositoryImpl())
+    private let profileUseCase = UserProfileUseCase(repository: ProfileRepositoryImpl())
     private let userInformationUseCase = FetchUserInformationUseCase(
         repository: UserSessionRepositoryImpl(
             userDefaults: UserDefaultsStorage(
