@@ -613,6 +613,8 @@ private extension HomeDetailViewController {
                     
                     let toast = ToastView(status: .complete, message: "댓글을 남겼어요")
                     toast.show()
+                    
+                    owner.scrollToTop()
                 }
             }
             .store(in: cancelBag)
@@ -744,11 +746,21 @@ extension HomeDetailViewController {
         snapshot.deleteItems(snapshot.itemIdentifiers(inSection: .comment))
         snapshot.appendItems(commentItems, toSection: .comment)
         
-        dataSource?.apply(snapshot, animatingDifferences: true)
+        dataSource?.apply(snapshot, animatingDifferences: false)
+        
+        collectionView.layoutIfNeeded()
     }
-    
+
     func scrollToTop() {
-        collectionView.setContentOffset(.zero, animated: true)
+        collectionView.layoutIfNeeded()
+        
+        DispatchQueue.main.async {
+            self.collectionView.setContentOffset(.zero, animated: true)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.collectionView.layoutIfNeeded()
+            }
+        }
     }
 }
 
