@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 protocol FetchAccountInfoUseCase {
-    func execute() -> AnyPublisher<AccountInfo?, WableError>
+    func execute() async throws -> AccountInfo
 }
 
 final class FetchAccountInfoUseCaseImpl: FetchAccountInfoUseCase {
@@ -19,9 +19,7 @@ final class FetchAccountInfoUseCaseImpl: FetchAccountInfoUseCase {
         self.repository = repository
     }
     
-    func execute() -> AnyPublisher<AccountInfo?, WableError> {
-        return repository.fetchUserInfo()
-            .map { $0 }
-            .eraseToAnyPublisher()
+    func execute() async throws -> AccountInfo {
+        return try await repository.fetchAccountInfo()
     }
 }

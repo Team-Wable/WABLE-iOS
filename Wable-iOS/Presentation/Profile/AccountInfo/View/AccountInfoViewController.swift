@@ -42,7 +42,6 @@ final class AccountInfoViewController: UIViewController {
     private var dataSource: DataSource?
     
     private let viewModel: AccountInfoViewModel
-    private let didLoadRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
@@ -71,7 +70,7 @@ final class AccountInfoViewController: UIViewController {
         setupDataSource()
         setupBinding()
         
-        didLoadRelay.send()
+        viewModel.viewDidLoad()
     }
 }
 
@@ -134,15 +133,14 @@ private extension AccountInfoViewController {
     }
     
     func setupBinding() {
-        let input = AccountInfoViewModel.Input(load: didLoadRelay.eraseToAnyPublisher())
-        
-        let output = viewModel.transform(input: input, cancelBag: cancelBag)
-        
-        output.items
+        viewModel.$items
+            .receive(on: RunLoop.main)
             .sink { [weak self] in self?.applySnapshot(items: $0) }
             .store(in: cancelBag)
         
-        output.errorMessage
+        viewModel.$errorMessage
+            .compactMap { $0 }
+            .receive(on: RunLoop.main)
             .sink { [weak self] message in
                 let alert = UIAlertController(title: "에러가 발생했습니다.", message: message, preferredStyle: .alert)
                 alert.addAction(.init(title: "확인", style: .default))
