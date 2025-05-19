@@ -173,7 +173,7 @@ extension HomeDetailViewModel: ViewModelType {
                 .asDriver(onErrorJustReturn: isLiked)
             }
             .sink(receiveValue: { isLiked in
-                guard var content = contentSubject.value else { return }
+                guard let content = contentSubject.value else { return }
                 
                 let originalLike = content.like
                 let updatedLike = isLiked
