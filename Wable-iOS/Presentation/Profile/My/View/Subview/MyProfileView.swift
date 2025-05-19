@@ -18,6 +18,11 @@ final class MyProfileView: UIView {
         $0.alwaysBounceVertical = true
     }
     
+    let loadingIndicator = UIActivityIndicatorView(style: .large).then {
+        $0.hidesWhenStopped = true
+        $0.color = .gray600
+    }
+    
     // MARK: - Initializer
 
     override init(frame: CGRect) {
@@ -37,7 +42,7 @@ private extension MyProfileView {
     func setupView() {
         let underlineView = UIView(backgroundColor: .gray200)
         
-        addSubviews(navigationView, collectionView, underlineView)
+        addSubviews(navigationView, collectionView, loadingIndicator, underlineView)
         
         navigationView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(safeArea)
@@ -48,6 +53,11 @@ private extension MyProfileView {
             make.top.equalTo(navigationView.snp.bottom)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(safeArea)
+        }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-20)
         }
         
         underlineView.snp.makeConstraints { make in
