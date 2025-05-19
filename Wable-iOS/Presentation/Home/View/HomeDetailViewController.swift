@@ -81,6 +81,13 @@ final class HomeDetailViewController: NavigationViewController {
         $0.setPretendard(with: .body4)
         $0.textContainer.lineFragmentPadding = .zero
         $0.textContainerInset = .init(top: 10, left: 10, bottom: 10, right: 10)
+        $0.text = ""
+    }
+    
+    private lazy var placeholderLabel: UILabel = UILabel().then {
+        $0.textColor = .gray700
+        $0.attributedText = " ".pretendardString(with: .body4)
+        $0.isUserInteractionEnabled = false
     }
     
     private lazy var createCommentButton: UIButton = UIButton().then {
@@ -133,7 +140,7 @@ final class HomeDetailViewController: NavigationViewController {
 private extension HomeDetailViewController {
     func setupView() {
         view.addSubviews(collectionView, underLineView, writeCommentView, loadingIndicator)
-        writeCommentView.addSubviews(commentTextView, createCommentButton)
+        writeCommentView.addSubviews(commentTextView, createCommentButton, placeholderLabel)
     }
     
     func setupConstraint() {
@@ -160,6 +167,11 @@ private extension HomeDetailViewController {
             $0.trailing.equalTo(createCommentButton.snp.leading).offset(-7)
         }
         
+        placeholderLabel.snp.makeConstraints {
+            $0.leading.trailing.equalTo(commentTextView).inset(10)
+            $0.top.equalTo(commentTextView).offset(10)
+        }
+        
         createCommentButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(16)
@@ -173,7 +185,7 @@ private extension HomeDetailViewController {
     }
     
     func setupDataSource() {
-        let contentCellRegistration = UICollectionView.CellRegistration<
+        let contentCellRegistration = UICollectionView.CellRegistration <
             ContentCollectionViewCell,
             Content
         > { [weak self] cell, indexPath, item in
@@ -291,17 +303,19 @@ private extension HomeDetailViewController {
                 self.createCommentButton.isEnabled = false
                 self.didCommentTappedSubject.send()
                 
-                self.commentTextView.text = item.content.contentInfo.author.nickname + Constant.ripplePlaceholder
-                self.commentTextView.textColor = .gray700
+                self.commentTextView.text = ""
+                self.updatePlaceholder(for: item.content.contentInfo.author.nickname, type: .ripple)
                 
                 self.commentTextView.endEditing(true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    self.commentTextView.becomeFirstResponder()
+                }
             }), for: .touchUpInside)
             
-            commentTextView.text = item.content.contentInfo.author.nickname + Constant.ripplePlaceholder
-            self.commentTextView.textColor = .gray700
+            self.updatePlaceholder(for: item.content.contentInfo.author.nickname, type: .ripple)
         }
         
-        let commentCellRegistration = UICollectionView.CellRegistration<
+        let commentCellRegistration = UICollectionView.CellRegistration <
             CommentCollectionViewCell,
             ContentComment
         > { [weak self] cell, indexPath, item in
@@ -436,10 +450,13 @@ private extension HomeDetailViewController {
                     self.createCommentButton.isEnabled = false
                     self.didReplyTappedSubject.send(indexPath.item)
                     
-                    self.commentTextView.text = item.comment.author.nickname + Constant.replyPlaceholder
-                    self.commentTextView.textColor = .gray700
+                    self.commentTextView.text = ""
+                    self.updatePlaceholder(for: item.comment.author.nickname, type: .reply)
                     
                     self.commentTextView.endEditing(true)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        self.commentTextView.becomeFirstResponder()
+                    }
                 }
             )
         }
@@ -477,13 +494,15 @@ private extension HomeDetailViewController {
     
     func setupAction() {
         createCommentButton.addAction(UIAction(handler: { [weak self] _ in
-            guard let text = self?.commentTextView.text else { return }
-            
-            if !text.contains(Constant.replyPlaceholder) && !text.contains(Constant.ripplePlaceholder) {
-                
+            guard let self = self,
+                  !self.commentTextView.text.isEmpty
+            else {
+                return
             }
-            self?.didCreateTappedSubject.send(text)
+            
+            self.didCreateTappedSubject.send(self.commentTextView.text)
         }), for: .touchUpInside)
+        
         collectionView.refreshControl?.addAction(UIAction(handler: { [weak self] _ in
             self?.didRefreshSubject.send()
         }), for: .valueChanged)
@@ -579,7 +598,8 @@ private extension HomeDetailViewController {
             .withUnretained(self)
             .sink { owner, isSucceed in
                 if isSucceed {
-                    owner.commentTextView.text = nil
+                    owner.commentTextView.text = ""
+                    owner.placeholderLabel.isHidden = false
                     owner.commentTextView.endEditing(true)
                     
                     let toast = ToastView(status: .complete, message: "댓글을 남겼어요")
@@ -609,6 +629,12 @@ private extension HomeDetailViewController {
                 }
             }
             .store(in: cancelBag)
+    }
+    
+    func updatePlaceholder(for authorNickname: String, type: CommentType) {
+        let placeholderText = authorNickname + (type == .ripple ? Constant.ripplePlaceholder : Constant.replyPlaceholder)
+        placeholderLabel.text = placeholderText
+        placeholderLabel.isHidden = !commentTextView.text.isEmpty
     }
 }
 
@@ -697,7 +723,7 @@ extension HomeDetailViewController {
             
             if !comment.childs.isEmpty {
                 let childItems = comment.childs
-                    .filter { !$0.isDeleted } 
+                    .filter { !$0.isDeleted }
                     .map { Item.comment($0) }
                 
                 items.append(contentsOf: childItems)
@@ -715,29 +741,13 @@ extension HomeDetailViewController {
     func scrollToTop() {
         collectionView.setContentOffset(.zero, animated: true)
     }
-    
-    func checkCreateCondition(text: String?) -> Bool {
-        guard let text = text else {
-            return false
-        }
-        
-        return !(text == "" || text.contains(Constant.ripplePlaceholder) || text.contains(Constant.ripplePlaceholder))
-    }
 }
 
 // MARK: - UITextViewDelegate
-// TODO: 리팩 시 개선 필요
 
 extension HomeDetailViewController: UITextViewDelegate {
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text.contains(Constant.replyPlaceholder) || textView.text.contains(Constant.ripplePlaceholder) {
-            textView.text = nil
-            textView.textColor = .wableBlack
-        }
-    }
-    
     func textViewDidEndEditing(_ textView: UITextView) {
-        
+        placeholderLabel.isHidden = !textView.text.isEmpty
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -749,15 +759,18 @@ extension HomeDetailViewController: UITextViewDelegate {
         
         let newText = oldText.replacingCharacters(in: stringRange, with: text)
         
+        placeholderLabel.isHidden = !newText.isEmpty
+        
         return newText.count <= 500
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        createCommentButton.isEnabled = checkCreateCondition(text: textView.text)
+        placeholderLabel.isHidden = !textView.text.isEmpty
+        createCommentButton.isEnabled = !textView.text.isEmpty
     }
 }
 
-// MARK: - Constant
+    // MARK: - Constant
 
 extension HomeDetailViewController {
     enum Constant {
