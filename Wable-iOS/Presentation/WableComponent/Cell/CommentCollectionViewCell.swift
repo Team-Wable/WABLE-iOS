@@ -56,6 +56,10 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFit
     }
     
+    private let divisionLine: UIView = UIView().then {
+        $0.backgroundColor = .gray200
+    }
+    
     lazy var likeButton = LikeButton()
     private lazy var replyButton = CommentButton(type: .comment)
     private lazy var ghostButton = GhostButton()
@@ -87,7 +91,8 @@ private extension CommentCollectionViewCell {
             ghostButton,
             contentLabel,
             likeButton,
-            replyButton
+            replyButton,
+            divisionLine
         )
     }
     
@@ -117,6 +122,11 @@ private extension CommentCollectionViewCell {
         replyButton.snp.makeConstraints {
             $0.leading.equalTo(likeButton.snp.trailing).offset(8)
             $0.centerY.equalTo(ghostButton)
+        }
+        
+        divisionLine.snp.makeConstraints {
+            $0.bottom.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(1)
         }
     }
     
