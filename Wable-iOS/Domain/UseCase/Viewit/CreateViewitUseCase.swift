@@ -9,62 +9,54 @@ import Combine
 import Foundation
 
 protocol CreateViewitUseCase {
-    func validate(_ urlString: String) -> Bool
-    func execute(urlString: String, description: String) -> AnyPublisher<Void, WableError>
+    func validate(_ urlString: String) -> AnyPublisher<Bool, WableError>
+    func execute(description: String) -> AnyPublisher<Bool, WableError>
 }
 
 final class CreateViewitUseCaseImpl: CreateViewitUseCase {
-    private static let urlDetector: NSDataDetector? = {
-        do {
-            return try NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
-        } catch {
-            WableLogger.log("NSDataDetector 초기화 오류: \(error.localizedDescription)", for: .error)
-            return nil
-        }
-    }()
     
     @Injected private var urlPreviewRepository: URLPreviewRepository
     @Injected private var viewitRepository: ViewitRepository
     
-    func validate(_ urlString: String) -> Bool {
-        guard let detector = Self.urlDetector else {
-            return false
-        }
-        
-        let range = NSRange(location: 0, length: urlString.utf16.count)
-        let matches = detector.matches(in: urlString, options: [], range: range)
-        
-        if let match = matches.first,
-           match.range.length == urlString.utf16.count {
-            return true
-        }
-        
-        return false
-    }
+    private var urlPreview: URLPreview?
     
-    func execute(urlString: String, description: String) -> AnyPublisher<Void, WableError> {
+    func validate(_ urlString: String) -> AnyPublisher<Bool, WableError> {
+        urlPreview = nil
+        
         let updatedURLString = checkURLScheme(urlString)
         
         guard let url = URL(string: updatedURLString) else {
             return .fail(.unknownError)
         }
         
+        guard let scheme = url.scheme, !scheme.isEmpty,
+              let host = url.host, !host.isEmpty
+        else {
+            return .fail(.validationException)
+        }
+        
         return urlPreviewRepository.fetchPreview(url: url)
-            .flatMap { [weak self] preview -> AnyPublisher<Void, WableError> in
-                guard let self else {
-                    return .fail(.unknownError)
-                }
-                
-                return viewitRepository.createViewit(
-                    thumbnailImageURLString: preview.imageURLString,
-                    urlString: updatedURLString,
-                    title: preview.title,
-                    text: description,
-                    siteName: preview.siteName
-                )
-                .eraseToAnyPublisher()
-            }
+            .handleEvents(receiveOutput: { [weak self] preview in
+                self?.urlPreview = preview
+            })
+            .map { _ in true }
             .eraseToAnyPublisher()
+    }
+    
+    func execute(description: String) -> AnyPublisher<Bool, WableError> {
+        guard let urlPreview else {
+            return .fail(.unknownError)
+        }
+        
+        return viewitRepository.createViewit(
+            thumbnailImageURLString: urlPreview.imageURLString,
+            urlString: urlPreview.urlString,
+            title: urlPreview.title,
+            text: description,
+            siteName: urlPreview.siteName
+        )
+        .map { _ in true }
+        .eraseToAnyPublisher()
     }
     
     // MARK: - Helper Method
