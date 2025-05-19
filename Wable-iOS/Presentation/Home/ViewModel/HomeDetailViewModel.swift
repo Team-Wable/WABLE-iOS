@@ -360,21 +360,34 @@ extension HomeDetailViewModel: ViewModelType {
         input.didDeleteTappedItem
             .withUnretained(self)
             .flatMap { owner, input -> AnyPublisher<(Int, PostType), Never> in
-                return owner.deleteCommentUseCase.execute(commentID: input.0)
-                    .map { _ in input }
-                    .asDriver(onErrorJustReturn: input)
+                let (commentID, postType) = input
+                if postType == .content {
+                    return owner.deleteContentUseCase.execute(contentID: self.contentID)
+                        .map { _ in input }
+                        .asDriver(onErrorJustReturn: input)
+                } else {
+                    return owner.deleteCommentUseCase.execute(commentID: commentID)
+                        .map { _ in input }
+                        .asDriver(onErrorJustReturn: input)
+                }
             }
             .withUnretained(self)
             .sink(receiveValue: { owner, value in
-                if value.1 == .content {
+                let (id, postType) = value
+                
+                if postType == .content {
                     isContentDeletedSubject.send(true)
                 } else {
-                    let updatedCommentInfo = owner.updateDeleteComments(comments: commentsSubject.value, commentID: value.0)
+                    let updatedCommentInfo = owner.updateDeleteComments(
+                        comments: commentsSubject.value,
+                        commentID: id
+                    )
                     
                     commentsSubject.send(updatedCommentInfo)
                 }
             })
             .store(in: cancelBag)
+
         
         input.didCreateTappedItem
             .withUnretained(self)
