@@ -16,12 +16,14 @@ final class MyProfileViewController: UIViewController {
     enum Section: CaseIterable {
         case profile
         case post
+        case empty
     }
     
     enum Item: Hashable {
         case profile(UserProfile)
         case content(UserContent)
         case comment(UserComment)
+        case empty(ProfileSegmentKind)
     }
     
     // MARK: - Typealias
@@ -147,6 +149,15 @@ private extension MyProfileViewController {
             }
         }
         
+        let emptyCellRegistration = CellRegistration<MyProfileEmptyCell, ProfileSegmentKind> {
+            [weak self] cell, indexPath, item in
+            cell.configure(currentSegment: item, nickname: self?.viewModel.nickname)
+            
+            cell.writeButtonDidTapClosure = {
+                WableLogger.log("작성하러 가기 버튼 눌림.", for: .debug)
+            }
+        }
+        
         dataSource = DataSource(collectionView: rootView.collectionView, cellProvider: {
             collectionView, indexPath, item in
             switch item {
@@ -167,6 +178,12 @@ private extension MyProfileViewController {
                     using: commentCellRegistration,
                     for: indexPath,
                     item: comment
+                )
+            case .empty(let segment):
+                return collectionView.dequeueConfiguredReusableCell(
+                    using: emptyCellRegistration,
+                    for: indexPath,
+                    item: segment
                 )
             }
         })
@@ -239,7 +256,7 @@ private extension MyProfileViewController {
     }
     
     @objc func collectionViewDidRefresh() {
-        viewModel.viewDidLoad()
+        viewModel.viewDidRefresh()
     }
     
     // MARK: - Helper
@@ -255,9 +272,20 @@ private extension MyProfileViewController {
         
         if item.currentSegment == .content {
             snapshot.appendItems(item.contentList.map { Item.content($0) }, toSection: .post)
+            
+            if item.contentList.isEmpty {
+                snapshot.appendSections([.empty])
+                snapshot.appendItems([Item.empty(.content)], toSection: .empty)
+            }
         } else {
             snapshot.appendItems(item.commentList.map { Item.comment($0) }, toSection: .post)
+            
+            if item.commentList.isEmpty {
+                snapshot.appendSections([.empty])
+                snapshot.appendItems([Item.empty(.comment)], toSection: .empty)
+            }
         }
+        
         dataSource?.apply(snapshot)
     }
 
@@ -369,6 +397,21 @@ private extension MyProfileViewController {
                 )
                 sectionHeader.pinToVisibleBounds = true
                 section.boundarySupplementaryItems = [sectionHeader]
+                
+                return section
+                
+            case .empty:
+                let itemSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200)
+                )
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200)
+                )
+                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
                 
                 return section
             }
