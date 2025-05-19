@@ -18,29 +18,6 @@ final class MyProfileView: UIView {
         $0.alwaysBounceVertical = true
     }
     
-    let contentEmptyView = UIView().then {
-        $0.isHidden = true
-    }
-    
-    let contentEmptyLabel = UILabel().then {
-        $0.attributedText = "이름님, 아직 글을 작성하지 않았네요!\n왠지 텅빈 게시글이 허전하게 느껴져요."
-            .pretendardString(with: .body2)
-        $0.textColor = .gray500
-        $0.numberOfLines = 0
-    }
-    
-    let contentEmptyWriteButton = WableButton(style: .primary).then {
-        var config = $0.configuration
-        config?.attributedTitle = "글 작성하러 가기".pretendardString(with: .body1)
-        $0.configuration = config
-    }
-    
-    let commentEmptyLabel = UILabel().then {
-        $0.attributedText = "아직 작성한 댓글이 없어요.".pretendardString(with: .body2)
-        $0.textColor = .gray500
-        $0.isHidden = true
-    }
-    
     // MARK: - Initializer
 
     override init(frame: CGRect) {
@@ -58,9 +35,9 @@ final class MyProfileView: UIView {
 
 private extension MyProfileView {
     func setupView() {
-        contentEmptyView.addSubviews(contentEmptyLabel, contentEmptyWriteButton)
+        let underlineView = UIView(backgroundColor: .gray200)
         
-        addSubviews(navigationView, collectionView, contentEmptyView, commentEmptyLabel)
+        addSubviews(navigationView, collectionView, underlineView)
         
         navigationView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(safeArea)
@@ -71,6 +48,11 @@ private extension MyProfileView {
             make.top.equalTo(navigationView.snp.bottom)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(safeArea)
+        }
+        
+        underlineView.snp.makeConstraints { make in
+            make.bottom.horizontalEdges.equalTo(safeArea)
+            make.height.equalTo(1)
         }
     }
 }

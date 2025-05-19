@@ -44,37 +44,11 @@ final class MyProfileViewModel {
     }
     
     func viewDidLoad() {
-        guard let userID = userInfo?.id else {
-            return WableLogger.log("유저 아이디를 알 수 없음.", for: .debug)
-        }
-        
-        isLoading = true
-        
-        Task {
-            async let userProfile: UserProfile = fetchUserProfileUseCase.execute(userID: userID)
-            
-            async let contentList: [UserContent] = fetchUserContentListUseCase.execute(
-                for: userID, last: Constant.initialCursor
-            )
-            
-            async let commentList: [UserComment] = fetchUserCommentListUseCase.execute(
-                for: userID, last: Constant.initialCursor
-            )
-            
-            do {
-                let (userProfile, contentList, commentList) = try await (userProfile, contentList, commentList)
-                item = ProfileViewItem(
-                    currentSegment: .content,
-                    profileInfo: userProfile,
-                    contentList: contentList,
-                    commentList: commentList
-                )
-            } catch {
-                errorMessage = error.localizedDescription
-            }
-            
-            isLoading = false
-        }
+        fetchViewItems(segment: .content)
+    }
+    
+    func viewDidRefresh() {
+        fetchViewItems(segment: item?.currentSegment ?? .content)
     }
     
     func selectedIndexDidChange(_ selectedIndex: Int) {
@@ -96,6 +70,40 @@ private extension MyProfileViewModel {
                 self?.item?.currentSegment = segment
             }
             .store(in: cancelBag)
+    }
+    
+    func fetchViewItems(segment: ProfileSegmentKind) {
+        guard let userID = userInfo?.id else {
+            return WableLogger.log("유저 아이디를 알 수 없음.", for: .debug)
+        }
+        
+        isLoading = true
+        
+        Task {
+            async let userProfile: UserProfile = fetchUserProfileUseCase.execute(userID: userID)
+            
+            async let contentList: [UserContent] = fetchUserContentListUseCase.execute(
+                for: userID, last: Constant.initialCursor
+            )
+            
+            async let commentList: [UserComment] = fetchUserCommentListUseCase.execute(
+                for: userID, last: Constant.initialCursor
+            )
+            
+            do {
+                let (userProfile, contentList, commentList) = try await (userProfile, contentList, commentList)
+                item = ProfileViewItem(
+                    currentSegment: segment,
+                    profileInfo: userProfile,
+                    contentList: contentList,
+                    commentList: commentList
+                )
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+            
+            isLoading = false
+        }
     }
     
     enum Constant {
