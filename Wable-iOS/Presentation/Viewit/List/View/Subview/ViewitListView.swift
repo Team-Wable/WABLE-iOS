@@ -24,8 +24,8 @@ final class ViewitListView: UIView {
         $0.textColor = .gray500
     }
     
-    let createButton = UIButton().then {
-        $0.setImage(.btnWrite, for: .normal)
+    let createButton = UIButton(configuration: .plain()).then {
+        $0.configuration?.image = .btnWrite
     }
     
     let loadingIndicator = UIActivityIndicatorView(style: .large).then {
@@ -90,8 +90,8 @@ private extension ViewitListView {
         }
         
         createButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-12)
-            make.bottom.equalTo(safeArea).offset(-24)
+            make.trailing.equalToSuperview().offset(-16)
+            make.bottom.equalTo(safeArea).offset(-16)
         }
         
         loadingIndicator.snp.makeConstraints { make in

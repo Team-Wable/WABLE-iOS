@@ -25,6 +25,16 @@ enum TriggerType {
         case popularContent = "popularContent"
         case childComment = "childComment"
         case childCommentLike = "childCommentLiked"
+        case viewitLike = "viewitLiked"
+        
+        static func from(_ value: String) -> Self? {
+            if let result = Self(rawValue: value) {
+                return result
+            }
+            
+            WableLogger.log("\(String(describing: Self.self))생성 실패: \(value)", for: .debug)
+            return nil
+        }
     }
     
     // MARK: - 투명도 낮추기에 대한 종류
