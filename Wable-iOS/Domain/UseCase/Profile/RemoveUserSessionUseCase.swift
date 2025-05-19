@@ -20,8 +20,7 @@ final class RemoveUserSessionUseCaseImpl: RemoveUserSessionUseCase {
     
     func removeUserSession() {
         guard let userID = repository.fetchActiveUserID() else {
-            WableLogger.log("유저 아이디를 찾을 수 없음.", for: .debug)
-            return
+            return WableLogger.log("유저 아이디를 찾을 수 없음.", for: .debug)
         }
         
         repository.removeUserSession(forUserID: userID)

@@ -9,19 +9,21 @@ import Combine
 import Foundation
 
 final class MyProfileViewModel {
-    private(set) var selectedSegment: ProfileSegmentKind = .content
+    var nickname: String? { userInfo?.nickname }
     
+    @Published private(set) var item: ProfileViewItem?
+    @Published private(set) var isLoading: Bool = false
+    @Published private(set) var errorMessage: String?
+    
+    private let userInfo: UserSession?
     private let userSessionUseCase: FetchUserInformationUseCase
     private let fetchUserProfileUseCase: FetchUserProfileUseCase
     private let fetchUserCommentListUseCase: FetchUserCommentListUseCase
     private let fetchUserContentListUseCase: FetchUserContentListUseCase
     private let removeUserSessionUseCase: RemoveUserSessionUseCase
     
-    private let userSessionRelay = CurrentValueRelay<UserSession?>(nil)
-    private let profileViewItemRelay = CurrentValueRelay<ProfileViewItem>(.init(
-        profileInfo: nil, content: [], comment: []
-    ))
-    private let errorMessageRelay = PassthroughRelay<String>()
+    private let selectedIndexSubject = PassthroughSubject<Int, Never>()
+    private let cancelBag = CancelBag()
     
     init(
         userinformationUseCase: FetchUserInformationUseCase,
@@ -35,107 +37,65 @@ final class MyProfileViewModel {
         self.fetchUserCommentListUseCase = fetchUserCommentListUseCase
         self.fetchUserContentListUseCase = fetchUserContentListUseCase
         self.removeUserSessionUseCase = removeUserSessionUseCase
-    }
-}
-
-extension MyProfileViewModel: ViewModelType {
-    struct Input {
-        let load: Driver<Void>
-        let selectedIndex: Driver<Int>
-        let logout: Driver<Void>
-    }
-    
-    struct Output {
-        let nickname: Driver<String>
-        let item: Driver<ProfileViewItem>
-        let errorMessage: Driver<String>
-        let shouldBeLogin: Driver<Void>
-    }
-    
-    func transform(input: Input, cancelBag: CancelBag) -> Output {
-        let nickname = userSessionUseCase.fetchActiveUserInfo()
-            .handleEvents(receiveOutput: { [weak self] session in
-                self?.userSessionRelay.send(session)
-            })
-            .compactMap(\.?.nickname)
-            .asDriver()
         
-        input.selectedIndex
-            .compactMap { ProfileSegmentKind(rawValue: $0) }
-            .sink { [weak self] in self?.selectedSegment = $0 }
-            .store(in: cancelBag)
-
-        input.load
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                return owner.fetchUserProfile()
-                    .combineLatest(
-                        owner.fetchUserContentList(cursor: Constant.initialCursor),
-                        owner.fetchUserCommentList(cursor: Constant.initialCursor)
-                    )
+        self.userInfo = userinformationUseCase.fetchActiveUserInfo()
+        
+        bind()
+    }
+    
+    func viewDidLoad() {
+        guard let userID = userInfo?.id else {
+            return WableLogger.log("유저 아이디를 알 수 없음.", for: .debug)
+        }
+        
+        isLoading = true
+        
+        Task {
+            async let userProfile: UserProfile = fetchUserProfileUseCase.execute(userID: userID)
+            
+            async let contentList: [UserContent] = fetchUserContentListUseCase.execute(
+                for: userID, last: Constant.initialCursor
+            )
+            
+            async let commentList: [UserComment] = fetchUserCommentListUseCase.execute(
+                for: userID, last: Constant.initialCursor
+            )
+            
+            do {
+                let (userProfile, contentList, commentList) = try await (userProfile, contentList, commentList)
+                item = ProfileViewItem(
+                    currentSegment: .content,
+                    profileInfo: userProfile,
+                    contentList: contentList,
+                    commentList: commentList
+                )
+            } catch {
+                errorMessage = error.localizedDescription
             }
-            .map { ProfileViewItem(profileInfo: $0, content: $1, comment: $2) }
-            .sink { [weak self] in self?.profileViewItemRelay.send($0) }
-            .store(in: cancelBag)
-        
-        let shouldBeLogin = input.logout
-            .handleEvents(receiveOutput: { [weak self] _ in self?.removeUserSessionUseCase.removeUserSession() })
-            .asDriver()
-        
-        return Output(
-            nickname: nickname,
-            item: profileViewItemRelay.asDriver(),
-            errorMessage: errorMessageRelay.asDriver(),
-            shouldBeLogin: shouldBeLogin
-        )
+            
+            isLoading = false
+        }
+    }
+    
+    func selectedIndexDidChange(_ selectedIndex: Int) {
+        selectedIndexSubject.send(selectedIndex)
+    }
+    
+    func logoutDidTap() {
+        removeUserSessionUseCase.removeUserSession()
     }
 }
 
 private extension MyProfileViewModel {
-    func fetchUserProfile() -> AnyPublisher<UserProfile, Never> {
-        return userSessionUseCase.fetchActiveUserID()
-            .compactMap { $0 }
-            .withUnretained(self)
-            .flatMap { owner, userID in
-                return owner.fetchUserProfileUseCase.execute(userID: userID)
-                    .catch { [weak self] error -> AnyPublisher<UserProfile?, Never> in
-                        self?.errorMessageRelay.send(error.localizedDescription)
-                        return .just(nil)
-                    }
-                    .compactMap { $0 }
-                    .eraseToAnyPublisher()
+    func bind() {
+        selectedIndexSubject
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .compactMap { return ProfileSegmentKind(rawValue: $0) }
+            .sink { [weak self] segment in
+                self?.item?.currentSegment = segment
             }
-            .eraseToAnyPublisher()
-    }
-    
-    func fetchUserCommentList(cursor: Int) -> AnyPublisher<[UserComment], Never> {
-        return userSessionUseCase.fetchActiveUserID()
-            .compactMap { $0 }
-            .withUnretained(self)
-            .flatMap { owner, userID in
-                return owner.fetchUserCommentListUseCase.execute(for: userID, last: cursor)
-                    .catch { [weak self] error -> AnyPublisher<[UserComment], Never> in
-                        self?.errorMessageRelay.send(error.localizedDescription)
-                        return .just([])
-                    }
-                    .eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
-    }
-    
-    func fetchUserContentList(cursor: Int) -> AnyPublisher<[UserContent], Never> {
-        return userSessionUseCase.fetchActiveUserID()
-            .compactMap { $0 }
-            .withUnretained(self)
-            .flatMap { owner, userID in
-                return owner.fetchUserContentListUseCase.execute(for: userID, last: cursor)
-                    .catch { [weak self] error -> AnyPublisher<[UserContent], Never> in
-                        self?.errorMessageRelay.send(error.localizedDescription)
-                        return .just([])
-                    }
-                    .eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
+            .store(in: cancelBag)
     }
     
     enum Constant {

@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 protocol FetchUserCommentListUseCase {
-    func execute(for userID: Int, last commentID: Int) -> AnyPublisher<[UserComment], WableError>
+    func execute(for userID: Int, last commentID: Int) async throws -> [UserComment]
 }
 
 final class FetchUserCommentListUseCaseImpl: FetchUserCommentListUseCase {
@@ -19,11 +19,11 @@ final class FetchUserCommentListUseCaseImpl: FetchUserCommentListUseCase {
         self.repository = repository
     }
     
-    func execute(for userID: Int, last commentID: Int) -> AnyPublisher<[UserComment], WableError> {
-        guard userID > .zero else {
-            return .fail(.notFoundMember)
+    func execute(for userID: Int, last commentID: Int) async throws -> [UserComment] {
+        if userID <= .zero {
+            throw WableError.notFoundMember
         }
-
-        return repository.fetchUserCommentList(memberID: userID, cursor: commentID)
+        
+        return try await repository.fetchUserCommentList(memberID: userID, cursor: commentID)
     }
 }

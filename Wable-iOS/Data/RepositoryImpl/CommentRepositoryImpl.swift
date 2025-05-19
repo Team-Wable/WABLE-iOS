@@ -29,6 +29,18 @@ extension CommentRepositoryImpl: CommentRepository {
         .mapWableError()
     }
     
+    func fetchUserCommentList(memberID: Int, cursor: Int) async throws -> [UserComment] {
+        do {
+            let response = try await provider.request(
+                .fetchUserCommentList(memberID: memberID, cursor: cursor),
+                for: [DTO.Response.FetchUserComments].self
+            )
+            return CommentMapper.toDomain(response)
+        } catch {
+            throw ErrorMapper.map(error)
+        }
+    }
+    
     func fetchContentCommentList(contentID: Int, cursor: Int) -> AnyPublisher<[ContentComment], WableError> {
         return provider.request(
             .fetchContentCommentList(

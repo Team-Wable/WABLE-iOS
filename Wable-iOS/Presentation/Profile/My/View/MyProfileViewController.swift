@@ -28,13 +28,12 @@ final class MyProfileViewController: UIViewController {
     
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
-    typealias ViewModel = MyProfileViewModel
     
     // MARK: - Property
 
     private var dataSource: DataSource?
     
-    private let viewModel: ViewModel
+    private let viewModel: MyProfileViewModel
     private let didLoadRelay = PassthroughRelay<Void>()
     private let selectedIndexRelay = PassthroughRelay<Int>()
     private let logoutRelay = PassthroughRelay<Void>()
@@ -43,7 +42,7 @@ final class MyProfileViewController: UIViewController {
     
     // MARK: - Initializer
 
-    init(viewModel: ViewModel) {
+    init(viewModel: MyProfileViewModel) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -63,19 +62,24 @@ final class MyProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupView()
         setupCollectionViewLayout()
         setupNavigationBar()
         setupDataSource()
         setupAction()
         setupBinding()
         
-        didLoadRelay.send()
+        viewModel.viewDidLoad()
     }
 }
 
 private extension MyProfileViewController {
     
     // MARK: - Setup
+    
+    func setupView() {
+        rootView.navigationView.setNavigationTitle(text: viewModel.nickname ?? "")
+    }
     
     func setupCollectionViewLayout() {
         rootView.collectionView.collectionViewLayout = collectionViewLayout
@@ -87,12 +91,13 @@ private extension MyProfileViewController {
     
     func setupDataSource() {
         let profileInfoCellRegistration = CellRegistration<ProfileInfoCell, UserProfile> { cell, indexPath, item in
+            let fanTeamName = item.user.fanTeam?.rawValue ?? "LCK"
             cell.configure(
                 isMyProfile: true,
                 profileImageURL: item.user.profileURL,
                 level: "\(item.userLevel)",
                 nickname: item.user.nickname,
-                introduction: "\(item.user.fanTeam?.rawValue ?? "LCK")을(를) 응원하고 있어요.\n\(item.lckYears)부터 LCK를 보기 시작했어요.",
+                introduction: "\(fanTeamName)을(를) 응원하고 있어요.\n\(item.lckYears)부터 LCK를 보기 시작했어요.",
                 ghostValue: item.ghostCount,
                 editButtonTapHandler: { [weak self] in
                     self?.navigationController?.pushViewController(ProfileEditViewController(), animated: true)
@@ -125,11 +130,7 @@ private extension MyProfileViewController {
                 info: item.comment,
                 commentType: .ripple,
                 authorType: .mine,
-                likeButtonTapHandler: {
-                    WableLogger.log("좋아요 눌림", for: .debug)
-                    
-                    // TODO: 추후 기능 연결
-                },
+                likeButtonTapHandler: nil,
                 settingButtonTapHandler: nil,
                 profileImageViewTapHandler: nil,
                 ghostButtonTapHandler: nil,
@@ -142,6 +143,7 @@ private extension MyProfileViewController {
         ) { supplementaryView, elementKind, indexPath in
             supplementaryView.segmentDidChangeClosure = { [weak self] selectedIndex in
                 self?.selectedIndexRelay.send(selectedIndex)
+                self?.viewModel.selectedIndexDidChange(selectedIndex)
             }
         }
         
@@ -182,57 +184,37 @@ private extension MyProfileViewController {
 
     func setupAction() {
         rootView.navigationView.menuButton.addTarget(self, action: #selector(menuButtonDidTap), for: .touchUpInside)
+        
+        rootView.collectionView.refreshControl?.addTarget(
+            self, action: #selector(collectionViewDidRefresh), for: .valueChanged
+        )
     }
     
-    func setupBinding() {
-        let input = ViewModel.Input(
-            load: didLoadRelay.eraseToAnyPublisher(),
-            selectedIndex: selectedIndexRelay.eraseToAnyPublisher(),
-            logout: logoutRelay.eraseToAnyPublisher()
-        )
-        
-        let output = viewModel.transform(input: input, cancelBag: cancelBag)
-        
-        output.nickname
-            .sink { [weak self] in self?.rootView.navigationView.setNavigationTitle(text: $0) }
+    func setupBinding() {        
+        viewModel.$item
+            .receive(on: RunLoop.main)
+            .compactMap { $0 }
+            .sink { [weak self] in
+                self?.applySnapshot(item: $0)
+            }
             .store(in: cancelBag)
         
-        output.item
-            .sink { [weak self] in self?.applySnapshot(item: $0) }
+        viewModel.$isLoading
+            .receive(on: RunLoop.main)
+            .filter { $0 }
+            .sink { [weak self] _ in
+                let refreshControl = self?.rootView.collectionView.refreshControl
+                refreshControl?.endRefreshing()
+            }
             .store(in: cancelBag)
         
-        output.errorMessage
+        viewModel.$errorMessage
+            .receive(on: RunLoop.main)
+            .compactMap { $0 }
             .sink { [weak self] message in
                 let alert = UIAlertController(title: "에러 발생!", message: message, preferredStyle: .alert)
                 alert.addAction(.init(title: "확인", style: .default))
                 self?.present(alert, animated: true)
-            }
-            .store(in: cancelBag)
-        
-        output.shouldBeLogin
-            .sink { _ in
-                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
-                    return WableLogger.log("SceneDelegate 찾을 수 없음.", for: .debug)
-                }
-                
-                sceneDelegate.window?.rootViewController = LoginViewController(
-                    viewModel: .init(
-                        updateFCMTokenUseCase: UpdateFCMTokenUseCase(
-                            repository: ProfileRepositoryImpl()
-                        ),
-                        fetchUserAuthUseCase: FetchUserAuthUseCase(
-                            loginRepository: LoginRepositoryImpl(),
-                            userSessionRepository: UserSessionRepositoryImpl(
-                                userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
-                            )
-                        ),
-                        updateUserSessionUseCase: FetchUserInformationUseCase(
-                            repository: UserSessionRepositoryImpl(
-                                userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
-                            )
-                        )
-                    )
-                )
             }
             .store(in: cancelBag)
     }
@@ -256,6 +238,10 @@ private extension MyProfileViewController {
         present(bottomSheet, animated: true)
     }
     
+    @objc func collectionViewDidRefresh() {
+        viewModel.viewDidLoad()
+    }
+    
     // MARK: - Helper
     
     func applySnapshot(item: ProfileViewItem) {
@@ -267,10 +253,10 @@ private extension MyProfileViewController {
         snapshot.appendSections([.profile, .post])
         snapshot.appendItems([.profile(profileInfo)], toSection: .profile)
         
-        if viewModel.selectedSegment == .content {
-            snapshot.appendItems(item.content.map { Item.content($0) }, toSection: .post)
+        if item.currentSegment == .content {
+            snapshot.appendItems(item.contentList.map { Item.content($0) }, toSection: .post)
         } else {
-            snapshot.appendItems(item.comment.map { Item.comment($0) }, toSection: .post)
+            snapshot.appendItems(item.commentList.map { Item.comment($0) }, toSection: .post)
         }
         dataSource?.apply(snapshot)
     }
@@ -296,12 +282,46 @@ private extension MyProfileViewController {
         let actionSheet = WableSheetViewController(title: "로그아웃하시겠어요?")
         let cancelAction = WableSheetAction(title: "취소", style: .gray)
         let logoutAction = WableSheetAction(title: "로그아웃하기", style: .primary) { [weak self] in
-            WableLogger.log("로그아웃 눌림.", for: .debug)
-            
-            self?.logoutRelay.send()
+            self?.viewModel.logoutDidTap()
+            self?.presentLoginView()
         }
         actionSheet.addActions(cancelAction, logoutAction)
         present(actionSheet, animated: true)
+    }
+    
+    func presentLoginView() {
+        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
+              let window = sceneDelegate.window
+        else {
+            return WableLogger.log("SceneDelegate 찾을 수 없음.", for: .debug)
+        }
+        
+        let loginViewController = LoginViewController(
+            viewModel: .init(
+                updateFCMTokenUseCase: UpdateFCMTokenUseCase(
+                    repository: ProfileRepositoryImpl()
+                ),
+                fetchUserAuthUseCase: FetchUserAuthUseCase(
+                    loginRepository: LoginRepositoryImpl(),
+                    userSessionRepository: UserSessionRepositoryImpl(
+                        userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
+                    )
+                ),
+                updateUserSessionUseCase: FetchUserInformationUseCase(
+                    repository: UserSessionRepositoryImpl(
+                        userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
+                    )
+                )
+            )
+        )
+        
+        UIView.transition(
+            with: window,
+            duration: 0.5,
+            options: [.transitionCrossDissolve],
+            animations: { window.rootViewController = loginViewController },
+            completion: nil
+        )
     }
     
     // MARK: - Computed Property
