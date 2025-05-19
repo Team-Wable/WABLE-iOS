@@ -403,6 +403,8 @@ extension HomeDetailViewModel: ViewModelType {
             .sink(receiveValue: { [weak self] _ in
                 guard let id = self?.contentID else { return }
                 
+                isLastViewSubject.send(false)
+                
                 self?.fetchContentCommentListUseCase.execute(contentID: id, cursor: -1)
                     .sink(receiveCompletion: { _ in
                     }, receiveValue: { comments in
