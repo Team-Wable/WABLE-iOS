@@ -259,9 +259,6 @@ private extension HomeViewController {
                 },
                 profileImageViewTapHandler: {
                     // TODO: 프로필 구현되는 대로 추가적인 설정 필요
-                    let viewController = ProfileViewController()
-                    
-                    self.navigationController?.pushViewController(viewController, animated: true)
                 },
                 ghostButtonTapHandler: {
                     let viewController = WableSheetViewController(title: "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?")

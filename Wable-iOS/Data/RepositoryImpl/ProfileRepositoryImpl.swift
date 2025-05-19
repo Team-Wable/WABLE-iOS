@@ -58,13 +58,13 @@ extension ProfileRepositoryImpl: ProfileRepository {
         }
     }
     
-    func fetchUserInfo() -> AnyPublisher<AccountInfo, WableError> {
-        return provider.request(
-            .fetchUserInfo,
-            for: DTO.Response.FetchAccountInfo.self
-        )
-        .map(ProfileMapper.toDomain)
-        .mapWableError()
+    func fetchAccountInfo() async throws -> AccountInfo {
+        do {
+            let response = try await provider.request(.fetchUserInfo, for: DTO.Response.FetchAccountInfo.self)
+            return ProfileMapper.toDomain(response)
+        } catch {
+            throw ErrorMapper.map(error)
+        }
     }
     
     func fetchUserProfile(memberID: Int) -> AnyPublisher<UserProfile, WableError> {

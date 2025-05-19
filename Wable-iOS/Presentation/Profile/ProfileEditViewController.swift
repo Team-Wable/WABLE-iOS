@@ -1,5 +1,5 @@
 //
-//  ProfileRegisterViewController.swift
+//  ProfileEditViewController.swift
 //  Wable-iOS
 //
 //  Created by YOUJIM on 3/20/25.
@@ -9,16 +9,25 @@ import Photos
 import PhotosUI
 import UIKit
 
-final class ProfileRegisterViewController: NavigationViewController {
+final class ProfileEditViewController: NavigationViewController {
     
     // MARK: Property
     // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
     
-    private let lckYear: Int
-    private let lckTeam: String
     private var defaultImage: String? = nil
-    private let useCase = FetchNicknameDuplicationUseCase(repository: AccountRepositoryImpl())
+    private let profileUseCase = UserProfileUseCase(repository: ProfileRepositoryImpl())
+    private let nicknameUseCase = FetchNicknameDuplicationUseCase(repository: AccountRepositoryImpl())
+    private let userSessionUseCase = FetchUserInformationUseCase(
+        repository: UserSessionRepositoryImpl(
+            userDefaults: UserDefaultsStorage(
+                jsonEncoder: JSONEncoder(),
+                jsonDecoder: JSONDecoder()
+            )
+        )
+    )
     private let cancelBag = CancelBag()
+    
+    private var sessionProfile: UserProfile? = nil
     
     // MARK: - UIComponent
     
@@ -26,11 +35,8 @@ final class ProfileRegisterViewController: NavigationViewController {
     
     // MARK: - LifeCycle
     
-    init(lckYear: Int, lckTeam: String) {
-        self.lckYear = lckYear
-        self.lckTeam = lckTeam
-        
-        super.init(type: .flow)
+    init() {
+        super.init(type: .page(type: .detail, title: "프로필 편집"))
     }
     
     required init?(coder: NSCoder) {
@@ -46,20 +52,26 @@ final class ProfileRegisterViewController: NavigationViewController {
         setupAction()
         setupTapGesture()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.updateSessionInfo()
+        rootView.nickNameTextField.text = nil
+    }
 }
 
 // MARK: - Priviate Extension
 
-private extension ProfileRegisterViewController {
+private extension ProfileEditViewController {
     
     // MARK: - Setup Method
     
     func setupView() {
+        self.navigationController?.navigationBar.isHidden = true
         view.addSubview(rootView)
         
-        defaultImage = rootView.defaultImageList[0].uppercased
-        
-        rootView.configureView()
+        hidesBottomBarWhenPushed = true
     }
     
     func setupConstraint() {
@@ -117,7 +129,7 @@ private extension ProfileRegisterViewController {
     @objc func duplicationCheckButtonDidTap() {
         guard let text = rootView.nickNameTextField.text else { return }
 
-        useCase.execute(nickname: text)
+        nicknameUseCase.execute(nickname: text)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 let condition = completion == .finished
@@ -132,18 +144,35 @@ private extension ProfileRegisterViewController {
     }
     
     @objc func nextButtonDidTap() {
-        guard let name = rootView.nickNameTextField.text else { return }
+        guard let profile = sessionProfile else { return }
         
-        navigationController?.pushViewController(
-            AgreementViewController(
-                nickname: name,
-                lckTeam: lckTeam,
-                lckYear: lckYear,
-                profileImage: defaultImage == nil ? rootView.profileImageView.image : nil,
-                defaultImage: defaultImage
+        guard let text = rootView.nickNameTextField.text,
+              text != "" else {
+            return
+        }
+        
+        profileUseCase.execute(
+            profile: UserProfile(
+                user: User(
+                    id: profile.user.id,
+                    nickname: text,
+                    profileURL: profile.user.profileURL,
+                    fanTeam: profile.user.fanTeam
+                ),
+                introduction: profile.introduction,
+                ghostCount: profile.ghostCount,
+                lckYears: profile.lckYears,
+                userLevel: profile.userLevel
             ),
-            animated: true
+            image: defaultImage == nil ? rootView.profileImageView.image : nil,
+            defaultProfileType: defaultImage
         )
+        .withUnretained(self)
+        .sink { _ in
+        } receiveValue: { owner, _ in
+            owner.navigationController?.popViewController(animated: true)
+        }
+        .store(in: cancelBag)
     }
     
     // MARK: - Function Method
@@ -176,9 +205,32 @@ private extension ProfileRegisterViewController {
     }
 }
 
+extension ProfileEditViewController {
+    func updateSessionInfo() {
+        userSessionUseCase.fetchActiveUserID()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] sessionID in
+                guard let self = self,
+                      let sessionID = sessionID else { return }
+                
+                profileUseCase.execute(userID: sessionID)
+                    .receive(on: DispatchQueue.main)
+                    .sink { _ in } receiveValue: { [weak self] profile in
+                        guard let self = self else { return }
+                        
+                        self.sessionProfile = profile
+                        
+                        self.rootView.configureProfileView(profileImageURL: profile.user.profileURL)
+                    }
+                    .store(in: cancelBag)
+            }
+            .store(in: cancelBag)
+    }
+}
+
 // MARK: - PHPickerViewControllerDelegate
 
-extension ProfileRegisterViewController: PHPickerViewControllerDelegate {
+extension ProfileEditViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         results.first?.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
             guard let image = image as? UIImage else { return }
@@ -195,7 +247,7 @@ extension ProfileRegisterViewController: PHPickerViewControllerDelegate {
 
 // MARK: - UITextFieldDelegate
 
-extension ProfileRegisterViewController: UITextFieldDelegate {
+extension ProfileEditViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool{
         textField.resignFirstResponder()
         

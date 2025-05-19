@@ -116,8 +116,6 @@ private extension ProfileRegisterView {
             conditiionLabel,
             nextButton
         )
-        
-        configureView()
     }
     
     func setupConstraint() {
@@ -174,6 +172,9 @@ private extension ProfileRegisterView {
             $0.adjustedHeightEqualTo(56)
         }
     }
+}
+
+extension ProfileRegisterView {
     
     // MARK: Configure Method
     
@@ -185,5 +186,43 @@ private extension ProfileRegisterView {
         }
         
         profileImageView.kf.setImage(with: profileImageURL)
+    }
+    
+    func configureProfileView(profileImageURL: URL? = .none) {
+        titleLabel.snp.updateConstraints { make in
+            make.top.equalToSuperview().offset(28)
+        }
+        
+        profileImageView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(62)
+            make.centerX.equalToSuperview()
+            make.size.equalTo(166.adjustedWidth)
+        }
+        
+        titleLabel.text = "와블에서 멋진 모습으로\n활동해 보세요!"
+        descriptionLabel.isHidden = true
+        nextButton.configuration?.attributedTitle = "완료".pretendardString(with: .head2)
+        nextButton.isUserInteractionEnabled = true
+        nextButton.updateStyle(.primary)
+        
+        guard let profileImageURL = profileImageURL else {
+            configureDefaultImage()
+            
+            return
+        }
+        
+        switch profileImageURL.absoluteString {
+        case "PURPLE":
+            profileImageView.image = .imgProfilePurple
+        case "GREEN":
+            profileImageView.image = .imgProfileGreen
+        case "BLUE":
+            profileImageView.image = .imgProfileBlue
+        default:
+            profileImageView.kf.setImage(
+                with: profileImageURL,
+                placeholder: [UIImage.imgProfilePurple, UIImage.imgProfileBlue, UIImage.imgProfileGreen].randomElement()
+            )
+        }
     }
 }
