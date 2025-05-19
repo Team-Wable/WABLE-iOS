@@ -165,6 +165,7 @@ private extension HomeDetailViewController {
             $0.verticalEdges.equalToSuperview().inset(10)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalTo(createCommentButton.snp.leading).offset(-7)
+            $0.height.lessThanOrEqualTo(80.adjustedHeight)
         }
         
         placeholderLabel.snp.makeConstraints {
@@ -603,6 +604,10 @@ private extension HomeDetailViewController {
             .sink { owner, isSucceed in
                 if isSucceed {
                     owner.commentTextView.text = ""
+                    owner.commentTextView.isScrollEnabled = false
+                    owner.commentTextView.sizeToFit()
+                    owner.commentTextView.setNeedsUpdateConstraints()
+                    owner.commentTextView.superview?.layoutIfNeeded()
                     owner.placeholderLabel.isHidden = false
                     owner.commentTextView.endEditing(true)
                     
@@ -771,6 +776,17 @@ extension HomeDetailViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
         createCommentButton.isEnabled = !textView.text.isEmpty
+        
+        let size = CGSize(width: textView.frame.width, height: .infinity)
+        let estimatedSize = textView.sizeThatFits(size)
+        let isMaxHeight = estimatedSize.height >= 80.adjustedHeight
+        guard isMaxHeight != textView.isScrollEnabled else { return }
+        
+        textView.isScrollEnabled = isMaxHeight
+        textView.reloadInputViews()
+        textView.setNeedsUpdateConstraints()
+        
+        textView.superview?.layoutIfNeeded()
     }
 }
 
