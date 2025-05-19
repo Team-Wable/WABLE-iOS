@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 protocol FetchUserProfileUseCase {
-    func execute(userID: Int) -> AnyPublisher<UserProfile?, WableError>
+    func execute(userID: Int) async throws -> UserProfile
 }
 
 final class FetchUserProfileUseCaseImpl: FetchUserProfileUseCase {
@@ -19,13 +19,11 @@ final class FetchUserProfileUseCaseImpl: FetchUserProfileUseCase {
         self.repository = repository
     }
     
-    func execute(userID: Int) -> AnyPublisher<UserProfile?, WableError> {
-        guard userID > .zero else {
-            return .fail(.notFoundMember)
+    func execute(userID: Int) async throws -> UserProfile {
+        if userID <= .zero {
+            throw WableError.notFoundMember
         }
         
-        return repository.fetchUserProfile(memberID: userID)
-            .map { $0 }
-            .eraseToAnyPublisher()
+        return try await repository.fetchUserProfile(memberID: userID)
     }
 }

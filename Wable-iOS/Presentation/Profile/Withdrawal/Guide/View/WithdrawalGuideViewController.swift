@@ -93,13 +93,17 @@ private extension WithdrawalGuideViewController {
     // MARK: - Helper
 
     func presentLoginView() {
-        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
+              let window = sceneDelegate.window
+        else {
             return WableLogger.log("SceneDelegate 찾을 수 없음.", for: .debug)
         }
         
-        sceneDelegate.window?.rootViewController = LoginViewController(
+        let loginViewController = LoginViewController(
             viewModel: .init(
-                updateFCMTokenUseCase: UpdateFCMTokenUseCase(repository: ProfileRepositoryImpl()),
+                updateFCMTokenUseCase: UpdateFCMTokenUseCase(
+                    repository: ProfileRepositoryImpl()
+                ),
                 fetchUserAuthUseCase: FetchUserAuthUseCase(
                     loginRepository: LoginRepositoryImpl(),
                     userSessionRepository: UserSessionRepositoryImpl(
@@ -112,6 +116,14 @@ private extension WithdrawalGuideViewController {
                     )
                 )
             )
+        )
+        
+        UIView.transition(
+            with: window,
+            duration: 0.5,
+            options: [.transitionCrossDissolve],
+            animations: { window.rootViewController = loginViewController },
+            completion: nil
         )
     }
     

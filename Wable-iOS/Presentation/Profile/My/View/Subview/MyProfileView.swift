@@ -35,6 +35,12 @@ final class MyProfileView: UIView {
         $0.configuration = config
     }
     
+    let commentEmptyLabel = UILabel().then {
+        $0.attributedText = "아직 작성한 댓글이 없어요.".pretendardString(with: .body2)
+        $0.textColor = .gray500
+        $0.isHidden = true
+    }
+    
     // MARK: - Initializer
 
     override init(frame: CGRect) {
@@ -54,7 +60,7 @@ private extension MyProfileView {
     func setupView() {
         contentEmptyView.addSubviews(contentEmptyLabel, contentEmptyWriteButton)
         
-        addSubviews(navigationView, collectionView, contentEmptyView)
+        addSubviews(navigationView, collectionView, contentEmptyView, commentEmptyLabel)
         
         navigationView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(safeArea)
@@ -65,22 +71,6 @@ private extension MyProfileView {
             make.top.equalTo(navigationView.snp.bottom)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(safeArea)
-        }
-        
-        contentEmptyLabel.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(contentEmptyWriteButton.snp.top).offset(-24)
-        }
-        
-        contentEmptyWriteButton.snp.makeConstraints { make in
-            make.centerX.bottom.equalToSuperview()
-            make.leading.equalToSuperview().offset(8)
-            make.adjustedHeightEqualTo(48)
-        }
-        
-        contentEmptyView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalTo(safeArea).offset(-48)
         }
     }
 }

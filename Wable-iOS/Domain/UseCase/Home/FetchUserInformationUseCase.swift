@@ -25,9 +25,17 @@ extension FetchUserInformationUseCase {
             .eraseToAnyPublisher()
     }
     
+    func fetchActiveUserID() -> Int? {
+        return repository.fetchActiveUserID()
+    }
+    
     func fetchActiveUserInfo() -> AnyPublisher<UserSession?, Never> {
         return Just(repository.fetchActiveUserSession())
             .eraseToAnyPublisher()
+    }
+    
+    func fetchActiveUserInfo() -> UserSession? {
+        return repository.fetchActiveUserSession()
     }
     
     func updateUserSession(
