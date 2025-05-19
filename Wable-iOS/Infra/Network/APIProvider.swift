@@ -70,6 +70,33 @@ final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
             .eraseToAnyPublisher()
     }
     
+    func request<D: Decodable>(
+        _ target: Target,
+        for type: D.Type
+    ) async throws -> D {
+        let response = try await withCheckedThrowingContinuation { continuation in
+            self.request(target) { result in
+                switch result {
+                case .success(let moyaResponse):
+                    continuation.resume(returning: moyaResponse)
+                case .failure(let error):
+                    continuation.resume(throwing: NetworkError.unknown(error))
+                }
+            }
+        }
+        
+        do {
+            let baseResponse = try jsonDecoder.decode(BaseResponse<D>.self, from: response.data)
+            return try validateResponse(baseResponse)
+        } catch let decodingError as DecodingError {
+            throw NetworkError.decodedError(decodingError)
+        } catch let error as NetworkError {
+            throw error
+        } catch {
+            throw NetworkError.unknown(error)
+        }
+    }
+    
     private func validateResponse<D>(_ baseResponse: BaseResponse<D>) throws -> D {
         guard baseResponse.success else {
             throw convertNetworkError(statusCode: baseResponse.status, message: baseResponse.message)
