@@ -10,7 +10,7 @@ import Foundation
 extension ActivityNotification {
     var message: String {
         guard let type else {
-            return ""
+            return "알 수 없는 메세지"
         }
         
         switch type {
@@ -38,6 +38,8 @@ extension ActivityNotification {
             return "\(triggerUserNickname)님이 \(userNickname)님에게 대댓글을 작성했습니다."
         case .childCommentLike:
             return "\(triggerUserNickname)님이 \(userNickname)님의 대댓글을 좋아합니다."
+        case .viewitLike:
+            return "\(triggerUserNickname)님이 \(userNickname)님의 추천 링크를 좋아합니다."
         }
     }
 }
