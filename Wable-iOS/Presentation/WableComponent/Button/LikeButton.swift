@@ -34,32 +34,6 @@ final class LikeButton: UIButton {
     var likeCount: Int = 0
     
     private var postType: PostType = .content
-    
-    // MARK: - LifeCycle
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        setupConstraint()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-// MARK: - Private Extension
-
-private extension LikeButton {
-    
-    // MARK: - Setup
-
-    func setupConstraint() {
-        snp.makeConstraints {
-            $0.adjustedWidthEqualTo(45)
-            $0.adjustedHeightEqualTo(24)
-        }
-    }
 }
 
 // MARK: - Configure Extension
@@ -90,6 +64,7 @@ extension LikeButton {
         configuration.image = image.withConfiguration(UIImage.SymbolConfiguration(pointSize: 24))
         configuration.imagePadding = 4
         configuration.attributedTitle = String(likeCount).pretendardString(with: .caption1)
+        configuration.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         self.configuration = configuration
     }
