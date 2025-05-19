@@ -1702,10 +1702,8 @@
 			isa = PBXGroup;
 			children = (
 				DD51A44B2DD458A8004295B6 /* ProfileEditViewController.swift */,
-				DEA10B592DD3E8E9001EBBA9 /* ProfileViewItem.swift */,
-				DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */,
-				DEA10B5D2DD3F48E001EBBA9 /* ProfileSegmentKind.swift */,
-				DEA10B502DD3D995001EBBA9 /* ProfileInfoCell.swift */,
+				DEF08E212DDB45480024B33C /* Model */,
+				DEF08E202DDB45380024B33C /* Component */,
 				DEA10B522DD3E43A001EBBA9 /* My */,
 				DE3908CA2DD2622400997ABE /* AlarmSetting */,
 				DEB60AEC2DD20B7E00FE8BFD /* AccountInfo */,
@@ -2276,6 +2274,24 @@
 			isa = PBXGroup;
 			children = (
 				DE8E863A2D918735000A4292 /* RankViewItem.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DEF08E202DDB45380024B33C /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */,
+				DEA10B502DD3D995001EBBA9 /* ProfileInfoCell.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		DEF08E212DDB45480024B33C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DEA10B5D2DD3F48E001EBBA9 /* ProfileSegmentKind.swift */,
+				DEA10B592DD3E8E9001EBBA9 /* ProfileViewItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
