@@ -71,13 +71,13 @@ extension GhostButton {
     ///   - status: 버튼 상태 (.normal 또는 .disabled)
     func configureButton(type: GhostButtonType, status: GhostButtonStatus) {
         var configuration = UIButton.Configuration.filled()
-        self.roundCorners([.all], radius: 16)
+        self.roundCorners([.all], radius: 16.adjustedWidth)
         self.clipsToBounds = true
         
         switch type {
         case .large:
             configuration.attributedTitle = "내리기".pretendardString(with: .caption3)
-            configuration.imagePadding = 4
+            configuration.imagePadding = 4.adjustedWidth
             configuration.imagePlacement = .leading
             configuration.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10)
         case .small:

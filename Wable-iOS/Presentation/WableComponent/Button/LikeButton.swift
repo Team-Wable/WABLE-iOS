@@ -61,8 +61,8 @@ extension LikeButton {
             configuration.baseForegroundColor = .gray600
         }
         
-        configuration.image = image.withConfiguration(UIImage.SymbolConfiguration(pointSize: 24))
-        configuration.imagePadding = 4
+        configuration.image = image.withConfiguration(UIImage.SymbolConfiguration(pointSize: 24.adjustedWidth))
+        configuration.imagePadding = 4.adjustedWidth
         configuration.attributedTitle = String(likeCount).pretendardString(with: .caption1)
         configuration.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         

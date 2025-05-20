@@ -40,17 +40,23 @@ final class LoginViewController: UIViewController {
         $0.textColor = .black
     }
     
-    private lazy var kakaoButton: UIButton = UIButton(configuration: .plain()).then {
-        $0.configuration?.image = .btnKakao
+    private lazy var kakaoButton: UIButton = UIButton().then {
+        $0.setImage(.btnKakao, for: .normal)
+        $0.imageView?.contentMode = .scaleAspectFit
+        $0.contentVerticalAlignment = .fill
+        $0.contentHorizontalAlignment = .fill
         $0.backgroundColor = UIColor("FEE500")
-        $0.layer.cornerRadius = 6
+        $0.layer.cornerRadius = 6.adjustedHeight
         $0.clipsToBounds = true
     }
     
-    private lazy var appleButton: UIButton = UIButton(configuration: .plain()).then {
-        $0.configuration?.image = .btnApple
+    private lazy var appleButton: UIButton = UIButton().then {
+        $0.setImage(.btnApple, for: .normal)
+        $0.imageView?.contentMode = .scaleAspectFit
+        $0.contentVerticalAlignment = .fill
+        $0.contentHorizontalAlignment = .fill
         $0.backgroundColor = .wableBlack
-        $0.layer.cornerRadius = 6
+        $0.layer.cornerRadius = 6.adjustedHeight
         $0.clipsToBounds = true
     }
     
@@ -100,8 +106,8 @@ private extension LoginViewController {
         logoImageView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(44)
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(104)
-            $0.height.equalTo(34)
+            $0.adjustedWidthEqualTo(104)
+            $0.adjustedHeightEqualTo(34)
         }
         
         titleLabel.snp.makeConstraints {
@@ -117,13 +123,13 @@ private extension LoginViewController {
         appleButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(56)
             $0.horizontalEdges.equalToSuperview().inset(16)
-            $0.height.equalTo(50)
+            $0.adjustedHeightEqualTo(50)
         }
         
         kakaoButton.snp.makeConstraints {
             $0.bottom.equalTo(appleButton.snp.top).offset(-18)
             $0.horizontalEdges.equalToSuperview().inset(16)
-            $0.height.equalTo(50)
+            $0.adjustedHeightEqualTo(50)
         }
     }
     
