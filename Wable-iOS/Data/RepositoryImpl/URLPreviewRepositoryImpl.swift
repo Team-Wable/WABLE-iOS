@@ -10,23 +10,19 @@ import Foundation
 
 import SwiftSoup
 
-final class URLPreviewRepositoryImpl: URLPreviewRepository {
-    private let session: URLSession
-    
-    init(session: URLSession = .shared) {
-        self.session = session
-    }
-    
+struct URLPreviewRepositoryImpl: URLPreviewRepository {
     func fetchPreview(url: URL) -> AnyPublisher<URLPreview, WableError> {
+        let config = URLSessionConfiguration.ephemeral
+        config.timeoutIntervalForRequest = 5
+        config.timeoutIntervalForResource = 10
+        
+        let session = URLSession(configuration: config)
+        
         return session.dataTaskPublisher(for: url)
             .mapError { _ -> WableError in
                 return WableError.networkError
             }
-            .tryMap { [weak self] data, response -> URLPreview in
-                guard let self else {
-                    throw WableError.unknownError
-                }
-                
+            .tryMap { data, response -> URLPreview in
                 guard let httpResponse = response as? HTTPURLResponse else {
                     throw WableError.networkError
                 }

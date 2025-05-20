@@ -25,7 +25,7 @@ extension CommentTargetType: BaseTargetType {
     var endPoint: String? {
         switch self {
         case .fetchUserCommentList(memberID: let memberID, _):
-            return "/v3/member/\(memberID)/member-comments"
+            return "/v3/member/\(memberID)/comments"
         case .fetchContentCommentList(contentID: let contentID, _):
             return "/v3/content/\(contentID)/comments"
         case .deleteComment(commentID: let commentID):

@@ -23,7 +23,7 @@ final class ViewitListCell: UICollectionViewCell {
     }
     
     private let profileImageView = UIImageView(image: .imgProfilePurple).then {
-        $0.contentMode = .scaleAspectFit
+        $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = Constant.profileImageViewSize / 2
         $0.clipsToBounds = true
     }
@@ -223,16 +223,17 @@ private extension ViewitListCell {
         titleLabel.snp.makeConstraints { make in
             make.top.trailing.equalToSuperview().inset(8)
             make.leading.equalTo(thumbnailImageView.snp.trailing).offset(8)
-            make.bottom.equalTo(siteNameLabel.snp.top).offset(-4)
+            make.bottom.equalTo(siteNameLabel.snp.top)
         }
         
         siteNameLabel.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(titleLabel)
+            make.bottom.lessThanOrEqualTo(likeButton.snp.top).offset(0)
         }
         
         likeButton.snp.makeConstraints { make in
             make.trailing.equalTo(titleLabel)
-            make.bottom.equalToSuperview().offset(-8)
+            make.bottom.equalToSuperview().offset(-4)
         }
     }
     
@@ -326,6 +327,10 @@ private extension ViewitListCell {
     }
     
     @objc func likeDidTap() {
+        let newCount = likeButton.isLiked ? likeButton.likeCount - 1 : likeButton.likeCount + 1
+        
+        likeButton.configureButton(isLiked: !likeButton.isLiked, likeCount: newCount, postType: .content)
+        
         likeDidTapClosure?()
     }
     

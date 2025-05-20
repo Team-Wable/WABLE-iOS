@@ -84,14 +84,14 @@ private extension LoadingViewController {
     
     func setupConstraint() {
         loadingAnimationView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(252.adjustedHeight)
+            make.bottom.equalTo(view.snp.centerY).offset(-16)
             make.centerX.equalToSuperview()
             make.size.equalTo(160.adjustedHeight)
         }
         
         messageLabel.snp.makeConstraints { make in
-            make.top.equalTo(loadingAnimationView.snp.bottom).offset(36.adjustedHeight)
-            make.horizontalEdges.equalToSuperview().inset(30.adjustedWidth)
+            make.top.equalTo(view.snp.centerY).offset(16)
+            make.horizontalEdges.equalToSuperview().inset(30)
         }
     }
 }
