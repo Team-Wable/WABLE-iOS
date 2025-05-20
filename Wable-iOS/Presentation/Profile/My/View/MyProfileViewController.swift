@@ -13,6 +13,8 @@ import Then
 
 final class MyProfileViewController: UIViewController {
     
+    // MARK: - Section & Item
+
     enum Section: CaseIterable {
         case profile
         case post
@@ -31,6 +33,23 @@ final class MyProfileViewController: UIViewController {
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     
+    // MARK: - UIComponent
+    
+    private let navigationView = NavigationView(type: .page(type: .profile, title: "이름"))
+    
+    private lazy var collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: collectionViewLayout
+    ).then {
+        $0.refreshControl = UIRefreshControl()
+        $0.alwaysBounceVertical = true
+    }
+    
+    private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
+        $0.hidesWhenStopped = true
+        $0.color = .gray600
+    }
+
     // MARK: - Property
 
     private var dataSource: DataSource?
@@ -40,7 +59,6 @@ final class MyProfileViewController: UIViewController {
     private let selectedIndexRelay = PassthroughRelay<Int>()
     private let logoutRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
-    private let rootView = MyProfileView()
     
     // MARK: - Initializer
 
@@ -56,16 +74,11 @@ final class MyProfileViewController: UIViewController {
     }
     
     // MARK: - Life Cycle
-    
-    override func loadView() {
-        view = rootView
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupView()
-        setupCollectionViewLayout()
         setupNavigationBar()
         setupDataSource()
         setupAction()
@@ -138,11 +151,34 @@ private extension MyProfileViewController {
     // MARK: - Setup
     
     func setupView() {
-        rootView.navigationView.setNavigationTitle(text: viewModel.nickname ?? "")
-    }
-    
-    func setupCollectionViewLayout() {
-        rootView.collectionView.collectionViewLayout = collectionViewLayout
+        view.backgroundColor = .wableWhite
+        
+        navigationView.setNavigationTitle(text: viewModel.nickname ?? "알 수 없음")
+        
+        let underlineView = UIView(backgroundColor: .gray200)
+        
+        view.addSubviews(navigationView, collectionView, loadingIndicator, underlineView)
+        
+        navigationView.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalTo(safeArea)
+            make.adjustedHeightEqualTo(56)
+        }
+        
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(navigationView.snp.bottom)
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(safeArea)
+        }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-20)
+        }
+        
+        underlineView.snp.makeConstraints { make in
+            make.bottom.horizontalEdges.equalTo(safeArea)
+            make.height.equalTo(1)
+        }
     }
     
     func setupNavigationBar() {
@@ -224,8 +260,7 @@ private extension MyProfileViewController {
             }
         }
         
-        dataSource = DataSource(collectionView: rootView.collectionView, cellProvider: {
-            collectionView, indexPath, item in
+        dataSource = DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
             switch item {
             case .profile(let profileInfo):
                 return collectionView.dequeueConfiguredReusableCell(
@@ -266,18 +301,16 @@ private extension MyProfileViewController {
     }
 
     func setupAction() {
-        rootView.navigationView.menuButton.addTarget(self, action: #selector(menuButtonDidTap), for: .touchUpInside)
+        navigationView.menuButton.addTarget(self, action: #selector(menuButtonDidTap), for: .touchUpInside)
         
-        rootView.collectionView.refreshControl?.addTarget(
-            self, action: #selector(collectionViewDidRefresh), for: .valueChanged
-        )
+        collectionView.refreshControl?.addTarget(self, action: #selector(collectionViewDidRefresh), for: .valueChanged)
     }
     
     func setupBinding() {
         viewModel.$nickname
             .receive(on: RunLoop.main)
             .sink { [weak self] in
-                self?.rootView.navigationView.setNavigationTitle(text: $0 ?? "알 수 없는 유저")
+                self?.navigationView.setNavigationTitle(text: $0 ?? "알 수 없는 유저")
             }
             .store(in: cancelBag)
         
@@ -291,16 +324,13 @@ private extension MyProfileViewController {
         viewModel.$isLoading
             .receive(on: RunLoop.main)
             .filter { $0 }
-            .sink { [weak self] _ in
-                let refreshControl = self?.rootView.collectionView.refreshControl
-                refreshControl?.endRefreshing()
-            }
+            .sink { [weak self] _ in self?.collectionView.refreshControl?.endRefreshing() }
             .store(in: cancelBag)
         
         viewModel.$isLoadingMore
             .receive(on: RunLoop.main)
             .sink { [weak self] in
-                let loadingIndicator = self?.rootView.loadingIndicator
+                let loadingIndicator = self?.loadingIndicator
                 $0 ? loadingIndicator?.startAnimating() : loadingIndicator?.stopAnimating()
             }
             .store(in: cancelBag)
@@ -317,7 +347,7 @@ private extension MyProfileViewController {
     }
     
     func setupDelegate() {
-        rootView.collectionView.delegate = self
+        collectionView.delegate = self
     }
     
     // MARK: - Action

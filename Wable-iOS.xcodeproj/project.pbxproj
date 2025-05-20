@@ -311,7 +311,6 @@
 		DEA10B5A2DD3E8E9001EBBA9 /* ProfileViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B592DD3E8E9001EBBA9 /* ProfileViewItem.swift */; };
 		DEA10B5C2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */; };
 		DEA10B5E2DD3F48E001EBBA9 /* ProfileSegmentKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B5D2DD3F48E001EBBA9 /* ProfileSegmentKind.swift */; };
-		DEA10B612DD3FE6C001EBBA9 /* MyProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B602DD3FE6C001EBBA9 /* MyProfileView.swift */; };
 		DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7142DA92E7100D35646 /* CommunityView.swift */; };
 		DEA9E7172DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
@@ -331,6 +330,9 @@
 		DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29132D7208A00073D512 /* GameStatus.swift */; };
 		DEDC29162D72099C0073D512 /* InformationNotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29152D72099C0073D512 /* InformationNotificationType.swift */; };
 		DEDC29182D720D030073D512 /* PostStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29172D720D030073D512 /* PostStatus.swift */; };
+		DEDFCED42DDC564D00B3CD97 /* OtherProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDFCED32DDC564D00B3CD97 /* OtherProfileViewController.swift */; };
+		DEDFCED62DDC565B00B3CD97 /* OtherProfileEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDFCED52DDC565B00B3CD97 /* OtherProfileEmptyCell.swift */; };
+		DEDFCED82DDC566A00B3CD97 /* OtherProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDFCED72DDC566A00B3CD97 /* OtherProfileViewModel.swift */; };
 		DEE5D6112D9121E5009E5A25 /* OverviewPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6102D9121E5009E5A25 /* OverviewPageView.swift */; };
 		DEE5D6132D9126D8009E5A25 /* WableBadgeSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6122D9126D8009E5A25 /* WableBadgeSegmentedControl.swift */; };
 		DEE5D6162D9130E5009E5A25 /* GameScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6152D9130E5009E5A25 /* GameScheduleViewModel.swift */; };
@@ -642,7 +644,6 @@
 		DEA10B592DD3E8E9001EBBA9 /* ProfileViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewItem.swift; sourceTree = "<group>"; };
 		DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSegmentedHeaderView.swift; sourceTree = "<group>"; };
 		DEA10B5D2DD3F48E001EBBA9 /* ProfileSegmentKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSegmentKind.swift; sourceTree = "<group>"; };
-		DEA10B602DD3FE6C001EBBA9 /* MyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileView.swift; sourceTree = "<group>"; };
 		DEA9E7142DA92E7100D35646 /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
 		DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegisterCompleteViewController.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
@@ -663,6 +664,9 @@
 		DEDC29132D7208A00073D512 /* GameStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStatus.swift; sourceTree = "<group>"; };
 		DEDC29152D72099C0073D512 /* InformationNotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationType.swift; sourceTree = "<group>"; };
 		DEDC29172D720D030073D512 /* PostStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStatus.swift; sourceTree = "<group>"; };
+		DEDFCED32DDC564D00B3CD97 /* OtherProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileViewController.swift; sourceTree = "<group>"; };
+		DEDFCED52DDC565B00B3CD97 /* OtherProfileEmptyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileEmptyCell.swift; sourceTree = "<group>"; };
+		DEDFCED72DDC566A00B3CD97 /* OtherProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileViewModel.swift; sourceTree = "<group>"; };
 		DEE5D6102D9121E5009E5A25 /* OverviewPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPageView.swift; sourceTree = "<group>"; };
 		DEE5D6122D9126D8009E5A25 /* WableBadgeSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableBadgeSegmentedControl.swift; sourceTree = "<group>"; };
 		DEE5D6152D9130E5009E5A25 /* GameScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleViewModel.swift; sourceTree = "<group>"; };
@@ -1708,6 +1712,7 @@
 				DD51A44B2DD458A8004295B6 /* ProfileEditViewController.swift */,
 				DEF08E212DDB45480024B33C /* Model */,
 				DEF08E202DDB45380024B33C /* Component */,
+				DEDFCECF2DDC542000B3CD97 /* Other */,
 				DEA10B522DD3E43A001EBBA9 /* My */,
 				DE3908CA2DD2622400997ABE /* AlarmSetting */,
 				DEB60AEC2DD20B7E00FE8BFD /* AccountInfo */,
@@ -2080,18 +2085,9 @@
 			isa = PBXGroup;
 			children = (
 				DEA10B572DD3E53A001EBBA9 /* MyProfileViewController.swift */,
-				DEA10B5F2DD3FE4F001EBBA9 /* Subview */,
 				DEF08E242DDB46920024B33C /* Cell */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		DEA10B5F2DD3FE4F001EBBA9 /* Subview */ = {
-			isa = PBXGroup;
-			children = (
-				DEA10B602DD3FE6C001EBBA9 /* MyProfileView.swift */,
-			);
-			path = Subview;
 			sourceTree = "<group>";
 		};
 		DEAFE04F2D8C43D90097E91C /* GameSchedule */ = {
@@ -2239,6 +2235,40 @@
 				DE0D0C9B2DD1E35B00FB64DC /* UserRole.swift */,
 			);
 			path = Enum;
+			sourceTree = "<group>";
+		};
+		DEDFCECF2DDC542000B3CD97 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				DEDFCED02DDC543200B3CD97 /* ViewModel */,
+				DEDFCED12DDC543900B3CD97 /* View */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		DEDFCED02DDC543200B3CD97 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DEDFCED72DDC566A00B3CD97 /* OtherProfileViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DEDFCED12DDC543900B3CD97 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DEDFCED32DDC564D00B3CD97 /* OtherProfileViewController.swift */,
+				DEDFCED22DDC543F00B3CD97 /* Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DEDFCED22DDC543F00B3CD97 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DEDFCED52DDC565B00B3CD97 /* OtherProfileEmptyCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		DEE5D60E2D9121D4009E5A25 /* View */ = {
@@ -2467,6 +2497,7 @@
 				DE8873BB2DC7416C00AB16F8 /* URLPreviewRepositoryImpl.swift in Sources */,
 				DD29680A2D6DACF700143851 /* User.swift in Sources */,
 				DD29680B2D6DACF700143851 /* UserProfile.swift in Sources */,
+				DEDFCED42DDC564D00B3CD97 /* OtherProfileViewController.swift in Sources */,
 				DE54B03E2D82CD82009A7C34 /* NotFoundViewController.swift in Sources */,
 				DD29680C2D6DACF700143851 /* LCKTeamRank.swift in Sources */,
 				DD29680D2D6DACF700143851 /* Content.swift in Sources */,
@@ -2479,7 +2510,6 @@
 				DD514D0A2D8C958B0095021D /* AgreementItemView.swift in Sources */,
 				DEE5D6112D9121E5009E5A25 /* OverviewPageView.swift in Sources */,
 				DDFB22442D8BB8D500FEA24A /* LCKTeamView.swift in Sources */,
-				DEA10B612DD3FE6C001EBBA9 /* MyProfileView.swift in Sources */,
 				DD2968112D6DACF700143851 /* Viewit.swift in Sources */,
 				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
 				DD514D082D8C83560095021D /* AgreementViewController.swift in Sources */,
@@ -2568,6 +2598,7 @@
 				DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */,
 				DD29686F2D6DAD5F00143851 /* MoyaLoggingPlugin.swift in Sources */,
 				DD7E797E2DBF6D1E00570C23 /* AppDelegate+Firebase.swift in Sources */,
+				DEDFCED82DDC566A00B3CD97 /* OtherProfileViewModel.swift in Sources */,
 				DE98919B2D993D7200D538D8 /* InformationNotificationViewModel.swift in Sources */,
 				DD2968702D6DAD5F00143851 /* TokenStorage.swift in Sources */,
 				DE8E863D2D918759000A4292 /* RankViewModel.swift in Sources */,
@@ -2611,6 +2642,7 @@
 				DEA9E7172DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift in Sources */,
 				DD29684F2D6DAD2F00143851 /* FetchViewits.swift in Sources */,
 				DE59BB9A2D8A9D3A0040ADCB /* NotificationPageViewController.swift in Sources */,
+				DEDFCED62DDC565B00B3CD97 /* OtherProfileEmptyCell.swift in Sources */,
 				DDCA70952D883D4100A988B8 /* NavigationViewController.swift in Sources */,
 				DE72BB182D93D4E1008E5774 /* NotificationCell.swift in Sources */,
 				DD2968502D6DAD2F00143851 /* FetchUserComments.swift in Sources */,
