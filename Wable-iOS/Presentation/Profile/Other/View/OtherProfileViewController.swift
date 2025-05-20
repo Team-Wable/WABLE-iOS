@@ -49,8 +49,24 @@ final class OtherProfileViewController: UIViewController {
     
     private var dataSource: DataSource?
     
+    private let viewModel: OtherProfileViewModel
     private let cancelBag = CancelBag()
+    
+    // MARK: - Initializer
 
+    init(viewModel: OtherProfileViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+        
+        hidesBottomBarWhenPushed = true
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -59,6 +75,70 @@ final class OtherProfileViewController: UIViewController {
         setupView()
         setupAction()
         setupNavigationBar()
+        setupDataSource()
+        setupDelegate()
+        setupBinding()
+        
+        viewModel.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel.viewDidRefresh()
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension OtherProfileViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let contentID = viewModel.didSelect(index: indexPath.item)
+        
+        let viewController = HomeDetailViewController(
+            viewModel: HomeDetailViewModel(
+                contentID: contentID,
+                fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
+                fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
+                createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),
+                deleteCommentUseCase: DeleteCommentUseCase(repository: CommentRepositoryImpl()),
+                createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+                deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
+                createCommentLikedUseCase: CreateCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
+                deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
+                fetchUserInformationUseCase: FetchUserInformationUseCase(
+                    repository: UserSessionRepositoryImpl(
+                        userDefaults: UserDefaultsStorage(
+                            jsonEncoder: JSONEncoder(),
+                            jsonDecoder: JSONDecoder()
+                        )
+                    )
+                ),
+                fetchGhostUseCase: FetchGhostUseCase(repository: GhostRepositoryImpl()),
+                createReportUseCase: CreateReportUseCase(repository: ReportRepositoryImpl()),
+                createBannedUseCase: CreateBannedUseCase(repository: ReportRepositoryImpl()),
+                deleteContentUseCase: DeleteContentUseCase(repository: ContentRepositoryImpl())
+            ),
+            cancelBag: CancelBag()
+        )
+        
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemCount = dataSource?.snapshot().itemIdentifiers.count,
+              itemCount > .zero
+        else {
+            return
+        }
+        
+        if indexPath.item >= itemCount - 2 {
+            viewModel.willDisplayLast()
+        }
     }
 }
 
@@ -69,7 +149,7 @@ private extension OtherProfileViewController {
     func setupView() {
         view.backgroundColor = .wableWhite
         
-        view.addSubviews(navigationView, collectionView)
+        view.addSubviews(navigationView, collectionView, loadingIndicator)
         
         navigationView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(safeArea)
@@ -90,6 +170,8 @@ private extension OtherProfileViewController {
     
     func setupAction() {
         navigationView.backButton.addTarget(self, action: #selector(backButtonDidTap), for: .touchUpInside)
+        
+        collectionView.refreshControl?.addTarget(self, action: #selector(collectionViewDidRefresh), for: .valueChanged)
     }
     
     func setupNavigationBar() {
@@ -148,9 +230,7 @@ private extension OtherProfileViewController {
             elementKind: UICollectionView.elementKindSectionHeader
         ) { supplementaryView, elementKind, indexPath in
             supplementaryView.segmentDidChangeClosure = { [weak self] selectedIndex in
-                
-                // TODO: 뷰모델에 전달
-                
+                self?.viewModel.selectedIndexDidChange(selectedIndex)
             }
         }
         
@@ -199,6 +279,46 @@ private extension OtherProfileViewController {
         }
     }
     
+    func setupDelegate() {
+        collectionView.delegate = self
+    }
+    
+    func setupBinding() {
+        viewModel.$nickname
+            .receive(on: RunLoop.main)
+            .sink { [weak self] in self?.navigationView.setNavigationTitle(text: $0 ?? "알 수 없는 유저") }
+            .store(in: cancelBag)
+        
+        viewModel.$item
+            .receive(on: RunLoop.main)
+            .sink { [weak self] in self?.applySnapshot(item: $0) }
+            .store(in: cancelBag)
+        
+        viewModel.$isLoading
+            .receive(on: RunLoop.main)
+            .filter { $0 }
+            .sink { [weak self] _ in self?.collectionView.refreshControl?.endRefreshing() }
+            .store(in: cancelBag)
+        
+        viewModel.$isLoadingMore
+            .receive(on: RunLoop.main)
+            .sink { [weak self] in
+                let loadingIndicator = self?.loadingIndicator
+                $0 ? loadingIndicator?.startAnimating() : loadingIndicator?.stopAnimating()
+            }
+            .store(in: cancelBag)
+        
+        viewModel.$errorMessage
+            .receive(on: RunLoop.main)
+            .compactMap { $0 }
+            .sink { [weak self] message in
+                let alert = UIAlertController(title: "에러 발생!", message: message, preferredStyle: .alert)
+                alert.addAction(.init(title: "확인", style: .default))
+                self?.present(alert, animated: true)
+            }
+            .store(in: cancelBag)
+    }
+    
     // MARK: - Helper
     
     func applySnapshot(item: ProfileViewItem) {
@@ -212,13 +332,19 @@ private extension OtherProfileViewController {
         
         if item.currentSegment == .content {
             if item.contentList.isEmpty {
-//                snapshot.appendItems([.empty(<#T##ProfileEmptyCellItem#>)], toSection: .post)
+                snapshot.appendItems(
+                    [.empty(ProfileEmptyCellItem(segment: item.currentSegment, nickname: viewModel.nickname))],
+                    toSection: .post
+                )
             } else {
                 snapshot.appendItems(item.contentList.map { Item.content($0) }, toSection: .post)
             }
         } else {
             if item.commentList.isEmpty {
-                
+                snapshot.appendItems(
+                    [.empty(ProfileEmptyCellItem(segment: item.currentSegment, nickname: viewModel.nickname))],
+                    toSection: .post
+                )
             } else {
                 snapshot.appendItems(item.commentList.map { Item.comment($0) }, toSection: .post)
             }
@@ -226,12 +352,15 @@ private extension OtherProfileViewController {
         
         dataSource?.apply(snapshot)
     }
-
     
     // MARK: - Action
     
     @objc func backButtonDidTap() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func collectionViewDidRefresh() {
+        viewModel.viewDidRefresh()
     }
 
     // MARK: - Computed Property

@@ -10,7 +10,7 @@ import Foundation
 
 final class MyProfileViewModel {
     @Published private(set) var nickname: String?
-    @Published private(set) var item: ProfileViewItem = .init(currentSegment: .content, contentList: [], commentList: [])
+    @Published private(set) var item = ProfileViewItem()
     @Published private(set) var isLoading: Bool = false
     @Published private(set) var isLoadingMore: Bool = false
     @Published private(set) var errorMessage: String?
@@ -27,6 +27,7 @@ final class MyProfileViewModel {
     private let removeUserSessionUseCase: RemoveUserSessionUseCase
     
     private let selectedIndexSubject = PassthroughSubject<Int, Never>()
+    private let willDisplaySubject = PassthroughSubject<Void, Never>()
     private let cancelBag = CancelBag()
     
     init(
@@ -81,16 +82,7 @@ final class MyProfileViewModel {
     }
     
     func willDisplayLast() {
-        guard let userID else { return }
-        
-        switch item.currentSegment {
-        case .content:
-            guard let lastContentID = item.contentList.last?.id else { return }
-            fetchMoreContentList(userID: userID, lastContentID: lastContentID)
-        case .comment:
-            guard let lastCommentID = item.commentList.last?.comment.id else { return }
-            fetchMoreCommentList(userID: userID, lastCommentID: lastCommentID)
-        }
+        willDisplaySubject.send()
     }
 }
 
@@ -102,6 +94,25 @@ private extension MyProfileViewModel {
             .compactMap { return ProfileSegmentKind(rawValue: $0) }
             .sink { [weak self] segment in
                 self?.item.currentSegment = segment
+            }
+            .store(in: cancelBag)
+        
+        willDisplaySubject
+            .debounce(for: .milliseconds(1000), scheduler: DispatchQueue.main)
+            .compactMap { [weak self] in
+                return self?.userID
+            }
+            .sink { [weak self] userID in
+                guard let self else { return }
+                
+                switch item.currentSegment {
+                case .content:
+                    guard let lastContentID = item.contentList.last?.id else { return }
+                    fetchMoreContentList(userID: userID, lastContentID: lastContentID)
+                case .comment:
+                    guard let lastCommentID = item.commentList.last?.comment.id else { return }
+                    fetchMoreCommentList(userID: userID, lastCommentID: lastCommentID)
+                }
             }
             .store(in: cancelBag)
     }
@@ -137,42 +148,42 @@ private extension MyProfileViewModel {
     }
     
     func fetchMoreContentList(userID: Int, lastContentID: Int) {
-        guard !isLastPageForContent else { return }
+        if isLastPageForContent || isLoadingMore { return }
         
         loadingMoreTask?.cancel()
-        
+        isLoadingMore = true
         loadingMoreTask = Task {
-            isLoadingMore = true
-            defer { isLoadingMore = false }
-            
             do {
                 let contentListForNextPage = try await fetchUserContentListUseCase.execute(for: userID, last: lastContentID)
                 guard !Task.isCancelled else { return }
+                isLastPageForContent = contentListForNextPage.count < Constant.defaultCountForContentPage
                 item.contentList.append(contentsOf: contentListForNextPage)
             } catch {
                 guard !Task.isCancelled else { return }
                 errorMessage = error.localizedDescription
             }
+            
+            isLoadingMore = false
         }
     }
     
     func fetchMoreCommentList(userID: Int, lastCommentID: Int) {
-        guard !isLastPageForComment else { return }
+        if isLastPageForComment || isLoadingMore { return }
         
         loadingMoreTask?.cancel()
-        
+        isLoadingMore = true
         loadingMoreTask = Task {
-            isLoadingMore = true
-            defer { isLoadingMore = false }
-            
             do {
                 let commentListForNextPage = try await fetchUserCommentListUseCase.execute(for: userID, last: lastCommentID)
                 guard !Task.isCancelled else { return }
+                isLastPageForComment = commentListForNextPage.count < Constant.defaultCountForCommentPage
                 item.commentList.append(contentsOf: commentListForNextPage)
             } catch {
                 guard !Task.isCancelled else { return }
                 errorMessage = error.localizedDescription
             }
+            
+            isLoadingMore = false
         }
     }
     
