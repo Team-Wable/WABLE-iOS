@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import UserNotifications
 
 final class CommunityViewModel {
     private let useCase: CommunityUseCase
@@ -21,12 +22,14 @@ extension CommunityViewModel: ViewModelType {
         let viewDidLoad: Driver<Void>
         let viewDidRefresh: Driver<Void>
         let register: Driver<Int>
+        let checkNotificationAuthorization: Driver<Void>
     }
     
     struct Output {
         let communityItems: Driver<[CommunityItem]>
         let isLoading: Driver<Bool>
         let completeRegistration: Driver<LCKTeam?>
+        let isNotificationAuthorized: Driver<Bool>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
@@ -100,15 +103,21 @@ extension CommunityViewModel: ViewModelType {
                     .eraseToAnyPublisher()
             }
             .sink { updatedRate in
-                guard let team = registrationRelay.value.team else { return }
+                guard let team = registrationRelay.value.team,
+                      let index = communityListRelay.value.firstIndex(where: { $0.team == team })
+                else {
+                    WableLogger.log("팀을 찾을 수 없습니다.", for: .debug)
+                    return
+                }
                 
-                var community = communityListRelay.value.first { $0.team == team }
-                community?.registrationRate = updatedRate
+                communityListRelay.value[index].registrationRate = updatedRate
             }
             .store(in: cancelBag)
         
-        let communityItems = Publishers.CombineLatest(communityListRelay, registrationRelay)
-            .map { communityList, registration in
+        let communityItems = communityListRelay
+            .map { communityList in
+                let registration = registrationRelay.value
+                
                 return communityList.map {
                     let isRegistered = registration.hasRegisteredTeam
                     ? $0.team == registration.team
@@ -127,10 +136,22 @@ extension CommunityViewModel: ViewModelType {
             })
             .asDriver()
         
+        let isNotificationAuthorized = input.checkNotificationAuthorization
+            .flatMap { _ -> AnyPublisher<Bool, Never> in
+                Future { promise in
+                    UNUserNotificationCenter.current().getNotificationSettings { settings in
+                        promise(.success(settings.authorizationStatus == .authorized))
+                    }
+                }
+                .eraseToAnyPublisher()
+            }
+            .asDriver()
+        
         return Output(
             communityItems: communityItems,
             isLoading: isLoadingRelay.asDriver(),
-            completeRegistration: completeRegistrationRelay.asDriver()
+            completeRegistration: completeRegistrationRelay.asDriver(),
+            isNotificationAuthorized: isNotificationAuthorized
         )
     }
 }

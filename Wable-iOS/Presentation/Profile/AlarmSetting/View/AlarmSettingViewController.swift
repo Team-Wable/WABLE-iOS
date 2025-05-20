@@ -130,6 +130,7 @@ private extension AlarmSettingViewController {
     func setupBinding() {
         viewModel.$isAuthorized
             .map { $0 ? "on" : "off" }
+            .receive(on: RunLoop.main)
             .assign(to: \.text, on: statusLabel)
             .store(in: cancelBag)
     }
@@ -151,8 +152,7 @@ private extension AlarmSettingViewController {
         guard let url = URL(string: urlString),
               UIApplication.shared.canOpenURL(url)
         else {
-            WableLogger.log("설정 창 열 수 없음!", for: .debug)
-            return
+            return WableLogger.log("설정 창 열 수 없음!", for: .debug)
         }
         
         UIApplication.shared.open(url)
