@@ -75,8 +75,8 @@ extension CommentButton {
             configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         }
         
-        configuration.image = image.withConfiguration(UIImage.SymbolConfiguration(pointSize: 24))
-        configuration.imagePadding = 4
+        configuration.image = image.withConfiguration(UIImage.SymbolConfiguration(pointSize: 24.adjustedWidth))
+        configuration.imagePadding = 4.adjustedWidth
         
         self.configuration = configuration
     }
