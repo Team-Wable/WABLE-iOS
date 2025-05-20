@@ -110,12 +110,13 @@ private extension WritePostViewController {
             scrollView,
             imageButton,
             countLabel,
-            postButton
+            postButton,
+            divideView
         )
         
         scrollView.addSubviews(stackView, deleteButton)
         
-        stackView.addArrangedSubviews(titleTextView, divideView, imageView, contentTextView)
+        stackView.addArrangedSubviews(titleTextView, imageView, contentTextView)
     }
     
     func setupConstraint() {
