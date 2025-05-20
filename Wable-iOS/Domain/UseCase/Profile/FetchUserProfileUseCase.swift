@@ -13,11 +13,7 @@ protocol FetchUserProfileUseCase {
 }
 
 final class FetchUserProfileUseCaseImpl: FetchUserProfileUseCase {
-    private let repository: ProfileRepository
-    
-    init(repository: ProfileRepository) {
-        self.repository = repository
-    }
+    @Injected private var repository: ProfileRepository
     
     func execute(userID: Int) async throws -> UserProfile {
         if userID <= .zero {

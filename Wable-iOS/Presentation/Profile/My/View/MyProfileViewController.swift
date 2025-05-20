@@ -18,7 +18,6 @@ final class MyProfileViewController: UIViewController {
     enum Section: CaseIterable {
         case profile
         case post
-        case empty
     }
     
     enum Item: Hashable {
@@ -385,24 +384,22 @@ private extension MyProfileViewController {
         snapshot.appendItems([.profile(profileInfo)], toSection: .profile)
         
         if item.currentSegment == .content {
-            snapshot.appendItems(item.contentList.map { Item.content($0) }, toSection: .post)
-            
             if item.contentList.isEmpty {
-                snapshot.appendSections([.empty])
                 snapshot.appendItems(
-                    [Item.empty(.init(segment: .content, nickname: viewModel.nickname))],
-                    toSection: .empty
+                    [.empty(ProfileEmptyCellItem(segment: item.currentSegment, nickname: viewModel.nickname))],
+                    toSection: .post
                 )
+            } else {
+                snapshot.appendItems(item.contentList.map { Item.content($0) }, toSection: .post)
             }
         } else {
-            snapshot.appendItems(item.commentList.map { Item.comment($0) }, toSection: .post)
-            
             if item.commentList.isEmpty {
-                snapshot.appendSections([.empty])
                 snapshot.appendItems(
-                    [Item.empty(.init(segment: .comment, nickname: viewModel.nickname))],
-                    toSection: .empty
+                    [.empty(ProfileEmptyCellItem(segment: item.currentSegment, nickname: viewModel.nickname))],
+                    toSection: .post
                 )
+            } else {
+                snapshot.appendItems(item.commentList.map { Item.comment($0) }, toSection: .post)
             }
         }
         
@@ -410,7 +407,7 @@ private extension MyProfileViewController {
     }
 
     func navigateToAccountInfo() {
-        let viewModel = AccountInfoViewModel(useCase: FetchAccountInfoUseCaseImpl(repository: ProfileRepositoryImpl()))
+        let viewModel = AccountInfoViewModel(useCase: FetchAccountInfoUseCaseImpl())
         let viewController = AccountInfoViewController(viewModel: viewModel)
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -517,21 +514,6 @@ private extension MyProfileViewController {
                 )
                 sectionHeader.pinToVisibleBounds = true
                 section.boundarySupplementaryItems = [sectionHeader]
-                
-                return section
-                
-            case .empty:
-                let itemSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200)
-                )
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200)
-                )
-                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-                
-                let section = NSCollectionLayoutSection(group: group)
                 
                 return section
             }

@@ -13,11 +13,7 @@ protocol FetchAccountInfoUseCase {
 }
 
 final class FetchAccountInfoUseCaseImpl: FetchAccountInfoUseCase {
-    private let repository: ProfileRepository
-    
-    init(repository: ProfileRepository) {
-        self.repository = repository
-    }
+    @Injected private var repository: ProfileRepository
     
     func execute() async throws -> AccountInfo {
         return try await repository.fetchAccountInfo()

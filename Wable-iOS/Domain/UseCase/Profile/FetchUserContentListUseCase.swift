@@ -13,11 +13,7 @@ protocol FetchUserContentListUseCase {
 }
 
 final class FetchUserContentUseCaseImpl: FetchUserContentListUseCase {
-    private let repository: ContentRepository
-    
-    init(repository: ContentRepository) {
-        self.repository = repository
-    }
+    @Injected private var repository: ContentRepository
     
     func execute(for userID: Int, last contentID: Int) async throws -> [UserContent] {
         if userID < .zero {

@@ -13,11 +13,7 @@ protocol FetchUserCommentListUseCase {
 }
 
 final class FetchUserCommentListUseCaseImpl: FetchUserCommentListUseCase {
-    private let repository: CommentRepository
-    
-    init(repository: CommentRepository) {
-        self.repository = repository
-    }
+    @Injected private var repository: CommentRepository
     
     func execute(for userID: Int, last commentID: Int) async throws -> [UserComment] {
         if userID <= .zero {
