@@ -44,14 +44,14 @@ extension UIFont {
         /// - Returns: 스타일에 따른 `CGFloat` 크기 값
         var size: CGFloat {
             switch self {
-            case .head0: return 24
-            case .head1: return 20
-            case .head2: return 18
-            case .body1, .body2: return 16
-            case .body3, .body4: return 14
-            case .caption1, .caption2: return 13
-            case .caption3, .caption4: return 12
-            case .caption5: return 11
+            case .head0: return 24.adjustedWidth
+            case .head1: return 20.adjustedWidth
+            case .head2: return 18.adjustedWidth
+            case .body1, .body2: return 16.adjustedWidth
+            case .body3, .body4: return 14.adjustedWidth
+            case .caption1, .caption2: return 13.adjustedWidth
+            case .caption3, .caption4: return 12.adjustedWidth
+            case .caption5: return 11.adjustedWidth
             }
         }
         

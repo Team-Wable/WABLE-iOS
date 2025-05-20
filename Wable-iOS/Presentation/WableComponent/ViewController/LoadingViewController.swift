@@ -86,8 +86,7 @@ private extension LoadingViewController {
         loadingAnimationView.snp.makeConstraints { make in
             make.bottom.equalTo(view.snp.centerY).offset(-16)
             make.centerX.equalToSuperview()
-            make.adjustedWidthEqualTo(160)
-            make.height.equalTo(loadingAnimationView.snp.width)
+            make.size.equalTo(160.adjustedHeight)
         }
         
         messageLabel.snp.makeConstraints { make in
