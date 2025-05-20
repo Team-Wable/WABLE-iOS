@@ -65,7 +65,7 @@ extension HomeDetailViewModel: ViewModelType {
         let didContentHeartTappedItem: AnyPublisher<Bool, Never>
         let didCommentHeartTappedItem: AnyPublisher<(Bool, ContentComment), Never>
         let didCommentTappedItem: AnyPublisher<Void, Never>
-        let didReplyTappedItem: AnyPublisher<Int, Never>
+        let didReplyTappedItem: AnyPublisher<(Int, Int), Never>
         let didCreateTappedItem: AnyPublisher<String, Never>
         let didGhostTappedItem: AnyPublisher<(Int, Int, PostType), Never>
         let didDeleteTappedItem: AnyPublisher<(Int, PostType), Never>
@@ -283,6 +283,7 @@ extension HomeDetailViewModel: ViewModelType {
         input.didCommentTappedItem
             .withUnretained(self)
             .sink { owner, _ in
+                replyParentSubject.send((-1, -1))
                 commentTypeSubject.send(.ripple)
             }
             .store(in: cancelBag)
@@ -290,10 +291,9 @@ extension HomeDetailViewModel: ViewModelType {
         input.didReplyTappedItem
             .withUnretained(self)
             .sink { owner, index in
-                replyParentSubject.send((
-                    commentsSubject.value[index].comment.id,
-                    commentsSubject.value[index].comment.author.id
-                ))
+                let (commentID, authorID) = index
+                
+                replyParentSubject.send((commentID, authorID))
                 commentTypeSubject.send(.reply)
             }
             .store(in: cancelBag)
@@ -418,6 +418,9 @@ extension HomeDetailViewModel: ViewModelType {
                         contentSubject.send(content)
                     })
                     .store(in: cancelBag)
+                
+                replyParentSubject.send((-1, -1))
+                commentTypeSubject.send(.ripple)
                 
                 postSucceedSubject.send(true)
             })
