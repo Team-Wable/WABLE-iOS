@@ -77,6 +77,14 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        infoView.snp.updateConstraints {
+            $0.leading.trailing.equalToSuperview()
+        }
+    }
 }
 
 // MARK: - Private Extension
