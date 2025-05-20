@@ -38,7 +38,7 @@ final class HomeDetailViewController: NavigationViewController {
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
     private let didContentHeartTappedSubject = PassthroughSubject<Bool, Never>()
     private let didCommentHeartTappedSubject = PassthroughSubject<(Bool, ContentComment), Never>()
-    private let didReplyTappedSubject = PassthroughSubject<Int, Never>()
+    private let didReplyTappedSubject = PassthroughSubject<(Int, Int), Never>()
     private let didCommentTappedSubject = PassthroughSubject<Void, Never>()
     private let didGhostTappedSubject = PassthroughSubject<(Int, Int, PostType), Never>()
     private let didDeleteTappedSubject = PassthroughSubject<(Int, PostType), Never>()
@@ -453,7 +453,7 @@ private extension HomeDetailViewController {
                 },
                 replyButtonTapHandler: {
                     self.createCommentButton.isEnabled = false
-                    self.didReplyTappedSubject.send(indexPath.item)
+                    self.didReplyTappedSubject.send((item.comment.id, item.comment.author.id))
                     
                     self.commentTextView.text = ""
                     self.updatePlaceholder(for: item.comment.author.nickname, type: .reply)
