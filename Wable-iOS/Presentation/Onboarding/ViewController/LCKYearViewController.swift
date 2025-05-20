@@ -143,6 +143,18 @@ extension LCKYearViewController: UICollectionViewDelegate {
         
         rootView.pullDownButton.configuration?.attributedTitle = String(Constant.startYear + indexPath.item).pretendardString(with: .body1)
         
+        UIView.animate(withDuration: 0.3, animations: {
+            self.rootView.yearCollectionView.alpha = 0
+        }) { _ in
+            self.rootView.yearCollectionView.isHidden = true
+            self.isPullDownEnabled = false
+            
+            if var configuration = self.rootView.pullDownButton.configuration {
+                configuration.image = .btnDropdownDown
+                self.rootView.pullDownButton.configuration = configuration
+            }
+        }
+        
         collectionView.layoutIfNeeded()
     }
 }
