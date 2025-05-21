@@ -8,7 +8,8 @@
 import Foundation
 
 struct ProfileViewItem {
+    var currentSegment: ProfileSegmentKind = .content
     var profileInfo: UserProfile?
-    var content: [UserContent]
-    var comment: [UserComment]
+    var contentList: [UserContent] = []
+    var commentList: [UserComment] = []
 }

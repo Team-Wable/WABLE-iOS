@@ -1,73 +1,56 @@
 //
-//  MyProfileViewModel.swift
+//  OtherProfileViewModel.swift
 //  Wable-iOS
 //
-//  Created by 김진웅 on 5/14/25.
+//  Created by 김진웅 on 5/20/25.
 //
 
 import Combine
 import Foundation
 
-final class MyProfileViewModel {
+final class OtherProfileViewModel {
     @Published private(set) var nickname: String?
     @Published private(set) var item = ProfileViewItem()
-    @Published private(set) var isLoading: Bool = false
-    @Published private(set) var isLoadingMore: Bool = false
+    @Published private(set) var isLoading = false
+    @Published private(set) var isLoadingMore = false
     @Published private(set) var errorMessage: String?
     
     private var isLastPageForContent = false
     private var isLastPageForComment = false
     private var loadingMoreTask: Task<Void, Never>?
     
-    private let userID: Int?
-    private let userSessionUseCase: FetchUserInformationUseCase
+    private let userID: Int
     private let fetchUserProfileUseCase: FetchUserProfileUseCase
-    private let fetchUserCommentListUseCase: FetchUserCommentListUseCase
     private let fetchUserContentListUseCase: FetchUserContentListUseCase
-    private let removeUserSessionUseCase: RemoveUserSessionUseCase
-    
+    private let fetchUserCommentListUseCase: FetchUserCommentListUseCase
     private let selectedIndexSubject = PassthroughSubject<Int, Never>()
-    private let willDisplaySubject = PassthroughSubject<Void, Never>()
+    private let willLastDisplaySubject = PassthroughSubject<Void, Never>()
     private let cancelBag = CancelBag()
     
     init(
-        userinformationUseCase: FetchUserInformationUseCase,
+        userID: Int,
         fetchUserProfileUseCase: FetchUserProfileUseCase,
-        fetchUserCommentListUseCase: FetchUserCommentListUseCase,
         fetchUserContentListUseCase: FetchUserContentListUseCase,
-        removeUserSessionUseCase: RemoveUserSessionUseCase
+        fetchUserCommentListUseCase: FetchUserCommentListUseCase
     ) {
-        self.userSessionUseCase = userinformationUseCase
+        self.userID = userID
         self.fetchUserProfileUseCase = fetchUserProfileUseCase
-        self.fetchUserCommentListUseCase = fetchUserCommentListUseCase
         self.fetchUserContentListUseCase = fetchUserContentListUseCase
-        self.removeUserSessionUseCase = removeUserSessionUseCase
-        
-        self.userID = userinformationUseCase.fetchActiveUserID()
+        self.fetchUserCommentListUseCase = fetchUserCommentListUseCase
         
         bind()
     }
     
     func viewDidLoad() {
-        guard let userID else {
-            return WableLogger.log("유저 아이디를 알 수 없음.", for: .debug)
-        }
         fetchViewItems(userID: userID, segment: .content)
     }
     
     func viewDidRefresh() {
-        guard let userID else {
-            return WableLogger.log("유저 아이디를 알 수 없음.", for: .debug)
-        }
         fetchViewItems(userID: userID, segment: item.currentSegment)
     }
     
     func selectedIndexDidChange(_ selectedIndex: Int) {
         selectedIndexSubject.send(selectedIndex)
-    }
-    
-    func logoutDidTap() {
-        removeUserSessionUseCase.removeUserSession()
     }
     
     func didSelect(index: Int) -> Int {
@@ -82,27 +65,22 @@ final class MyProfileViewModel {
     }
     
     func willDisplayLast() {
-        willDisplaySubject.send()
+        willLastDisplaySubject.send()
     }
 }
 
-private extension MyProfileViewModel {
+private extension OtherProfileViewModel {
     func bind() {
         selectedIndexSubject
             .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
             .removeDuplicates()
             .compactMap { return ProfileSegmentKind(rawValue: $0) }
-            .sink { [weak self] segment in
-                self?.item.currentSegment = segment
-            }
+            .sink { [weak self] in self?.item.currentSegment = $0 }
             .store(in: cancelBag)
         
-        willDisplaySubject
+        willLastDisplaySubject
             .debounce(for: .milliseconds(1000), scheduler: DispatchQueue.main)
-            .compactMap { [weak self] in
-                return self?.userID
-            }
-            .sink { [weak self] userID in
+            .sink { [weak self] _ in
                 guard let self else { return }
                 
                 switch item.currentSegment {
@@ -162,7 +140,6 @@ private extension MyProfileViewModel {
                 guard !Task.isCancelled else { return }
                 errorMessage = error.localizedDescription
             }
-            
             isLoadingMore = false
         }
     }

@@ -265,8 +265,17 @@ private extension HomeViewController {
                     
                     self.present(viewController, animated: true)
                 },
-                profileImageViewTapHandler: {
-                    // TODO: 프로필 구현되는 대로 추가적인 설정 필요
+                profileImageViewTapHandler: { [weak self] in
+                    let otherProfileViewController = OtherProfileViewController(
+                        viewModel: .init(
+                            userID: item.content.contentInfo.author.id,
+                            fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
+                            fetchUserContentListUseCase: FetchUserContentUseCaseImpl(),
+                            fetchUserCommentListUseCase: FetchUserCommentListUseCaseImpl()
+                        )
+                    )
+                    
+                    self?.navigationController?.pushViewController(otherProfileViewController, animated: true)
                 },
                 ghostButtonTapHandler: {
                     let viewController = WableSheetViewController(title: "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?")

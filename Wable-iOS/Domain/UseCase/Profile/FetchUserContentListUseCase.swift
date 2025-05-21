@@ -9,21 +9,17 @@ import Combine
 import Foundation
 
 protocol FetchUserContentListUseCase {
-    func execute(for userID: Int, last contentID: Int) -> AnyPublisher<[UserContent], WableError>
+    func execute(for userID: Int, last contentID: Int) async throws -> [UserContent]
 }
 
 final class FetchUserContentUseCaseImpl: FetchUserContentListUseCase {
-    private let repository: ContentRepository
+    @Injected private var repository: ContentRepository
     
-    init(repository: ContentRepository) {
-        self.repository = repository
-    }
-    
-    func execute(for userID: Int, last contentID: Int) -> AnyPublisher<[UserContent], WableError> {
+    func execute(for userID: Int, last contentID: Int) async throws -> [UserContent] {
         if userID < .zero {
-            return .fail(.notFoundMember)
+            throw WableError.notFoundMember
         }
         
-        return repository.fetchUserContentList(memberID: userID, cursor: contentID)
+        return try await repository.fetchUserContentList(memberID: userID, cursor: contentID)
     }
 }

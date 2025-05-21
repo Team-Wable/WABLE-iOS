@@ -32,6 +32,23 @@ extension CommentLikedRepositoryImpl: CommentLikedRepository {
         .mapWableError()
     }
     
+    func createCommentLiked(commentID: Int, triggerType: String, notificationText: String) async throws {
+        do {
+            _ = try await provider.request(
+                .createCommentLiked(
+                    commentID: commentID,
+                    request: DTO.Request.CreateCommentLiked(
+                        notificationTriggerType: triggerType,
+                        notificationText: notificationText
+                    )
+                ),
+                for: DTO.Response.Empty.self
+            )
+        } catch {
+            throw ErrorMapper.map(error)
+        }
+    }
+    
     func deleteCommentLiked(commentID: Int) -> AnyPublisher<Void, WableError> {
         return provider.request(
             .deleteCommentLiked(commentID: commentID),
@@ -39,5 +56,16 @@ extension CommentLikedRepositoryImpl: CommentLikedRepository {
         )
         .asVoid()
         .mapWableError()
+    }
+    
+    func deleteCommentLiked(commentID: Int) async throws {
+        do {
+            _ = try await provider.request(
+                .deleteCommentLiked(commentID: commentID),
+                for: DTO.Response.Empty.self
+            )
+        } catch {
+            throw ErrorMapper.map(error)
+        }
     }
 }

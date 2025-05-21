@@ -38,6 +38,28 @@ extension AppDelegate {
                 return ViewitRepositoryImpl()
             }
         }
+        
         diContainer.register(for: URLPreviewRepository.self, object: URLPreviewRepositoryImpl())
+        
+        // MARK: - Comment
+        
+        diContainer.register(for: CommentRepository.self) { config in
+            switch config {
+            case .debug:
+                return MockCommentRepository()
+            case .release:
+                return CommentRepositoryImpl()
+            }
+        }
+        diContainer.register(for: CommentLikedRepository.self, object: CommentLikedRepositoryImpl())
+        
+        // MARK: - Content
+
+        diContainer.register(for: ContentRepository.self, object: ContentRepositoryImpl())
+        diContainer.register(for: ContentLikedRepository.self, object: ContentLikedRepositoryImpl())
+        
+        // MARK: - Profile
+
+        diContainer.register(for: ProfileRepository.self, object: ProfileRepositoryImpl())
     }
 }
