@@ -456,7 +456,8 @@ private extension MyProfileViewController {
                     repository: UserSessionRepositoryImpl(
                         userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
                     )
-                )
+                ),
+                userProfileUseCase: UserProfileUseCase(repository: ProfileRepositoryImpl())
             )
         )
         
