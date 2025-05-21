@@ -114,7 +114,8 @@ private extension WithdrawalGuideViewController {
                     repository: UserSessionRepositoryImpl(
                         userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
                     )
-                )
+                ),
+                userProfileUseCase: UserProfileUseCase(repository: ProfileRepositoryImpl())
             )
         )
         
