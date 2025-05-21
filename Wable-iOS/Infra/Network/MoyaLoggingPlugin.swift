@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 import Moya
 
@@ -128,6 +129,17 @@ private extension MoyaLoggingPlugin {
                 do {
                     try owner.tokenStorage.save(token.accessToken, for: .wableAccessToken)
                     try owner.tokenStorage.save(token.refreshToken, for: .wableRefreshToken)
+                    
+                    guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                          let rootViewController = windowScene.windows.first?.rootViewController
+                    else {
+                        return
+                    }
+                    
+                    let viewController = WableSheetViewController(title: "알 수 없는 오류입니다.\n재시도하세요.")
+                    viewController.addAction(WableSheetAction.init(title: "확인", style: .primary))
+                    
+                    rootViewController.present(viewController, animated: true)
                 } catch {
                     WableLogger.log("토큰 재발급 중 문제 발생", for: .error)
                     owner.logoutHandler?()

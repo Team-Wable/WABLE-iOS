@@ -56,6 +56,10 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFit
     }
     
+    private let divisionLine: UIView = UIView().then {
+        $0.backgroundColor = .gray200
+    }
+    
     lazy var likeButton = LikeButton()
     private lazy var replyButton = CommentButton(type: .comment)
     private lazy var ghostButton = GhostButton()
@@ -73,6 +77,14 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        infoView.snp.updateConstraints {
+            $0.leading.trailing.equalToSuperview()
+        }
+    }
 }
 
 // MARK: - Private Extension
@@ -87,7 +99,8 @@ private extension CommentCollectionViewCell {
             ghostButton,
             contentLabel,
             likeButton,
-            replyButton
+            replyButton,
+            divisionLine
         )
     }
     
@@ -117,6 +130,11 @@ private extension CommentCollectionViewCell {
         replyButton.snp.makeConstraints {
             $0.leading.equalTo(likeButton.snp.trailing).offset(8)
             $0.centerY.equalTo(ghostButton)
+        }
+        
+        divisionLine.snp.makeConstraints {
+            $0.bottom.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(1)
         }
     }
     

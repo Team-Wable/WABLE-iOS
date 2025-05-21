@@ -79,7 +79,7 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     
     lazy var commentButton: CommentButton = CommentButton(type: .content)
     
-    private let divideView: UIView = UIView().then {
+    let divideView: UIView = UIView().then {
         $0.backgroundColor = .gray200
     }
     
@@ -164,6 +164,7 @@ private extension ContentCollectionViewCell {
         
         divideView.snp.makeConstraints {
             $0.bottom.horizontalEdges.equalToSuperview()
+            $0.top.equalTo(likeButton.snp.bottom).offset(16.5)
             $0.adjustedHeightEqualTo(1)
         }
     }
