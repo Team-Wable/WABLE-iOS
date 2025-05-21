@@ -69,4 +69,16 @@ extension ContentRepositoryImpl: ContentRepository {
         .map(ContentMapper.toDomain)
         .mapWableError()
     }
+    
+    func fetchUserContentList(memberID: Int, cursor: Int) async throws -> [UserContent] {
+        do {
+            let response = try await provider.request(
+                .fetchUserContentList(memberID: memberID, cursor: cursor),
+                for: [DTO.Response.FetchUserContents].self
+            )
+            return ContentMapper.toDomain(response)
+        } catch {
+            throw ErrorMapper.map(error)
+        }
+    }
 }

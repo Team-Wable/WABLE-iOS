@@ -76,6 +76,18 @@ extension ProfileRepositoryImpl: ProfileRepository {
         .mapWableError()
     }
     
+    func fetchUserProfile(memberID: Int) async throws -> UserProfile {
+        do {
+            let response = try await provider.request(
+                .fetchUserProfile(memberID: memberID),
+                for: DTO.Response.FetchUserProfile.self
+            )
+            return ProfileMapper.toDomain(response)
+        } catch {
+            throw ErrorMapper.map(error)
+        }
+    }
+    
     func updateUserProfile(
         profile: UserProfile? = nil,
         isPushAlarmAllowed: Bool? = nil,

@@ -15,4 +15,5 @@ protocol ContentRepository {
     func fetchContentInfo(contentID: Int) -> AnyPublisher<ContentInfo, WableError>
     func fetchContentList(cursor: Int) -> AnyPublisher<[Content], WableError>
     func fetchUserContentList(memberID: Int, cursor: Int) -> AnyPublisher<[UserContent], WableError>
+    func fetchUserContentList(memberID: Int, cursor: Int) async throws -> [UserContent]
 }

@@ -84,15 +84,9 @@ final class TabBarController: UITabBarController {
                     userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
                 )
             ),
-            fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(
-                repository: ProfileRepositoryImpl()
-            ),
-            fetchUserCommentListUseCase: FetchUserCommentListUseCaseImpl(
-                repository: CommentRepositoryImpl()
-            ),
-            fetchUserContentListUseCase: FetchUserContentUseCaseImpl(
-                repository: ContentRepositoryImpl()
-            ),
+            fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
+            fetchUserCommentListUseCase: FetchUserCommentListUseCaseImpl(),
+            fetchUserContentListUseCase: FetchUserContentUseCaseImpl(),
             removeUserSessionUseCase: RemoveUserSessionUseCaseImpl(
                 repository: UserSessionRepositoryImpl(
                     userDefaults: UserDefaultsStorage(

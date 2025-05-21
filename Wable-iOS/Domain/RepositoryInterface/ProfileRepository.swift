@@ -12,6 +12,7 @@ import UIKit
 protocol ProfileRepository {
     func fetchAccountInfo() async throws -> AccountInfo
     func fetchUserProfile(memberID: Int) -> AnyPublisher<UserProfile, WableError>
+    func fetchUserProfile(memberID: Int) async throws -> UserProfile
     func fetchFCMToken() -> String?
     func updateFCMToken(token: String)
     func updateUserProfile(nickname: String, fcmToken: String?) -> AnyPublisher<Void, WableError>
