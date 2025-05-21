@@ -32,7 +32,7 @@ final class WritePostViewController: NavigationViewController {
         $0.isScrollEnabled = false
         $0.textContainerInset = .zero
         $0.setPretendard(with: .head1, text: Constant.titlePlaceholder)
-        $0.textColor = .gray700
+        $0.textColor = .gray500
         $0.backgroundColor = .clear
     }
     
@@ -55,6 +55,8 @@ final class WritePostViewController: NavigationViewController {
         $0.configuration?.image = .btnRemovePhoto
         $0.isHidden = true
     }
+    
+    private let divideView: UIView = .init(backgroundColor: .gray100)
     
     private lazy var imageButton: UIButton = .init(configuration: .plain()).then {
         $0.configuration?.image = .icPhoto
@@ -108,7 +110,8 @@ private extension WritePostViewController {
             scrollView,
             imageButton,
             countLabel,
-            postButton
+            postButton,
+            divideView
         )
         
         scrollView.addSubviews(stackView, deleteButton)
@@ -140,6 +143,12 @@ private extension WritePostViewController {
             $0.size.equalTo(44.adjustedWidth)
         }
         
+        divideView.snp.makeConstraints {
+            $0.bottom.equalTo(imageButton.snp.top).offset(-8)
+            $0.horizontalEdges.equalToSuperview()
+            $0.adjustedHeightEqualTo(2)
+        }
+        
         imageButton.snp.makeConstraints {
             $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-7.5)
             $0.leading.equalToSuperview().offset(16)
@@ -160,6 +169,8 @@ private extension WritePostViewController {
     }
     
     func setupAction() {
+        navigationView.backButton.removeTarget(nil, action: nil, for: .touchUpInside)
+        navigationView.backButton.addTarget(self, action: #selector(popButtonDidTap), for: .touchUpInside)
         postButton.addTarget(self, action: #selector(postButtonDidTap), for: .touchUpInside)
         imageButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
         deleteButton.addAction(UIAction(handler: { [weak self] _ in
@@ -218,6 +229,25 @@ private extension WritePostViewController {
         
         postButtonTapRelay.send((title: title, content: content, image: imageView.image))
         WableLogger.log("postButtonTapRelay 실행 완료", for: .debug)
+    }
+    
+    @objc func popButtonDidTap() {
+        if (contentTextView.text == Constant.contentPlaceholder || contentTextView.text == "")
+            && (titleTextView.text == Constant.titlePlaceholder || titleTextView.text == "")
+            && imageView.image == nil {
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            let popup = WableSheetViewController(title: "작성중인 글에서 나가실건가요?\n작성하셨던 내용은 삭제돼요")
+            
+            popup.addActions(
+                WableSheetAction(title: "취소", style: .gray),
+                WableSheetAction(title: "나가기", style: .primary, handler: {
+                    self.navigationController?.popViewController(animated: true)
+                })
+            )
+            
+            self.present(popup, animated: true)
+        }
     }
 }
 
@@ -311,7 +341,7 @@ extension WritePostViewController: UITextViewDelegate {
         
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             textView.text = placeholder
-            textView.textColor = textView == titleTextView ? .gray700 : .gray500
+            textView.textColor = .gray500
             updateCharacterCount()
         }
     }
@@ -321,14 +351,13 @@ extension WritePostViewController: UITextViewDelegate {
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        let isPlaceholder = (textView == titleTextView && textView.textColor == .gray700) ||
-        (textView == contentTextView && textView.textColor == .gray500)
-        
+        let isPlaceholder = textView == titleTextView || textView == contentTextView 
+         
         if isPlaceholder {
             return true
         }
         
-        let titleCount = titleTextView.textColor == .gray700 ? 0 : titleTextView.text.count
+        let titleCount = titleTextView.textColor == .gray500 ? 0 : titleTextView.text.count
         let contentCount = contentTextView.textColor == .gray500 ? 0 : contentTextView.text.count
         let currentCount = textView == titleTextView ? titleCount : contentCount
         let otherCount = textView == titleTextView ? contentCount : titleCount

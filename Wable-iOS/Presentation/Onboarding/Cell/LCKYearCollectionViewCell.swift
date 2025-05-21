@@ -29,6 +29,14 @@ final class LCKYearCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        backgroundColor = .clear
+        yearLabel.textColor = .wableBlack
+        yearLabel.attributedText = yearLabel.text?.pretendardString(with: .body2)
+    }
 }
 
 // MARK: - Private Extension

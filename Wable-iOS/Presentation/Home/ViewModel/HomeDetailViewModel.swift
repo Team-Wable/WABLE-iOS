@@ -65,7 +65,7 @@ extension HomeDetailViewModel: ViewModelType {
         let didContentHeartTappedItem: AnyPublisher<Bool, Never>
         let didCommentHeartTappedItem: AnyPublisher<(Bool, ContentComment), Never>
         let didCommentTappedItem: AnyPublisher<Void, Never>
-        let didReplyTappedItem: AnyPublisher<Int, Never>
+        let didReplyTappedItem: AnyPublisher<(Int, Int), Never>
         let didCreateTappedItem: AnyPublisher<String, Never>
         let didGhostTappedItem: AnyPublisher<(Int, Int, PostType), Never>
         let didDeleteTappedItem: AnyPublisher<(Int, PostType), Never>
@@ -166,35 +166,124 @@ extension HomeDetailViewModel: ViewModelType {
         
         input.didContentHeartTappedItem
             .withUnretained(self)
-            .flatMap { owner, info -> AnyPublisher<Void, Never> in
-                if info {
-                    return owner.createContentLikedUseCase.execute(contentID: owner.contentID)
-                        .asDriver(onErrorJustReturn: ())
-                } else {
-                    return owner.deleteContentLikedUseCase.execute(contentID: owner.contentID)
-                        .asDriver(onErrorJustReturn: ())
-                }
+            .flatMap { owner, isLiked -> AnyPublisher<Bool, Never> in
+                return (isLiked ? owner.createContentLikedUseCase.execute(contentID: owner.contentID)
+                        : owner.deleteContentLikedUseCase.execute(contentID: owner.contentID))
+                .map { _ in isLiked }
+                .asDriver(onErrorJustReturn: isLiked)
             }
-            .sink(receiveValue: { _ in })
+            .sink(receiveValue: { isLiked in
+                guard let content = contentSubject.value else { return }
+                
+                let originalLike = content.like
+                let updatedLike = isLiked
+                    ? Like(status: true, count: originalLike.count + 1)
+                    : Like(status: false, count: max(0, originalLike.count - 1))
+                
+                let updatedContent = ContentInfo(
+                    author: content.author,
+                    createdDate: content.createdDate,
+                    title: content.title,
+                    imageURL: content.imageURL,
+                    text: content.text,
+                    status: content.status,
+                    like: updatedLike,
+                    opacity: content.opacity,
+                    commentCount: content.commentCount
+                )
+                
+                contentSubject.send(updatedContent)
+            })
             .store(in: cancelBag)
-        
+
         input.didCommentHeartTappedItem
             .withUnretained(self)
-            .flatMap { owner, info -> AnyPublisher<Void, Never> in
-                if info.0 {
-                    return owner.createCommentLikedUseCase.execute(commentID: info.1.comment.id, notificationText: info.1.comment.text)
-                        .asDriver(onErrorJustReturn: ())
-                } else {
-                    return owner.deleteCommentLikedUseCase.execute(commentID: info.1.comment.id)
-                        .asDriver(onErrorJustReturn: ())
-                }
+            .flatMap { owner, info -> AnyPublisher<(Bool, ContentComment), Never> in
+                let (isLiked, comment) = info
+                return (isLiked ? owner.createCommentLikedUseCase.execute(commentID: comment.comment.id, notificationText: comment.comment.text)
+                        : owner.deleteCommentLikedUseCase.execute(commentID: comment.comment.id))
+                .map { _ in info }
+                .asDriver(onErrorJustReturn: info)
             }
-            .sink(receiveValue: { _ in })
+            .sink(receiveValue: { isLiked, commentInfo in
+                var updatedComments = commentsSubject.value
+                
+                for i in 0..<updatedComments.count {
+                    if updatedComments[i].comment.id == commentInfo.comment.id {
+                        let originalComment = updatedComments[i].comment
+                        let originalLike = originalComment.like
+                        
+                        let updatedLike = isLiked
+                            ? Like(status: true, count: originalLike.count + 1)
+                            : Like(status: false, count: max(0, originalLike.count - 1))
+                        
+                        let updatedCommentInfo = CommentInfo(
+                            author: originalComment.author,
+                            id: originalComment.id,
+                            text: originalComment.text,
+                            createdDate: originalComment.createdDate,
+                            status: originalComment.status,
+                            like: updatedLike,
+                            opacity: originalComment.opacity
+                        )
+                        
+                        updatedComments[i] = ContentComment(
+                            comment: updatedCommentInfo,
+                            parentID: updatedComments[i].parentID,
+                            isDeleted: updatedComments[i].isDeleted,
+                            childs: updatedComments[i].childs
+                        )
+                        
+                        commentsSubject.send(updatedComments)
+                        return
+                    }
+                    
+                    for j in 0..<updatedComments[i].childs.count {
+                        if updatedComments[i].childs[j].comment.id == commentInfo.comment.id {
+                            let originalChild = updatedComments[i].childs[j].comment
+                            let originalLike = originalChild.like
+                            
+                            let updatedLike = isLiked
+                                ? Like(status: true, count: originalLike.count + 1)
+                                : Like(status: false, count: max(0, originalLike.count - 1))
+                            
+                            let updatedChildInfo = CommentInfo(
+                                author: originalChild.author,
+                                id: originalChild.id,
+                                text: originalChild.text,
+                                createdDate: originalChild.createdDate,
+                                status: originalChild.status,
+                                like: updatedLike,
+                                opacity: originalChild.opacity
+                            )
+                            
+                            var updatedChilds = updatedComments[i].childs
+                            updatedChilds[j] = ContentComment(
+                                comment: updatedChildInfo,
+                                parentID: updatedChilds[j].parentID,
+                                isDeleted: updatedChilds[j].isDeleted,
+                                childs: updatedChilds[j].childs
+                            )
+                            
+                            updatedComments[i] = ContentComment(
+                                comment: updatedComments[i].comment,
+                                parentID: updatedComments[i].parentID,
+                                isDeleted: updatedComments[i].isDeleted,
+                                childs: updatedChilds
+                            )
+                            
+                            commentsSubject.send(updatedComments)
+                            return
+                        }
+                    }
+                }
+            })
             .store(in: cancelBag)
         
         input.didCommentTappedItem
             .withUnretained(self)
             .sink { owner, _ in
+                replyParentSubject.send((-1, -1))
                 commentTypeSubject.send(.ripple)
             }
             .store(in: cancelBag)
@@ -202,10 +291,9 @@ extension HomeDetailViewModel: ViewModelType {
         input.didReplyTappedItem
             .withUnretained(self)
             .sink { owner, index in
-                replyParentSubject.send((
-                    commentsSubject.value[index].comment.id,
-                    commentsSubject.value[index].comment.author.id
-                ))
+                let (commentID, authorID) = index
+                
+                replyParentSubject.send((commentID, authorID))
                 commentTypeSubject.send(.reply)
             }
             .store(in: cancelBag)
@@ -272,21 +360,34 @@ extension HomeDetailViewModel: ViewModelType {
         input.didDeleteTappedItem
             .withUnretained(self)
             .flatMap { owner, input -> AnyPublisher<(Int, PostType), Never> in
-                return owner.deleteCommentUseCase.execute(commentID: input.0)
-                    .map { _ in input }
-                    .asDriver(onErrorJustReturn: input)
+                let (commentID, postType) = input
+                if postType == .content {
+                    return owner.deleteContentUseCase.execute(contentID: self.contentID)
+                        .map { _ in input }
+                        .asDriver(onErrorJustReturn: input)
+                } else {
+                    return owner.deleteCommentUseCase.execute(commentID: commentID)
+                        .map { _ in input }
+                        .asDriver(onErrorJustReturn: input)
+                }
             }
             .withUnretained(self)
             .sink(receiveValue: { owner, value in
-                if value.1 == .content {
+                let (id, postType) = value
+                
+                if postType == .content {
                     isContentDeletedSubject.send(true)
                 } else {
-                    let updatedCommentInfo = owner.updateDeleteComments(comments: commentsSubject.value, commentID: value.0)
+                    let updatedCommentInfo = owner.updateDeleteComments(
+                        comments: commentsSubject.value,
+                        commentID: id
+                    )
                     
                     commentsSubject.send(updatedCommentInfo)
                 }
             })
             .store(in: cancelBag)
+
         
         input.didCreateTappedItem
             .withUnretained(self)
@@ -302,6 +403,8 @@ extension HomeDetailViewModel: ViewModelType {
             .sink(receiveValue: { [weak self] _ in
                 guard let id = self?.contentID else { return }
                 
+                isLastViewSubject.send(false)
+                
                 self?.fetchContentCommentListUseCase.execute(contentID: id, cursor: -1)
                     .sink(receiveCompletion: { _ in
                     }, receiveValue: { comments in
@@ -315,6 +418,9 @@ extension HomeDetailViewModel: ViewModelType {
                         contentSubject.send(content)
                     })
                     .store(in: cancelBag)
+                
+                replyParentSubject.send((-1, -1))
+                commentTypeSubject.send(.ripple)
                 
                 postSucceedSubject.send(true)
             })
