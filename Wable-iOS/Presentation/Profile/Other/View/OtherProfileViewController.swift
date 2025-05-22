@@ -14,7 +14,7 @@ final class OtherProfileViewController: UIViewController {
     
     // MARK: - Section & Item
     
-    enum Section: CaseIterable {
+    enum Section: Int, CaseIterable {
         case profile
         case post
     }
@@ -93,6 +93,8 @@ final class OtherProfileViewController: UIViewController {
 
 extension OtherProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let section = Section(rawValue: indexPath.section), section == .post else { return }
+        
         let contentID = viewModel.didSelect(index: indexPath.item)
         
         let viewController = HomeDetailViewController(
