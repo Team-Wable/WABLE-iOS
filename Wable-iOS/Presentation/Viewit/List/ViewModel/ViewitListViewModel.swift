@@ -153,12 +153,18 @@ extension ViewitListViewModel: ViewModelType {
                         return .just(nil)
                     }
                     .compactMap { $0 }
-                    .map { (index, $0) }
+                    .withUnretained(self)
+                    .flatMap { owner, _ -> AnyPublisher<[Viewit], Never> in
+                        return owner.useCase.fetchViewitList(last: Constant.initialCursor)
+                            .catch { error -> AnyPublisher<[Viewit], Never> in
+                                errorMessageRelay.send(error.localizedDescription)
+                                return .just([])
+                            }
+                            .eraseToAnyPublisher()
+                    }
                     .eraseToAnyPublisher()
             }
-            .sink { index, viewit in
-                viewitListRelay.value[index] = viewit
-            }
+            .sink { viewitListRelay.send($0) }
             .store(in: cancelBag)
         
         input.bottomSheetAction
