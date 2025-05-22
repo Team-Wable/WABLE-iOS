@@ -70,7 +70,7 @@ final class ProfileInfoCell: UICollectionViewCell {
         $0.progressTintColor = .purple50
         $0.trackTintColor = .gray200
         $0.layer.cornerRadius = 8
-        $0.setProgress(0.0, animated: false)
+        $0.progress = .zero
         $0.clipsToBounds = true
     }
     
@@ -118,7 +118,7 @@ final class ProfileInfoCell: UICollectionViewCell {
         nicknameLabel.text = nickname
         introductionLabel.text = introduction
         ghostValueLabel.text = "\(ghostValue)%"
-        ghostProgressBar.setProgress(Float(100 + ghostValue), animated: false)
+        ghostProgressBar.setProgress(Float(100 + ghostValue) / 100, animated: true)
         
         let randomProfileImage = [
             UIImage.imgProfilePurple,
