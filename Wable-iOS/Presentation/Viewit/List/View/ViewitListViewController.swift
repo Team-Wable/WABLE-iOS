@@ -301,8 +301,14 @@ private extension ViewitListViewController {
             viewModel: .init(
                 userID: userID,
                 fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
-                fetchUserContentListUseCase: FetchUserContentUseCaseImpl(),
-                fetchUserCommentListUseCase: FetchUserCommentListUseCaseImpl()
+                checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
+                    repository: UserSessionRepositoryImpl(
+                        userDefaults: UserDefaultsStorage(
+                            jsonEncoder: JSONEncoder(),
+                            jsonDecoder: JSONDecoder()
+                        )
+                    )
+                )
             )
         )
         
