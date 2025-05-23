@@ -28,10 +28,6 @@ final class MyProfileViewModel {
     @Injected private var contentLikedRepository: ContentLikedRepository
     @Injected private var commentLikedRepository: CommentLikedRepository
     
-    private let selectedIndexSubject = PassthroughSubject<Int, Never>()
-    private let willDisplaySubject = PassthroughSubject<Void, Never>()
-    private let cancelBag = CancelBag()
-    
     init(
         userinformationUseCase: FetchUserInformationUseCase,
         fetchUserProfileUseCase: FetchUserProfileUseCase,
@@ -42,15 +38,6 @@ final class MyProfileViewModel {
         self.removeUserSessionUseCase = removeUserSessionUseCase
         
         self.userID = userinformationUseCase.fetchActiveUserID()
-        
-        bind()
-    }
-    
-    func viewDidLoad() {
-        guard let userID else {
-            return WableLogger.log("유저 아이디를 알 수 없음.", for: .debug)
-        }
-        fetchViewItems(userID: userID, segment: .content)
     }
     
     func viewDidRefresh() {
@@ -61,7 +48,8 @@ final class MyProfileViewModel {
     }
     
     func selectedIndexDidChange(_ selectedIndex: Int) {
-        selectedIndexSubject.send(selectedIndex)
+        guard let segment = ProfileSegmentKind(rawValue: selectedIndex) else { return }
+        item.currentSegment = segment
     }
     
     func logoutDidTap() {
@@ -80,7 +68,16 @@ final class MyProfileViewModel {
     }
     
     func willDisplayLast() {
-        willDisplaySubject.send()
+        guard let userID else { return }
+        
+        switch item.currentSegment {
+        case .content:
+            guard let lastContentID = item.contentList.last?.id else { return }
+            fetchMoreContentList(userID: userID, lastContentID: lastContentID)
+        case .comment:
+            guard let lastCommentID = item.commentList.last?.comment.id else { return }
+            fetchMoreCommentList(userID: userID, lastCommentID: lastCommentID)
+        }
     }
     
     func deleteContent(for contentID: Int) {
@@ -158,36 +155,6 @@ final class MyProfileViewModel {
 }
 
 private extension MyProfileViewModel {
-    func bind() {
-        selectedIndexSubject
-            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
-            .removeDuplicates()
-            .compactMap { return ProfileSegmentKind(rawValue: $0) }
-            .sink { [weak self] segment in
-                self?.item.currentSegment = segment
-            }
-            .store(in: cancelBag)
-        
-        willDisplaySubject
-            .debounce(for: .milliseconds(1000), scheduler: DispatchQueue.main)
-            .compactMap { [weak self] in
-                return self?.userID
-            }
-            .sink { [weak self] userID in
-                guard let self else { return }
-                
-                switch item.currentSegment {
-                case .content:
-                    guard let lastContentID = item.contentList.last?.id else { return }
-                    fetchMoreContentList(userID: userID, lastContentID: lastContentID)
-                case .comment:
-                    guard let lastCommentID = item.commentList.last?.comment.id else { return }
-                    fetchMoreCommentList(userID: userID, lastCommentID: lastCommentID)
-                }
-            }
-            .store(in: cancelBag)
-    }
-    
     func fetchViewItems(userID: Int, segment: ProfileSegmentKind) {
         isLoading = true
         
