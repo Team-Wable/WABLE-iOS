@@ -13,6 +13,7 @@ final class OtherProfileViewModel {
     @Published private(set) var item = ProfileViewItem()
     @Published private(set) var isLoading = false
     @Published private(set) var isLoadingMore = false
+    @Published private(set) var isReportCompleted = false
     @Published private(set) var errorMessage: String?
     
     private var isLastPageForContent = false
@@ -21,17 +22,21 @@ final class OtherProfileViewModel {
     
     private let userID: Int
     private let fetchUserProfileUseCase: FetchUserProfileUseCase
+    private let checkUserRoleUseCase: CheckUserRoleUseCase
     @Injected private var contentRepository: ContentRepository
     @Injected private var commentRepository: CommentRepository
     @Injected private var contentLikedRepository: ContentLikedRepository
     @Injected private var commentLikedRepository: CommentLikedRepository
+    @Injected private var reportRepository: ReportRepository
     
     init(
         userID: Int,
-        fetchUserProfileUseCase: FetchUserProfileUseCase
+        fetchUserProfileUseCase: FetchUserProfileUseCase,
+        checkUserRoleUseCase: CheckUserRoleUseCase
     ) {
         self.userID = userID
         self.fetchUserProfileUseCase = fetchUserProfileUseCase
+        self.checkUserRoleUseCase = checkUserRoleUseCase
     }
     
     func viewDidRefresh() {
@@ -108,6 +113,71 @@ final class OtherProfileViewModel {
                     isLiked ? commentInfo.like.unlike() : commentInfo.like.like()
                     item.commentList[index] = UserComment(comment: commentInfo, contentID: comment.contentID)
                 }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func checkUserRole() -> UserRole? {
+        return checkUserRoleUseCase.execute(userID: userID)
+    }
+    
+    func reportContent(for contentID: Int) {
+        guard let content = item.contentList.first(where: { $0.id == contentID }) else { return }
+        let nickname = content.contentInfo.author.nickname
+        let text = content.contentInfo.text
+        Task {
+            do {
+                try await reportRepository.createReport(nickname: nickname, text: text)
+                await MainActor.run { isReportCompleted = true }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func reportComment(for commentID: Int) {
+        guard let comment = item.commentList.first(where: { $0.comment.id == commentID }) else { return }
+        let nickname = comment.comment.author.nickname
+        let text = comment.comment.text
+        
+        Task {
+            do {
+                try await reportRepository.createReport(nickname: nickname, text: text)
+                await MainActor.run { isReportCompleted = true }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func banContent(for contentID: Int) {
+        Task {
+            do {
+                try await reportRepository.createBan(
+                    memberID: userID,
+                    triggerType: .content,
+                    triggerID: contentID
+                )
+                
+                fetchViewItems(userID: userID, segment: item.currentSegment)
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func banComment(for commentID: Int) {
+        Task {
+            do {
+                try await reportRepository.createBan(
+                    memberID: userID,
+                    triggerType: .content,
+                    triggerID: commentID
+                )
+                
+                fetchViewItems(userID: userID, segment: item.currentSegment)
             } catch {
                 await handleError(error: error)
             }

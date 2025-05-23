@@ -204,11 +204,31 @@ private extension OtherProfileViewController {
             cell, indexPath, item in
             cell.configureCell(
                 info: item.contentInfo,
-                authorType: .mine,
+                authorType: .others,
                 cellType: .list,
                 contentImageViewTapHandler: nil,
                 likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeContent(for: item.id) },
-                settingButtonTapHandler: nil,
+                settingButtonTapHandler: { [weak self] in
+                    guard let userRole = self?.viewModel.checkUserRole(),
+                          userRole != .owner
+                    else {
+                        return
+                    }
+                    
+                    let bottomSheet = WableBottomSheetController()
+                    let report = WableBottomSheetAction(title: "신고하기") { [weak self] in
+                        self?.presentReportSheet(contentID: item.id)
+                    }
+                    bottomSheet.addAction(report)
+                    
+                    if userRole == .admin {
+                        let ban = WableBottomSheetAction(title: "밴하기") { [weak self] in
+                            self?.presentBanSheet(contentID: item.id)
+                        }
+                        bottomSheet.addAction(ban)
+                    }
+                    self?.present(bottomSheet, animated: true)
+                },
                 profileImageViewTapHandler: nil,
                 ghostButtonTapHandler: nil
             )
@@ -222,7 +242,27 @@ private extension OtherProfileViewController {
                 commentType: .ripple,
                 authorType: .mine,
                 likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeComment(for: item.comment.id) },
-                settingButtonTapHandler: nil,
+                settingButtonTapHandler: { [weak self] in
+                    guard let userRole = self?.viewModel.checkUserRole(),
+                          userRole != .owner
+                    else {
+                        return
+                    }
+                    
+                    let bottomSheet = WableBottomSheetController()
+                    let report = WableBottomSheetAction(title: "신고하기") { [weak self] in
+                        self?.presentReportSheet(commentID: item.comment.id)
+                    }
+                    bottomSheet.addAction(report)
+                    
+                    if userRole == .admin {
+                        let ban = WableBottomSheetAction(title: "밴하기") { [weak self] in
+                            self?.presentBanSheet(commentID: item.comment.id)
+                        }
+                        bottomSheet.addAction(ban)
+                    }
+                    self?.present(bottomSheet, animated: true)
+                },
                 profileImageViewTapHandler: nil,
                 ghostButtonTapHandler: nil,
                 replyButtonTapHandler: nil
@@ -309,6 +349,12 @@ private extension OtherProfileViewController {
             }
             .store(in: cancelBag)
         
+        viewModel.$isReportCompleted
+            .receive(on: RunLoop.main)
+            .filter { $0 }
+            .sink { _ in ToastView(status: .complete, message: Constant.Report.completedMessage).show() }
+            .store(in: cancelBag)
+        
         viewModel.$errorMessage
             .receive(on: RunLoop.main)
             .compactMap { $0 }
@@ -352,6 +398,62 @@ private extension OtherProfileViewController {
         }
         
         dataSource?.apply(snapshot)
+    }
+    
+    func presentReportSheet(contentID: Int) {
+        let actionSheet = WableSheetViewController(
+            title: Constant.Report.sheetTitle,
+            message: "해당 유저 혹은 게시글을 " + Constant.Report.sheetMessage
+        )
+        
+        let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
+        let confirm = WableSheetAction(title: Constant.Report.title, style: .primary) { [weak self] in
+            self?.viewModel.reportContent(for: contentID)
+        }
+        actionSheet.addActions(cancel, confirm)
+        present(actionSheet, animated: true)
+    }
+    
+    func presentReportSheet(commentID: Int) {
+        let actionSheet = WableSheetViewController(
+            title: Constant.Report.sheetTitle,
+            message: "해당 유저 혹은 댓글을 " + Constant.Report.sheetMessage
+        )
+        
+        let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
+        let confirm = WableSheetAction(title: Constant.Report.title, style: .primary) { [weak self] in
+            self?.viewModel.reportComment(for: commentID)
+        }
+        actionSheet.addActions(cancel, confirm)
+        present(actionSheet, animated: true)
+    }
+    
+    func presentBanSheet(contentID: Int) {
+        let actionSheet = WableSheetViewController(
+            title: Constant.Ban.title,
+            message: Constant.Ban.sheetMessage
+        )
+        
+        let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
+        let confirm = WableSheetAction(title: Constant.Ban.title, style: .primary) { [weak self] in
+            self?.viewModel.banContent(for: contentID)
+        }
+        actionSheet.addActions(cancel, confirm)
+        present(actionSheet, animated: true)
+    }
+    
+    func presentBanSheet(commentID: Int) {
+        let actionSheet = WableSheetViewController(
+            title: Constant.Ban.title,
+            message: Constant.Ban.sheetMessage
+        )
+        
+        let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
+        let confirm = WableSheetAction(title: Constant.Ban.title, style: .primary) { [weak self] in
+            self?.viewModel.banComment(for: commentID)
+        }
+        actionSheet.addActions(cancel, confirm)
+        present(actionSheet, animated: true)
     }
     
     // MARK: - Action
@@ -412,6 +514,32 @@ private extension OtherProfileViewController {
                 
                 return section
             }
+        }
+    }
+    
+    enum Constant {
+        enum Report {
+            static let title = "신고하기"
+            static let sheetTitle = "신고하시겠어요?"
+            static let sheetMessage = "신고하시려면\n신고하기 버튼을 눌러주세요."
+            static let completedMessage = """
+                                        신고 접수가 완료되었어요.
+                                        24시간 내에 조치할 예정이에요.
+                                        """
+        }
+        
+        enum Ban {
+            static let title = "밴하기"
+            static let sheetMessage = """
+                                    1회 누적 - 게시글 블라인드 처리
+                                    2회 누적 - 게시글/댓글 블라인드 처리
+                                    3회 누적 - 게시글 작성 제한
+                                    4회 누적 - 계정 정지
+                                    """
+        }
+        
+        enum Cancel {
+            static let title = "취소"
         }
     }
 }
