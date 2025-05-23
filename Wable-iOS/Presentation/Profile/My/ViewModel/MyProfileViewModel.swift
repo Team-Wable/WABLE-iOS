@@ -48,7 +48,7 @@ final class MyProfileViewModel {
     }
     
     func selectedIndexDidChange(_ selectedIndex: Int) {
-        guard let segment = ProfileSegmentKind(rawValue: selectedIndex) else { return }
+        guard let segment = ProfileSegment(rawValue: selectedIndex) else { return }
         item.currentSegment = segment
     }
     
@@ -155,7 +155,7 @@ final class MyProfileViewModel {
 }
 
 private extension MyProfileViewModel {
-    func fetchViewItems(userID: Int, segment: ProfileSegmentKind) {
+    func fetchViewItems(userID: Int, segment: ProfileSegment) {
         isLoading = true
         
         Task {
