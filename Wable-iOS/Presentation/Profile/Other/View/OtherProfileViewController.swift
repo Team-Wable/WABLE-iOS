@@ -207,11 +207,7 @@ private extension OtherProfileViewController {
                 authorType: .mine,
                 cellType: .list,
                 contentImageViewTapHandler: nil,
-                likeButtonTapHandler: {
-                    WableLogger.log("좋아요 눌림", for: .debug)
-                    
-                    // TODO: 추후 기능 연결
-                },
+                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeContent(for: item.id) },
                 settingButtonTapHandler: nil,
                 profileImageViewTapHandler: nil,
                 ghostButtonTapHandler: nil
@@ -225,7 +221,7 @@ private extension OtherProfileViewController {
                 info: item.comment,
                 commentType: .ripple,
                 authorType: .mine,
-                likeButtonTapHandler: nil,
+                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeComment(for: item.comment.id) },
                 settingButtonTapHandler: nil,
                 profileImageViewTapHandler: nil,
                 ghostButtonTapHandler: nil,
