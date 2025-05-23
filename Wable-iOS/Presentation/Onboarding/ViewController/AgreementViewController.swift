@@ -68,6 +68,8 @@ private extension AgreementViewController {
     // MARK: - Setup Method
     
     func setupView() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        
         view.addSubview(rootView)
     }
     

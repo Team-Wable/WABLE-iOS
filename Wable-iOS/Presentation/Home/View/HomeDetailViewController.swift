@@ -139,6 +139,8 @@ final class HomeDetailViewController: NavigationViewController {
 
 private extension HomeDetailViewController {
     func setupView() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        
         view.addSubviews(collectionView, underLineView, writeCommentView, loadingIndicator)
         writeCommentView.addSubviews(commentTextView, createCommentButton, placeholderLabel)
     }
