@@ -21,19 +21,17 @@ final class OtherProfileViewModel {
     
     private let userID: Int
     private let fetchUserProfileUseCase: FetchUserProfileUseCase
-    private let fetchUserContentListUseCase: FetchUserContentListUseCase
-    private let fetchUserCommentListUseCase: FetchUserCommentListUseCase
+    @Injected private var contentRepository: ContentRepository
+    @Injected private var commentRepository: CommentRepository
+    @Injected private var contentLikedRepository: ContentLikedRepository
+    @Injected private var commentLikedRepository: CommentLikedRepository
     
     init(
         userID: Int,
-        fetchUserProfileUseCase: FetchUserProfileUseCase,
-        fetchUserContentListUseCase: FetchUserContentListUseCase,
-        fetchUserCommentListUseCase: FetchUserCommentListUseCase
+        fetchUserProfileUseCase: FetchUserProfileUseCase
     ) {
         self.userID = userID
         self.fetchUserProfileUseCase = fetchUserProfileUseCase
-        self.fetchUserContentListUseCase = fetchUserContentListUseCase
-        self.fetchUserCommentListUseCase = fetchUserCommentListUseCase
     }
     
     func viewDidRefresh() {
@@ -66,6 +64,55 @@ final class OtherProfileViewModel {
             fetchMoreCommentList(userID: userID, lastCommentID: lastCommentID)
         }
     }
+    
+    func toggleLikeContent(for contentID: Int) {
+        guard let index = item.contentList.firstIndex(where: { $0.id == contentID }) else { return }
+        let isLiked = item.contentList[index].contentInfo.like.status
+        
+        Task {
+            do {
+                isLiked
+                ? try await contentLikedRepository.deleteContentLiked(contentID: contentID)
+                : try await contentLikedRepository.createContentLiked(
+                    contentID: contentID,
+                    triggerType: TriggerType.Like.contentLike.rawValue
+                )
+                await MainActor.run {
+                    var contentInfo = item.contentList[index].contentInfo
+                    isLiked ? contentInfo.like.unlike() : contentInfo.like.like()
+                    item.contentList[index] = UserContent(id: contentID, contentInfo: contentInfo)
+                }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func toggleLikeComment(for commentID: Int) {
+        guard let index = item.commentList.firstIndex(where: { $0.comment.id == commentID }) else { return }
+        let comment = item.commentList[index]
+        let isLiked = item.commentList[index].comment.like.status
+        
+        Task {
+            do {
+                isLiked
+                ? try await commentLikedRepository.deleteCommentLiked(commentID: commentID)
+                : try await commentLikedRepository.createCommentLiked(
+                    commentID: commentID,
+                    triggerType: TriggerType.Like.commentLike.rawValue,
+                    notificationText: item.commentList[index].comment.text
+                )
+                
+                await MainActor.run {
+                    var commentInfo = comment.comment
+                    isLiked ? commentInfo.like.unlike() : commentInfo.like.like()
+                    item.commentList[index] = UserComment(comment: commentInfo, contentID: comment.contentID)
+                }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
 }
 
 private extension OtherProfileViewModel {
@@ -74,8 +121,16 @@ private extension OtherProfileViewModel {
         
         Task {
             async let userProfile: UserProfile = fetchUserProfileUseCase.execute(userID: userID)
-            async let contentList: [UserContent] = fetchUserContentListUseCase.execute(for: userID, last: Constant.initialCursor)
-            async let commentList: [UserComment] = fetchUserCommentListUseCase.execute(for: userID, last: Constant.initialCursor)
+            
+            async let contentList: [UserContent] = contentRepository.fetchUserContentList(
+                memberID: userID,
+                cursor: Constant.initialCursor
+            )
+            
+            async let commentList: [UserComment] = commentRepository.fetchUserCommentList(
+                memberID: userID,
+                cursor: Constant.initialCursor
+            )
             
             do {
                 let (userProfile, contentList, commentList) = try await (userProfile, contentList, commentList)
@@ -108,7 +163,10 @@ private extension OtherProfileViewModel {
         isLoadingMore = true
         loadingMoreTask = Task {
             do {
-                let contentListForNextPage = try await fetchUserContentListUseCase.execute(for: userID, last: lastContentID)
+                let contentListForNextPage = try await contentRepository.fetchUserContentList(
+                    memberID: userID,
+                    cursor: lastContentID
+                )
                 guard !Task.isCancelled else { return }
                 await MainActor.run {
                     isLastPageForContent = contentListForNextPage.count < Constant.defaultCountForContentPage
@@ -130,7 +188,10 @@ private extension OtherProfileViewModel {
         isLoadingMore = true
         loadingMoreTask = Task {
             do {
-                let commentListForNextPage = try await fetchUserCommentListUseCase.execute(for: userID, last: lastCommentID)
+                let commentListForNextPage = try await commentRepository.fetchUserCommentList(
+                    memberID: userID,
+                    cursor: lastCommentID
+                )
                 guard !Task.isCancelled else { return }
                 await MainActor.run {
                     isLastPageForComment = commentListForNextPage.count < Constant.defaultCountForCommentPage
