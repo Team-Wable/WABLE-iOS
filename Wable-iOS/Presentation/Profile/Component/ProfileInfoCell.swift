@@ -27,6 +27,11 @@ final class ProfileInfoCell: UICollectionViewCell {
         $0.clipsToBounds = true
     }
     
+    private let levelBadgeImageView = UIImageView(image: .icLevelBadge).then {
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+    }
+    
     private let levelLabel = UILabel().then {
         $0.attributedText = "LV. 1".pretendardString(with: .caption1)
         $0.textColor = .gray600
@@ -173,21 +178,27 @@ private extension ProfileInfoCell {
     }
     
     func setupHeaderView() {
-        headerView.addSubviews(profileImageView, levelLabel, nicknameLabel, editButton)
+        headerView.addSubviews(profileImageView, levelBadgeImageView, levelLabel, nicknameLabel, editButton)
         
         profileImageView.snp.makeConstraints { make in
             make.verticalEdges.leading.equalToSuperview()
             make.size.equalTo(Constant.profileImageViewSize)
         }
         
-        levelLabel.snp.makeConstraints { make in
+        levelBadgeImageView.snp.makeConstraints { make in
             make.top.equalTo(profileImageView).offset(12)
             make.leading.equalTo(profileImageView.snp.trailing).offset(16)
+            make.size.equalTo(16)
+        }
+        
+        levelLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(levelBadgeImageView)
+            make.leading.equalTo(levelBadgeImageView.snp.trailing).offset(4)
         }
         
         nicknameLabel.snp.makeConstraints { make in
-            make.top.equalTo(levelLabel.snp.bottom).offset(4)
-            make.leading.equalTo(levelLabel)
+            make.top.equalTo(levelBadgeImageView.snp.bottom).offset(4)
+            make.leading.equalTo(levelBadgeImageView)
         }
         
         editButton.snp.makeConstraints { make in
