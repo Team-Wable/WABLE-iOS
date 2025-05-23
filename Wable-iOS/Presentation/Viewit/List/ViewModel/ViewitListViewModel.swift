@@ -204,17 +204,9 @@ extension ViewitListViewModel: ViewModelType {
                         return .just(nil)
                     }
                     .compactMap { $0 }
-                    .map { (index, $0) }
                     .eraseToAnyPublisher()
             }
-            .handleEvents(receiveOutput: { _ in
-                isReportSuccess.send(true)
-            })
-            .sink { index, viewit in
-                var viewitList = viewitListRelay.value
-                viewitList.remove(at: index)
-                viewitListRelay.send(viewitList)
-            }
+            .sink { _ in isReportSuccess.send(true) }
             .store(in: cancelBag)
         
         let moveToProfile = input.profileDidTap
