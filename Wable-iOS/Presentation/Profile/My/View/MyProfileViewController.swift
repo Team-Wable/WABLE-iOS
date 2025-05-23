@@ -211,11 +211,7 @@ private extension MyProfileViewController {
                 authorType: .mine,
                 cellType: .list,
                 contentImageViewTapHandler: nil,
-                likeButtonTapHandler: {
-                    WableLogger.log("좋아요 눌림", for: .debug)
-                    
-                    // TODO: 추후 기능 연결
-                },
+                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeContent(for: item.id) },
                 settingButtonTapHandler: { [weak self] in
                     let bottomSheet = WableBottomSheetController()
                     bottomSheet.addAction(
@@ -238,7 +234,7 @@ private extension MyProfileViewController {
                 info: item.comment,
                 commentType: .ripple,
                 authorType: .mine,
-                likeButtonTapHandler: nil,
+                likeButtonTapHandler: { [weak self] in self?.viewModel.likeComment(for: item.comment.id) },
                 settingButtonTapHandler: { [weak self] in
                     let bottomSheet = WableBottomSheetController()
                     bottomSheet.addAction(
