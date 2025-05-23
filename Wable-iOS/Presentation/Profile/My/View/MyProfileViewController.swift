@@ -234,7 +234,7 @@ private extension MyProfileViewController {
                 info: item.comment,
                 commentType: .ripple,
                 authorType: .mine,
-                likeButtonTapHandler: { [weak self] in self?.viewModel.likeComment(for: item.comment.id) },
+                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeComment(for: item.comment.id) },
                 settingButtonTapHandler: { [weak self] in
                     let bottomSheet = WableBottomSheetController()
                     bottomSheet.addAction(

@@ -130,7 +130,7 @@ final class MyProfileViewModel {
         }
     }
     
-    func likeComment(for commentID: Int) {
+    func toggleLikeComment(for commentID: Int) {
         guard let commentIndex = item.commentList.firstIndex(where: { $0.comment.id == commentID }) else { return }
         let comment = item.commentList[commentIndex]
         let isLiked = item.commentList[commentIndex].comment.like.status
@@ -146,7 +146,7 @@ final class MyProfileViewModel {
                 )
                 
                 await MainActor.run {
-                    var commentInfo = item.commentList[commentIndex].comment
+                    var commentInfo = comment.comment
                     isLiked ? commentInfo.like.unlike() : commentInfo.like.like()
                     item.commentList[commentIndex] = UserComment(comment: commentInfo, contentID: comment.contentID)
                 }
