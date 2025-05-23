@@ -216,7 +216,16 @@ private extension MyProfileViewController {
                     
                     // TODO: 추후 기능 연결
                 },
-                settingButtonTapHandler: nil,
+                settingButtonTapHandler: { [weak self] in
+                    let bottomSheet = WableBottomSheetController()
+                    bottomSheet.addAction(
+                        .init(
+                            title: "삭제하기",
+                            handler: { [weak self] in self?.presentDeleteContentActionSheet(for: item.id) }
+                        )
+                    )
+                    self?.present(bottomSheet, animated: true)
+                },
                 profileImageViewTapHandler: nil,
                 ghostButtonTapHandler: nil
             )
@@ -230,7 +239,16 @@ private extension MyProfileViewController {
                 commentType: .ripple,
                 authorType: .mine,
                 likeButtonTapHandler: nil,
-                settingButtonTapHandler: nil,
+                settingButtonTapHandler: { [weak self] in
+                    let bottomSheet = WableBottomSheetController()
+                    bottomSheet.addAction(
+                        .init(
+                            title: "삭제하기",
+                            handler: { [weak self] in self?.presentDeleteCommentActionSheet(for: item.comment.id) }
+                        )
+                    )
+                    self?.present(bottomSheet, animated: true)
+                },
                 profileImageViewTapHandler: nil,
                 ghostButtonTapHandler: nil,
                 replyButtonTapHandler: nil
@@ -471,6 +489,26 @@ private extension MyProfileViewController {
             animations: { window.rootViewController = loginViewController },
             completion: nil
         )
+    }
+    
+    func presentDeleteContentActionSheet(for contentID: Int) {
+        let actionSheet = WableSheetViewController(title: "게시글을 삭제하시겠어요?", message: "게시글이 영구히 삭제됩니다.")
+        let cancelAction = WableSheetAction(title: "취소", style: .gray)
+        let confirmAction = WableSheetAction(title: "삭제하기", style: .primary) { [weak self] in
+            self?.viewModel.deleteContent(for: contentID)
+        }
+        actionSheet.addActions(cancelAction, confirmAction)
+        present(actionSheet, animated: true)
+    }
+    
+    func presentDeleteCommentActionSheet(for commentID: Int) {
+        let actionSheet = WableSheetViewController(title: "댓글을 삭제하시겠어요?", message: "댓글이 영구히 삭제됩니다.")
+        let cancelAction = WableSheetAction(title: "취소", style: .gray)
+        let confirmAction = WableSheetAction(title: "삭제하기", style: .primary) { [weak self] in
+            self?.viewModel.deleteComment(for: commentID)
+        }
+        actionSheet.addActions(cancelAction, confirmAction)
+        present(actionSheet, animated: true)
     }
     
     // MARK: - Computed Property

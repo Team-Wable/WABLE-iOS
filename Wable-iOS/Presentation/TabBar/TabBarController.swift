@@ -93,8 +93,6 @@ final class TabBarController: UITabBarController {
                 )
             ),
             fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
-            fetchUserCommentListUseCase: FetchUserCommentListUseCaseImpl(),
-            fetchUserContentListUseCase: FetchUserContentUseCaseImpl(),
             removeUserSessionUseCase: RemoveUserSessionUseCaseImpl(
                 repository: UserSessionRepositoryImpl(
                     userDefaults: UserDefaultsStorage(
