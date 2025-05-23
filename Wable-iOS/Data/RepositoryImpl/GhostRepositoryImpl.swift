@@ -35,4 +35,27 @@ final class GhostRepositoryImpl: GhostRepository {
         .asVoid()
         .mapWableError()
     }
+    
+    func postGhostReduction(
+        alarmTriggerType: String,
+        alarmTriggerID: Int,
+        targetMemberID: Int,
+        reason: String
+    ) async throws {
+        let request = DTO.Request.UpdateGhost(
+            alarmTriggerType: alarmTriggerType,
+            targetMemberID: targetMemberID,
+            alarmTriggerID: alarmTriggerID,
+            ghostReason: reason
+        )
+        
+        do {
+            _ = try await provider.request(
+                .ghostReduction(request: request),
+                for: DTO.Response.Empty.self
+            )
+        } catch {
+            throw ErrorMapper.map(error)
+        }
+    }
 }

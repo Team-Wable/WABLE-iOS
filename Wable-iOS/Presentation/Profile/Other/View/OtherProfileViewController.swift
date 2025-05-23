@@ -230,7 +230,7 @@ private extension OtherProfileViewController {
                     self?.present(bottomSheet, animated: true)
                 },
                 profileImageViewTapHandler: nil,
-                ghostButtonTapHandler: nil
+                ghostButtonTapHandler: { [weak self] in self?.presentGhostSheet(contentID: item.id) }
             )
         }
         
@@ -240,7 +240,7 @@ private extension OtherProfileViewController {
             cell.configureCell(
                 info: item.comment,
                 commentType: .ripple,
-                authorType: .mine,
+                authorType: .others,
                 likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeComment(for: item.comment.id) },
                 settingButtonTapHandler: { [weak self] in
                     guard let userRole = self?.viewModel.checkUserRole(),
@@ -264,7 +264,7 @@ private extension OtherProfileViewController {
                     self?.present(bottomSheet, animated: true)
                 },
                 profileImageViewTapHandler: nil,
-                ghostButtonTapHandler: nil,
+                ghostButtonTapHandler: { [weak self] in self?.presentGhostSheet(commentID: item.comment.id) },
                 replyButtonTapHandler: nil
             )
         }
@@ -456,6 +456,26 @@ private extension OtherProfileViewController {
         present(actionSheet, animated: true)
     }
     
+    func presentGhostSheet(contentID: Int) {
+        let actionSheet = WableSheetViewController(title: Constant.Ghost.sheetTitle)
+        let cancel = WableSheetAction(title: Constant.Ghost.grayTitle, style: .gray)
+        let confirm = WableSheetAction(title: Constant.Ghost.primaryTitle, style: .primary) { [weak self] in
+            self?.viewModel.ghostContent(for: contentID)
+        }
+        actionSheet.addActions(cancel, confirm)
+        present(actionSheet, animated: true)
+    }
+    
+    func presentGhostSheet(commentID: Int) {
+        let actionSheet = WableSheetViewController(title: Constant.Ghost.sheetTitle)
+        let cancel = WableSheetAction(title: Constant.Ghost.grayTitle, style: .gray)
+        let confirm = WableSheetAction(title: Constant.Ghost.primaryTitle, style: .primary) { [weak self] in
+            self?.viewModel.ghostComment(for: commentID)
+        }
+        actionSheet.addActions(cancel, confirm)
+        present(actionSheet, animated: true)
+    }
+    
     // MARK: - Action
     
     @objc func backButtonDidTap() {
@@ -536,6 +556,13 @@ private extension OtherProfileViewController {
                                     3회 누적 - 게시글 작성 제한
                                     4회 누적 - 계정 정지
                                     """
+        }
+        
+        enum Ghost {
+            static let sheetTitle = "와블의 문화를 해치는\n누군가를 발견하신 건가요?"
+            static let grayTitle = "고민할게요"
+            static let primaryTitle = "네 맞아요"
+            static let completedMessage = "덕분에 와블이 더 온화해지고 있어요!"
         }
         
         enum Cancel {

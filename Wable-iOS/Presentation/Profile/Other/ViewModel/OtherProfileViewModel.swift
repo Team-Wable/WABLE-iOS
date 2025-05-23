@@ -14,6 +14,7 @@ final class OtherProfileViewModel {
     @Published private(set) var isLoading = false
     @Published private(set) var isLoadingMore = false
     @Published private(set) var isReportCompleted = false
+    @Published private(set) var isGhostCompleted = false
     @Published private(set) var errorMessage: String?
     
     private var isLastPageForContent = false
@@ -28,6 +29,7 @@ final class OtherProfileViewModel {
     @Injected private var contentLikedRepository: ContentLikedRepository
     @Injected private var commentLikedRepository: CommentLikedRepository
     @Injected private var reportRepository: ReportRepository
+    @Injected private var ghostRepository: GhostRepository
     
     init(
         userID: Int,
@@ -175,6 +177,46 @@ final class OtherProfileViewModel {
                     memberID: userID,
                     triggerType: .content,
                     triggerID: commentID
+                )
+                
+                fetchViewItems(userID: userID, segment: item.currentSegment)
+                
+                await MainActor.run { isGhostCompleted = true }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func ghostContent(for contentID: Int) {
+        guard let content = item.contentList.first(where: { $0.id == contentID }) else { return }
+        
+        Task {
+            do {
+                try await ghostRepository.postGhostReduction(
+                    alarmTriggerType: TriggerType.Ghost.contentGhost.rawValue,
+                    alarmTriggerID: contentID,
+                    targetMemberID: userID,
+                    reason: ""
+                )
+                
+                fetchViewItems(userID: userID, segment: item.currentSegment)
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func ghostComment(for commentID: Int) {
+        guard let comment = item.commentList.first(where: { $0.comment.id == commentID }) else { return }
+        
+        Task {
+            do {
+                try await ghostRepository.postGhostReduction(
+                    alarmTriggerType: TriggerType.Ghost.commentGhost.rawValue,
+                    alarmTriggerID: commentID,
+                    targetMemberID: userID,
+                    reason: ""
                 )
                 
                 fetchViewItems(userID: userID, segment: item.currentSegment)
