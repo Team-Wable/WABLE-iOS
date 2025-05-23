@@ -12,7 +12,7 @@ enum CommentMapper { }
 extension CommentMapper {
     static func toDomain(_ response: [DTO.Response.FetchUserComments]) -> [UserComment] {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:dd"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
         
         return response.map { comment in
