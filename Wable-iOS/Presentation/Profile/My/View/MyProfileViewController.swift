@@ -5,6 +5,7 @@
 //  Created by 김진웅 on 5/14/25.
 //
 
+import Combine
 import UIKit
 import SafariServices
 
@@ -54,9 +55,7 @@ final class MyProfileViewController: UIViewController {
     private var dataSource: DataSource?
     
     private let viewModel: MyProfileViewModel
-    private let didLoadRelay = PassthroughRelay<Void>()
-    private let selectedIndexRelay = PassthroughRelay<Int>()
-    private let logoutRelay = PassthroughRelay<Void>()
+    private let willDisplaySubject = PassthroughSubject<Void, Never>()
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
@@ -83,8 +82,6 @@ final class MyProfileViewController: UIViewController {
         setupAction()
         setupBinding()
         setupDelegate()
-        
-        viewModel.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -143,7 +140,7 @@ extension MyProfileViewController: UICollectionViewDelegate {
             return
         }
         
-        if indexPath.item >= itemCount - 5 {
+        if indexPath.item >= itemCount - 2 {
             viewModel.willDisplayLast()
         }
     }
@@ -254,10 +251,7 @@ private extension MyProfileViewController {
         let headerRegistration = SupplementaryRegistration<ProfileSegmentedHeaderView>(
             elementKind: UICollectionView.elementKindSectionHeader
         ) { supplementaryView, elementKind, indexPath in
-            supplementaryView.segmentDidChangeClosure = { [weak self] selectedIndex in
-                self?.selectedIndexRelay.send(selectedIndex)
-                self?.viewModel.selectedIndexDidChange(selectedIndex)
-            }
+            supplementaryView.onSegmentIndexChanged = { [weak self] in self?.viewModel.selectedIndexDidChange($0) }
         }
         
         let emptyCellRegistration = CellRegistration<MyProfileEmptyCell, ProfileEmptyCellItem> {
@@ -321,21 +315,22 @@ private extension MyProfileViewController {
         navigationView.menuButton.addTarget(self, action: #selector(menuButtonDidTap), for: .touchUpInside)
         
         collectionView.refreshControl?.addTarget(self, action: #selector(collectionViewDidRefresh), for: .valueChanged)
+        
+        willDisplaySubject
+            .debounce(for: .milliseconds(1000), scheduler: DispatchQueue.main)
+            .sink { [weak self] _ in self?.viewModel.willDisplayLast() }
+            .store(in: cancelBag)
     }
     
     func setupBinding() {
         viewModel.$nickname
             .receive(on: RunLoop.main)
-            .sink { [weak self] in
-                self?.navigationView.setNavigationTitle(text: $0 ?? "알 수 없는 유저")
-            }
+            .sink { [weak self] in self?.navigationView.setNavigationTitle(text: $0 ?? "알 수 없는 유저") }
             .store(in: cancelBag)
         
         viewModel.$item
             .receive(on: RunLoop.main)
-            .sink { [weak self] in
-                self?.applySnapshot(item: $0)
-            }
+            .sink { [weak self] in self?.applySnapshot(item: $0) }
             .store(in: cancelBag)
         
         viewModel.$isLoading

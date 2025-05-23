@@ -5,6 +5,7 @@
 //  Created by 김진웅 on 5/20/25.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
@@ -50,6 +51,7 @@ final class OtherProfileViewController: UIViewController {
     private var dataSource: DataSource?
     
     private let viewModel: OtherProfileViewModel
+    private let willLastDisplaySubject = PassthroughSubject<Void, Never>()
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
@@ -78,8 +80,6 @@ final class OtherProfileViewController: UIViewController {
         setupDataSource()
         setupDelegate()
         setupBinding()
-        
-        viewModel.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -139,7 +139,7 @@ extension OtherProfileViewController: UICollectionViewDelegate {
         }
         
         if indexPath.item >= itemCount - 2 {
-            viewModel.willDisplayLast()
+            willLastDisplaySubject.send()
         }
     }
 }
@@ -174,6 +174,11 @@ private extension OtherProfileViewController {
         navigationView.backButton.addTarget(self, action: #selector(backButtonDidTap), for: .touchUpInside)
         
         collectionView.refreshControl?.addTarget(self, action: #selector(collectionViewDidRefresh), for: .valueChanged)
+        
+        willLastDisplaySubject
+            .debounce(for: .milliseconds(1000), scheduler: DispatchQueue.main)
+            .sink { [weak self] _ in self?.viewModel.willDisplayLast() }
+            .store(in: cancelBag)
     }
     
     func setupNavigationBar() {
@@ -231,9 +236,7 @@ private extension OtherProfileViewController {
         let headerRegistration = SupplementaryRegistration<ProfileSegmentedHeaderView>(
             elementKind: UICollectionView.elementKindSectionHeader
         ) { supplementaryView, elementKind, indexPath in
-            supplementaryView.segmentDidChangeClosure = { [weak self] selectedIndex in
-                self?.viewModel.selectedIndexDidChange(selectedIndex)
-            }
+            supplementaryView.onSegmentIndexChanged = { [weak self] in self?.viewModel.selectedIndexDidChange($0) }
         }
         
         let emptyCellRegistration = CellRegistration<OtherProfileEmptyCell, ProfileEmptyCellItem> {
