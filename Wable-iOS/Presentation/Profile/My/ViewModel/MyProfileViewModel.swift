@@ -105,8 +105,8 @@ final class MyProfileViewModel {
     }
     
     func toggleLikeContent(for contentID: Int) {
-        guard let contentIndex = item.contentList.firstIndex(where: { $0.id == contentID }) else { return }
-        let isLiked = item.contentList[contentIndex].contentInfo.like.status
+        guard let index = item.contentList.firstIndex(where: { $0.id == contentID }) else { return }
+        let isLiked = item.contentList[index].contentInfo.like.status
         Task {
             do {
                 isLiked
@@ -117,9 +117,9 @@ final class MyProfileViewModel {
                 )
                 
                 await MainActor.run {
-                    var contentInfo = item.contentList[contentIndex].contentInfo
+                    var contentInfo = item.contentList[index].contentInfo
                     isLiked ? contentInfo.like.unlike() : contentInfo.like.like()
-                    item.contentList[contentIndex] = UserContent(id: contentID, contentInfo: contentInfo)
+                    item.contentList[index] = UserContent(id: contentID, contentInfo: contentInfo)
                 }
             } catch {
                 await handleError(error: error)
@@ -128,9 +128,9 @@ final class MyProfileViewModel {
     }
     
     func toggleLikeComment(for commentID: Int) {
-        guard let commentIndex = item.commentList.firstIndex(where: { $0.comment.id == commentID }) else { return }
-        let comment = item.commentList[commentIndex]
-        let isLiked = item.commentList[commentIndex].comment.like.status
+        guard let index = item.commentList.firstIndex(where: { $0.comment.id == commentID }) else { return }
+        let comment = item.commentList[index]
+        let isLiked = item.commentList[index].comment.like.status
         
         Task {
             do {
@@ -139,13 +139,13 @@ final class MyProfileViewModel {
                 : try await commentLikedRepository.createCommentLiked(
                     commentID: commentID,
                     triggerType: TriggerType.Like.commentLike.rawValue,
-                    notificationText: item.commentList[commentIndex].comment.text
+                    notificationText: item.commentList[index].comment.text
                 )
                 
                 await MainActor.run {
                     var commentInfo = comment.comment
                     isLiked ? commentInfo.like.unlike() : commentInfo.like.like()
-                    item.commentList[commentIndex] = UserComment(comment: commentInfo, contentID: comment.contentID)
+                    item.commentList[index] = UserComment(comment: commentInfo, contentID: comment.contentID)
                 }
             } catch {
                 await handleError(error: error)
