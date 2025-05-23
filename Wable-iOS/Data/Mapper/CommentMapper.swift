@@ -54,7 +54,7 @@ extension CommentMapper {
     
     static func toDomain(_ response: [DTO.Response.FetchContentComments]) -> [ContentComment] {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:SS"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         return response.map { comment in
             let url = URL(string: comment.memberProfileURL)
