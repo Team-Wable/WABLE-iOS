@@ -22,9 +22,9 @@ final class MyProfileViewModel {
     private let userID: Int?
     private let userSessionUseCase: FetchUserInformationUseCase
     private let fetchUserProfileUseCase: FetchUserProfileUseCase
-    private let fetchUserCommentListUseCase: FetchUserCommentListUseCase
-    private let fetchUserContentListUseCase: FetchUserContentListUseCase
     private let removeUserSessionUseCase: RemoveUserSessionUseCase
+    @Injected private var contentRepository: ContentRepository
+    @Injected private var commentRepository: CommentRepository
     
     private let selectedIndexSubject = PassthroughSubject<Int, Never>()
     private let willDisplaySubject = PassthroughSubject<Void, Never>()
@@ -33,14 +33,10 @@ final class MyProfileViewModel {
     init(
         userinformationUseCase: FetchUserInformationUseCase,
         fetchUserProfileUseCase: FetchUserProfileUseCase,
-        fetchUserCommentListUseCase: FetchUserCommentListUseCase,
-        fetchUserContentListUseCase: FetchUserContentListUseCase,
         removeUserSessionUseCase: RemoveUserSessionUseCase
     ) {
         self.userSessionUseCase = userinformationUseCase
         self.fetchUserProfileUseCase = fetchUserProfileUseCase
-        self.fetchUserCommentListUseCase = fetchUserCommentListUseCase
-        self.fetchUserContentListUseCase = fetchUserContentListUseCase
         self.removeUserSessionUseCase = removeUserSessionUseCase
         
         self.userID = userinformationUseCase.fetchActiveUserID()
@@ -84,6 +80,30 @@ final class MyProfileViewModel {
     func willDisplayLast() {
         willDisplaySubject.send()
     }
+    
+    func deleteContent(for contentID: Int) {
+        Task {
+            do {
+                try await contentRepository.deleteContent(contentID: contentID)
+                guard let index = item.contentList.firstIndex(where: { $0.id == contentID }) else { return }
+                item.contentList.remove(at: index)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+        }
+    }
+    
+    func deleteComment(for commentID: Int) {
+        Task {
+            do {
+                try await commentRepository.deleteComment(commentID: commentID)
+                guard let index = item.commentList.firstIndex(where: { $0.comment.id == commentID }) else { return }
+                item.commentList.remove(at: index)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+        }
+    }
 }
 
 private extension MyProfileViewModel {
@@ -122,8 +142,16 @@ private extension MyProfileViewModel {
         
         Task {
             async let userProfile: UserProfile = fetchUserProfileUseCase.execute(userID: userID)
-            async let contentList: [UserContent] = fetchUserContentListUseCase.execute(for: userID, last: Constant.initialCursor)
-            async let commentList: [UserComment] = fetchUserCommentListUseCase.execute(for: userID, last: Constant.initialCursor)
+
+            async let contentList: [UserContent] = contentRepository.fetchUserContentList(
+                memberID: userID,
+                cursor: Constant.initialCursor
+            )
+            
+            async let commentList: [UserComment] = commentRepository.fetchUserCommentList(
+                memberID: userID,
+                cursor: Constant.initialCursor
+            )
             
             do {
                 let (userProfile, contentList, commentList) = try await (userProfile, contentList, commentList)
@@ -154,7 +182,10 @@ private extension MyProfileViewModel {
         isLoadingMore = true
         loadingMoreTask = Task {
             do {
-                let contentListForNextPage = try await fetchUserContentListUseCase.execute(for: userID, last: lastContentID)
+                let contentListForNextPage = try await contentRepository.fetchUserContentList(
+                    memberID: userID,
+                    cursor: lastContentID
+                )
                 guard !Task.isCancelled else { return }
                 isLastPageForContent = contentListForNextPage.count < Constant.defaultCountForContentPage
                 item.contentList.append(contentsOf: contentListForNextPage)
@@ -174,7 +205,10 @@ private extension MyProfileViewModel {
         isLoadingMore = true
         loadingMoreTask = Task {
             do {
-                let commentListForNextPage = try await fetchUserCommentListUseCase.execute(for: userID, last: lastCommentID)
+                let commentListForNextPage = try await commentRepository.fetchUserCommentList(
+                    memberID: userID,
+                    cursor: lastCommentID
+                )
                 guard !Task.isCancelled else { return }
                 isLastPageForComment = commentListForNextPage.count < Constant.defaultCountForCommentPage
                 item.commentList.append(contentsOf: commentListForNextPage)
