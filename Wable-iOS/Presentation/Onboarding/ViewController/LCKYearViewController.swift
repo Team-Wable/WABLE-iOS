@@ -43,6 +43,8 @@ private extension LCKYearViewController {
     // MARK: - Setup
     
     func setupView() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        
         view.addSubview(rootView)
     }
     
