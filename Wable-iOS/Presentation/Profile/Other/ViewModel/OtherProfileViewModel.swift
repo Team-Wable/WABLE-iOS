@@ -189,8 +189,6 @@ final class OtherProfileViewModel {
     }
     
     func ghostContent(for contentID: Int) {
-        guard let content = item.contentList.first(where: { $0.id == contentID }) else { return }
-        
         Task {
             do {
                 try await ghostRepository.postGhostReduction(
@@ -208,8 +206,6 @@ final class OtherProfileViewModel {
     }
     
     func ghostComment(for commentID: Int) {
-        guard let comment = item.commentList.first(where: { $0.comment.id == commentID }) else { return }
-        
         Task {
             do {
                 try await ghostRepository.postGhostReduction(
