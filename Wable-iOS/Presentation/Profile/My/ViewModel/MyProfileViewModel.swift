@@ -25,6 +25,8 @@ final class MyProfileViewModel {
     private let removeUserSessionUseCase: RemoveUserSessionUseCase
     @Injected private var contentRepository: ContentRepository
     @Injected private var commentRepository: CommentRepository
+    @Injected private var contentLikedRepository: ContentLikedRepository
+    @Injected private var commentLikedRepository: CommentLikedRepository
     
     private let selectedIndexSubject = PassthroughSubject<Int, Never>()
     private let willDisplaySubject = PassthroughSubject<Void, Never>()
@@ -86,9 +88,9 @@ final class MyProfileViewModel {
             do {
                 try await contentRepository.deleteContent(contentID: contentID)
                 guard let index = item.contentList.firstIndex(where: { $0.id == contentID }) else { return }
-                item.contentList.remove(at: index)
+                _ = await MainActor.run { item.contentList.remove(at: index) }
             } catch {
-                errorMessage = error.localizedDescription
+                await handleError(error: error)
             }
         }
     }
@@ -98,9 +100,58 @@ final class MyProfileViewModel {
             do {
                 try await commentRepository.deleteComment(commentID: commentID)
                 guard let index = item.commentList.firstIndex(where: { $0.comment.id == commentID }) else { return }
-                item.commentList.remove(at: index)
+                _ = await MainActor.run { item.commentList.remove(at: index) }
             } catch {
-                errorMessage = error.localizedDescription
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func toggleLikeContent(for contentID: Int) {
+        guard let contentIndex = item.contentList.firstIndex(where: { $0.id == contentID }) else { return }
+        let isLiked = item.contentList[contentIndex].contentInfo.like.status
+        Task {
+            do {
+                isLiked
+                ? try await contentLikedRepository.deleteContentLiked(contentID: contentID)
+                : try await contentLikedRepository.createContentLiked(
+                    contentID: contentID,
+                    triggerType: TriggerType.Like.contentLike.rawValue
+                )
+                
+                await MainActor.run {
+                    var contentInfo = item.contentList[contentIndex].contentInfo
+                    isLiked ? contentInfo.like.unlike() : contentInfo.like.like()
+                    item.contentList[contentIndex] = UserContent(id: contentID, contentInfo: contentInfo)
+                }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func likeComment(for commentID: Int) {
+        guard let commentIndex = item.commentList.firstIndex(where: { $0.comment.id == commentID }) else { return }
+        let comment = item.commentList[commentIndex]
+        let isLiked = item.commentList[commentIndex].comment.like.status
+        
+        Task {
+            do {
+                isLiked
+                ? try await commentLikedRepository.deleteCommentLiked(commentID: commentID)
+                : try await commentLikedRepository.createCommentLiked(
+                    commentID: commentID,
+                    triggerType: TriggerType.Like.commentLike.rawValue,
+                    notificationText: item.commentList[commentIndex].comment.text
+                )
+                
+                await MainActor.run {
+                    var commentInfo = item.commentList[commentIndex].comment
+                    isLiked ? commentInfo.like.unlike() : commentInfo.like.like()
+                    item.commentList[commentIndex] = UserComment(comment: commentInfo, contentID: comment.contentID)
+                }
+            } catch {
+                await handleError(error: error)
             }
         }
     }
@@ -156,22 +207,24 @@ private extension MyProfileViewModel {
             do {
                 let (userProfile, contentList, commentList) = try await (userProfile, contentList, commentList)
                 
-                isLastPageForContent = contentList.count < Constant.defaultCountForContentPage
-                isLastPageForComment = commentList.count < Constant.defaultCountForCommentPage
-                
-                nickname = userProfile.user.nickname
-                
-                item = ProfileViewItem(
-                    currentSegment: segment,
-                    profileInfo: userProfile,
-                    contentList: contentList,
-                    commentList: commentList
-                )
+                await MainActor.run {
+                    isLastPageForContent = contentList.count < Constant.defaultCountForContentPage
+                    isLastPageForComment = commentList.count < Constant.defaultCountForCommentPage
+                    
+                    nickname = userProfile.user.nickname
+                    
+                    item = ProfileViewItem(
+                        currentSegment: segment,
+                        profileInfo: userProfile,
+                        contentList: contentList,
+                        commentList: commentList
+                    )
+                }
             } catch {
-                errorMessage = error.localizedDescription
+                await handleError(error: error)
             }
             
-            isLoading = false
+            await MainActor.run { isLoading = false }
         }
     }
     
@@ -187,14 +240,17 @@ private extension MyProfileViewModel {
                     cursor: lastContentID
                 )
                 guard !Task.isCancelled else { return }
-                isLastPageForContent = contentListForNextPage.count < Constant.defaultCountForContentPage
-                item.contentList.append(contentsOf: contentListForNextPage)
+                
+                await MainActor.run {
+                    isLastPageForContent = contentListForNextPage.count < Constant.defaultCountForContentPage
+                    item.contentList.append(contentsOf: contentListForNextPage)
+                }
             } catch {
                 guard !Task.isCancelled else { return }
-                errorMessage = error.localizedDescription
+                await handleError(error: error)
             }
             
-            isLoadingMore = false
+            await MainActor.run { isLoadingMore = false }
         }
     }
     
@@ -210,15 +266,22 @@ private extension MyProfileViewModel {
                     cursor: lastCommentID
                 )
                 guard !Task.isCancelled else { return }
-                isLastPageForComment = commentListForNextPage.count < Constant.defaultCountForCommentPage
-                item.commentList.append(contentsOf: commentListForNextPage)
+                await MainActor.run {
+                    isLastPageForComment = commentListForNextPage.count < Constant.defaultCountForCommentPage
+                    item.commentList.append(contentsOf: commentListForNextPage)
+                }
             } catch {
                 guard !Task.isCancelled else { return }
-                errorMessage = error.localizedDescription
+                await handleError(error: error)
             }
             
-            isLoadingMore = false
+            await MainActor.run { isLoadingMore = false }
         }
+    }
+    
+    @MainActor
+    func handleError(error: Error) {
+        errorMessage = error.localizedDescription
     }
     
     enum Constant {
