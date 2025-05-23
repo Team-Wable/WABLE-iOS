@@ -255,11 +255,10 @@ private extension ProfileInfoCell {
     }
     
     func setupAction() {
-        editButton.addAction(UIAction(handler: { [weak self] _ in
-            guard let self = self else { return }
-            
-            editButtonTapHandler?()
-        }), for: .touchUpInside)
+        editButton.addAction(
+            UIAction(handler: { [weak self] _ in self?.editButtonTapHandler?() }),
+            for: .touchUpInside
+        )
     }
     
     enum Constant {
