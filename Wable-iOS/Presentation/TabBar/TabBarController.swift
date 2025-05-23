@@ -70,6 +70,14 @@ final class TabBarController: UITabBarController {
                         jsonDecoder: JSONDecoder()
                     )
                 )
+            ),
+            userSessionUseCase: FetchUserInformationUseCase(
+                repository: UserSessionRepositoryImpl(
+                    userDefaults: UserDefaultsStorage(
+                        jsonEncoder: JSONEncoder(),
+                        jsonDecoder: JSONDecoder()
+                    )
+                )
             )
         )
     ).then {
@@ -146,7 +154,7 @@ private extension TabBarController {
                 viewitNavigationController,
                 profileNavigationController
             ],
-            animated: true
+            animated: false
         )
     }
     
