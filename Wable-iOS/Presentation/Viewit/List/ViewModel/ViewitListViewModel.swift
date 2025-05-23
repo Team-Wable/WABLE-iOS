@@ -13,17 +13,20 @@ final class ViewitListViewModel {
     private let likeUseCase: LikeViewitUseCase
     private let reportUseCase: ReportViewitUseCase
     private let checkUserRoleUseCase: CheckUserRoleUseCase
+    private let userSessionUseCase: FetchUserInformationUseCase
     
     init(
         useCase: ViewitUseCase,
         likeUseCase: LikeViewitUseCase,
         reportUseCase: ReportViewitUseCase,
-        checkUserRoleUseCase: CheckUserRoleUseCase
+        checkUserRoleUseCase: CheckUserRoleUseCase,
+        userSessionUseCase: FetchUserInformationUseCase
     ) {
         self.useCase = useCase
         self.likeUseCase = likeUseCase
         self.reportUseCase = reportUseCase
         self.checkUserRoleUseCase = checkUserRoleUseCase
+        self.userSessionUseCase = userSessionUseCase
     }
 }
 
@@ -34,6 +37,7 @@ extension ViewitListViewModel: ViewModelType {
         let willLastDisplay: Driver<Void>
         let meatball: Driver<Int>
         let bottomSheetAction: Driver<ViewitBottomSheetActionKind>
+        let profileDidTap: Driver<Int>
     }
     
     struct Output {
@@ -42,6 +46,7 @@ extension ViewitListViewModel: ViewModelType {
         let isMoreLoading: Driver<Bool>
         let userRole: Driver<UserRole>
         let isReportSuccess: Driver<Bool>
+        let moveToProfile: Driver<Int?>
         let errorMessage: Driver<String>
     }
     
@@ -212,12 +217,26 @@ extension ViewitListViewModel: ViewModelType {
             }
             .store(in: cancelBag)
         
+        let moveToProfile = input.profileDidTap
+            .withUnretained(self)
+            .compactMap { owner, userID -> (Int, Int)? in
+                guard let activeUserID = owner.userSessionUseCase.fetchActiveUserID() else {
+                    return nil
+                }
+                return (activeUserID, userID)
+            }
+            .map { activeUserID, userID -> Int? in
+                return activeUserID == userID ? .none : userID
+            }
+            .asDriver()
+        
         return Output(
             isLoading: isLoadingRelay.asDriver(),
             viewitList: viewitList,
             isMoreLoading: isMoreLoadingRelay.asDriver(),
             userRole: userRole,
             isReportSuccess: isReportSuccess.asDriver(),
+            moveToProfile: moveToProfile,
             errorMessage: errorMessageRelay.asDriver()
         )
     }
