@@ -55,7 +55,7 @@ final class AnnouncementDetailViewController: UIViewController {
         super.viewDidLoad()
         
         setupAction()
-        setupDelegate()
+        setupNavigationBar()
     }
     
     func configure(
@@ -83,14 +83,6 @@ final class AnnouncementDetailViewController: UIViewController {
     }
 }
 
-// MARK: - UIGestureRecognizerDelegate
-
-extension AnnouncementDetailViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return navigationController?.viewControllers.count ?? 0 > 1
-    }
-}
-
 // MARK: - Setup Method
 
 private extension AnnouncementDetailViewController {
@@ -103,8 +95,9 @@ private extension AnnouncementDetailViewController {
         submitButton.addTarget(self, action: #selector(submitButtonDidTap), for: .touchUpInside)
     }
     
-    func setupDelegate() {
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
+    func setupNavigationBar() {
+        navigationController?.navigationBar.isHidden = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
 }
 

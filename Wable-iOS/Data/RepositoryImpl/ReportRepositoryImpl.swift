@@ -31,6 +31,22 @@ extension ReportRepositoryImpl: ReportRepository {
         .mapWableError()
     }
     
+    func createReport(nickname: String, text: String) async throws {
+        do {
+            _ = try await provider.request(
+                .createReport(
+                    request: DTO.Request.CreateReport(
+                        reportTargetNickname: nickname,
+                        relateText: text
+                    )
+                ),
+                for: DTO.Response.Empty.self
+            )
+        } catch {
+            throw ErrorMapper.map(error)
+        }
+    }
+    
     func createBan(memberID: Int, triggerType: TriggerType.Ban, triggerID: Int) -> AnyPublisher<Void, WableError> {
         return provider.request(
             .createBan(
@@ -45,6 +61,23 @@ extension ReportRepositoryImpl: ReportRepository {
         .asVoid()
         .mapWableError()
     }
+    
+    func createBan(memberID: Int, triggerType: TriggerType.Ban, triggerID: Int) async throws {
+        do {
+            _ = try await provider.request(
+                .createBan(
+                    request: DTO.Request.CreateBan(
+                        memberID: memberID,
+                        triggerType: triggerType.rawValue,
+                        triggerID: triggerID
+                    )
+                ),
+                for: DTO.Response.Empty.self
+            )
+        } catch {
+            throw ErrorMapper.map(error)
+        }
+    }
 }
 
 // MARK: - Mock
@@ -58,9 +91,17 @@ struct MockReportRepository: ReportRepository {
             .eraseToAnyPublisher()
     }
     
+    func createReport(nickname: String, text: String) async throws {
+        
+    }
+    
     func createBan(memberID: Int, triggerType: TriggerType.Ban, triggerID: Int) -> AnyPublisher<Void, WableError> {
         return .just(())
             .delay(for: .seconds(delaySeconds), scheduler: RunLoop.main)
             .eraseToAnyPublisher()
+    }
+    
+    func createBan(memberID: Int, triggerType: TriggerType.Ban, triggerID: Int) async throws {
+        
     }
 }

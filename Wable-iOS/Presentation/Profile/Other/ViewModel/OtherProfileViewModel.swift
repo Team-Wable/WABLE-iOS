@@ -13,6 +13,8 @@ final class OtherProfileViewModel {
     @Published private(set) var item = ProfileViewItem()
     @Published private(set) var isLoading = false
     @Published private(set) var isLoadingMore = false
+    @Published private(set) var isReportCompleted = false
+    @Published private(set) var isGhostCompleted = false
     @Published private(set) var errorMessage: String?
     
     private var isLastPageForContent = false
@@ -21,28 +23,22 @@ final class OtherProfileViewModel {
     
     private let userID: Int
     private let fetchUserProfileUseCase: FetchUserProfileUseCase
-    private let fetchUserContentListUseCase: FetchUserContentListUseCase
-    private let fetchUserCommentListUseCase: FetchUserCommentListUseCase
-    private let selectedIndexSubject = PassthroughSubject<Int, Never>()
-    private let willLastDisplaySubject = PassthroughSubject<Void, Never>()
-    private let cancelBag = CancelBag()
+    private let checkUserRoleUseCase: CheckUserRoleUseCase
+    @Injected private var contentRepository: ContentRepository
+    @Injected private var commentRepository: CommentRepository
+    @Injected private var contentLikedRepository: ContentLikedRepository
+    @Injected private var commentLikedRepository: CommentLikedRepository
+    @Injected private var reportRepository: ReportRepository
+    @Injected private var ghostRepository: GhostRepository
     
     init(
         userID: Int,
         fetchUserProfileUseCase: FetchUserProfileUseCase,
-        fetchUserContentListUseCase: FetchUserContentListUseCase,
-        fetchUserCommentListUseCase: FetchUserCommentListUseCase
+        checkUserRoleUseCase: CheckUserRoleUseCase
     ) {
         self.userID = userID
         self.fetchUserProfileUseCase = fetchUserProfileUseCase
-        self.fetchUserContentListUseCase = fetchUserContentListUseCase
-        self.fetchUserCommentListUseCase = fetchUserCommentListUseCase
-        
-        bind()
-    }
-    
-    func viewDidLoad() {
-        fetchViewItems(userID: userID, segment: .content)
+        self.checkUserRoleUseCase = checkUserRoleUseCase
     }
     
     func viewDidRefresh() {
@@ -50,7 +46,8 @@ final class OtherProfileViewModel {
     }
     
     func selectedIndexDidChange(_ selectedIndex: Int) {
-        selectedIndexSubject.send(selectedIndex)
+        guard let segment = ProfileSegment(rawValue: selectedIndex) else { return }
+        item.currentSegment = segment
     }
     
     func didSelect(index: Int) -> Int {
@@ -65,63 +62,205 @@ final class OtherProfileViewModel {
     }
     
     func willDisplayLast() {
-        willLastDisplaySubject.send()
+        switch item.currentSegment {
+        case .content:
+            guard let lastContentID = item.contentList.last?.id else { return }
+            fetchMoreContentList(userID: userID, lastContentID: lastContentID)
+        case .comment:
+            guard let lastCommentID = item.commentList.last?.comment.id else { return }
+            fetchMoreCommentList(userID: userID, lastCommentID: lastCommentID)
+        }
+    }
+    
+    func toggleLikeContent(for contentID: Int) {
+        guard let index = item.contentList.firstIndex(where: { $0.id == contentID }) else { return }
+        let isLiked = item.contentList[index].contentInfo.like.status
+        
+        Task {
+            do {
+                isLiked
+                ? try await contentLikedRepository.deleteContentLiked(contentID: contentID)
+                : try await contentLikedRepository.createContentLiked(
+                    contentID: contentID,
+                    triggerType: TriggerType.Like.contentLike.rawValue
+                )
+                await MainActor.run {
+                    var contentInfo = item.contentList[index].contentInfo
+                    isLiked ? contentInfo.like.unlike() : contentInfo.like.like()
+                    item.contentList[index] = UserContent(id: contentID, contentInfo: contentInfo)
+                }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func toggleLikeComment(for commentID: Int) {
+        guard let index = item.commentList.firstIndex(where: { $0.comment.id == commentID }) else { return }
+        let comment = item.commentList[index]
+        let isLiked = item.commentList[index].comment.like.status
+        
+        Task {
+            do {
+                isLiked
+                ? try await commentLikedRepository.deleteCommentLiked(commentID: commentID)
+                : try await commentLikedRepository.createCommentLiked(
+                    commentID: commentID,
+                    triggerType: TriggerType.Like.commentLike.rawValue,
+                    notificationText: item.commentList[index].comment.text
+                )
+                
+                await MainActor.run {
+                    var commentInfo = comment.comment
+                    isLiked ? commentInfo.like.unlike() : commentInfo.like.like()
+                    item.commentList[index] = UserComment(comment: commentInfo, contentID: comment.contentID)
+                }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func checkUserRole() -> UserRole? {
+        return checkUserRoleUseCase.execute(userID: userID)
+    }
+    
+    func reportContent(for contentID: Int) {
+        guard let content = item.contentList.first(where: { $0.id == contentID }) else { return }
+        let nickname = content.contentInfo.author.nickname
+        let text = content.contentInfo.text
+        Task {
+            do {
+                try await reportRepository.createReport(nickname: nickname, text: text)
+                await MainActor.run { isReportCompleted = true }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func reportComment(for commentID: Int) {
+        guard let comment = item.commentList.first(where: { $0.comment.id == commentID }) else { return }
+        let nickname = comment.comment.author.nickname
+        let text = comment.comment.text
+        
+        Task {
+            do {
+                try await reportRepository.createReport(nickname: nickname, text: text)
+                await MainActor.run { isReportCompleted = true }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func banContent(for contentID: Int) {
+        Task {
+            do {
+                try await reportRepository.createBan(
+                    memberID: userID,
+                    triggerType: .content,
+                    triggerID: contentID
+                )
+                
+                fetchViewItems(userID: userID, segment: item.currentSegment)
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func banComment(for commentID: Int) {
+        Task {
+            do {
+                try await reportRepository.createBan(
+                    memberID: userID,
+                    triggerType: .content,
+                    triggerID: commentID
+                )
+                
+                fetchViewItems(userID: userID, segment: item.currentSegment)
+                
+                await MainActor.run { isGhostCompleted = true }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func ghostContent(for contentID: Int) {
+        Task {
+            do {
+                try await ghostRepository.postGhostReduction(
+                    alarmTriggerType: TriggerType.Ghost.contentGhost.rawValue,
+                    alarmTriggerID: contentID,
+                    targetMemberID: userID,
+                    reason: ""
+                )
+                
+                fetchViewItems(userID: userID, segment: item.currentSegment)
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func ghostComment(for commentID: Int) {
+        Task {
+            do {
+                try await ghostRepository.postGhostReduction(
+                    alarmTriggerType: TriggerType.Ghost.commentGhost.rawValue,
+                    alarmTriggerID: commentID,
+                    targetMemberID: userID,
+                    reason: ""
+                )
+                
+                fetchViewItems(userID: userID, segment: item.currentSegment)
+            } catch {
+                await handleError(error: error)
+            }
+        }
     }
 }
 
 private extension OtherProfileViewModel {
-    func bind() {
-        selectedIndexSubject
-            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
-            .removeDuplicates()
-            .compactMap { return ProfileSegmentKind(rawValue: $0) }
-            .sink { [weak self] in self?.item.currentSegment = $0 }
-            .store(in: cancelBag)
-        
-        willLastDisplaySubject
-            .debounce(for: .milliseconds(1000), scheduler: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                
-                switch item.currentSegment {
-                case .content:
-                    guard let lastContentID = item.contentList.last?.id else { return }
-                    fetchMoreContentList(userID: userID, lastContentID: lastContentID)
-                case .comment:
-                    guard let lastCommentID = item.commentList.last?.comment.id else { return }
-                    fetchMoreCommentList(userID: userID, lastCommentID: lastCommentID)
-                }
-            }
-            .store(in: cancelBag)
-    }
-    
-    func fetchViewItems(userID: Int, segment: ProfileSegmentKind) {
+    func fetchViewItems(userID: Int, segment: ProfileSegment) {
         isLoading = true
         
         Task {
             async let userProfile: UserProfile = fetchUserProfileUseCase.execute(userID: userID)
-            async let contentList: [UserContent] = fetchUserContentListUseCase.execute(for: userID, last: Constant.initialCursor)
-            async let commentList: [UserComment] = fetchUserCommentListUseCase.execute(for: userID, last: Constant.initialCursor)
+            
+            async let contentList: [UserContent] = contentRepository.fetchUserContentList(
+                memberID: userID,
+                cursor: Constant.initialCursor
+            )
+            
+            async let commentList: [UserComment] = commentRepository.fetchUserCommentList(
+                memberID: userID,
+                cursor: Constant.initialCursor
+            )
             
             do {
                 let (userProfile, contentList, commentList) = try await (userProfile, contentList, commentList)
                 
-                isLastPageForContent = contentList.count < Constant.defaultCountForContentPage
-                isLastPageForComment = commentList.count < Constant.defaultCountForCommentPage
-                
-                nickname = userProfile.user.nickname
-                
-                item = ProfileViewItem(
-                    currentSegment: segment,
-                    profileInfo: userProfile,
-                    contentList: contentList,
-                    commentList: commentList
-                )
+                await MainActor.run {
+                    isLastPageForContent = contentList.count < Constant.defaultCountForContentPage
+                    isLastPageForComment = commentList.count < Constant.defaultCountForCommentPage
+                    
+                    nickname = userProfile.user.nickname
+                    
+                    item = ProfileViewItem(
+                        currentSegment: segment,
+                        profileInfo: userProfile,
+                        contentList: contentList,
+                        commentList: commentList
+                    )
+                }
             } catch {
-                errorMessage = error.localizedDescription
+                await handleError(error: error)
             }
             
-            isLoading = false
+            await MainActor.run { isLoading = false }
         }
     }
     
@@ -132,15 +271,21 @@ private extension OtherProfileViewModel {
         isLoadingMore = true
         loadingMoreTask = Task {
             do {
-                let contentListForNextPage = try await fetchUserContentListUseCase.execute(for: userID, last: lastContentID)
+                let contentListForNextPage = try await contentRepository.fetchUserContentList(
+                    memberID: userID,
+                    cursor: lastContentID
+                )
                 guard !Task.isCancelled else { return }
-                isLastPageForContent = contentListForNextPage.count < Constant.defaultCountForContentPage
-                item.contentList.append(contentsOf: contentListForNextPage)
+                await MainActor.run {
+                    isLastPageForContent = contentListForNextPage.count < Constant.defaultCountForContentPage
+                    item.contentList.append(contentsOf: contentListForNextPage)
+                }
             } catch {
                 guard !Task.isCancelled else { return }
-                errorMessage = error.localizedDescription
+                await handleError(error: error)
             }
-            isLoadingMore = false
+            
+            await MainActor.run { isLoadingMore = false }
         }
     }
     
@@ -151,17 +296,27 @@ private extension OtherProfileViewModel {
         isLoadingMore = true
         loadingMoreTask = Task {
             do {
-                let commentListForNextPage = try await fetchUserCommentListUseCase.execute(for: userID, last: lastCommentID)
+                let commentListForNextPage = try await commentRepository.fetchUserCommentList(
+                    memberID: userID,
+                    cursor: lastCommentID
+                )
                 guard !Task.isCancelled else { return }
-                isLastPageForComment = commentListForNextPage.count < Constant.defaultCountForCommentPage
-                item.commentList.append(contentsOf: commentListForNextPage)
+                await MainActor.run {
+                    isLastPageForComment = commentListForNextPage.count < Constant.defaultCountForCommentPage
+                    item.commentList.append(contentsOf: commentListForNextPage)
+                }
             } catch {
                 guard !Task.isCancelled else { return }
-                errorMessage = error.localizedDescription
+                await handleError(error: error)
             }
             
-            isLoadingMore = false
+            await MainActor.run { isLoadingMore = false }
         }
+    }
+    
+    @MainActor
+    func handleError(error: Error) {
+        errorMessage = error.localizedDescription
     }
     
     enum Constant {
