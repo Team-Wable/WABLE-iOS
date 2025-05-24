@@ -15,4 +15,11 @@ protocol GhostRepository {
         targetMemberID: Int,
         reason: String
     ) -> AnyPublisher<Void, WableError>
+    
+    func postGhostReduction(
+        alarmTriggerType: String,
+        alarmTriggerID: Int,
+        targetMemberID: Int,
+        reason: String
+    ) async throws
 }

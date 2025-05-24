@@ -8,6 +8,6 @@
 import Foundation
 
 struct ProfileEmptyCellItem: Hashable {
-    var segment: ProfileSegmentKind
+    var segment: ProfileSegment
     var nickname: String?
 }
