@@ -120,10 +120,6 @@ private extension CreateViewitViewModel {
             return false
         }
         
-        if urlString.range(of: #"^www\.[a-zA-Z0-9\-]+\.[a-zA-Z]{2,}$"#, options: .regularExpression) == nil {
-            return false
-        }
-        
         let range = NSRange(location: 0, length: urlString.utf16.count)
         let matches = detector.matches(in: urlString, options: [], range: range)
         

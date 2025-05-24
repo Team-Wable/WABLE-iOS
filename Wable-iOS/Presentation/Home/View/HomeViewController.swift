@@ -267,22 +267,29 @@ private extension HomeViewController {
                     self.present(viewController, animated: true)
                 },
                 profileImageViewTapHandler: { [weak self] in
-                    let otherProfileViewController = OtherProfileViewController(
-                        viewModel: .init(
-                            userID: item.content.contentInfo.author.id,
-                            fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
-                            checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
-                                repository: UserSessionRepositoryImpl(
-                                    userDefaults: UserDefaultsStorage(
-                                        jsonEncoder: JSONEncoder(),
-                                        jsonDecoder: JSONDecoder()
+                    guard let self = self else { return }
+                    
+                    if self.activeUserID == item.content.contentInfo.author.id,
+                       let tabBarController = self.tabBarController {
+                        tabBarController.selectedIndex = 4
+                    } else {
+                        let viewController = OtherProfileViewController(
+                            viewModel: .init(
+                                userID: item.content.contentInfo.author.id,
+                                fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
+                                checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
+                                    repository: UserSessionRepositoryImpl(
+                                        userDefaults: .init(
+                                            jsonEncoder: .init(),
+                                            jsonDecoder: .init()
+                                        )
                                     )
                                 )
                             )
                         )
-                    )
-                    
-                    self?.navigationController?.pushViewController(otherProfileViewController, animated: true)
+                        
+                        self.navigationController?.pushViewController(viewController, animated: true)
+                    }
                 },
                 ghostButtonTapHandler: {
                     let viewController = WableSheetViewController(title: "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?")

@@ -41,6 +41,8 @@ final class AlarmSettingViewController: UIViewController {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
+        
+        hidesBottomBarWhenPushed = true
     }
     
     @available(*, unavailable)
