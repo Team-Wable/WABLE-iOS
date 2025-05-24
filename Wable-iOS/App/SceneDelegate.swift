@@ -45,24 +45,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window?.makeKeyAndVisible()
         
         setupBinding()
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
-            self.userSessionRepository.checkAutoLogin()
-                .withUnretained(self)
-                .sink { [weak self] completion in
-                    switch completion {
-                    case .finished:
-                        break
-                    case .failure(let error):
-                        WableLogger.log("자동 로그인 여부 체크 실패: \(error)", for: .error)
-                        self?.configureLoginScreen()
-                    }
-                } receiveValue: { owner, isAutologinEnabled in
-                    WableLogger.log("자동 로그인 여부 체크 성공: \(isAutologinEnabled)", for: .debug)
-                    isAutologinEnabled ? owner.configureMainScreen() : owner.configureLoginScreen()
-                }
-                .store(in: self.cancelBag)
-        }
+        checkForceUpdate()
     }
     
     // MARK: - Kakao URLContexts
@@ -131,6 +114,30 @@ private extension SceneDelegate {
         
         self.window?.rootViewController = TabBarController(shouldShowLoadingScreen: true)
     }
+    
+    func proceedToAppLaunch() {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) { [weak self] in
+            guard let self = self else { return }
+            
+            userSessionRepository.checkAutoLogin()
+                .withUnretained(self)
+                .sink { [weak self] completion in
+                    guard let self = self else { return }
+                    
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        WableLogger.log("자동 로그인 여부 체크 실패: \(error)", for: .error)
+                        self.configureLoginScreen()
+                    }
+                } receiveValue: { owner, isAutologinEnabled in
+                    WableLogger.log("자동 로그인 여부 체크 성공: \(isAutologinEnabled)", for: .debug)
+                    isAutologinEnabled ? owner.configureMainScreen() : owner.configureLoginScreen()
+                }
+                .store(in: cancelBag)
+        }
+    }
 }
 
 // MARK: - Private Extension
@@ -147,8 +154,7 @@ private extension SceneDelegate {
             }
             .store(in: cancelBag)
     }
-    
-    
+
     func handleTokenExpired() {
         userSessionRepository.updateActiveUserID(nil)
         configureLoginScreen()
@@ -156,8 +162,112 @@ private extension SceneDelegate {
         let toast = ToastView(status: .caution, message: "세션이 만료되었습니다. 다시 로그인해주세요.")
         toast.show()
     }
+}
+
+// MARK: - Helper Method
+
+private extension SceneDelegate {
+    func checkForceUpdate() {
+        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        let itunesLookupURL = "https://itunes.apple.com/kr/lookup?bundleId=com.wable.Wable-iOS&country=kr"
+        
+        guard let url = URL(string: itunesLookupURL) else {
+            proceedToAppLaunch()
+            
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                WableLogger.log("앱스토어 버전 확인 실패: \(error.localizedDescription)", for: .error)
+                DispatchQueue.main.async {
+                    self.proceedToAppLaunch()
+                }
+                return
+            }
+            
+            guard let data = data,
+                  let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
+                  let results = json["results"] as? [[String: Any]],
+                  let appStoreInfo = results.first,
+                  let appStoreVersion = appStoreInfo["version"] as? String,
+                  let currentVersion = appVersion
+            else {
+                WableLogger.log("앱스토어 데이터 파싱 실패", for: .error)
+                
+                DispatchQueue.main.async {
+                    self.proceedToAppLaunch()
+                }
+                
+                return
+            }
+            
+            DispatchQueue.main.async {
+                WableLogger.log(
+                    "currentVersion: \(currentVersion), appStoreVersion: \(appStoreVersion)",
+                    for: .debug
+                )
+                
+                let isUpdateNeeded = self.isForceUpdateNeeded(
+                    currentVersion: currentVersion,
+                    appStoreVersion: appStoreVersion
+                )
+                
+                isUpdateNeeded ? self.showForceUpdateAlert() : self.proceedToAppLaunch()
+            }
+            
+        }.resume()
+    }
     
-    func updateVersionIfNeeded() {
-        // TODO: 강제 업데이트 로직 구현 필요
+    func showForceUpdateAlert() {
+        let view = WableSheetViewController(
+            title: "새로운 업데이트가 있습니다.",
+            message: "최신 버전으로 업데이트할 수 있습니다."
+        )
+        
+        view.addAction(.init(title: "지금 업데이트", style: .primary, handler: {
+            let appStoreOpenUrlString = "itms-apps://itunes.apple.com/app/apple-store/id6670352454"
+            
+            guard let url = URL(string: appStoreOpenUrlString) else {
+                WableLogger.log("앱스토어 URL이 올바르지 않습니다", for: .error)
+                return
+            }
+            
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:]) { success in
+                    if !success {
+                        WableLogger.log("앱스토어 열기 실패", for: .error)
+                    }
+                }
+            }
+        }))
+        
+        self.window?.rootViewController?.present(view, animated: true)
+    }
+    
+    func isForceUpdateNeeded(currentVersion: String, appStoreVersion: String) -> Bool {
+        let currentComponents = convertVersionComponents(from: currentVersion)
+        let appStoreComponents = convertVersionComponents(from: appStoreVersion)
+        
+        if currentComponents.major != appStoreComponents.major {
+            return currentComponents.major < appStoreComponents.major
+        }
+        
+        if currentComponents.minor != appStoreComponents.minor {
+            return currentComponents.minor < appStoreComponents.minor
+        }
+        
+        return currentComponents.patch < appStoreComponents.patch
+    }
+    
+    func convertVersionComponents(from version: String) -> (major: Int, minor: Int, patch: Int) {
+        let components = version.split(separator: ".").map { Int($0) ?? 0 }
+        return (
+            major: components.count > 0 ? components[0] : 0,
+            minor: components.count > 1 ? components[1] : 0,
+            patch: components.count > 2 ? components[2] : 0
+        )
     }
 }
