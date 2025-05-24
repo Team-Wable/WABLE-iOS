@@ -176,9 +176,7 @@ private extension HomeViewController {
     
     func setupDataSource() {
         let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> {
-            [weak self] cell,
-            indexPath,
-            item in
+            [weak self] cell, indexPath, item in
             guard let self = self else { return }
             
             cell.configureCell(
