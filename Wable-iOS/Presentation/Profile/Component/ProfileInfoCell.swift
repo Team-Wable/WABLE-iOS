@@ -28,7 +28,7 @@ final class ProfileInfoCell: UICollectionViewCell {
     }
     
     private let levelBadgeImageView = UIImageView(image: .icLevelBadge).then {
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
     }
     
