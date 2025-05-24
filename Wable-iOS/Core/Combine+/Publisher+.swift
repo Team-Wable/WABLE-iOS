@@ -60,4 +60,39 @@ extension Publisher {
             .mapError { $0 as Error }
             .eraseToAnyPublisher()
     }
+    
+    // MARK: - withLatestFrom
+    
+    /// `self`가 새로운 값을 방출할 때마다 `other` Publisher가 가장 마지막으로 방출한 값을 함께 전달하는 연산자입니다.
+    ///
+    /// 이 메서드는 `self`의 이벤트를 트리거로 사용하며, 해당 시점에서 `other`의 최신 값을 가져와 방출합니다.
+    ///
+    /// - Parameters:
+    ///   - other: 참조할 다른 `Publisher`. 이 Publisher가 방출한 마지막 값이 `self`의 트리거에 따라 전달됩니다.
+    ///
+    /// - Returns: `self`의 방출 이벤트를 트리거로 하여 `other`의 최신 값을 방출하는 `AnyPublisher`.
+    ///
+    /// - 사용 예:
+    ///   ```
+    ///   buttonTapPublisher
+    ///       .withLatestFrom(textFieldTextPublisher)
+    ///       .sink { latestText in
+    ///           print("버튼 탭 시 최신 텍스트: \(latestText)")
+    ///       }
+    ///   ```
+    ///
+    /// - Note: `other`가 값을 방출하지 않은 상태에서는 `self`가 아무리 값을 방출하더라도 출력이 발생하지 않습니다.
+    ///   반드시 `other`가 최소 한 번은 값을 내보낸 이후여야 `withLatestFrom`이 동작합니다.
+    ///   이 동작은 RxSwift의 `withLatestFrom`과 동일한 특성을 가집니다.
+    ///
+    func withLatestFrom<Other: Publisher>(
+        _ other: Other
+    ) -> AnyPublisher<Other.Output, Failure> where Other.Failure == Failure {
+        self
+            .map { _ in Date.now.timeIntervalSince1970 }
+            .combineLatest(other)
+            .removeDuplicates(by: { $0.0 == $1.0 })
+            .map { $0.1 }
+            .eraseToAnyPublisher()
+    }
 }
