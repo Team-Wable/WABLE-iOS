@@ -5,6 +5,7 @@
 //  Created by 김진웅 on 5/4/25.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
@@ -77,6 +78,42 @@ final class ViewitInputView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension ViewitInputView {
+    var urlStringChanged: AnyPublisher<String, Never> {
+        urlTextField
+            .publisher(for: .editingChanged, keyPath: \.text)
+            .compactMap { $0 }
+            .handleEvents(receiveOutput: { [weak self] text in
+                self?.urlTextField.backgroundColor = text.isEmpty ? .gray100 : .blue10
+            })
+            .eraseToAnyPublisher()
+    }
+    
+    var nextTapped: AnyPublisher<Void, Never> {
+        nextButton
+            .publisher(for: .touchUpInside)
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    var descriptionChanged: AnyPublisher<String, Never> {
+        descriptionTextField
+            .publisher(for: .editingChanged, keyPath: \.text)
+            .compactMap { $0 }
+            .handleEvents(receiveOutput: { [weak self] text in
+                self?.descriptionTextField.backgroundColor = text.isEmpty ? .gray100 : .wableWhite
+            })
+            .eraseToAnyPublisher()
+    }
+    
+    var uploadTapped: AnyPublisher<Void, Never> {
+        uploadButton
+            .publisher(for: .touchUpInside)
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
 }
 
