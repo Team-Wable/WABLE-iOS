@@ -47,6 +47,8 @@ final class LCKTeamViewController: NavigationViewController {
 
 private extension LCKTeamViewController {
     func setupView() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        
         view.addSubview(rootView)
     }
     
