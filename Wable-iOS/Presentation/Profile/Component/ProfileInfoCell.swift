@@ -27,6 +27,11 @@ final class ProfileInfoCell: UICollectionViewCell {
         $0.clipsToBounds = true
     }
     
+    private let levelBadgeImageView = UIImageView(image: .icLevelBadge).then {
+        $0.contentMode = .scaleAspectFit
+        $0.clipsToBounds = true
+    }
+    
     private let levelLabel = UILabel().then {
         $0.attributedText = "LV. 1".pretendardString(with: .caption1)
         $0.textColor = .gray600
@@ -70,7 +75,7 @@ final class ProfileInfoCell: UICollectionViewCell {
         $0.progressTintColor = .purple50
         $0.trackTintColor = .gray200
         $0.layer.cornerRadius = 8
-        $0.setProgress(0.0, animated: false)
+        $0.progress = .zero
         $0.clipsToBounds = true
     }
     
@@ -118,7 +123,7 @@ final class ProfileInfoCell: UICollectionViewCell {
         nicknameLabel.text = nickname
         introductionLabel.text = introduction
         ghostValueLabel.text = "\(ghostValue)%"
-        ghostProgressBar.setProgress(Float(100 + ghostValue), animated: false)
+        ghostProgressBar.setProgress(Float(100 + ghostValue) / 100, animated: true)
         
         let randomProfileImage = [
             UIImage.imgProfilePurple,
@@ -173,21 +178,27 @@ private extension ProfileInfoCell {
     }
     
     func setupHeaderView() {
-        headerView.addSubviews(profileImageView, levelLabel, nicknameLabel, editButton)
+        headerView.addSubviews(profileImageView, levelBadgeImageView, levelLabel, nicknameLabel, editButton)
         
         profileImageView.snp.makeConstraints { make in
             make.verticalEdges.leading.equalToSuperview()
             make.size.equalTo(Constant.profileImageViewSize)
         }
         
-        levelLabel.snp.makeConstraints { make in
+        levelBadgeImageView.snp.makeConstraints { make in
             make.top.equalTo(profileImageView).offset(12)
             make.leading.equalTo(profileImageView.snp.trailing).offset(16)
+            make.size.equalTo(16)
+        }
+        
+        levelLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(levelBadgeImageView)
+            make.leading.equalTo(levelBadgeImageView.snp.trailing).offset(4)
         }
         
         nicknameLabel.snp.makeConstraints { make in
-            make.top.equalTo(levelLabel.snp.bottom).offset(4)
-            make.leading.equalTo(levelLabel)
+            make.top.equalTo(levelBadgeImageView.snp.bottom).offset(4)
+            make.leading.equalTo(levelBadgeImageView)
         }
         
         editButton.snp.makeConstraints { make in
@@ -244,11 +255,10 @@ private extension ProfileInfoCell {
     }
     
     func setupAction() {
-        editButton.addAction(UIAction(handler: { [weak self] _ in
-            guard let self = self else { return }
-            
-            editButtonTapHandler?()
-        }), for: .touchUpInside)
+        editButton.addAction(
+            UIAction(handler: { [weak self] _ in self?.editButtonTapHandler?() }),
+            for: .touchUpInside
+        )
     }
     
     enum Constant {

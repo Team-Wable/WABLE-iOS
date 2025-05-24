@@ -5,6 +5,7 @@
 //  Created by 김진웅 on 5/14/25.
 //
 
+import Combine
 import UIKit
 import SafariServices
 
@@ -15,7 +16,7 @@ final class MyProfileViewController: UIViewController {
     
     // MARK: - Section & Item
 
-    enum Section: CaseIterable {
+    enum Section: Int, CaseIterable {
         case profile
         case post
     }
@@ -54,9 +55,7 @@ final class MyProfileViewController: UIViewController {
     private var dataSource: DataSource?
     
     private let viewModel: MyProfileViewModel
-    private let didLoadRelay = PassthroughRelay<Void>()
-    private let selectedIndexRelay = PassthroughRelay<Int>()
-    private let logoutRelay = PassthroughRelay<Void>()
+    private let willDisplaySubject = PassthroughSubject<Void, Never>()
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
@@ -83,8 +82,6 @@ final class MyProfileViewController: UIViewController {
         setupAction()
         setupBinding()
         setupDelegate()
-        
-        viewModel.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,8 +91,12 @@ final class MyProfileViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDelegate
+
 extension MyProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let section = Section(rawValue: indexPath.section), section == .post else { return }
+        
         let contentID = viewModel.didSelect(index: indexPath.item)
         
         let viewController = HomeDetailViewController(
@@ -139,7 +140,7 @@ extension MyProfileViewController: UICollectionViewDelegate {
             return
         }
         
-        if indexPath.item >= itemCount - 5 {
+        if indexPath.item >= itemCount - 2 {
             viewModel.willDisplayLast()
         }
     }
@@ -207,12 +208,17 @@ private extension MyProfileViewController {
                 authorType: .mine,
                 cellType: .list,
                 contentImageViewTapHandler: nil,
-                likeButtonTapHandler: {
-                    WableLogger.log("좋아요 눌림", for: .debug)
-                    
-                    // TODO: 추후 기능 연결
+                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeContent(for: item.id) },
+                settingButtonTapHandler: { [weak self] in
+                    let bottomSheet = WableBottomSheetController()
+                    bottomSheet.addAction(
+                        .init(
+                            title: "삭제하기",
+                            handler: { [weak self] in self?.presentDeleteContentActionSheet(for: item.id) }
+                        )
+                    )
+                    self?.present(bottomSheet, animated: true)
                 },
-                settingButtonTapHandler: nil,
                 profileImageViewTapHandler: nil,
                 ghostButtonTapHandler: nil
             )
@@ -225,8 +231,17 @@ private extension MyProfileViewController {
                 info: item.comment,
                 commentType: .ripple,
                 authorType: .mine,
-                likeButtonTapHandler: nil,
-                settingButtonTapHandler: nil,
+                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeComment(for: item.comment.id) },
+                settingButtonTapHandler: { [weak self] in
+                    let bottomSheet = WableBottomSheetController()
+                    bottomSheet.addAction(
+                        .init(
+                            title: "삭제하기",
+                            handler: { [weak self] in self?.presentDeleteCommentActionSheet(for: item.comment.id) }
+                        )
+                    )
+                    self?.present(bottomSheet, animated: true)
+                },
                 profileImageViewTapHandler: nil,
                 ghostButtonTapHandler: nil,
                 replyButtonTapHandler: nil
@@ -236,10 +251,7 @@ private extension MyProfileViewController {
         let headerRegistration = SupplementaryRegistration<ProfileSegmentedHeaderView>(
             elementKind: UICollectionView.elementKindSectionHeader
         ) { supplementaryView, elementKind, indexPath in
-            supplementaryView.segmentDidChangeClosure = { [weak self] selectedIndex in
-                self?.selectedIndexRelay.send(selectedIndex)
-                self?.viewModel.selectedIndexDidChange(selectedIndex)
-            }
+            supplementaryView.onSegmentIndexChanged = { [weak self] in self?.viewModel.selectedIndexDidChange($0) }
         }
         
         let emptyCellRegistration = CellRegistration<MyProfileEmptyCell, ProfileEmptyCellItem> {
@@ -303,21 +315,22 @@ private extension MyProfileViewController {
         navigationView.menuButton.addTarget(self, action: #selector(menuButtonDidTap), for: .touchUpInside)
         
         collectionView.refreshControl?.addTarget(self, action: #selector(collectionViewDidRefresh), for: .valueChanged)
+        
+        willDisplaySubject
+            .debounce(for: .milliseconds(1000), scheduler: DispatchQueue.main)
+            .sink { [weak self] _ in self?.viewModel.willDisplayLast() }
+            .store(in: cancelBag)
     }
     
     func setupBinding() {
         viewModel.$nickname
             .receive(on: RunLoop.main)
-            .sink { [weak self] in
-                self?.navigationView.setNavigationTitle(text: $0 ?? "알 수 없는 유저")
-            }
+            .sink { [weak self] in self?.navigationView.setNavigationTitle(text: $0 ?? "알 수 없는 유저") }
             .store(in: cancelBag)
         
         viewModel.$item
             .receive(on: RunLoop.main)
-            .sink { [weak self] in
-                self?.applySnapshot(item: $0)
-            }
+            .sink { [weak self] in self?.applySnapshot(item: $0) }
             .store(in: cancelBag)
         
         viewModel.$isLoading
@@ -468,6 +481,26 @@ private extension MyProfileViewController {
             animations: { window.rootViewController = loginViewController },
             completion: nil
         )
+    }
+    
+    func presentDeleteContentActionSheet(for contentID: Int) {
+        let actionSheet = WableSheetViewController(title: "게시글을 삭제하시겠어요?", message: "게시글이 영구히 삭제됩니다.")
+        let cancelAction = WableSheetAction(title: "취소", style: .gray)
+        let confirmAction = WableSheetAction(title: "삭제하기", style: .primary) { [weak self] in
+            self?.viewModel.deleteContent(for: contentID)
+        }
+        actionSheet.addActions(cancelAction, confirmAction)
+        present(actionSheet, animated: true)
+    }
+    
+    func presentDeleteCommentActionSheet(for commentID: Int) {
+        let actionSheet = WableSheetViewController(title: "댓글을 삭제하시겠어요?", message: "댓글이 영구히 삭제됩니다.")
+        let cancelAction = WableSheetAction(title: "취소", style: .gray)
+        let confirmAction = WableSheetAction(title: "삭제하기", style: .primary) { [weak self] in
+            self?.viewModel.deleteComment(for: commentID)
+        }
+        actionSheet.addActions(cancelAction, confirmAction)
+        present(actionSheet, animated: true)
     }
     
     // MARK: - Computed Property

@@ -11,5 +11,7 @@ import Foundation
 
 protocol ContentLikedRepository {
     func createContentLiked(contentID: Int, triggerType: String) -> AnyPublisher<Void, WableError>
+    func createContentLiked(contentID: Int, triggerType: String) async throws
     func deleteContentLiked(contentID: Int) -> AnyPublisher<Void, WableError>
+    func deleteContentLiked(contentID: Int) async throws
 }

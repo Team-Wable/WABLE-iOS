@@ -33,6 +33,7 @@ final class ViewitListViewController: UIViewController {
     private let likeRelay = PassthroughRelay<Int>()
     private let willLastDisplayRelay = PassthroughRelay<Void>()
     private let bottomSheetActionRelay = PassthroughRelay<ViewitBottomSheetActionKind>()
+    private let profileDidTapRelay = PassthroughRelay<Int>()
     private let cancelBag = CancelBag()
     private let rootView = ViewitListView()
     
@@ -115,10 +116,10 @@ private extension ViewitListViewController {
                 isBlind: item.status == .blind
             )
             
-            cell.profileInfoDidTapClosure = {
+            cell.profileInfoDidTapClosure = { [weak self] in
                 WableLogger.log("프로필 정보 눌림", for: .debug)
                 
-                // TODO: 프로필(상대/나)로 이동
+                self?.profileDidTapRelay.send(item.userID)
             }
             
             cell.meatballDidTapClosure = { [weak self] in
@@ -160,7 +161,8 @@ private extension ViewitListViewController {
             like: likeRelay.eraseToAnyPublisher(),
             willLastDisplay: willLastDisplayRelay.eraseToAnyPublisher(),
             meatball: meatballRelay.eraseToAnyPublisher(),
-            bottomSheetAction: bottomSheetActionRelay.eraseToAnyPublisher()
+            bottomSheetAction: bottomSheetActionRelay.eraseToAnyPublisher(),
+            profileDidTap: profileDidTapRelay.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
@@ -195,6 +197,17 @@ private extension ViewitListViewController {
         output.isReportSuccess
             .filter { $0 }
             .sink { _ in ToastView(status: .complete, message: Constant.reportSuccessMessage).show() }
+            .store(in: cancelBag)
+        
+        output.moveToProfile
+            .sink { [weak self] userID in
+                switch userID {
+                case .some(let value):
+                    self?.navigateToOtherProfile(for: value)
+                case .none:
+                    self?.showMyProfile()
+                }
+            }
             .store(in: cancelBag)
         
         output.errorMessage
@@ -276,6 +289,30 @@ private extension ViewitListViewController {
             $0.addActions(cancelAction, primaryAction)
         }
         present(wableSheet, animated: true)
+    }
+    
+    func showMyProfile() {
+        let myProfileTabIndex = 4
+        navigationController?.tabBarController?.selectedIndex = myProfileTabIndex
+    }
+    
+    func navigateToOtherProfile(for userID: Int) {
+        let otherProfileViewController = OtherProfileViewController(
+            viewModel: .init(
+                userID: userID,
+                fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
+                checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
+                    repository: UserSessionRepositoryImpl(
+                        userDefaults: UserDefaultsStorage(
+                            jsonEncoder: JSONEncoder(),
+                            jsonDecoder: JSONDecoder()
+                        )
+                    )
+                )
+            )
+        )
+        
+        navigationController?.pushViewController(otherProfileViewController, animated: true)
     }
     
     // MARK: - Action Method
