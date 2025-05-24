@@ -16,6 +16,8 @@ final class AlarmSettingViewModel {
         Task {
             let settings = await UNUserNotificationCenter.current().notificationSettings()
             isAuthorized = settings.authorizationStatus == .authorized
+            
+            // TODO: 서버로 알람 수신 여부 보내기
         }
     }
 }

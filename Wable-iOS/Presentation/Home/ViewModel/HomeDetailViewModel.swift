@@ -177,8 +177,8 @@ extension HomeDetailViewModel: ViewModelType {
                 
                 let originalLike = content.like
                 let updatedLike = isLiked
-                    ? Like(status: true, count: originalLike.count + 1)
-                    : Like(status: false, count: max(0, originalLike.count - 1))
+                ? Like(status: true, count: originalLike.count + 1)
+                : Like(status: false, count: max(0, originalLike.count - 1))
                 
                 let updatedContent = ContentInfo(
                     author: content.author,
@@ -195,7 +195,7 @@ extension HomeDetailViewModel: ViewModelType {
                 contentSubject.send(updatedContent)
             })
             .store(in: cancelBag)
-
+        
         input.didCommentHeartTappedItem
             .withUnretained(self)
             .flatMap { owner, info -> AnyPublisher<(Bool, ContentComment), Never> in
@@ -214,8 +214,8 @@ extension HomeDetailViewModel: ViewModelType {
                         let originalLike = originalComment.like
                         
                         let updatedLike = isLiked
-                            ? Like(status: true, count: originalLike.count + 1)
-                            : Like(status: false, count: max(0, originalLike.count - 1))
+                        ? Like(status: true, count: originalLike.count + 1)
+                        : Like(status: false, count: max(0, originalLike.count - 1))
                         
                         let updatedCommentInfo = CommentInfo(
                             author: originalComment.author,
@@ -244,8 +244,8 @@ extension HomeDetailViewModel: ViewModelType {
                             let originalLike = originalChild.like
                             
                             let updatedLike = isLiked
-                                ? Like(status: true, count: originalLike.count + 1)
-                                : Like(status: false, count: max(0, originalLike.count - 1))
+                            ? Like(status: true, count: originalLike.count + 1)
+                            : Like(status: false, count: max(0, originalLike.count - 1))
                             
                             let updatedChildInfo = CommentInfo(
                                 author: originalChild.author,
@@ -352,8 +352,32 @@ extension HomeDetailViewModel: ViewModelType {
                     .map { _ in input.0 }
                     .asDriver(onErrorJustReturn: -1)
             }
-            .sink(receiveValue: { userID in
-                refreshTriggerSubject.send()
+            .sink(receiveValue: { [weak self] userID in
+                guard let self = self,
+                      let contentInfo = contentSubject.value
+                else {
+                    return
+                }
+                
+                let updatedCommentInfo = self.updateBannedComments(comments: commentsSubject.value, userID: userID)
+                
+                commentsSubject.send(updatedCommentInfo)
+                
+                if userID == contentInfo.author.id {
+                    let updatedContent = ContentInfo(
+                        author: contentInfo.author,
+                        createdDate: contentInfo.createdDate,
+                        title: contentInfo.title,
+                        imageURL: contentInfo.imageURL,
+                        text: contentInfo.text,
+                        status: .blind,
+                        like: contentInfo.like,
+                        opacity: contentInfo.opacity.reduced(),
+                        commentCount: contentInfo.commentCount
+                    )
+                    
+                    contentSubject.send(updatedContent)
+                }
             })
             .store(in: cancelBag)
         
@@ -387,7 +411,7 @@ extension HomeDetailViewModel: ViewModelType {
                 }
             })
             .store(in: cancelBag)
-
+        
         
         input.didCreateTappedItem
             .withUnretained(self)
@@ -498,6 +522,44 @@ private extension HomeDetailViewModel {
             
             if !updatedComment.childs.isEmpty {
                 let updatedChilds = updateGhostComments(comments: updatedComment.childs, userID: userID)
+                
+                return ContentComment(
+                    comment: updatedComment.comment,
+                    parentID: updatedComment.parentID,
+                    isDeleted: updatedComment.isDeleted,
+                    childs: updatedChilds
+                )
+            }
+            
+            return updatedComment
+        }
+    }
+    
+    func updateBannedComments(comments: [ContentComment], userID: Int) -> [ContentComment] {
+        return comments.map { comment in
+            let updatedComment: ContentComment
+            
+            if comment.comment.author.id == userID {
+                updatedComment = ContentComment(
+                    comment: CommentInfo(
+                        author: comment.comment.author,
+                        id: comment.comment.id,
+                        text: comment.comment.text,
+                        createdDate: comment.comment.createdDate,
+                        status: .blind,
+                        like: comment.comment.like,
+                        opacity: comment.comment.opacity.reduced()
+                    ),
+                    parentID: comment.parentID,
+                    isDeleted: comment.isDeleted,
+                    childs: comment.childs
+                )
+            } else {
+                updatedComment = comment
+            }
+            
+            if !updatedComment.childs.isEmpty {
+                let updatedChilds = updateBannedComments(comments: updatedComment.childs, userID: userID)
                 
                 return ContentComment(
                     comment: updatedComment.comment,

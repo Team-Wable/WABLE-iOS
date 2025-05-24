@@ -74,7 +74,8 @@ private extension SceneDelegate {
                     loginRepository: loginRepository,
                     userSessionRepository: userSessionRepository
                 ),
-                updateUserSessionUseCase: FetchUserInformationUseCase(repository: userSessionRepository)
+                updateUserSessionUseCase: FetchUserInformationUseCase(repository: userSessionRepository),
+                userProfileUseCase: UserProfileUseCase(repository: ProfileRepositoryImpl())
             )
         )
     }

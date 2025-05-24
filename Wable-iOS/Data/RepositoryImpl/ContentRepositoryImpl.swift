@@ -43,6 +43,17 @@ extension ContentRepositoryImpl: ContentRepository {
         .mapWableError()
     }
     
+    func deleteContent(contentID: Int) async throws {
+        do {
+            _ = try await provider.request(
+                .deleteContent(contentID: contentID),
+                for: DTO.Response.Empty.self
+            )
+        } catch {
+            throw ErrorMapper.map(error)
+        }
+    }
+    
     func fetchContentInfo(contentID: Int) -> AnyPublisher<ContentInfo, WableError> {
         provider.request(
             .fetchContentInfo(contentID: contentID),

@@ -23,7 +23,7 @@ final class ProfileRegisterView: UIView {
     // MARK: - UIComponent
     
     private let titleLabel: UILabel = UILabel().then {
-        $0.attributedText = "와블에서 활동할\n프로필을 등록해 주세요".pretendardString(with: .head0)
+        $0.attributedText = " ".pretendardString(with: .head0)
         $0.textColor = .wableBlack
         $0.numberOfLines = 2
     }
@@ -31,6 +31,7 @@ final class ProfileRegisterView: UIView {
     private let descriptionLabel: UILabel = UILabel().then {
         $0.attributedText = "프로필 사진은 나중에도 등록 가능해요".pretendardString(with: .body2)
         $0.textColor = .gray600
+        $0.isHidden = true
     }
     
     let profileImageView: UIImageView = UIImageView().then {
@@ -179,6 +180,9 @@ extension ProfileRegisterView {
     // MARK: Configure Method
     
     func configureView(profileImageURL: URL? = .none) {
+        titleLabel.text = "와블에서 활동할\n프로필을 등록해 주세요"
+        descriptionLabel.isHidden = false
+        
         guard let profileImageURL = profileImageURL else {
             configureDefaultImage()
             
@@ -200,7 +204,6 @@ extension ProfileRegisterView {
         }
         
         titleLabel.text = "와블에서 멋진 모습으로\n활동해 보세요!"
-        descriptionLabel.isHidden = true
         nextButton.configuration?.attributedTitle = "완료".pretendardString(with: .head2)
         nextButton.isUserInteractionEnabled = true
         nextButton.updateStyle(.primary)

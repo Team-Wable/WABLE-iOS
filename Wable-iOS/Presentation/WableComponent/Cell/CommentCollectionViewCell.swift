@@ -222,14 +222,13 @@ extension CommentCollectionViewCell {
         self.settingButtonTapHandler = settingButtonTapHandler
         self.replyButtonTapHandler = replyButtonTapHandler
         
-        guard let createdDate = info.createdDate else { return }
-        
         ghostButton.isHidden = authorType == .mine || info.status == .ghost
         configureCommentType(info: info, commentType: commentType)
         configurePostStatus(info: info)
         
         contentLabel.attributedText = info.text.pretendardString(with: .body4)
         
+        guard let createdDate = info.createdDate else { return }
         infoView.configureView(
             userProfileURL: info.author.profileURL,
             userName: info.author.nickname,

@@ -62,6 +62,17 @@ extension CommentRepositoryImpl: CommentRepository {
         .mapWableError()
     }
     
+    func deleteComment(commentID: Int) async throws {
+        do {
+            _ = try await provider.request(
+                .deleteComment(commentID: commentID),
+                for: DTO.Response.Empty.self
+            )
+        } catch {
+            throw ErrorMapper.map(error)
+        }
+    }
+    
     func createComment(contentID: Int, text: String, parentID: Int?, parentMemberID: Int?) -> AnyPublisher<Void, WableError> {
         return provider.request(
             .createComment(
@@ -102,6 +113,10 @@ struct MockCommentRepository: CommentRepository {
     
     func deleteComment(commentID: Int) -> AnyPublisher<Void, WableError> {
         .fail(.unknownError)
+    }
+    
+    func deleteComment(commentID: Int) async throws {
+        throw WableError.unknownError
     }
     
     func createComment(contentID: Int, text: String, parentID: Int?, parentMemberID: Int?) -> AnyPublisher<Void, WableError> {

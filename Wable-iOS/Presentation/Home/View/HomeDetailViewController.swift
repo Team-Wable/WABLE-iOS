@@ -139,6 +139,8 @@ final class HomeDetailViewController: NavigationViewController {
 
 private extension HomeDetailViewController {
     func setupView() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        
         view.addSubviews(collectionView, underLineView, writeCommentView, loadingIndicator)
         writeCommentView.addSubviews(commentTextView, createCommentButton, placeholderLabel)
     }
@@ -425,7 +427,26 @@ private extension HomeDetailViewController {
                     self.present(viewController, animated: true)
                 },
                 profileImageViewTapHandler: {
-                    // TODO: 프로필 구현되는 대로 추가적인 설정 필요
+                    if self.activeUserID == item.comment.author.id,
+                       let tabBarController = self.tabBarController {
+                        tabBarController.selectedIndex = 4
+                    } else {
+                        let viewController = OtherProfileViewController(
+                            viewModel: .init(
+                                userID: item.comment.author.id,
+                                fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
+                                checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
+                                    repository: UserSessionRepositoryImpl(
+                                        userDefaults: .init(
+                                            jsonEncoder: .init(),
+                                            jsonDecoder: .init()
+                                        )
+                                    )
+                                )
+                            ))
+                        
+                        self.navigationController?.pushViewController(viewController, animated: true)
+                    }
                 },
                 ghostButtonTapHandler: {
                     let viewController = WableSheetViewController(title: "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?")

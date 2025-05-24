@@ -29,7 +29,7 @@ final class OtherProfileEmptyCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(currentSegment: ProfileSegmentKind, nickname: String?) {
+    func configure(currentSegment: ProfileSegment, nickname: String?) {
         let emptyString = currentSegment == .content ? Constant.emptyContentString : Constant.emptyCommentString
         textLabel.text = "아직 \(nickname ?? "알 수 없음")님이" + emptyString
     }

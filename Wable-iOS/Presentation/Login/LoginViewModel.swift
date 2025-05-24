@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+import UserNotifications
 
 final class LoginViewModel {
     
@@ -16,6 +17,7 @@ final class LoginViewModel {
     private let updateFCMTokenUseCase: UpdateFCMTokenUseCase
     private let fetchUserAuthUseCase: FetchUserAuthUseCase
     private let updateUserSessionUseCase: FetchUserInformationUseCase
+    private let userProfileUseCase: UserProfileUseCase
     private let loginSuccessSubject = PassthroughSubject<Account, Never>()
     private let loginErrorSubject = PassthroughSubject<WableError, Never>()
     
@@ -24,11 +26,13 @@ final class LoginViewModel {
     init(
         updateFCMTokenUseCase: UpdateFCMTokenUseCase,
         fetchUserAuthUseCase: FetchUserAuthUseCase,
-        updateUserSessionUseCase: FetchUserInformationUseCase
+        updateUserSessionUseCase: FetchUserInformationUseCase,
+        userProfileUseCase: UserProfileUseCase
     ) {
         self.updateFCMTokenUseCase = updateFCMTokenUseCase
         self.fetchUserAuthUseCase = fetchUserAuthUseCase
         self.updateUserSessionUseCase = updateUserSessionUseCase
+        self.userProfileUseCase = userProfileUseCase
     }
 }
 
@@ -75,24 +79,50 @@ extension LoginViewModel: ViewModelType {
                         .sink { completion in
                             if case .failure(let error) = completion {
                                 WableLogger.log("FCM 토큰 저장 중 에러 발생: \(error)", for: .error)
+                            } else {
+                                WableLogger.log("FCM 토큰 저장 성공", for: .network)
                             }
                         } receiveValue: { () in
                         }
                         .store(in: cancelBag)
                     
-                    self.updateUserSessionUseCase.updateUserSession(
-                        userID: account.user.id,
-                        nickname: account.user.nickname,
-                        profileURL: account.user.profileURL,
-                        isPushAlarmAllowed: account.isPushAlarmAllowed,
-                        isAdmin: account.isAdmin,
-                        isAutoLoginEnabled: true
-                    )
-                    .sink(receiveCompletion: { _ in
-                    }, receiveValue: { _ in
-                        WableLogger.log("세션 저장 완료", for: .debug)
-                    })
-                    .store(in: cancelBag)
+                    Task {
+                        let isAuthorized = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus == .authorized
+                        
+                        WableLogger.log("\(isAuthorized)", for: .debug)
+                        
+                        self.updateUserSessionUseCase.updateUserSession(
+                            userID: account.user.id,
+                            nickname: account.user.nickname,
+                            profileURL: account.user.profileURL,
+                            isPushAlarmAllowed: isAuthorized,
+                            isAdmin: account.isAdmin,
+                            isAutoLoginEnabled: true
+                        )
+                        .sink(receiveCompletion: { _ in
+                        }, receiveValue: { _ in
+                            WableLogger.log("로컬에 세션 저장 완료", for: .debug)
+                        })
+                        .store(in: cancelBag)
+                        
+                        self.userProfileUseCase.execute(userID: account.user.id)
+                            .sink { _ in
+                            } receiveValue: { profile in
+                                self.userProfileUseCase.execute(profile: profile, isPushAlarmAllowed: isAuthorized)
+                                    .sink { completion in
+                                        switch completion {
+                                        case .failure(let error):
+                                            WableLogger.log("서버로 프로필 업데이트 중 오류 발생: \(error)", for: .error)
+                                        default:
+                                            WableLogger.log("로그인 및 서버로 프로필 업데이트 완료", for: .debug)
+                                        }
+                                    } receiveValue: { _ in
+                                        
+                                    }
+                                    .store(in: cancelBag)
+                            }
+                            .store(in: cancelBag)
+                    }
                     
                     self.loginSuccessSubject.send(account)
                 }
