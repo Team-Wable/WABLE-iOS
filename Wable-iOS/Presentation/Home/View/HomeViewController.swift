@@ -175,7 +175,8 @@ private extension HomeViewController {
     }
     
     func setupDataSource() {
-        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> { [weak self] cell, indexPath, item in
+        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> {
+            [weak self] cell, indexPath, item in
             guard let self = self else { return }
             
             cell.configureCell(
@@ -270,8 +271,14 @@ private extension HomeViewController {
                         viewModel: .init(
                             userID: item.content.contentInfo.author.id,
                             fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
-                            fetchUserContentListUseCase: FetchUserContentUseCaseImpl(),
-                            fetchUserCommentListUseCase: FetchUserCommentListUseCaseImpl()
+                            checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
+                                repository: UserSessionRepositoryImpl(
+                                    userDefaults: UserDefaultsStorage(
+                                        jsonEncoder: JSONEncoder(),
+                                        jsonDecoder: JSONDecoder()
+                                    )
+                                )
+                            )
                         )
                     )
                     

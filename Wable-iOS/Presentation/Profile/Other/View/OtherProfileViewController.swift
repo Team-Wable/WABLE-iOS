@@ -5,6 +5,7 @@
 //  Created by 김진웅 on 5/20/25.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
@@ -14,7 +15,7 @@ final class OtherProfileViewController: UIViewController {
     
     // MARK: - Section & Item
     
-    enum Section: CaseIterable {
+    enum Section: Int, CaseIterable {
         case profile
         case post
     }
@@ -50,6 +51,7 @@ final class OtherProfileViewController: UIViewController {
     private var dataSource: DataSource?
     
     private let viewModel: OtherProfileViewModel
+    private let willLastDisplaySubject = PassthroughSubject<Void, Never>()
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
@@ -78,8 +80,6 @@ final class OtherProfileViewController: UIViewController {
         setupDataSource()
         setupDelegate()
         setupBinding()
-        
-        viewModel.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -93,6 +93,8 @@ final class OtherProfileViewController: UIViewController {
 
 extension OtherProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let section = Section(rawValue: indexPath.section), section == .post else { return }
+        
         let contentID = viewModel.didSelect(index: indexPath.item)
         
         let viewController = HomeDetailViewController(
@@ -137,7 +139,7 @@ extension OtherProfileViewController: UICollectionViewDelegate {
         }
         
         if indexPath.item >= itemCount - 2 {
-            viewModel.willDisplayLast()
+            willLastDisplaySubject.send()
         }
     }
 }
@@ -172,6 +174,11 @@ private extension OtherProfileViewController {
         navigationView.backButton.addTarget(self, action: #selector(backButtonDidTap), for: .touchUpInside)
         
         collectionView.refreshControl?.addTarget(self, action: #selector(collectionViewDidRefresh), for: .valueChanged)
+        
+        willLastDisplaySubject
+            .debounce(for: .milliseconds(1000), scheduler: DispatchQueue.main)
+            .sink { [weak self] _ in self?.viewModel.willDisplayLast() }
+            .store(in: cancelBag)
     }
     
     func setupNavigationBar() {
@@ -197,17 +204,33 @@ private extension OtherProfileViewController {
             cell, indexPath, item in
             cell.configureCell(
                 info: item.contentInfo,
-                authorType: .mine,
+                authorType: .others,
                 cellType: .list,
                 contentImageViewTapHandler: nil,
-                likeButtonTapHandler: {
-                    WableLogger.log("좋아요 눌림", for: .debug)
+                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeContent(for: item.id) },
+                settingButtonTapHandler: { [weak self] in
+                    guard let userRole = self?.viewModel.checkUserRole(),
+                          userRole != .owner
+                    else {
+                        return
+                    }
                     
-                    // TODO: 추후 기능 연결
+                    let bottomSheet = WableBottomSheetController()
+                    let report = WableBottomSheetAction(title: "신고하기") { [weak self] in
+                        self?.presentReportSheet(contentID: item.id)
+                    }
+                    bottomSheet.addAction(report)
+                    
+                    if userRole == .admin {
+                        let ban = WableBottomSheetAction(title: "밴하기") { [weak self] in
+                            self?.presentBanSheet(contentID: item.id)
+                        }
+                        bottomSheet.addAction(ban)
+                    }
+                    self?.present(bottomSheet, animated: true)
                 },
-                settingButtonTapHandler: nil,
                 profileImageViewTapHandler: nil,
-                ghostButtonTapHandler: nil
+                ghostButtonTapHandler: { [weak self] in self?.presentGhostSheet(contentID: item.id) }
             )
         }
         
@@ -217,11 +240,31 @@ private extension OtherProfileViewController {
             cell.configureCell(
                 info: item.comment,
                 commentType: .ripple,
-                authorType: .mine,
-                likeButtonTapHandler: nil,
-                settingButtonTapHandler: nil,
+                authorType: .others,
+                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeComment(for: item.comment.id) },
+                settingButtonTapHandler: { [weak self] in
+                    guard let userRole = self?.viewModel.checkUserRole(),
+                          userRole != .owner
+                    else {
+                        return
+                    }
+                    
+                    let bottomSheet = WableBottomSheetController()
+                    let report = WableBottomSheetAction(title: "신고하기") { [weak self] in
+                        self?.presentReportSheet(commentID: item.comment.id)
+                    }
+                    bottomSheet.addAction(report)
+                    
+                    if userRole == .admin {
+                        let ban = WableBottomSheetAction(title: "밴하기") { [weak self] in
+                            self?.presentBanSheet(commentID: item.comment.id)
+                        }
+                        bottomSheet.addAction(ban)
+                    }
+                    self?.present(bottomSheet, animated: true)
+                },
                 profileImageViewTapHandler: nil,
-                ghostButtonTapHandler: nil,
+                ghostButtonTapHandler: { [weak self] in self?.presentGhostSheet(commentID: item.comment.id) },
                 replyButtonTapHandler: nil
             )
         }
@@ -229,9 +272,7 @@ private extension OtherProfileViewController {
         let headerRegistration = SupplementaryRegistration<ProfileSegmentedHeaderView>(
             elementKind: UICollectionView.elementKindSectionHeader
         ) { supplementaryView, elementKind, indexPath in
-            supplementaryView.segmentDidChangeClosure = { [weak self] selectedIndex in
-                self?.viewModel.selectedIndexDidChange(selectedIndex)
-            }
+            supplementaryView.onSegmentIndexChanged = { [weak self] in self?.viewModel.selectedIndexDidChange($0) }
         }
         
         let emptyCellRegistration = CellRegistration<OtherProfileEmptyCell, ProfileEmptyCellItem> {
@@ -308,6 +349,12 @@ private extension OtherProfileViewController {
             }
             .store(in: cancelBag)
         
+        viewModel.$isReportCompleted
+            .receive(on: RunLoop.main)
+            .filter { $0 }
+            .sink { _ in ToastView(status: .complete, message: Constant.Report.completedMessage).show() }
+            .store(in: cancelBag)
+        
         viewModel.$errorMessage
             .receive(on: RunLoop.main)
             .compactMap { $0 }
@@ -351,6 +398,82 @@ private extension OtherProfileViewController {
         }
         
         dataSource?.apply(snapshot)
+    }
+    
+    func presentReportSheet(contentID: Int) {
+        let actionSheet = WableSheetViewController(
+            title: Constant.Report.sheetTitle,
+            message: "해당 유저 혹은 게시글을 " + Constant.Report.sheetMessage
+        )
+        
+        let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
+        let confirm = WableSheetAction(title: Constant.Report.title, style: .primary) { [weak self] in
+            self?.viewModel.reportContent(for: contentID)
+        }
+        actionSheet.addActions(cancel, confirm)
+        present(actionSheet, animated: true)
+    }
+    
+    func presentReportSheet(commentID: Int) {
+        let actionSheet = WableSheetViewController(
+            title: Constant.Report.sheetTitle,
+            message: "해당 유저 혹은 댓글을 " + Constant.Report.sheetMessage
+        )
+        
+        let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
+        let confirm = WableSheetAction(title: Constant.Report.title, style: .primary) { [weak self] in
+            self?.viewModel.reportComment(for: commentID)
+        }
+        actionSheet.addActions(cancel, confirm)
+        present(actionSheet, animated: true)
+    }
+    
+    func presentBanSheet(contentID: Int) {
+        let actionSheet = WableSheetViewController(
+            title: Constant.Ban.title,
+            message: Constant.Ban.sheetMessage
+        )
+        
+        let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
+        let confirm = WableSheetAction(title: Constant.Ban.title, style: .primary) { [weak self] in
+            self?.viewModel.banContent(for: contentID)
+        }
+        actionSheet.addActions(cancel, confirm)
+        present(actionSheet, animated: true)
+    }
+    
+    func presentBanSheet(commentID: Int) {
+        let actionSheet = WableSheetViewController(
+            title: Constant.Ban.title,
+            message: Constant.Ban.sheetMessage
+        )
+        
+        let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
+        let confirm = WableSheetAction(title: Constant.Ban.title, style: .primary) { [weak self] in
+            self?.viewModel.banComment(for: commentID)
+        }
+        actionSheet.addActions(cancel, confirm)
+        present(actionSheet, animated: true)
+    }
+    
+    func presentGhostSheet(contentID: Int) {
+        let actionSheet = WableSheetViewController(title: Constant.Ghost.sheetTitle)
+        let cancel = WableSheetAction(title: Constant.Ghost.grayTitle, style: .gray)
+        let confirm = WableSheetAction(title: Constant.Ghost.primaryTitle, style: .primary) { [weak self] in
+            self?.viewModel.ghostContent(for: contentID)
+        }
+        actionSheet.addActions(cancel, confirm)
+        present(actionSheet, animated: true)
+    }
+    
+    func presentGhostSheet(commentID: Int) {
+        let actionSheet = WableSheetViewController(title: Constant.Ghost.sheetTitle)
+        let cancel = WableSheetAction(title: Constant.Ghost.grayTitle, style: .gray)
+        let confirm = WableSheetAction(title: Constant.Ghost.primaryTitle, style: .primary) { [weak self] in
+            self?.viewModel.ghostComment(for: commentID)
+        }
+        actionSheet.addActions(cancel, confirm)
+        present(actionSheet, animated: true)
     }
     
     // MARK: - Action
@@ -411,6 +534,39 @@ private extension OtherProfileViewController {
                 
                 return section
             }
+        }
+    }
+    
+    enum Constant {
+        enum Report {
+            static let title = "신고하기"
+            static let sheetTitle = "신고하시겠어요?"
+            static let sheetMessage = "신고하시려면\n신고하기 버튼을 눌러주세요."
+            static let completedMessage = """
+                                        신고 접수가 완료되었어요.
+                                        24시간 내에 조치할 예정이에요.
+                                        """
+        }
+        
+        enum Ban {
+            static let title = "밴하기"
+            static let sheetMessage = """
+                                    1회 누적 - 게시글 블라인드 처리
+                                    2회 누적 - 게시글/댓글 블라인드 처리
+                                    3회 누적 - 게시글 작성 제한
+                                    4회 누적 - 계정 정지
+                                    """
+        }
+        
+        enum Ghost {
+            static let sheetTitle = "와블의 문화를 해치는\n누군가를 발견하신 건가요?"
+            static let grayTitle = "고민할게요"
+            static let primaryTitle = "네 맞아요"
+            static let completedMessage = "덕분에 와블이 더 온화해지고 있어요!"
+        }
+        
+        enum Cancel {
+            static let title = "취소"
         }
     }
 }

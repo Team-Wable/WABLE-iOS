@@ -311,7 +311,7 @@
 		DEA10B582DD3E53A001EBBA9 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B572DD3E53A001EBBA9 /* MyProfileViewController.swift */; };
 		DEA10B5A2DD3E8E9001EBBA9 /* ProfileViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B592DD3E8E9001EBBA9 /* ProfileViewItem.swift */; };
 		DEA10B5C2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */; };
-		DEA10B5E2DD3F48E001EBBA9 /* ProfileSegmentKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B5D2DD3F48E001EBBA9 /* ProfileSegmentKind.swift */; };
+		DEA10B5E2DD3F48E001EBBA9 /* ProfileSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B5D2DD3F48E001EBBA9 /* ProfileSegment.swift */; };
 		DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7142DA92E7100D35646 /* CommunityView.swift */; };
 		DEA9E7172DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
@@ -645,7 +645,7 @@
 		DEA10B572DD3E53A001EBBA9 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		DEA10B592DD3E8E9001EBBA9 /* ProfileViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewItem.swift; sourceTree = "<group>"; };
 		DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSegmentedHeaderView.swift; sourceTree = "<group>"; };
-		DEA10B5D2DD3F48E001EBBA9 /* ProfileSegmentKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSegmentKind.swift; sourceTree = "<group>"; };
+		DEA10B5D2DD3F48E001EBBA9 /* ProfileSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSegment.swift; sourceTree = "<group>"; };
 		DEA9E7142DA92E7100D35646 /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
 		DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegisterCompleteViewController.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
@@ -1665,6 +1665,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		DE4EFCCF2DE0060700E4146C /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				DD51A44B2DD458A8004295B6 /* ProfileEditViewController.swift */,
+			);
+			path = Edit;
+			sourceTree = "<group>";
+		};
 		DE59BB952D8A9D130040ADCB /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -1719,11 +1727,11 @@
 		DE59BBA52D8A9DD50040ADCB /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				DD51A44B2DD458A8004295B6 /* ProfileEditViewController.swift */,
 				DEF08E212DDB45480024B33C /* Model */,
 				DEF08E202DDB45380024B33C /* Component */,
 				DEDFCECF2DDC542000B3CD97 /* Other */,
 				DEA10B522DD3E43A001EBBA9 /* My */,
+				DE4EFCCF2DE0060700E4146C /* Edit */,
 				DE3908CA2DD2622400997ABE /* AlarmSetting */,
 				DEB60AEC2DD20B7E00FE8BFD /* AccountInfo */,
 				DEA10B282DD38C48001EBBA9 /* Withdrawal */,
@@ -2336,7 +2344,7 @@
 		DEF08E212DDB45480024B33C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				DEA10B5D2DD3F48E001EBBA9 /* ProfileSegmentKind.swift */,
+				DEA10B5D2DD3F48E001EBBA9 /* ProfileSegment.swift */,
 				DEA10B592DD3E8E9001EBBA9 /* ProfileViewItem.swift */,
 				DEF08E282DDB73200024B33C /* ProfileEmptyCellItem.swift */,
 			);
@@ -2802,7 +2810,7 @@
 				DE54B0402D832E78009A7C34 /* LoadingViewController.swift in Sources */,
 				DD2968282D6DAD0B00143851 /* InformationMapper.swift in Sources */,
 				DD2968292D6DAD0B00143851 /* WableError.swift in Sources */,
-				DEA10B5E2DD3F48E001EBBA9 /* ProfileSegmentKind.swift in Sources */,
+				DEA10B5E2DD3F48E001EBBA9 /* ProfileSegment.swift in Sources */,
 				DD29682A2D6DAD0B00143851 /* ErrorMapper.swift in Sources */,
 				DD9EAE302D9A64A800803A1A /* HomeDetailViewController.swift in Sources */,
 				DD29682B2D6DAD0B00143851 /* CommentMapper.swift in Sources */,

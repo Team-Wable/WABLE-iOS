@@ -56,7 +56,6 @@ final class AlarmSettingViewController: UIViewController {
         setupView()
         setupNavigationBar()
         setupAction()
-        setupDelegate()
         setupBinding()
         
         NotificationCenter.default.addObserver(
@@ -71,14 +70,6 @@ final class AlarmSettingViewController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
-    }
-}
-
-// MARK: - UIGestureRecognizerDelegate
-
-extension AlarmSettingViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return navigationController?.viewControllers.count ?? 0 > 1
     }
 }
 
@@ -115,16 +106,13 @@ private extension AlarmSettingViewController {
     
     func setupNavigationBar() {
         navigationController?.navigationBar.isHidden = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
     func setupAction() {
         navigationView.backButton.addTarget(self, action: #selector(backButtonDidTap), for: .touchUpInside)
         
         openSettingbutton.addTarget(self, action: #selector(openSettingButtonDidTap), for: .touchUpInside)
-    }
-    
-    func setupDelegate() {
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     func setupBinding() {
