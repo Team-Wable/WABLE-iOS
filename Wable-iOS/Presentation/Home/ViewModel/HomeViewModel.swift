@@ -273,9 +273,10 @@ extension HomeViewModel: ViewModelType {
                     .map { _ in content.0 }
                     .asDriver(onErrorJustReturn: -1)
             }
+            .compactMap { userID in
+                return userID != -1 ? userID : nil
+            }
             .sink(receiveValue: { userID in
-                guard userID != -1 else { return }
-                
                 var updatedContents = contentsSubject.value
                 
                 for i in 0..<updatedContents.count {
