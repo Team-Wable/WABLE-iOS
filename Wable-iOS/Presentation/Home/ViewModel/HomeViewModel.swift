@@ -201,36 +201,38 @@ extension HomeViewModel: ViewModelType {
                     .map { _ in id.1 }
                     .asDriver(onErrorJustReturn: id.1)
             }
-            .compactMap { userID in
-                return contentsSubject.value.firstIndex(where: { $0.content.contentInfo.author.id == userID })
-            }
-            .sink(receiveValue: { index in
+            .sink(receiveValue: { userID in
                 var updatedContents = contentsSubject.value
                 
-                let content = updatedContents[index]
-                let contentInfo = content.content.contentInfo
-                let userContent = content.content
-                let opacity = contentInfo.opacity.reduced()
-                
-                let updatedContent = Content(
-                    content: UserContent(
-                        id: userContent.id,
-                        contentInfo: ContentInfo(
-                            author: contentInfo.author,
-                            createdDate: contentInfo.createdDate,
-                            title: contentInfo.title,
-                            imageURL: contentInfo.imageURL,
-                            text: contentInfo.text,
-                            status: .ghost,
-                            like: contentInfo.like,
-                            opacity: opacity,
-                            commentCount: contentInfo.commentCount
+                for i in 0..<updatedContents.count {
+                    if updatedContents[i].content.contentInfo.author.id == userID {
+                        let content = updatedContents[i]
+                        let contentInfo = content.content.contentInfo
+                        let userContent = content.content
+                        let opacity = contentInfo.opacity.reduced()
+                        
+                        let updatedContent = Content(
+                            content: UserContent(
+                                id: userContent.id,
+                                contentInfo: ContentInfo(
+                                    author: contentInfo.author,
+                                    createdDate: contentInfo.createdDate,
+                                    title: contentInfo.title,
+                                    imageURL: contentInfo.imageURL,
+                                    text: contentInfo.text,
+                                    status: .ghost,
+                                    like: contentInfo.like,
+                                    opacity: opacity,
+                                    commentCount: contentInfo.commentCount
+                                )
+                            ),
+                            isDeleted: content.isDeleted
                         )
-                    ),
-                    isDeleted: content.isDeleted
-                )
+                        
+                        updatedContents[i] = updatedContent
+                    }
+                }
                 
-                updatedContents[index] = updatedContent
                 contentsSubject.send(updatedContents)
             })
             .store(in: cancelBag)
@@ -261,47 +263,6 @@ extension HomeViewModel: ViewModelType {
             }
             .sink(receiveValue: { _ in
                 isReportSucceedSubject.send(true)
-            })
-            .store(in: cancelBag)
-        
-        input.didBannedTappedItem
-            .withUnretained(self)
-            .flatMap { owner, content -> AnyPublisher<Int, Never> in
-                return owner.createBannedUseCase.execute(memberID: content.0, triggerType: .content, triggerID: content.1)
-                    .map { _ in content.0 }
-                    .asDriver(onErrorJustReturn: -1)
-            }
-            .compactMap { userID in
-                return contentsSubject.value.firstIndex(where: { $0.content.contentInfo.author.id == userID })
-            }
-            .sink(receiveValue: { index in
-                var updatedContents = contentsSubject.value
-                
-                let content = updatedContents[index]
-                let contentInfo = content.content.contentInfo
-                let userContent = content.content
-                let opacity = contentInfo.opacity.reduced()
-                
-                let updatedContent = Content(
-                    content: UserContent(
-                        id: userContent.id,
-                        contentInfo: ContentInfo(
-                            author: contentInfo.author,
-                            createdDate: contentInfo.createdDate,
-                            title: contentInfo.title,
-                            imageURL: contentInfo.imageURL,
-                            text: contentInfo.text,
-                            status: .blind,
-                            like: contentInfo.like,
-                            opacity: opacity,
-                            commentCount: contentInfo.commentCount
-                        )
-                    ),
-                    isDeleted: content.isDeleted
-                )
-                
-                updatedContents[index] = updatedContent
-                contentsSubject.send(updatedContents)
             })
             .store(in: cancelBag)
         
