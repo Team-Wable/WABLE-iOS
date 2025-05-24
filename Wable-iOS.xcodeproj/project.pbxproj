@@ -278,6 +278,10 @@
 		DE7C53142D761EE500076E5D /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53132D761EE500076E5D /* UIView+.swift */; };
 		DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */; };
 		DE7C531A2D76202B00076E5D /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53192D76202B00076E5D /* UITextField+.swift */; };
+		DE833B9B2DE22A8500812A80 /* Publishers+UIControlEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE833B9A2DE22A8500812A80 /* Publishers+UIControlEvent.swift */; };
+		DE833B9E2DE22B1500812A80 /* CombineCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE833B9D2DE22B1500812A80 /* CombineCompatible.swift */; };
+		DE833BA02DE22C8D00812A80 /* Publishers+UIControlProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE833B9F2DE22C8D00812A80 /* Publishers+UIControlProperty.swift */; };
+		DE833BA22DE22D4600812A80 /* Publishers+UIGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE833BA12DE22D4600812A80 /* Publishers+UIGesture.swift */; };
 		DE83891B2D906C0C00C089E6 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE83891A2D906C0C00C089E6 /* Types.swift */; };
 		DE83891D2D9071E400C089E6 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE83891C2D9071E400C089E6 /* Date+.swift */; };
 		DE8873B72DC7407C00AB16F8 /* URLPreviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8873B62DC7407C00AB16F8 /* URLPreviewRepository.swift */; };
@@ -614,6 +618,10 @@
 		DE7C53132D761EE500076E5D /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
 		DE7C53192D76202B00076E5D /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		DE833B9A2DE22A8500812A80 /* Publishers+UIControlEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+UIControlEvent.swift"; sourceTree = "<group>"; };
+		DE833B9D2DE22B1500812A80 /* CombineCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineCompatible.swift; sourceTree = "<group>"; };
+		DE833B9F2DE22C8D00812A80 /* Publishers+UIControlProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+UIControlProperty.swift"; sourceTree = "<group>"; };
+		DE833BA12DE22D4600812A80 /* Publishers+UIGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+UIGesture.swift"; sourceTree = "<group>"; };
 		DE83891A2D906C0C00C089E6 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		DE83891C2D9071E400C089E6 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		DE8873B62DC7407C00AB16F8 /* URLPreviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLPreviewRepository.swift; sourceTree = "<group>"; };
@@ -1942,6 +1950,17 @@
 			path = Interface;
 			sourceTree = "<group>";
 		};
+		DE833B9C2DE22B0000812A80 /* Combine+UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				DE833B9D2DE22B1500812A80 /* CombineCompatible.swift */,
+				DE833B9A2DE22A8500812A80 /* Publishers+UIControlEvent.swift */,
+				DE833B9F2DE22C8D00812A80 /* Publishers+UIControlProperty.swift */,
+				DE833BA12DE22D4600812A80 /* Publishers+UIGesture.swift */,
+			);
+			path = "Combine+UIKit";
+			sourceTree = "<group>";
+		};
 		DE8E86402D91A092000A4292 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -1958,6 +1977,7 @@
 				DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */,
 				DE83891C2D9071E400C089E6 /* Date+.swift */,
 				DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */,
+				DE833B9C2DE22B0000812A80 /* Combine+UIKit */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -2572,6 +2592,7 @@
 				DEE5D61A2D91537C009E5A25 /* GameScheduleViewItem.swift in Sources */,
 				DE72BB102D93CC68008E5774 /* NotificationPageView.swift in Sources */,
 				DDFB22462D8BBB8600FEA24A /* ProfileRegisterViewController.swift in Sources */,
+				DE833BA22DE22D4600812A80 /* Publishers+UIGesture.swift in Sources */,
 				DD29685B2D6DAD4400143851 /* CreateAccountRequest.swift in Sources */,
 				DE9B94762D927F140060FF92 /* NoticeViewModel.swift in Sources */,
 				DD29685C2D6DAD4400143851 /* CreateContent.swift in Sources */,
@@ -2605,6 +2626,7 @@
 				DE20BAD72D903985000126A4 /* AnnouncementDetailView.swift in Sources */,
 				DE70048D2D8EA85400B7AB71 /* NewsViewController.swift in Sources */,
 				DE6459CF2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift in Sources */,
+				DE833BA02DE22C8D00812A80 /* Publishers+UIControlProperty.swift in Sources */,
 				DE8E863B2D918735000A4292 /* RankViewItem.swift in Sources */,
 				DE9891A02D995EE800D538D8 /* InformationNotificationType+.swift in Sources */,
 				DD29683F2D6DAD2F00143851 /* FetchInfoNotifications.swift in Sources */,
@@ -2744,6 +2766,7 @@
 				DD2967FD2D6DAC4800143851 /* CancelBag.swift in Sources */,
 				DEF148422DA7B7E5003B2AD8 /* IsUserRegistered.swift in Sources */,
 				DD2967FE2D6DAC4800143851 /* WableLogger.swift in Sources */,
+				DE833B9E2DE22B1500812A80 /* CombineCompatible.swift in Sources */,
 				DE0D0CAC2DD204D000FB64DC /* ReportViewitUseCase.swift in Sources */,
 				DEA10B512DD3D995001EBBA9 /* ProfileInfoCell.swift in Sources */,
 				DE59BBA92D8A9EFD0040ADCB /* UIViewController+.swift in Sources */,
@@ -2767,6 +2790,7 @@
 				DD2968192D6DAD0200143851 /* ReportRepository.swift in Sources */,
 				DE6C3E3E2D91A8E00046DB30 /* NewsViewModel.swift in Sources */,
 				DD29681A2D6DAD0200143851 /* ViewitRepository.swift in Sources */,
+				DE833B9B2DE22A8500812A80 /* Publishers+UIControlEvent.swift in Sources */,
 				DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */,
 				DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */,
 				DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */,
