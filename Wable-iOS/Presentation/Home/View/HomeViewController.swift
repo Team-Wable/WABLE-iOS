@@ -277,8 +277,14 @@ private extension HomeViewController {
                             viewModel: .init(
                                 userID: item.content.contentInfo.author.id,
                                 fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
-                                fetchUserContentListUseCase: FetchUserContentUseCaseImpl(),
-                                fetchUserCommentListUseCase: FetchUserCommentListUseCaseImpl()
+                                checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
+                                    repository: UserSessionRepositoryImpl(
+                                        userDefaults: .init(
+                                            jsonEncoder: .init(),
+                                            jsonDecoder: .init()
+                                        )
+                                    )
+                                )
                             )
                         )
                         

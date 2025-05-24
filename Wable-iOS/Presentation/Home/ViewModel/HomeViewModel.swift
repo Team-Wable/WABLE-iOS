@@ -305,6 +305,51 @@ extension HomeViewModel: ViewModelType {
             })
             .store(in: cancelBag)
         
+        input.didBannedTappedItem
+            .withUnretained(self)
+            .flatMap { owner, content -> AnyPublisher<Int, Never> in
+                return owner.createBannedUseCase.execute(memberID: content.0, triggerType: .content, triggerID: content.1)
+                    .map { _ in content.0 }
+                    .asDriver(onErrorJustReturn: -1)
+            }
+            .sink(receiveValue: { userID in
+                guard userID != -1 else { return }
+                
+                var updatedContents = contentsSubject.value
+                
+                for i in 0..<updatedContents.count {
+                    if updatedContents[i].content.contentInfo.author.id == userID {
+                        let content = updatedContents[i]
+                        let contentInfo = content.content.contentInfo
+                        let userContent = content.content
+                        let opacity = contentInfo.opacity.reduced()
+                        
+                        let updatedContent = Content(
+                            content: UserContent(
+                                id: userContent.id,
+                                contentInfo: ContentInfo(
+                                    author: contentInfo.author,
+                                    createdDate: contentInfo.createdDate,
+                                    title: contentInfo.title,
+                                    imageURL: contentInfo.imageURL,
+                                    text: contentInfo.text,
+                                    status: .blind,
+                                    like: contentInfo.like,
+                                    opacity: opacity,
+                                    commentCount: contentInfo.commentCount
+                                )
+                            ),
+                            isDeleted: content.isDeleted
+                        )
+                        
+                        updatedContents[i] = updatedContent
+                    }
+                }
+                
+                contentsSubject.send(updatedContents)
+            })
+            .store(in: cancelBag)
+        
         let selectedContent = input.didSelectedItem
             .filter { $0 < contentsSubject.value.count }
             .map { contentsSubject.value[$0] }
