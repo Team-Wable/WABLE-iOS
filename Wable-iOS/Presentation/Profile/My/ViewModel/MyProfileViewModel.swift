@@ -22,37 +22,22 @@ final class MyProfileViewModel {
     private let userID: Int?
     private let userSessionUseCase: FetchUserInformationUseCase
     private let fetchUserProfileUseCase: FetchUserProfileUseCase
-    private let fetchUserCommentListUseCase: FetchUserCommentListUseCase
-    private let fetchUserContentListUseCase: FetchUserContentListUseCase
     private let removeUserSessionUseCase: RemoveUserSessionUseCase
-    
-    private let selectedIndexSubject = PassthroughSubject<Int, Never>()
-    private let willDisplaySubject = PassthroughSubject<Void, Never>()
-    private let cancelBag = CancelBag()
+    @Injected private var contentRepository: ContentRepository
+    @Injected private var commentRepository: CommentRepository
+    @Injected private var contentLikedRepository: ContentLikedRepository
+    @Injected private var commentLikedRepository: CommentLikedRepository
     
     init(
         userinformationUseCase: FetchUserInformationUseCase,
         fetchUserProfileUseCase: FetchUserProfileUseCase,
-        fetchUserCommentListUseCase: FetchUserCommentListUseCase,
-        fetchUserContentListUseCase: FetchUserContentListUseCase,
         removeUserSessionUseCase: RemoveUserSessionUseCase
     ) {
         self.userSessionUseCase = userinformationUseCase
         self.fetchUserProfileUseCase = fetchUserProfileUseCase
-        self.fetchUserCommentListUseCase = fetchUserCommentListUseCase
-        self.fetchUserContentListUseCase = fetchUserContentListUseCase
         self.removeUserSessionUseCase = removeUserSessionUseCase
         
         self.userID = userinformationUseCase.fetchActiveUserID()
-        
-        bind()
-    }
-    
-    func viewDidLoad() {
-        guard let userID else {
-            return WableLogger.log("유저 아이디를 알 수 없음.", for: .debug)
-        }
-        fetchViewItems(userID: userID, segment: .content)
     }
     
     func viewDidRefresh() {
@@ -63,7 +48,8 @@ final class MyProfileViewModel {
     }
     
     func selectedIndexDidChange(_ selectedIndex: Int) {
-        selectedIndexSubject.send(selectedIndex)
+        guard let segment = ProfileSegment(rawValue: selectedIndex) else { return }
+        item.currentSegment = segment
     }
     
     func logoutDidTap() {
@@ -82,68 +68,130 @@ final class MyProfileViewModel {
     }
     
     func willDisplayLast() {
-        willDisplaySubject.send()
+        guard let userID else { return }
+        
+        switch item.currentSegment {
+        case .content:
+            guard let lastContentID = item.contentList.last?.id else { return }
+            fetchMoreContentList(userID: userID, lastContentID: lastContentID)
+        case .comment:
+            guard let lastCommentID = item.commentList.last?.comment.id else { return }
+            fetchMoreCommentList(userID: userID, lastCommentID: lastCommentID)
+        }
+    }
+    
+    func deleteContent(for contentID: Int) {
+        Task {
+            do {
+                try await contentRepository.deleteContent(contentID: contentID)
+                guard let index = item.contentList.firstIndex(where: { $0.id == contentID }) else { return }
+                _ = await MainActor.run { item.contentList.remove(at: index) }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func deleteComment(for commentID: Int) {
+        Task {
+            do {
+                try await commentRepository.deleteComment(commentID: commentID)
+                guard let index = item.commentList.firstIndex(where: { $0.comment.id == commentID }) else { return }
+                _ = await MainActor.run { item.commentList.remove(at: index) }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func toggleLikeContent(for contentID: Int) {
+        guard let index = item.contentList.firstIndex(where: { $0.id == contentID }) else { return }
+        let isLiked = item.contentList[index].contentInfo.like.status
+        Task {
+            do {
+                isLiked
+                ? try await contentLikedRepository.deleteContentLiked(contentID: contentID)
+                : try await contentLikedRepository.createContentLiked(
+                    contentID: contentID,
+                    triggerType: TriggerType.Like.contentLike.rawValue
+                )
+                
+                await MainActor.run {
+                    var contentInfo = item.contentList[index].contentInfo
+                    isLiked ? contentInfo.like.unlike() : contentInfo.like.like()
+                    item.contentList[index] = UserContent(id: contentID, contentInfo: contentInfo)
+                }
+            } catch {
+                await handleError(error: error)
+            }
+        }
+    }
+    
+    func toggleLikeComment(for commentID: Int) {
+        guard let index = item.commentList.firstIndex(where: { $0.comment.id == commentID }) else { return }
+        let comment = item.commentList[index]
+        let isLiked = item.commentList[index].comment.like.status
+        
+        Task {
+            do {
+                isLiked
+                ? try await commentLikedRepository.deleteCommentLiked(commentID: commentID)
+                : try await commentLikedRepository.createCommentLiked(
+                    commentID: commentID,
+                    triggerType: TriggerType.Like.commentLike.rawValue,
+                    notificationText: item.commentList[index].comment.text
+                )
+                
+                await MainActor.run {
+                    var commentInfo = comment.comment
+                    isLiked ? commentInfo.like.unlike() : commentInfo.like.like()
+                    item.commentList[index] = UserComment(comment: commentInfo, contentID: comment.contentID)
+                }
+            } catch {
+                await handleError(error: error)
+            }
+        }
     }
 }
 
 private extension MyProfileViewModel {
-    func bind() {
-        selectedIndexSubject
-            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
-            .removeDuplicates()
-            .compactMap { return ProfileSegmentKind(rawValue: $0) }
-            .sink { [weak self] segment in
-                self?.item.currentSegment = segment
-            }
-            .store(in: cancelBag)
-        
-        willDisplaySubject
-            .debounce(for: .milliseconds(1000), scheduler: DispatchQueue.main)
-            .compactMap { [weak self] in
-                return self?.userID
-            }
-            .sink { [weak self] userID in
-                guard let self else { return }
-                
-                switch item.currentSegment {
-                case .content:
-                    guard let lastContentID = item.contentList.last?.id else { return }
-                    fetchMoreContentList(userID: userID, lastContentID: lastContentID)
-                case .comment:
-                    guard let lastCommentID = item.commentList.last?.comment.id else { return }
-                    fetchMoreCommentList(userID: userID, lastCommentID: lastCommentID)
-                }
-            }
-            .store(in: cancelBag)
-    }
-    
-    func fetchViewItems(userID: Int, segment: ProfileSegmentKind) {
+    func fetchViewItems(userID: Int, segment: ProfileSegment) {
         isLoading = true
         
         Task {
             async let userProfile: UserProfile = fetchUserProfileUseCase.execute(userID: userID)
-            async let contentList: [UserContent] = fetchUserContentListUseCase.execute(for: userID, last: Constant.initialCursor)
-            async let commentList: [UserComment] = fetchUserCommentListUseCase.execute(for: userID, last: Constant.initialCursor)
+
+            async let contentList: [UserContent] = contentRepository.fetchUserContentList(
+                memberID: userID,
+                cursor: Constant.initialCursor
+            )
+            
+            async let commentList: [UserComment] = commentRepository.fetchUserCommentList(
+                memberID: userID,
+                cursor: Constant.initialCursor
+            )
             
             do {
                 let (userProfile, contentList, commentList) = try await (userProfile, contentList, commentList)
                 
-                isLastPageForContent = contentList.count < Constant.defaultCountForContentPage
-                isLastPageForComment = commentList.count < Constant.defaultCountForCommentPage
-                
-                nickname = userProfile.user.nickname
-                
-                item = ProfileViewItem(
-                    currentSegment: segment,
-                    profileInfo: userProfile,
-                    contentList: contentList,
-                    commentList: commentList
-                )
+                await MainActor.run {
+                    isLastPageForContent = contentList.count < Constant.defaultCountForContentPage
+                    isLastPageForComment = commentList.count < Constant.defaultCountForCommentPage
+                    
+                    nickname = userProfile.user.nickname
+                    
+                    item = ProfileViewItem(
+                        currentSegment: segment,
+                        profileInfo: userProfile,
+                        contentList: contentList,
+                        commentList: commentList
+                    )
+                }
             } catch {
-                errorMessage = error.localizedDescription
+                await handleError(error: error)
             }
             
-            isLoading = false
+            await MainActor.run { isLoading = false }
         }
     }
     
@@ -154,16 +202,22 @@ private extension MyProfileViewModel {
         isLoadingMore = true
         loadingMoreTask = Task {
             do {
-                let contentListForNextPage = try await fetchUserContentListUseCase.execute(for: userID, last: lastContentID)
+                let contentListForNextPage = try await contentRepository.fetchUserContentList(
+                    memberID: userID,
+                    cursor: lastContentID
+                )
                 guard !Task.isCancelled else { return }
-                isLastPageForContent = contentListForNextPage.count < Constant.defaultCountForContentPage
-                item.contentList.append(contentsOf: contentListForNextPage)
+                
+                await MainActor.run {
+                    isLastPageForContent = contentListForNextPage.count < Constant.defaultCountForContentPage
+                    item.contentList.append(contentsOf: contentListForNextPage)
+                }
             } catch {
                 guard !Task.isCancelled else { return }
-                errorMessage = error.localizedDescription
+                await handleError(error: error)
             }
             
-            isLoadingMore = false
+            await MainActor.run { isLoadingMore = false }
         }
     }
     
@@ -174,17 +228,27 @@ private extension MyProfileViewModel {
         isLoadingMore = true
         loadingMoreTask = Task {
             do {
-                let commentListForNextPage = try await fetchUserCommentListUseCase.execute(for: userID, last: lastCommentID)
+                let commentListForNextPage = try await commentRepository.fetchUserCommentList(
+                    memberID: userID,
+                    cursor: lastCommentID
+                )
                 guard !Task.isCancelled else { return }
-                isLastPageForComment = commentListForNextPage.count < Constant.defaultCountForCommentPage
-                item.commentList.append(contentsOf: commentListForNextPage)
+                await MainActor.run {
+                    isLastPageForComment = commentListForNextPage.count < Constant.defaultCountForCommentPage
+                    item.commentList.append(contentsOf: commentListForNextPage)
+                }
             } catch {
                 guard !Task.isCancelled else { return }
-                errorMessage = error.localizedDescription
+                await handleError(error: error)
             }
             
-            isLoadingMore = false
+            await MainActor.run { isLoadingMore = false }
         }
+    }
+    
+    @MainActor
+    func handleError(error: Error) {
+        errorMessage = error.localizedDescription
     }
     
     enum Constant {

@@ -40,7 +40,7 @@ final class MyProfileEmptyCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(currentSegment: ProfileSegmentKind, nickname: String?) {
+    func configure(currentSegment: ProfileSegment, nickname: String?) {
         switch currentSegment {
         case .content:
             contentLabel.isHidden = false

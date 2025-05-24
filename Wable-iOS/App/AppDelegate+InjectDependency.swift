@@ -61,5 +61,11 @@ extension AppDelegate {
         // MARK: - Profile
 
         diContainer.register(for: ProfileRepository.self, object: ProfileRepositoryImpl())
+        
+        // MARK: - Ghost
+
+        diContainer.register(for: GhostRepository.self) { config in
+            return GhostRepositoryImpl()
+        }
     }
 }

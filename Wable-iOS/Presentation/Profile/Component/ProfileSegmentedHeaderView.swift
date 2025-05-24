@@ -16,13 +16,16 @@ final class ProfileSegmentedHeaderView: UICollectionReusableView {
         $0.selectedSegmentIndex = 0
     }
     
-    var segmentDidChangeClosure: ((Int) -> Void)?
+    var onSegmentIndexChanged: ((Int) -> Void)?
+    
+    private let cancelBag = CancelBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = .wableWhite
         setupView()
+        setupAction()
     }
     
     @available(*, unavailable)
@@ -44,12 +47,13 @@ final class ProfileSegmentedHeaderView: UICollectionReusableView {
             make.bottom.horizontalEdges.equalToSuperview()
             make.height.equalTo(1)
         }
-        
-        segmentedControl.addTarget(self, action: #selector(segmentDidChange), for: .valueChanged)
     }
     
-    @objc
-    private func segmentDidChange() {
-        segmentDidChangeClosure?(segmentedControl.selectedSegmentIndex)
+    func setupAction() {
+        segmentedControl.publisher(for: \.selectedSegmentIndex)
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] in self?.onSegmentIndexChanged?($0) }
+            .store(in: cancelBag)
     }
 }

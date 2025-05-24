@@ -70,6 +70,14 @@ final class TabBarController: UITabBarController {
                         jsonDecoder: JSONDecoder()
                     )
                 )
+            ),
+            userSessionUseCase: FetchUserInformationUseCase(
+                repository: UserSessionRepositoryImpl(
+                    userDefaults: UserDefaultsStorage(
+                        jsonEncoder: JSONEncoder(),
+                        jsonDecoder: JSONDecoder()
+                    )
+                )
             )
         )
     ).then {
@@ -85,8 +93,6 @@ final class TabBarController: UITabBarController {
                 )
             ),
             fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
-            fetchUserCommentListUseCase: FetchUserCommentListUseCaseImpl(),
-            fetchUserContentListUseCase: FetchUserContentUseCaseImpl(),
             removeUserSessionUseCase: RemoveUserSessionUseCaseImpl(
                 repository: UserSessionRepositoryImpl(
                     userDefaults: UserDefaultsStorage(
@@ -146,7 +152,7 @@ private extension TabBarController {
                 viewitNavigationController,
                 profileNavigationController
             ],
-            animated: true
+            animated: false
         )
     }
     
