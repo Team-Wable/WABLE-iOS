@@ -435,10 +435,15 @@ private extension HomeDetailViewController {
                             viewModel: .init(
                                 userID: item.comment.author.id,
                                 fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
-                                fetchUserContentListUseCase: FetchUserContentUseCaseImpl(),
-                                fetchUserCommentListUseCase: FetchUserCommentListUseCaseImpl()
-                            )
-                        )
+                                checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
+                                    repository: UserSessionRepositoryImpl(
+                                        userDefaults: .init(
+                                            jsonEncoder: .init(),
+                                            jsonDecoder: .init()
+                                        )
+                                    )
+                                )
+                            ))
                         
                         self.navigationController?.pushViewController(viewController, animated: true)
                     }
