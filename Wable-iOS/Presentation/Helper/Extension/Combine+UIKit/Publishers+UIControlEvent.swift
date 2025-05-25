@@ -64,6 +64,7 @@ extension Publishers {
         
         private var subscriber: S?
         private weak var control: Control?
+        private let events: UIControl.Event
         
         /// 구독 객체를 생성하고 이벤트를 감지하도록 설정합니다.
         ///
@@ -74,6 +75,7 @@ extension Publishers {
         init(subscriber: S, control: Control, events: UIControl.Event) {
             self.subscriber = subscriber
             self.control = control
+            self.events = events
             control.addTarget(self, action: #selector(eventHandler), for: events)
         }
         
@@ -82,6 +84,7 @@ extension Publishers {
         
         /// 구독을 취소하고 참조를 해제합니다.
         func cancel() {
+            control?.removeTarget(self, action: #selector(eventHandler), for: events)
             subscriber = nil
         }
         
