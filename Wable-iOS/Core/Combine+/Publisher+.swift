@@ -63,28 +63,26 @@ extension Publisher {
     
     // MARK: - withLatestFrom
     
-    /// `self`가 새로운 값을 방출할 때마다 `other` Publisher가 가장 마지막으로 방출한 값을 함께 전달하는 연산자입니다.
+    /// `self`가 새로운 값을 방출할 때마다 `other`의 최신 값을 함께 방출하는 연산자입니다.
     ///
-    /// 이 메서드는 `self`의 이벤트를 트리거로 사용하며, 해당 시점에서 `other`의 최신 값을 가져와 방출합니다.
+    /// 이 메서드는 `self`의 이벤트를 트리거로 사용하며, 해당 시점에서 `other`가 가장 마지막으로 방출한 값을 함께 전달합니다.
     ///
     /// - Parameters:
-    ///   - other: 참조할 다른 `Publisher`. 이 Publisher가 방출한 마지막 값이 `self`의 트리거에 따라 전달됩니다.
+    ///   - other: 참조할 다른 `Publisher`.
     ///
-    /// - Returns: `self`의 방출 이벤트를 트리거로 하여 `other`의 최신 값을 방출하는 `AnyPublisher`.
+    /// - Returns: `self`가 방출될 때 `other`의 최신 값을 방출하는 `AnyPublisher`.
     ///
-    /// - 사용 예:
-    ///   ```
+    /// - Note:
+    ///   `other`가 값을 한 번도 방출하지 않은 경우에는 `self`가 값을 방출하더라도 출력이 발생하지 않습니다.
+    ///
+    /// - Example:
+    ///   ```swift
     ///   buttonTapPublisher
     ///       .withLatestFrom(textFieldTextPublisher)
     ///       .sink { latestText in
     ///           print("버튼 탭 시 최신 텍스트: \(latestText)")
     ///       }
     ///   ```
-    ///
-    /// - Note: `other`가 값을 방출하지 않은 상태에서는 `self`가 아무리 값을 방출하더라도 출력이 발생하지 않습니다.
-    ///   반드시 `other`가 최소 한 번은 값을 내보낸 이후여야 `withLatestFrom`이 동작합니다.
-    ///   이 동작은 RxSwift의 `withLatestFrom`과 동일한 특성을 가집니다.
-    ///
     func withLatestFrom<Other: Publisher>(
         _ other: Other
     ) -> AnyPublisher<Other.Output, Failure> where Other.Failure == Failure {
@@ -93,6 +91,108 @@ extension Publisher {
             .combineLatest(other)
             .removeDuplicates(by: { $0.0 == $1.0 })
             .map { $0.1 }
+            .eraseToAnyPublisher()
+    }
+    
+    /// `self`가 새로운 값을 방출할 때마다 `other`의 최신 값을 함께 사용하여 가공된 값을 방출하는 연산자입니다.
+    ///
+    /// - Parameters:
+    ///   - other: 참조할 다른 `Publisher`.
+    ///   - resultSelector: `self`와 `other`의 값을 받아 원하는 형태로 가공하는 클로저.
+    ///
+    /// - Returns: `self`의 이벤트를 트리거로 하여, `other`의 최신 값과 함께 가공한 결과를 방출하는 `AnyPublisher`.
+    ///
+    /// - Note:
+    ///   `other`가 값을 한 번도 방출하지 않은 경우에는 출력이 발생하지 않습니다.
+    ///
+    /// - Example:
+    ///   ```swift
+    ///   buttonTapPublisher
+    ///       .withLatestFrom(textFieldTextPublisher) { _, text in
+    ///           return "입력된 텍스트: \(text)"
+    ///       }
+    ///       .sink { result in
+    ///           print(result)
+    ///       }
+    ///   ```
+    func withLatestFrom<Other: Publisher, Result>(
+        _ other: Other,
+        _ resultSelector: @escaping (Output, Other.Output) -> Result
+    ) -> AnyPublisher<Result, Failure> where Other.Failure == Failure {
+        self
+            .map { ($0, Date.now.timeIntervalSince1970) }
+            .combineLatest(other)
+            .removeDuplicates { $0.0.1 == $1.0.1 }
+            .map { lhs, rhs in resultSelector(lhs.0, rhs) }
+            .eraseToAnyPublisher()
+    }
+    
+    /// `self`가 새로운 값을 방출할 때마다 `other1`, `other2`의 최신 값을 함께 방출하는 연산자입니다.
+    ///
+    /// - Parameters:
+    ///   - other1: 첫 번째 참조할 `Publisher`.
+    ///   - other2: 두 번째 참조할 `Publisher`.
+    ///
+    /// - Returns: `self`가 방출될 때 `other1`, `other2`의 최신 값을 튜플 형태로 방출하는 `AnyPublisher`.
+    ///
+    /// - Note:
+    ///   두 퍼블리셔 모두 최소 한 번 이상 값을 방출해야 출력이 발생합니다.
+    ///
+    /// - Example:
+    ///   ```swift
+    ///   buttonTapPublisher
+    ///       .withLatestFrom(textPublisher, togglePublisher)
+    ///       .sink { text, isOn in
+    ///           print("텍스트: \(text), 스위치: \(isOn)")
+    ///       }
+    ///   ```
+    func withLatestFrom<Other1: Publisher, Other2: Publisher>(
+        _ other1: Other1,
+        _ other2: Other2
+    ) -> AnyPublisher<(Other1.Output, Other2.Output), Failure> where Other1.Failure == Failure, Other2.Failure == Failure {
+        self
+            .map { _ in Date.now.timeIntervalSince1970 }
+            .combineLatest(other1, other2)
+            .removeDuplicates { $0.0 == $1.0 }
+            .map { ($0.1, $0.2) }
+            .eraseToAnyPublisher()
+    }
+    
+    /// `self`가 새로운 값을 방출할 때마다 `other1`, `other2`의 최신 값을 함께 사용하여 가공된 값을 방출하는 연산자입니다.
+    ///
+    /// - Parameters:
+    ///   - other1: 첫 번째 참조할 `Publisher`.
+    ///   - other2: 두 번째 참조할 `Publisher`.
+    ///   - resultSelector: `self`, `other1`, `other2`의 값을 받아 원하는 형태로 가공하는 클로저.
+    ///
+    /// - Returns: `self`의 이벤트를 트리거로 하여, 두 퍼블리셔의 최신 값을 함께 사용한 결과를 방출하는 `AnyPublisher`.
+    ///
+    /// - Note:
+    ///   두 퍼블리셔 모두 최소 한 번 이상 값을 방출해야 출력이 발생합니다.
+    ///
+    /// - Example:
+    ///   ```swift
+    ///   buttonTapPublisher
+    ///       .withLatestFrom(textPublisher, togglePublisher) { _, text, isOn in
+    ///           return "입력: \(text), 상태: \(isOn)"
+    ///       }
+    ///       .sink { result in
+    ///           print(result)
+    ///       }
+    ///   ```
+    func withLatestFrom<Other1: Publisher, Other2: Publisher, Result>(
+        _ other1: Other1,
+        _ other2: Other2,
+        _ resultSelector: @escaping (Output, Other1.Output, Other2.Output) -> Result
+    ) -> AnyPublisher<Result, Failure>
+    where Other1.Failure == Failure, Other2.Failure == Failure {
+        self
+            .map { ($0, Date.now.timeIntervalSince1970) }
+            .combineLatest(other1, other2)
+            .removeDuplicates { $0.0.1 == $1.0.1 }
+            .map { trigger, value1, value2 in
+                resultSelector(trigger.0, value1, value2)
+            }
             .eraseToAnyPublisher()
     }
 }
