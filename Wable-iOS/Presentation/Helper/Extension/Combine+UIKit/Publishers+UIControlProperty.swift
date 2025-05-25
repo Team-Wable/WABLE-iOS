@@ -55,7 +55,7 @@ extension Publishers {
             let subscription = UIControlPropertySubscription(
                 subscriber: subscriber,
                 control: control,
-                event: events,
+                events: events,
                 keyPath: keyPath
             )
             subscriber.receive(subscription: subscription)
@@ -67,10 +67,11 @@ extension Publishers {
     /// `UIControlPropertyPublisher`의 구독 객체로, 지정된 이벤트가 발생할 때마다 구독자에게 속성 값을 전달합니다.
     ///
     /// 이벤트가 발생한 시점에 해당 컨트롤의 지정된 KeyPath를 통해 값을 읽어 구독자에게 전달합니다.
-    final class UIControlPropertySubscription<SubscriberType: Subscriber, Control: UIControl, Output>: Subscription where SubscriberType.Input == Output {
+    final class UIControlPropertySubscription<S: Subscriber, Control: UIControl, Output>: Subscription where S.Input == Output {
         
-        private var subscriber: SubscriberType?
+        private var subscriber: S?
         private weak var control: Control?
+        private let events: UIControl.Event
         private let keyPath: KeyPath<Control, Output>
         
         /// 구독 객체를 생성하고 UIControl의 이벤트를 감지합니다.
@@ -80,11 +81,12 @@ extension Publishers {
         ///   - control: 이벤트를 발생시키는 UIControl
         ///   - event: 관찰할 UIControl.Event
         ///   - keyPath: 이벤트 발생 시 값을 읽을 속성의 KeyPath
-        init(subscriber: SubscriberType, control: Control, event: UIControl.Event, keyPath: KeyPath<Control, Output>) {
+        init(subscriber: S, control: Control, events: UIControl.Event, keyPath: KeyPath<Control, Output>) {
             self.subscriber = subscriber
             self.control = control
+            self.events = events
             self.keyPath = keyPath
-            control.addTarget(self, action: #selector(eventHandler), for: event)
+            control.addTarget(self, action: #selector(eventHandler), for: events)
         }
         
         /// 수요 요청은 UI 기반 이벤트 스트림에서 무시됩니다.
@@ -92,6 +94,7 @@ extension Publishers {
         
         /// 구독을 취소하고 참조를 해제합니다.
         func cancel() {
+            control?.removeTarget(self, action: #selector(eventHandler), for: events)
             subscriber = nil
         }
         
