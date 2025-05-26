@@ -259,7 +259,7 @@ private extension ActivityNotificationViewController {
         
         output.googleForm
             .receive(on: DispatchQueue.main)
-            .compactMap { URL(string: Constant.googleFormURLText) }
+            .compactMap { URL(string: StringLiterals.URL.feedbackForm) }
             .sink { [weak self] url in
                 let safariController = SFSafariViewController(url: url)
                 self?.present(safariController, animated: true)
@@ -312,13 +312,5 @@ private extension ActivityNotificationViewController {
         section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         
         return UICollectionViewCompositionalLayout(section: section)
-    }
-}
-
-// MARK: - Constant
-
-private extension ActivityNotificationViewController {
-    enum Constant {
-        static let googleFormURLText: String = "https://docs.google.com/forms/d/e/1FAIpQLSf3JlBkVRPaPFSreQHaEv-u5pqZWZzk7Y4Qll9lRP0htBZs-Q/viewform"
     }
 }

@@ -114,7 +114,7 @@ private extension RankListViewController {
     
     func setupAction() {
         submitButton.publisher(for: .touchUpInside)
-            .compactMap { _ in URL(string: Constant.googleFormURLText) }
+            .compactMap { _ in URL(string: StringLiterals.URL.feedbackForm) }
             .sink { [weak self] url in
                 let safariViewController = SFSafariViewController(url: url)
                 self?.present(safariViewController, animated: true)
@@ -304,6 +304,5 @@ private extension RankListViewController {
 private extension RankListViewController {
     enum Constant {
         static let submitButtonTitle: String = "더 알고싶은 정보가 있다면? 의견 남기러 가기"
-        static let googleFormURLText: String = "https://docs.google.com/forms/d/e/1FAIpQLSf3JlBkVRPaPFSreQHaEv-u5pqZWZzk7Y4Qll9lRP0htBZs-Q/viewform"
     }
 }
