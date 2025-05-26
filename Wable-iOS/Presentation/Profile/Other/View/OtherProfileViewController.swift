@@ -431,7 +431,7 @@ private extension OtherProfileViewController {
     func presentBanSheet(contentID: Int) {
         let actionSheet = WableSheetViewController(
             title: Constant.Ban.title,
-            message: Constant.Ban.sheetMessage
+            message: StringLiterals.Ban.sheetMessage
         )
         
         let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
@@ -445,7 +445,7 @@ private extension OtherProfileViewController {
     func presentBanSheet(commentID: Int) {
         let actionSheet = WableSheetViewController(
             title: Constant.Ban.title,
-            message: Constant.Ban.sheetMessage
+            message: StringLiterals.Ban.sheetMessage
         )
         
         let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
@@ -550,12 +550,6 @@ private extension OtherProfileViewController {
         
         enum Ban {
             static let title = "밴하기"
-            static let sheetMessage = """
-                                    1회 누적 - 게시글 블라인드 처리
-                                    2회 누적 - 게시글/댓글 블라인드 처리
-                                    3회 누적 - 게시글 작성 제한
-                                    4회 누적 - 계정 정지
-                                    """
         }
         
         enum Ghost {

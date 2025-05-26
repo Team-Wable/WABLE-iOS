@@ -276,7 +276,7 @@ private extension ViewitListViewController {
             buttonTitle = Constant.Delete.buttonTitle
         case .ban:
             title = Constant.Ban.title
-            message = Constant.Ban.message
+            message = StringLiterals.Ban.sheetMessage
             buttonTitle = Constant.Ban.buttonTitle
         }
         
@@ -345,12 +345,6 @@ private extension ViewitListViewController {
         
         enum Ban {
             static let title = "밴하시겠어요?"
-            static let message = """
-                                1회 누적 - 게시글 블라인드 처리
-                                2회 누적 - 게시글/댓글 블라인드 처리
-                                3회 누적 - 게시글 작성 제한
-                                4회 누적 - 계정 정지
-                                """
             static let buttonTitle = "밴하기"
         }
         
