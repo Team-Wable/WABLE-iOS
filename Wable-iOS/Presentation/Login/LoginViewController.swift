@@ -10,8 +10,6 @@ import AuthenticationServices
 import Combine
 import UIKit
 
-import CombineCocoa
-
 final class LoginViewController: UIViewController {
     
     // MARK: Property
@@ -137,13 +135,13 @@ private extension LoginViewController {
         let output = viewModel.transform(
             input: .init(
                 kakaoLoginTrigger: kakaoButton
-                    .tapPublisher
+                    .publisher(for: .touchUpInside)
                     .handleEvents(receiveOutput: { _ in
                         WableLogger.log("카카오 로그인 버튼 트리거 발생", for: .debug)
                     })
                     .eraseToAnyPublisher(),
                 appleLoginTrigger: appleButton
-                    .tapPublisher
+                    .publisher(for: .touchUpInside)
                     .handleEvents(receiveOutput: { _ in
                         WableLogger.log("애플 로그인 버튼 트리거 발생", for: .debug)
                     })

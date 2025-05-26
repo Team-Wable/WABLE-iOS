@@ -64,7 +64,6 @@ extension CreateViewitViewModel: ViewModelType {
             .asDriver()
         
         let isPossibleToURLUpload = input.next
-            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<Bool, Never> in
                 owner.useCase.validate(urlStringRelay.value)
@@ -82,7 +81,6 @@ extension CreateViewitViewModel: ViewModelType {
             .asDriver()
         
         let successUpload = input.upload
-            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<Bool, Never> in
                 return owner.useCase.execute(description: descriptionRelay.value)
