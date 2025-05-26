@@ -224,11 +224,11 @@ private extension SceneDelegate {
     
     func showForceUpdateAlert() {
         let view = WableSheetViewController(
-            title: "새로운 업데이트가 있습니다.",
-            message: "최신 버전으로 업데이트할 수 있습니다."
+            title: StringLiterals.Update.title,
+            message: StringLiterals.Update.message
         )
         
-        view.addAction(.init(title: "지금 업데이트", style: .primary, handler: {
+        view.addAction(.init(title: "업데이트 하기", style: .primary, handler: {
             let appStoreOpenUrlString = "itms-apps://itunes.apple.com/app/apple-store/id6670352454"
             
             guard let url = URL(string: appStoreOpenUrlString) else {
