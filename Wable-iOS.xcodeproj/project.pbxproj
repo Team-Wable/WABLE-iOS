@@ -294,6 +294,9 @@
 		DE8E86432D91A0DA000A4292 /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = DE8E86422D91A0DA000A4292 /* LookinServer */; };
 		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
 		DE9321122DE4C3FA00629B88 /* IntegerLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9321112DE4C3FA00629B88 /* IntegerLiterals.swift */; };
+		DE9321142DE4C50100629B88 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9321132DE4C50100629B88 /* StringLiterals.swift */; };
+		DE9321182DE4C53000629B88 /* UngEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9321172DE4C53000629B88 /* UngEmpty.swift */; };
+		DE93211A2DE4C53800629B88 /* YoujinEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9321192DE4C53800629B88 /* YoujinEmpty.swift */; };
 		DE9593352D9A1465009B00D3 /* ActivityNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */; };
 		DE98919B2D993D7200D538D8 /* InformationNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */; };
 		DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */; };
@@ -632,6 +635,9 @@
 		DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeManager.swift; sourceTree = "<group>"; };
 		DE8FF1902D8155DD00C41880 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
 		DE9321112DE4C3FA00629B88 /* IntegerLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegerLiterals.swift; sourceTree = "<group>"; };
+		DE9321132DE4C50100629B88 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
+		DE9321172DE4C53000629B88 /* UngEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UngEmpty.swift; sourceTree = "<group>"; };
+		DE9321192DE4C53800629B88 /* YoujinEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoujinEmpty.swift; sourceTree = "<group>"; };
 		DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotificationViewModel.swift; sourceTree = "<group>"; };
 		DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationViewModel.swift; sourceTree = "<group>"; };
 		DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Driver.swift"; sourceTree = "<group>"; };
@@ -2000,8 +2006,27 @@
 		DE9321102DE4C3EF00629B88 /* String */ = {
 			isa = PBXGroup;
 			children = (
+				DE9321132DE4C50100629B88 /* StringLiterals.swift */,
+				DE9321162DE4C51400629B88 /* Youjin */,
+				DE9321152DE4C50C00629B88 /* Ung */,
 			);
 			path = String;
+			sourceTree = "<group>";
+		};
+		DE9321152DE4C50C00629B88 /* Ung */ = {
+			isa = PBXGroup;
+			children = (
+				DE9321172DE4C53000629B88 /* UngEmpty.swift */,
+			);
+			path = Ung;
+			sourceTree = "<group>";
+		};
+		DE9321162DE4C51400629B88 /* Youjin */ = {
+			isa = PBXGroup;
+			children = (
+				DE9321192DE4C53800629B88 /* YoujinEmpty.swift */,
+			);
+			path = Youjin;
 			sourceTree = "<group>";
 		};
 		DE9593332D9A1453009B00D3 /* ViewModel */ = {
@@ -2668,6 +2693,7 @@
 				DE0BFB5E2DA4EC4D00F06656 /* CommunityRegisterCell.swift in Sources */,
 				DEA10B492DD3C3BA001EBBA9 /* WithdrawalGuideView.swift in Sources */,
 				DEA10B442DD3B7ED001EBBA9 /* WithdrawalGuideViewController.swift in Sources */,
+				DE9321182DE4C53000629B88 /* UngEmpty.swift in Sources */,
 				DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */,
 				DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */,
 				DE83891D2D9071E400C089E6 /* Date+.swift in Sources */,
@@ -2840,9 +2866,11 @@
 				DD2968222D6DAD0200143851 /* CommentLikedRepository.swift in Sources */,
 				DDFF126F2D7EE39500980BA7 /* UIColor+.swift in Sources */,
 				DD2968242D6DAD0B00143851 /* ProfileMapper.swift in Sources */,
+				DE9321142DE4C50100629B88 /* StringLiterals.swift in Sources */,
 				DD2968252D6DAD0B00143851 /* ViewitMapper.swift in Sources */,
 				DEA10B4C2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift in Sources */,
 				DEA10B2B2DD399F4001EBBA9 /* WithdrawalReasonViewController.swift in Sources */,
+				DE93211A2DE4C53800629B88 /* YoujinEmpty.swift in Sources */,
 				DD2968262D6DAD0B00143851 /* CommunityMapper.swift in Sources */,
 				DE7004842D8E87DC00B7AB71 /* RankListViewController.swift in Sources */,
 				DD2968272D6DAD0B00143851 /* LoginMapper.swift in Sources */,
