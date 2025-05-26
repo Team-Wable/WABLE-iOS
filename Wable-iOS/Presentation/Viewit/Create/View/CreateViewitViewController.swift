@@ -126,11 +126,37 @@ private extension CreateViewitViewController {
     }
     
     func setupBinding() {
+        let urlInput = viewitInputView.urlTextField
+            .publisher(for: .editingChanged, keyPath: \.text)
+            .compactMap { $0 }
+            .handleEvents(receiveOutput: { [weak self] text in
+                self?.viewitInputView.urlTextField.backgroundColor = text.isEmpty ? .gray100 : .blue10
+            })
+            .eraseToAnyPublisher()
+        
+        let nextTapped = viewitInputView.nextButton
+            .publisher(for: .touchUpInside)
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .eraseToAnyPublisher()
+        
+        let descriptionInput = viewitInputView.descriptionTextField
+            .publisher(for: .editingChanged, keyPath: \.text)
+            .compactMap { $0 }
+            .handleEvents(receiveOutput: { [weak self] text in
+                self?.viewitInputView.descriptionTextField.backgroundColor = text.isEmpty ? .gray100 : .wableWhite
+            })
+            .eraseToAnyPublisher()
+        
+        let uploadTapped = viewitInputView.uploadButton
+            .publisher(for: .touchUpInside)
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .eraseToAnyPublisher()
+        
         let input = ViewModel.Input(
-            urlStringChanged: viewitInputView.urlStringChanged,
-            next: viewitInputView.nextTapped,
-            descriptionChanged: viewitInputView.descriptionChanged,
-            upload: viewitInputView.uploadTapped,
+            urlStringChanged: urlInput,
+            next: nextTapped,
+            descriptionChanged: descriptionInput,
+            upload: uploadTapped,
             backgroundTap: dimmedBackgroundView.gesture().asVoid()
         )
         

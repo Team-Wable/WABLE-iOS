@@ -81,42 +81,6 @@ final class ViewitInputView: UIView {
     }
 }
 
-extension ViewitInputView {
-    var urlStringChanged: AnyPublisher<String, Never> {
-        urlTextField
-            .publisher(for: .editingChanged, keyPath: \.text)
-            .compactMap { $0 }
-            .handleEvents(receiveOutput: { [weak self] text in
-                self?.urlTextField.backgroundColor = text.isEmpty ? .gray100 : .blue10
-            })
-            .eraseToAnyPublisher()
-    }
-    
-    var nextTapped: AnyPublisher<Void, Never> {
-        nextButton
-            .publisher(for: .touchUpInside)
-            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
-            .eraseToAnyPublisher()
-    }
-    
-    var descriptionChanged: AnyPublisher<String, Never> {
-        descriptionTextField
-            .publisher(for: .editingChanged, keyPath: \.text)
-            .compactMap { $0 }
-            .handleEvents(receiveOutput: { [weak self] text in
-                self?.descriptionTextField.backgroundColor = text.isEmpty ? .gray100 : .wableWhite
-            })
-            .eraseToAnyPublisher()
-    }
-    
-    var uploadTapped: AnyPublisher<Void, Never> {
-        uploadButton
-            .publisher(for: .touchUpInside)
-            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
-            .eraseToAnyPublisher()
-    }
-}
-
 private extension ViewitInputView {
     
     // MARK: - Setup Method
