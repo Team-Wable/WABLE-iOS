@@ -15,7 +15,7 @@ final class AgreementView: UIView {
     // MARK: - UIComponent
     
     private let titleLabel: UILabel = UILabel().then {
-        $0.attributedText = "와블 이용을 위해\n동의가 필요해요".pretendardString(with: .head0)
+        $0.attributedText = StringLiterals.Onboarding.agreementTitle.pretendardString(with: .head0)
         $0.textColor = .wableBlack
         $0.numberOfLines = 2
     }
@@ -26,13 +26,13 @@ final class AgreementView: UIView {
         $0.backgroundColor = .gray300
     }
     
-    let personalInfoAgreementItemView = AgreementItemView(title: "[필수] 이용약관 동의", hasInformation: true)
+    let personalInfoAgreementItemView = AgreementItemView(title: StringLiterals.Onboarding.termsButtonTitle, hasInformation: true)
     
-    let privacyPolicyAgreementItemView = AgreementItemView(title: "[필수] 개인정보 수집 및 이용동의", hasInformation: true)
+    let privacyPolicyAgreementItemView = AgreementItemView(title: StringLiterals.Onboarding.agreementPrivacyPolicyButtonTitle, hasInformation: true)
     
-    let ageAgreementItemView = AgreementItemView(title: "[필수] 만 14세 이상입니다", hasInformation: false)
+    let ageAgreementItemView = AgreementItemView(title: StringLiterals.Onboarding.agreementAgeButtonTitle, hasInformation: false)
     
-    let marketingAgreementItemView = AgreementItemView(title: "마케팅 활용/광고성 정보 수신 동의", hasInformation: false)
+    let marketingAgreementItemView = AgreementItemView(title: StringLiterals.Onboarding.agreementMarketingButtonTitle, hasInformation: false)
     
     let nextButton: WableButton = WableButton(style: .gray).then {
         $0.configuration?.attributedTitle = "다음으로".pretendardString(with: .head2)

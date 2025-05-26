@@ -37,7 +37,7 @@ final class InformationNotificationViewController: UIViewController {
     }
     
     private let emptyLabel = UILabel().then {
-        $0.attributedText = "아직 표시할 내용이 없습니다.".pretendardString(with: .body2)
+        $0.attributedText = StringLiterals.Empty.text.pretendardString(with: .body2)
         $0.textColor = .gray500
         $0.isHidden = true
     }

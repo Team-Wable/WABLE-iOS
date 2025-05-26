@@ -232,20 +232,20 @@ private extension OtherProfileViewModel {
             
             async let contentList: [UserContent] = contentRepository.fetchUserContentList(
                 memberID: userID,
-                cursor: Constant.initialCursor
+                cursor: IntegerLiterals.initialCursor
             )
             
             async let commentList: [UserComment] = commentRepository.fetchUserCommentList(
                 memberID: userID,
-                cursor: Constant.initialCursor
+                cursor: IntegerLiterals.initialCursor
             )
             
             do {
                 let (userProfile, contentList, commentList) = try await (userProfile, contentList, commentList)
                 
                 await MainActor.run {
-                    isLastPageForContent = contentList.count < Constant.defaultCountForContentPage
-                    isLastPageForComment = commentList.count < Constant.defaultCountForCommentPage
+                    isLastPageForContent = contentList.count < IntegerLiterals.defaultCountPerPage
+                    isLastPageForComment = commentList.count < IntegerLiterals.commentCountPerPage
                     
                     nickname = userProfile.user.nickname
                     
@@ -277,7 +277,7 @@ private extension OtherProfileViewModel {
                 )
                 guard !Task.isCancelled else { return }
                 await MainActor.run {
-                    isLastPageForContent = contentListForNextPage.count < Constant.defaultCountForContentPage
+                    isLastPageForContent = contentListForNextPage.count < IntegerLiterals.defaultCountPerPage
                     item.contentList.append(contentsOf: contentListForNextPage)
                 }
             } catch {
@@ -302,7 +302,7 @@ private extension OtherProfileViewModel {
                 )
                 guard !Task.isCancelled else { return }
                 await MainActor.run {
-                    isLastPageForComment = commentListForNextPage.count < Constant.defaultCountForCommentPage
+                    isLastPageForComment = commentListForNextPage.count < IntegerLiterals.commentCountPerPage
                     item.commentList.append(contentsOf: commentListForNextPage)
                 }
             } catch {
@@ -317,11 +317,5 @@ private extension OtherProfileViewModel {
     @MainActor
     func handleError(error: Error) {
         errorMessage = error.localizedDescription
-    }
-    
-    enum Constant {
-        static let initialCursor = -1
-        static let defaultCountForContentPage = 15
-        static let defaultCountForCommentPage = 10
     }
 }

@@ -20,7 +20,7 @@ final class ViewitListView: UIView {
     }
     
     let emptyLabel = UILabel().then {
-        $0.attributedText = "아직 작성된 글이 없어요".pretendardString(with: .body2)
+        $0.attributedText = StringLiterals.Empty.post.pretendardString(with: .body2)
         $0.textColor = .gray500
     }
     

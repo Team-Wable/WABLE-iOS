@@ -29,7 +29,7 @@ final class ProfileRegisterView: UIView {
     }
     
     private let descriptionLabel: UILabel = UILabel().then {
-        $0.attributedText = "프로필 사진은 나중에도 등록 가능해요".pretendardString(with: .body2)
+        $0.attributedText = StringLiterals.ProfileSetting.registerDescription.pretendardString(with: .body2)
         $0.textColor = .gray600
         $0.isHidden = true
     }
@@ -66,7 +66,7 @@ final class ProfileRegisterView: UIView {
     }
     
     let conditiionLabel: UILabel = UILabel().then {
-        $0.attributedText = "10자리 이내, 문자/숫자로 입력 가능해요".pretendardString(with: .caption2)
+        $0.attributedText = StringLiterals.ProfileSetting.checkDefaultMessage.pretendardString(with: .caption2)
         $0.textColor = .gray600
     }
     
@@ -180,7 +180,7 @@ extension ProfileRegisterView {
     // MARK: Configure Method
     
     func configureView(profileImageURL: URL? = .none) {
-        titleLabel.text = "와블에서 활동할\n프로필을 등록해 주세요"
+        titleLabel.text = StringLiterals.ProfileSetting.registerTitle
         descriptionLabel.isHidden = false
         
         guard let profileImageURL = profileImageURL else {
@@ -203,7 +203,7 @@ extension ProfileRegisterView {
             make.size.equalTo(166.adjustedWidth)
         }
         
-        titleLabel.text = "와블에서 멋진 모습으로\n활동해 보세요!"
+        titleLabel.text = StringLiterals.ProfileSetting.editTitle
         nextButton.configuration?.attributedTitle = "완료".pretendardString(with: .head2)
         nextButton.isUserInteractionEnabled = true
         nextButton.updateStyle(.primary)

@@ -42,15 +42,15 @@ private extension WithdrawalGuideView {
     
     func setupView() {
         let titleLabel = UILabel().then {
-            $0.attributedText = Constant.title.pretendardString(with: .head0)
+            $0.attributedText = StringLiterals.ProfileDelete.withdrawalGuideTitle.pretendardString(with: .head0)
             $0.numberOfLines = 0
         }
         
         let firstDescriptionView = WithdrawalGuideDescriptionView().then {
-            $0.configure(description: Constant.firstDescription)
+            $0.configure(description: StringLiterals.ProfileDelete.withdrawalGuideDescription1)
         }
         let secondDescriptionView = WithdrawalGuideDescriptionView().then {
-            $0.configure(description: Constant.secondDescription)
+            $0.configure(description: StringLiterals.ProfileDelete.withdrawalGuideDescription2)
         }
         
         let descriptionStackView = UIStackView(arrangedSubviews: [firstDescriptionView, secondDescriptionView]).then {
@@ -67,7 +67,7 @@ private extension WithdrawalGuideView {
         descriptionBackgroundView.addSubview(descriptionStackView)
         
         let messageLabel = UILabel().then {
-            $0.attributedText = Constant.message.pretendardString(with: .caption2)
+            $0.attributedText = StringLiterals.ProfileDelete.checkboxTitle.pretendardString(with: .caption2)
         }
         
         addSubviews(navigationView, titleLabel, descriptionBackgroundView, checkboxButton, messageLabel, nextButton)
@@ -108,15 +108,5 @@ private extension WithdrawalGuideView {
             make.bottom.equalTo(safeArea).offset(-24)
             make.adjustedHeightEqualTo(56)
         }
-    }
-    
-    enum Constant {
-        static let title = """
-                        계정을 삭제하기 전,
-                        아래 내용을 꼭 확인해 주세요
-                        """
-        static let firstDescription = "계정 삭제 처리된 이메일 아이디는 재가입 방지를 위해 30일간 보존된 후 삭제 처리됩니다."
-        static let secondDescription = "탈퇴와 재가입을 통해 아이디를 교체하며 선량한 이용자들께 피해를 끼치는 행위를 방지하려는 조치 오니 넓은 양해 부탁드립니다."
-        static let message = "안내사항을 모두 확인하였으며, 이에 동의합니다."
     }
 }

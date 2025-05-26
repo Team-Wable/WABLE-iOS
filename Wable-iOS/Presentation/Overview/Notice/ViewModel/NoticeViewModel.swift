@@ -44,7 +44,7 @@ extension NoticeViewModel: ViewModelType {
             })
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<[Announcement], Never> in
-                return owner.fetchNotices(with: Constant.initialCursor)
+                return owner.fetchNotices(with: IntegerLiterals.initialCursor)
             }
             .handleEvents(receiveOutput: { [weak self] notices in
                 isLoadingSubject.send(false)
@@ -105,15 +105,6 @@ private extension NoticeViewModel {
     }
     
     func isLastPage(_ notices: [Announcement]) -> Bool {
-        return notices.isEmpty || notices.count < Constant.defaultItemsCountPerPage
-    }
-}
-
-// MARK: - Constant
-
-private extension NoticeViewModel {
-    enum Constant {
-        static let defaultItemsCountPerPage: Int = 15
-        static let initialCursor: Int = -1
+        return notices.isEmpty || notices.count < IntegerLiterals.defaultCountPerPage
     }
 }

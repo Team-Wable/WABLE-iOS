@@ -57,7 +57,7 @@ extension ActivityNotificationViewModel: ViewModelType {
             })
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<[ActivityNotification], Never> in
-                return owner.fetchNotifications(for: Constant.initialCursor)
+                return owner.fetchNotifications(for: IntegerLiterals.initialCursor)
             }
             .handleEvents(receiveOutput: { [weak self] notifications in
                 isLoadingSubject.send(false)
@@ -181,15 +181,6 @@ private extension ActivityNotificationViewModel {
     }
     
     func isLastPage(_ notifications: [ActivityNotification]) -> Bool {
-        return notifications.isEmpty || notifications.count < Constant.defaultItemsCountPerPage
-    }
-}
-
-// MARK: - Constant
-
-private extension ActivityNotificationViewModel {
-    enum Constant {
-        static let defaultItemsCountPerPage: Int = 15
-        static let initialCursor: Int = -1
+        return notifications.isEmpty || notifications.count < IntegerLiterals.defaultCountPerPage
     }
 }

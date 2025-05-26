@@ -13,12 +13,12 @@ final class LCKTeamView: UIView {
     // MARK: - UIComponent
     
     private let titleLabel: UILabel = UILabel().then {
-        $0.attributedText = "가장 응원하는 팀을 골라주세요".pretendardString(with: .head0)
+        $0.attributedText = StringLiterals.Onboarding.teamSheetTitle.pretendardString(with: .head0)
         $0.textColor = .wableBlack
     }
     
     private let descriptionLabel: UILabel = UILabel().then {
-        $0.attributedText = "선택하신 팀은 프로필에 응원중인 팀으로 소개돼요\n팀 순서는 랜덤으로 표시됩니다".pretendardString(with: .body2)
+        $0.attributedText = StringLiterals.Onboarding.teamSheetMessage.pretendardString(with: .body2)
         $0.textColor = .gray600
         $0.numberOfLines = 2
     }
@@ -38,7 +38,7 @@ final class LCKTeamView: UIView {
         }
     
     lazy var skipButton: UIButton = UIButton(configuration: .plain()).then {
-        $0.configuration?.attributedTitle = "아직 응원하는 팀이 없어요".pretendardString(with: .body2)
+        $0.configuration?.attributedTitle = StringLiterals.Onboarding.teamEmptyButtonTitle.pretendardString(with: .body2)
         $0.configuration?.baseForegroundColor = .gray600
     }
     

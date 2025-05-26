@@ -198,8 +198,8 @@ private extension CommunityViewController {
     
     func showRegisterSheet(for item: Int) {
         let wableSheet = WableSheetViewController(
-            title: Constant.registerSheetTitle,
-            message: Constant.registerSheetMessage
+            title: StringLiterals.Community.registerSheetTitle,
+            message: StringLiterals.Community.registerSheetMessage
         )
         
         let cancelAction = WableSheetAction(title: "취소", style: .gray)
@@ -223,8 +223,8 @@ private extension CommunityViewController {
     
     func showAlarmSettingSheet() {
         let wableSheet = WableSheetViewController(
-            title: Constant.pushAlarmSettingSheetTitle,
-            message: Constant.pushAlarmSettingSheetMessage
+            title: StringLiterals.Community.alarmSheetTitle,
+            message: StringLiterals.Community.alarmSheetMessage
         )
         
         let cancelAction = WableSheetAction(title: "나중에", style: .gray)
@@ -243,8 +243,8 @@ private extension CommunityViewController {
     
     func showCopyLinkCompleteSheet() {
         let wableSheet = WableSheetViewController(
-            title: Constant.copyLinkCompleteSheetTitle,
-            message: Constant.copyLinkCompleteSheetMessage
+            title: StringLiterals.Community.inviteSheetTitle,
+            message: StringLiterals.Community.inviteSheetMessage
         )
         
         let primaryAction = WableSheetAction(title: "좋아요!", style: .primary)
@@ -254,7 +254,7 @@ private extension CommunityViewController {
     }
     
     func copyLinkToClipboard() {
-        UIPasteboard.general.string = Constant.littlyURLText
+        UIPasteboard.general.string = StringLiterals.URL.littly
     }
     
     func scrollToTopItem() {
@@ -273,7 +273,7 @@ private extension CommunityViewController {
 
 private extension CommunityViewController {
     @objc func askButtonDidTap() {
-        guard let url = URL(string: Constant.googleFormURLText) else { return }
+        guard let url = URL(string: StringLiterals.URL.feedbackForm) else { return }
         
         let safariController = SFSafariViewController(url: url)
         present(safariController, animated: true)
@@ -290,19 +290,4 @@ private extension CommunityViewController {
     var collectionView: UICollectionView { rootView.collectionView }
     var refreshControl: UIRefreshControl? { rootView.collectionView.refreshControl }
     var askButton: UIButton { rootView.askButton }
-}
-
-// MARK: - Constant
-
-private extension CommunityViewController {
-    enum Constant {
-        static let googleFormURLText = "https://docs.google.com/forms/d/e/1FAIpQLSf3JlBkVRPaPFSreQHaEv-u5pqZWZzk7Y4Qll9lRP0htBZs-Q/viewform"
-        static let registerSheetTitle = "사전 신청하시겠어요?"
-        static let registerSheetMessage = "1개의 팀별 공간에만 참여가 가능하다는 점\n꼭 기억해주세요!"
-        static let pushAlarmSettingSheetTitle = "푸시 알림 안내"
-        static let pushAlarmSettingSheetMessage = "푸시 알림을 켜두면 팀별 커뮤니티가\n오픈됐을 때 알림으로 안내드려요!"
-        static let copyLinkCompleteSheetTitle = "링크가 복사되었어요"
-        static let copyLinkCompleteSheetMessage = "복사된 링크를 널리널리 퍼뜨려\n함께 응원할 팬을 더 많이 데려와주세요!"
-        static let littlyURLText = "https://litt.ly/wable"
-    }
 }

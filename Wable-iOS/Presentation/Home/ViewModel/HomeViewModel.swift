@@ -109,13 +109,13 @@ extension HomeViewModel: ViewModelType {
             })
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<[Content], Never> in
-                return owner.fetchContentListUseCase.execute(cursor: -1)
+                return owner.fetchContentListUseCase.execute(cursor: IntegerLiterals.initialCursor)
                     .replaceError(with: [])
                     .eraseToAnyPublisher()
             }
             .handleEvents(receiveOutput: { contents in
                 isLoadingSubject.send(false)
-                isLastViewSubject.send(contents.isEmpty || contents.count < Constant.defaultContentCountPerPage)
+                isLastViewSubject.send(contents.isEmpty || contents.count < IntegerLiterals.homeContentCountPerPage)
             })
             .sink { contentsSubject.send($0) }
             .store(in: cancelBag)
@@ -139,7 +139,7 @@ extension HomeViewModel: ViewModelType {
             }
             .handleEvents(receiveOutput: { content in
                 isLoadingMoreSubject.send(false)
-                isLastViewSubject.send(content.isEmpty || content.count < Constant.defaultContentCountPerPage)
+                isLastViewSubject.send(content.isEmpty || content.count < IntegerLiterals.homeContentCountPerPage)
             })
             .filter { !$0.isEmpty }
             .sink { content in
@@ -327,12 +327,5 @@ extension HomeViewModel: ViewModelType {
             isLoadingMore: isLoadingMoreSubject.eraseToAnyPublisher(),
             isReportSucceed: isReportSucceedSubject.eraseToAnyPublisher()
         )
-    }
-}
-
-private extension HomeViewModel {
-    enum Constant {
-        static let defaultContentCountPerPage: Int = 10
-        static let initialCursor: Int = -1
     }
 }

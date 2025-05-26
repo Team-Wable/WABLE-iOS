@@ -170,9 +170,8 @@ private extension SceneDelegate {
 private extension SceneDelegate {
     func checkForceUpdate() {
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-        let itunesLookupURL = "https://itunes.apple.com/kr/lookup?bundleId=com.wable.Wable-iOS&country=kr"
         
-        guard let url = URL(string: itunesLookupURL) else {
+        guard let url = URL(string: StringLiterals.URL.itunes) else {
             proceedToAppLaunch()
             
             return
@@ -224,14 +223,12 @@ private extension SceneDelegate {
     
     func showForceUpdateAlert() {
         let view = WableSheetViewController(
-            title: "새로운 업데이트가 있습니다.",
-            message: "최신 버전으로 업데이트할 수 있습니다."
+            title: StringLiterals.Update.title,
+            message: StringLiterals.Update.message
         )
         
-        view.addAction(.init(title: "지금 업데이트", style: .primary, handler: {
-            let appStoreOpenUrlString = "itms-apps://itunes.apple.com/app/apple-store/id6670352454"
-            
-            guard let url = URL(string: appStoreOpenUrlString) else {
+        view.addAction(.init(title: "업데이트 하기", style: .primary, handler: {
+            guard let url = URL(string: StringLiterals.URL.appStore) else {
                 WableLogger.log("앱스토어 URL이 올바르지 않습니다", for: .error)
                 return
             }

@@ -121,7 +121,7 @@ private extension AccountInfoViewController {
             }
             
             cell.configure(title: item.title, description: item.description) { [weak self] in
-                guard let url = URL(string: Constant.termURLString) else { return }
+                guard let url = URL(string: StringLiterals.URL.terms) else { return }
                 let safari = SFSafariViewController(url: url)
                 self?.present(safari, animated: true)
             }
@@ -191,11 +191,5 @@ private extension AccountInfoViewController {
         let section = NSCollectionLayoutSection(group: group)
         
         return UICollectionViewCompositionalLayout(section: section)
-    }
-    
-    // MARK: - Constant
-    
-    enum Constant {
-        static let termURLString = "https://joyous-ghost-8c7.notion.site/c6e26919055a4ff98fd73a8f9b29cb36?pvs=4"
     }
 }
