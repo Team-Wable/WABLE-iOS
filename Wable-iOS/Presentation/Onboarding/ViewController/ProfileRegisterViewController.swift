@@ -55,6 +55,8 @@ private extension ProfileRegisterViewController {
     // MARK: - Setup Method
     
     func setupView() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        
         view.addSubview(rootView)
         
         defaultImage = rootView.defaultImageList[0].uppercased

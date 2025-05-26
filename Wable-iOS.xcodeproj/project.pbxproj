@@ -158,7 +158,6 @@
 		DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */; };
 		DD765D9A2D8746E30029A317 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D992D8746DD0029A317 /* LoginViewController.swift */; };
 		DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D9C2D8747900029A317 /* SplashViewController.swift */; };
-		DD7E797E2DBF6D1E00570C23 /* AppDelegate+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7E797D2DBF6D0500570C23 /* AppDelegate+Firebase.swift */; };
 		DD7E79822DBFA48300570C23 /* UpdateUserBadgeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7E79812DBFA47000570C23 /* UpdateUserBadgeUseCase.swift */; };
 		DD8326962D95836F0014B62D /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8326952D95836B0014B62D /* HomeViewModel.swift */; };
 		DD8B42A42DA15DB0007DC1CA /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8B42A32DA15DA9007DC1CA /* UITextView+.swift */; };
@@ -503,7 +502,6 @@
 		DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenProvider.swift; sourceTree = "<group>"; };
 		DD765D992D8746DD0029A317 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DD765D9C2D8747900029A317 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
-		DD7E797D2DBF6D0500570C23 /* AppDelegate+Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Firebase.swift"; sourceTree = "<group>"; };
 		DD7E79812DBFA47000570C23 /* UpdateUserBadgeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserBadgeUseCase.swift; sourceTree = "<group>"; };
 		DD8326952D95836B0014B62D /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		DD8B42A32DA15DA9007DC1CA /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
@@ -1279,7 +1277,6 @@
 			isa = PBXGroup;
 			children = (
 				DD8CEF472D6A007900DBE580 /* AppDelegate.swift */,
-				DD7E797D2DBF6D0500570C23 /* AppDelegate+Firebase.swift */,
 				DE6459CE2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift */,
 				DD8CEF482D6A007900DBE580 /* SceneDelegate.swift */,
 			);
@@ -2634,7 +2631,6 @@
 				DE3CA27D2DD4294000BF5E87 /* MyProfileViewModel.swift in Sources */,
 				DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */,
 				DD29686F2D6DAD5F00143851 /* MoyaLoggingPlugin.swift in Sources */,
-				DD7E797E2DBF6D1E00570C23 /* AppDelegate+Firebase.swift in Sources */,
 				DEDFCED82DDC566A00B3CD97 /* OtherProfileViewModel.swift in Sources */,
 				DE98919B2D993D7200D538D8 /* InformationNotificationViewModel.swift in Sources */,
 				DD2968702D6DAD5F00143851 /* TokenStorage.swift in Sources */,

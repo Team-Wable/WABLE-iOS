@@ -6,7 +6,7 @@
 //
 
 import Combine
-import Foundation
+import UIKit
 
 final class ActivityNotificationViewModel {
     private let useCase: NotificationUseCase
@@ -88,6 +88,8 @@ extension ActivityNotificationViewModel: ViewModelType {
                                 self.userInformationUseCase.updateUserSession(userID: id, notificationBadgeCount: 0)
                                     .sink { _ in }
                                     .store(in: cancelBag)
+                                
+                                UIApplication.shared.applicationIconBadgeNumber = 0
                             }
                             .store(in: cancelBag)
                     }
