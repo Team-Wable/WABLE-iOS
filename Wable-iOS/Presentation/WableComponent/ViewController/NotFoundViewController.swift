@@ -26,7 +26,7 @@ final class NotFoundViewController: UIViewController {
     }
     
     private let subtitleLabel = UILabel().then {
-        $0.attributedText = "현재 요청하신 페이지를 찾을 수 없어요!".pretendardString(with: .head2)
+        $0.attributedText = StringLiterals.NotFound.subtitle.pretendardString(with: .head2)
         $0.textAlignment = .center
         $0.textColor = .wableBlack
     }
