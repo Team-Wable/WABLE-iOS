@@ -216,7 +216,7 @@ private extension HomeDetailViewController {
                     if self.activeUserID == item.content.contentInfo.author.id {
                         viewController.addActions(WableBottomSheetAction(title: "삭제하기", handler: {
                             viewController.dismiss(animated: true, completion: {
-                                let viewController = WableSheetViewController(title: "게시글을 삭제하시겠어요?", message: "게시글이 영구히 삭제됩니다.")
+                                let viewController = WableSheetViewController(title: StringLiterals.Delete.contentSheetTitle, message: StringLiterals.Delete.contentSheetMessage)
                                 
                                 viewController.addActions(
                                     WableSheetAction(title: "취소", style: .gray),
@@ -237,7 +237,7 @@ private extension HomeDetailViewController {
                     } else if self.isActiveUserAdmin ?? false {
                         viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
                             viewController.dismiss(animated: true, completion: {
-                                let viewController = WableSheetViewController(title: "신고하시겠어요?")
+                                let viewController = WableSheetViewController(title: StringLiterals.Report.sheetTitle)
                                 
                                 viewController.addActions(
                                     WableSheetAction(title: "취소", style: .gray),
@@ -261,7 +261,7 @@ private extension HomeDetailViewController {
                     } else {
                         viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
                             viewController.dismiss(animated: true, completion: {
-                                let viewController = WableSheetViewController(title: "신고하시겠어요?")
+                                let viewController = WableSheetViewController(title: StringLiterals.Report.sheetTitle)
                                 
                                 viewController.addActions(
                                     WableSheetAction(title: "취소", style: .gray),
@@ -287,7 +287,7 @@ private extension HomeDetailViewController {
                     // TODO: 프로필 구현되는 대로 추가적인 설정 필요
                 },
                 ghostButtonTapHandler: {
-                    let viewController = WableSheetViewController(title: "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?")
+                    let viewController = WableSheetViewController(title: StringLiterals.Ghost.sheetTitle)
                     
                     viewController.addActions(
                         WableSheetAction(title: "고민할게요", style: .gray),
@@ -341,7 +341,7 @@ private extension HomeDetailViewController {
                     if self.activeUserID == item.comment.author.id {
                         viewController.addActions(WableBottomSheetAction(title: "삭제하기", handler: {
                             viewController.dismiss(animated: true, completion: {
-                                let viewController = WableSheetViewController(title: "댓글을 삭제하시겠어요?", message: "댓글이 영구히 삭제됩니다.")
+                                let viewController = WableSheetViewController(title: StringLiterals.Delete.commentSheetTitle, message: StringLiterals.Delete.commentSheetMessage)
                                 
                                 viewController.addActions(
                                     WableSheetAction(
@@ -368,7 +368,7 @@ private extension HomeDetailViewController {
                     } else if self.isActiveUserAdmin ?? false {
                         viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
                             viewController.dismiss(animated: true, completion: {
-                                let viewController = WableSheetViewController(title: "신고하시겠어요?")
+                                let viewController = WableSheetViewController(title: StringLiterals.Report.sheetTitle)
                                 
                                 viewController.addActions(
                                     WableSheetAction(
@@ -398,7 +398,7 @@ private extension HomeDetailViewController {
                     } else {
                         viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
                             viewController.dismiss(animated: true, completion: {
-                                let viewController = WableSheetViewController(title: "신고하시겠어요?")
+                                let viewController = WableSheetViewController(title: StringLiterals.Report.sheetTitle)
                                 
                                 viewController.addActions(
                                     WableSheetAction(
@@ -449,7 +449,7 @@ private extension HomeDetailViewController {
                     }
                 },
                 ghostButtonTapHandler: {
-                    let viewController = WableSheetViewController(title: "와블의 온화한 문화를 해치는\n누군가를 발견하신 건가요?")
+                    let viewController = WableSheetViewController(title: StringLiterals.Ghost.sheetTitle)
                     
                     viewController.addActions(
                         WableSheetAction(
@@ -632,7 +632,7 @@ private extension HomeDetailViewController {
                     owner.placeholderLabel.isHidden = false
                     owner.commentTextView.endEditing(true)
                     
-                    let toast = ToastView(status: .complete, message: "댓글을 남겼어요")
+                    let toast = ToastView(status: .complete, message: StringLiterals.Detail.rippleCompleteToast)
                     toast.show()
                     
                     owner.scrollToTop()
@@ -645,7 +645,7 @@ private extension HomeDetailViewController {
             .sink { isSucceed in
                 let toast = ToastView(
                     status: .complete,
-                    message: "신고 접수가 완료되었어요.\n24시간 이내에 조치할 예정이예요."
+                    message: StringLiterals.Report.completeToast
                 )
                 
                 isSucceed ? toast.show() : nil

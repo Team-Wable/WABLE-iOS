@@ -437,7 +437,7 @@ private extension MyProfileViewController {
     }
     
     func presentLogoutActionSheet() {
-        let actionSheet = WableSheetViewController(title: StringLiterals.Profile.logoutSheetTitle)
+        let actionSheet = WableSheetViewController(title: StringLiterals.ProfileDelete.logoutSheetTitle)
         let cancelAction = WableSheetAction(title: "취소", style: .gray)
         let logoutAction = WableSheetAction(title: "로그아웃하기", style: .primary) { [weak self] in
             self?.viewModel.logoutDidTap()
@@ -484,7 +484,7 @@ private extension MyProfileViewController {
     }
     
     func presentDeleteContentActionSheet(for contentID: Int) {
-        let actionSheet = WableSheetViewController(title: "게시글을 삭제하시겠어요?", message: "게시글이 영구히 삭제됩니다.")
+        let actionSheet = WableSheetViewController(title: StringLiterals.Delete.contentSheetTitle, message: StringLiterals.Delete.contentSheetMessage)
         let cancelAction = WableSheetAction(title: "취소", style: .gray)
         let confirmAction = WableSheetAction(title: "삭제하기", style: .primary) { [weak self] in
             self?.viewModel.deleteContent(for: contentID)
@@ -494,7 +494,7 @@ private extension MyProfileViewController {
     }
     
     func presentDeleteCommentActionSheet(for commentID: Int) {
-        let actionSheet = WableSheetViewController(title: "댓글을 삭제하시겠어요?", message: "댓글이 영구히 삭제됩니다.")
+        let actionSheet = WableSheetViewController(title: StringLiterals.Delete.commentSheetTitle, message: StringLiterals.Delete.commentSheetMessage)
         let cancelAction = WableSheetAction(title: "취소", style: .gray)
         let confirmAction = WableSheetAction(title: "삭제하기", style: .primary) { [weak self] in
             self?.viewModel.deleteComment(for: commentID)

@@ -224,18 +224,12 @@ private extension CreateViewitViewController {
     }
     
     func presentExitSheet() {
-        let wableSheetViewController = WableSheetViewController(title: Constant.wableSheetTitle, message: nil)
+        let wableSheetViewController = WableSheetViewController(title: StringLiterals.Exit.sheetTitle, message: nil)
         let cancelAction = WableSheetAction(title: "취소", style: .gray)
         let confirmAction = WableSheetAction(title: "나가기", style: .primary) { [weak self] in
             self?.dismiss(animated: true)
         }
         wableSheetViewController.addActions(cancelAction, confirmAction)
         present(wableSheetViewController, animated: true)
-    }
-    
-    // MARK: - Constant
-    
-    enum Constant {
-        static let wableSheetTitle = "작성중인 글에서 나가실건가요?\n작성하셨던 내용은 삭제돼요"
     }
 }

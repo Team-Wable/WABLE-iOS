@@ -23,7 +23,7 @@ final class MyProfileEmptyCell: UICollectionViewCell {
     }
     
     private let commentLabel = UILabel().then {
-        $0.attributedText = "아직 작성한 댓글이 없어요.".pretendardString(with: .body2)
+        $0.attributedText = StringLiterals.Empty.comment.pretendardString(with: .body2)
         $0.textColor = .gray500
     }
     

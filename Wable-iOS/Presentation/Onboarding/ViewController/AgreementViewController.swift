@@ -206,11 +206,11 @@ private extension AgreementViewController {
                         self.dismiss(animated: false) {
                             loginViewController.present(tabBarController, animated: true) {
                                 let noticeViewController = WableSheetViewController(
-                                    title: "와블과 함께해 주셔서 감사합니다!",
+                                    title: StringLiterals.Onboarding.completeSheetTitle,
                                     message: "\(self.nickname)님\n와블의 일원이 되신 것을 환영해요.\nLCK 함께 보며 같이 즐겨요 :)"
                                 )
                                 
-                                noticeViewController.addAction(.init(title: "와블 즐기러 가기", style: .primary))
+                                noticeViewController.addAction(.init(title: StringLiterals.Onboarding.completeButtonTitle, style: .primary))
                                 
                                 tabBarController.present(noticeViewController, animated: true)
                             }

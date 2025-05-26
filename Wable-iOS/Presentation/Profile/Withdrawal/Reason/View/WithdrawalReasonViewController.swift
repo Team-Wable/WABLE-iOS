@@ -70,12 +70,12 @@ private extension WithdrawalReasonViewController {
         view.backgroundColor = .wableWhite
         
         let titleLabel = UILabel().then {
-            $0.attributedText = StringLiterals.Profile.withdrawalReasonTitle.pretendardString(with: .head0)
+            $0.attributedText = StringLiterals.ProfileDelete.withdrawalReasonTitle.pretendardString(with: .head0)
             $0.numberOfLines = 0
         }
         
         let descriptionLabel = UILabel().then {
-            $0.attributedText = StringLiterals.Profile.withdrawalReasonSubtitle.pretendardString(with: .body2)
+            $0.attributedText = StringLiterals.ProfileDelete.withdrawalReasonSubtitle.pretendardString(with: .body2)
             $0.numberOfLines = 0
             $0.textColor = .gray600
         }

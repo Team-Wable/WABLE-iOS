@@ -42,15 +42,15 @@ private extension WithdrawalGuideView {
     
     func setupView() {
         let titleLabel = UILabel().then {
-            $0.attributedText = StringLiterals.Profile.withdrawalGuideTitle.pretendardString(with: .head0)
+            $0.attributedText = StringLiterals.ProfileDelete.withdrawalGuideTitle.pretendardString(with: .head0)
             $0.numberOfLines = 0
         }
         
         let firstDescriptionView = WithdrawalGuideDescriptionView().then {
-            $0.configure(description: StringLiterals.Profile.withdrawalGuideDescription1)
+            $0.configure(description: StringLiterals.ProfileDelete.withdrawalGuideDescription1)
         }
         let secondDescriptionView = WithdrawalGuideDescriptionView().then {
-            $0.configure(description: StringLiterals.Profile.withdrawalGuideDescription2)
+            $0.configure(description: StringLiterals.ProfileDelete.withdrawalGuideDescription2)
         }
         
         let descriptionStackView = UIStackView(arrangedSubviews: [firstDescriptionView, secondDescriptionView]).then {
@@ -67,7 +67,7 @@ private extension WithdrawalGuideView {
         descriptionBackgroundView.addSubview(descriptionStackView)
         
         let messageLabel = UILabel().then {
-            $0.attributedText = StringLiterals.Profile.checkboxTitle.pretendardString(with: .caption2)
+            $0.attributedText = StringLiterals.ProfileDelete.checkboxTitle.pretendardString(with: .caption2)
         }
         
         addSubviews(navigationView, titleLabel, descriptionBackgroundView, checkboxButton, messageLabel, nextButton)
