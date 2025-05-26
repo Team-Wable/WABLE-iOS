@@ -293,6 +293,7 @@
 		DE8E863F2D91A032000A4292 /* AmplitudeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */; };
 		DE8E86432D91A0DA000A4292 /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = DE8E86422D91A0DA000A4292 /* LookinServer */; };
 		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
+		DE9321122DE4C3FA00629B88 /* IntegerLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9321112DE4C3FA00629B88 /* IntegerLiterals.swift */; };
 		DE9593352D9A1465009B00D3 /* ActivityNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */; };
 		DE98919B2D993D7200D538D8 /* InformationNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */; };
 		DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */; };
@@ -630,6 +631,7 @@
 		DE8E863C2D918759000A4292 /* RankViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankViewModel.swift; sourceTree = "<group>"; };
 		DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeManager.swift; sourceTree = "<group>"; };
 		DE8FF1902D8155DD00C41880 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
+		DE9321112DE4C3FA00629B88 /* IntegerLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegerLiterals.swift; sourceTree = "<group>"; };
 		DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotificationViewModel.swift; sourceTree = "<group>"; };
 		DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationViewModel.swift; sourceTree = "<group>"; };
 		DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Driver.swift"; sourceTree = "<group>"; };
@@ -797,6 +799,7 @@
 		DD2967642D6DAC3100143851 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				DE93210E2DE4C3DE00629B88 /* Literals */,
 				DD29676E2D6DAC3100143851 /* Bundle */,
 				DD29675D2D6DAC3100143851 /* DI */,
 				DD2967612D6DAC3100143851 /* Combine+ */,
@@ -1977,6 +1980,30 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		DE93210E2DE4C3DE00629B88 /* Literals */ = {
+			isa = PBXGroup;
+			children = (
+				DE9321102DE4C3EF00629B88 /* String */,
+				DE93210F2DE4C3E600629B88 /* Integer */,
+			);
+			path = Literals;
+			sourceTree = "<group>";
+		};
+		DE93210F2DE4C3E600629B88 /* Integer */ = {
+			isa = PBXGroup;
+			children = (
+				DE9321112DE4C3FA00629B88 /* IntegerLiterals.swift */,
+			);
+			path = Integer;
+			sourceTree = "<group>";
+		};
+		DE9321102DE4C3EF00629B88 /* String */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = String;
+			sourceTree = "<group>";
+		};
 		DE9593332D9A1453009B00D3 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -2597,6 +2624,7 @@
 				DD29682E2D6DAD1700143851 /* CommunityRepositoryImpl.swift in Sources */,
 				DD29682F2D6DAD1700143851 /* ViewitRepositoryImpl.swift in Sources */,
 				DDE966102D8C62A4004E899B /* DefaultProfileType.swift in Sources */,
+				DE9321122DE4C3FA00629B88 /* IntegerLiterals.swift in Sources */,
 				DD2968302D6DAD1700143851 /* AccountRepositoryImpl.swift in Sources */,
 				DD50980E2DA2C1BA00F666DE /* CreateCommentUseCase.swift in Sources */,
 				DE7004872D8E882B00B7AB71 /* RankCell.swift in Sources */,
