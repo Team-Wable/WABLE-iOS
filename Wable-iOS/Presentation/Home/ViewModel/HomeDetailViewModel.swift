@@ -146,7 +146,7 @@ extension HomeDetailViewModel: ViewModelType {
                 
                 let commentsPublisher = owner.fetchContentCommentListUseCase.execute(
                     contentID: owner.contentID,
-                    cursor: Constant.initialCursor
+                    cursor: IntegerLiterals.initialCursor
                 )
                     .replaceError(with: [])
                     .eraseToAnyPublisher()
@@ -601,12 +601,5 @@ private extension HomeDetailViewModel {
             
             return updatedComment
         }
-    }
-}
-
-private extension HomeDetailViewModel {
-    enum Constant {
-        static let defaultContentCountPerPage: Int = 15
-        static let initialCursor: Int = -1
     }
 }

@@ -44,7 +44,7 @@ extension NewsViewModel: ViewModelType {
             })
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<[Announcement], Never> in
-                return owner.fetchNews(with: Constant.initialCursor)
+                return owner.fetchNews(with: IntegerLiterals.initialCursor)
             }
             .handleEvents(receiveOutput: { [weak self] news in
                 isLoadingSubject.send(false)
@@ -107,15 +107,6 @@ private extension NewsViewModel {
     }
     
     func isLastPage(_ news: [Announcement]) -> Bool {
-        return news.isEmpty || news.count < Constant.defaultItemsCountPerPage
-    }
-}
-
-// MARK: - Constant
-
-private extension NewsViewModel {
-    enum Constant {
-        static let defaultItemsCountPerPage: Int = 15
-        static let initialCursor: Int = -1
+        return news.isEmpty || news.count < IntegerLiterals.defaultCountPerPage
     }
 }
