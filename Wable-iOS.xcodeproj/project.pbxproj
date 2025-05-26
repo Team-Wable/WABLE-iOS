@@ -302,6 +302,7 @@
 		DE9321222DE4CBF900629B88 /* StringLiterals+Viewit.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9321212DE4CBF900629B88 /* StringLiterals+Viewit.swift */; };
 		DE9321242DE4CD0C00629B88 /* StringLiterals+Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9321232DE4CD0C00629B88 /* StringLiterals+Overview.swift */; };
 		DE9321262DE4CDFC00629B88 /* StringLiterals+Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9321252DE4CDFC00629B88 /* StringLiterals+Profile.swift */; };
+		DE9321282DE4D17100629B88 /* StringLiterals+NotFound.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9321272DE4D17100629B88 /* StringLiterals+NotFound.swift */; };
 		DE9593352D9A1465009B00D3 /* ActivityNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */; };
 		DE98919B2D993D7200D538D8 /* InformationNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */; };
 		DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */; };
@@ -648,6 +649,7 @@
 		DE9321212DE4CBF900629B88 /* StringLiterals+Viewit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringLiterals+Viewit.swift"; sourceTree = "<group>"; };
 		DE9321232DE4CD0C00629B88 /* StringLiterals+Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringLiterals+Overview.swift"; sourceTree = "<group>"; };
 		DE9321252DE4CDFC00629B88 /* StringLiterals+Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringLiterals+Profile.swift"; sourceTree = "<group>"; };
+		DE9321272DE4D17100629B88 /* StringLiterals+NotFound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringLiterals+NotFound.swift"; sourceTree = "<group>"; };
 		DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotificationViewModel.swift; sourceTree = "<group>"; };
 		DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationViewModel.swift; sourceTree = "<group>"; };
 		DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Driver.swift"; sourceTree = "<group>"; };
@@ -2031,6 +2033,7 @@
 				DE93211F2DE4C99500629B88 /* StringLiterals+Community.swift */,
 				DE9321212DE4CBF900629B88 /* StringLiterals+Viewit.swift */,
 				DE9321232DE4CD0C00629B88 /* StringLiterals+Overview.swift */,
+				DE9321272DE4D17100629B88 /* StringLiterals+NotFound.swift */,
 				DE9321252DE4CDFC00629B88 /* StringLiterals+Profile.swift */,
 			);
 			path = Ung;
@@ -2635,6 +2638,7 @@
 				DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */,
 				DD2968532D6DAD4400143851 /* BaseResponse.swift in Sources */,
 				DD2968542D6DAD4400143851 /* CreateBan.swift in Sources */,
+				DE9321282DE4D17100629B88 /* StringLiterals+NotFound.swift in Sources */,
 				DD2968552D6DAD4400143851 /* CreateComment.swift in Sources */,
 				DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */,
 				DD2968562D6DAD4400143851 /* UpdateUserBadge.swift in Sources */,
