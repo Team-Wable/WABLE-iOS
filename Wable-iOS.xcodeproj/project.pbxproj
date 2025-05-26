@@ -295,7 +295,6 @@
 		DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8FF1902D8155DD00C41880 /* WableButton.swift */; };
 		DE9321122DE4C3FA00629B88 /* IntegerLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9321112DE4C3FA00629B88 /* IntegerLiterals.swift */; };
 		DE9321142DE4C50100629B88 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9321132DE4C50100629B88 /* StringLiterals.swift */; };
-		DE93211A2DE4C53800629B88 /* YoujinEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9321192DE4C53800629B88 /* YoujinEmpty.swift */; };
 		DE93211C2DE4C5B400629B88 /* StringLiterals+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93211B2DE4C5B400629B88 /* StringLiterals+URL.swift */; };
 		DE93211E2DE4C8A600629B88 /* StringLiterals+Ban.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93211D2DE4C8A600629B88 /* StringLiterals+Ban.swift */; };
 		DE9321202DE4C99500629B88 /* StringLiterals+Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93211F2DE4C99500629B88 /* StringLiterals+Community.swift */; };
@@ -643,7 +642,6 @@
 		DE8FF1902D8155DD00C41880 /* WableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableButton.swift; sourceTree = "<group>"; };
 		DE9321112DE4C3FA00629B88 /* IntegerLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegerLiterals.swift; sourceTree = "<group>"; };
 		DE9321132DE4C50100629B88 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
-		DE9321192DE4C53800629B88 /* YoujinEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoujinEmpty.swift; sourceTree = "<group>"; };
 		DE93211B2DE4C5B400629B88 /* StringLiterals+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringLiterals+URL.swift"; sourceTree = "<group>"; };
 		DE93211D2DE4C8A600629B88 /* StringLiterals+Ban.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringLiterals+Ban.swift"; sourceTree = "<group>"; };
 		DE93211F2DE4C99500629B88 /* StringLiterals+Community.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringLiterals+Community.swift"; sourceTree = "<group>"; };
@@ -2021,15 +2019,6 @@
 			isa = PBXGroup;
 			children = (
 				DE9321132DE4C50100629B88 /* StringLiterals.swift */,
-				DE9321162DE4C51400629B88 /* Youjin */,
-				DE9321152DE4C50C00629B88 /* Ung */,
-			);
-			path = String;
-			sourceTree = "<group>";
-		};
-		DE9321152DE4C50C00629B88 /* Ung */ = {
-			isa = PBXGroup;
-			children = (
 				DE93211B2DE4C5B400629B88 /* StringLiterals+URL.swift */,
 				DE93211D2DE4C8A600629B88 /* StringLiterals+Ban.swift */,
 				DE93211F2DE4C99500629B88 /* StringLiterals+Community.swift */,
@@ -2039,15 +2028,7 @@
 				DE9321252DE4CDFC00629B88 /* StringLiterals+Profile.swift */,
 				DE9321292DE4D26D00629B88 /* StringLiterals+Update.swift */,
 			);
-			path = Ung;
-			sourceTree = "<group>";
-		};
-		DE9321162DE4C51400629B88 /* Youjin */ = {
-			isa = PBXGroup;
-			children = (
-				DE9321192DE4C53800629B88 /* YoujinEmpty.swift */,
-			);
-			path = Youjin;
+			path = String;
 			sourceTree = "<group>";
 		};
 		DE9593332D9A1453009B00D3 /* ViewModel */ = {
@@ -2898,7 +2879,6 @@
 				DD2968252D6DAD0B00143851 /* ViewitMapper.swift in Sources */,
 				DEA10B4C2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift in Sources */,
 				DEA10B2B2DD399F4001EBBA9 /* WithdrawalReasonViewController.swift in Sources */,
-				DE93211A2DE4C53800629B88 /* YoujinEmpty.swift in Sources */,
 				DD2968262D6DAD0B00143851 /* CommunityMapper.swift in Sources */,
 				DE7004842D8E87DC00B7AB71 /* RankListViewController.swift in Sources */,
 				DD2968272D6DAD0B00143851 /* LoginMapper.swift in Sources */,
