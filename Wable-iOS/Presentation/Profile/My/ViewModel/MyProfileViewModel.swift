@@ -176,7 +176,7 @@ private extension MyProfileViewModel {
                 
                 await MainActor.run {
                     isLastPageForContent = contentList.count < IntegerLiterals.defaultCountPerPage
-                    isLastPageForComment = commentList.count < IntegerLiterals.profileCommentCountPerPage
+                    isLastPageForComment = commentList.count < IntegerLiterals.commentCountPerPage
                     
                     nickname = userProfile.user.nickname
                     
@@ -234,7 +234,7 @@ private extension MyProfileViewModel {
                 )
                 guard !Task.isCancelled else { return }
                 await MainActor.run {
-                    isLastPageForComment = commentListForNextPage.count < IntegerLiterals.profileCommentCountPerPage
+                    isLastPageForComment = commentListForNextPage.count < IntegerLiterals.commentCountPerPage
                     item.commentList.append(contentsOf: commentListForNextPage)
                 }
             } catch {
