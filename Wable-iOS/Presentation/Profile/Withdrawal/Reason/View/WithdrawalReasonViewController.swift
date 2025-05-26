@@ -70,12 +70,12 @@ private extension WithdrawalReasonViewController {
         view.backgroundColor = .wableWhite
         
         let titleLabel = UILabel().then {
-            $0.attributedText = Constant.title.pretendardString(with: .head0)
+            $0.attributedText = StringLiterals.Profile.withdrawalReasonTitle.pretendardString(with: .head0)
             $0.numberOfLines = 0
         }
         
         let descriptionLabel = UILabel().then {
-            $0.attributedText = Constant.description.pretendardString(with: .body2)
+            $0.attributedText = StringLiterals.Profile.withdrawalReasonSubtitle.pretendardString(with: .body2)
             $0.numberOfLines = 0
             $0.textColor = .gray600
         }
@@ -225,15 +225,5 @@ private extension WithdrawalReasonViewController {
         let section = NSCollectionLayoutSection(group: group)
         
         return UICollectionViewCompositionalLayout(section: section)
-    }
-    
-    // MARK: - Constant
-    
-    enum Constant {
-        static let title = "정말 떠나시는 건가요?"
-        static let description = """
-                                계정을 삭제하시려는 이유를 말씀해 주세요
-                                서비스 개선에 중요한 자료로 활용하겠습니다
-                                """
     }
 }

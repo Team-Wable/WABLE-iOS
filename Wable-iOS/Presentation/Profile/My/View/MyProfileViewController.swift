@@ -437,7 +437,7 @@ private extension MyProfileViewController {
     }
     
     func presentLogoutActionSheet() {
-        let actionSheet = WableSheetViewController(title: "로그아웃하시겠어요?")
+        let actionSheet = WableSheetViewController(title: StringLiterals.Profile.logoutSheetTitle)
         let cancelAction = WableSheetAction(title: "취소", style: .gray)
         let logoutAction = WableSheetAction(title: "로그아웃하기", style: .primary) { [weak self] in
             self?.viewModel.logoutDidTap()
