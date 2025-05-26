@@ -11,5 +11,5 @@ enum IntegerLiterals {
     static let initialCursor = -1
     static let homeContentCountPerPage = 20
     static let defaultCountPerPage = 15
-    static let profileCommentCountPerPage = 10
+    static let commentCountPerPage = 10
 }
