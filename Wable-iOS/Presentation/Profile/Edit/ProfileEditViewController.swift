@@ -134,7 +134,7 @@ private extension ProfileEditViewController {
             .sink(receiveCompletion: { [weak self] completion in
                 let condition = completion == .finished
                 
-                self?.rootView.conditiionLabel.text = condition ? "사용 가능한 닉네임입니다." : "이미 사용 중인 닉네임입니다."
+                self?.rootView.conditiionLabel.text = condition ? StringLiterals.ProfileSetting.checkVaildMessage : StringLiterals.ProfileSetting.checkDuplicateError
                 self?.rootView.conditiionLabel.textColor = condition ? .success : .error
                 self?.rootView.nextButton.isUserInteractionEnabled = condition
                 self?.rootView.nextButton.updateStyle(condition ? .primary : .gray)
@@ -192,7 +192,7 @@ private extension ProfileEditViewController {
         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
         let alert = UIAlertController(
             title: "설정",
-            message: "사진 권한이 없습니다.\n설정으로 이동해 권한 설정을 진행해주세요.",
+            message: StringLiterals.Empty.photoPermission,
             preferredStyle: .alert
         )
         
@@ -260,7 +260,7 @@ extension ProfileEditViewController: UITextFieldDelegate {
         let range = NSRange(location: 0, length: text.utf16.count)
         let condition = regex?.firstMatch(in: text, options: [], range: range) != nil
         
-        self.rootView.conditiionLabel.text = condition || text == "" ? "10자리 이내, 문자/숫자로 입력 가능해요" : "닉네임에 사용할 수 없는 문자가 포함되어 있어요."
+        self.rootView.conditiionLabel.text = condition || text == "" ? StringLiterals.ProfileSetting.checkDefaultMessage : StringLiterals.ProfileSetting.checkInvaildError
         self.rootView.conditiionLabel.textColor = condition || text == "" ? .gray600 : .error
         self.rootView.duplicationCheckButton.isUserInteractionEnabled = condition
         self.rootView.duplicationCheckButton.configuration?.baseForegroundColor = condition ? .white : .gray600

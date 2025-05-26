@@ -32,7 +32,7 @@ final class LoginViewController: UIViewController {
     }
     
     private let titleLabel: UILabel = UILabel().then {
-        $0.attributedText = "클린 LCK 팬 커뮤니티\n와블에서 함께 해요".pretendardString(with: .head0)
+        $0.attributedText = StringLiterals.Login.title.pretendardString(with: .head0)
         $0.textAlignment = .center
         $0.numberOfLines = 0
         $0.textColor = .black
@@ -166,7 +166,7 @@ private extension LoginViewController {
     private func navigateToOnboarding() {
         let noticeViewController = WableSheetViewController(
             title: "앗 잠깐!",
-            message: "와블은 온화하면서도 유쾌한 LCK 팬들이 모여 함께 즐기는 공간이에요.\n더 건강하고 즐거운 커뮤니티를 만들어 나가는데 함께 노력해주실거죠?"
+            message: StringLiterals.Onboarding.enterSheetTitle
         )
         
         noticeViewController.addAction(.init(title: "확인", style: .primary, handler: {

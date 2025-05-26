@@ -41,7 +41,7 @@ final class NewsViewController: UIViewController {
     }
     
     private let emptyLabel = UILabel().then {
-        $0.attributedText = "아직 작성된 뉴스가 없어요.".pretendardString(with: .body2)
+        $0.attributedText = StringLiterals.Empty.news.pretendardString(with: .body2)
         $0.textColor = .gray500
     }
     

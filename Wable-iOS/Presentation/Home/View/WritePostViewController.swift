@@ -31,7 +31,7 @@ final class WritePostViewController: NavigationViewController {
     private lazy var titleTextView: UITextView = .init().then {
         $0.isScrollEnabled = false
         $0.textContainerInset = .zero
-        $0.setPretendard(with: .head1, text: Constant.titlePlaceholder)
+        $0.setPretendard(with: .head1, text: StringLiterals.Write.sheetTitle)
         $0.textColor = .gray500
         $0.backgroundColor = .clear
     }
@@ -39,7 +39,7 @@ final class WritePostViewController: NavigationViewController {
     private lazy var contentTextView: UITextView = .init().then {
         $0.isScrollEnabled = false
         $0.textContainerInset = .zero
-        $0.setPretendard(with: .body2, text: Constant.contentPlaceholder)
+        $0.setPretendard(with: .body2, text: StringLiterals.Write.sheetMessage)
         $0.textColor = .gray500
         $0.backgroundColor = .clear
     }
@@ -225,19 +225,19 @@ private extension WritePostViewController {
     @objc func postButtonDidTap() {
         guard let title = titleTextView.text else { return }
         
-        let content = contentTextView.text == Constant.contentPlaceholder ? nil : contentTextView.text
+        let content = contentTextView.text == StringLiterals.Write.sheetMessage ? nil : contentTextView.text
         
         postButtonTapRelay.send((title: title, content: content, image: imageView.image))
         WableLogger.log("postButtonTapRelay 실행 완료", for: .debug)
     }
     
     @objc func popButtonDidTap() {
-        if (contentTextView.text == Constant.contentPlaceholder || contentTextView.text == "")
-            && (titleTextView.text == Constant.titlePlaceholder || titleTextView.text == "")
+        if (contentTextView.text == StringLiterals.Write.sheetMessage || contentTextView.text == "")
+            && (titleTextView.text == StringLiterals.Write.sheetTitle || titleTextView.text == "")
             && imageView.image == nil {
             self.navigationController?.popViewController(animated: true)
         } else {
-            let popup = WableSheetViewController(title: "작성중인 글에서 나가실건가요?\n작성하셨던 내용은 삭제돼요")
+            let popup = WableSheetViewController(title: StringLiterals.Exit.sheetTitle)
             
             popup.addActions(
                 WableSheetAction(title: "취소", style: .gray),
@@ -271,7 +271,7 @@ private extension WritePostViewController {
             return
         }
         
-        let isEnabled = totalCount > 0 && totalCount <= 500 && titleTextView.text != Constant.titlePlaceholder && !titleTextView.text.isEmpty
+        let isEnabled = totalCount > 0 && totalCount <= 500 && titleTextView.text != StringLiterals.Write.sheetTitle && !titleTextView.text.isEmpty
         
         postButton.isEnabled = isEnabled
         postButton.configuration?.baseBackgroundColor = isEnabled ? .purple50 : .gray400
@@ -292,7 +292,7 @@ private extension WritePostViewController {
         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
         let alert = UIAlertController(
             title: "설정",
-            message: "사진 권한이 없습니다.\n설정으로 이동해 권한 설정을 진행해주세요.",
+            message: StringLiterals.Empty.photoPermission,
             preferredStyle: .alert
         )
         
@@ -328,7 +328,7 @@ extension WritePostViewController: PHPickerViewControllerDelegate {
 
 extension WritePostViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        let placeholder = textView == titleTextView ? Constant.titlePlaceholder : Constant.contentPlaceholder
+        let placeholder = textView == titleTextView ? StringLiterals.Write.sheetTitle : StringLiterals.Write.sheetMessage
         
         if textView.text == placeholder {
             textView.text = nil
@@ -337,7 +337,7 @@ extension WritePostViewController: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        let placeholder = textView == titleTextView ? Constant.titlePlaceholder : Constant.contentPlaceholder
+        let placeholder = textView == titleTextView ? StringLiterals.Write.sheetTitle : StringLiterals.Write.sheetMessage
         
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             textView.text = placeholder
@@ -375,14 +375,5 @@ extension WritePostViewController: UITextViewDelegate {
         }
         
         return (newTextCount - currentCount) + otherCount + currentCount < 500
-    }
-}
-
-// MARK: - Constant
-
-extension WritePostViewController {
-    enum Constant {
-        static let titlePlaceholder: String = "자유롭게 이야기해요"
-        static let contentPlaceholder: String = "지금 머릿속에 떠오른 생각들을 남겨보세요\n본문은 생략이 가능해요"
     }
 }
