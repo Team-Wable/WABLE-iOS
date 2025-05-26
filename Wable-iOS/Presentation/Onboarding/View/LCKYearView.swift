@@ -17,12 +17,12 @@ final class LCKYearView: UIView {
     // MARK: - UIComponent
     
     private let titleLabel: UILabel = UILabel().then {
-        $0.attributedText = "언제부터 LCK를 시청하셨나요?".pretendardString(with: .head0)
+        $0.attributedText = StringLiterals.Onboarding.yearSheetTitle.pretendardString(with: .head0)
         $0.textColor = .wableBlack
     }
     
     private let descriptionLabel: UILabel = UILabel().then {
-        $0.attributedText = "꼭 LCK가 아닌 LOL경기여도 좋아요".pretendardString(with: .body2)
+        $0.attributedText = StringLiterals.Onboarding.yearSheetMessage.pretendardString(with: .body2)
         $0.textColor = .gray600
     }
     

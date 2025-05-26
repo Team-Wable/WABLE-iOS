@@ -70,7 +70,7 @@ extension ViewitListViewModel: ViewModelType {
             })
             .withUnretained(self)
             .flatMap { owner, _ in
-                return owner.useCase.fetchViewitList(last: Constant.initialCursor)
+                return owner.useCase.fetchViewitList(last: IntegerLiterals.initialCursor)
                     .catch { error -> AnyPublisher<[Viewit], Never> in
                         errorMessageRelay.send(error.localizedDescription)
                         return .just([])
@@ -160,7 +160,7 @@ extension ViewitListViewModel: ViewModelType {
                     .compactMap { $0 }
                     .withUnretained(self)
                     .flatMap { owner, _ -> AnyPublisher<[Viewit], Never> in
-                        return owner.useCase.fetchViewitList(last: Constant.initialCursor)
+                        return owner.useCase.fetchViewitList(last: IntegerLiterals.initialCursor)
                             .catch { error -> AnyPublisher<[Viewit], Never> in
                                 errorMessageRelay.send(error.localizedDescription)
                                 return .just([])
@@ -239,13 +239,6 @@ private extension ViewitListViewModel {
     // MARK: - Helper Method
 
     func isLastPage(_ viewitList: [Viewit]) -> Bool {
-        return viewitList.isEmpty || viewitList.count < Constant.defaultItemsCountPerPage
-    }
-    
-    // MARK: - Constant
-    
-    enum Constant {
-        static let initialCursor = -1
-        static let defaultItemsCountPerPage: Int = 15
+        return viewitList.isEmpty || viewitList.count < IntegerLiterals.defaultCountPerPage
     }
 }

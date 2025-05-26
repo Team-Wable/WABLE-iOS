@@ -41,7 +41,7 @@ final class NoticeViewController: UIViewController {
     }
     
     private let emptyLabel: UILabel = .init().then {
-        $0.attributedText = "아직 작성된 공지사항이 없어요.".pretendardString(with: .body2)
+        $0.attributedText = StringLiterals.Empty.notice.pretendardString(with: .body2)
         $0.textColor = .gray500
     }
     

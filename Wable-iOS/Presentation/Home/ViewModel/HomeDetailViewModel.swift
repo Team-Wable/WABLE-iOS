@@ -146,7 +146,7 @@ extension HomeDetailViewModel: ViewModelType {
                 
                 let commentsPublisher = owner.fetchContentCommentListUseCase.execute(
                     contentID: owner.contentID,
-                    cursor: Constant.initialCursor
+                    cursor: IntegerLiterals.initialCursor
                 )
                     .replaceError(with: [])
                     .eraseToAnyPublisher()
@@ -155,8 +155,10 @@ extension HomeDetailViewModel: ViewModelType {
                     .eraseToAnyPublisher()
             })
             .handleEvents(receiveOutput: { result in
+                let (_, comments) = result
+                
                 isLoadingSubject.send(false)
-                isLastViewSubject.send(result.1.isEmpty)
+                isLastViewSubject.send(comments.isEmpty || self.flattenComments(comments).count < IntegerLiterals.commentCountPerPage)
             })
             .sink { result in
                 contentSubject.send(result.0)
@@ -467,9 +469,11 @@ extension HomeDetailViewModel: ViewModelType {
                     .replaceError(with: [])
                     .eraseToAnyPublisher()
             }
-            .handleEvents(receiveOutput: { comments in
+            .handleEvents(receiveOutput: { [weak self] comments in
+                guard let self = self else { return }
+                
                 isLoadingMoreSubject.send(false)
-                isLastViewSubject.send(comments.isEmpty)
+                isLastViewSubject.send(comments.isEmpty || self.flattenComments(comments).count < IntegerLiterals.commentCountPerPage)
             })
             .filter { !$0.isEmpty }
             .sink { comment in
@@ -602,11 +606,15 @@ private extension HomeDetailViewModel {
             return updatedComment
         }
     }
-}
-
-private extension HomeDetailViewModel {
-    enum Constant {
-        static let defaultContentCountPerPage: Int = 15
-        static let initialCursor: Int = -1
+    
+    func flattenComments(_ comments: [ContentComment]) -> [ContentComment] {
+        var flattenedComments: [ContentComment] = []
+        
+        for comment in comments {
+            flattenedComments.append(comment)
+            flattenedComments.append(contentsOf: comment.childs)
+        }
+        
+        return flattenedComments
     }
 }

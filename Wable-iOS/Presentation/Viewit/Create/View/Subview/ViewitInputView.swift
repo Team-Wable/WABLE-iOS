@@ -24,7 +24,7 @@ final class ViewitInputView: UIView {
     
     let urlIconImageView = UIImageView(image: .icLink)
     
-    let urlTextField = UITextField(pretendard: .body4, placeholder: Constant.urlPlaceholder).then {
+    let urlTextField = UITextField(pretendard: .body4, placeholder: StringLiterals.Viewit.urlPlaceholder).then {
         $0.tintColor = .purple50
         $0.textColor = .blue50
         $0.backgroundColor = .gray100
@@ -48,7 +48,10 @@ final class ViewitInputView: UIView {
         $0.isHidden = true
     }
     
-    let descriptionTextField = UITextField(pretendard: .body4, placeholder: Constant.descriptionPlaceholder).then {
+    let descriptionTextField = UITextField(
+        pretendard: .body4,
+        placeholder: StringLiterals.Viewit.descriptionPlaceholder
+    ).then {
         $0.tintColor = .purple50
         $0.backgroundColor = .gray100
         $0.layer.borderColor = UIColor.gray100.cgColor
@@ -168,8 +171,6 @@ private extension ViewitInputView {
     // MARK: - Constant
     
     enum Constant {
-        static let urlPlaceholder = "공유하고 싶은 동영상 링크를 입력해주세요."
-        static let descriptionPlaceholder = "어떤 내용의 링크인가요?"
         static let textFieldHeight: CGFloat = 40
         static let buttonSize: CGFloat = 32
     }

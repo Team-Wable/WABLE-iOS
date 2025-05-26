@@ -196,7 +196,7 @@ private extension ViewitListViewController {
         
         output.isReportSuccess
             .filter { $0 }
-            .sink { _ in ToastView(status: .complete, message: Constant.reportSuccessMessage).show() }
+            .sink { _ in ToastView(status: .complete, message: StringLiterals.Report.completeToast).show() }
             .store(in: cancelBag)
         
         output.moveToProfile
@@ -267,8 +267,8 @@ private extension ViewitListViewController {
         
         switch action {
         case .report:
-            title = Constant.Report.title
-            message = Constant.Report.message
+            title = StringLiterals.Report.sheetTitle
+            message = StringLiterals.Report.sheetMessage
             buttonTitle = Constant.Report.buttonTitle
         case .delete:
             title = Constant.Delete.title
@@ -276,7 +276,7 @@ private extension ViewitListViewController {
             buttonTitle = Constant.Delete.buttonTitle
         case .ban:
             title = Constant.Ban.title
-            message = Constant.Ban.message
+            message = StringLiterals.Ban.sheetMessage
             buttonTitle = Constant.Ban.buttonTitle
         }
         
@@ -338,19 +338,11 @@ private extension ViewitListViewController {
 
     enum Constant {
         enum Report {
-            static let title = "신고하시겠어요?"
-            static let message = "해당 유저 혹은 게시글을 신고하시려면\n신고하기 버튼을 눌러주세요."
             static let buttonTitle = "신고하기"
         }
         
         enum Ban {
             static let title = "밴하시겠어요?"
-            static let message = """
-                                1회 누적 - 게시글 블라인드 처리
-                                2회 누적 - 게시글/댓글 블라인드 처리
-                                3회 누적 - 게시글 작성 제한
-                                4회 누적 - 계정 정지
-                                """
             static let buttonTitle = "밴하기"
         }
         
@@ -361,9 +353,5 @@ private extension ViewitListViewController {
         }
         
         static let cancelButtonTitle = "취소"
-        static let reportSuccessMessage = """
-                                        신고 접수가 완료되었어요.
-                                        24시간 내에 조치할 예정이에요.
-                                        """
     }
 }

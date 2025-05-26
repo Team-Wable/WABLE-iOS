@@ -76,7 +76,7 @@ final class AnnouncementDetailView: UIView {
     
     let submitButton: WableButton = .init(style: .black).then {
         var config = $0.configuration
-        config?.attributedTitle = "와블에 대한 의견 남기러 가기".pretendardString(with: .body3)
+        config?.attributedTitle = StringLiterals.Overview.feedbackButtonShortTitle.pretendardString(with: .body3)
         config?.baseForegroundColor = .sky50
         $0.configuration = config
     }

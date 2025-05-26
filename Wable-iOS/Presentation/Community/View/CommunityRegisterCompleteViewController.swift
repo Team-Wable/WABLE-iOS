@@ -54,7 +54,7 @@ private extension CommunityRegisterCompleteViewController {
         let imageView = UIImageView(image: .icCircleCheck)
         
         let titleLabel = UILabel().then {
-            $0.attributedText = "신청을 완료했어요".pretendardString(with: .head1)
+            $0.attributedText = StringLiterals.Community.completeSheetTitle.pretendardString(with: .head1)
             $0.textAlignment = .center
         }
         
