@@ -298,6 +298,7 @@
 		DE93211A2DE4C53800629B88 /* YoujinEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9321192DE4C53800629B88 /* YoujinEmpty.swift */; };
 		DE93211C2DE4C5B400629B88 /* StringLiterals+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93211B2DE4C5B400629B88 /* StringLiterals+URL.swift */; };
 		DE93211E2DE4C8A600629B88 /* StringLiterals+Ban.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93211D2DE4C8A600629B88 /* StringLiterals+Ban.swift */; };
+		DE9321202DE4C99500629B88 /* StringLiterals+Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93211F2DE4C99500629B88 /* StringLiterals+Community.swift */; };
 		DE9593352D9A1465009B00D3 /* ActivityNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */; };
 		DE98919B2D993D7200D538D8 /* InformationNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */; };
 		DE98919D2D994BFF00D538D8 /* Publisher+Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */; };
@@ -640,6 +641,7 @@
 		DE9321192DE4C53800629B88 /* YoujinEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoujinEmpty.swift; sourceTree = "<group>"; };
 		DE93211B2DE4C5B400629B88 /* StringLiterals+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringLiterals+URL.swift"; sourceTree = "<group>"; };
 		DE93211D2DE4C8A600629B88 /* StringLiterals+Ban.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringLiterals+Ban.swift"; sourceTree = "<group>"; };
+		DE93211F2DE4C99500629B88 /* StringLiterals+Community.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringLiterals+Community.swift"; sourceTree = "<group>"; };
 		DE9593342D9A1465009B00D3 /* ActivityNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityNotificationViewModel.swift; sourceTree = "<group>"; };
 		DE98919A2D993D7200D538D8 /* InformationNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationViewModel.swift; sourceTree = "<group>"; };
 		DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Driver.swift"; sourceTree = "<group>"; };
@@ -2020,6 +2022,7 @@
 			children = (
 				DE93211B2DE4C5B400629B88 /* StringLiterals+URL.swift */,
 				DE93211D2DE4C8A600629B88 /* StringLiterals+Ban.swift */,
+				DE93211F2DE4C99500629B88 /* StringLiterals+Community.swift */,
 			);
 			path = Ung;
 			sourceTree = "<group>";
@@ -2816,6 +2819,7 @@
 				DD2967FD2D6DAC4800143851 /* CancelBag.swift in Sources */,
 				DEF148422DA7B7E5003B2AD8 /* IsUserRegistered.swift in Sources */,
 				DD2967FE2D6DAC4800143851 /* WableLogger.swift in Sources */,
+				DE9321202DE4C99500629B88 /* StringLiterals+Community.swift in Sources */,
 				DE833B9E2DE22B1500812A80 /* CombineCompatible.swift in Sources */,
 				DE0D0CAC2DD204D000FB64DC /* ReportViewitUseCase.swift in Sources */,
 				DEA10B512DD3D995001EBBA9 /* ProfileInfoCell.swift in Sources */,
