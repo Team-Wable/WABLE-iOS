@@ -95,6 +95,10 @@ extension OtherProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let section = Section(rawValue: indexPath.section), section == .post else { return }
         
+        if collectionView.cellForItem(at: indexPath) is OtherProfileEmptyCell {
+            return
+        }
+        
         let contentID = viewModel.didSelect(index: indexPath.item)
         
         let viewController = HomeDetailViewController(
