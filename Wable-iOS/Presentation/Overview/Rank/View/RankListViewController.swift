@@ -113,7 +113,7 @@ private extension RankListViewController {
     }
     
     func setupAction() {
-        submitButton.tapPublisher
+        submitButton.publisher(for: .touchUpInside)
             .compactMap { _ in URL(string: Constant.googleFormURLText) }
             .sink { [weak self] url in
                 let safariViewController = SFSafariViewController(url: url)

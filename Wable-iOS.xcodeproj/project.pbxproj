@@ -205,7 +205,6 @@
 		DDED597E2D79578C00A0BEF1 /* AuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED597D2D79578800A0BEF1 /* AuthProvider.swift */; };
 		DDED59862D7965E900A0BEF1 /* OverviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59852D7965DB00A0BEF1 /* OverviewUseCase.swift */; };
 		DDED59882D7965F100A0BEF1 /* NotificationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59872D7965EC00A0BEF1 /* NotificationUseCase.swift */; };
-		DDED598D2D79957700A0BEF1 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = DDED598C2D79957700A0BEF1 /* CombineCocoa */; };
 		DDF2CC842D71FA8A000F1919 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC832D71FA8A000F1919 /* Then */; };
 		DDF2CC872D71FA96000F1919 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC862D71FA96000F1919 /* SnapKit */; };
 		DDF2CC8A2D71FADB000F1919 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2CC892D71FADB000F1919 /* Lottie */; };
@@ -277,6 +276,10 @@
 		DE7C53142D761EE500076E5D /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53132D761EE500076E5D /* UIView+.swift */; };
 		DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */; };
 		DE7C531A2D76202B00076E5D /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7C53192D76202B00076E5D /* UITextField+.swift */; };
+		DE833B9B2DE22A8500812A80 /* Publishers+UIControlEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE833B9A2DE22A8500812A80 /* Publishers+UIControlEvent.swift */; };
+		DE833B9E2DE22B1500812A80 /* CombineCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE833B9D2DE22B1500812A80 /* CombineCompatible.swift */; };
+		DE833BA02DE22C8D00812A80 /* Publishers+UIControlProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE833B9F2DE22C8D00812A80 /* Publishers+UIControlProperty.swift */; };
+		DE833BA22DE22D4600812A80 /* Publishers+UIGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE833BA12DE22D4600812A80 /* Publishers+UIGesture.swift */; };
 		DE83891B2D906C0C00C089E6 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE83891A2D906C0C00C089E6 /* Types.swift */; };
 		DE83891D2D9071E400C089E6 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE83891C2D9071E400C089E6 /* Date+.swift */; };
 		DE8873B72DC7407C00AB16F8 /* URLPreviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8873B62DC7407C00AB16F8 /* URLPreviewRepository.swift */; };
@@ -612,6 +615,10 @@
 		DE7C53132D761EE500076E5D /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
 		DE7C53192D76202B00076E5D /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		DE833B9A2DE22A8500812A80 /* Publishers+UIControlEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+UIControlEvent.swift"; sourceTree = "<group>"; };
+		DE833B9D2DE22B1500812A80 /* CombineCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineCompatible.swift; sourceTree = "<group>"; };
+		DE833B9F2DE22C8D00812A80 /* Publishers+UIControlProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+UIControlProperty.swift"; sourceTree = "<group>"; };
+		DE833BA12DE22D4600812A80 /* Publishers+UIGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+UIGesture.swift"; sourceTree = "<group>"; };
 		DE83891A2D906C0C00C089E6 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		DE83891C2D9071E400C089E6 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		DE8873B62DC7407C00AB16F8 /* URLPreviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLPreviewRepository.swift; sourceTree = "<group>"; };
@@ -690,7 +697,6 @@
 			files = (
 				DDF2CCA12D71FF27000F1919 /* AmplitudeSwift in Frameworks */,
 				DDF2CC972D71FC7E000F1919 /* KakaoSDKCommon in Frameworks */,
-				DDED598D2D79957700A0BEF1 /* CombineCocoa in Frameworks */,
 				DDF2CC952D71FC7E000F1919 /* KakaoSDKAuth in Frameworks */,
 				DDF2CC922D71FB41000F1919 /* Kingfisher in Frameworks */,
 				DDF2CC842D71FA8A000F1919 /* Then in Frameworks */,
@@ -1939,6 +1945,17 @@
 			path = Interface;
 			sourceTree = "<group>";
 		};
+		DE833B9C2DE22B0000812A80 /* Combine+UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				DE833B9D2DE22B1500812A80 /* CombineCompatible.swift */,
+				DE833B9A2DE22A8500812A80 /* Publishers+UIControlEvent.swift */,
+				DE833B9F2DE22C8D00812A80 /* Publishers+UIControlProperty.swift */,
+				DE833BA12DE22D4600812A80 /* Publishers+UIGesture.swift */,
+			);
+			path = "Combine+UIKit";
+			sourceTree = "<group>";
+		};
 		DE8E86402D91A092000A4292 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -1955,6 +1972,7 @@
 				DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */,
 				DE83891C2D9071E400C089E6 /* Date+.swift */,
 				DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */,
+				DE833B9C2DE22B0000812A80 /* Combine+UIKit */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -2427,7 +2445,6 @@
 				DDF2CC9B2D71FECB000F1919 /* FirebaseCore */,
 				DDF2CC9D2D71FECB000F1919 /* FirebaseMessaging */,
 				DDF2CCA02D71FF27000F1919 /* AmplitudeSwift */,
-				DDED598C2D79957700A0BEF1 /* CombineCocoa */,
 				DE8E86422D91A0DA000A4292 /* LookinServer */,
 				DE8873BD2DC7419000AB16F8 /* SwiftSoup */,
 			);
@@ -2468,7 +2485,6 @@
 				DDF2CC932D71FC7E000F1919 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				DDF2CC9A2D71FECB000F1919 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				DDF2CC9F2D71FF27000F1919 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
-				DDED598B2D79957700A0BEF1 /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 				DE8E86412D91A0DA000A4292 /* XCRemoteSwiftPackageReference "LookinServer" */,
 				DE8873BC2DC7419000AB16F8 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
@@ -2569,6 +2585,7 @@
 				DEE5D61A2D91537C009E5A25 /* GameScheduleViewItem.swift in Sources */,
 				DE72BB102D93CC68008E5774 /* NotificationPageView.swift in Sources */,
 				DDFB22462D8BBB8600FEA24A /* ProfileRegisterViewController.swift in Sources */,
+				DE833BA22DE22D4600812A80 /* Publishers+UIGesture.swift in Sources */,
 				DD29685B2D6DAD4400143851 /* CreateAccountRequest.swift in Sources */,
 				DE9B94762D927F140060FF92 /* NoticeViewModel.swift in Sources */,
 				DD29685C2D6DAD4400143851 /* CreateContent.swift in Sources */,
@@ -2602,6 +2619,7 @@
 				DE20BAD72D903985000126A4 /* AnnouncementDetailView.swift in Sources */,
 				DE70048D2D8EA85400B7AB71 /* NewsViewController.swift in Sources */,
 				DE6459CF2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift in Sources */,
+				DE833BA02DE22C8D00812A80 /* Publishers+UIControlProperty.swift in Sources */,
 				DE8E863B2D918735000A4292 /* RankViewItem.swift in Sources */,
 				DE9891A02D995EE800D538D8 /* InformationNotificationType+.swift in Sources */,
 				DD29683F2D6DAD2F00143851 /* FetchInfoNotifications.swift in Sources */,
@@ -2740,6 +2758,7 @@
 				DD2967FD2D6DAC4800143851 /* CancelBag.swift in Sources */,
 				DEF148422DA7B7E5003B2AD8 /* IsUserRegistered.swift in Sources */,
 				DD2967FE2D6DAC4800143851 /* WableLogger.swift in Sources */,
+				DE833B9E2DE22B1500812A80 /* CombineCompatible.swift in Sources */,
 				DE0D0CAC2DD204D000FB64DC /* ReportViewitUseCase.swift in Sources */,
 				DEA10B512DD3D995001EBBA9 /* ProfileInfoCell.swift in Sources */,
 				DE59BBA92D8A9EFD0040ADCB /* UIViewController+.swift in Sources */,
@@ -2763,6 +2782,7 @@
 				DD2968192D6DAD0200143851 /* ReportRepository.swift in Sources */,
 				DE6C3E3E2D91A8E00046DB30 /* NewsViewModel.swift in Sources */,
 				DD29681A2D6DAD0200143851 /* ViewitRepository.swift in Sources */,
+				DE833B9B2DE22A8500812A80 /* Publishers+UIControlEvent.swift in Sources */,
 				DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */,
 				DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */,
 				DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */,
@@ -3071,14 +3091,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		DDED598B2D79957700A0BEF1 /* XCRemoteSwiftPackageReference "CombineCocoa" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CombineCommunity/CombineCocoa";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.1;
-			};
-		};
 		DDF2CC822D71FA8A000F1919 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
@@ -3162,11 +3174,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		DDED598C2D79957700A0BEF1 /* CombineCocoa */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DDED598B2D79957700A0BEF1 /* XCRemoteSwiftPackageReference "CombineCocoa" */;
-			productName = CombineCocoa;
-		};
 		DDF2CC832D71FA8A000F1919 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DDF2CC822D71FA8A000F1919 /* XCRemoteSwiftPackageReference "Then" */;

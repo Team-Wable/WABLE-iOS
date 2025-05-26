@@ -31,11 +31,6 @@ final class CreateViewitViewController: UIViewController {
     weak var delegate: CreateViewitViewDelegate?
     
     private let viewModel: ViewModel
-    private let urlTextRelay = PassthroughRelay<String>()
-    private let nextRelay = PassthroughRelay<Void>()
-    private let contentTextRelay = PassthroughRelay<String>()
-    private let uploadButtonRelay = PassthroughRelay<Void>()
-    private let backgroundTapRelay = PassthroughRelay<Void>()
     private let cancelBag = CancelBag()
     
     // MARK: - Initializer
@@ -62,7 +57,6 @@ final class CreateViewitViewController: UIViewController {
         view.backgroundColor = .wableBlack.withAlphaComponent(.zero)
         
         setupView()
-        setupAction()
         setupDelegate()
         setupBinding()
     }
@@ -126,32 +120,44 @@ private extension CreateViewitViewController {
         }
     }
     
-    func setupAction() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(backgroundViewDidTap))
-        dimmedBackgroundView.addGestureRecognizer(tapGesture)
-        
-        viewitInputView.urlTextField.addTarget(self, action: #selector(urlTextFieldDidChange(_:)), for: .editingChanged)
-        viewitInputView.nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
-        viewitInputView.descriptionTextField.addTarget(
-            self,
-            action: #selector(descriptionTextFieldDidChange(_:)),
-            for: .editingChanged
-        )
-        viewitInputView.uploadButton.addTarget(self, action: #selector(uploadButtonDidTap), for: .touchUpInside)
-    }
-    
     func setupDelegate() {
         viewitInputView.urlTextField.delegate = self
         viewitInputView.descriptionTextField.delegate = self
     }
     
     func setupBinding() {
+        let urlInput = viewitInputView.urlTextField
+            .publisher(for: .editingChanged, keyPath: \.text)
+            .compactMap { $0 }
+            .handleEvents(receiveOutput: { [weak self] text in
+                self?.viewitInputView.urlTextField.backgroundColor = text.isEmpty ? .gray100 : .blue10
+            })
+            .eraseToAnyPublisher()
+        
+        let nextTapped = viewitInputView.nextButton
+            .publisher(for: .touchUpInside)
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .eraseToAnyPublisher()
+        
+        let descriptionInput = viewitInputView.descriptionTextField
+            .publisher(for: .editingChanged, keyPath: \.text)
+            .compactMap { $0 }
+            .handleEvents(receiveOutput: { [weak self] text in
+                self?.viewitInputView.descriptionTextField.backgroundColor = text.isEmpty ? .gray100 : .wableWhite
+            })
+            .eraseToAnyPublisher()
+        
+        let uploadTapped = viewitInputView.uploadButton
+            .publisher(for: .touchUpInside)
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .eraseToAnyPublisher()
+        
         let input = ViewModel.Input(
-            urlStringChanged: urlTextRelay.eraseToAnyPublisher(),
-            next: nextRelay.eraseToAnyPublisher(),
-            descriptionChanged: contentTextRelay.eraseToAnyPublisher(),
-            upload: uploadButtonRelay.eraseToAnyPublisher(),
-            backgroundTap: backgroundTapRelay.eraseToAnyPublisher()
+            urlStringChanged: urlInput,
+            next: nextTapped,
+            descriptionChanged: descriptionInput,
+            upload: uploadTapped,
+            backgroundTap: dimmedBackgroundView.gesture().asVoid()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
@@ -193,32 +199,6 @@ private extension CreateViewitViewController {
                 self?.present(alertController, animated: true)
             }
             .store(in: cancelBag)
-    }
-    
-    // MARK: - Action Method
-    
-    @objc func backgroundViewDidTap() {
-        backgroundTapRelay.send()
-    }
-    
-    @objc func urlTextFieldDidChange(_ sender: UITextField) {
-        guard let text = sender.text else { return }
-        sender.backgroundColor = text.isEmpty ? .gray100 : .blue10
-        urlTextRelay.send(text)
-    }
-    
-    @objc func nextButtonDidTap() {
-        nextRelay.send()
-    }
-    
-    @objc func descriptionTextFieldDidChange(_ sender: UITextField) {
-        guard let text = sender.text else { return }
-        sender.backgroundColor = text.isEmpty ? .gray100 : .wableWhite
-        contentTextRelay.send(text)
-    }
-    
-    @objc func uploadButtonDidTap() {
-        uploadButtonRelay.send()
     }
     
     // MARK: - Helper Method
