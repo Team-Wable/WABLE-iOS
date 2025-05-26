@@ -43,7 +43,7 @@ final class RankListViewController: UIViewController {
     
     private let submitButton = WableButton(style: .black).then {
         var config = $0.configuration
-        config?.attributedTitle = Constant.submitButtonTitle.pretendardString(with: .body3)
+        config?.attributedTitle = StringLiterals.Overview.feedbackButtonLongTitle.pretendardString(with: .body3)
             .highlight(textColor: .sky50, to: "의견 남기러 가기")
         $0.configuration = config
     }
@@ -296,13 +296,5 @@ private extension RankListViewController {
         section.boundarySupplementaryItems = [header]
         
         return section
-    }
-}
-
-// MARK: - Constant
-
-private extension RankListViewController {
-    enum Constant {
-        static let submitButtonTitle: String = "더 알고싶은 정보가 있다면? 의견 남기러 가기"
     }
 }
