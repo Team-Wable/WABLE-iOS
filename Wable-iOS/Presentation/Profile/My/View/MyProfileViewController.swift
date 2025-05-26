@@ -432,7 +432,7 @@ private extension MyProfileViewController {
     }
     
     func presentGoogleForm() {
-        guard let url = URL(string: Constant.googleFormURLString) else { return }
+        guard let url = URL(string: StringLiterals.URL.feedbackForm) else { return }
         present(SFSafariViewController(url: url), animated: true)
     }
     
@@ -552,11 +552,5 @@ private extension MyProfileViewController {
                 return section
             }
         }
-    }
-    
-    // MARK: - Constant
-
-    enum Constant {
-        static let googleFormURLString = "https://docs.google.com/forms/d/e/1FAIpQLSf3JlBkVRPaPFSreQHaEv-u5pqZWZzk7Y4Qll9lRP0htBZs-Q/viewform"
     }
 }

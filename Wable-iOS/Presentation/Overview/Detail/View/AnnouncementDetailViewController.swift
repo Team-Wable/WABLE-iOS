@@ -116,7 +116,7 @@ private extension AnnouncementDetailViewController {
     }
     
     @objc func submitButtonDidTap() {
-        guard let url = URL(string: Constant.googleFormURLText) else { return }
+        guard let url = URL(string: StringLiterals.URL.feedbackForm) else { return }
         
         let safariController = SFSafariViewController(url: url)
         present(safariController, animated: true)
@@ -134,12 +134,4 @@ private extension AnnouncementDetailViewController {
     var bodyTextView: UITextView { rootView.bodyTextView }
     var submitButtonContainerView: UIView { rootView.submitButtonContainerView }
     var submitButton: UIButton { rootView.submitButton }
-}
-
-// MARK: - Constant
-
-private extension AnnouncementDetailViewController {
-    enum Constant {
-        static let googleFormURLText: String = "https://docs.google.com/forms/d/e/1FAIpQLSf3JlBkVRPaPFSreQHaEv-u5pqZWZzk7Y4Qll9lRP0htBZs-Q/viewform"
-    }
 }

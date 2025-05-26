@@ -118,7 +118,7 @@ private extension AgreementViewController {
     
     @objc func infoButtonDidTap(_ sender: UIButton) {
         guard let url = URL(
-            string: sender == rootView.personalInfoAgreementItemView.infoButton ? "https://joyous-ghost-8c7.notion.site/c6e26919055a4ff98fd73a8f9b29cb36?pvs=4" : "https://joyous-ghost-8c7.notion.site/fff08b005ea18052ae0bf9d056c2e830?pvs=4"
+            string: sender == rootView.personalInfoAgreementItemView.infoButton ? StringLiterals.URL.terms : StringLiterals.URL.privacyPolicy
         ) else {
             return
         }
