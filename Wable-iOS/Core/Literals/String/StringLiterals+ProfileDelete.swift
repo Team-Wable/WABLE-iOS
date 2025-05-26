@@ -9,9 +9,9 @@ import Foundation
 
 extension StringLiterals {
     
-    // MARK: - Profile
+    // MARK: - ProfileDelete
     
-    enum Profile {
+    enum ProfileDelete {
         static let withdrawalReasonTitle = "정말 떠나시는 건가요?"
         static let withdrawalReasonSubtitle = "계정을 삭제하시려는 이유를 말해주세요\n서비스 개선에 중요한 자료로 활용하겠습니다"
         
