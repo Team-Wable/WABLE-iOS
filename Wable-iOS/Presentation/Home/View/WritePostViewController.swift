@@ -206,6 +206,8 @@ private extension WritePostViewController {
 
 private extension WritePostViewController {
     @objc func addButtonDidTap() {
+        AmplitudeManager.shared.trackEvent(tag: .clickAttachPhoto)
+        
         switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
         case .denied, .restricted:
             presentSettings()
@@ -223,12 +225,13 @@ private extension WritePostViewController {
     }
     
     @objc func postButtonDidTap() {
+        AmplitudeManager.shared.trackEvent(tag: .clickUploadPost)
+        
         guard let title = titleTextView.text else { return }
         
         let content = contentTextView.text == StringLiterals.Write.sheetMessage ? nil : contentTextView.text
         
         postButtonTapRelay.send((title: title, content: content, image: imageView.image))
-        WableLogger.log("postButtonTapRelay 실행 완료", for: .debug)
     }
     
     @objc func popButtonDidTap() {

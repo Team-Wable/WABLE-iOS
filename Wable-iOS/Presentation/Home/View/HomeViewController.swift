@@ -191,6 +191,8 @@ private extension HomeViewController {
                     self.present(PhotoDetailViewController(image: image), animated: true)
                 },
                 likeButtonTapHandler: {
+                    AmplitudeManager.shared.trackEvent(tag: .clickLikePost)
+                    
                     self.didHeartTappedSubject.send((item.content.id, cell.likeButton.isLiked))
                 },
                 settingButtonTapHandler: {
@@ -207,6 +209,8 @@ private extension HomeViewController {
                                         title: "삭제하기",
                                         style: .primary,
                                         handler: {
+                                            AmplitudeManager.shared.trackEvent(tag: .clickDeletePost)
+                                            
                                             viewController.dismiss(animated: true, completion: {
                                                 self.didDeleteTappedSubject.send(item.content.id)
                                             })
@@ -292,6 +296,8 @@ private extension HomeViewController {
                     }
                 },
                 ghostButtonTapHandler: {
+                    AmplitudeManager.shared.trackEvent(tag: .clickGhostPost)
+                    
                     let viewController = WableSheetViewController(title: StringLiterals.Ghost.sheetTitle)
                     
                     viewController.addActions(
@@ -299,13 +305,15 @@ private extension HomeViewController {
                             title: "고민할게요",
                             style: .gray,
                             handler: {
-                                viewController.dismiss(animated: true)
+                                AmplitudeManager.shared.trackEvent(tag: .clickWithdrawghostPopup)
                             }
                         ),
                         WableSheetAction(
                             title: "네 맞아요",
                             style: .primary,
                             handler: {
+                                AmplitudeManager.shared.trackEvent(tag: .clickApplyghostPopup)
+                                
                                 viewController.dismiss(animated: true, completion: {
                                     self.didGhostTappedSubject.send((item.content.id, item.content.contentInfo.author.id))
                                 })
@@ -335,6 +343,8 @@ private extension HomeViewController {
         navigationView.notificationButton.addAction(
             UIAction(
                 handler: { _ in
+                    AmplitudeManager.shared.trackEvent(tag: .clickNotiBotnavi)
+                    
                     let viewController = NotificationPageViewController()
                     
                     self.navigationController?.pushViewController(viewController, animated: true)
@@ -491,6 +501,8 @@ extension HomeViewController {
 
 private extension HomeViewController {
     @objc func plusButtonDidTap() {
+        AmplitudeManager.shared.trackEvent(tag: .clickWritePost)
+        
         let viewController = WritePostViewController(
             viewModel: WritePostViewModel(
                 createContentUseCase: CreateContentUseCase(

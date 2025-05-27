@@ -204,6 +204,8 @@ private extension CommunityViewController {
         
         let cancelAction = WableSheetAction(title: "취소", style: .gray)
         let registerAction = WableSheetAction(title: "신청하기", style: .primary) { [weak self] in
+            AmplitudeManager.shared.trackEvent(tag: .clickApplyTeamzone)
+            
             self?.registerRelay.send(item)
         }
         wableSheet.addActions(cancelAction, registerAction)

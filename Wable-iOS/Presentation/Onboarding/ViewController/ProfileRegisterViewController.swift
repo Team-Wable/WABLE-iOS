@@ -95,11 +95,15 @@ private extension ProfileRegisterViewController {
     }
     
     @objc func switchButtonDidTap() {
+        AmplitudeManager.shared.trackEvent(tag: .clickChangePictureProfileSignup)
+        
         rootView.configureDefaultImage()
         defaultImage = rootView.defaultImageList[0].uppercased
     }
     
     @objc func addButtonDidTap() {
+        AmplitudeManager.shared.trackEvent(tag: .clickAddPictureProfileSignup)
+        
         switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
         case .denied, .restricted:
             presentSettings()
@@ -137,6 +141,8 @@ private extension ProfileRegisterViewController {
     
     @objc func nextButtonDidTap() {
         guard let name = rootView.nickNameTextField.text else { return }
+        
+        AmplitudeManager.shared.trackEvent(tag: .clickNextProfileSignup)
         
         navigationController?.pushViewController(
             AgreementViewController(
