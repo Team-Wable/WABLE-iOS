@@ -18,7 +18,7 @@ final class AmplitudeManager {
         amplitude = Amplitude(configuration: Configuration(apiKey: Bundle.amplitudeAppKey))
     }
     
-    func trackEvent(tag: String) {
-        amplitude.track(eventType: tag)
+    func trackEvent(tag: AmplitudeEventTag) {
+        amplitude.track(eventType: tag.rawValue)
     }
 }
