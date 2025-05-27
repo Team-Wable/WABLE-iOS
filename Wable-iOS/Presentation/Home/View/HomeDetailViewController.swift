@@ -126,6 +126,7 @@ final class HomeDetailViewController: NavigationViewController {
         setupConstraint()
         setupDataSource()
         setupAction()
+        setupTapGesture()
         setupDelegate()
         setupBinding()
     }
@@ -188,6 +189,12 @@ private extension HomeDetailViewController {
             $0.centerX.equalToSuperview()
             $0.bottom.equalTo(writeCommentView.snp.top)
         }
+    }
+    
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
     }
     
     func setupDataSource() {
@@ -691,6 +698,15 @@ private extension HomeDetailViewController {
         placeholderLabel.isHidden = !commentTextView.text.isEmpty
     }
 }
+
+// MARK: - @objc method
+
+extension HomeDetailViewController {
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
 
 // MARK: - UICollectionViewDelegate
 
