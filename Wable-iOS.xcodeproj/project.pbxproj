@@ -1603,6 +1603,7 @@
 		DDFE04392DE618590040ED75 /* Amplitude */ = {
 			isa = PBXGroup;
 			children = (
+				DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */,
 				DDFE043C2DE6186E0040ED75 /* AmplitudeEventTag.swift */,
 			);
 			path = Amplitude;
@@ -2007,7 +2008,6 @@
 		DE7C53092D761DB900076E5D /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E863E2D91A032000A4292 /* AmplitudeManager.swift */,
 				DE83891A2D906C0C00C089E6 /* Types.swift */,
 				DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */,
 				DE8E86402D91A092000A4292 /* Extension */,
