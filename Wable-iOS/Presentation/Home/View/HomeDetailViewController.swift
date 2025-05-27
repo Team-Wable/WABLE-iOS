@@ -201,10 +201,7 @@ private extension HomeDetailViewController {
         let contentCellRegistration = UICollectionView.CellRegistration <
             ContentCollectionViewCell,
             Content
-        > {
-            [weak self] cell,
-            indexPath,
-            item in
+        > { [weak self] cell, indexPath, item in
             guard let self = self else { return }
             
             cell.divideView.snp.updateConstraints { make in
