@@ -218,6 +218,8 @@ private extension HomeDetailViewController {
                     self.present(PhotoDetailViewController(image: image), animated: true)
                 },
                 likeButtonTapHandler: {
+                    AmplitudeManager.shared.trackEvent(tag: .clickLikeComment)
+                    
                     self.didContentHeartTappedSubject.send(cell.likeButton.isLiked)
                 },
                 settingButtonTapHandler: {
@@ -316,14 +318,23 @@ private extension HomeDetailViewController {
                     }
                 },
                 ghostButtonTapHandler: {
+                    AmplitudeManager.shared.trackEvent(tag: .clickGhostPost)
+                    
                     let viewController = WableSheetViewController(title: StringLiterals.Ghost.sheetTitle)
                     
                     viewController.addActions(
-                        WableSheetAction(title: "고민할게요", style: .gray),
+                        WableSheetAction(
+                            title: "고민할게요",
+                            style: .gray,
+                            handler: {
+                                AmplitudeManager.shared.trackEvent(tag: .clickWithdrawghostPopup)
+                            }),
                         WableSheetAction(
                             title: "네 맞아요",
                             style: .primary,
                             handler: {
+                                AmplitudeManager.shared.trackEvent(tag: .clickApplyghostPopup)
+                                
                                 viewController.dismiss(animated: true, completion: {
                                     self.didGhostTappedSubject.send((item.content.id, item.content.contentInfo.author.id, .content))
                                 })
@@ -336,6 +347,8 @@ private extension HomeDetailViewController {
             )
             
             cell.commentButton.addAction(UIAction(handler: { _ in
+                AmplitudeManager.shared.trackEvent(tag: .clickWriteComment)
+                
                 self.createCommentButton.isEnabled = false
                 self.didCommentTappedSubject.send()
                 
@@ -478,6 +491,8 @@ private extension HomeDetailViewController {
                     }
                 },
                 ghostButtonTapHandler: {
+                    AmplitudeManager.shared.trackEvent(tag: .clickGhostComment)
+                    
                     let viewController = WableSheetViewController(title: StringLiterals.Ghost.sheetTitle)
                     
                     viewController.addActions(
@@ -485,6 +500,8 @@ private extension HomeDetailViewController {
                             title: "고민할게요",
                             style: .gray,
                             handler: {
+                                AmplitudeManager.shared.trackEvent(tag: .clickWithdrawghostPopup)
+                                
                                 viewController.dismiss(animated: true)
                             }
                         ),
@@ -492,6 +509,8 @@ private extension HomeDetailViewController {
                             title: "네 맞아요",
                             style: .primary,
                             handler: {
+                                AmplitudeManager.shared.trackEvent(tag: .clickApplyghostPopup)
+                                
                                 viewController.dismiss(animated: true, completion: {
                                     self.didGhostTappedSubject.send((item.comment.id, item.comment.author.id, .comment))
                                 })
@@ -502,6 +521,8 @@ private extension HomeDetailViewController {
                     self.present(viewController, animated: true)
                 },
                 replyButtonTapHandler: {
+                    AmplitudeManager.shared.trackEvent(tag: .clickWriteRecomment)
+                    
                     self.createCommentButton.isEnabled = false
                     self.didReplyTappedSubject.send((item.comment.id, item.comment.author.id))
                     
@@ -555,6 +576,7 @@ private extension HomeDetailViewController {
                 return
             }
             
+            AmplitudeManager.shared.trackEvent(tag: .clickUploadComment)
             self.didCreateTappedSubject.send(self.commentTextView.text)
         }), for: .touchUpInside)
         

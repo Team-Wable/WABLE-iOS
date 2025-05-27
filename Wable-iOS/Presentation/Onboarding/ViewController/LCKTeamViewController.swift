@@ -72,6 +72,8 @@ private extension LCKTeamViewController {
     // MARK: - @objc Method
 
     @objc func skipButtonDidTap() {
+        AmplitudeManager.shared.trackEvent(tag: .clickDetourTeamSignup)
+        
         navigationController?.pushViewController(
             ProfileRegisterViewController(
                 lckYear: lckYear,
@@ -82,6 +84,8 @@ private extension LCKTeamViewController {
     }
     
     @objc func nextButtonDidTap() {
+        AmplitudeManager.shared.trackEvent(tag: .clickNextTeamSignup)
+        
         navigationController?.pushViewController(
             ProfileRegisterViewController(
                 lckYear: lckYear,

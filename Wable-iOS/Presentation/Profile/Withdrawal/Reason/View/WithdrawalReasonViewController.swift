@@ -191,6 +191,8 @@ private extension WithdrawalReasonViewController {
     }
     
     @objc func nextButtonDidTap() {
+        AmplitudeManager.shared.trackEvent(tag: .clickNextDeletereason)
+        
         nextRelay.send()
     }
     

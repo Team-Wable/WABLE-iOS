@@ -139,9 +139,13 @@ private extension WithdrawalGuideViewController {
     }
     
     @objc func nextButtonDidTap() {
+        AmplitudeManager.shared.trackEvent(tag: .clickNextDeleteguide)
+        
         let wableSheet = WableSheetViewController(title: StringLiterals.ProfileDelete.withdrawalSheetTitle)
         let cancelAction = WableSheetAction(title: "취소", style: .gray)
         let withdrawAction = WableSheetAction(title: "삭제하기", style: .primary) { [weak self] in
+            AmplitudeManager.shared.trackEvent(tag: .clickDoneDeleteaccount)
+            
             self?.withdrawRelay.send()
         }
         wableSheet.addActions(cancelAction, withdrawAction)

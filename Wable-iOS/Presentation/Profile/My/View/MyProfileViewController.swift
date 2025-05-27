@@ -444,6 +444,8 @@ private extension MyProfileViewController {
         let actionSheet = WableSheetViewController(title: StringLiterals.ProfileDelete.logoutSheetTitle)
         let cancelAction = WableSheetAction(title: "취소", style: .gray)
         let logoutAction = WableSheetAction(title: "로그아웃하기", style: .primary) { [weak self] in
+            AmplitudeManager.shared.trackEvent(tag: .clickCompleteLogout)
+            
             self?.viewModel.logoutDidTap()
             self?.presentLoginView()
         }
