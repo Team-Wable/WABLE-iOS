@@ -150,6 +150,7 @@ private extension CreateViewitViewController {
         let uploadTapped = viewitInputView.uploadButton
             .publisher(for: .touchUpInside)
             .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .handleEvents(receiveOutput: { _ in AmplitudeManager.shared.trackEvent(tag: .clickUploadLinkpost) })
             .eraseToAnyPublisher()
         
         let input = ViewModel.Input(

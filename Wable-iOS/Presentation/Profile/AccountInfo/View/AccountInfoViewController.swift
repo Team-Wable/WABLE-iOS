@@ -156,6 +156,8 @@ private extension AccountInfoViewController {
     }
     
     @objc func withdrawButtonDidTap() {
+        AmplitudeManager.shared.trackEvent(tag: .clickDeleteAccount)
+        
         let viewController = WithdrawalReasonViewController()
         navigationController?.pushViewController(viewController, animated: true)
     }

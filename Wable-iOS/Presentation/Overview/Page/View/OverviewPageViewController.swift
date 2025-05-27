@@ -208,13 +208,13 @@ private extension OverviewPageViewController {
     func trackPageChangeEvent(for index: Int) {
         switch index {
         case 0:
-            AmplitudeManager.shared.trackEvent(tag: "click_gameschedule")
+            AmplitudeManager.shared.trackEvent(tag: .clickGameschedule)
         case 1:
-            AmplitudeManager.shared.trackEvent(tag: "click_ranking")
+            AmplitudeManager.shared.trackEvent(tag: .clickRanking)
         case 2:
-            AmplitudeManager.shared.trackEvent(tag: "click_news")
+            AmplitudeManager.shared.trackEvent(tag: .clickNews)
         case 3:
-            AmplitudeManager.shared.trackEvent(tag: "click_announcement")
+            AmplitudeManager.shared.trackEvent(tag: .clickAnnouncement)
         default:
             break
         }
