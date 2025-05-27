@@ -78,10 +78,12 @@ final class HomeDetailViewController: NavigationViewController {
         $0.layer.cornerRadius = 16
         $0.isScrollEnabled = false
         $0.backgroundColor = .gray100
-        $0.setPretendard(with: .body4)
+        $0.font = .pretendard(.body4)
         $0.textContainer.lineFragmentPadding = .zero
-        $0.textContainerInset = .init(top: 10, left: 10, bottom: 10, right: 10)
         $0.text = ""
+        $0.textContainerInset.top = 12
+        $0.textContainerInset.left = 8
+        $0.textContainerInset.bottom = 12
     }
     
     private lazy var placeholderLabel: UILabel = UILabel().then {
@@ -124,6 +126,7 @@ final class HomeDetailViewController: NavigationViewController {
         setupConstraint()
         setupDataSource()
         setupAction()
+        setupTapGesture()
         setupDelegate()
         setupBinding()
     }
@@ -167,7 +170,8 @@ private extension HomeDetailViewController {
             $0.verticalEdges.equalToSuperview().inset(10)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalTo(createCommentButton.snp.leading).offset(-7)
-            $0.height.lessThanOrEqualTo(80.adjustedHeight)
+            $0.height.greaterThanOrEqualTo(42.adjustedHeight)
+            $0.height.lessThanOrEqualTo(76.adjustedHeight)
         }
         
         placeholderLabel.snp.makeConstraints {
@@ -185,6 +189,12 @@ private extension HomeDetailViewController {
             $0.centerX.equalToSuperview()
             $0.bottom.equalTo(writeCommentView.snp.top)
         }
+    }
+    
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
     }
     
     func setupDataSource() {
@@ -284,7 +294,26 @@ private extension HomeDetailViewController {
                     self.present(viewController, animated: true)
                 },
                 profileImageViewTapHandler: {
-                    // TODO: 프로필 구현되는 대로 추가적인 설정 필요
+                    if self.activeUserID == item.content.contentInfo.author.id,
+                       let tabBarController = self.tabBarController {
+                        tabBarController.selectedIndex = 4
+                    } else {
+                        let viewController = OtherProfileViewController(
+                            viewModel: .init(
+                                userID: item.content.contentInfo.author.id,
+                                fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
+                                checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
+                                    repository: UserSessionRepositoryImpl(
+                                        userDefaults: .init(
+                                            jsonEncoder: .init(),
+                                            jsonDecoder: .init()
+                                        )
+                                    )
+                                )
+                            ))
+                        
+                        self.navigationController?.pushViewController(viewController, animated: true)
+                    }
                 },
                 ghostButtonTapHandler: {
                     let viewController = WableSheetViewController(title: StringLiterals.Ghost.sheetTitle)
@@ -669,6 +698,15 @@ private extension HomeDetailViewController {
         placeholderLabel.isHidden = !commentTextView.text.isEmpty
     }
 }
+
+// MARK: - @objc method
+
+extension HomeDetailViewController {
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
 
 // MARK: - UICollectionViewDelegate
 
