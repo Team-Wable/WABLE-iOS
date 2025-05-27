@@ -284,7 +284,26 @@ private extension HomeDetailViewController {
                     self.present(viewController, animated: true)
                 },
                 profileImageViewTapHandler: {
-                    // TODO: 프로필 구현되는 대로 추가적인 설정 필요
+                    if self.activeUserID == item.content.contentInfo.author.id,
+                       let tabBarController = self.tabBarController {
+                        tabBarController.selectedIndex = 4
+                    } else {
+                        let viewController = OtherProfileViewController(
+                            viewModel: .init(
+                                userID: item.content.contentInfo.author.id,
+                                fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
+                                checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
+                                    repository: UserSessionRepositoryImpl(
+                                        userDefaults: .init(
+                                            jsonEncoder: .init(),
+                                            jsonDecoder: .init()
+                                        )
+                                    )
+                                )
+                            ))
+                        
+                        self.navigationController?.pushViewController(viewController, animated: true)
+                    }
                 },
                 ghostButtonTapHandler: {
                     let viewController = WableSheetViewController(title: StringLiterals.Ghost.sheetTitle)
