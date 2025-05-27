@@ -78,10 +78,12 @@ final class HomeDetailViewController: NavigationViewController {
         $0.layer.cornerRadius = 16
         $0.isScrollEnabled = false
         $0.backgroundColor = .gray100
-        $0.setPretendard(with: .body4)
+        $0.font = .pretendard(.body4)
         $0.textContainer.lineFragmentPadding = .zero
-        $0.textContainerInset = .init(top: 10, left: 10, bottom: 10, right: 10)
         $0.text = ""
+        $0.textContainerInset.top = 12
+        $0.textContainerInset.left = 8
+        $0.textContainerInset.bottom = 12
     }
     
     private lazy var placeholderLabel: UILabel = UILabel().then {
@@ -167,7 +169,8 @@ private extension HomeDetailViewController {
             $0.verticalEdges.equalToSuperview().inset(10)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalTo(createCommentButton.snp.leading).offset(-7)
-            $0.height.lessThanOrEqualTo(80.adjustedHeight)
+            $0.height.greaterThanOrEqualTo(42.adjustedHeight)
+            $0.height.lessThanOrEqualTo(76.adjustedHeight)
         }
         
         placeholderLabel.snp.makeConstraints {
