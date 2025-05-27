@@ -170,9 +170,9 @@ private extension NotificationPageViewController {
     func trackPageChangeEvent(for index: Int) {
         switch index {
         case 0:
-            AmplitudeManager.shared.trackEvent(tag: "click_activitiesnoti")
+            AmplitudeManager.shared.trackEvent(tag: .clickActivitiesnoti)
         case 1:
-            AmplitudeManager.shared.trackEvent(tag: "click_infonoti")
+            AmplitudeManager.shared.trackEvent(tag: .clickInfonoti)
         default:
             break
         }

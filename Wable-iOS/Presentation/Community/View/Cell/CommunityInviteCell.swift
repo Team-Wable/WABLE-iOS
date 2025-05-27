@@ -142,6 +142,8 @@ private extension CommunityInviteCell {
     @objc func copyLinkButtonDidTap(_ sender: UIButton) {
         guard sender.configuration?.title == Constant.defaultTitle else { return }
         
+        AmplitudeManager.shared.trackEvent(tag: .clickViralinkTeamzone)
+        
         copyLinkClosure?()
         
         showCopyLinkCompletedState()
