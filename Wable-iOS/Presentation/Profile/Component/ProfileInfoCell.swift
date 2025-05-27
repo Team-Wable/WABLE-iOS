@@ -87,7 +87,9 @@ final class ProfileInfoCell: UICollectionViewCell {
         $0.attributedText = "뱃지".pretendardString(with: .caption1)
     }
     
-    private let defaultBadgeImageView = UIImageView(image: .imgBadge)
+    private let defaultBadgeImageView = UIImageView(image: .imgBadge).then {
+        $0.contentMode = .scaleAspectFit
+    }
 
     // MARK: - Initializer
 
