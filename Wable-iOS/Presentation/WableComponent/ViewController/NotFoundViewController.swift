@@ -108,6 +108,8 @@ private extension NotFoundViewController {
     
     func setupAction() {
         let dismissAction = UIAction { [weak self] _ in
+            AmplitudeManager.shared.trackEvent(tag: .clickGobackHome)
+            
             self?.backToHomeAction()
             self?.dismiss(animated: true)
         }
