@@ -256,14 +256,15 @@ private extension WritePostViewController {
 
 private extension WritePostViewController {
     private func updateCharacterCount() {
-        let titleText = titleTextView.textColor == .gray700 ? "" : titleTextView.text
-        let contentText = contentTextView.textColor == .gray500 ? "" : contentTextView.text
+        let titleText = titleTextView.textColor == .wableBlack ? titleTextView.text : ""
+        let contentText = contentTextView.textColor == .wableBlack ? contentTextView.text : ""
         
         let titleCount = titleText?.count ?? 0
         let contentCount = contentText?.count ?? 0
         let totalCount = titleCount + contentCount
         
         countLabel.text = "\(totalCount)/500"
+        countLabel.textColor = totalCount >= 500 ? .error : .gray600
         
         if titleCount > 250 {
             titleTextView.text = String(titleTextView.text.prefix(250))
@@ -351,14 +352,16 @@ extension WritePostViewController: UITextViewDelegate {
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        let isPlaceholder = textView == titleTextView || textView == contentTextView 
-         
-        if isPlaceholder {
+        let isCurrentPlaceholder = (textView == titleTextView && textView.text == StringLiterals.Write.sheetTitle) ||
+                                 (textView == contentTextView && textView.text == StringLiterals.Write.sheetMessage)
+        
+        if isCurrentPlaceholder {
             return true
         }
         
-        let titleCount = titleTextView.textColor == .gray500 ? 0 : titleTextView.text.count
-        let contentCount = contentTextView.textColor == .gray500 ? 0 : contentTextView.text.count
+        let titleCount = titleTextView.textColor == .wableBlack ? titleTextView.text.count : 0
+        let contentCount = contentTextView.textColor == .wableBlack ? contentTextView.text.count : 0
+        
         let currentCount = textView == titleTextView ? titleCount : contentCount
         let otherCount = textView == titleTextView ? contentCount : titleCount
         
@@ -374,6 +377,6 @@ extension WritePostViewController: UITextViewDelegate {
             return false
         }
         
-        return (newTextCount - currentCount) + otherCount + currentCount < 500
+        return (newTextCount - currentCount) + otherCount + currentCount <= 500
     }
 }
