@@ -14,7 +14,6 @@ final class ProfileEditViewController: NavigationViewController {
     // MARK: Property
     // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
     
-    private var defaultImage: String? = nil
     private let profileUseCase = UserProfileUseCase(repository: ProfileRepositoryImpl())
     private let nicknameUseCase = FetchNicknameDuplicationUseCase(repository: AccountRepositoryImpl())
     private let userSessionUseCase = FetchUserInformationUseCase(
@@ -28,6 +27,8 @@ final class ProfileEditViewController: NavigationViewController {
     private let cancelBag = CancelBag()
     
     private var sessionProfile: UserProfile? = nil
+    private var defaultImage: String? = nil
+    private var hasUserSelectedImage = false
     
     // MARK: - UIComponent
     
@@ -58,6 +59,8 @@ final class ProfileEditViewController: NavigationViewController {
         
         self.updateSessionInfo()
         rootView.nickNameTextField.text = nil
+        hasUserSelectedImage = false
+        defaultImage = nil
     }
 }
 
@@ -107,6 +110,8 @@ private extension ProfileEditViewController {
     @objc func switchButtonDidTap() {
         rootView.configureDefaultImage()
         defaultImage = rootView.defaultImageList[0].uppercased
+        hasUserSelectedImage = false
+        updateNextButtonState()
     }
     
     @objc func addButtonDidTap() {
@@ -127,6 +132,8 @@ private extension ProfileEditViewController {
     }
     
     @objc func duplicationCheckButtonDidTap() {
+        rootView.nickNameTextField.endEditing(true)
+        
         guard let text = rootView.nickNameTextField.text else { return }
 
         nicknameUseCase.execute(nickname: text)
@@ -146,33 +153,38 @@ private extension ProfileEditViewController {
     @objc func nextButtonDidTap() {
         guard let profile = sessionProfile else { return }
         
-        guard let text = rootView.nickNameTextField.text,
-              text != "" else {
-            return
-        }
+        let nicknameText = rootView.nickNameTextField.text ?? ""
+        let hasNicknameChanged = !nicknameText.isEmpty && nicknameText != profile.user.nickname
+        let hasImageChanged = defaultImage != nil || hasUserSelectedImage
         
-        profileUseCase.execute(
-            profile: UserProfile(
-                user: User(
-                    id: profile.user.id,
-                    nickname: text,
-                    profileURL: profile.user.profileURL,
-                    fanTeam: profile.user.fanTeam
+        if hasNicknameChanged || hasImageChanged {
+            let finalNickname = hasNicknameChanged ? nicknameText : profile.user.nickname
+            
+            profileUseCase.execute(
+                profile: UserProfile(
+                    user: User(
+                        id: profile.user.id,
+                        nickname: finalNickname,
+                        profileURL: profile.user.profileURL,
+                        fanTeam: profile.user.fanTeam
+                    ),
+                    introduction: profile.introduction,
+                    ghostCount: profile.ghostCount,
+                    lckYears: profile.lckYears,
+                    userLevel: profile.userLevel
                 ),
-                introduction: profile.introduction,
-                ghostCount: profile.ghostCount,
-                lckYears: profile.lckYears,
-                userLevel: profile.userLevel
-            ),
-            image: defaultImage == nil ? rootView.profileImageView.image : nil,
-            defaultProfileType: defaultImage
-        )
-        .withUnretained(self)
-        .sink { _ in
-        } receiveValue: { owner, _ in
-            owner.navigationController?.popViewController(animated: true)
+                image: defaultImage == nil ? rootView.profileImageView.image : nil,
+                defaultProfileType: defaultImage
+            )
+            .withUnretained(self)
+            .sink { _ in
+            } receiveValue: { owner, _ in
+                owner.navigationController?.popViewController(animated: true)
+            }
+            .store(in: cancelBag)
+        } else {
+            navigationController?.popViewController(animated: true)
         }
-        .store(in: cancelBag)
     }
     
     // MARK: - Function Method
@@ -202,6 +214,19 @@ private extension ProfileEditViewController {
         })
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    func updateNextButtonState() {
+        guard let profile = sessionProfile else { return }
+        
+        let nicknameText = rootView.nickNameTextField.text ?? ""
+        let hasNicknameChanged = !nicknameText.isEmpty && nicknameText != profile.user.nickname
+        let hasImageChanged = defaultImage != nil || hasUserSelectedImage
+        
+        let shouldEnable = hasNicknameChanged || hasImageChanged
+        
+        rootView.nextButton.isUserInteractionEnabled = shouldEnable
+        rootView.nextButton.updateStyle(shouldEnable ? .primary : .gray)
     }
 }
 
@@ -238,6 +263,8 @@ extension ProfileEditViewController: PHPickerViewControllerDelegate {
             DispatchQueue.main.async {
                 self.rootView.profileImageView.image = image
                 self.defaultImage = nil
+                self.hasUserSelectedImage = true
+                self.updateNextButtonState()
             }
         }
         
