@@ -127,6 +127,8 @@ private extension ProfileEditViewController {
     }
     
     @objc func duplicationCheckButtonDidTap() {
+        rootView.nickNameTextField.endEditing(true)
+        
         guard let text = rootView.nickNameTextField.text else { return }
 
         nicknameUseCase.execute(nickname: text)
