@@ -25,21 +25,21 @@ final class WritePostViewController: NavigationViewController {
     }
     
     private let stackView: UIStackView = .init(axis: .vertical).then {
-        $0.spacing = 12
+        $0.spacing = 4
     }
     
     private lazy var titleTextView: UITextView = .init().then {
         $0.isScrollEnabled = false
-        $0.textContainerInset = .zero
-        $0.setPretendard(with: .head1, text: StringLiterals.Write.sheetTitle)
+        $0.font = .pretendard(.head1)
+        $0.text = StringLiterals.Write.sheetTitle
         $0.textColor = .gray500
         $0.backgroundColor = .clear
     }
     
     private lazy var contentTextView: UITextView = .init().then {
         $0.isScrollEnabled = false
-        $0.textContainerInset = .zero
-        $0.setPretendard(with: .body2, text: StringLiterals.Write.sheetMessage)
+        $0.font = .pretendard(.body2)
+        $0.text = StringLiterals.Write.sheetMessage
         $0.textColor = .gray500
         $0.backgroundColor = .clear
     }
