@@ -110,6 +110,8 @@ private extension LCKYearViewController {
             return
         }
         
+        AmplitudeManager.shared.trackEvent(tag: .clickNextYearSignup)
+        
         navigationController?.pushViewController(LCKTeamViewController(lckYear: Constant.startYear + selectedIndex), animated: true)
     }
 }
