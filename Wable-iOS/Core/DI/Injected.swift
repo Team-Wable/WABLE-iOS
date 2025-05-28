@@ -11,8 +11,8 @@ import Foundation
 struct Injected<T> {
     private var dependency: T
     
-    init(config: BuildConfiguration = .release) {
-        self.dependency = AppDIContainer.shared.resolve(for: T.self, config: config)
+    init(env: AppEnvironment = .production) {
+        self.dependency = AppDIContainer.shared.resolve(for: T.self, env: env)
     }
     
     var wrappedValue: T {

@@ -19,22 +19,22 @@ extension AppDelegate {
         
         // MARK: - Report
         
-        diContainer.register(for: ReportRepository.self) { config in
-            switch config {
-            case .debug:
+        diContainer.register(for: ReportRepository.self) { env in
+            switch env {
+            case .mock:
                 return MockReportRepository()
-            case .release:
+            case .production:
                 return ReportRepositoryImpl()
             }
         }
         
         // MARK: - Viewit
 
-        diContainer.register(for: ViewitRepository.self) { config in
-            switch config {
-            case .debug:
+        diContainer.register(for: ViewitRepository.self) { env in
+            switch env {
+            case .mock:
                 return MockViewitRepository()
-            case .release:
+            case .production:
                 return ViewitRepositoryImpl()
             }
         }
@@ -43,11 +43,11 @@ extension AppDelegate {
         
         // MARK: - Comment
         
-        diContainer.register(for: CommentRepository.self) { config in
-            switch config {
-            case .debug:
+        diContainer.register(for: CommentRepository.self) { env in
+            switch env {
+            case .mock:
                 return MockCommentRepository()
-            case .release:
+            case .production:
                 return CommentRepositoryImpl()
             }
         }
@@ -64,26 +64,26 @@ extension AppDelegate {
         
         // MARK: - Ghost
 
-        diContainer.register(for: GhostRepository.self) { config in
+        diContainer.register(for: GhostRepository.self) { env in
             return GhostRepositoryImpl()
         }
         
         // MARK: - AppVersion
         
-        diContainer.register(for: AppVersionRepository.self) { config in
-            switch config {
-            case .debug:
+        diContainer.register(for: AppVersionRepository.self) { env in
+            switch env {
+            case .mock:
                 return MockAppVersionRepository()
-            case .release:
+            case .production:
                 return AppVersionRepositoryImpl()
             }
         }
         
-        diContainer.register(for: UpdateAlertPolicyRepository.self) { config in
-            switch config {
-            case .debug:
+        diContainer.register(for: UpdateAlertPolicyRepository.self) { env in
+            switch env {
+            case .mock:
                 return MockUpdateAlertPolicyRepository()
-            case .release:
+            case .production:
                 return UpdateAlertPolicyRepositoryImpl()
             }
         }
