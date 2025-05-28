@@ -27,6 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             jsonDecoder: JSONDecoder()
         )
     )
+    private let checkAppUpdateRequirementUseCase = CheckAppUpdateRequirementUseCaseImpl()
     
     // MARK: - UIComponent
     
@@ -45,7 +46,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window?.makeKeyAndVisible()
         
         setupBinding()
-        checkForceUpdate()
+        checkUpdate()
     }
     
     // MARK: - Kakao URLContexts
@@ -168,104 +169,48 @@ private extension SceneDelegate {
 // MARK: - Helper Method
 
 private extension SceneDelegate {
-    func checkForceUpdate() {
-        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-        
-        guard let url = URL(string: StringLiterals.URL.itunes) else {
-            proceedToAppLaunch()
-            
-            return
+    func checkUpdate() {
+        Task {
+            do {
+                let requirement = try await checkAppUpdateRequirementUseCase.execute()
+                
+                if requirement == .none {
+                    await MainActor.run { proceedToAppLaunch() }
+                    return
+                }
+                
+                await MainActor.run { showUpdateAlert(for: requirement) }
+            } catch {
+                WableLogger.log(error.localizedDescription, for: .error)
+            }
         }
-        
-        URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
-            guard let self = self else { return }
-            
-            if let error = error {
-                WableLogger.log("앱스토어 버전 확인 실패: \(error.localizedDescription)", for: .error)
-                DispatchQueue.main.async {
-                    self.proceedToAppLaunch()
-                }
-                return
-            }
-            
-            guard let data = data,
-                  let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
-                  let results = json["results"] as? [[String: Any]],
-                  let appStoreInfo = results.first,
-                  let appStoreVersion = appStoreInfo["version"] as? String,
-                  let currentVersion = appVersion
-            else {
-                WableLogger.log("앱스토어 데이터 파싱 실패", for: .error)
-                
-                DispatchQueue.main.async {
-                    self.proceedToAppLaunch()
-                }
-                
-                return
-            }
-            
-            DispatchQueue.main.async {
-                WableLogger.log(
-                    "currentVersion: \(currentVersion), appStoreVersion: \(appStoreVersion)",
-                    for: .debug
-                )
-                
-                let isUpdateNeeded = self.isForceUpdateNeeded(
-                    currentVersion: currentVersion,
-                    appStoreVersion: appStoreVersion
-                )
-                
-                isUpdateNeeded ? self.showForceUpdateAlert() : self.proceedToAppLaunch()
-            }
-            
-        }.resume()
     }
     
-    func showForceUpdateAlert() {
-        let view = WableSheetViewController(
+    func showUpdateAlert(for requirement: UpdateRequirement) {
+        let sheet = WableSheetViewController(
             title: StringLiterals.Update.title,
             message: StringLiterals.Update.message
         )
         
-        view.addAction(.init(title: "업데이트 하기", style: .primary, handler: {
-            guard let url = URL(string: StringLiterals.URL.appStore) else {
-                WableLogger.log("앱스토어 URL이 올바르지 않습니다", for: .error)
-                return
-            }
-            
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url, options: [:]) { success in
-                    if !success {
-                        WableLogger.log("앱스토어 열기 실패", for: .error)
-                    }
-                }
-            }
-        }))
-        
-        self.window?.rootViewController?.present(view, animated: true)
-    }
-    
-    func isForceUpdateNeeded(currentVersion: String, appStoreVersion: String) -> Bool {
-        let currentComponents = convertVersionComponents(from: currentVersion)
-        let appStoreComponents = convertVersionComponents(from: appStoreVersion)
-        
-        if currentComponents.major != appStoreComponents.major {
-            return currentComponents.major < appStoreComponents.major
+        if requirement == .frequent || requirement == .optional {
+            let cancel = WableSheetAction(title: "취소", style: .gray) { [weak self] in self?.proceedToAppLaunch() }
+            sheet.addAction(cancel)
         }
         
-        if currentComponents.minor != appStoreComponents.minor {
-            return currentComponents.minor < appStoreComponents.minor
-        }
+        let update = WableSheetAction(title: "업데이트 하기", style: .primary) { [weak self] in self?.openAppStore() }
+        sheet.addAction(update)
         
-        return currentComponents.patch < appStoreComponents.patch
+        window?.rootViewController?.present(sheet, animated: true)
     }
     
-    func convertVersionComponents(from version: String) -> (major: Int, minor: Int, patch: Int) {
-        let components = version.split(separator: ".").map { Int($0) ?? 0 }
-        return (
-            major: components.count > 0 ? components[0] : 0,
-            minor: components.count > 1 ? components[1] : 0,
-            patch: components.count > 2 ? components[2] : 0
-        )
+    func openAppStore() {
+        guard let url = URL(string: StringLiterals.URL.appStore),
+              UIApplication.shared.canOpenURL(url)
+        else {
+            WableLogger.log("앱스토어를 열 수 없습니다.", for: .error)
+            return
+        }
+        
+        UIApplication.shared.open(url)
     }
 }

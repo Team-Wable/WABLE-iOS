@@ -67,5 +67,25 @@ extension AppDelegate {
         diContainer.register(for: GhostRepository.self) { config in
             return GhostRepositoryImpl()
         }
+        
+        // MARK: - AppVersion
+        
+        diContainer.register(for: AppVersionRepository.self) { config in
+            switch config {
+            case .debug:
+                return MockAppVersionRepository()
+            case .release:
+                return AppVersionRepositoryImpl()
+            }
+        }
+        
+        diContainer.register(for: UpdateAlertPolicyRepository.self) { config in
+            switch config {
+            case .debug:
+                return MockUpdateAlertPolicyRepository()
+            case .release:
+                return UpdateAlertPolicyRepositoryImpl()
+            }
+        }
     }
 }
