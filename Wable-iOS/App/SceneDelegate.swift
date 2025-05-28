@@ -182,6 +182,7 @@ private extension SceneDelegate {
                 await MainActor.run { showUpdateAlert(for: requirement) }
             } catch {
                 WableLogger.log(error.localizedDescription, for: .error)
+                await MainActor.run { proceedToAppLaunch() }
             }
         }
     }
