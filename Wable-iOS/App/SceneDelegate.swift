@@ -118,25 +118,14 @@ private extension SceneDelegate {
     
     func proceedToAppLaunch() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) { [weak self] in
-            guard let self = self else { return }
+            guard let self = self,
+            let session = userSessionRepository.fetchActiveUserSession(),
+            let isAutoLoginEnabled = session.isAutoLoginEnabled
+            else {
+                return
+            }
             
-            userSessionRepository.checkAutoLogin()
-                .withUnretained(self)
-                .sink { [weak self] completion in
-                    guard let self = self else { return }
-                    
-                    switch completion {
-                    case .finished:
-                        break
-                    case .failure(let error):
-                        WableLogger.log("자동 로그인 여부 체크 실패: \(error)", for: .error)
-                        self.configureLoginScreen()
-                    }
-                } receiveValue: { owner, isAutologinEnabled in
-                    WableLogger.log("자동 로그인 여부 체크 성공: \(isAutologinEnabled)", for: .debug)
-                    isAutologinEnabled ? owner.configureMainScreen() : owner.configureLoginScreen()
-                }
-                .store(in: cancelBag)
+            (session.nickname != "" && isAutoLoginEnabled) ? configureMainScreen() : configureLoginScreen()
         }
     }
 }

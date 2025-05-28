@@ -83,6 +83,8 @@ final class WritePostViewController: NavigationViewController {
         self.viewModel = viewModel
         
         super.init(type: .page(type: .detail, title: "새로운 글"))
+        
+        hidesBottomBarWhenPushed = true
     }
     
     required init?(coder: NSCoder) {
