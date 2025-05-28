@@ -11,12 +11,12 @@ import Foundation
 
 protocol DependencyRegistable {
     func register<T>(for type: T.Type, object: T)
-    func register<T>(for type: T.Type, _ resolver: @escaping (BuildConfiguration) -> T)
+    func register<T>(for type: T.Type, _ resolver: @escaping (AppEnvironment) -> T)
     func unregister<T>(for type: T.Type)
 }
 
 protocol DependencyResolvable {
-    func resolve<T>(for type: T.Type, config: BuildConfiguration) -> T
+    func resolve<T>(for type: T.Type, env: AppEnvironment) -> T
 }
 
 typealias DependencyContainer = DependencyRegistable & DependencyResolvable
@@ -36,7 +36,7 @@ extension AppDIContainer: DependencyContainer {
         dependencies[key(type)] = object
     }
     
-    func register<T>(for type: T.Type, _ resolver: @escaping (BuildConfiguration) -> T) {
+    func register<T>(for type: T.Type, _ resolver: @escaping (AppEnvironment) -> T) {
         dependencies[key(type)] = resolver
     }
     
@@ -44,19 +44,19 @@ extension AppDIContainer: DependencyContainer {
         dependencies.removeValue(forKey: key(type))
     }
     
-    func resolve<T>(for type: T.Type, config: BuildConfiguration) -> T {
+    func resolve<T>(for type: T.Type, env: AppEnvironment) -> T {
         let key = key(type)
         
-        if config == .release,
+        if env == .production,
            let object = dependencies[key] as? T {
             return object
         }
         
-        if let resolver = dependencies[key] as? (BuildConfiguration) -> T {
-            return resolver(config)
+        if let resolver = dependencies[key] as? (AppEnvironment) -> T {
+            return resolver(env)
         }
         
-        fatalError("No dependency registered for \(key)")
+        fatalError("No dependency registered for \(key) in \(env)")
     }
     
     private func key<T>(_ type: T.Type) -> String {
