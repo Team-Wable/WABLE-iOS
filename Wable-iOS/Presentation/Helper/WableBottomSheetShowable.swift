@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - WableBottomSheetShowable
+
 protocol WableBottomSheetShowable: AnyObject {
     func presentBottomSheet(actions: WableBottomSheetAction...)
 }
@@ -18,5 +20,7 @@ extension WableBottomSheetShowable where Self: UIViewController {
         present(wableBottomSheet, animated: true)
     }
 }
+
+// MARK: - UIViewController Extension
 
 extension UIViewController: WableBottomSheetShowable {}

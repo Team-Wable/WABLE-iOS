@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - WableSheetShowable
+
 protocol WableSheetShowable {
     func showWableSheet(title: String, message: String?, actions: WableSheetAction...)
 }
@@ -25,5 +27,7 @@ extension WableSheetShowable where Self: UIViewController {
         present(wableSheet, animated: true)
     }
 }
+
+// MARK: - UIViewController Extension
 
 extension UIViewController: WableSheetShowable {}
