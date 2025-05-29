@@ -1,0 +1,22 @@
+//
+//  WableBottomSheetShowable.swift
+//  Wable-iOS
+//
+//  Created by 김진웅 on 5/30/25.
+//
+
+import UIKit
+
+protocol WableBottomSheetShowable: AnyObject {
+    func presentBottomSheet(actions: WableBottomSheetAction...)
+}
+
+extension WableBottomSheetShowable where Self: UIViewController {
+    func presentBottomSheet(actions: WableBottomSheetAction...) {
+        let wableBottomSheet = WableBottomSheetController()
+        actions.forEach { wableBottomSheet.addActions($0) }
+        present(wableBottomSheet, animated: true)
+    }
+}
+
+extension UIViewController: WableBottomSheetShowable {}
