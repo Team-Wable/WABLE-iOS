@@ -10,11 +10,11 @@ import UIKit
 // MARK: - WableBottomSheetShowable
 
 protocol WableBottomSheetShowable: AnyObject {
-    func presentBottomSheet(actions: WableBottomSheetAction...)
+    func showBottomSheet(actions: WableBottomSheetAction...)
 }
 
 extension WableBottomSheetShowable where Self: UIViewController {
-    func presentBottomSheet(actions: WableBottomSheetAction...) {
+    func showBottomSheet(actions: WableBottomSheetAction...) {
         let wableBottomSheet = WableBottomSheetController()
         actions.forEach { wableBottomSheet.addActions($0) }
         present(wableBottomSheet, animated: true)
