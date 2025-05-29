@@ -212,14 +212,8 @@ private extension ViewitListViewController {
         
         output.errorMessage
             .sink { [weak self] message in
-                let alertController = UIAlertController(
-                    title: "오류가 발생했어요.",
-                    message: message,
-                    preferredStyle: .alert
-                )
                 let confirmAction = UIAlertAction(title: "확인", style: .default)
-                alertController.addAction(confirmAction)
-                self?.present(alertController, animated: true)
+                self?.showAlert(title: "오류 발생!", message: message, actions: confirmAction)
             }
             .store(in: cancelBag)
     }
@@ -234,8 +228,6 @@ private extension ViewitListViewController {
     }
     
     func presentBottomSheet(for userRole: UserRole) {
-        let bottomSheet = WableBottomSheetController()
-        
         switch userRole {
         case .admin:
             let reportAction = WableBottomSheetAction(title: "신고하기") { [weak self] in
@@ -244,20 +236,18 @@ private extension ViewitListViewController {
             let banAction = WableBottomSheetAction(title: "밴하기") { [weak self] in
                 self?.presentActionSheet(for: .ban)
             }
-            bottomSheet.addActions(reportAction, banAction)
+            showBottomSheet(actions: reportAction, banAction)
         case .owner:
             let deleteAction = WableBottomSheetAction(title: "삭제하기") { [weak self] in
                 self?.presentActionSheet(for: .delete)
             }
-            bottomSheet.addAction(deleteAction)
+            showBottomSheet(actions: deleteAction)
         case .viewer:
             let reportAction = WableBottomSheetAction(title: "신고하기") { [weak self] in
                 self?.presentActionSheet(for: .report)
             }
-            bottomSheet.addAction(reportAction)
+            showBottomSheet(actions: reportAction)
         }
-        
-        present(bottomSheet, animated: true)
     }
     
     func presentActionSheet(for action: ViewitBottomSheetActionKind) {
@@ -280,15 +270,10 @@ private extension ViewitListViewController {
             buttonTitle = Constant.Ban.buttonTitle
         }
         
-        let cancelAction = WableSheetAction(title: Constant.cancelButtonTitle, style: .gray)
         let primaryAction = WableSheetAction(title: buttonTitle, style: .primary) { [weak self] in
             self?.bottomSheetActionRelay.send(action)
         }
-        
-        let wableSheet = WableSheetViewController(title: title, message: message).then {
-            $0.addActions(cancelAction, primaryAction)
-        }
-        present(wableSheet, animated: true)
+        showWableSheetWithCancel(title: title, message: message, action: primaryAction)
     }
     
     func showMyProfile() {
@@ -351,7 +336,5 @@ private extension ViewitListViewController {
             static let message = "게시글이 영구히 삭제됩니다."
             static let buttonTitle = "삭제하기"
         }
-        
-        static let cancelButtonTitle = "취소"
     }
 }
