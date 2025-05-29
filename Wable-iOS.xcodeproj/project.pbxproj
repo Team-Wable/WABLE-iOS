@@ -268,6 +268,7 @@
 		DE3CA28B2DD4697700BF5E87 /* RemoveUserSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3CA28A2DD4697700BF5E87 /* RemoveUserSessionUseCase.swift */; };
 		DE4AE84F2DE8B645003E20AB /* WableSheetShowable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4AE84E2DE8B645003E20AB /* WableSheetShowable.swift */; };
 		DE4AE8512DE8B6FF003E20AB /* WableBottomSheetShowable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4AE8502DE8B6FF003E20AB /* WableBottomSheetShowable.swift */; };
+		DE4AE8532DE8BA18003E20AB /* UIAlertShowable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4AE8522DE8BA18003E20AB /* UIAlertShowable.swift */; };
 		DE54B03C2D82C43F009A7C34 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */; };
 		DE54B03E2D82CD82009A7C34 /* NotFoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */; };
 		DE54B0402D832E78009A7C34 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */; };
@@ -629,6 +630,7 @@
 		DE3CA28A2DD4697700BF5E87 /* RemoveUserSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveUserSessionUseCase.swift; sourceTree = "<group>"; };
 		DE4AE84E2DE8B645003E20AB /* WableSheetShowable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSheetShowable.swift; sourceTree = "<group>"; };
 		DE4AE8502DE8B6FF003E20AB /* WableBottomSheetShowable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableBottomSheetShowable.swift; sourceTree = "<group>"; };
+		DE4AE8522DE8BA18003E20AB /* UIAlertShowable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertShowable.swift; sourceTree = "<group>"; };
 		DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFoundViewController.swift; sourceTree = "<group>"; };
 		DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
@@ -2013,6 +2015,7 @@
 				DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */,
 				DE4AE84E2DE8B645003E20AB /* WableSheetShowable.swift */,
 				DE4AE8502DE8B6FF003E20AB /* WableBottomSheetShowable.swift */,
+				DE4AE8522DE8BA18003E20AB /* UIAlertShowable.swift */,
 				DE8E86402D91A092000A4292 /* Extension */,
 			);
 			path = Helper;
@@ -2665,6 +2668,7 @@
 				DDFB22482D8BBCB300FEA24A /* ProfileRegisterView.swift in Sources */,
 				DD2968122D6DACF700143851 /* Community.swift in Sources */,
 				DECC36DF2DC3B24000336B7B /* CreateViewitViewController.swift in Sources */,
+				DE4AE8532DE8BA18003E20AB /* UIAlertShowable.swift in Sources */,
 				DD2968132D6DACF700143851 /* TriggerType.swift in Sources */,
 				DD9980DF2D834F4E00EBBFBC /* CommentCollectionViewCell.swift in Sources */,
 				DD9980E02D834F4E00EBBFBC /* PostUserInfoView.swift in Sources */,
