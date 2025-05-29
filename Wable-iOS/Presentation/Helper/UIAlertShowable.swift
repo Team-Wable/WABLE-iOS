@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - UIAlertShowable
+
 protocol UIAlertShowable: AnyObject {
     func showAlert(title: String, message: String?, actions: UIAlertAction...)
 }
@@ -26,5 +28,7 @@ extension UIAlertShowable where Self: UIViewController {
         present(alert, animated: true)
     }
 }
+
+// MARK: - UIViewController Extension
 
 extension UIViewController: UIAlertShowable {}
