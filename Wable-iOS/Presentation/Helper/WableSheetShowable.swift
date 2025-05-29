@@ -20,10 +20,10 @@ extension WableSheetShowable where Self: UIViewController {
         present(wableSheet, animated: true)
     }
     
-    func showWableSheetWithCancel(title: String, message: String? = nil, confirmAction: WableSheetAction) {
+    func showWableSheetWithCancel(title: String, message: String? = nil, action: WableSheetAction) {
         let wableSheet = WableSheetViewController(title: title, message: message)
         let cancelAction = WableSheetAction(title: "취소", style: .gray)
-        wableSheet.addActions(cancelAction, confirmAction)
+        wableSheet.addActions(cancelAction, action)
         present(wableSheet, animated: true)
     }
 }
