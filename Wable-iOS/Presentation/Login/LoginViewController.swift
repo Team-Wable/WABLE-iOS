@@ -137,13 +137,13 @@ private extension LoginViewController {
                 kakaoLoginTrigger: kakaoButton
                     .publisher(for: .touchUpInside)
                     .handleEvents(receiveOutput: { _ in
-                        WableLogger.log("카카오 로그인 버튼 트리거 발생", for: .debug)
+                        AmplitudeManager.shared.trackEvent(tag: .clickSigninKakao)
                     })
                     .eraseToAnyPublisher(),
                 appleLoginTrigger: appleButton
                     .publisher(for: .touchUpInside)
                     .handleEvents(receiveOutput: { _ in
-                        WableLogger.log("애플 로그인 버튼 트리거 발생", for: .debug)
+                        AmplitudeManager.shared.trackEvent(tag: .clickSigninApple)
                     })
                     .eraseToAnyPublisher()
             ),
@@ -156,7 +156,9 @@ private extension LoginViewController {
             .sink { owner, sessionInfo in
                 let condition = sessionInfo.isNewUser || sessionInfo.user.nickname == ""
                 
-                WableLogger.log("새로운 유저인가요? : \(sessionInfo.isNewUser || sessionInfo.user.nickname.isEmpty)", for: .debug)
+                if condition {
+                    AmplitudeManager.shared.trackEvent(tag: .clickAgreePopupSignup)
+                }
                 
                 condition ? owner.navigateToOnboarding() : owner.navigateToHome()
             }

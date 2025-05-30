@@ -86,6 +86,8 @@ private extension MyProfileEmptyCell {
     }
     
     @objc func writeButtonDidTap() {
+        AmplitudeManager.shared.trackEvent(tag: .clickWriteFirstpost)
+        
         writeButtonDidTapClosure?()
     }
     
