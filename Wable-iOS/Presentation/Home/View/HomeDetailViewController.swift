@@ -555,6 +555,7 @@ private extension HomeDetailViewController {
                 return
             }
             
+            createCommentButton.isUserInteractionEnabled = false
             self.didCreateTappedSubject.send(self.commentTextView.text)
         }), for: .touchUpInside)
         
@@ -653,18 +654,18 @@ private extension HomeDetailViewController {
             .withUnretained(self)
             .sink { owner, isSucceed in
                 if isSucceed {
+                    let toast = ToastView(status: .complete, message: StringLiterals.Detail.rippleCompleteToast)
+                    
+                    toast.show()
+                    owner.scrollToTop()
                     owner.commentTextView.text = ""
                     owner.commentTextView.isScrollEnabled = false
                     owner.commentTextView.sizeToFit()
                     owner.commentTextView.setNeedsUpdateConstraints()
                     owner.commentTextView.superview?.layoutIfNeeded()
-                    owner.placeholderLabel.isHidden = false
                     owner.commentTextView.endEditing(true)
-                    
-                    let toast = ToastView(status: .complete, message: StringLiterals.Detail.rippleCompleteToast)
-                    toast.show()
-                    
-                    owner.scrollToTop()
+                    owner.placeholderLabel.isHidden = false
+                    owner.createCommentButton.isUserInteractionEnabled = true
                 }
             }
             .store(in: cancelBag)
