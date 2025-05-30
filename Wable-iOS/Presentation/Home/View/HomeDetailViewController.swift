@@ -194,6 +194,8 @@ private extension HomeDetailViewController {
     private func setupTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self
+        
         view.addGestureRecognizer(tapGesture)
     }
     
@@ -724,6 +726,14 @@ extension HomeDetailViewController: UICollectionViewDelegate {
                 willDisplayLastItemSubject.send()
             }
         }
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+extension HomeDetailViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        return !(touch.view == createCommentButton)
     }
 }
 
