@@ -211,7 +211,11 @@ private extension MyProfileViewController {
                 info: item.contentInfo,
                 authorType: .mine,
                 cellType: .list,
-                contentImageViewTapHandler: nil,
+                contentImageViewTapHandler: { [weak self] in
+                    guard let image = cell.contentImageView.image else { return }
+                    
+                    self?.present(PhotoDetailViewController(image: image), animated: true)
+                },
                 likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeContent(for: item.id) },
                 settingButtonTapHandler: { [weak self] in
                     let bottomSheet = WableBottomSheetController()
