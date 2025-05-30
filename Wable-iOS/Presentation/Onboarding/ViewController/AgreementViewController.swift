@@ -145,9 +145,13 @@ private extension AgreementViewController {
     }
     
     @objc func nextButtonDidTap() {
+        AmplitudeManager.shared.trackEvent(tag: .clickCompleteTncSignup)
+        
         userInformationUseCase.fetchActiveUserInfo()
             .withUnretained(self)
-            .sink { owner, userSession in
+            .sink {
+                owner,
+                userSession in
                 guard let userSession = userSession else { return }
                 
                 owner.profileUseCase.execute(
@@ -191,31 +195,40 @@ private extension AgreementViewController {
                         isAutoLoginEnabled: true,
                         notificationBadgeCount: userSession.notificationBadgeCount
                     )
-                    .sink(receiveCompletion: { _ in
-                    }, receiveValue: { _ in
-                        WableLogger.log("세션 저장 완료", for: .debug)
-                        
-                        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                              let loginViewController = windowScene.windows.first?.rootViewController
-                        else {
-                            return
-                        }
-                        
-                        let tabBarController = TabBarController()
-                        
-                        self.dismiss(animated: false) {
-                            loginViewController.present(tabBarController, animated: true) {
-                                let noticeViewController = WableSheetViewController(
-                                    title: StringLiterals.Onboarding.completeSheetTitle,
-                                    message: "\(self.nickname)님\n와블의 일원이 되신 것을 환영해요.\nLCK 함께 보며 같이 즐겨요 :)"
-                                )
-                                
-                                noticeViewController.addAction(.init(title: StringLiterals.Onboarding.completeButtonTitle, style: .primary))
-                                
-                                tabBarController.present(noticeViewController, animated: true)
+                    .sink(
+                        receiveCompletion: { _ in
+                        },
+                        receiveValue: { _ in
+                            WableLogger.log("세션 저장 완료", for: .debug)
+                            
+                            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                                  let loginViewController = windowScene.windows.first?.rootViewController
+                            else {
+                                return
                             }
-                        }
-                    })
+                            
+                            let tabBarController = TabBarController()
+                            
+                            self.dismiss(animated: false) {
+                                loginViewController.present(tabBarController, animated: true) {
+                                    let noticeViewController = WableSheetViewController(
+                                        title: StringLiterals.Onboarding.completeSheetTitle,
+                                        message: "\(self.nickname)님\n와블의 일원이 되신 것을 환영해요.\nLCK 함께 보며 같이 즐겨요 :)"
+                                    )
+                                    
+                                    noticeViewController.addAction(
+                                        .init(
+                                            title: StringLiterals.Onboarding.completeButtonTitle,
+                                            style: .primary,
+                                            handler: {
+                                                AmplitudeManager.shared.trackEvent(tag: .clickJoinPopupSignup)
+                                            })
+                                    )
+                                    
+                                    tabBarController.present(noticeViewController, animated: true)
+                                }
+                            }
+                        })
                     .store(in: cancelBag)
                 }
                 .store(in: owner.cancelBag)

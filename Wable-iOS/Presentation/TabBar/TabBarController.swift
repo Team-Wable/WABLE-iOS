@@ -197,6 +197,21 @@ extension TabBarController: UITabBarControllerDelegate {
             }
         }
         
+        switch currentIndex {
+        case 0:
+            AmplitudeManager.shared.trackEvent(tag: .clickHomeBotnavi)
+        case 1:
+            AmplitudeManager.shared.trackEvent(tag: .clickCommunityBotnavi)
+        case 2:
+            AmplitudeManager.shared.trackEvent(tag: .clickNewsBotnavi)
+        case 3:
+            AmplitudeManager.shared.trackEvent(tag: .clickViewitBotnavi)
+        case 4:
+            AmplitudeManager.shared.trackEvent(tag: .clickMyprofileBotnavi)
+        default:
+            break
+        }
+        
         if previousIndex == 4 && currentIndex == 0 {
             homeViewController.showLoadingScreen()
         }
