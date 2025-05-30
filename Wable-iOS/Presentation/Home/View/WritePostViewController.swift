@@ -139,6 +139,10 @@ private extension WritePostViewController {
             $0.adjustedHeightEqualTo(253)
         }
         
+        contentTextView.snp.makeConstraints { make in
+            make.height.greaterThanOrEqualTo(300)
+        }
+        
         deleteButton.snp.makeConstraints {
             $0.top.equalTo(imageView).offset(16)
             $0.trailing.equalTo(imageView).inset(16)
