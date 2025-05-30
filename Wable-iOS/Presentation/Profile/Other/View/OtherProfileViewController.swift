@@ -210,7 +210,11 @@ private extension OtherProfileViewController {
                 info: item.contentInfo,
                 authorType: .others,
                 cellType: .list,
-                contentImageViewTapHandler: nil,
+                contentImageViewTapHandler: { [weak self] in
+                    guard let image = cell.contentImageView.image else { return }
+                    
+                    self?.present(PhotoDetailViewController(image: image), animated: true)
+                },
                 likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeContent(for: item.id) },
                 settingButtonTapHandler: { [weak self] in
                     guard let userRole = self?.viewModel.checkUserRole(),
