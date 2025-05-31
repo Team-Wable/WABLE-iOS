@@ -154,7 +154,7 @@ private extension LoginViewController {
             .receive(on: DispatchQueue.main)
             .withUnretained(self)
             .sink { owner, sessionInfo in
-                let condition = sessionInfo.isNewUser || sessionInfo.user.nickname.isEmpty
+                let condition = sessionInfo.isNewUser || sessionInfo.user.nickname == ""
                 
                 if condition {
                     AmplitudeManager.shared.trackEvent(tag: .clickAgreePopupSignup)
