@@ -194,10 +194,8 @@ private extension CreateViewitViewController {
         
         output.errorMessage
             .sink { [weak self] message in
-                let alertController = UIAlertController(title: "에러 발생!", message: message, preferredStyle: .alert)
                 let confirmAction = UIAlertAction(title: "확인", style: .default)
-                alertController.addAction(confirmAction)
-                self?.present(alertController, animated: true)
+                self?.showAlert(title: "에러 발생!", message: message, actions: confirmAction)
             }
             .store(in: cancelBag)
     }
@@ -225,12 +223,9 @@ private extension CreateViewitViewController {
     }
     
     func presentExitSheet() {
-        let wableSheetViewController = WableSheetViewController(title: StringLiterals.Exit.sheetTitle, message: nil)
-        let cancelAction = WableSheetAction(title: "취소", style: .gray)
-        let confirmAction = WableSheetAction(title: "나가기", style: .primary) { [weak self] in
+        let exitAction = WableSheetAction(title: "나가기", style: .primary) { [weak self] in
             self?.dismiss(animated: true)
         }
-        wableSheetViewController.addActions(cancelAction, confirmAction)
-        present(wableSheetViewController, animated: true)
+        showWableSheetWithCancel(title: StringLiterals.Exit.sheetTitle, action: exitAction)
     }
 }
