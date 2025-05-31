@@ -33,6 +33,7 @@ final class PostUserInfoView: UIView {
     let profileImageView: UIImageView = UIImageView().then {
         $0.roundCorners([.all], radius: 36 / 2)
         $0.isUserInteractionEnabled = true
+        $0.contentMode = .scaleAspectFill
     }
     
     private let fanTeamImageView: UIImageView = UIImageView()

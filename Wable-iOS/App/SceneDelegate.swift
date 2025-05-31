@@ -119,14 +119,14 @@ private extension SceneDelegate {
     
     func proceedToAppLaunch() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) { [weak self] in
-            guard let self = self,
-            let session = userSessionRepository.fetchActiveUserSession(),
-            let isAutoLoginEnabled = session.isAutoLoginEnabled
-            else {
-                return
-            }
+            guard let self = self else { return }
             
-            (session.nickname != "" && isAutoLoginEnabled) ? configureMainScreen() : configureLoginScreen()
+            if let session = userSessionRepository.fetchActiveUserSession(),
+               let isAutoLoginEnabled = session.isAutoLoginEnabled {
+                (session.nickname != "" && isAutoLoginEnabled) ? configureMainScreen() : configureLoginScreen()
+            } else {
+                configureLoginScreen()
+            }
         }
     }
 }
