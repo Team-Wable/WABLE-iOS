@@ -363,7 +363,10 @@ private extension HomeDetailViewController {
                 }
             }), for: .touchUpInside)
             
-            self.updatePlaceholder(for: item.content.contentInfo.author.nickname, type: .ripple)
+            if let text = placeholderLabel.text,
+               !text.contains(Constant.replyPlaceholder) && !text.contains(Constant.ripplePlaceholder) {
+                self.updatePlaceholder(for: item.content.contentInfo.author.nickname, type: .ripple)
+            }
         }
         
         let commentCellRegistration = UICollectionView.CellRegistration <
