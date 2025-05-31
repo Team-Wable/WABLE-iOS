@@ -83,6 +83,8 @@ final class WritePostViewController: NavigationViewController {
         self.viewModel = viewModel
         
         super.init(type: .page(type: .detail, title: "새로운 글"))
+        
+        hidesBottomBarWhenPushed = true
     }
     
     required init?(coder: NSCoder) {
@@ -135,6 +137,10 @@ private extension WritePostViewController {
         imageView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.adjustedHeightEqualTo(253)
+        }
+        
+        contentTextView.snp.makeConstraints { make in
+            make.height.greaterThanOrEqualTo(300)
         }
         
         deleteButton.snp.makeConstraints {
