@@ -104,8 +104,6 @@ final class HomeViewController: NavigationViewController {
         }
       
         willAppearSubject.send()
-        
-        scrollToTop()
     }
 }
 
