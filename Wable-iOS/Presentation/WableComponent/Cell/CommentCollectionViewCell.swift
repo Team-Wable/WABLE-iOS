@@ -54,6 +54,7 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     
     private let blindImageView: UIImageView = UIImageView(image: .imgReplyIsBlind).then {
         $0.contentMode = .scaleAspectFit
+        $0.isHidden = true
     }
     
     private let divisionLine: UIView = UIView().then {
@@ -84,6 +85,14 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         infoView.snp.updateConstraints {
             $0.leading.trailing.equalToSuperview()
         }
+        
+        blindImageView.isHidden = true
+        contentLabel.isHidden = false
+        
+        blindImageView.snp.removeConstraints()
+        ghostCell(opacity: 1.0)
+        
+        replyButton.isHidden = false
     }
 }
 
@@ -100,6 +109,7 @@ private extension CommentCollectionViewCell {
             contentLabel,
             likeButton,
             replyButton,
+            blindImageView,
             divisionLine
         )
     }
@@ -262,6 +272,7 @@ extension CommentCollectionViewCell {
     }
     
     func configurePostStatus(info: CommentInfo) {
+        WableLogger.log("\(info.status)", for: .error)
         switch info.status {
         case .normal:
             ghostCell(opacity: info.opacity.alpha)
@@ -271,15 +282,18 @@ extension CommentCollectionViewCell {
             ghostButton.configureButton(type: .large, status: .disabled)
         case .blind:
             ghostCell(opacity: info.opacity.alpha)
-            contentLabel.removeFromSuperview()
-            addSubview(blindImageView)
             
             blindImageView.snp.makeConstraints {
                 $0.top.equalTo(infoView.snp.bottom).offset(12)
                 $0.leading.equalTo(likeButton)
-                $0.trailing.equalTo(ghostButton)
+                $0.trailing.equalToSuperview().inset(16)
                 $0.bottom.equalTo(ghostButton.snp.top).offset(-12)
                 $0.adjustedHeightEqualTo(50)
+            }
+            
+            DispatchQueue.main.async {
+                self.contentLabel.isHidden = true
+                self.blindImageView.isHidden = false
             }
             
             ghostButton.configureButton(type: .small, status: .normal)
