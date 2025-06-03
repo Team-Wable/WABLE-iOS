@@ -90,7 +90,6 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         contentLabel.isHidden = false
         
         blindImageView.snp.removeConstraints()
-        ghostCell(opacity: 1.0)
         
         replyButton.isHidden = false
     }
