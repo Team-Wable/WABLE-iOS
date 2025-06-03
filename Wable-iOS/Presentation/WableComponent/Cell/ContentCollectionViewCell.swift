@@ -100,10 +100,23 @@ final class ContentCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
+        contentImageView.snp.remakeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.adjustedHeightEqualTo(192).priority(.high)
+        }
+        
         contentImageView.kf.cancelDownloadTask()
         contentImageView.image = nil
+        contentImageView.isHidden = false
+        contentTextView.isHidden = false
         contentTextView.text = nil
+        titleTextView.isHidden = false
         titleTextView.text = nil
+        contentStackView.spacing = 10
+        
+        [infoView, contentImageView, titleTextView, contentTextView].forEach {
+            $0.alpha = 1.0
+        }
     }
 }
 
@@ -143,13 +156,14 @@ private extension ContentCollectionViewCell {
         
         contentImageView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.adjustedHeightEqualTo(192)
+            $0.adjustedHeightEqualTo(192).priority(.high)
         }
         
         ghostButton.snp.makeConstraints {
             $0.top.equalTo(contentStackView.snp.bottom).offset(20)
             $0.leading.equalTo(infoView).offset(16)
-            $0.bottom.equalToSuperview().inset(18)
+            $0.bottom.lessThanOrEqualToSuperview().inset(10).priority(.required)
+            $0.bottom.equalToSuperview().inset(18).priority(.high)
         }
         
         likeButton.snp.makeConstraints {
@@ -268,41 +282,61 @@ extension ContentCollectionViewCell {
             postType: .content
         )
         
-        contentStackView.spacing = info.imageURL == nil ? 4 : 10
-    
-        titleTextView.text = info.title
-        
-        contentImageView.isHidden = info.imageURL == nil
-        contentImageView.kf.setImage(with: info.imageURL)
-        
-        contentTextView.text = info.text
-        contentTextView.isUserInteractionEnabled = cellType == .detail
+        switch info.status {
+        case .normal, .ghost:
+            titleTextView.isHidden = false
+            contentTextView.isHidden = false
+            titleTextView.text = info.title
+            contentTextView.text = info.text
+            contentTextView.isUserInteractionEnabled = cellType == .detail
+            
+            if info.imageURL == nil {
+                contentImageView.isHidden = true
+                contentImageView.snp.remakeConstraints {
+                    $0.horizontalEdges.equalToSuperview()
+                    $0.height.equalTo(0).priority(.required)
+                }
+                contentStackView.spacing = 4
+            } else {
+                contentImageView.isHidden = false
+                contentImageView.snp.remakeConstraints {
+                    $0.horizontalEdges.equalToSuperview()
+                    $0.adjustedHeightEqualTo(192).priority(.high)
+                }
+                contentStackView.spacing = 10
+                contentImageView.kf.setImage(with: info.imageURL)
+            }
+            
+            if info.status == .ghost {
+                ghostCell(opacity: 0.15)
+                ghostButton.configureButton(type: .large, status: .disabled)
+            } else {
+                ghostCell(opacity: info.opacity.alpha)
+            }
+            
+        case .blind:
+            titleTextView.isHidden = true
+            contentTextView.isHidden = true
+            contentImageView.isHidden = false
+            contentImageView.image = .imgFeedIsBlind
+            
+            contentImageView.snp.remakeConstraints {
+                $0.horizontalEdges.equalToSuperview()
+                $0.adjustedHeightEqualTo(98).priority(.required)
+            }
+            
+            contentStackView.spacing = 4
+            ghostCell(opacity: info.opacity.alpha)
+        }
         
         likeButton.configureButton(isLiked: info.like.status, likeCount: info.like.count, postType: .content)
-        
         commentButton.configureButton(commentCount: info.commentCount)
         commentButton.isUserInteractionEnabled = cellType == .detail
         
         ghostButton.configureButton(type: .large, status: .normal)
         ghostButton.isHidden = authorType == .mine || info.status == .ghost
         
-        switch info.status {
-        case .normal:
-            ghostCell(opacity: info.opacity.alpha)
-        case .ghost:
-            ghostCell(opacity: 0.15)
-            ghostButton.configureButton(type: .large, status: .disabled)
-        case .blind:
-            DispatchQueue.main.async {
-                self.contentImageView.image = .imgFeedIsBlind
-            }
-            
-            titleTextView.isHidden = true
-            contentTextView.isHidden = true
-            contentImageView.snp.updateConstraints {
-                $0.adjustedHeightEqualTo(98)
-            }
-            ghostCell(opacity: info.opacity.alpha)
-        }
+        setNeedsLayout()
+        layoutIfNeeded()
     }
 }
