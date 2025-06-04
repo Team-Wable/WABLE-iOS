@@ -26,7 +26,7 @@ final class CommunityInviteCell: UICollectionViewCell {
     private let progressBar = UIProgressView(progressViewStyle: .bar).then {
         $0.trackTintColor = .gray200
         $0.layer.cornerRadius = 8
-        $0.setProgress(0.0, animated: false)
+        $0.progress = .zero
         $0.clipsToBounds = true
     }
     
@@ -54,6 +54,7 @@ final class CommunityInviteCell: UICollectionViewCell {
         
         communityImageView.image = nil
         copyLinkClosure = nil
+        progressBar.progress = .zero
         resetCopyLinkButton()
     }
     
@@ -68,7 +69,9 @@ final class CommunityInviteCell: UICollectionViewCell {
         titleLabel.text = title
         
         progressBar.progressTintColor = progressBarColor
-        progressBar.setProgress(progress, animated: false)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.progressBar.setProgress(progress, animated: true)
+        }
     }
 }
 

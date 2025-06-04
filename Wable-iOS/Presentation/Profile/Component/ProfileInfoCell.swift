@@ -125,7 +125,9 @@ final class ProfileInfoCell: UICollectionViewCell {
         nicknameLabel.text = nickname
         introductionLabel.text = introduction
         ghostValueLabel.text = "\(ghostValue)%"
-        ghostProgressBar.setProgress(Float(100 + ghostValue) / 100, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.ghostProgressBar.setProgress(Float(100 + ghostValue) / 100, animated: true)
+        }
         
         let randomProfileImage = [
             UIImage.imgProfilePurple,
