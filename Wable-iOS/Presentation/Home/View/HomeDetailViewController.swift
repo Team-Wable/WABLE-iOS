@@ -863,7 +863,7 @@ extension HomeDetailViewController {
 
 extension HomeDetailViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
-        placeholderLabel.isHidden = !textView.text.isEmpty
+        updatePlaceholderVisibility(textView)
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -875,14 +875,13 @@ extension HomeDetailViewController: UITextViewDelegate {
         
         let newText = oldText.replacingCharacters(in: stringRange, with: text)
         
-        placeholderLabel.isHidden = !newText.isEmpty
-        
         return newText.count <= 500
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        placeholderLabel.isHidden = !textView.text.isEmpty
-        createCommentButton.isEnabled = !textView.text.isEmpty
+        updatePlaceholderVisibility(textView)
+        
+        createCommentButton.isEnabled = !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         
         let size = CGSize(width: textView.frame.width, height: .infinity)
         let estimatedSize = textView.sizeThatFits(size)
@@ -894,6 +893,13 @@ extension HomeDetailViewController: UITextViewDelegate {
         textView.setNeedsUpdateConstraints()
         
         textView.superview?.layoutIfNeeded()
+    }
+    
+    private func updatePlaceholderVisibility(_ textView: UITextView) {
+        let hasText = !textView.text.isEmpty
+        let hasMarkedText = textView.markedTextRange != nil
+        
+        placeholderLabel.isHidden = hasText || hasMarkedText
     }
 }
 
