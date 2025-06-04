@@ -271,7 +271,6 @@ extension CommentCollectionViewCell {
     }
     
     func configurePostStatus(info: CommentInfo) {
-        WableLogger.log("\(info.status)", for: .error)
         switch info.status {
         case .normal:
             ghostCell(opacity: info.opacity.alpha)
