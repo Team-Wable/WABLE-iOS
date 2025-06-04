@@ -271,7 +271,6 @@ extension CommentCollectionViewCell {
     }
     
     func configurePostStatus(info: CommentInfo) {
-        WableLogger.log("\(info.status)", for: .error)
         switch info.status {
         case .normal:
             ghostCell(opacity: info.opacity.alpha)
@@ -286,8 +285,8 @@ extension CommentCollectionViewCell {
                 $0.top.equalTo(infoView.snp.bottom).offset(12)
                 $0.leading.equalTo(likeButton)
                 $0.trailing.equalToSuperview().inset(16)
-                $0.bottom.equalTo(ghostButton.snp.top).offset(-12)
-                $0.adjustedHeightEqualTo(50)
+                $0.bottom.lessThanOrEqualTo(ghostButton.snp.top).offset(-12)
+                $0.adjustedHeightEqualTo(50).priority(.high)
             }
             
             DispatchQueue.main.async {
