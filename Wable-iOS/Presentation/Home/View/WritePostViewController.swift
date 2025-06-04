@@ -14,9 +14,11 @@ final class WritePostViewController: NavigationViewController {
     
     // MARK: - Property
     
+    var onPostCompleted: VoidClosure?
+    
     private let viewModel: WritePostViewModel
     private let postButtonTapRelay = PassthroughRelay<(title: String, content: String?, image: UIImage?)>()
-    private var cancelBag = CancelBag()
+    private let cancelBag = CancelBag()
     
     // MARK: - UIComponents
     
@@ -199,10 +201,11 @@ private extension WritePostViewController {
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
         
         output.postSuccess
-            .sink { _ in
+            .sink { [weak self] _ in
                 let toast = ToastView(status: .complete, message: "게시물이 작성되었습니다")
                 toast.show()
-                self.navigationController?.popViewController(animated: true)
+                self?.navigationController?.popViewController(animated: true)
+                self?.onPostCompleted?()
             }
             .store(in: cancelBag)
     }
