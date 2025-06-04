@@ -101,10 +101,13 @@ private extension CommunityViewController {
         let inviteCellRegistration = CellRegistration<CommunityInviteCell, Item> { cell, indexPath, item in
             let teamName = item.community.team?.rawValue ?? ""
             
+            let progress = Float(item.community.registrationRate) / Float(100)
+            WableLogger.log("프로그레스 값은: \(progress)", for: .debug)
+            
             cell.configure(
                 image: UIImage(named: teamName.lowercased()),
                 title: teamName,
-                progress: Float(item.community.registrationRate),
+                progress: progress,
                 progressBarColor: UIColor(named: "\(teamName.lowercased())50") ?? .purple50
             )
             
@@ -156,8 +159,8 @@ private extension CommunityViewController {
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
         
         output.communityItems
+            .removeDuplicates()
             .sink { [weak self] communityItems in
-                WableLogger.log("커뮤니티 아이템: \(communityItems)", for: .debug)
                 self?.applySnapshot(items: communityItems)
             }
             .store(in: cancelBag)
