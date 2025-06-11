@@ -18,7 +18,8 @@ final class WritePostViewController: NavigationViewController {
     
     private let viewModel: WritePostViewModel
     private let postButtonTapRelay = PassthroughRelay<(title: String, content: String?, image: UIImage?)>()
-    private let cancelBag = CancelBag()
+    private var cancelBag = CancelBag()
+    private var isPosting = false
     
     // MARK: - UIComponents
     
@@ -202,10 +203,16 @@ private extension WritePostViewController {
         
         output.postSuccess
             .sink { [weak self] _ in
-                let toast = ToastView(status: .complete, message: "게시물이 작성되었습니다")
-                toast.show()
-                self?.navigationController?.popViewController(animated: true)
-                self?.onPostCompleted?()
+                guard let self = self else { return }
+                
+                self.isPosting = false
+                self.updatePostButtonState(isLoading: false)
+                
+                if self.navigationController?.topViewController == self {
+                    let toast = ToastView(status: .complete, message: "게시물이 작성되었습니다")
+                    toast.show()
+                    self.navigationController?.popViewController(animated: true)
+                }
             }
             .store(in: cancelBag)
     }
@@ -215,6 +222,8 @@ private extension WritePostViewController {
 
 private extension WritePostViewController {
     @objc func addButtonDidTap() {
+        guard !isPosting else { return }
+        
         AmplitudeManager.shared.trackEvent(tag: .clickAttachPhoto)
         
         switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
@@ -234,16 +243,23 @@ private extension WritePostViewController {
     }
     
     @objc func postButtonDidTap() {
+        guard !isPosting else { return }
+        
         AmplitudeManager.shared.trackEvent(tag: .clickUploadPost)
         
         guard let title = titleTextView.text else { return }
         
         let content = contentTextView.text == StringLiterals.Write.sheetMessage ? nil : contentTextView.text
         
+        isPosting = true
+        updatePostButtonState(isLoading: true)
+        
         postButtonTapRelay.send((title: title, content: content, image: imageView.image))
     }
     
     @objc func popButtonDidTap() {
+        if isPosting { return }
+        
         if (contentTextView.text == StringLiterals.Write.sheetMessage || contentTextView.text == "")
             && (titleTextView.text == StringLiterals.Write.sheetTitle || titleTextView.text == "")
             && imageView.image == nil {
@@ -262,7 +278,6 @@ private extension WritePostViewController {
         }
     }
 }
-
 
 // MARK: - Helper Extension
 
@@ -284,10 +299,18 @@ private extension WritePostViewController {
             return
         }
         
-        let isEnabled = totalCount > 0 && totalCount <= 500 && titleTextView.text != StringLiterals.Write.sheetTitle && !titleTextView.text.isEmpty
+        let isEnabled = totalCount > 0 && totalCount <= 500 && titleTextView.text != StringLiterals.Write.sheetTitle && !titleTextView.text.isEmpty && !isPosting
         
         postButton.isEnabled = isEnabled
         postButton.configuration?.baseBackgroundColor = isEnabled ? .purple50 : .gray400
+    }
+    
+    private func updatePostButtonState(isLoading: Bool) {
+        if isLoading {
+            postButton.isEnabled = false
+        } else {
+            updateCharacterCount()
+        }
     }
     
     func presentPhotoPicker() {
@@ -341,6 +364,12 @@ extension WritePostViewController: PHPickerViewControllerDelegate {
 
 extension WritePostViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
+        guard !isPosting else {
+            textView.resignFirstResponder()
+            
+            return
+        }
+        
         let placeholder = textView == titleTextView ? StringLiterals.Write.sheetTitle : StringLiterals.Write.sheetMessage
         
         if textView.text == placeholder {
@@ -364,6 +393,8 @@ extension WritePostViewController: UITextViewDelegate {
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        guard !isPosting else { return false }
+        
         let isCurrentPlaceholder = (textView == titleTextView && textView.text == StringLiterals.Write.sheetTitle) ||
                                  (textView == contentTextView && textView.text == StringLiterals.Write.sheetMessage)
         
