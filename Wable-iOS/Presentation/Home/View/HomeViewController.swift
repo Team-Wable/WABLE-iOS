@@ -508,6 +508,9 @@ private extension HomeViewController {
                 )
             )
         )
+        viewController.onPostCompleted = { [weak self] in
+            self?.scrollToTop()
+        }
         
         navigationController?.pushViewController(viewController, animated: true)
     }
