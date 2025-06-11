@@ -14,6 +14,8 @@ final class WritePostViewController: NavigationViewController {
     
     // MARK: - Property
     
+    var onPostCompleted: VoidClosure?
+    
     private let viewModel: WritePostViewModel
     private let postButtonTapRelay = PassthroughRelay<(title: String, content: String?, image: UIImage?)>()
     private var cancelBag = CancelBag()
