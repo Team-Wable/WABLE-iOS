@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Photos
 
 import SnapKit
 import Then
@@ -18,7 +19,7 @@ final class PhotoDetailViewController: UIViewController {
         $0.setImage(.icBackCircle, for: .normal)
     }
     
-    private let downloadButton = UIButton().then {
+    private let saveButton = UIButton().then {
         $0.setImage(.icDownloadCircle, for: .normal)
     }
     
@@ -66,9 +67,9 @@ private extension PhotoDetailViewController {
         view.backgroundColor = .wableBlack
         
         view.addSubviews(
+            imageView,
             dismissButton,
-            downloadButton,
-            imageView
+            saveButton
         )
         
         imageView.image = image
@@ -81,7 +82,7 @@ private extension PhotoDetailViewController {
             make.size.equalTo(48)
         }
         
-        downloadButton.snp.makeConstraints { make in
+        saveButton.snp.makeConstraints { make in
             make.top.size.equalTo(dismissButton)
             make.trailing.equalTo(safeArea).offset(-12)
         }
@@ -90,7 +91,7 @@ private extension PhotoDetailViewController {
             make.center.equalToSuperview()
             make.width.lessThanOrEqualToSuperview()
             make.height.lessThanOrEqualToSuperview()
-            make.height.equalTo(optimalImageViewHeight)
+            make.size.equalTo(optimalImageViewSize)
         }
     }
     
@@ -98,21 +99,72 @@ private extension PhotoDetailViewController {
         let dismissAction = UIAction { [weak self] _ in
             self?.dismiss(animated: true)
         }
-        
         dismissButton.addAction(dismissAction, for: .touchUpInside)
+        
+        let saveAction = UIAction { [weak self] _ in
+            self?.saveImage()
+        }
+        saveButton.addAction(saveAction, for: .touchUpInside)
     }
-}
-
-// MARK: - Computed Property
-
-private extension PhotoDetailViewController {
-    var optimalImageViewHeight: CGFloat {
-        let aspectRatio = image.size.height / image.size.width
-        let screenWidth = UIScreen.main.bounds.width
-        let height = screenWidth * aspectRatio
+    
+    // MARK: - Photo Method
+    
+    func saveImage() {
+        Task {
+            do {
+                guard try await requestPhotoPermissionIfNeeded() else { return }
+                try await saveImageToPhotoLibrary(image)
+            } catch {
+                WableLogger.log("\(error)", for: .error)
+            }
+        }
+    }
+    
+    func requestPhotoPermissionIfNeeded() async throws -> Bool {
+        let currentStatus = PHPhotoLibrary.authorizationStatus(for: .addOnly)
         
-        let maxHeight: CGFloat = 812.adjustedHeight
+        if isPermissionGranted(currentStatus) {
+            return true
+        }
         
-        return min(height, maxHeight)
+        let newStatus = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
+        return isPermissionGranted(newStatus)
+    }
+    
+    func isPermissionGranted(_ status: PHAuthorizationStatus) -> Bool {
+        return status == .authorized || status == .limited
+    }
+    
+    func saveImageToPhotoLibrary(_ image: UIImage) async throws {
+        try await PHPhotoLibrary.shared().performChanges {
+            PHAssetChangeRequest.creationRequestForAsset(from: image)
+        }
+    }
+    
+    // MARK: - Computed Property
+    
+    var optimalImageViewSize: CGSize {
+        let screenSize = UIScreen.main.bounds.size
+        let imageSize = image.size
+        
+        let aspectRatio = imageSize.width / imageSize.height
+        
+        var finalWidth: CGFloat
+        var finalHeight: CGFloat
+        
+        if imageSize.width > screenSize.width {
+            finalWidth = screenSize.width
+            finalHeight = finalWidth / aspectRatio
+        } else {
+            finalWidth = imageSize.width
+            finalHeight = imageSize.height
+        }
+        
+        if finalHeight > screenSize.height {
+            finalHeight = screenSize.height
+            finalWidth = finalHeight * aspectRatio
+        }
+        
+        return CGSize(width: finalWidth, height: finalHeight)
     }
 }
