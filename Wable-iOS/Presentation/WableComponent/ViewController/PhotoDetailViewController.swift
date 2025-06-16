@@ -14,16 +14,19 @@ final class PhotoDetailViewController: UIViewController {
     
     // MARK: - UIComponent
     
+    private let dismissButton = UIButton().then {
+        $0.setImage(.icBackCircle, for: .normal)
+    }
+    
+    private let downloadButton = UIButton().then {
+        $0.setImage(.icDownloadCircle, for: .normal)
+    }
+    
     private let imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
     }
     
-    private let dismissButton = UIButton().then {
-        var configuration = UIButton.Configuration.plain()
-        configuration.image = .btnRemovePhoto
-        $0.configuration = configuration
-    }
     
     // MARK: - Property
     
@@ -55,32 +58,39 @@ final class PhotoDetailViewController: UIViewController {
     }
 }
 
-// MARK: - Setup Method
-
 private extension PhotoDetailViewController {
-    func setupView() {        
-        view.backgroundColor = .wableBlack.withAlphaComponent(0.7)
+    
+    // MARK: - Setup Method
+    
+    func setupView() {
+        view.backgroundColor = .wableBlack
         
         view.addSubviews(
-            imageView,
-            dismissButton
+            dismissButton,
+            downloadButton,
+            imageView
         )
         
         imageView.image = image
     }
     
     func setupConstraint() {
-        imageView.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.center.equalToSuperview()
-            make.height.equalTo(optimalImageViewHeight)
+        dismissButton.snp.makeConstraints { make in
+            make.top.equalTo(safeArea).offset(4)
+            make.leading.equalTo(safeArea).offset(12)
+            make.size.equalTo(48)
         }
         
-        dismissButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-100)
-            make.adjustedWidthEqualTo(60)
-            make.height.equalTo(dismissButton.snp.width)
+        downloadButton.snp.makeConstraints { make in
+            make.top.size.equalTo(dismissButton)
+            make.trailing.equalTo(safeArea).offset(-12)
+        }
+        
+        imageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.lessThanOrEqualToSuperview()
+            make.height.lessThanOrEqualToSuperview()
+            make.height.equalTo(optimalImageViewHeight)
         }
     }
     
