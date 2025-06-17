@@ -152,13 +152,9 @@ private extension PhotoDetailViewController {
         var finalWidth: CGFloat
         var finalHeight: CGFloat
         
-        if imageSize.width > screenSize.width {
-            finalWidth = screenSize.width
-            finalHeight = finalWidth / aspectRatio
-        } else {
-            finalWidth = imageSize.width
-            finalHeight = imageSize.height
-        }
+        let condition = imageSize.width > screenSize.width
+        finalWidth = condition ? screenSize.width : imageSize.width
+        finalHeight = condition ? finalWidth / aspectRatio : imageSize.height
         
         if finalHeight > screenSize.height {
             finalHeight = screenSize.height
