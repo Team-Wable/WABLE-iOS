@@ -31,7 +31,7 @@ final class AppVersionRepositoryImpl: AppVersionRepository {
             }
             
             return AppVersion(from: appStoreVersion)
-        } catch let error as URLError {
+        } catch _ as URLError {
             throw WableError.networkError
         } catch {
             throw error

@@ -112,7 +112,7 @@ private extension AnnouncementDetailViewController {
         guard let image = imageView.image else { return }
         
         let photoDetailViewController = PhotoDetailViewController(image: image)
-        present(photoDetailViewController, animated: true)
+        navigationController?.pushViewController(photoDetailViewController, animated: true)
     }
     
     @objc func submitButtonDidTap() {

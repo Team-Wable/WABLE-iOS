@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Photos
 
 import SnapKit
 import Then
@@ -14,16 +15,19 @@ final class PhotoDetailViewController: UIViewController {
     
     // MARK: - UIComponent
     
+    private let backButton = UIButton().then {
+        $0.setImage(.icBackCircle, for: .normal)
+    }
+    
+    private let saveButton = UIButton().then {
+        $0.setImage(.icDownloadCircle, for: .normal)
+    }
+    
     private let imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
     }
     
-    private let dismissButton = UIButton().then {
-        var configuration = UIButton.Configuration.plain()
-        configuration.image = .btnRemovePhoto
-        $0.configuration = configuration
-    }
     
     // MARK: - Property
     
@@ -36,10 +40,10 @@ final class PhotoDetailViewController: UIViewController {
         
         super.init(nibName: nil, bundle: nil)
         
-        modalTransitionStyle = .crossDissolve
-        modalPresentationStyle = .overFullScreen
+        hidesBottomBarWhenPushed = true
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -55,54 +59,108 @@ final class PhotoDetailViewController: UIViewController {
     }
 }
 
-// MARK: - Setup Method
-
 private extension PhotoDetailViewController {
-    func setupView() {        
-        view.backgroundColor = .wableBlack.withAlphaComponent(0.7)
+    
+    // MARK: - Setup Method
+    
+    func setupView() {
+        view.backgroundColor = .wableBlack
         
         view.addSubviews(
             imageView,
-            dismissButton
+            backButton,
+            saveButton
         )
         
         imageView.image = image
     }
     
     func setupConstraint() {
-        imageView.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.center.equalToSuperview()
-            make.height.equalTo(optimalImageViewHeight)
+        backButton.snp.makeConstraints { make in
+            make.top.equalTo(safeArea).offset(4)
+            make.leading.equalTo(safeArea).offset(12)
+            make.size.equalTo(48)
         }
         
-        dismissButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-100)
-            make.adjustedWidthEqualTo(60)
-            make.height.equalTo(dismissButton.snp.width)
+        saveButton.snp.makeConstraints { make in
+            make.top.size.equalTo(backButton)
+            make.trailing.equalTo(safeArea).offset(-12)
+        }
+        
+        imageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.lessThanOrEqualToSuperview()
+            make.height.lessThanOrEqualToSuperview()
+            make.size.equalTo(optimalImageViewSize)
         }
     }
     
     func setupAction() {
-        let dismissAction = UIAction { [weak self] _ in
-            self?.dismiss(animated: true)
+        let popAction = UIAction { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        backButton.addAction(popAction, for: .touchUpInside)
+        
+        let saveAction = UIAction { [weak self] _ in
+            self?.saveImage()
+        }
+        saveButton.addAction(saveAction, for: .touchUpInside)
+    }
+    
+    // MARK: - Photo Method
+    
+    func saveImage() {
+        Task {
+            do {
+                guard try await requestPhotoPermissionIfNeeded() else { return }
+                try await saveImageToPhotoLibrary(image)
+            } catch {
+                WableLogger.log("\(error)", for: .error)
+            }
+        }
+    }
+    
+    func requestPhotoPermissionIfNeeded() async throws -> Bool {
+        let currentStatus = PHPhotoLibrary.authorizationStatus(for: .addOnly)
+        
+        if isPermissionGranted(currentStatus) {
+            return true
         }
         
-        dismissButton.addAction(dismissAction, for: .touchUpInside)
+        let newStatus = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
+        return isPermissionGranted(newStatus)
     }
-}
-
-// MARK: - Computed Property
-
-private extension PhotoDetailViewController {
-    var optimalImageViewHeight: CGFloat {
-        let aspectRatio = image.size.height / image.size.width
-        let screenWidth = UIScreen.main.bounds.width
-        let height = screenWidth * aspectRatio
+    
+    func isPermissionGranted(_ status: PHAuthorizationStatus) -> Bool {
+        return status == .authorized || status == .limited
+    }
+    
+    func saveImageToPhotoLibrary(_ image: UIImage) async throws {
+        try await PHPhotoLibrary.shared().performChanges {
+            PHAssetChangeRequest.creationRequestForAsset(from: image)
+        }
+    }
+    
+    // MARK: - Computed Property
+    
+    var optimalImageViewSize: CGSize {
+        let screenSize = UIScreen.main.bounds.size
+        let imageSize = image.size
         
-        let maxHeight: CGFloat = 812.adjustedHeight
+        let aspectRatio = imageSize.width / imageSize.height
         
-        return min(height, maxHeight)
+        var finalWidth: CGFloat
+        var finalHeight: CGFloat
+        
+        let condition = imageSize.width > screenSize.width
+        finalWidth = condition ? screenSize.width : imageSize.width
+        finalHeight = condition ? finalWidth / aspectRatio : imageSize.height
+        
+        if finalHeight > screenSize.height {
+            finalHeight = screenSize.height
+            finalWidth = finalHeight * aspectRatio
+        }
+        
+        return CGSize(width: finalWidth, height: finalHeight)
     }
 }
