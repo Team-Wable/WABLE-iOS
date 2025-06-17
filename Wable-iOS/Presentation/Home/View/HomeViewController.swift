@@ -186,7 +186,7 @@ private extension HomeViewController {
                         return
                     }
                     
-                    self.present(PhotoDetailViewController(image: image), animated: true)
+                    self.navigationController?.pushViewController(PhotoDetailViewController(image: image), animated: true)
                 },
                 likeButtonTapHandler: {
                     AmplitudeManager.shared.trackEvent(tag: .clickLikePost)
