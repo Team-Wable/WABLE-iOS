@@ -217,7 +217,8 @@ private extension HomeDetailViewController {
                 contentImageViewTapHandler: {
                     guard let image = cell.contentImageView.image else { return }
                     
-                    self.present(PhotoDetailViewController(image: image), animated: true)
+                    let photoDetailViewController = PhotoDetailViewController(image: image)
+                    self.navigationController?.pushViewController(photoDetailViewController, animated: true)
                 },
                 likeButtonTapHandler: {
                     AmplitudeManager.shared.trackEvent(tag: .clickLikeComment)
