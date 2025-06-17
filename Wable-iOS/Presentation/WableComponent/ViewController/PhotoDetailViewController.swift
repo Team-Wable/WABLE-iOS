@@ -15,7 +15,7 @@ final class PhotoDetailViewController: UIViewController {
     
     // MARK: - UIComponent
     
-    private let dismissButton = UIButton().then {
+    private let backButton = UIButton().then {
         $0.setImage(.icBackCircle, for: .normal)
     }
     
@@ -40,10 +40,10 @@ final class PhotoDetailViewController: UIViewController {
         
         super.init(nibName: nil, bundle: nil)
         
-        modalTransitionStyle = .crossDissolve
-        modalPresentationStyle = .overFullScreen
+        hidesBottomBarWhenPushed = true
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -68,7 +68,7 @@ private extension PhotoDetailViewController {
         
         view.addSubviews(
             imageView,
-            dismissButton,
+            backButton,
             saveButton
         )
         
@@ -76,14 +76,14 @@ private extension PhotoDetailViewController {
     }
     
     func setupConstraint() {
-        dismissButton.snp.makeConstraints { make in
+        backButton.snp.makeConstraints { make in
             make.top.equalTo(safeArea).offset(4)
             make.leading.equalTo(safeArea).offset(12)
             make.size.equalTo(48)
         }
         
         saveButton.snp.makeConstraints { make in
-            make.top.size.equalTo(dismissButton)
+            make.top.size.equalTo(backButton)
             make.trailing.equalTo(safeArea).offset(-12)
         }
         
@@ -96,10 +96,10 @@ private extension PhotoDetailViewController {
     }
     
     func setupAction() {
-        let dismissAction = UIAction { [weak self] _ in
-            self?.dismiss(animated: true)
+        let popAction = UIAction { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
         }
-        dismissButton.addAction(dismissAction, for: .touchUpInside)
+        backButton.addAction(popAction, for: .touchUpInside)
         
         let saveAction = UIAction { [weak self] _ in
             self?.saveImage()
