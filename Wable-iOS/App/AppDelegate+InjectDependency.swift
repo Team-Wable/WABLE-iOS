@@ -21,10 +21,8 @@ extension AppDelegate {
         
         diContainer.register(for: ReportRepository.self) { env in
             switch env {
-            case .mock:
-                return MockReportRepository()
-            case .production:
-                return ReportRepositoryImpl()
+            case .mock: MockReportRepository()
+            case .production: ReportRepositoryImpl()
             }
         }
         
@@ -32,10 +30,8 @@ extension AppDelegate {
 
         diContainer.register(for: ViewitRepository.self) { env in
             switch env {
-            case .mock:
-                return MockViewitRepository()
-            case .production:
-                return ViewitRepositoryImpl()
+            case .mock: MockViewitRepository()
+            case .production: ViewitRepositoryImpl()
             }
         }
         
@@ -45,10 +41,8 @@ extension AppDelegate {
         
         diContainer.register(for: CommentRepository.self) { env in
             switch env {
-            case .mock:
-                return MockCommentRepository()
-            case .production:
-                return CommentRepositoryImpl()
+            case .mock: MockCommentRepository()
+            case .production: CommentRepositoryImpl()
             }
         }
         diContainer.register(for: CommentLikedRepository.self, object: CommentLikedRepositoryImpl())
@@ -72,19 +66,17 @@ extension AppDelegate {
         
         diContainer.register(for: AppVersionRepository.self) { env in
             switch env {
-            case .mock:
-                return MockAppVersionRepository()
-            case .production:
-                return AppVersionRepositoryImpl()
+            case .mock: MockAppVersionRepository()
+            case .production: AppVersionRepositoryImpl()
             }
         }
         
         diContainer.register(for: UpdateAlertPolicyRepository.self) { env in
             switch env {
-            case .mock:
-                return MockUpdateAlertPolicyRepository()
-            case .production:
-                return UpdateAlertPolicyRepositoryImpl()
+            case .mock: MockUpdateAlertPolicyRepository()
+            case .production: UpdateAlertPolicyRepositoryImpl()
+            }
+        }
         
         // MARK: - Community
         
