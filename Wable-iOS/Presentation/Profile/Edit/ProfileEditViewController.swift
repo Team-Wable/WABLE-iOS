@@ -26,18 +26,25 @@ final class ProfileEditViewController: NavigationViewController {
     )
     private let cancelBag = CancelBag()
     
+    private var lckTeam = "LCK"
     private var sessionProfile: UserProfile? = nil
     private var defaultImage: String? = nil
     private var hasUserSelectedImage = false
     
     // MARK: - UIComponent
     
-    private let rootView = ProfileRegisterView()
+    private lazy var rootView = ProfileEditView(cellTapped: { [weak self] selectedTeam in
+        guard let self = self else { return }
+        
+        lckTeam = selectedTeam
+    })
     
     // MARK: - LifeCycle
     
     init() {
-        super.init(type: .page(type: .detail, title: "프로필 편집"))
+        super.init(type: .page(type: .profileEdit, title: "프로필 편집"))
+        
+        hidesBottomBarWhenPushed = true
     }
     
     required init?(coder: NSCoder) {
@@ -92,12 +99,13 @@ private extension ProfileEditViewController {
         rootView.switchButton.addTarget(self, action: #selector(switchButtonDidTap), for: .touchUpInside)
         rootView.addButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
         rootView.duplicationCheckButton.addTarget(self, action: #selector(duplicationCheckButtonDidTap), for: .touchUpInside)
-        rootView.nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
+        navigationView.doneButton.addTarget(self, action: #selector(doneButtonDidTap), for: .touchUpInside)
     }
     
     private func setupTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         
+        tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
     
@@ -107,11 +115,49 @@ private extension ProfileEditViewController {
         view.endEditing(true)
     }
     
+    @objc func doneButtonDidTap() {
+        guard let profile = sessionProfile else { return }
+        
+        let nicknameText = rootView.nickNameTextField.text ?? ""
+        let hasNicknameChanged = !nicknameText.isEmpty && nicknameText != profile.user.nickname
+        let hasImageChanged = defaultImage != nil || hasUserSelectedImage
+        let hasTeamChanged = lckTeam != (profile.user.fanTeam?.rawValue ?? "LCK")
+        
+        if hasNicknameChanged || hasImageChanged || hasTeamChanged {
+            let finalNickname = hasNicknameChanged ? nicknameText : profile.user.nickname
+            
+            profileUseCase.execute(
+                profile: UserProfile(
+                    user: User(
+                        id: profile.user.id,
+                        nickname: finalNickname,
+                        profileURL: profile.user.profileURL,
+                        fanTeam: LCKTeam(rawValue: lckTeam)
+                    ),
+                    introduction: profile.introduction,
+                    ghostCount: profile.ghostCount,
+                    lckYears: profile.lckYears,
+                    userLevel: profile.userLevel
+                ),
+                image: defaultImage == nil ? rootView.profileImageView.image : nil,
+                defaultProfileType: defaultImage
+            )
+            .withUnretained(self)
+            .sink { _ in
+            } receiveValue: { owner, _ in
+                owner.navigationController?.popViewController(animated: true)
+            }
+            .store(in: cancelBag)
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
+    }
+    
     @objc func switchButtonDidTap() {
         rootView.configureDefaultImage()
         defaultImage = rootView.defaultImageList[0].uppercased
         hasUserSelectedImage = false
-        updateNextButtonState()
+        updateDoneButtonState()
     }
     
     @objc func addButtonDidTap() {
@@ -141,50 +187,13 @@ private extension ProfileEditViewController {
             .sink(receiveCompletion: { [weak self] completion in
                 let condition = completion == .finished
                 
-                self?.rootView.conditiionLabel.text = condition ? StringLiterals.ProfileSetting.checkVaildMessage : StringLiterals.ProfileSetting.checkDuplicateError
-                self?.rootView.conditiionLabel.textColor = condition ? .success : .error
-                self?.rootView.nextButton.isUserInteractionEnabled = condition
-                self?.rootView.nextButton.updateStyle(condition ? .primary : .gray)
+                self?.rootView.conditionLabel.text = condition ? StringLiterals.ProfileSetting.checkVaildMessage : StringLiterals.ProfileSetting.checkDuplicateError
+                self?.rootView.conditionLabel.textColor = condition ? .success : .error
+                self?.navigationView.doneButton.isUserInteractionEnabled = condition
+                self?.navigationView.doneButton.updateStyle(condition ? .primary : .gray)
             }, receiveValue: { _ in
             })
             .store(in: cancelBag)
-    }
-    
-    @objc func nextButtonDidTap() {
-        guard let profile = sessionProfile else { return }
-        
-        let nicknameText = rootView.nickNameTextField.text ?? ""
-        let hasNicknameChanged = !nicknameText.isEmpty && nicknameText != profile.user.nickname
-        let hasImageChanged = defaultImage != nil || hasUserSelectedImage
-        
-        if hasNicknameChanged || hasImageChanged {
-            let finalNickname = hasNicknameChanged ? nicknameText : profile.user.nickname
-            
-            profileUseCase.execute(
-                profile: UserProfile(
-                    user: User(
-                        id: profile.user.id,
-                        nickname: finalNickname,
-                        profileURL: profile.user.profileURL,
-                        fanTeam: profile.user.fanTeam
-                    ),
-                    introduction: profile.introduction,
-                    ghostCount: profile.ghostCount,
-                    lckYears: profile.lckYears,
-                    userLevel: profile.userLevel
-                ),
-                image: defaultImage == nil ? rootView.profileImageView.image : nil,
-                defaultProfileType: defaultImage
-            )
-            .withUnretained(self)
-            .sink { _ in
-            } receiveValue: { owner, _ in
-                owner.navigationController?.popViewController(animated: true)
-            }
-            .store(in: cancelBag)
-        } else {
-            navigationController?.popViewController(animated: true)
-        }
     }
     
     // MARK: - Function Method
@@ -216,7 +225,7 @@ private extension ProfileEditViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    func updateNextButtonState() {
+    func updateDoneButtonState() {
         guard let profile = sessionProfile else { return }
         
         let nicknameText = rootView.nickNameTextField.text ?? ""
@@ -225,8 +234,8 @@ private extension ProfileEditViewController {
         
         let shouldEnable = hasNicknameChanged || hasImageChanged
         
-        rootView.nextButton.isUserInteractionEnabled = shouldEnable
-        rootView.nextButton.updateStyle(shouldEnable ? .primary : .gray)
+        navigationView.doneButton.isUserInteractionEnabled = shouldEnable
+        navigationView.doneButton.updateStyle(shouldEnable ? .primary : .gray)
     }
 }
 
@@ -244,8 +253,10 @@ extension ProfileEditViewController {
                         guard let self = self else { return }
                         
                         self.sessionProfile = profile
-                        
-                        self.rootView.configureProfileView(profileImageURL: profile.user.profileURL)
+                        self.rootView.configureView(
+                            profileImageURL: profile.user.profileURL,
+                            team: profile.user.fanTeam
+                        )
                     }
                     .store(in: cancelBag)
             }
@@ -264,7 +275,7 @@ extension ProfileEditViewController: PHPickerViewControllerDelegate {
                 self.rootView.profileImageView.image = image
                 self.defaultImage = nil
                 self.hasUserSelectedImage = true
-                self.updateNextButtonState()
+                self.updateDoneButtonState()
             }
         }
         
@@ -287,13 +298,13 @@ extension ProfileEditViewController: UITextFieldDelegate {
         let range = NSRange(location: 0, length: text.utf16.count)
         let condition = regex?.firstMatch(in: text, options: [], range: range) != nil
         
-        self.rootView.conditiionLabel.text = condition || text == "" ? StringLiterals.ProfileSetting.checkDefaultMessage : StringLiterals.ProfileSetting.checkInvaildError
-        self.rootView.conditiionLabel.textColor = condition || text == "" ? .gray600 : .error
+        self.rootView.conditionLabel.text = condition || text == "" ? StringLiterals.ProfileSetting.checkDefaultMessage : StringLiterals.ProfileSetting.checkInvaildError
+        self.rootView.conditionLabel.textColor = condition || text == "" ? .gray600 : .error
         self.rootView.duplicationCheckButton.isUserInteractionEnabled = condition
         self.rootView.duplicationCheckButton.configuration?.baseForegroundColor = condition ? .white : .gray600
         self.rootView.duplicationCheckButton.configuration?.baseBackgroundColor = condition ? .wableBlack : .gray200
-        self.rootView.nextButton.updateStyle(.gray)
-        self.rootView.nextButton.isUserInteractionEnabled = false
+        self.navigationView.doneButton.updateStyle(.gray)
+        self.navigationView.doneButton.isUserInteractionEnabled = false
     }
     
     func textField(
