@@ -5,6 +5,7 @@
 //  Created by 김진웅 on 4/8/25.
 //
 
+import Combine
 import UIKit
 import SafariServices
 
@@ -31,10 +32,8 @@ final class CommunityViewController: UIViewController {
     private var dataSource: DataSource?
     
     private let viewModel: ViewModel
-    private let viewDidRefreshRelay = PassthroughRelay<Void>()
-    private let registerRelay = PassthroughRelay<Int>()
-    private let copyLinkRelay = PassthroughRelay<Void>()
-    private let checkNotificationAuthorizationRelay = PassthroughRelay<Void>()
+    private let registerSubject = PassthroughSubject<Int, Never>()
+    private let checkNotificationAuthorizationSubject = PassthroughSubject<Void, Never>()
     private let cancelBag = CancelBag()
     private let rootView = CommunityView()
     
@@ -67,13 +66,17 @@ final class CommunityViewController: UIViewController {
     }
 }
 
-// MARK: - Setup Method
-
 private extension CommunityViewController {
+    
+    // MARK: - Setup Method
+    
     func setupAction() {
-        askButton.addTarget(self, action: #selector(askButtonDidTap), for: .touchUpInside)
-        
-        refreshControl?.addTarget(self, action: #selector(collectionViewDidRefresh), for: .valueChanged)
+        rootView.askDidTap
+            .compactMap { URL(string: StringLiterals.URL.feedbackForm) }
+            .sink { [weak self] url in
+                self?.present(SFSafariViewController(url: url), animated: true)
+            }
+            .store(in: cancelBag)
     }
     
     func setupNavigationBar() {
@@ -99,7 +102,6 @@ private extension CommunityViewController {
             let teamName = item.community.team?.rawValue ?? ""
             
             let progress = Float(item.community.registrationRate) / Float(100)
-            WableLogger.log("프로그레스 값은: \(progress)", for: .debug)
             
             cell.configure(
                 image: UIImage(named: teamName.lowercased()),
@@ -117,7 +119,7 @@ private extension CommunityViewController {
         let headerKind = UICollectionView.elementKindSectionHeader
         let headerRegistration = SupplementaryRegistration<CommunityHeaderView>(elementKind: headerKind) { _, _, _ in }
         
-        dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
+        dataSource = DataSource(collectionView: rootView.collectionView) { collectionView, indexPath, item in
             if item.hasRegisteredCommunity, item.isRegistered {
                 return collectionView.dequeueConfiguredReusableCell(
                     using: inviteCellRegistration,
@@ -147,47 +149,38 @@ private extension CommunityViewController {
     
     func setupBinding() {
         let input = ViewModel.Input(
-            refresh: viewDidRefreshRelay.eraseToAnyPublisher(),
-            register: registerRelay.eraseToAnyPublisher(),
-            checkNotificationAuthorization: checkNotificationAuthorizationRelay.eraseToAnyPublisher()
+            refresh: rootView.didRefresh,
+            register: registerSubject.eraseToAnyPublisher(),
+            checkNotificationAuthorization: checkNotificationAuthorizationSubject.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
         
         output.communityItems
-            .removeDuplicates()
-            .sink { [weak self] communityItems in
-                self?.applySnapshot(items: communityItems)
-            }
+            .sink { [weak self] in self?.applySnapshot(items: $0) }
             .store(in: cancelBag)
         
         output.isLoading
             .filter { !$0 }
-            .sink { [weak self] _ in
-                self?.refreshControl?.endRefreshing()
-            }
+            .sink { [weak self] _ in self?.rootView.refreshControl.endRefreshing() }
             .store(in: cancelBag)
         
         output.registrationCompleted
             .compactMap { $0 }
             .sink { [weak self] team in
-                self?.scrollToTopItem()
+                self?.scrollToTop()
                 self?.showCompleteSheet(for: team.rawValue)
             }
             .store(in: cancelBag)
         
         output.isNotificationAuthorized
             .filter { !$0 }
-            .sink { [weak self] _ in
-                self?.showAlarmSettingSheet()
-            }
+            .sink { [weak self] _ in self?.showAlarmSettingSheet() }
             .store(in: cancelBag)
     }
-}
+    
+    // MARK: - Helper Method
 
-// MARK: - Helper Method
-
-private extension CommunityViewController {
     func applySnapshot(items: [Item]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
@@ -205,7 +198,7 @@ private extension CommunityViewController {
         let registerAction = WableSheetAction(title: "신청하기", style: .primary) { [weak self] in
             AmplitudeManager.shared.trackEvent(tag: .clickApplyTeamzone)
             
-            self?.registerRelay.send(item)
+            self?.registerSubject.send(item)
         }
         wableSheet.addActions(cancelAction, registerAction)
         present(wableSheet, animated: true)
@@ -217,7 +210,7 @@ private extension CommunityViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             completeSheet.dismiss(animated: true) { [weak self] in
-                self?.checkNotificationAuthorizationRelay.send()
+                self?.checkNotificationAuthorizationSubject.send()
             }
         }
     }
@@ -258,37 +251,7 @@ private extension CommunityViewController {
         UIPasteboard.general.string = StringLiterals.URL.littly
     }
     
-    func scrollToTopItem() {
-        guard collectionView.numberOfSections > 0,
-                collectionView.numberOfItems(inSection: 0) > 0
-        else {
-            return
-        }
-        
-        let indexPath = IndexPath(item: 0, section: 0)
-        collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+    func scrollToTop() {
+        rootView.collectionView.setContentOffset(.zero, animated: true)
     }
-}
-
-// MARK: - Action Method
-
-private extension CommunityViewController {
-    @objc func askButtonDidTap() {
-        guard let url = URL(string: StringLiterals.URL.feedbackForm) else { return }
-        
-        let safariController = SFSafariViewController(url: url)
-        present(safariController, animated: true)
-    }
-    
-    @objc func collectionViewDidRefresh() {
-        viewDidRefreshRelay.send()
-    }
-}
-
-// MARK: - Computed Property
-
-private extension CommunityViewController {
-    var collectionView: UICollectionView { rootView.collectionView }
-    var refreshControl: UIRefreshControl? { rootView.collectionView.refreshControl }
-    var askButton: UIButton { rootView.askButton }
 }

@@ -60,7 +60,7 @@ private extension CommunityViewModel {
             .handleEvents(receiveOutput: { [weak self] in self?.userRegistrationState = $0 })
             .withUnretained(self)
             .flatMap(maxPublishers: .max(1)) { owner, _ in owner.fetchCommunityList() }
-            .subscribe(communityListSubject)
+            .sink { [weak self] in self?.communityListSubject.send($0) }
             .store(in: cancelBag)
     }
     
@@ -69,8 +69,7 @@ private extension CommunityViewModel {
             .handleEvents(receiveOutput: { [weak self] in self?.loadingStateSubject.send(true) })
             .withUnretained(self)
             .flatMap { owner, _ in owner.fetchCommunityList() }
-            .filter { !$0.isEmpty }
-            .subscribe(communityListSubject)
+            .sink { [weak self] in self?.communityListSubject.send($0) }
             .store(in: cancelBag)
     }
     
