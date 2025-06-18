@@ -31,7 +31,6 @@ final class CommunityViewController: UIViewController {
     private var dataSource: DataSource?
     
     private let viewModel: ViewModel
-    private let viewDidLoadRelay = PassthroughRelay<Void>()
     private let viewDidRefreshRelay = PassthroughRelay<Void>()
     private let registerRelay = PassthroughRelay<Int>()
     private let copyLinkRelay = PassthroughRelay<Void>()
@@ -65,8 +64,6 @@ final class CommunityViewController: UIViewController {
         setupNavigationBar()
         setupDataSource()
         setupBinding()
-        
-        viewDidLoadRelay.send()
     }
 }
 
@@ -150,8 +147,7 @@ private extension CommunityViewController {
     
     func setupBinding() {
         let input = ViewModel.Input(
-            viewDidLoad: viewDidLoadRelay.eraseToAnyPublisher(),
-            viewDidRefresh: viewDidRefreshRelay.eraseToAnyPublisher(),
+            refresh: viewDidRefreshRelay.eraseToAnyPublisher(),
             register: registerRelay.eraseToAnyPublisher(),
             checkNotificationAuthorization: checkNotificationAuthorizationRelay.eraseToAnyPublisher()
         )
@@ -172,7 +168,7 @@ private extension CommunityViewController {
             }
             .store(in: cancelBag)
         
-        output.completeRegistration
+        output.registrationCompleted
             .compactMap { $0 }
             .sink { [weak self] team in
                 self?.scrollToTopItem()

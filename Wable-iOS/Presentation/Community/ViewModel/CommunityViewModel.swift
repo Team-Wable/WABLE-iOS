@@ -10,7 +10,12 @@ import Foundation
 import UserNotifications
 
 final class CommunityViewModel {
+    private var userRegistrationState = CommunityRegistration.initialState()
+    
     private let useCase: CommunityUseCase
+    private let communityListSubject = CurrentValueSubject<[Community], Never>([])
+    private let loadingStateSubject = CurrentValueSubject<Bool, Never>(false)
+    private let registrationCompletedSubject = CurrentValueSubject<LCKTeam?, Never>(nil)
     
     init(useCase: CommunityUseCase) {
         self.useCase = useCase
@@ -19,8 +24,7 @@ final class CommunityViewModel {
 
 extension CommunityViewModel: ViewModelType {
     struct Input {
-        let viewDidLoad: Driver<Void>
-        let viewDidRefresh: Driver<Void>
+        let refresh: Driver<Void>
         let register: Driver<Int>
         let checkNotificationAuthorization: Driver<Void>
     }
@@ -28,97 +32,85 @@ extension CommunityViewModel: ViewModelType {
     struct Output {
         let communityItems: Driver<[CommunityItem]>
         let isLoading: Driver<Bool>
-        let completeRegistration: Driver<LCKTeam?>
+        let registrationCompleted: Driver<LCKTeam?>
         let isNotificationAuthorized: Driver<Bool>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
-        let registrationRelay = CurrentValueRelay<CommunityRegistration>(.initialState())
-        let communityListRelay = CurrentValueRelay<[Community]>([])
-        let isLoadingRelay = CurrentValueRelay<Bool>(false)
-        let completeRegistrationRelay = CurrentValueRelay<LCKTeam?>(nil)
+        bindInitialLoad(cancelBag: cancelBag)
+        bindRefresh(input: input, cancelBag: cancelBag)
+        bindRegister(input: input, cancelBag: cancelBag)
         
+        return Output(
+            communityItems: createItemsPublisher(),
+            isLoading: loadingStateSubject.removeDuplicates().asDriver(),
+            registrationCompleted: registrationCompletedSubject.asDriver(),
+            isNotificationAuthorized: createIsNotificationAuthorizedPublisher(input: input)
+        )
+    }
+}
+
+private extension CommunityViewModel {
+    func bindInitialLoad(cancelBag: CancelBag) {
         useCase.isUserRegistered()
             .catch { error -> AnyPublisher<CommunityRegistration, Never> in
                 WableLogger.log("\(error.localizedDescription)", for: .error)
                 return .just(.initialState())
             }
-            .sink { status in
-                registrationRelay.send(status)
-            }
-            .store(in: cancelBag)
-        
-        input.viewDidLoad
+            .handleEvents(receiveOutput: { [weak self] in self?.userRegistrationState = $0 })
             .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<[Community], Never> in
-                owner.useCase.fetchCommunityList()
-                    .catch { error -> AnyPublisher<[Community], Never> in
-                        WableLogger.log("\(error.localizedDescription)", for: .error)
-                        return .just([])
-                    }
-                    .eraseToAnyPublisher()
-            }
-            .filter { !$0.isEmpty }
-            .sink { communityListRelay.send($0) }
+            .flatMap(maxPublishers: .max(1)) { owner, _ in owner.fetchCommunityList() }
+            .subscribe(communityListSubject)
             .store(in: cancelBag)
-        
-        let viewDidRefresh = input.viewDidRefresh
-            .handleEvents(receiveOutput: { _ in
-                isLoadingRelay.send(true)
-            })
-        
-        Publishers.Merge(input.viewDidLoad, viewDidRefresh)
+    }
+    
+    func bindRefresh(input: Input, cancelBag: CancelBag) {
+        input.refresh
+            .handleEvents(receiveOutput: { [weak self] in self?.loadingStateSubject.send(true) })
             .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<[Community], Never> in
-                owner.useCase.fetchCommunityList()
-                    .catch { error -> AnyPublisher<[Community], Never> in
-                        WableLogger.log("\(error.localizedDescription)", for: .error)
-                        return .just([])
-                    }
-                    .eraseToAnyPublisher()
-            }
+            .flatMap { owner, _ in owner.fetchCommunityList() }
             .filter { !$0.isEmpty }
-            .sink { communityListRelay.send($0) }
+            .subscribe(communityListSubject)
             .store(in: cancelBag)
-        
+    }
+    
+    func bindRegister(input: Input, cancelBag: CancelBag) {
         input.register
-            .compactMap { communityListRelay.value[$0].team }
-            .handleEvents(receiveOutput: { team in
-                registrationRelay.send(.init(team: team, hasRegisteredTeam: true))
+            .compactMap { [weak self] in self?.communityListSubject.value[$0].team }
+            .handleEvents(receiveOutput: { [weak self] team in
+                self?.userRegistrationState = CommunityRegistration(team: team, hasRegisteredTeam: true)
             })
             .withUnretained(self)
-            .flatMap { owner, team -> AnyPublisher<Double, Never> in
+            .flatMap { owner, team in
                 return owner.useCase.register(for: team)
-                    .map { value -> Double? in
-                        return value
-                    }
+                    .map { Optional.some($0) }
                     .catch { error -> AnyPublisher<Double?, Never> in
                         WableLogger.log("\(error.localizedDescription)", for: .error)
                         return .just(nil)
                     }
                     .compactMap { $0 }
-                    .handleEvents(receiveOutput: { _ in
-                        completeRegistrationRelay.send(team)
-                    })
+                    .handleEvents(receiveOutput: { [weak self] _ in self?.registrationCompletedSubject.send(team) })
+                    .map { (team, $0) }
                     .eraseToAnyPublisher()
             }
-            .sink { updatedRate in
-                guard let team = registrationRelay.value.team,
-                      let index = communityListRelay.value.firstIndex(where: { $0.team == team })
-                else {
-                    WableLogger.log("팀을 찾을 수 없습니다.", for: .debug)
-                    return
+            .sink { [weak self] team, updatedRate in
+                guard let index = self?.communityListSubject.value.firstIndex(where: { $0.team == team }) else {
+                    return WableLogger.log("팀을 찾을 수 없습니다.", for: .debug)
                 }
                 
-                communityListRelay.value[index].registrationRate = updatedRate
+                self?.communityListSubject.value[index].registrationRate = updatedRate
             }
             .store(in: cancelBag)
-        
-        let communityItems = communityListRelay
-            .map { communityList in
-                let registration = registrationRelay.value
+    }
+    
+    func createItemsPublisher() -> AnyPublisher<[CommunityItem], Never> {
+        return communityListSubject
+            .map { [weak self] list in
+                guard let registration = self?.userRegistrationState else {
+                    return []
+                }
                 
-                return communityList.map {
+                return list.map {
                     let isRegistered = registration.hasRegisteredTeam
                     ? $0.team == registration.team
                     : false
@@ -131,27 +123,29 @@ extension CommunityViewModel: ViewModelType {
                 }
                 .sorted { $0.isRegistered && !$1.isRegistered }
             }
-            .handleEvents(receiveOutput: { _ in
-                isLoadingRelay.send(false)
-            })
+            .handleEvents(receiveOutput: { [weak self] _ in self?.loadingStateSubject.send(false) })
+            .removeDuplicates()
             .asDriver()
-        
-        let isNotificationAuthorized = input.checkNotificationAuthorization
-            .flatMap { _ -> AnyPublisher<Bool, Never> in
-                Future { promise in
+    }
+    
+    func createIsNotificationAuthorizedPublisher(input: Input) -> AnyPublisher<Bool, Never> {
+        return input.checkNotificationAuthorization
+            .flatMap { _ in
+                return Future { promise in
                     UNUserNotificationCenter.current().getNotificationSettings { settings in
                         promise(.success(settings.authorizationStatus == .authorized))
                     }
                 }
-                .eraseToAnyPublisher()
             }
             .asDriver()
-        
-        return Output(
-            communityItems: communityItems,
-            isLoading: isLoadingRelay.asDriver(),
-            completeRegistration: completeRegistrationRelay.asDriver(),
-            isNotificationAuthorized: isNotificationAuthorized
-        )
+    }
+    
+    func fetchCommunityList() -> AnyPublisher<[Community], Never> {
+        return useCase.fetchCommunityList()
+            .catch { error -> AnyPublisher<[Community], Never> in
+                WableLogger.log("\(error.localizedDescription)", for: .error)
+                return .just([])
+            }
+            .eraseToAnyPublisher()
     }
 }
