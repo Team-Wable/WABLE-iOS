@@ -56,7 +56,9 @@ private extension CommunityViewModel {
             }
             .handleEvents(receiveOutput: { [weak self] in self?.userRegistrationState = $0 })
             .withUnretained(self)
-            .flatMap(maxPublishers: .max(1)) { owner, _ in owner.fetchCommunityList() }
+            .flatMap(maxPublishers: .max(1)) { owner, _ -> AnyPublisher<[Community], Never> in
+                owner.fetchCommunityList()
+            }
             .sink { [weak self] in self?.communityListSubject.send($0) }
             .store(in: cancelBag)
     }
@@ -65,19 +67,24 @@ private extension CommunityViewModel {
         input.refresh
             .handleEvents(receiveOutput: { [weak self] in self?.loadingStateSubject.send(true) })
             .withUnretained(self)
-            .flatMap { owner, _ in owner.fetchCommunityList() }
+            .flatMap {  owner, _ -> AnyPublisher<[Community], Never> in
+                owner.fetchCommunityList()
+            }
             .sink { [weak self] in self?.communityListSubject.send($0) }
             .store(in: cancelBag)
     }
     
     func bindRegister(input: Input, cancelBag: CancelBag) {
-        input.register
+        let teamPublisher: AnyPublisher<LCKTeam, Never> = input.register
             .compactMap { [weak self] in self?.communityListSubject.value[$0].team }
             .handleEvents(receiveOutput: { [weak self] team in
                 self?.userRegistrationState = CommunityRegistration(team: team, hasRegisteredTeam: true)
             })
+            .eraseToAnyPublisher()
+       
+        teamPublisher
             .withUnretained(self)
-            .flatMap { owner, team in
+            .flatMap { owner, team -> AnyPublisher<(LCKTeam, Double), Never> in
                 return owner.repository.updateRegistration(communityName: team.rawValue)
                     .map { Optional.some($0) }
                     .catch { error -> AnyPublisher<Double?, Never> in
