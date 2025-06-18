@@ -85,6 +85,13 @@ extension AppDelegate {
                 return MockUpdateAlertPolicyRepository()
             case .production:
                 return UpdateAlertPolicyRepositoryImpl()
+        
+        // MARK: - Community
+        
+        diContainer.register(for: CommunityRepository.self) { env in
+            switch env {
+            case .mock: MockCommunityRepository()
+            case .production: CommunityRepositoryImpl()
             }
         }
     }
