@@ -43,11 +43,7 @@ final class TabBarController: UITabBarController {
     }
     
     private let communityViewController = CommunityViewController(
-        viewModel: CommunityViewModel(
-            useCase: CommunityUseCaseImpl(
-                repository: CommunityRepositoryImpl()
-            )
-        )
+        viewModel: CommunityViewModel()
     ).then {
         $0.tabBarItem.title = "커뮤니티"
         $0.tabBarItem.image = .icCommunity
