@@ -10,16 +10,13 @@ import Foundation
 import UserNotifications
 
 final class CommunityViewModel {
+    @Injected private var repository: CommunityRepository
+    
     private var userRegistrationState = CommunityRegistration.initialState()
     
-    private let useCase: CommunityUseCase
     private let communityListSubject = CurrentValueSubject<[Community], Never>([])
     private let loadingStateSubject = CurrentValueSubject<Bool, Never>(false)
     private let registrationCompletedSubject = CurrentValueSubject<LCKTeam?, Never>(nil)
-    
-    init(useCase: CommunityUseCase) {
-        self.useCase = useCase
-    }
 }
 
 extension CommunityViewModel: ViewModelType {
@@ -52,7 +49,7 @@ extension CommunityViewModel: ViewModelType {
 
 private extension CommunityViewModel {
     func bindInitialLoad(cancelBag: CancelBag) {
-        useCase.isUserRegistered()
+        repository.checkUserRegistration()
             .catch { error -> AnyPublisher<CommunityRegistration, Never> in
                 WableLogger.log("\(error.localizedDescription)", for: .error)
                 return .just(.initialState())
@@ -81,7 +78,7 @@ private extension CommunityViewModel {
             })
             .withUnretained(self)
             .flatMap { owner, team in
-                return owner.useCase.register(for: team)
+                return owner.repository.updateRegistration(communityName: team.rawValue)
                     .map { Optional.some($0) }
                     .catch { error -> AnyPublisher<Double?, Never> in
                         WableLogger.log("\(error.localizedDescription)", for: .error)
@@ -140,7 +137,7 @@ private extension CommunityViewModel {
     }
     
     func fetchCommunityList() -> AnyPublisher<[Community], Never> {
-        return useCase.fetchCommunityList()
+        return repository.fetchCommunityList()
             .catch { error -> AnyPublisher<[Community], Never> in
                 WableLogger.log("\(error.localizedDescription)", for: .error)
                 return .just([])
