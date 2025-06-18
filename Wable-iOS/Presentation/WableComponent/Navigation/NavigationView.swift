@@ -34,6 +34,7 @@ enum NavigationType {
         case plain
         case detail
         case profile
+        case profileEdit
     }
     
     case home(hasNewNotification: Bool)
@@ -105,6 +106,12 @@ final class NavigationView: UIView {
         $0.contentMode = .scaleAspectFit
     }
     
+    lazy var doneButton: WableButton = WableButton(style: .primary).then {
+        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 16.adjustedHeight
+        $0.configuration?.attributedTitle = "완료".pretendardString(with: .body3)
+    }
+    
     lazy var menuButton: UIButton = UIButton().then {
         $0.setImage(.btnHamberger, for: .normal)
         $0.contentMode = .scaleAspectFit
@@ -144,6 +151,7 @@ private extension NavigationView {
             notificationButton,
             backButton,
             dismissButton,
+            doneButton,
             menuButton
         ].forEach {
             addSubviews($0)
@@ -202,6 +210,13 @@ private extension NavigationView {
             $0.verticalEdges.trailing.equalToSuperview().inset(12)
         }
         
+        doneButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(12)
+            $0.adjustedWidthEqualTo(53)
+            $0.adjustedHeightEqualTo(33)
+        }
+        
         menuButton.snp.makeConstraints {
             $0.verticalEdges.trailing.equalToSuperview().inset(12)
         }
@@ -247,6 +262,13 @@ extension NavigationView {
                 visibleViewList = [
                     pageTitleLabel,
                     menuButton,
+                    pageUnderLineView
+                ]
+            case .profileEdit:
+                visibleViewList = [
+                    pageTitleLabel,
+                    backButton,
+                    doneButton,
                     pageUnderLineView
                 ]
             }
