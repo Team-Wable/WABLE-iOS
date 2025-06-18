@@ -64,7 +64,7 @@ final class MockCommunityUseCaseImpl: CommunityUseCase {
     }
     
     func register(for communityTeam: LCKTeam) -> AnyPublisher<Double, WableError> {
-        return .just(0.92)
+        return .just(88.0)
             .delay(for: .seconds(randomDelay), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
