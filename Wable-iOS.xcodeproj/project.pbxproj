@@ -20,6 +20,7 @@
 		DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */; };
 		DD214B582E028FB80065D995 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD214B572E028FB80065D995 /* ProfileEditView.swift */; };
 		DD214B5A2E029E480065D995 /* TeamCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD214B592E029E430065D995 /* TeamCollectionView.swift */; };
+		DD214B5C2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD214B5B2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift */; };
 		DD2967F92D6DAC4800143851 /* AnyPublisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29675E2D6DAC3100143851 /* AnyPublisher+.swift */; };
 		DD2967FA2D6DAC4800143851 /* Publisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967602D6DAC3100143851 /* Publisher+.swift */; };
 		DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29675B2D6DAC3100143851 /* DIContainer.swift */; };
@@ -398,6 +399,7 @@
 		DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD214B572E028FB80065D995 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		DD214B592E029E430065D995 /* TeamCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamCollectionView.swift; sourceTree = "<group>"; };
+		DD214B5B2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+KeyboardHandling.swift"; sourceTree = "<group>"; };
 		DD29675B2D6DAC3100143851 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		DD29675C2D6DAC3100143851 /* Injected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injected.swift; sourceTree = "<group>"; };
 		DD29675E2D6DAC3100143851 /* AnyPublisher+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnyPublisher+.swift"; sourceTree = "<group>"; };
@@ -2074,6 +2076,7 @@
 		DE8E86402D91A092000A4292 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				DD214B5B2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift */,
 				DD8B42A32DA15DA9007DC1CA /* UITextView+.swift */,
 				DE7C530F2D761E3300076E5D /* String+.swift */,
 				DE9C3BFB2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift */,
@@ -2913,6 +2916,7 @@
 				DEAFE05B2D8C4E930097E91C /* GameScheduleHeaderView.swift in Sources */,
 				DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */,
 				DECC36DA2DC3A4D800336B7B /* CreateViewitViewModel.swift in Sources */,
+				DD214B5C2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift in Sources */,
 				DDFB22402D8BA68900FEA24A /* LCKTeamCollectionViewCell.swift in Sources */,
 				DDCA70972D88797200A988B8 /* AuthorType.swift in Sources */,
 				DD2967FC2D6DAC4800143851 /* Injected.swift in Sources */,
