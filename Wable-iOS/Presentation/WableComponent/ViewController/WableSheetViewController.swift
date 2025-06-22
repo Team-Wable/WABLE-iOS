@@ -10,6 +10,42 @@ import UIKit
 import SnapKit
 import Then
 
+// MARK: - WableSheetAction
+
+struct WableSheetAction {
+    enum Style {
+        case primary
+        case gray
+    }
+    
+    let title: String
+    let style: Style
+    let handler: (() -> Void)?
+    
+    init(
+        title: String,
+        style: Style,
+        handler: (() -> Void)? = nil
+    ) {
+        self.title = title
+        self.style = style
+        self.handler = handler
+    }
+}
+
+fileprivate extension WableSheetAction.Style {
+    var buttonStyle: WableButton.Style {
+        switch self {
+        case .primary:
+            return .primary
+        case .gray:
+            return .gray
+        }
+    }
+}
+
+// MARK: - WableSheetViewController
+
 final class WableSheetViewController: UIViewController {
     
     // MARK: - UIComponent
@@ -76,8 +112,6 @@ final class WableSheetViewController: UIViewController {
     }
 }
 
-// MARK: - Public Method
-
 extension WableSheetViewController {
     func addAction(_ action: WableSheetAction) {
         let button = createWableButton(for: action)
@@ -87,12 +121,8 @@ extension WableSheetViewController {
     func addActions(_ actions: WableSheetAction...) {
         actions.forEach { addAction($0) }
     }
-}
-
-// MARK: - Private Method
-
-private extension WableSheetViewController {
-    func createWableButton(for action: WableSheetAction) -> WableButton {
+    
+    private func createWableButton(for action: WableSheetAction) -> WableButton {
         return WableButton(style: action.style.buttonStyle).then {
             var config = $0.configuration ?? .filled()
             config.attributedTitle = action.title.pretendardString(with: .body1)
@@ -109,9 +139,10 @@ private extension WableSheetViewController {
     }
 }
 
-// MARK: - Setup Method
-
 private extension WableSheetViewController {
+    
+    // MARK: - Setup Method
+    
     func setupView() {
         view.backgroundColor = .wableBlack.withAlphaComponent(0.7)
         
