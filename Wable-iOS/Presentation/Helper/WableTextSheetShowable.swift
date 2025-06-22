@@ -11,12 +11,19 @@ import UIKit
 
 protocol WableTextSheetShowable {
     func showWableTextSheet(title: String, placeholder: String, actions: WableTextSheetAction...)
+    func showWableTextSheet(title: String, placeholder: String, actions: [WableTextSheetAction])
 }
 
 extension WableTextSheetShowable where Self: UIViewController {
     func showWableTextSheet(title: String, placeholder: String, actions: WableTextSheetAction...) {
         let wableTextSheet = WableTextSheetViewController(title: title, placeholder: placeholder)
         actions.forEach { wableTextSheet.addAction($0) }
+        present(wableTextSheet, animated: true)
+    }
+    
+    func showWableTextSheet(title: String, placeholder: String, actions: [WableTextSheetAction]) {
+        let wableTextSheet = WableTextSheetViewController(title: title, placeholder: placeholder)
+        wableTextSheet.addActions(actions)
         present(wableTextSheet, animated: true)
     }
     
