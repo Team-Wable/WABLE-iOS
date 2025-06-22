@@ -258,7 +258,7 @@ private extension ViewitListViewController {
         switch action {
         case .report:
             title = StringLiterals.Report.sheetTitle
-            message = StringLiterals.Report.sheetMessage
+            message = StringLiterals.Report.sheetPlaceholder
             buttonTitle = Constant.Report.buttonTitle
         case .delete:
             title = Constant.Delete.title

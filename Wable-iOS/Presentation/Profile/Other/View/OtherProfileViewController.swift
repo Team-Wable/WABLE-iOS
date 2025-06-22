@@ -412,7 +412,7 @@ private extension OtherProfileViewController {
     func presentReportSheet(contentID: Int) {
         let actionSheet = WableSheetViewController(
             title: StringLiterals.Report.sheetTitle,
-            message: StringLiterals.Report.sheetMessage
+            message: StringLiterals.Report.sheetPlaceholder
         )
         
         let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
@@ -426,7 +426,7 @@ private extension OtherProfileViewController {
     func presentReportSheet(commentID: Int) {
         let actionSheet = WableSheetViewController(
             title: StringLiterals.Report.sheetTitle,
-            message: StringLiterals.Report.sheetMessage
+            message: StringLiterals.Report.sheetPlaceholder
         )
         
         let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
