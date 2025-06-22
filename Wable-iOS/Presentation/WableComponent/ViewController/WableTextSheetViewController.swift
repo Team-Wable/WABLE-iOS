@@ -300,11 +300,18 @@ private extension WableTextSheetViewController {
         scrollView.scrollIndicatorInsets = contentInsets
         
         if isShowing {
-            let scrollOffset = adjustedKeyboardHeight / 2
-            let targetContentOffset = CGPoint(x: 0, y: scrollOffset)
+            let textCountLabelFrame = textCountLabel.convert(textCountLabel.bounds, to: scrollView)
+            let textCountLabelBottom = textCountLabelFrame.maxY
             
-            UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
-                self.scrollView.setContentOffset(targetContentOffset, animated: false)
+            let keyboardTop = scrollView.frame.height - adjustedKeyboardHeight
+            
+            if textCountLabelBottom > keyboardTop {
+                let scrollOffset = textCountLabelBottom - keyboardTop + 8
+                let targetContentOffset = CGPoint(x: 0, y: scrollOffset)
+                
+                UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
+                    self.scrollView.setContentOffset(targetContentOffset, animated: false)
+                }
             }
         } else {
             UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
