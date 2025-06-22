@@ -5,6 +5,7 @@
 //  Created by 김진웅 on 6/22/25.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
@@ -50,6 +51,12 @@ final class WableTextSheetViewController: UIViewController {
     
     // MARK: - UIComponent
     
+    private let scrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = false
+        $0.showsHorizontalScrollIndicator = false
+        $0.keyboardDismissMode = .interactive
+    }
+    
     private let containerView = UIView(backgroundColor: .wableWhite).then {
         $0.layer.cornerRadius = 16
     }
@@ -85,12 +92,13 @@ final class WableTextSheetViewController: UIViewController {
     }
     
     // MARK: - Property
-
+    
     private let sheetTitle: String
     private let placeholder: String
+    private let cancelBag = CancelBag()
     
     // MARK: - Life Cycle
-
+    
     init(title: String, placeholder: String) {
         self.sheetTitle = title
         self.placeholder = placeholder
@@ -111,6 +119,8 @@ final class WableTextSheetViewController: UIViewController {
         
         setupView()
         setupConstraint()
+        setupDelegate()
+        setupAction()
     }
 }
 
@@ -141,6 +151,36 @@ extension WableTextSheetViewController {
     }
 }
 
+// MARK: - UITextViewDelegate
+
+extension WableTextSheetViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        configure(textView: textView)
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let currentText = textView.text ?? ""
+        let newLength = currentText.count + text.count - range.length
+        return newLength <= Constant.maxCharacterCount
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+extension WableTextSheetViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view is UIButton || touch.view is UITextView {
+            return false
+        }
+        
+        if let view = touch.view, view.isDescendant(of: buttonStackView) {
+            return false
+        }
+        
+        return true
+    }
+}
+
 private extension WableTextSheetViewController {
     
     // MARK: - Setup Method
@@ -151,8 +191,8 @@ private extension WableTextSheetViewController {
         titleLabel.text = sheetTitle
         placeholderLabel.text = placeholder
         
-        view.addSubview(containerView)
-        
+        view.addSubview(scrollView)
+        scrollView.addSubview(containerView)
         messageTextView.addSubview(placeholderLabel)
         
         containerView.addSubviews(
@@ -164,9 +204,14 @@ private extension WableTextSheetViewController {
     }
     
     func setupConstraint() {
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(safeArea)
+        }
+        
         containerView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(32)
             make.centerY.equalToSuperview()
+            make.width.equalTo(view.snp.width).offset(-64)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -187,14 +232,90 @@ private extension WableTextSheetViewController {
         
         textCountLabel.snp.makeConstraints { make in
             make.top.equalTo(messageTextView.snp.bottom).offset(4)
-            make.horizontalEdges.equalTo(messageTextView)
+            make.trailing.equalTo(messageTextView)
         }
         
         buttonStackView.snp.makeConstraints { make in
             make.top.equalTo(textCountLabel.snp.bottom).offset(16)
-            make.horizontalEdges.equalTo(textCountLabel)
+            make.horizontalEdges.equalTo(messageTextView)
             make.adjustedHeightEqualTo(48)
             make.bottom.equalToSuperview().offset(-16)
         }
+    }
+    
+    func setupDelegate() {
+        messageTextView.delegate = self
+    }
+    
+    func setupAction() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: nil)
+        tapGesture.delegate = self
+        
+        view.gesture(.tap(tapGesture))
+            .sink { [weak self] _ in self?.view.endEditing(true) }
+            .store(in: cancelBag)
+        
+        NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+            .compactMap { notification -> (CGRect, TimeInterval)? in
+                guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+                      let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval else {
+                    return nil
+                }
+                return (keyboardFrame, duration)
+            }
+            .sink { [weak self] keyboardFrame, duration in
+                self?.adjustScrollViewForKeyboard(keyboardFrame: keyboardFrame, duration: duration, isShowing: true)
+            }
+            .store(in: cancelBag)
+        
+        NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
+            .compactMap { notification -> TimeInterval? in
+                notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
+            }
+            .sink { [weak self] duration in
+                self?.adjustScrollViewForKeyboard(keyboardFrame: .zero, duration: duration, isShowing: false)
+            }
+            .store(in: cancelBag)
+    }
+    
+    // MARK: - Helper Method
+    
+    func configure(textView: UITextView) {
+        let currentText = textView.text ?? ""
+        let currentCount = currentText.count
+        
+        placeholderLabel.isHidden = !currentText.isEmpty
+        
+        textCountLabel.text = "\(currentCount)/\(Constant.maxCharacterCount)"
+        textCountLabel.textColor = currentCount >= Constant.maxCharacterCount ? .red : .wableBlack
+    }
+    
+    func adjustScrollViewForKeyboard(keyboardFrame: CGRect, duration: TimeInterval, isShowing: Bool) {
+        let keyboardHeight = isShowing ? keyboardFrame.height : 0
+        let safeAreaBottom = view.safeAreaInsets.bottom
+        let adjustedKeyboardHeight = keyboardHeight - safeAreaBottom
+        
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: adjustedKeyboardHeight, right: 0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+        
+        if isShowing {
+            let scrollOffset = adjustedKeyboardHeight / 2
+            let targetContentOffset = CGPoint(x: 0, y: scrollOffset)
+            
+            UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
+                self.scrollView.setContentOffset(targetContentOffset, animated: false)
+            }
+        } else {
+            UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
+                self.scrollView.setContentOffset(.zero, animated: false)
+            }
+        }
+    }
+    
+    // MARK: - Constant
+    
+    enum Constant {
+        static let maxCharacterCount = 100
     }
 }
