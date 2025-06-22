@@ -300,7 +300,7 @@ private extension WableTextSheetViewController {
     }
     
     func calculateAdjustedKeyboardHeight(keyboardFrame: CGRect, isShowing: Bool) -> CGFloat {
-        if isShowing { return 0 }
+        if !isShowing { return 0 }
         
         let keyboardHeight = keyboardFrame.height
         let safeAreaBottom = view.safeAreaInsets.bottom
