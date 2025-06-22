@@ -355,7 +355,7 @@
 		DEB60AF62DD210E600FE8BFD /* AccountInfoCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB60AF52DD210E600FE8BFD /* AccountInfoCellItem.swift */; };
 		DEB60AF92DD2158A00FE8BFD /* AccountInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB60AF82DD2158A00FE8BFD /* AccountInfoViewModel.swift */; };
 		DEB60AFF2DD238AF00FE8BFD /* ViewitListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB60AFE2DD238AF00FE8BFD /* ViewitListCell.swift */; };
-		DEC526882E083608000F7900 /* WableSheetAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC526872E083608000F7900 /* WableSheetAction.swift */; };
+		DEC5268A2E0837DA000F7900 /* WableTextSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC526892E0837DA000F7900 /* WableTextSheetViewController.swift */; };
 		DECC36DA2DC3A4D800336B7B /* CreateViewitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECC36D92DC3A4D800336B7B /* CreateViewitViewModel.swift */; };
 		DECC36DF2DC3B24000336B7B /* CreateViewitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECC36DE2DC3B24000336B7B /* CreateViewitViewController.swift */; };
 		DED1344E2DCF6C73008463BD /* ViewitListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED1344D2DCF6C73008463BD /* ViewitListViewModel.swift */; };
@@ -723,7 +723,7 @@
 		DEB60AF52DD210E600FE8BFD /* AccountInfoCellItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoCellItem.swift; sourceTree = "<group>"; };
 		DEB60AF82DD2158A00FE8BFD /* AccountInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoViewModel.swift; sourceTree = "<group>"; };
 		DEB60AFE2DD238AF00FE8BFD /* ViewitListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitListCell.swift; sourceTree = "<group>"; };
-		DEC526872E083608000F7900 /* WableSheetAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSheetAction.swift; sourceTree = "<group>"; };
+		DEC526892E0837DA000F7900 /* WableTextSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableTextSheetViewController.swift; sourceTree = "<group>"; };
 		DECC36D92DC3A4D800336B7B /* CreateViewitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewitViewModel.swift; sourceTree = "<group>"; };
 		DECC36DE2DC3B24000336B7B /* CreateViewitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewitViewController.swift; sourceTree = "<group>"; };
 		DED1344D2DCF6C73008463BD /* ViewitListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitListViewModel.swift; sourceTree = "<group>"; };
@@ -1868,8 +1868,9 @@
 				DE54B03B2D82C43F009A7C34 /* PhotoDetailViewController.swift */,
 				DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */,
 				DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */,
+				DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */,
+				DEC526892E0837DA000F7900 /* WableTextSheetViewController.swift */,
 				DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */,
-				DEC526862E0835F6000F7900 /* WableSheet */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -2333,15 +2334,6 @@
 				DEB60AF82DD2158A00FE8BFD /* AccountInfoViewModel.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		DEC526862E0835F6000F7900 /* WableSheet */ = {
-			isa = PBXGroup;
-			children = (
-				DEC526872E083608000F7900 /* WableSheetAction.swift */,
-				DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */,
-			);
-			path = WableSheet;
 			sourceTree = "<group>";
 		};
 		DECC36D52DC39F8A00336B7B /* View */ = {
@@ -2815,6 +2807,7 @@
 				DD2968432D6DAD2F00143851 /* FetchGameSchedules.swift in Sources */,
 				DE3CA2832DD4464E00BF5E87 /* FetchUserCommentListUseCase.swift in Sources */,
 				DEB60AF92DD2158A00FE8BFD /* AccountInfoViewModel.swift in Sources */,
+				DEC5268A2E0837DA000F7900 /* WableTextSheetViewController.swift in Sources */,
 				DE6459D52D97B8C2005569B8 /* InformationNotificationViewController.swift in Sources */,
 				DD8326962D95836F0014B62D /* HomeViewModel.swift in Sources */,
 				DD2968442D6DAD2F00143851 /* FetchUserProfile.swift in Sources */,
@@ -2955,7 +2948,6 @@
 				DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */,
 				DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */,
 				DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */,
-				DEC526882E083608000F7900 /* WableSheetAction.swift in Sources */,
 				DD29681B2D6DAD0200143851 /* ProfileRepository.swift in Sources */,
 				DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */,
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
