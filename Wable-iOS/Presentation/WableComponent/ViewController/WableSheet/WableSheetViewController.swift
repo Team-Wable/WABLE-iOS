@@ -10,42 +10,6 @@ import UIKit
 import SnapKit
 import Then
 
-// MARK: - WableSheetAction
-
-struct WableSheetAction {
-    enum Style {
-        case primary
-        case gray
-    }
-    
-    let title: String
-    let style: Style
-    let handler: (() -> Void)?
-    
-    init(
-        title: String,
-        style: Style,
-        handler: (() -> Void)? = nil
-    ) {
-        self.title = title
-        self.style = style
-        self.handler = handler
-    }
-}
-
-fileprivate extension WableSheetAction.Style {
-    var buttonStyle: WableButton.Style {
-        switch self {
-        case .primary:
-            return .primary
-        case .gray:
-            return .gray
-        }
-    }
-}
-
-// MARK: - WableSheetViewController
-
 final class WableSheetViewController: UIViewController {
     
     // MARK: - UIComponent
@@ -97,6 +61,7 @@ final class WableSheetViewController: UIViewController {
         modalPresentationStyle = .overFullScreen
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
