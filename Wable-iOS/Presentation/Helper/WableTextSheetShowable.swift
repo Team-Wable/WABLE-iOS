@@ -20,7 +20,7 @@ extension WableTextSheetShowable where Self: UIViewController {
         present(wableTextSheet, animated: true)
     }
     
-    func showGhostSheet(_ handler: @escaping (String?) -> Void) {
+    func showGhostSheet(onPrimary handler: @escaping (String?) -> Void) {
         let wableTextSheet = WableTextSheetViewController(
             title: StringLiterals.Ghost.sheetTitle,
             placeholder: StringLiterals.Ghost.sheetPlaceholder
@@ -31,7 +31,7 @@ extension WableTextSheetShowable where Self: UIViewController {
         present(wableTextSheet, animated: true)
     }
     
-    func showReportSheet(_ handler: @escaping (String?) -> Void) {
+    func showReportSheet(onPrimary handler: @escaping (String?) -> Void) {
         let wableTextSheet = WableTextSheetViewController(
             title: StringLiterals.Report.sheetTitle,
             placeholder: StringLiterals.Report.sheetPlaceholder
