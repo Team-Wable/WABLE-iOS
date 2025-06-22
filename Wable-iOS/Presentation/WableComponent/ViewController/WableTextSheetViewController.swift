@@ -130,6 +130,10 @@ extension WableTextSheetViewController {
         buttonStackView.addArrangedSubview(button)
     }
     
+    func addActions(_ actions: [WableTextSheetAction]) {
+        actions.forEach { addAction($0) }
+    }
+    
     func addActions(_ actions: WableTextSheetAction...) {
         actions.forEach { addAction($0) }
     }

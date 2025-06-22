@@ -118,6 +118,10 @@ extension WableSheetViewController {
         buttonStackView.addArrangedSubview(button)
     }
     
+    func addActions(_ actions: [WableSheetAction]) {
+        actions.forEach { addAction($0) }
+    }
+    
     func addActions(_ actions: WableSheetAction...) {
         actions.forEach { addAction($0) }
     }
