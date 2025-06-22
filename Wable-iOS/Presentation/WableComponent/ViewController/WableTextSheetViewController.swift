@@ -291,32 +291,48 @@ private extension WableTextSheetViewController {
     }
     
     func adjustScrollViewForKeyboard(keyboardFrame: CGRect, duration: TimeInterval, isShowing: Bool) {
-        let keyboardHeight = isShowing ? keyboardFrame.height : 0
-        let safeAreaBottom = view.safeAreaInsets.bottom
-        let adjustedKeyboardHeight = keyboardHeight - safeAreaBottom
+        let adjustedKeyboardHeight = calculateAdjustedKeyboardHeight(keyboardFrame: keyboardFrame, isShowing: isShowing)
+        updateScrollViewInsets(with: adjustedKeyboardHeight)
         
-        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: adjustedKeyboardHeight, right: 0)
+        isShowing
+        ? scrollToVisibleAreaIfNeeded(keyboardHeight: adjustedKeyboardHeight, duration: duration)
+        : animateScrollViewContentOffset(to: .zero, duration: duration)
+    }
+    
+    func calculateAdjustedKeyboardHeight(keyboardFrame: CGRect, isShowing: Bool) -> CGFloat {
+        if isShowing { return 0 }
+        
+        let keyboardHeight = keyboardFrame.height
+        let safeAreaBottom = view.safeAreaInsets.bottom
+        return keyboardHeight - safeAreaBottom
+    }
+    
+    func updateScrollViewInsets(with keyboardHeight: CGFloat) {
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    func scrollToVisibleAreaIfNeeded(keyboardHeight: CGFloat, duration: TimeInterval) {
+        let textCountLabelFrame = textCountLabel.convert(textCountLabel.bounds, to: scrollView)
+        let textCountLabelBottom = textCountLabelFrame.maxY
+        let keyboardTop = scrollView.frame.height - keyboardHeight
         
-        if isShowing {
-            let textCountLabelFrame = textCountLabel.convert(textCountLabel.bounds, to: scrollView)
-            let textCountLabelBottom = textCountLabelFrame.maxY
-            
-            let keyboardTop = scrollView.frame.height - adjustedKeyboardHeight
-            
-            if textCountLabelBottom > keyboardTop {
-                let scrollOffset = textCountLabelBottom - keyboardTop + 8
-                let targetContentOffset = CGPoint(x: 0, y: scrollOffset)
-                
-                UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
-                    self.scrollView.setContentOffset(targetContentOffset, animated: false)
-                }
-            }
-        } else {
-            UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
-                self.scrollView.setContentOffset(.zero, animated: false)
-            }
+        guard textCountLabelBottom > keyboardTop else { return }
+        
+        let scrollOffset = textCountLabelBottom - keyboardTop + 8
+        let targetContentOffset = CGPoint(x: 0, y: scrollOffset)
+        
+        animateScrollViewContentOffset(to: targetContentOffset, duration: duration)
+    }
+    
+    func animateScrollViewContentOffset(to offset: CGPoint, duration: TimeInterval) {
+        UIView.animate(
+            withDuration: duration,
+            delay: 0,
+            options: .curveEaseInOut
+        ) {
+            self.scrollView.setContentOffset(offset, animated: false)
         }
     }
     
