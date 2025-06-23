@@ -14,11 +14,7 @@ final class ProfileEditView: UIView {
     
     // MARK: Property
 
-    var defaultImageList = [
-        DefaultProfileType.blue,
-        DefaultProfileType.green,
-        DefaultProfileType.purple
-    ]
+    var defaultImageList = DefaultProfileType.allCases
     
     private let cellTapped: ((String) -> Void)?
     
