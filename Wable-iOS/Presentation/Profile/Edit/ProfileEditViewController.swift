@@ -99,7 +99,50 @@ private extension ProfileEditViewController {
         rootView.switchButton.addTarget(self, action: #selector(switchButtonDidTap), for: .touchUpInside)
         rootView.addButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
         rootView.duplicationCheckButton.addTarget(self, action: #selector(duplicationCheckButtonDidTap), for: .touchUpInside)
-        navigationView.doneButton.addTarget(self, action: #selector(doneButtonDidTap), for: .touchUpInside)
+        navigationView.doneButton
+            .publisher(for: .touchUpInside)
+            .sink { [weak self] _ in
+                guard let self = self,
+                      let profile = sessionProfile
+                else {
+                    return
+                }
+                
+                let nicknameText = rootView.nickNameTextField.text ?? ""
+                let hasNicknameChanged = !nicknameText.isEmpty && nicknameText != profile.user.nickname
+                let hasImageChanged = defaultImage != nil || hasUserSelectedImage
+                let hasTeamChanged = lckTeam != (profile.user.fanTeam?.rawValue ?? "LCK")
+                
+                if hasNicknameChanged || hasImageChanged || hasTeamChanged {
+                    let finalNickname = hasNicknameChanged ? nicknameText : profile.user.nickname
+                    
+                    profileUseCase.execute(
+                        profile: UserProfile(
+                            user: User(
+                                id: profile.user.id,
+                                nickname: finalNickname,
+                                profileURL: profile.user.profileURL,
+                                fanTeam: LCKTeam(rawValue: lckTeam)
+                            ),
+                            introduction: profile.introduction,
+                            ghostCount: profile.ghostCount,
+                            lckYears: profile.lckYears,
+                            userLevel: profile.userLevel
+                        ),
+                        image: defaultImage == nil ? rootView.profileImageView.image : nil,
+                        defaultProfileType: defaultImage
+                    )
+                    .replaceError(with: ())
+                    .withUnretained(self)
+                    .sink(receiveValue: { owner, _ in
+                        owner.navigationController?.popViewController(animated: true)
+                    })
+                    .store(in: cancelBag)
+                } else {
+                    navigationController?.popViewController(animated: true)
+                }
+            }
+            .store(in: cancelBag)
     }
     
     private func setupTapGesture() {
@@ -142,11 +185,11 @@ private extension ProfileEditViewController {
                 image: defaultImage == nil ? rootView.profileImageView.image : nil,
                 defaultProfileType: defaultImage
             )
+            .replaceError(with: ())
             .withUnretained(self)
-            .sink { _ in
-            } receiveValue: { owner, _ in
+            .sink(receiveValue: { owner, _ in
                 owner.navigationController?.popViewController(animated: true)
-            }
+            })
             .store(in: cancelBag)
         } else {
             navigationController?.popViewController(animated: true)

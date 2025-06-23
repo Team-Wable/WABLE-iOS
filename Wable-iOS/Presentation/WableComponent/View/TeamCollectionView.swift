@@ -12,13 +12,13 @@ final class TeamCollectionView: UICollectionView {
     // MARK: - Property
 
     let randomTeamList: [LCKTeam] = [.t1, .gen, .bro, .drx, .dk, .kt, .ns, .bfx, .hle, .dnf].shuffled()
-    private let tappedHandler: ((String) -> Void)?
-    private var selectedTeam: LCKTeam? // 선택된 팀을 저장
+    private let onSelected: ((String) -> Void)?
+    private var selectedTeam: LCKTeam?
     
     // MARK: - LifeCycle
 
     init(cellDidTapped: ((String) -> Void)?) {
-        self.tappedHandler = cellDidTapped
+        self.onSelected = cellDidTapped
         
         super.init(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
             $0.itemSize = .init(width: 166.adjustedWidth, height: 64.adjustedHeight)
@@ -105,13 +105,13 @@ extension TeamCollectionView: UICollectionViewDelegate {
         cell.layer.borderColor = UIColor.purple50.cgColor
         cell.teamLabel.textColor = .wableBlack
         
-        tappedHandler?(selectedTeam.rawValue)
+        onSelected?(selectedTeam.rawValue)
     }
 }
 
 extension TeamCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return randomTeamList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
