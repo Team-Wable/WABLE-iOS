@@ -19,5 +19,6 @@ extension StringLiterals {
                                     ex. 선수를 비하했어요
                                     """
         static let completeToast = "덕분에 와블이 더 온화해지고 있어요!"
+        static let tooltip = "투명도란? 설명어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구"
     }
 }

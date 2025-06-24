@@ -253,6 +253,7 @@
 		DE0D0CA52DD2013A00FB64DC /* CheckUserRoleUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CA42DD2013A00FB64DC /* CheckUserRoleUseCase.swift */; };
 		DE0D0CAA2DD2041100FB64DC /* LikeViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CA92DD2041100FB64DC /* LikeViewitUseCase.swift */; };
 		DE0D0CAC2DD204D000FB64DC /* ReportViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CAB2DD204D000FB64DC /* ReportViewitUseCase.swift */; };
+		DE0DC22B2E0AEB9600FF061E /* GhostInfoTooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0DC22A2E0AEB9600FF061E /* GhostInfoTooltipView.swift */; };
 		DE202FF62DE784FB00B04CAA /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE202FF52DE784FB00B04CAA /* AppVersion.swift */; };
 		DE202FF82DE7856E00B04CAA /* UpdateRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE202FF72DE7856E00B04CAA /* UpdateRequirement.swift */; };
 		DE202FFA2DE785E800B04CAA /* AppVersionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE202FF92DE785E800B04CAA /* AppVersionRepository.swift */; };
@@ -625,6 +626,7 @@
 		DE0D0CA42DD2013A00FB64DC /* CheckUserRoleUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckUserRoleUseCase.swift; sourceTree = "<group>"; };
 		DE0D0CA92DD2041100FB64DC /* LikeViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewitUseCase.swift; sourceTree = "<group>"; };
 		DE0D0CAB2DD204D000FB64DC /* ReportViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewitUseCase.swift; sourceTree = "<group>"; };
+		DE0DC22A2E0AEB9600FF061E /* GhostInfoTooltipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostInfoTooltipView.swift; sourceTree = "<group>"; };
 		DE202FF52DE784FB00B04CAA /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		DE202FF72DE7856E00B04CAA /* UpdateRequirement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRequirement.swift; sourceTree = "<group>"; };
 		DE202FF92DE785E800B04CAA /* AppVersionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionRepository.swift; sourceTree = "<group>"; };
@@ -2483,6 +2485,7 @@
 			children = (
 				DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */,
 				DEA10B502DD3D995001EBBA9 /* ProfileInfoCell.swift */,
+				DE0DC22A2E0AEB9600FF061E /* GhostInfoTooltipView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -2978,6 +2981,7 @@
 				DD2968252D6DAD0B00143851 /* ViewitMapper.swift in Sources */,
 				DEA10B4C2DD3C504001EBBA9 /* WithdrawalGuideViewModel.swift in Sources */,
 				DEA10B2B2DD399F4001EBBA9 /* WithdrawalReasonViewController.swift in Sources */,
+				DE0DC22B2E0AEB9600FF061E /* GhostInfoTooltipView.swift in Sources */,
 				DD2968262D6DAD0B00143851 /* CommunityMapper.swift in Sources */,
 				DE7004842D8E87DC00B7AB71 /* RankListViewController.swift in Sources */,
 				DD2968272D6DAD0B00143851 /* LoginMapper.swift in Sources */,
