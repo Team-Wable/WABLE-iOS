@@ -97,6 +97,7 @@ final class WableSheetViewController: UIViewController {
         modalPresentationStyle = .overFullScreen
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -111,23 +112,21 @@ final class WableSheetViewController: UIViewController {
     }
 }
 
-// MARK: - Public Method
-
 extension WableSheetViewController {
     func addAction(_ action: WableSheetAction) {
         let button = createWableButton(for: action)
         buttonStackView.addArrangedSubview(button)
     }
     
+    func addActions(_ actions: [WableSheetAction]) {
+        actions.forEach { addAction($0) }
+    }
+    
     func addActions(_ actions: WableSheetAction...) {
         actions.forEach { addAction($0) }
     }
-}
-
-// MARK: - Private Method
-
-private extension WableSheetViewController {
-    func createWableButton(for action: WableSheetAction) -> WableButton {
+    
+    private func createWableButton(for action: WableSheetAction) -> WableButton {
         return WableButton(style: action.style.buttonStyle).then {
             var config = $0.configuration ?? .filled()
             config.attributedTitle = action.title.pretendardString(with: .body1)
@@ -144,9 +143,10 @@ private extension WableSheetViewController {
     }
 }
 
-// MARK: - Setup Method
-
 private extension WableSheetViewController {
+    
+    // MARK: - Setup Method
+    
     func setupView() {
         view.backgroundColor = .wableBlack.withAlphaComponent(0.7)
         

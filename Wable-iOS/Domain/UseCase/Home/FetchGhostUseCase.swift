@@ -20,12 +20,12 @@ final class FetchGhostUseCase {
 // MARK: - Extension
 
 extension FetchGhostUseCase {
-    func execute(type: PostType, targetID: Int, userID: Int) -> AnyPublisher<Void, WableError> {
+    func execute(type: PostType, targetID: Int, userID: Int, reason: String?) -> AnyPublisher<Void, WableError> {
         return repository.postGhostReduction(
             alarmTriggerType: type == .comment ? "commentGhost" : "contentGhost",
             alarmTriggerID: targetID,
             targetMemberID: userID,
-            reason: ""
+            reason: reason ?? ""
         )
     }
 }
