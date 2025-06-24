@@ -114,7 +114,13 @@ private extension PhotoDetailViewController {
             do {
                 guard try await requestPhotoPermissionIfNeeded() else { return }
                 try await saveImageToPhotoLibrary(image)
+                await MainActor.run {
+                    ToastView(status: .complete, message: StringLiterals.PhotoDetail.successMessage).show()
+                }
             } catch {
+                await MainActor.run {
+                    ToastView(status: .error, message: StringLiterals.PhotoDetail.errorMessage).show()
+                }
                 WableLogger.log("\(error)", for: .error)
             }
         }
