@@ -286,13 +286,17 @@ private extension ProfileInfoCell {
     
     func setupAction() {
         editButton.publisher(for: .touchUpInside)
-            .sink { [weak self] _ in self?.editButtonTapHandler?() }
+            .sink { [weak self] _ in
+                self?.editButtonTapHandler?()
+            }
             .store(in: cancelBag)
         
         let onGhostTitleTap = ghostTitleLabel.gesture().asVoid()
         let onGhostInfoTap = ghostInfoButton.publisher(for: .touchUpInside)
         Publishers.Merge(onGhostTitleTap, onGhostInfoTap)
-            .sink { [weak self] _ in self?.toggleTooltip() }
+            .sink { [weak self] _ in
+                self?.toggleTooltip()
+            }
             .store(in: cancelBag)
     }
     

@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import Then
 
 final class GhostInfoTooltipView: UIView {
     private let tooltipImageView = UIImageView(image: .imgGhostTooltip).then {
