@@ -40,7 +40,7 @@ final class HomeDetailViewController: NavigationViewController {
     private let didCommentHeartTappedSubject = PassthroughSubject<(Bool, ContentComment), Never>()
     private let didReplyTappedSubject = PassthroughSubject<(Int, Int), Never>()
     private let didCommentTappedSubject = PassthroughSubject<Void, Never>()
-    private let didGhostTappedSubject = PassthroughSubject<(Int, Int, PostType), Never>()
+    private let didGhostTappedSubject = PassthroughSubject<(Int, Int, String?, PostType), Never>()
     private let didDeleteTappedSubject = PassthroughSubject<(Int, PostType), Never>()
     private let didBannedTappedSubject = PassthroughSubject<(Int, Int, TriggerType.Ban), Never>()
     private let didReportTappedSubject = PassthroughSubject<(String, String), Never>()
@@ -203,7 +203,10 @@ private extension HomeDetailViewController {
         let contentCellRegistration = UICollectionView.CellRegistration <
             ContentCollectionViewCell,
             Content
-        > { [weak self] cell, indexPath, item in
+        > {
+            [weak self] cell,
+            indexPath,
+            item in
             guard let self = self else { return }
             
             cell.divideView.snp.updateConstraints { make in
@@ -250,50 +253,46 @@ private extension HomeDetailViewController {
                             })
                         }))
                     } else if self.isActiveUserAdmin ?? false {
-                        viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
-                            viewController.dismiss(animated: true, completion: {
-                                let viewController = WableSheetViewController(title: StringLiterals.Report.sheetTitle)
-                                
-                                viewController.addActions(
-                                    WableSheetAction(title: "취소", style: .gray),
-                                    WableSheetAction(
-                                        title: "신고하기",
-                                        style: .primary,
-                                        handler: {
-                                            viewController.dismiss(animated: true, completion: {
-                                                self.didReportTappedSubject.send((item.content.contentInfo.author.nickname, item.content.contentInfo.text))
-                                            })
-                                        }
-                                    )
-                                )
-                                
-                                self.present(viewController, animated: true)
-                            })
-                        }), WableBottomSheetAction(title: "밴하기", handler: {
-                            self.didBannedTappedSubject.send((item.content.contentInfo.author.id, item.content.id, .content))
-                        })
-                        )
+                        let reportAction = WableBottomSheetAction(title: "신고하기") { [weak self] in
+                            self?.showReportSheet(
+                                onPrimary: { message in
+                                    viewController.dismiss(
+                                        animated: true,
+                                        completion: {
+                                            self?.didReportTappedSubject.send(
+                                                (
+                                                    item.content.contentInfo.author.nickname,
+                                                    message ?? item.content.contentInfo.text
+                                                )
+                                            )
+                                        })
+                                })
+                        }
+                        let banAction = WableBottomSheetAction(title: "밴하기") { [weak self] in
+                            self?.didBannedTappedSubject.send((item.content.contentInfo.author.id, item.content.id, .content))
+                        }
+                        self.showBottomSheet(actions: reportAction, banAction)
                     } else {
-                        viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
-                            viewController.dismiss(animated: true, completion: {
-                                let viewController = WableSheetViewController(title: StringLiterals.Report.sheetTitle)
-                                
-                                viewController.addActions(
-                                    WableSheetAction(title: "취소", style: .gray),
-                                    WableSheetAction(
-                                        title: "신고하기",
-                                        style: .primary,
-                                        handler: {
-                                            viewController.dismiss(animated: true, completion: {
-                                                self.didReportTappedSubject.send((item.content.contentInfo.author.nickname, item.content.contentInfo.text))
+                        let reportAction = WableBottomSheetAction(title: "신고하기") { [weak self] in
+                            self?.showReportSheet(
+                                onPrimary: { message in
+                                    viewController.dismiss(
+                                        animated: true,
+                                        completion: {
+                                            viewController.dismiss(
+                                                animated: true,
+                                                completion: {
+                                                    self?.didReportTappedSubject.send(
+                                                        (
+                                                            item.content.contentInfo.author.nickname,
+                                                            message ?? item.content.contentInfo.text
+                                                        )
+                                                    )
                                             })
-                                        }
-                                    )
-                                )
-                                
-                                self.present(viewController, animated: true)
-                            })
-                        }))
+                                        })
+                                })
+                        }
+                        self.showBottomSheet(actions: reportAction)
                     }
                     
                     self.present(viewController, animated: true)
@@ -322,30 +321,13 @@ private extension HomeDetailViewController {
                 },
                 ghostButtonTapHandler: {
                     AmplitudeManager.shared.trackEvent(tag: .clickGhostPost)
-                    
-                    let viewController = WableSheetViewController(title: StringLiterals.Ghost.sheetTitle)
-                    
-                    viewController.addActions(
-                        WableSheetAction(
-                            title: "고민할게요",
-                            style: .gray,
-                            handler: {
-                                AmplitudeManager.shared.trackEvent(tag: .clickWithdrawghostPopup)
-                            }),
-                        WableSheetAction(
-                            title: "네 맞아요",
-                            style: .primary,
-                            handler: {
-                                AmplitudeManager.shared.trackEvent(tag: .clickApplyghostPopup)
-                                
-                                viewController.dismiss(animated: true, completion: {
-                                    self.didGhostTappedSubject.send((item.content.id, item.content.contentInfo.author.id, .content))
-                                })
-                            }
-                        )
-                    )
-                    
-                    self.present(viewController, animated: true)
+                    self.showGhostSheet(onCancel: {
+                        AmplitudeManager.shared.trackEvent(tag: .clickWithdrawghostPopup)
+                    }, onPrimary: { message in
+                        AmplitudeManager.shared.trackEvent(tag: .clickApplyghostPopup)
+                        
+                        self.didGhostTappedSubject.send((item.content.id, item.content.contentInfo.author.id, message, .content))
+                    })
                 }
             )
             
@@ -373,7 +355,10 @@ private extension HomeDetailViewController {
         let commentCellRegistration = UICollectionView.CellRegistration <
             CommentCollectionViewCell,
             ContentComment
-        > { [weak self] cell, indexPath, item in
+        > {
+            [weak self] cell,
+            indexPath,
+            item in
             guard let self = self else { return }
             
             cell.configureCell(
@@ -414,62 +399,37 @@ private extension HomeDetailViewController {
                             })
                         }))
                     } else if self.isActiveUserAdmin ?? false {
-                        viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
-                            viewController.dismiss(animated: true, completion: {
-                                let viewController = WableSheetViewController(title: StringLiterals.Report.sheetTitle)
-                                
-                                viewController.addActions(
-                                    WableSheetAction(
-                                        title: "취소",
-                                        style: .gray,
-                                        handler: {
-                                            viewController.dismiss(animated: true)
-                                        }
-                                    ),
-                                    WableSheetAction(
-                                        title: "신고하기",
-                                        style: .primary,
-                                        handler: {
-                                            viewController.dismiss(animated: true, completion: {
-                                                self.didReportTappedSubject.send((item.comment.author.nickname, item.comment.text))
-                                            })
-                                        }
-                                    )
-                                )
-                                
-                                self.present(viewController, animated: true)
-                            })
-                        }), WableBottomSheetAction(title: "밴하기", handler: {
-                            self.didBannedTappedSubject.send((item.comment.author.id, item.comment.id, .comment))
-                        })
-                        )
+                        let reportAction = WableBottomSheetAction(title: "신고하기") { [weak self] in
+                            self?.showReportSheet(
+                                onPrimary: { message in
+                                    viewController.dismiss(
+                                        animated: true,
+                                        completion: {
+                                            self?.didReportTappedSubject.send((item.comment.author.nickname, message ?? item.comment.text))
+                                        })
+                                })
+                        }
+                        let banAction = WableBottomSheetAction(title: "밴하기") { [weak self] in
+                            self?.didBannedTappedSubject.send((item.comment.author.id, item.comment.id, .comment))
+                        }
+                        self.showBottomSheet(actions: reportAction, banAction)
                     } else {
-                        viewController.addActions(WableBottomSheetAction(title: "신고하기", handler: {
-                            viewController.dismiss(animated: true, completion: {
-                                let viewController = WableSheetViewController(title: StringLiterals.Report.sheetTitle)
-                                
-                                viewController.addActions(
-                                    WableSheetAction(
-                                        title: "취소",
-                                        style: .gray,
-                                        handler: {
-                                            viewController.dismiss(animated: true)
-                                        }
-                                    ),
-                                    WableSheetAction(
-                                        title: "신고하기",
-                                        style: .primary,
-                                        handler: {
-                                            viewController.dismiss(animated: true, completion: {
-                                                self.didReportTappedSubject.send((item.comment.author.nickname, item.comment.text))
-                                            })
-                                        }
-                                    )
-                                )
-                                
-                                self.present(viewController, animated: true)
-                            })
-                        }))
+                        let reportAction = WableBottomSheetAction(title: "신고하기") { [weak self] in
+                            self?.showReportSheet(
+                                onPrimary: { message in
+                                    viewController.dismiss(
+                                        animated: true,
+                                        completion: {
+                                            self?.didReportTappedSubject.send(
+                                                (
+                                                    item.comment.author.nickname,
+                                                    message ?? item.comment.text
+                                                )
+                                            )
+                                        })
+                                })
+                        }
+                        self.showBottomSheet(actions: reportAction)
                     }
                     
                     self.present(viewController, animated: true)
@@ -498,33 +458,13 @@ private extension HomeDetailViewController {
                 },
                 ghostButtonTapHandler: {
                     AmplitudeManager.shared.trackEvent(tag: .clickGhostComment)
-                    
-                    let viewController = WableSheetViewController(title: StringLiterals.Ghost.sheetTitle)
-                    
-                    viewController.addActions(
-                        WableSheetAction(
-                            title: "고민할게요",
-                            style: .gray,
-                            handler: {
-                                AmplitudeManager.shared.trackEvent(tag: .clickWithdrawghostPopup)
-                                
-                                viewController.dismiss(animated: true)
-                            }
-                        ),
-                        WableSheetAction(
-                            title: "네 맞아요",
-                            style: .primary,
-                            handler: {
-                                AmplitudeManager.shared.trackEvent(tag: .clickApplyghostPopup)
-                                
-                                viewController.dismiss(animated: true, completion: {
-                                    self.didGhostTappedSubject.send((item.comment.id, item.comment.author.id, .comment))
-                                })
-                            }
-                        )
-                    )
-                    
-                    self.present(viewController, animated: true)
+                    self.showGhostSheet(onCancel: {
+                        AmplitudeManager.shared.trackEvent(tag: .clickWithdrawghostPopup)
+                    }, onPrimary: { message in
+                        AmplitudeManager.shared.trackEvent(tag: .clickApplyghostPopup)
+                        
+                        self.didGhostTappedSubject.send((item.comment.id, item.comment.author.id, message, .comment))
+                    })
                 },
                 replyButtonTapHandler: {
                     AmplitudeManager.shared.trackEvent(tag: .clickWriteRecomment)
