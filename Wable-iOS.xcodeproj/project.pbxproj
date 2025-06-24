@@ -254,6 +254,7 @@
 		DE0D0CAA2DD2041100FB64DC /* LikeViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CA92DD2041100FB64DC /* LikeViewitUseCase.swift */; };
 		DE0D0CAC2DD204D000FB64DC /* ReportViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CAB2DD204D000FB64DC /* ReportViewitUseCase.swift */; };
 		DE0DC22B2E0AEB9600FF061E /* GhostInfoTooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0DC22A2E0AEB9600FF061E /* GhostInfoTooltipView.swift */; };
+		DE0DC22F2E0B008F00FF061E /* StringLiterals+PhotoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0DC22E2E0B008F00FF061E /* StringLiterals+PhotoDetail.swift */; };
 		DE202FF62DE784FB00B04CAA /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE202FF52DE784FB00B04CAA /* AppVersion.swift */; };
 		DE202FF82DE7856E00B04CAA /* UpdateRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE202FF72DE7856E00B04CAA /* UpdateRequirement.swift */; };
 		DE202FFA2DE785E800B04CAA /* AppVersionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE202FF92DE785E800B04CAA /* AppVersionRepository.swift */; };
@@ -627,6 +628,7 @@
 		DE0D0CA92DD2041100FB64DC /* LikeViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewitUseCase.swift; sourceTree = "<group>"; };
 		DE0D0CAB2DD204D000FB64DC /* ReportViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewitUseCase.swift; sourceTree = "<group>"; };
 		DE0DC22A2E0AEB9600FF061E /* GhostInfoTooltipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostInfoTooltipView.swift; sourceTree = "<group>"; };
+		DE0DC22E2E0B008F00FF061E /* StringLiterals+PhotoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringLiterals+PhotoDetail.swift"; sourceTree = "<group>"; };
 		DE202FF52DE784FB00B04CAA /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		DE202FF72DE7856E00B04CAA /* UpdateRequirement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRequirement.swift; sourceTree = "<group>"; };
 		DE202FF92DE785E800B04CAA /* AppVersionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionRepository.swift; sourceTree = "<group>"; };
@@ -1597,6 +1599,7 @@
 				DDF97CB12DE4EAC7009FC612 /* StringLiterals+URL.swift */,
 				DDF97CB22DE4EAC7009FC612 /* StringLiterals+Viewit.swift */,
 				DDF97CB32DE4EAC7009FC612 /* StringLiterals+Write.swift */,
+				DE0DC22E2E0B008F00FF061E /* StringLiterals+PhotoDetail.swift */,
 			);
 			path = String;
 			sourceTree = "<group>";
@@ -2706,6 +2709,7 @@
 				DE4AE8532DE8BA18003E20AB /* UIAlertShowable.swift in Sources */,
 				DD2968132D6DACF700143851 /* TriggerType.swift in Sources */,
 				DD9980DF2D834F4E00EBBFBC /* CommentCollectionViewCell.swift in Sources */,
+				DE0DC22F2E0B008F00FF061E /* StringLiterals+PhotoDetail.swift in Sources */,
 				DD9980E02D834F4E00EBBFBC /* PostUserInfoView.swift in Sources */,
 				DD9980E12D834F4E00EBBFBC /* ContentCollectionViewCell.swift in Sources */,
 				DD2968142D6DACF700143851 /* AccountInfo.swift in Sources */,
