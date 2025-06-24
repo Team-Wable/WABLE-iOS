@@ -11,10 +11,17 @@ import UIKit
 
 protocol UIAlertShowable: AnyObject {
     func showAlert(title: String, message: String?, actions: UIAlertAction...)
+    func showAlert(title: String, message: String?, actions: [UIAlertAction])
 }
 
 extension UIAlertShowable where Self: UIViewController {
     func showAlert(title: String, message: String? = nil, actions: UIAlertAction...) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        actions.forEach { alert.addAction($0) }
+        present(alert, animated: true)
+    }
+    
+    func showAlert(title: String, message: String?, actions: [UIAlertAction]) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         actions.forEach { alert.addAction($0) }
         present(alert, animated: true)

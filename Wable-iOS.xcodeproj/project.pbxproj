@@ -250,7 +250,6 @@
 		DE0BFB602DA4F63800F06656 /* CommunityInviteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BFB5F2DA4F63800F06656 /* CommunityInviteCell.swift */; };
 		DE0BFB632DA4F7FA00F06656 /* CommunityCellBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */; };
 		DE0D0C9C2DD1E35B00FB64DC /* UserRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0C9B2DD1E35B00FB64DC /* UserRole.swift */; };
-		DE0D0CA22DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CA12DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift */; };
 		DE0D0CA52DD2013A00FB64DC /* CheckUserRoleUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CA42DD2013A00FB64DC /* CheckUserRoleUseCase.swift */; };
 		DE0D0CAA2DD2041100FB64DC /* LikeViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CA92DD2041100FB64DC /* LikeViewitUseCase.swift */; };
 		DE0D0CAC2DD204D000FB64DC /* ReportViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CAB2DD204D000FB64DC /* ReportViewitUseCase.swift */; };
@@ -358,6 +357,8 @@
 		DEB60AF62DD210E600FE8BFD /* AccountInfoCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB60AF52DD210E600FE8BFD /* AccountInfoCellItem.swift */; };
 		DEB60AF92DD2158A00FE8BFD /* AccountInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB60AF82DD2158A00FE8BFD /* AccountInfoViewModel.swift */; };
 		DEB60AFF2DD238AF00FE8BFD /* ViewitListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB60AFE2DD238AF00FE8BFD /* ViewitListCell.swift */; };
+		DEC5268A2E0837DA000F7900 /* WableTextSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC526892E0837DA000F7900 /* WableTextSheetViewController.swift */; };
+		DEC5268C2E085AAA000F7900 /* WableTextSheetShowable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC5268B2E085AAA000F7900 /* WableTextSheetShowable.swift */; };
 		DECC36DA2DC3A4D800336B7B /* CreateViewitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECC36D92DC3A4D800336B7B /* CreateViewitViewModel.swift */; };
 		DECC36DF2DC3B24000336B7B /* CreateViewitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECC36DE2DC3B24000336B7B /* CreateViewitViewController.swift */; };
 		DED1344E2DCF6C73008463BD /* ViewitListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED1344D2DCF6C73008463BD /* ViewitListViewModel.swift */; };
@@ -622,7 +623,6 @@
 		DE0BFB5F2DA4F63800F06656 /* CommunityInviteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityInviteCell.swift; sourceTree = "<group>"; };
 		DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityCellBaseView.swift; sourceTree = "<group>"; };
 		DE0D0C9B2DD1E35B00FB64DC /* UserRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRole.swift; sourceTree = "<group>"; };
-		DE0D0CA12DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitBottomSheetActionKind.swift; sourceTree = "<group>"; };
 		DE0D0CA42DD2013A00FB64DC /* CheckUserRoleUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckUserRoleUseCase.swift; sourceTree = "<group>"; };
 		DE0D0CA92DD2041100FB64DC /* LikeViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewitUseCase.swift; sourceTree = "<group>"; };
 		DE0D0CAB2DD204D000FB64DC /* ReportViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewitUseCase.swift; sourceTree = "<group>"; };
@@ -728,6 +728,8 @@
 		DEB60AF52DD210E600FE8BFD /* AccountInfoCellItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoCellItem.swift; sourceTree = "<group>"; };
 		DEB60AF82DD2158A00FE8BFD /* AccountInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoViewModel.swift; sourceTree = "<group>"; };
 		DEB60AFE2DD238AF00FE8BFD /* ViewitListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitListCell.swift; sourceTree = "<group>"; };
+		DEC526892E0837DA000F7900 /* WableTextSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableTextSheetViewController.swift; sourceTree = "<group>"; };
+		DEC5268B2E085AAA000F7900 /* WableTextSheetShowable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableTextSheetShowable.swift; sourceTree = "<group>"; };
 		DECC36D92DC3A4D800336B7B /* CreateViewitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewitViewModel.swift; sourceTree = "<group>"; };
 		DECC36DE2DC3B24000336B7B /* CreateViewitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewitViewController.swift; sourceTree = "<group>"; };
 		DED1344D2DCF6C73008463BD /* ViewitListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitListViewModel.swift; sourceTree = "<group>"; };
@@ -1668,14 +1670,6 @@
 			path = Subview;
 			sourceTree = "<group>";
 		};
-		DE0D0CA02DD1EF7900FB64DC /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				DE0D0CA12DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		DE0D0CA32DD2012900FB64DC /* UserRole */ = {
 			isa = PBXGroup;
 			children = (
@@ -1874,6 +1868,7 @@
 				DE54B03D2D82CD82009A7C34 /* NotFoundViewController.swift */,
 				DE54B03F2D832E78009A7C34 /* LoadingViewController.swift */,
 				DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */,
+				DEC526892E0837DA000F7900 /* WableTextSheetViewController.swift */,
 				DE8D12692D859FB000D02993 /* WableBottomSheetController.swift */,
 			);
 			path = ViewController;
@@ -2049,6 +2044,7 @@
 				DE83891A2D906C0C00C089E6 /* Types.swift */,
 				DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */,
 				DE4AE84E2DE8B645003E20AB /* WableSheetShowable.swift */,
+				DEC5268B2E085AAA000F7900 /* WableTextSheetShowable.swift */,
 				DE4AE8502DE8B6FF003E20AB /* WableBottomSheetShowable.swift */,
 				DE4AE8522DE8BA18003E20AB /* UIAlertShowable.swift */,
 				DE8E86402D91A092000A4292 /* Extension */,
@@ -2370,7 +2366,6 @@
 		DECC36DC2DC3B20600336B7B /* List */ = {
 			isa = PBXGroup;
 			children = (
-				DE0D0CA02DD1EF7900FB64DC /* Model */,
 				DED1344C2DCF6B4B008463BD /* ViewModel */,
 				DEF6A3B92DA97F6E0044ACAB /* View */,
 			);
@@ -2681,6 +2676,7 @@
 				DDF97CC02DE4EAC7009FC612 /* StringLiterals+URL.swift in Sources */,
 				DDF97CC12DE4EAC7009FC612 /* StringLiterals+Ban.swift in Sources */,
 				DDF97CC22DE4EAC7009FC612 /* StringLiterals+Exit.swift in Sources */,
+				DEC5268C2E085AAA000F7900 /* WableTextSheetShowable.swift in Sources */,
 				DDF97CC32DE4EAC7009FC612 /* StringLiterals+Detail.swift in Sources */,
 				DDF97CC42DE4EAC7009FC612 /* StringLiterals+Viewit.swift in Sources */,
 				DDF97CC52DE4EAC7009FC612 /* StringLiterals+ProfileDelete.swift in Sources */,
@@ -2813,6 +2809,7 @@
 				DD2968432D6DAD2F00143851 /* FetchGameSchedules.swift in Sources */,
 				DE3CA2832DD4464E00BF5E87 /* FetchUserCommentListUseCase.swift in Sources */,
 				DEB60AF92DD2158A00FE8BFD /* AccountInfoViewModel.swift in Sources */,
+				DEC5268A2E0837DA000F7900 /* WableTextSheetViewController.swift in Sources */,
 				DE6459D52D97B8C2005569B8 /* InformationNotificationViewController.swift in Sources */,
 				DD8326962D95836F0014B62D /* HomeViewModel.swift in Sources */,
 				DD2968442D6DAD2F00143851 /* FetchUserProfile.swift in Sources */,
@@ -3009,7 +3006,6 @@
 				DE0BFB632DA4F7FA00F06656 /* CommunityCellBaseView.swift in Sources */,
 				DD29682D2D6DAD0B00143851 /* NotificationMapper.swift in Sources */,
 				DE3390302D8EC6C400638BB4 /* NoticeViewController.swift in Sources */,
-				DE0D0CA22DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift in Sources */,
 				DE4AE8512DE8B6FF003E20AB /* WableBottomSheetShowable.swift in Sources */,
 				DD2968232D6DAD0200143851 /* NotificationRepository.swift in Sources */,
 				DD2968002D6DAC8900143851 /* AppDelegate.swift in Sources */,
