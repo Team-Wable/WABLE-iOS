@@ -114,7 +114,13 @@ private extension PhotoDetailViewController {
             do {
                 guard try await requestPhotoPermissionIfNeeded() else { return }
                 try await saveImageToPhotoLibrary(image)
+                await MainActor.run {
+                    ToastView(status: .complete, message: "사진을 앨범에 저장했습니다.").show()
+                }
             } catch {
+                await MainActor.run {
+                    ToastView(status: .error, message: "사진 저장에 실패하였습니다.\n다시 시도해 주세요.").show()
+                }
                 WableLogger.log("\(error)", for: .error)
             }
         }
