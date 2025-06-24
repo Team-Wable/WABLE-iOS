@@ -33,7 +33,6 @@ final class ViewitListViewController: UIViewController {
     private let meatballRelay = PassthroughRelay<Int>()
     private let likeRelay = PassthroughRelay<Int>()
     private let willLastDisplayRelay = PassthroughRelay<Void>()
-    private let bottomSheetActionRelay = PassthroughRelay<ViewitBottomSheetActionKind>()
     private let reportRelay = PassthroughRelay<String>()
     private let banRelay = PassthroughRelay<Void>()
     private let deleteRelay = PassthroughRelay<Void>()

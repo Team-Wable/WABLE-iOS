@@ -248,7 +248,6 @@
 		DE0BFB602DA4F63800F06656 /* CommunityInviteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BFB5F2DA4F63800F06656 /* CommunityInviteCell.swift */; };
 		DE0BFB632DA4F7FA00F06656 /* CommunityCellBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */; };
 		DE0D0C9C2DD1E35B00FB64DC /* UserRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0C9B2DD1E35B00FB64DC /* UserRole.swift */; };
-		DE0D0CA22DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CA12DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift */; };
 		DE0D0CA52DD2013A00FB64DC /* CheckUserRoleUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CA42DD2013A00FB64DC /* CheckUserRoleUseCase.swift */; };
 		DE0D0CAA2DD2041100FB64DC /* LikeViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CA92DD2041100FB64DC /* LikeViewitUseCase.swift */; };
 		DE0D0CAC2DD204D000FB64DC /* ReportViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0D0CAB2DD204D000FB64DC /* ReportViewitUseCase.swift */; };
@@ -619,7 +618,6 @@
 		DE0BFB5F2DA4F63800F06656 /* CommunityInviteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityInviteCell.swift; sourceTree = "<group>"; };
 		DE0BFB622DA4F7FA00F06656 /* CommunityCellBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityCellBaseView.swift; sourceTree = "<group>"; };
 		DE0D0C9B2DD1E35B00FB64DC /* UserRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRole.swift; sourceTree = "<group>"; };
-		DE0D0CA12DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitBottomSheetActionKind.swift; sourceTree = "<group>"; };
 		DE0D0CA42DD2013A00FB64DC /* CheckUserRoleUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckUserRoleUseCase.swift; sourceTree = "<group>"; };
 		DE0D0CA92DD2041100FB64DC /* LikeViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewitUseCase.swift; sourceTree = "<group>"; };
 		DE0D0CAB2DD204D000FB64DC /* ReportViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewitUseCase.swift; sourceTree = "<group>"; };
@@ -1666,14 +1664,6 @@
 			path = Subview;
 			sourceTree = "<group>";
 		};
-		DE0D0CA02DD1EF7900FB64DC /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				DE0D0CA12DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		DE0D0CA32DD2012900FB64DC /* UserRole */ = {
 			isa = PBXGroup;
 			children = (
@@ -2368,7 +2358,6 @@
 		DECC36DC2DC3B20600336B7B /* List */ = {
 			isa = PBXGroup;
 			children = (
-				DE0D0CA02DD1EF7900FB64DC /* Model */,
 				DED1344C2DCF6B4B008463BD /* ViewModel */,
 				DEF6A3B92DA97F6E0044ACAB /* View */,
 			);
@@ -3005,7 +2994,6 @@
 				DE0BFB632DA4F7FA00F06656 /* CommunityCellBaseView.swift in Sources */,
 				DD29682D2D6DAD0B00143851 /* NotificationMapper.swift in Sources */,
 				DE3390302D8EC6C400638BB4 /* NoticeViewController.swift in Sources */,
-				DE0D0CA22DD1EF8B00FB64DC /* ViewitBottomSheetActionKind.swift in Sources */,
 				DE4AE8512DE8B6FF003E20AB /* WableBottomSheetShowable.swift in Sources */,
 				DD2968232D6DAD0200143851 /* NotificationRepository.swift in Sources */,
 				DD2968002D6DAC8900143851 /* AppDelegate.swift in Sources */,
