@@ -245,7 +245,11 @@ private extension OtherProfileViewController {
                 },
                 profileImageViewTapHandler: nil,
                 ghostButtonTapHandler: { [weak self] in
-                    self?.showGhostSheet(onPrimary: { message in
+                    self?.showGhostSheet(onCancel: {
+                        AmplitudeManager.shared.trackEvent(tag: .clickWithdrawghostPopup)
+                    }, onPrimary: { message in
+                        AmplitudeManager.shared.trackEvent(tag: .clickGhostPost)
+                        
                         self?.viewModel.ghostContent(for: item.id, reason: message ?? "")
                     })
                 }
@@ -288,7 +292,11 @@ private extension OtherProfileViewController {
                 },
                 profileImageViewTapHandler: nil,
                 ghostButtonTapHandler: { [weak self] in
-                    self?.showGhostSheet(onPrimary: { message in
+                    self?.showGhostSheet(onCancel: {
+                        AmplitudeManager.shared.trackEvent(tag: .clickWithdrawghostPopup)
+                    }, onPrimary: { message in
+                        AmplitudeManager.shared.trackEvent(tag: .clickGhostComment)
+                        
                         self?.viewModel.ghostComment(for: item.comment.id, reason: message ?? "")
                     })
                 },

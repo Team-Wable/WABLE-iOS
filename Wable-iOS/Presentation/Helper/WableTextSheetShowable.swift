@@ -27,13 +27,13 @@ extension WableTextSheetShowable where Self: UIViewController {
         present(wableTextSheet, animated: true)
     }
     
-    func showGhostSheet(onPrimary handler: @escaping (String?) -> Void) {
+    func showGhostSheet(onCancel cancelAction: (() -> Void)?, onPrimary primaryAction: @escaping (String?) -> Void) {
         let wableTextSheet = WableTextSheetViewController(
             title: StringLiterals.Ghost.sheetTitle,
             placeholder: StringLiterals.Ghost.sheetPlaceholder
         )
-        let cancel = WableTextSheetAction(title: "고민할게요", style: .gray)
-        let confirm = WableTextSheetAction(title: "투명도 내리기", style: .primary, handler: handler)
+        let cancel = WableTextSheetAction(title: "고민할게요", style: .gray, handler: { _ in cancelAction?() })
+        let confirm = WableTextSheetAction(title: "투명도 내리기", style: .primary, handler: primaryAction)
         wableTextSheet.addActions(cancel, confirm)
         present(wableTextSheet, animated: true)
     }
