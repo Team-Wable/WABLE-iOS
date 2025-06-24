@@ -18,6 +18,9 @@
 		DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BAA2D80071E00B1661F /* CommentButton.swift */; };
 		DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */; };
 		DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */; };
+		DD214B582E028FB80065D995 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD214B572E028FB80065D995 /* ProfileEditView.swift */; };
+		DD214B5A2E029E480065D995 /* TeamCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD214B592E029E430065D995 /* TeamCollectionView.swift */; };
+		DD214B5C2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD214B5B2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift */; };
 		DD2967F92D6DAC4800143851 /* AnyPublisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29675E2D6DAC3100143851 /* AnyPublisher+.swift */; };
 		DD2967FA2D6DAC4800143851 /* Publisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2967602D6DAC3100143851 /* Publisher+.swift */; };
 		DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29675B2D6DAC3100143851 /* DIContainer.swift */; };
@@ -239,7 +242,6 @@
 		DDFB223B2D8B9F5100FEA24A /* LCKYearCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB223A2D8B9F3F00FEA24A /* LCKYearCollectionViewCell.swift */; };
 		DDFB22402D8BA68900FEA24A /* LCKTeamCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB223F2D8BA67D00FEA24A /* LCKTeamCollectionViewCell.swift */; };
 		DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22412D8BA9C800FEA24A /* LCKTeamViewController.swift */; };
-		DDFB22442D8BB8D500FEA24A /* LCKTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22432D8BB8D100FEA24A /* LCKTeamView.swift */; };
 		DDFB22462D8BBB8600FEA24A /* ProfileRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22452D8BBB7900FEA24A /* ProfileRegisterViewController.swift */; };
 		DDFB22482D8BBCB300FEA24A /* ProfileRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFB22472D8BBCB000FEA24A /* ProfileRegisterView.swift */; };
 		DDFF126F2D7EE39500980BA7 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFF126E2D7EE39200980BA7 /* UIColor+.swift */; };
@@ -396,6 +398,9 @@
 		DD005BAA2D80071E00B1661F /* CommentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentButton.swift; sourceTree = "<group>"; };
 		DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteContentLikedUseCase.swift; sourceTree = "<group>"; };
+		DD214B572E028FB80065D995 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
+		DD214B592E029E430065D995 /* TeamCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamCollectionView.swift; sourceTree = "<group>"; };
+		DD214B5B2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+KeyboardHandling.swift"; sourceTree = "<group>"; };
 		DD29675B2D6DAC3100143851 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		DD29675C2D6DAC3100143851 /* Injected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injected.swift; sourceTree = "<group>"; };
 		DD29675E2D6DAC3100143851 /* AnyPublisher+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnyPublisher+.swift"; sourceTree = "<group>"; };
@@ -609,7 +614,6 @@
 		DDFB223A2D8B9F3F00FEA24A /* LCKYearCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearCollectionViewCell.swift; sourceTree = "<group>"; };
 		DDFB223F2D8BA67D00FEA24A /* LCKTeamCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamCollectionViewCell.swift; sourceTree = "<group>"; };
 		DDFB22412D8BA9C800FEA24A /* LCKTeamViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamViewController.swift; sourceTree = "<group>"; };
-		DDFB22432D8BB8D100FEA24A /* LCKTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKTeamView.swift; sourceTree = "<group>"; };
 		DDFB22452D8BBB7900FEA24A /* ProfileRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRegisterViewController.swift; sourceTree = "<group>"; };
 		DDFB22472D8BBCB000FEA24A /* ProfileRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRegisterView.swift; sourceTree = "<group>"; };
 		DDFF126E2D7EE39200980BA7 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
@@ -1418,6 +1422,7 @@
 		DDAD41A52D873E3600EF312C /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DD214B592E029E430065D995 /* TeamCollectionView.swift */,
 				DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */,
 				DDCD67042D7E271C00EF4C28 /* ToastView.swift */,
 			);
@@ -1607,7 +1612,6 @@
 			isa = PBXGroup;
 			children = (
 				DDCA70922D88315C00A988B8 /* LCKYearView.swift */,
-				DDFB22432D8BB8D100FEA24A /* LCKTeamView.swift */,
 				DDFB22472D8BBCB000FEA24A /* ProfileRegisterView.swift */,
 				DD514D0D2D8C99DC0095021D /* AgreementView.swift */,
 				DD514D092D8C957E0095021D /* AgreementItemView.swift */,
@@ -1775,6 +1779,7 @@
 		DE4EFCCF2DE0060700E4146C /* Edit */ = {
 			isa = PBXGroup;
 			children = (
+				DD214B572E028FB80065D995 /* ProfileEditView.swift */,
 				DD51A44B2DD458A8004295B6 /* ProfileEditViewController.swift */,
 			);
 			path = Edit;
@@ -2067,6 +2072,7 @@
 		DE8E86402D91A092000A4292 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				DD214B5B2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift */,
 				DD8B42A32DA15DA9007DC1CA /* UITextView+.swift */,
 				DE7C530F2D761E3300076E5D /* String+.swift */,
 				DE9C3BFB2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift */,
@@ -2688,7 +2694,6 @@
 				DD2968102D6DACF700143851 /* Notification.swift in Sources */,
 				DD514D0A2D8C958B0095021D /* AgreementItemView.swift in Sources */,
 				DEE5D6112D9121E5009E5A25 /* OverviewPageView.swift in Sources */,
-				DDFB22442D8BB8D500FEA24A /* LCKTeamView.swift in Sources */,
 				DD2968112D6DACF700143851 /* Viewit.swift in Sources */,
 				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
 				DD514D082D8C83560095021D /* AgreementViewController.swift in Sources */,
@@ -2733,6 +2738,7 @@
 				DEE5D61A2D91537C009E5A25 /* GameScheduleViewItem.swift in Sources */,
 				DE72BB102D93CC68008E5774 /* NotificationPageView.swift in Sources */,
 				DDFB22462D8BBB8600FEA24A /* ProfileRegisterViewController.swift in Sources */,
+				DD214B582E028FB80065D995 /* ProfileEditView.swift in Sources */,
 				DE833BA22DE22D4600812A80 /* Publishers+UIGesture.swift in Sources */,
 				DD29685B2D6DAD4400143851 /* CreateAccountRequest.swift in Sources */,
 				DE9B94762D927F140060FF92 /* NoticeViewModel.swift in Sources */,
@@ -2872,6 +2878,7 @@
 				DD29686C2D6DAD5500143851 /* ProfileTargetType.swift in Sources */,
 				DD29686D2D6DAD5500143851 /* AccountTargetType.swift in Sources */,
 				DD514D102D8CA3780095021D /* AttributedString+.swift in Sources */,
+				DD214B5A2E029E480065D995 /* TeamCollectionView.swift in Sources */,
 				DD2968392D6DAD1700143851 /* LoginRepositoryImpl.swift in Sources */,
 				DEDC29182D720D030073D512 /* PostStatus.swift in Sources */,
 				DEB60AF22DD20C2D00FE8BFD /* AccountInfoCell.swift in Sources */,
@@ -2906,6 +2913,7 @@
 				DEAFE05B2D8C4E930097E91C /* GameScheduleHeaderView.swift in Sources */,
 				DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */,
 				DECC36DA2DC3A4D800336B7B /* CreateViewitViewModel.swift in Sources */,
+				DD214B5C2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift in Sources */,
 				DDFB22402D8BA68900FEA24A /* LCKTeamCollectionViewCell.swift in Sources */,
 				DDCA70972D88797200A988B8 /* AuthorType.swift in Sources */,
 				DD2967FC2D6DAC4800143851 /* Injected.swift in Sources */,
