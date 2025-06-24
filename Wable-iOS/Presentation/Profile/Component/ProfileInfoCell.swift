@@ -289,7 +289,9 @@ private extension ProfileInfoCell {
             .sink { [weak self] _ in self?.editButtonTapHandler?() }
             .store(in: cancelBag)
         
-        ghostInfoButton.publisher(for: .touchUpInside)
+        let onGhostTitleTap = ghostTitleLabel.gesture().asVoid()
+        let onGhostInfoTap = ghostInfoButton.publisher(for: .touchUpInside)
+        Publishers.Merge(onGhostTitleTap, onGhostInfoTap)
             .sink { [weak self] _ in self?.toggleTooltip() }
             .store(in: cancelBag)
     }
