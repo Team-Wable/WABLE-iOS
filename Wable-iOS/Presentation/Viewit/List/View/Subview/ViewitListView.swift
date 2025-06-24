@@ -15,9 +15,10 @@ final class ViewitListView: UIView {
     // MARK: - UIComponent
     
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout).then {
-        $0.refreshControl = UIRefreshControl()
         $0.alwaysBounceVertical = true
     }
+    
+    let refreshControl = UIRefreshControl()
     
     let emptyLabel = UILabel().then {
         $0.attributedText = StringLiterals.Empty.post.pretendardString(with: .body2)
@@ -52,6 +53,8 @@ final class ViewitListView: UIView {
 private extension ViewitListView {
     func setupView() {
         backgroundColor = .wableWhite
+        
+        collectionView.refreshControl = refreshControl
         
         let statusBarBackgroundView = UIView(backgroundColor: .wableBlack)
         let navigationView = NavigationView(type: .hub(title: "뷰잇", isBeta: false)).then {

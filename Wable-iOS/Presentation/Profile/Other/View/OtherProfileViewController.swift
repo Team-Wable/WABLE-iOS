@@ -218,28 +218,42 @@ private extension OtherProfileViewController {
                 },
                 likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeContent(for: item.id) },
                 settingButtonTapHandler: { [weak self] in
-                    guard let userRole = self?.viewModel.checkUserRole(),
-                          userRole != .owner
-                    else {
+                    guard let userRole = self?.viewModel.checkUserRole(), userRole != .owner else { return }
+                    
+                    let report = WableBottomSheetAction(title: "신고하기") { [weak self] in
+                        self?.showReportSheet(onPrimary: { message in
+                            let info = item.contentInfo
+                            self?.viewModel.reportContent(for: info.author.nickname, message: message ?? info.text)
+                        })
+                    }
+                    guard userRole == .admin else {
+                        self?.showBottomSheet(actions: report)
                         return
                     }
                     
-                    let bottomSheet = WableBottomSheetController()
-                    let report = WableBottomSheetAction(title: "신고하기") { [weak self] in
-                        self?.presentReportSheet(contentID: item.id)
-                    }
-                    bottomSheet.addAction(report)
-                    
-                    if userRole == .admin {
-                        let ban = WableBottomSheetAction(title: "밴하기") { [weak self] in
-                            self?.presentBanSheet(contentID: item.id)
+                    let ban = WableBottomSheetAction(title: "밴하기") { [weak self] in
+                        let confirm = WableSheetAction(title: Constant.Ban.title, style: .primary) { [weak self] in
+                            self?.viewModel.banContent(for: item.id)
                         }
-                        bottomSheet.addAction(ban)
+                        self?.showWableSheetWithCancel(
+                            title: Constant.Ban.title,
+                            message: StringLiterals.Ban.sheetMessage,
+                            action: confirm
+                        )
                     }
-                    self?.present(bottomSheet, animated: true)
+                    self?.showBottomSheet(actions: report, ban)
                 },
                 profileImageViewTapHandler: nil,
-                ghostButtonTapHandler: { [weak self] in self?.presentGhostSheet(contentID: item.id) }
+                ghostButtonTapHandler: { [weak self] in
+                    AmplitudeManager.shared.trackEvent(tag: .clickGhostPost)
+                    self?.showGhostSheet(onCancel: {
+                        AmplitudeManager.shared.trackEvent(tag: .clickWithdrawghostPopup)
+                    }, onPrimary: { message in
+                        AmplitudeManager.shared.trackEvent(tag: .clickApplyghostPopup)
+                        
+                        self?.viewModel.ghostContent(for: item.id, reason: message ?? "")
+                    })
+                }
             )
         }
         
@@ -252,28 +266,42 @@ private extension OtherProfileViewController {
                 authorType: .others,
                 likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeComment(for: item.comment.id) },
                 settingButtonTapHandler: { [weak self] in
-                    guard let userRole = self?.viewModel.checkUserRole(),
-                          userRole != .owner
-                    else {
+                    guard let userRole = self?.viewModel.checkUserRole(), userRole != .owner else { return }
+                    
+                    let report = WableBottomSheetAction(title: "신고하기") { [weak self] in
+                        self?.showReportSheet(onPrimary: { message in
+                            let comment = item.comment
+                            self?.viewModel.reportComment(for: comment.author.nickname, message: message ?? comment.text)
+                        })
+                    }
+                    guard userRole == .admin else {
+                        self?.showBottomSheet(actions: report)
                         return
                     }
                     
-                    let bottomSheet = WableBottomSheetController()
-                    let report = WableBottomSheetAction(title: "신고하기") { [weak self] in
-                        self?.presentReportSheet(commentID: item.comment.id)
-                    }
-                    bottomSheet.addAction(report)
-                    
-                    if userRole == .admin {
-                        let ban = WableBottomSheetAction(title: "밴하기") { [weak self] in
-                            self?.presentBanSheet(commentID: item.comment.id)
+                    let ban = WableBottomSheetAction(title: "밴하기") { [weak self] in
+                        let confirm = WableSheetAction(title: Constant.Ban.title, style: .primary) { [weak self] in
+                            self?.viewModel.banComment(for: item.comment.id)
                         }
-                        bottomSheet.addAction(ban)
+                        self?.showWableSheetWithCancel(
+                            title: Constant.Ban.title,
+                            message: StringLiterals.Ban.sheetMessage,
+                            action: confirm
+                        )
                     }
-                    self?.present(bottomSheet, animated: true)
+                    self?.showBottomSheet(actions: report, ban)
                 },
                 profileImageViewTapHandler: nil,
-                ghostButtonTapHandler: { [weak self] in self?.presentGhostSheet(commentID: item.comment.id) },
+                ghostButtonTapHandler: { [weak self] in
+                    AmplitudeManager.shared.trackEvent(tag: .clickGhostComment)
+                    self?.showGhostSheet(onCancel: {
+                        AmplitudeManager.shared.trackEvent(tag: .clickWithdrawghostPopup)
+                    }, onPrimary: { message in
+                        AmplitudeManager.shared.trackEvent(tag: .clickApplyghostPopup)
+                        
+                        self?.viewModel.ghostComment(for: item.comment.id, reason: message ?? "")
+                    })
+                },
                 replyButtonTapHandler: nil
             )
         }
@@ -409,82 +437,6 @@ private extension OtherProfileViewController {
         dataSource?.apply(snapshot)
     }
     
-    func presentReportSheet(contentID: Int) {
-        let actionSheet = WableSheetViewController(
-            title: StringLiterals.Report.sheetTitle,
-            message: StringLiterals.Report.sheetMessage
-        )
-        
-        let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
-        let confirm = WableSheetAction(title: Constant.Report.title, style: .primary) { [weak self] in
-            self?.viewModel.reportContent(for: contentID)
-        }
-        actionSheet.addActions(cancel, confirm)
-        present(actionSheet, animated: true)
-    }
-    
-    func presentReportSheet(commentID: Int) {
-        let actionSheet = WableSheetViewController(
-            title: StringLiterals.Report.sheetTitle,
-            message: StringLiterals.Report.sheetMessage
-        )
-        
-        let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
-        let confirm = WableSheetAction(title: Constant.Report.title, style: .primary) { [weak self] in
-            self?.viewModel.reportComment(for: commentID)
-        }
-        actionSheet.addActions(cancel, confirm)
-        present(actionSheet, animated: true)
-    }
-    
-    func presentBanSheet(contentID: Int) {
-        let actionSheet = WableSheetViewController(
-            title: Constant.Ban.title,
-            message: StringLiterals.Ban.sheetMessage
-        )
-        
-        let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
-        let confirm = WableSheetAction(title: Constant.Ban.title, style: .primary) { [weak self] in
-            self?.viewModel.banContent(for: contentID)
-        }
-        actionSheet.addActions(cancel, confirm)
-        present(actionSheet, animated: true)
-    }
-    
-    func presentBanSheet(commentID: Int) {
-        let actionSheet = WableSheetViewController(
-            title: Constant.Ban.title,
-            message: StringLiterals.Ban.sheetMessage
-        )
-        
-        let cancel = WableSheetAction(title: Constant.Cancel.title, style: .gray)
-        let confirm = WableSheetAction(title: Constant.Ban.title, style: .primary) { [weak self] in
-            self?.viewModel.banComment(for: commentID)
-        }
-        actionSheet.addActions(cancel, confirm)
-        present(actionSheet, animated: true)
-    }
-    
-    func presentGhostSheet(contentID: Int) {
-        let actionSheet = WableSheetViewController(title: StringLiterals.Ghost.sheetTitle)
-        let cancel = WableSheetAction(title: Constant.Ghost.grayTitle, style: .gray)
-        let confirm = WableSheetAction(title: Constant.Ghost.primaryTitle, style: .primary) { [weak self] in
-            self?.viewModel.ghostContent(for: contentID)
-        }
-        actionSheet.addActions(cancel, confirm)
-        present(actionSheet, animated: true)
-    }
-    
-    func presentGhostSheet(commentID: Int) {
-        let actionSheet = WableSheetViewController(title: StringLiterals.Ghost.sheetTitle)
-        let cancel = WableSheetAction(title: Constant.Ghost.grayTitle, style: .gray)
-        let confirm = WableSheetAction(title: Constant.Ghost.primaryTitle, style: .primary) { [weak self] in
-            self?.viewModel.ghostComment(for: commentID)
-        }
-        actionSheet.addActions(cancel, confirm)
-        present(actionSheet, animated: true)
-    }
-    
     // MARK: - Action
     
     @objc func backButtonDidTap() {
@@ -553,15 +505,6 @@ private extension OtherProfileViewController {
         
         enum Ban {
             static let title = "밴하기"
-        }
-        
-        enum Ghost {
-            static let grayTitle = "고민할게요"
-            static let primaryTitle = "네 맞아요"
-        }
-        
-        enum Cancel {
-            static let title = "취소"
         }
     }
 }
