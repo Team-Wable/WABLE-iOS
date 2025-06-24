@@ -5,6 +5,7 @@
 //  Created by 김진웅 on 5/14/25.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
@@ -57,12 +58,20 @@ final class ProfileInfoCell: UICollectionViewCell {
         $0.numberOfLines = 0
     }
     
-    // MARK: - Ghost UIComponent
+    // MARK: - Footer UIComponent
     
-    private let ghostView = UIView()
+    private let footerView = UIView()
     
     private let ghostTitleLabel = UILabel().then {
         $0.attributedText = "투명도".pretendardString(with: .caption1)
+    }
+    
+    private let ghostInfoButton = UIButton().then {
+        $0.setImage(.icGhostInfo, for: .normal)
+    }
+    
+    private let ghostInfoTooltip = GhostInfoTooltipView().then {
+        $0.isHidden = true
     }
     
     private let ghostImageView = UIImageView(image: .icPurpleGhost)
@@ -79,10 +88,6 @@ final class ProfileInfoCell: UICollectionViewCell {
         $0.clipsToBounds = true
     }
     
-    // MARK: - Badge UIComponent
-
-    private let badgeView = UIView()
-    
     private let badgeTitleLabel = UILabel().then {
         $0.attributedText = "뱃지".pretendardString(with: .caption1)
     }
@@ -90,6 +95,12 @@ final class ProfileInfoCell: UICollectionViewCell {
     private let defaultBadgeImageView = UIImageView(image: .imgBadge).then {
         $0.contentMode = .scaleAspectFit
     }
+    
+    // MARK: - Property
+    
+    private var tooltipTimer: AnyCancellable?
+    
+    private let cancelBag = CancelBag()
 
     // MARK: - Initializer
 
@@ -99,8 +110,7 @@ final class ProfileInfoCell: UICollectionViewCell {
         setupView()
         setupHeaderView()
         setupIntroductionView()
-        setupGhostView()
-        setupBadgeView()
+        setupFooterView()
         setupAction()
     }
     
@@ -157,7 +167,7 @@ final class ProfileInfoCell: UICollectionViewCell {
 
 private extension ProfileInfoCell {
     func setupView() {
-        contentView.addSubviews(headerView, introductionView, ghostView, badgeView)
+        contentView.addSubviews(headerView, introductionView, footerView)
         
         headerView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(16)
@@ -167,17 +177,12 @@ private extension ProfileInfoCell {
         
         introductionView.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(headerView)
-            make.bottom.equalTo(ghostView.snp.top).offset(-12)
+            make.bottom.equalTo(footerView.snp.top).offset(-12)
         }
         
-        ghostView.snp.makeConstraints { make in
+        footerView.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(headerView)
-            make.bottom.equalTo(badgeView.snp.top).offset(-12)
-        }
-        
-        badgeView.snp.makeConstraints { make in
-            make.horizontalEdges.equalTo(headerView)
-            make.bottom.equalToSuperview().offset(-16)
+            make.bottom.equalToSuperview().offset(-12)
         }
     }
     
@@ -220,11 +225,28 @@ private extension ProfileInfoCell {
         }
     }
     
-    func setupGhostView() {
-        ghostView.addSubviews(ghostTitleLabel, ghostImageView, ghostValueLabel, ghostProgressBar)
+    func setupFooterView() {
+        footerView.addSubviews(
+            ghostTitleLabel,
+            ghostInfoButton,
+            ghostImageView,
+            ghostValueLabel,
+            ghostProgressBar,
+            ghostInfoTooltip,
+            badgeTitleLabel,
+            defaultBadgeImageView
+        )
+        
+        footerView.bringSubviewToFront(ghostInfoTooltip)
         
         ghostTitleLabel.snp.makeConstraints { make in
             make.top.leading.equalToSuperview()
+        }
+        
+        ghostInfoButton.snp.makeConstraints { make in
+            make.centerY.equalTo(ghostTitleLabel)
+            make.leading.equalTo(ghostTitleLabel.snp.trailing).offset(4)
+            make.size.equalTo(12)
         }
         
         ghostImageView.snp.makeConstraints { make in
@@ -239,31 +261,86 @@ private extension ProfileInfoCell {
         }
         
         ghostProgressBar.snp.makeConstraints { make in
-            make.horizontalEdges.bottom.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
             make.adjustedHeightEqualTo(12)
         }
-    }
-    
-    func setupBadgeView() {
-        badgeView.addSubviews(badgeTitleLabel, defaultBadgeImageView)
+        
+        ghostInfoTooltip.snp.makeConstraints { make in
+            make.top.equalTo(ghostProgressBar.snp.bottom).offset(4)
+            make.leading.equalTo(ghostProgressBar)
+            make.trailing.equalToSuperview().offset(-68)
+        }
         
         badgeTitleLabel.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
+            make.top.equalTo(ghostProgressBar.snp.bottom).offset(12)
+            make.leading.equalTo(ghostInfoTooltip)
             make.bottom.equalTo(defaultBadgeImageView.snp.top).offset(-4)
         }
         
         defaultBadgeImageView.snp.makeConstraints { make in
             make.leading.equalTo(badgeTitleLabel)
             make.adjustedHeightEqualTo(Constant.badgeImageViewHeight)
+            make.bottom.equalToSuperview()
         }
     }
     
     func setupAction() {
-        editButton.addAction(
-            UIAction(handler: { [weak self] _ in self?.editButtonTapHandler?() }),
-            for: .touchUpInside
-        )
+        editButton.publisher(for: .touchUpInside)
+            .sink { [weak self] _ in self?.editButtonTapHandler?() }
+            .store(in: cancelBag)
+        
+        ghostInfoButton.publisher(for: .touchUpInside)
+            .sink { [weak self] _ in self?.toggleTooltip() }
+            .store(in: cancelBag)
     }
+    
+    // MARK: - Helper Method
+    
+    func toggleTooltip() {
+        tooltipTimer?.cancel()
+        
+        if ghostInfoTooltip.isHidden {
+            showTooltipWithAnimation()
+            
+            tooltipTimer = Just(())
+                .delay(for: .seconds(3), scheduler: DispatchQueue.main)
+                .sink { [weak self] _ in self?.hideTooltipWithAnimation() }
+        } else {
+            hideTooltipWithAnimation()
+        }
+    }
+    
+    func showTooltipWithAnimation() {
+        ghostInfoTooltip.alpha = 0
+        ghostInfoTooltip.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+        ghostInfoTooltip.isHidden = false
+        
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.2
+        ) {
+            self.ghostInfoTooltip.alpha = 1
+            self.ghostInfoTooltip.transform = .identity
+        }
+    }
+    
+    func hideTooltipWithAnimation() {
+        UIView.animate(
+            withDuration: 0.25,
+            delay: 0,
+            options: [.curveEaseInOut]
+        ) {
+            self.ghostInfoTooltip.alpha = 0
+            self.ghostInfoTooltip.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+        } completion: { _ in
+            self.ghostInfoTooltip.isHidden = true
+            self.ghostInfoTooltip.transform = .identity
+        }
+    }
+    
+    // MARK: - Constant
     
     enum Constant {
         static let profileImageViewSize: CGFloat = 80
