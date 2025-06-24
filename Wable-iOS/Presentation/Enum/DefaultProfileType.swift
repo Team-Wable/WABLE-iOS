@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum DefaultProfileType: String {
+enum DefaultProfileType: String, CaseIterable {
     case green = "img_profile_green"
     case blue = "img_profile_blue"
     case purple = "img_profile_purple"
