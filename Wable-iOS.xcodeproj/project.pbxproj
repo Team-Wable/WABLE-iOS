@@ -377,7 +377,6 @@
 		DEE5D61A2D91537C009E5A25 /* GameScheduleViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5D6192D91537C009E5A25 /* GameScheduleViewItem.swift */; };
 		DEF08E232DDB46170024B33C /* MyProfileEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF08E222DDB46170024B33C /* MyProfileEmptyCell.swift */; };
 		DEF08E292DDB73200024B33C /* ProfileEmptyCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF08E282DDB73200024B33C /* ProfileEmptyCellItem.swift */; };
-		DEF148402DA7B586003B2AD8 /* CommunityUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF1483F2DA7B586003B2AD8 /* CommunityUseCase.swift */; };
 		DEF148422DA7B7E5003B2AD8 /* IsUserRegistered.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148412DA7B7E5003B2AD8 /* IsUserRegistered.swift */; };
 		DEF148442DA7B966003B2AD8 /* RegisterResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148432DA7B966003B2AD8 /* RegisterResult.swift */; };
 		DEF148542DA7EF7B003B2AD8 /* CommunityRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF148532DA7EF7B003B2AD8 /* CommunityRegistration.swift */; };
@@ -750,7 +749,6 @@
 		DEE5D6192D91537C009E5A25 /* GameScheduleViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleViewItem.swift; sourceTree = "<group>"; };
 		DEF08E222DDB46170024B33C /* MyProfileEmptyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileEmptyCell.swift; sourceTree = "<group>"; };
 		DEF08E282DDB73200024B33C /* ProfileEmptyCellItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEmptyCellItem.swift; sourceTree = "<group>"; };
-		DEF1483F2DA7B586003B2AD8 /* CommunityUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityUseCase.swift; sourceTree = "<group>"; };
 		DEF148412DA7B7E5003B2AD8 /* IsUserRegistered.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsUserRegistered.swift; sourceTree = "<group>"; };
 		DEF148432DA7B966003B2AD8 /* RegisterResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterResult.swift; sourceTree = "<group>"; };
 		DEF148532DA7EF7B003B2AD8 /* CommunityRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegistration.swift; sourceTree = "<group>"; };
@@ -1493,7 +1491,6 @@
 				DE0D0CA32DD2012900FB64DC /* UserRole */,
 				DDED59732D78EFCF00A0BEF1 /* Onboarding */,
 				DD9EAE202D99C58600803A1A /* Home */,
-				DDED596E2D78EB9200A0BEF1 /* Community */,
 				DDED59822D79614E00A0BEF1 /* Overview */,
 				DDED59812D79612600A0BEF1 /* Notification */,
 				DDED59802D79611F00A0BEF1 /* Profile */,
@@ -1517,14 +1514,6 @@
 				DDED595B2D78C3B600A0BEF1 /* AppleAuthProvider.swift */,
 			);
 			path = Auth;
-			sourceTree = "<group>";
-		};
-		DDED596E2D78EB9200A0BEF1 /* Community */ = {
-			isa = PBXGroup;
-			children = (
-				DEF1483F2DA7B586003B2AD8 /* CommunityUseCase.swift */,
-			);
-			path = Community;
 			sourceTree = "<group>";
 		};
 		DDED59732D78EFCF00A0BEF1 /* Onboarding */ = {
@@ -2943,7 +2932,6 @@
 				DD2968182D6DAD0200143851 /* CommunityRepository.swift in Sources */,
 				DD4AFD472D90264500D56B94 /* OAuthEventManager.swift in Sources */,
 				DDED59862D7965E900A0BEF1 /* OverviewUseCase.swift in Sources */,
-				DEF148402DA7B586003B2AD8 /* CommunityUseCase.swift in Sources */,
 				DE202FF62DE784FB00B04CAA /* AppVersion.swift in Sources */,
 				DDED597C2D794F0D00A0BEF1 /* FetchUserAuthUseCase.swift in Sources */,
 				DE7C53102D761E3300076E5D /* String+.swift in Sources */,

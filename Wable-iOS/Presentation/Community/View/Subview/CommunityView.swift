@@ -5,6 +5,7 @@
 //  Created by 김진웅 on 4/11/25.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
@@ -14,21 +15,28 @@ final class CommunityView: UIView {
     
     // MARK: - UIComponent
     
+    private let statusBarBackgroundView = UIView(backgroundColor: .wableBlack)
+    
+    private let navigationView = NavigationView(type: .hub(title: "커뮤니티", isBeta: true))
+    
     lazy var collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: collectionViewLayout
     ).then {
-        $0.refreshControl = UIRefreshControl()
         $0.alwaysBounceVertical = true
     }
     
+    let refreshControl = UIRefreshControl()
+    
     let askButton = WableButton(style: .black).then {
         var config = $0.configuration
-        config?.attributedTitle = Constant.askButtonTitle
+        config?.attributedTitle = StringLiterals.Community.askButtonTitle
             .pretendardString(with: .body3)
             .highlight(textColor: .sky50, to: "요청하기")
         $0.configuration = config
     }
+    
+    private let underlineView = UIView(backgroundColor: .gray200)
     
     // MARK: - Initializer
 
@@ -44,19 +52,19 @@ final class CommunityView: UIView {
     }
 }
 
-// MARK: - Setup Method
+extension CommunityView {
+    var askDidTap: AnyPublisher<Void, Never> { askButton.publisher(for: .touchUpInside).eraseToAnyPublisher() }
+    var didRefresh: AnyPublisher<Void, Never> { refreshControl.publisher(for: .valueChanged).eraseToAnyPublisher() }
+}
 
 private extension CommunityView {
+    
+    // MARK: - Setup Method
+    
     func setupView() {
         backgroundColor = .wableWhite
         
-        let statusBarBackgroundView = UIView(backgroundColor: .wableBlack)
-        
-        let navigationView = NavigationView(type: .hub(title: "커뮤니티", isBeta: true)).then {
-            $0.configureView()
-        }
-        
-        let underlineView = UIView(backgroundColor: .gray200)
+        collectionView.refreshControl = refreshControl
         
         addSubviews(
             statusBarBackgroundView,
@@ -93,11 +101,9 @@ private extension CommunityView {
             make.height.equalTo(1)
         }
     }
-}
+    
+    // MARK: - CollectionViewLayout
 
-// MARK: - Computed Property
-
-private extension CommunityView {
     var collectionViewLayout: UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
@@ -126,13 +132,5 @@ private extension CommunityView {
         section.boundarySupplementaryItems = [header]
         
         return UICollectionViewCompositionalLayout(section: section)
-    }
-}
-
-// MARK: - Constant
-
-private extension CommunityView {
-    enum Constant {
-        static let askButtonTitle = "더 추가하고 싶은 게시판이 있다면? 요청하기"
     }
 }
