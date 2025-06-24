@@ -67,7 +67,7 @@ extension HomeDetailViewModel: ViewModelType {
         let didCommentTappedItem: AnyPublisher<Void, Never>
         let didReplyTappedItem: AnyPublisher<(Int, Int), Never>
         let didCreateTappedItem: AnyPublisher<String, Never>
-        let didGhostTappedItem: AnyPublisher<(Int, Int, PostType), Never>
+        let didGhostTappedItem: AnyPublisher<(Int, Int, String?, PostType), Never>
         let didDeleteTappedItem: AnyPublisher<(Int, PostType), Never>
         let didBannedTappedItem: AnyPublisher<(Int, Int, TriggerType.Ban), Never>
         let didReportTappedItem: AnyPublisher<(String, String), Never>
@@ -303,7 +303,7 @@ extension HomeDetailViewModel: ViewModelType {
         input.didGhostTappedItem
             .withUnretained(self)
             .flatMap { owner, input -> AnyPublisher<Int, Never> in
-                return owner.fetchGhostUseCase.execute(type: input.2, targetID: input.0, userID: input.1)
+                return owner.fetchGhostUseCase.execute(type: input.3, targetID: input.0, userID: input.1, reason: input.2)
                     .map { _ in input.1 }
                     .asDriver(onErrorJustReturn: input.1)
             }
