@@ -125,13 +125,10 @@ final class OtherProfileViewModel {
         return checkUserRoleUseCase.execute(userID: userID)
     }
     
-    func reportContent(for contentID: Int) {
-        guard let content = item.contentList.first(where: { $0.id == contentID }) else { return }
-        let nickname = content.contentInfo.author.nickname
-        let text = content.contentInfo.text
+    func reportContent(for nickname: String, message: String) {
         Task {
             do {
-                try await reportRepository.createReport(nickname: nickname, text: text)
+                try await reportRepository.createReport(nickname: nickname, text: message)
                 await MainActor.run { isReportCompleted = true }
             } catch {
                 await handleError(error: error)
@@ -139,14 +136,10 @@ final class OtherProfileViewModel {
         }
     }
     
-    func reportComment(for commentID: Int) {
-        guard let comment = item.commentList.first(where: { $0.comment.id == commentID }) else { return }
-        let nickname = comment.comment.author.nickname
-        let text = comment.comment.text
-        
+    func reportComment(for nickname: String, message: String) {
         Task {
             do {
-                try await reportRepository.createReport(nickname: nickname, text: text)
+                try await reportRepository.createReport(nickname: nickname, text: message)
                 await MainActor.run { isReportCompleted = true }
             } catch {
                 await handleError(error: error)
@@ -188,14 +181,14 @@ final class OtherProfileViewModel {
         }
     }
     
-    func ghostContent(for contentID: Int) {
+    func ghostContent(for contentID: Int, reason: String) {
         Task {
             do {
                 try await ghostRepository.postGhostReduction(
                     alarmTriggerType: TriggerType.Ghost.contentGhost.rawValue,
                     alarmTriggerID: contentID,
                     targetMemberID: userID,
-                    reason: ""
+                    reason: reason
                 )
                 
                 fetchViewItems(userID: userID, segment: item.currentSegment)
@@ -205,14 +198,14 @@ final class OtherProfileViewModel {
         }
     }
     
-    func ghostComment(for commentID: Int) {
+    func ghostComment(for commentID: Int, reason: String) {
         Task {
             do {
                 try await ghostRepository.postGhostReduction(
                     alarmTriggerType: TriggerType.Ghost.commentGhost.rawValue,
                     alarmTriggerID: commentID,
                     targetMemberID: userID,
-                    reason: ""
+                    reason: reason
                 )
                 
                 fetchViewItems(userID: userID, segment: item.currentSegment)

@@ -5,6 +5,7 @@
 //  Created by 김진웅 on 4/12/25.
 //
 
+import Combine
 import UIKit
 import SafariServices
 
@@ -32,7 +33,9 @@ final class ViewitListViewController: UIViewController {
     private let meatballRelay = PassthroughRelay<Int>()
     private let likeRelay = PassthroughRelay<Int>()
     private let willLastDisplayRelay = PassthroughRelay<Void>()
-    private let bottomSheetActionRelay = PassthroughRelay<ViewitBottomSheetActionKind>()
+    private let reportRelay = PassthroughRelay<String>()
+    private let banRelay = PassthroughRelay<Void>()
+    private let deleteRelay = PassthroughRelay<Void>()
     private let profileDidTapRelay = PassthroughRelay<Int>()
     private let cancelBag = CancelBag()
     private let rootView = ViewitListView()
@@ -90,7 +93,6 @@ extension ViewitListViewController: UICollectionViewDelegate {
     }
 }
 
-
 // MARK: - CreateViewitViewDelegate
 
 extension ViewitListViewController: CreateViewitViewDelegate {
@@ -99,9 +101,10 @@ extension ViewitListViewController: CreateViewitViewDelegate {
     }
 }
 
-// MARK: - Setup Method
-
 private extension ViewitListViewController {
+    
+    // MARK: - Setup Method
+    
     func setupDataSource() {
         let cellRegistration = CellRegistration<ViewitListCell, Item> { cell, indexPath, item in
             cell.configure(
@@ -147,8 +150,18 @@ private extension ViewitListViewController {
     }
     
     func setupAction() {
-        createButton.addTarget(self, action: #selector(createButtonDidTap), for: .touchUpInside)
-        refreshControl?.addTarget(self, action: #selector(viewDidRefresh), for: .valueChanged)
+        rootView.createButton.publisher(for: .touchUpInside)
+            .sink { [weak self] _ in
+                let useCase = CreateViewitUseCaseImpl()
+                let writeViewController = CreateViewitViewController(viewModel: .init(useCase: useCase))
+                writeViewController.delegate = self
+                self?.present(writeViewController, animated: true)
+            }
+            .store(in: cancelBag)
+        
+        rootView.refreshControl.publisher(for: .valueChanged)
+            .sink { [weak self] _ in self?.didLoadRelay.send() }
+            .store(in: cancelBag)
     }
     
     func setupDelegate() {
@@ -161,7 +174,9 @@ private extension ViewitListViewController {
             like: likeRelay.eraseToAnyPublisher(),
             willLastDisplay: willLastDisplayRelay.eraseToAnyPublisher(),
             meatball: meatballRelay.eraseToAnyPublisher(),
-            bottomSheetAction: bottomSheetActionRelay.eraseToAnyPublisher(),
+            report: reportRelay.eraseToAnyPublisher(),
+            delete: deleteRelay.eraseToAnyPublisher(),
+            ban: banRelay.eraseToAnyPublisher(),
             profileDidTap: profileDidTapRelay.eraseToAnyPublisher()
         )
         
@@ -169,9 +184,7 @@ private extension ViewitListViewController {
         
         output.isLoading
             .filter { !$0 }
-            .sink { [weak self] _ in
-                self?.refreshControl?.endRefreshing()
-            }
+            .sink { [weak self] _ in self?.rootView.refreshControl.endRefreshing() }
             .store(in: cancelBag)
         
         output.viewitList
@@ -189,9 +202,7 @@ private extension ViewitListViewController {
             .store(in: cancelBag)
         
         output.userRole
-            .sink { [weak self] role in
-                self?.presentBottomSheet(for: role)
-            }
+            .sink { [weak self] in self?.presentBottomSheet(for: $0) }
             .store(in: cancelBag)
         
         output.isReportSuccess
@@ -231,49 +242,55 @@ private extension ViewitListViewController {
         switch userRole {
         case .admin:
             let reportAction = WableBottomSheetAction(title: "신고하기") { [weak self] in
-                self?.presentActionSheet(for: .report)
+                self?.showReportSheet(onPrimary: { message in
+                    self?.reportRelay.send(message ?? "")
+                })
             }
             let banAction = WableBottomSheetAction(title: "밴하기") { [weak self] in
-                self?.presentActionSheet(for: .ban)
+                self?.showBanConfirmationSheet()
             }
             showBottomSheet(actions: reportAction, banAction)
         case .owner:
             let deleteAction = WableBottomSheetAction(title: "삭제하기") { [weak self] in
-                self?.presentActionSheet(for: .delete)
+                self?.showDeleteConfirmationSheet()
             }
             showBottomSheet(actions: deleteAction)
         case .viewer:
             let reportAction = WableBottomSheetAction(title: "신고하기") { [weak self] in
-                self?.presentActionSheet(for: .report)
+                self?.showReportSheet(onPrimary: { message in
+                    self?.reportRelay.send(message ?? "")
+                })
             }
             showBottomSheet(actions: reportAction)
         }
     }
     
-    func presentActionSheet(for action: ViewitBottomSheetActionKind) {
-        let title: String
-        let message: String
-        let buttonTitle: String
-        
-        switch action {
-        case .report:
-            title = StringLiterals.Report.sheetTitle
-            message = StringLiterals.Report.sheetMessage
-            buttonTitle = Constant.Report.buttonTitle
-        case .delete:
-            title = Constant.Delete.title
-            message = Constant.Delete.message
-            buttonTitle = Constant.Delete.buttonTitle
-        case .ban:
-            title = Constant.Ban.title
-            message = StringLiterals.Ban.sheetMessage
-            buttonTitle = Constant.Ban.buttonTitle
+    func showDeleteConfirmationSheet() {
+        let primaryAction = WableSheetAction(
+            title: Constant.Delete.buttonTitle,
+            style: .primary
+        ) { [weak self] in
+            self?.deleteRelay.send()
         }
-        
-        let primaryAction = WableSheetAction(title: buttonTitle, style: .primary) { [weak self] in
-            self?.bottomSheetActionRelay.send(action)
+        showWableSheetWithCancel(
+            title: Constant.Delete.title,
+            message: Constant.Delete.message,
+            action: primaryAction
+        )
+    }
+    
+    func showBanConfirmationSheet() {
+        let primaryAction = WableSheetAction(
+            title: Constant.Ban.buttonTitle,
+            style: .primary
+        ) { [weak self] in
+            self?.banRelay.send()
         }
-        showWableSheetWithCancel(title: title, message: message, action: primaryAction)
+        showWableSheetWithCancel(
+            title: Constant.Ban.title,
+            message: StringLiterals.Ban.sheetMessage,
+            action: primaryAction
+        )
     }
     
     func showMyProfile() {
@@ -301,23 +318,10 @@ private extension ViewitListViewController {
     }
     
     // MARK: - Action Method
-
-    @objc func createButtonDidTap() {
-        let useCase = CreateViewitUseCaseImpl()
-        let writeViewController = CreateViewitViewController(viewModel: .init(useCase: useCase))
-        writeViewController.delegate = self
-        present(writeViewController, animated: true)
-    }
     
     @objc func viewDidRefresh() {
         didLoadRelay.send()
     }
-    
-    // MARK: - Computed Property
-    
-    var collectionView: UICollectionView { rootView.collectionView }
-    var refreshControl: UIRefreshControl? { rootView.collectionView.refreshControl }
-    var createButton: UIButton { rootView.createButton }
     
     // MARK: - Constant
 
