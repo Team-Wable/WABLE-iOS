@@ -78,6 +78,7 @@ extension HomeDetailViewModel: ViewModelType {
         let activeUserID: AnyPublisher<Int?, Never>
         let isAdmin: AnyPublisher<Bool?, Never>
         let content: AnyPublisher<ContentInfo?, Never>
+        let contentNotFound: AnyPublisher<Void, Never>
         let comments: AnyPublisher<[ContentComment], Never>
         let isLoading: AnyPublisher<Bool, Never>
         let isLoadingMore: AnyPublisher<Bool, Never>
@@ -89,6 +90,7 @@ extension HomeDetailViewModel: ViewModelType {
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
         let contentSubject = CurrentValueSubject<ContentInfo?, Never>(nil)
+        let contentNotFoundSubject = PassthroughSubject<Void, Never>()
         let commentsSubject = CurrentValueSubject<[ContentComment], Never>([])
         let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
         let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
@@ -141,6 +143,13 @@ extension HomeDetailViewModel: ViewModelType {
                 let contentPublisher = owner.fetchContentInfoUseCase.execute(contentID: owner.contentID)
                     .map { contentInfo -> ContentInfo? in
                         return contentInfo
+                    }
+                    .catch { error -> AnyPublisher<ContentInfo?, Never> in
+                        WableLogger.log("\(error.localizedDescription)", for: .error)
+                        if case WableError.notFoundContent = error {
+                            contentNotFoundSubject.send()
+                        }
+                        return .just(nil)
                     }
                     .replaceError(with: nil)
                 
@@ -487,6 +496,7 @@ extension HomeDetailViewModel: ViewModelType {
             activeUserID: activeUserIDSubject.eraseToAnyPublisher(),
             isAdmin: isAdminSubject.eraseToAnyPublisher(),
             content: contentSubject.eraseToAnyPublisher(),
+            contentNotFound: contentNotFoundSubject.asDriver(),
             comments: commentsSubject.eraseToAnyPublisher(),
             isLoading: isLoadingSubject.eraseToAnyPublisher(),
             isLoadingMore: isLoadingMoreSubject.eraseToAnyPublisher(),
