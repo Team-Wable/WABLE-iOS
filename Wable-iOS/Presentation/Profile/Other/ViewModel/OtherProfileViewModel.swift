@@ -11,6 +11,7 @@ import Foundation
 final class OtherProfileViewModel {
     @Published private(set) var nickname: String?
     @Published private(set) var item = ProfileViewItem()
+    @Published private(set) var userNotFound = false
     @Published private(set) var isLoading = false
     @Published private(set) var isLoadingMore = false
     @Published private(set) var isReportCompleted = false
@@ -309,6 +310,11 @@ private extension OtherProfileViewModel {
     
     @MainActor
     func handleError(error: Error) {
+        if case WableError.notFoundMember = error {
+            userNotFound = true
+            return
+        }
+        
         errorMessage = error.localizedDescription
     }
 }
