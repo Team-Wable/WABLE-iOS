@@ -591,6 +591,12 @@ private extension HomeDetailViewController {
             }
             .store(in: cancelBag)
         
+        output.contentNotFound
+            .sink { [weak self] _ in
+                self?.showNotFoundViewController()
+            }
+            .store(in: cancelBag)
+        
         output.comments
             .receive(on: DispatchQueue.main)
             .withUnretained(self)
@@ -797,6 +803,15 @@ extension HomeDetailViewController {
                 self.collectionView.layoutIfNeeded()
             }
         }
+    }
+    
+    func showNotFoundViewController() {
+        let tabBar = navigationController?.tabBarController
+        let notFoundViewController = NotFoundViewController { [weak self] in
+            self?.navigationController?.popToRootViewController(animated: false)
+            tabBar?.selectedIndex = 0
+        }
+        present(notFoundViewController, animated: true)
     }
 }
 
