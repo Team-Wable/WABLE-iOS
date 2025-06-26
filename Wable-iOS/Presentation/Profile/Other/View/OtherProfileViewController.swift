@@ -372,6 +372,12 @@ private extension OtherProfileViewController {
             .sink { [weak self] in self?.applySnapshot(item: $0) }
             .store(in: cancelBag)
         
+        viewModel.$userNotFound
+            .receive(on: RunLoop.main)
+            .filter { $0 }
+            .sink { [weak self] _ in self?.showNotFound() }
+            .store(in: cancelBag)
+        
         viewModel.$isLoading
             .receive(on: RunLoop.main)
             .filter { $0 }
@@ -435,6 +441,17 @@ private extension OtherProfileViewController {
         }
         
         dataSource?.apply(snapshot)
+    }
+    
+    // MARK: - Helper
+
+    func showNotFound() {
+        let tabBar = navigationController?.tabBarController
+        let notFoundVC = NotFoundViewController { [weak self] in
+            self?.navigationController?.popToRootViewController(animated: false)
+            tabBar?.selectedIndex = 0
+        }
+        present(notFoundVC, animated: true)
     }
     
     // MARK: - Action
