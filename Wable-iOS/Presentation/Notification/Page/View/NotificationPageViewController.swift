@@ -127,7 +127,7 @@ private extension NotificationPageViewController {
                 userInformationUseCase: userInformationUseCase
             )
         )
-        let informationNotiViewController = InformationNotificationViewController(viewModel: .init(useCase: MockNotificationUseCaseImpl()))
+        let informationNotiViewController = InformationNotificationViewController(viewModel: .init(useCase: useCase))
         
         viewControllers.append(activityNotiViewController)
         viewControllers.append(informationNotiViewController)
