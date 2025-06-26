@@ -208,6 +208,8 @@ private extension WritePostViewController {
                 self.isPosting = false
                 self.updatePostButtonState(isLoading: false)
                 
+                self.onPostCompleted?()
+                
                 if self.navigationController?.topViewController == self {
                     let toast = ToastView(status: .complete, message: "게시물이 작성되었습니다")
                     toast.show()
