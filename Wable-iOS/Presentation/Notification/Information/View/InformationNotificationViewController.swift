@@ -192,37 +192,12 @@ private extension InformationNotificationViewController {
             }
             .store(in: cancelBag)
         
+        let tabBar = navigationController?.tabBarController
         output.selectedNotification
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] item in
-                let viewController = HomeDetailViewController(
-                    viewModel: HomeDetailViewModel(
-                        contentID: item.id,
-                        fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
-                        fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
-                        createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),
-                        deleteCommentUseCase: DeleteCommentUseCase(repository: CommentRepositoryImpl()),
-                        createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
-                        deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
-                        createCommentLikedUseCase: CreateCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
-                        deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
-                        fetchUserInformationUseCase: FetchUserInformationUseCase(
-                            repository: UserSessionRepositoryImpl(
-                                userDefaults: UserDefaultsStorage(
-                                    jsonEncoder: JSONEncoder(),
-                                    jsonDecoder: JSONDecoder()
-                                )
-                            )
-                        ),
-                        fetchGhostUseCase: FetchGhostUseCase(repository: GhostRepositoryImpl()),
-                        createReportUseCase: CreateReportUseCase(repository: ReportRepositoryImpl()),
-                        createBannedUseCase: CreateBannedUseCase(repository: ReportRepositoryImpl()),
-                        deleteContentUseCase: DeleteContentUseCase(repository: ContentRepositoryImpl())
-                    ),
-                    cancelBag: CancelBag()
-                )
-                
-                self?.navigationController?.pushViewController(viewController, animated: true)
+            .sink { [weak self] _ in
+                self?.navigationController?.popToRootViewController(animated: false)
+                tabBar?.selectedIndex = 2
             }
             .store(in: cancelBag)
         
