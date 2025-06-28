@@ -268,7 +268,7 @@ private extension ProfileInfoCell {
         ghostInfoTooltip.snp.makeConstraints { make in
             make.top.equalTo(ghostProgressBar.snp.bottom).offset(4)
             make.leading.equalTo(ghostProgressBar)
-            make.trailing.equalToSuperview().offset(-68)
+            make.trailing.equalToSuperview()
         }
         
         badgeTitleLabel.snp.makeConstraints { make in
@@ -309,7 +309,7 @@ private extension ProfileInfoCell {
             showTooltipWithAnimation()
             
             tooltipTimer = Just(())
-                .delay(for: .seconds(3), scheduler: DispatchQueue.main)
+                .delay(for: .seconds(5), scheduler: DispatchQueue.main)
                 .sink { [weak self] _ in self?.hideTooltipWithAnimation() }
         } else {
             hideTooltipWithAnimation()
