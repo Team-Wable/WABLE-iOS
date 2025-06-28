@@ -102,6 +102,7 @@ private extension PhotoDetailViewController {
         backButton.addAction(popAction, for: .touchUpInside)
         
         let saveAction = UIAction { [weak self] _ in
+            AmplitudeManager.shared.trackEvent(tag: .clickDownloadPhoto)
             self?.saveImage()
         }
         saveButton.addAction(saveAction, for: .touchUpInside)
