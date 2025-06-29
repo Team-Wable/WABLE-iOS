@@ -74,6 +74,7 @@ extension AmplitudeManager {
         case clickNextDeleteguide
         case clickDoneDeleteaccount
         case clickGobackHome
+        case clickDownloadPhoto
         
         var value: String {
             switch self {
@@ -123,6 +124,7 @@ extension AmplitudeManager {
             case .clickNextDeleteguide: return "click_next_deleteguide"
             case .clickDoneDeleteaccount: return "click_done_deleteaccount"
             case .clickGobackHome: return "click_goback_home"
+            case .clickDownloadPhoto: return "click_download_photo"
             }
         }
     }
