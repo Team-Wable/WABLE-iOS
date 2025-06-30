@@ -116,7 +116,7 @@ private extension ProfileEditViewController {
                 if hasNicknameChanged || hasImageChanged || hasTeamChanged {
                     let finalNickname = hasNicknameChanged ? nicknameText : profile.user.nickname
                     
-                    profileUseCase.execute(
+                    profileUseCase.updateProfile(
                         profile: UserProfile(
                             user: User(
                                 id: profile.user.id,
@@ -169,7 +169,7 @@ private extension ProfileEditViewController {
         if hasNicknameChanged || hasImageChanged || hasTeamChanged {
             let finalNickname = hasNicknameChanged ? nicknameText : profile.user.nickname
             
-            profileUseCase.execute(
+            profileUseCase.updateProfile(
                 profile: UserProfile(
                     user: User(
                         id: profile.user.id,
@@ -290,7 +290,7 @@ extension ProfileEditViewController {
                 guard let self = self,
                       let sessionID = sessionID else { return }
                 
-                profileUseCase.execute(userID: sessionID)
+                profileUseCase.fetchProfile(userID: sessionID)
                     .receive(on: DispatchQueue.main)
                     .sink { _ in } receiveValue: { [weak self] profile in
                         guard let self = self else { return }
