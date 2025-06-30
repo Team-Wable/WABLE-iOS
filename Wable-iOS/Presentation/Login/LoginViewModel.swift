@@ -72,6 +72,8 @@ extension LoginViewModel: ViewModelType {
     }
 }
 
+// MARK: - Helper Method
+
 private extension LoginViewModel {
     func fetchUserAuth(platform: SocialPlatform) -> AnyPublisher<Account, Never> {
         return fetchUserAuthUseCase.execute(platform: platform)
