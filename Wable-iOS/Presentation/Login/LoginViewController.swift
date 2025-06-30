@@ -156,11 +156,22 @@ private extension LoginViewController {
             .sink { owner, sessionInfo in
                 let condition = sessionInfo.isNewUser || sessionInfo.user.nickname == ""
                 
-                if condition {
-                    AmplitudeManager.shared.trackEvent(tag: .clickAgreePopupSignup)
-                }
-                
+                if condition { AmplitudeManager.shared.trackEvent(tag: .clickAgreePopupSignup) }
                 condition ? owner.navigateToOnboarding() : owner.navigateToHome()
+            }
+            .store(in: cancelBag)
+        
+        output.error
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, error in
+                let toast = WableSheetViewController(
+                    title: "로그인 중 오류가 발생했어요",
+                    message: "\(error.localizedDescription)\n다시 시도해주세요."
+                )
+                
+                toast.addAction(.init(title: "확인", style: .primary))
+                owner.present(toast, animated: true)
             }
             .store(in: cancelBag)
     }
