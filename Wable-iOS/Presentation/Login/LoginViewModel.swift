@@ -46,6 +46,7 @@ extension LoginViewModel: ViewModelType {
     
     struct Output {
         let account: AnyPublisher<Account, Never>
+        let error: AnyPublisher<WableError, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
@@ -60,7 +61,7 @@ extension LoginViewModel: ViewModelType {
                 return owner.fetchUserAuthUseCase.execute(platform: flatform)
                     .handleEvents(receiveCompletion: { completion in
                         if case .failure(let error) = completion {
-                            WableLogger.log("로그인 중 오류 발생: \(error)", for: .error)
+                            owner.loginErrorSubject.send(error)
                         }
                     })
                     .catch { error -> AnyPublisher<Account, Never> in
@@ -130,7 +131,8 @@ extension LoginViewModel: ViewModelType {
             .store(in: cancelBag)
         
         return Output(
-            account: loginSuccessSubject.eraseToAnyPublisher()
+            account: loginSuccessSubject.eraseToAnyPublisher(),
+            error: loginErrorSubject.eraseToAnyPublisher()
         )
     }
 }
