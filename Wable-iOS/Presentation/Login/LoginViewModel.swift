@@ -101,7 +101,7 @@ private extension LoginViewModel {
             let authorizedStatus = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
             let isAuthorized = authorizedStatus == .authorized
             
-            self.userProfileUseCase.updateProfile(userID: userID, isPushAlarmAllowed: isAuthorized)
+            self.userProfileUseCase.updateProfileWithUserID(userID: userID, isPushAlarmAllowed: isAuthorized)
                 .catch { error -> AnyPublisher<Void, Never> in
                     self.loginErrorSubject.send(error)
                     return .just(())
