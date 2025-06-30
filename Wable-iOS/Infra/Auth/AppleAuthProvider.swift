@@ -57,7 +57,7 @@ extension AppleAuthProvider: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         guard let promise = self.promise else { return }
         
-        promise(.failure(.failedToValidateAppleLogin))
+        promise(.failure(.failedToAppleLogin))
     }
 }
 

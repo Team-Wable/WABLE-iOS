@@ -154,7 +154,7 @@ private extension AgreementViewController {
                 userSession in
                 guard let userSession = userSession else { return }
                 
-                owner.profileUseCase.execute(
+                owner.profileUseCase.updateProfile(
                     profile: UserProfile(
                         user: User(
                             id: userSession.id,

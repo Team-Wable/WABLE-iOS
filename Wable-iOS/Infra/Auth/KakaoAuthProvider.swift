@@ -41,12 +41,12 @@ private extension KakaoAuthProvider {
         promise: @escaping (Result<String?, WableError>) -> Void
     ) {
         if error != nil {
-            promise(.failure(.kakaoUnauthorizedUser))
+            promise(.failure(.failedToKakaoLogin))
             return
         }
         
         guard let token = oauthToken?.accessToken else {
-            promise(.failure(.kakaoUnauthorizedUser))
+            promise(.failure(.failedToKakaoLogin))
             return
         }
         
