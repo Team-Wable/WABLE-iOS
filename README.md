@@ -201,81 +201,15 @@ print("와블 iOS 레포지토리입니다 🚀")
 
 ![Coding Convention](https://github.com/user-attachments/assets/14b15313-a25a-4ef9-a76a-0851eb9e55ea)
 
-<details>
-<summary><h2> 인터페이스(프로토콜)와 실구현체 </h2></summary>
-- 프로토콜의 네이밍: 구현하고자 하는 객체 이름
-- 실 구현체의 네이밍: 프로토콜 네이밍 + `Impl`
+## 📝 기본 규칙
 
-```swift
-protocol UserRepository {}
-final class UserRepositoryImpl {} 
-```
-</details>
+### 코드 작성 규칙
+- **한 줄 당 최대 글자 수**는 120자로 제한한다.
+- **들여쓰기 제한**은 최대 5번까지만 허용한다. 6번 이상 들여쓰기가 필요할 경우 메서드 분리로 최대한 가독성을 지켜 작성한다.
+- **자동 포매팅(`Control` + `M`)**을 적극적으로 활용한다.
 
-<details>
-<summary><h2> 함수명 </h2></summary>
-  
-- 조회: `fetch`
-- 수정: `update`
-- 삭제: `delete`
-- 생성: `create`
-- 초기 상태 설정: `configure`
-- 액션 메서드: `~DidTap`
-
-</details>
-
-<details>
-<summary><h2> UseCase  </h2></summary>
-  
-- 단일 메서드일 경우, 메서드 명은 `execute`로 한다.
-  
-</details>
-
-<details>
-<summary><h2> Setup Method </h2></summary>
-
-```swift
-func setupNavigationBar()
-func setupView()
-func setupConstraints()
-func setupAction()
-func setupDelegate()
-func setupDataSource()
-func setupBinding()
-```
-
-</details>
-
-<details>
-<summary><h2> MARK 주석 </h2></summary>
-- **위, 아래로 한 줄 씩 공백**을 두고 작성합니다.
-
-```swift
-// MARK: - Property
-// MARK: - Initializer
-// MARK: - Life Cycle
-// MARK: - Setup Method
-// MARK: - UICollectionViewDelegate (ex)
-// MARK: - Private Method
-```
-
-</details>
-
-<details>
-<summary><h2> Mapper </h2></summary>
-
-> DTO → Entity
-> 
-- `enum`의 `static` method로 구현
-- 메서드 네이밍: `map(with dto:)`
-
-</details>
-
-<details>
-<summary><h2> 라이브러리 선언 </h2></summary>
-  
-- 퍼스트 파티와 서드 파티를 분리
-- 순서는 무조건 알파벳순
+### 라이브러리 선언
+퍼스트 파티와 서드 파티를 구분하여 각각 알파벳 순으로 정렬한다. 퍼스트 파티를 먼저 작성한다.
 
 ```swift
 import Combine
@@ -284,23 +218,211 @@ import Foundation
 import CombineMoya
 import Moya
 ```
-</details>
 
-<details>
-<summary><h2> 반복되는 숫자, 문자열 등 선언 </h2></summary>
-  
-- 객체에서 반복되는 숫자, 문자열 등에 대해서 중첩 타입으로 Constant를 정의하고 타입 프로퍼티로 선언한다.
+---
+
+## 🏗️ 네이밍 규칙
+
+### 인터페이스(프로토콜)와 실구현체 네이밍 규칙
+- **프로토콜**: 구현하고자 하는 객체 이름으로 네이밍한다.
+- **실구현체**: 프로토콜 이름 + `Impl` 접미사 형태로 네이밍한다.
 
 ```swift
-final class CustomView: UIView {}
+protocol UserRepository {}
+final class UserRepositoryImpl: UserRepository {}
+```
+
+### 메서드 네이밍 규칙
+
+메서드의 역할에 따라 일관된 접두사를 사용한다.
+
+- **조회**: `fetch`
+- **수정**: `update`
+- **삭제**: `delete`
+- **생성**: `create`
+- **초기 상태 설정**: `configure`
+- **액션 메서드**: `~DidTap` 형식
+
+---
+
+## 🔧 Setup Method 규칙
+
+`Setup` 관련 메서드는 다음 명명 규칙과 역할에 따라 구분하여 작성한다.
+아래 순서대로 차례대로 작성한다.
+
+<div align="center">
+	
+| 메서드명 | 역할 및 담당 업무 |
+|---|---|
+| `setupNavigationBar()` | 네비게이션 바 설정 및 구성 |
+| `setupView()` | 해당 클래스의 프로퍼티 관리, 기본 뷰 설정 |
+| `setupConstraints()` | addSubviews, SnapKit 등 오토레이아웃 관련 코드 |
+| `setupAction()` | 액션 이벤트 관련 설정 |
+| `setupDelegate()` | Delegate, DataSource 관련 코드 |
+| `setupDataSource()` | 데이터 소스 초기화 및 설정 |
+| `setupBinding()` | 데이터 바인딩 및 리액티브 프로그래밍 관련 코드 |
+
+</div>
+
+---
+
+## 📚 MARK 주석 작성 규칙
+
+MARK 주석은 위아래로 한 줄씩 공백을 두고 작성하며, 되도록이면 아래 순서를 준수한다.
+
+### 클래스 내부 구조
+
+```swift
+// MARK: - Section & Item
+
+// MARK: - Typealias
+
+// MARK: - Property
+
+// MARK: - UIComponent
+
+// MARK: - Life Cycle
+```
+
+### Extension 구조
+
+Extension은 public으로 선언하고 내부에서 필요한 부분만 private으로 선언한다. 되도록이면 아래 순서를 준수한다.
+
+```swift
+// MARK: - Delegate 관련 Extension들
+
+// MARK: - Computed Property
+
+// MARK: - Setup Method
+
+// MARK: - Helper Method (재사용성을 위한 private 메서드)
+
+// MARK: - Action Method (@objc 메서드)
+
+// MARK: - UICollectionViewCompositionalLayout (CollectionView 레이아웃 관련 코드)
+
+// MARK: - Constant
+```
+
+---
+
+## 🎨 코드 포매팅 규칙
+
+### 삼항 연산자
+120자를 초과하는 경우 다음과 같이 개행한다.
+
+```swift
+let result = someCondition
+    ? valueWhenTrue
+    : valueWhenFalse
+```
+
+### 조건문 (if-else)
+반드시 아래와 같은 양식으로 개행해 작성한다.
+
+```swift
+if condition {
+    // 실행 코드
+} else {
+    // 실행 코드
+}
+```
+
+### Guard Let 구문
+120자 이하인 경우 한 줄로 작성 가능하며, 초과 시 개행한다.
+
+```swift
+// 120자 이하인 경우
+guard let self = self, let profile = sessionProfile else { return }
+
+// 120자 초과인 경우
+guard let self = self,
+      let profile = sessionProfile,
+      let userData = profile.userData
+else { 
+    return 
+}
+```
+
+### 클로저
+한 줄로 작성 가능하고 120자 이하인 경우 개행하지 않는다.
+
+```swift
+// 한 줄 작성 가능
+items.map { $0.name }
+
+// 복잡하거나 120자보다 긴 경우 개행
+items.compactMap { item in
+    return item.isValid ? item.processedValue : nil
+}
+```
+
+---
+
+## 🔄 지연 저장 프로퍼티 사용 규칙
+
+다음 조건에 해당하는 경우 `lazy var`를 사용한다.
+
+- 호출되지 않을 가능성이 있는 프로퍼티
+- 용량이 큰 리소스 (특히 애셋 파일이나 화면을 꽉 채우는 이미지)
+
+```swift
+private lazy var backgroundImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = UIImage(named: "large-background-image")
+    return imageView
+}()
+```
+
+---
+
+## 🔧 Mapper 규칙
+
+`DTO`에서 `Entity로` 변환하는 `Mapper는` 다음 규칙을 따른다.
+
+- `enum`의 `static` 메서드로 구현
+- 메서드명: `map(with dto:)`
+
+```swift
+enum UserMapper {
+    static func map(with dto: UserDTO) -> User {
+        return User(
+            id: dto.id,
+            name: dto.name,
+            email: dto.email
+        )
+    }
+}
+```
+
+---
+
+## 📊 상수 선언 규칙
+
+객체에서 반복되는 숫자나 문자열은 중첩 타입으로 `Constant`를 정의하여 관리한다.
+
+```swift
+final class CustomView: UIView {
+    // 구현 코드
+}
 
 // MARK: - Constant
 
 private extension CustomView {
-	enum Constant {
-		static let padding: CGFloat = 16
-	}
+    enum Constant {
+        static let padding: CGFloat = 16
+        static let cornerRadius: CGFloat = 8
+        static let animationDuration: TimeInterval = 0.3
+    }
 }
 ```
 
-</details>
+---
+
+## 🚀 성능 최적화 가이드라인
+
+성능 테스트와 관련된 지침은 추후 업데이트 예정이며 현재는 다음 기본 원칙을 준수한다.
+
+- 메모리 누수 방지를 위한 적절한 `weak` 참조 사용
+- 불필요한 연산 최소화
+- 적절한 캐싱 전략 적용
