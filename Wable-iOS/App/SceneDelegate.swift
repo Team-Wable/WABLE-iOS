@@ -20,13 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private let loginRepository = LoginRepositoryImpl()
     private let profileRepository = ProfileRepositoryImpl()
-    private let userSessionRepository = UserSessionRepositoryImpl(
-        userDefaults: UserDefaultsStorage(
-            userDefaults: UserDefaults.standard,
-            jsonEncoder: JSONEncoder(),
-            jsonDecoder: JSONDecoder()
-        )
-    )
+    private let userSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage())
     private let checkAppUpdateRequirementUseCase = CheckAppUpdateRequirementUseCaseImpl()
     
     // MARK: - UIComponent
@@ -66,17 +60,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 private extension SceneDelegate {
     func configureLoginScreen() {
+        let userProfileUseCase = UserProfileUseCase(repository: ProfileRepositoryImpl())
+        let fetchUserAuthUseCase = FetchUserAuthUseCase(
+            loginRepository: loginRepository,
+            userSessionRepository: userSessionRepository
+        )
+        let updateFCMTokenUseCase = UpdateFCMTokenUseCase(repository: ProfileRepositoryImpl())
+        let updateUserSessionUseCase = FetchUserInformationUseCase(repository: userSessionRepository)
+        
         self.window?.rootViewController = LoginViewController(
             viewModel: LoginViewModel(
-                updateFCMTokenUseCase: UpdateFCMTokenUseCase(
-                    repository: ProfileRepositoryImpl()
-                ),
-                fetchUserAuthUseCase: FetchUserAuthUseCase(
-                    loginRepository: loginRepository,
-                    userSessionRepository: userSessionRepository
-                ),
-                updateUserSessionUseCase: FetchUserInformationUseCase(repository: userSessionRepository),
-                userProfileUseCase: UserProfileUseCase(repository: ProfileRepositoryImpl())
+                userProfileUseCase: userProfileUseCase,
+                fetchUserAuthUseCase: fetchUserAuthUseCase,
+                updateFCMTokenUseCase: updateFCMTokenUseCase,
+                updateUserSessionUseCase: updateUserSessionUseCase
             )
         )
     }

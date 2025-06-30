@@ -465,23 +465,23 @@ private extension MyProfileViewController {
             return WableLogger.log("SceneDelegate 찾을 수 없음.", for: .debug)
         }
         
+        let userSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage(
+            jsonEncoder: .init(),
+            jsonDecoder: .init()
+        ))
+        let userProfileUseCase = UserProfileUseCase(repository: ProfileRepositoryImpl())
+        let fetchUserAuthUseCase = FetchUserAuthUseCase(
+            loginRepository: LoginRepositoryImpl(),
+            userSessionRepository: userSessionRepository
+        )
+        let updateFCMTokenUseCase = UpdateFCMTokenUseCase(repository: ProfileRepositoryImpl())
+        let updateUserSessionUseCase = FetchUserInformationUseCase(repository: userSessionRepository)
         let loginViewController = LoginViewController(
             viewModel: .init(
-                updateFCMTokenUseCase: UpdateFCMTokenUseCase(
-                    repository: ProfileRepositoryImpl()
-                ),
-                fetchUserAuthUseCase: FetchUserAuthUseCase(
-                    loginRepository: LoginRepositoryImpl(),
-                    userSessionRepository: UserSessionRepositoryImpl(
-                        userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
-                    )
-                ),
-                updateUserSessionUseCase: FetchUserInformationUseCase(
-                    repository: UserSessionRepositoryImpl(
-                        userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
-                    )
-                ),
-                userProfileUseCase: UserProfileUseCase(repository: ProfileRepositoryImpl())
+                userProfileUseCase: userProfileUseCase,
+                fetchUserAuthUseCase: fetchUserAuthUseCase,
+                updateFCMTokenUseCase: updateFCMTokenUseCase,
+                updateUserSessionUseCase: updateUserSessionUseCase
             )
         )
         
