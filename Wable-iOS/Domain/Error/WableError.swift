@@ -34,8 +34,8 @@ enum WableError: String, Error {
     case notFoundComment = "해당하는 답글이 없습니다."
     case unauthorizedMember = "권한이 없는 유저입니다."
     case unauthorizedToken = "유효하지 않은 토큰입니다."
-    case kakaoUnauthorizedUser = "카카오 로그인 실패. 만료되었거나 잘못된 카카오 토큰입니다."
-    case failedToValidateAppleLogin = "애플 로그인 실패. 만료되었거나 잘못된 애플 토큰입니다."
+    case failedToKakaoLogin = "카카오 로그인 실패. 작업이 취소되었거나 토큰 오류입니다."
+    case failedToAppleLogin = "애플 로그인 실패. 작업이 취소되었거나 토큰 오류입니다."
     case signinRequired = "access, refreshToken 모두 만료되었습니다. 재로그인이 필요합니다."
     case validAccessToken = "아직 유효한 accessToken 입니다."
     
