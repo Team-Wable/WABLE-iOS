@@ -20,10 +20,7 @@ final class UpdateFCMTokenUseCase {
 
 extension UpdateFCMTokenUseCase {
     func execute(nickname: String) -> AnyPublisher<Void, WableError> {
-        guard let token = repository.fetchFCMToken() else {
-            return .fail(WableError.noToken)
-        }
-        
+        guard let token = repository.fetchFCMToken() else { return .fail(WableError.noToken) }
         return repository.updateUserProfile(nickname: nickname, fcmToken: token)
     }
 }

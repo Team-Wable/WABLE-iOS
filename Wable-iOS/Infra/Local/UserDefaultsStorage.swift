@@ -13,7 +13,11 @@ struct UserDefaultsStorage {
     private let jsonEncoder: JSONEncoder
     private let jsonDecoder: JSONDecoder
     
-    init(userDefaults: UserDefaults = .standard, jsonEncoder: JSONEncoder, jsonDecoder: JSONDecoder) {
+    init(
+        userDefaults: UserDefaults = .standard,
+        jsonEncoder: JSONEncoder = JSONEncoder(),
+        jsonDecoder: JSONDecoder = JSONDecoder()
+    ) {
         self.userDefaults = userDefaults
         self.jsonEncoder = jsonEncoder
         self.jsonDecoder = jsonDecoder
