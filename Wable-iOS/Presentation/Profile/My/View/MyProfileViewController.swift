@@ -465,25 +465,7 @@ private extension MyProfileViewController {
             return WableLogger.log("SceneDelegate 찾을 수 없음.", for: .debug)
         }
         
-        let userSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage(
-            jsonEncoder: .init(),
-            jsonDecoder: .init()
-        ))
-        let userProfileUseCase = UserProfileUseCase(repository: ProfileRepositoryImpl())
-        let fetchUserAuthUseCase = FetchUserAuthUseCase(
-            loginRepository: LoginRepositoryImpl(),
-            userSessionRepository: userSessionRepository
-        )
-        let updateFCMTokenUseCase = UpdateFCMTokenUseCase(repository: ProfileRepositoryImpl())
-        let updateUserSessionUseCase = FetchUserInformationUseCase(repository: userSessionRepository)
-        let loginViewController = LoginViewController(
-            viewModel: .init(
-                userProfileUseCase: userProfileUseCase,
-                fetchUserAuthUseCase: fetchUserAuthUseCase,
-                updateFCMTokenUseCase: updateFCMTokenUseCase,
-                updateUserSessionUseCase: updateUserSessionUseCase
-            )
-        )
+        let loginViewController = LoginViewController(viewModel: LoginViewModel())
         
         UIView.transition(
             with: window,

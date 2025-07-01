@@ -14,26 +14,13 @@ final class LoginViewModel {
     
     // MARK: Property
     
-    private let userProfileUseCase: UserProfileUseCase
-    private let fetchUserAuthUseCase: FetchUserAuthUseCase
-    private let updateFCMTokenUseCase: UpdateFCMTokenUseCase
-    private let updateUserSessionUseCase: FetchUserInformationUseCase
-    private let loginErrorSubject = PassthroughSubject<WableError, Never>()
     private let loginSuccessSubject = PassthroughSubject<Account, Never>()
+    private let loginErrorSubject = PassthroughSubject<WableError, Never>()
     
-    // MARK: - Life Cycle
-
-    init(
-        userProfileUseCase: UserProfileUseCase,
-        fetchUserAuthUseCase: FetchUserAuthUseCase,
-        updateFCMTokenUseCase: UpdateFCMTokenUseCase,
-        updateUserSessionUseCase: FetchUserInformationUseCase
-    ) {
-        self.userProfileUseCase = userProfileUseCase
-        self.fetchUserAuthUseCase = fetchUserAuthUseCase
-        self.updateFCMTokenUseCase = updateFCMTokenUseCase
-        self.updateUserSessionUseCase = updateUserSessionUseCase
-    }
+    @Injected private var tokenStorage: TokenStorage
+    @Injected private var loginRepository: LoginRepository
+    @Injected private var profileRepository: ProfileRepository
+    @Injected private var userSessionRepository: UserSessionRepository
 }
 
 extension LoginViewModel: ViewModelType {
@@ -76,9 +63,10 @@ extension LoginViewModel: ViewModelType {
 
 private extension LoginViewModel {
     func fetchUserAuth(platform: SocialPlatform) -> AnyPublisher<Account, Never> {
-        return fetchUserAuthUseCase.execute(platform: platform)
-            .handleEvents(receiveCompletion: { completion in
-                if case .failure(let error) = completion { self.loginErrorSubject.send(error) }
+        return loginRepository.fetchUserAuth(platform: platform, userName: nil)
+            .handleEvents(receiveOutput: { account in
+                self.updateToken(accessToken: account.token.accessToken, refreshToken: account.token.refreshToken)
+                self.updateUserSession(account: account)
             })
             .catch { error -> AnyPublisher<Account, Never> in
                 return Empty<Account, Never>().eraseToAnyPublisher()
@@ -86,8 +74,34 @@ private extension LoginViewModel {
             .eraseToAnyPublisher()
     }
     
+    func updateToken(accessToken: String, refreshToken: String) {
+        do {
+            try self.tokenStorage.save(accessToken, for: .wableAccessToken)
+            try self.tokenStorage.save(refreshToken, for: .wableRefreshToken)
+        } catch {
+            guard let error = error as? WableError else { return }
+            loginErrorSubject.send(error)
+        }
+    }
+    
+    func updateUserSession(account: Account) {
+        userSessionRepository.updateUserSession(
+            userID: account.user.id,
+            nickname: account.user.nickname,
+            profileURL: account.user.profileURL,
+            isPushAlarmAllowed: account.isPushAlarmAllowed ?? false,
+            isAdmin: account.isAdmin,
+            isAutoLoginEnabled: true,
+            notificationBadgeCount: nil
+        )
+        
+        userSessionRepository.updateActiveUserID(account.user.id)
+    }
+    
     func updateFCMToken(account: Account, cancelBag: CancelBag) {
-        self.updateFCMTokenUseCase.execute(nickname: account.user.nickname)
+        guard let token = profileRepository.fetchFCMToken() else { return }
+        
+        profileRepository.updateUserProfile(nickname: account.user.nickname, fcmToken: token)
             .catch { error -> AnyPublisher<Void, Never> in
                 self.loginErrorSubject.send(error)
                 return .just(())
@@ -100,14 +114,22 @@ private extension LoginViewModel {
         Task {
             let authorizedStatus = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
             let isAuthorized = authorizedStatus == .authorized
+            let profile = try await profileRepository.fetchUserProfile(memberID: userID)
             
-            self.userProfileUseCase.updateProfileWithUserID(userID: userID, isPushAlarmAllowed: isAuthorized)
-                .catch { error -> AnyPublisher<Void, Never> in
-                    self.loginErrorSubject.send(error)
-                    return .just(())
-                }
-                .sink(receiveValue: {})
-                .store(in: cancelBag)
+            profileRepository.updateUserProfile(
+                profile: profile,
+                isPushAlarmAllowed: isAuthorized,
+                isAlarmAllowed: nil,
+                image: nil,
+                fcmToken: nil,
+                defaultProfileType: nil
+            )
+            .catch { error -> AnyPublisher<Void, Never> in
+                self.loginErrorSubject.send(error)
+                return .just(())
+            }
+            .sink(receiveValue: {})
+            .store(in: cancelBag)
         }
     }
 }
