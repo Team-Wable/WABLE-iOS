@@ -18,13 +18,11 @@ final class SplashViewController: UIViewController {
         view.contentMode = .scaleAspectFill
         view.loopMode = .playOnce
         view.play(fromProgress: 0, toProgress: 1, loopMode: .playOnce, completion: {
-            $0 ? DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                view.stop()
-            } : nil
+            $0 ? DispatchQueue.main.asyncAfter(deadline: .now() + 2) { view.stop() } : nil
         })
     }
     
-    // MARK: - LifeCycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,19 +32,16 @@ final class SplashViewController: UIViewController {
     }
 }
 
-// MARK: - Private Extension
+// MARK: - Setup Method
 
 private extension SplashViewController {
-    
-    // MARK: - Setup
-
     func setupView() {
         view.backgroundColor = .white
-        
-        view.addSubview(animationView)
     }
     
     func setupConstraint() {
+        view.addSubview(animationView)
+        
         animationView.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
