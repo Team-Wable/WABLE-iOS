@@ -69,6 +69,7 @@ private extension LoginViewModel {
                 self.updateUserSession(account: account)
             })
             .catch { error -> AnyPublisher<Account, Never> in
+                self.loginErrorSubject.send(error)
                 return Empty<Account, Never>().eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
