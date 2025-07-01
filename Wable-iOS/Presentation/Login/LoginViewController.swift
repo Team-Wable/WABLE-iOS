@@ -32,33 +32,33 @@ final class LoginViewController: UIViewController {
     }
     
     private let titleLabel: UILabel = UILabel().then {
-        $0.attributedText = StringLiterals.Login.title.pretendardString(with: .head0)
-        $0.textAlignment = .center
         $0.numberOfLines = 0
-        $0.textColor = .black
+        $0.textColor = .wableBlack
+        $0.textAlignment = .center
+        $0.attributedText = StringLiterals.Login.title.pretendardString(with: .head0)
     }
     
     private lazy var kakaoButton: UIButton = UIButton().then {
-        $0.setImage(.btnKakao, for: .normal)
-        $0.imageView?.contentMode = .scaleAspectFit
+        $0.clipsToBounds = true
         $0.contentVerticalAlignment = .fill
+        $0.setImage(.btnKakao, for: .normal)
         $0.contentHorizontalAlignment = .fill
         $0.backgroundColor = UIColor("FEE500")
         $0.layer.cornerRadius = 6.adjustedHeight
-        $0.clipsToBounds = true
+        $0.imageView?.contentMode = .scaleAspectFit
     }
     
     private lazy var appleButton: UIButton = UIButton().then {
-        $0.setImage(.btnApple, for: .normal)
-        $0.imageView?.contentMode = .scaleAspectFit
-        $0.contentVerticalAlignment = .fill
-        $0.contentHorizontalAlignment = .fill
-        $0.backgroundColor = .wableBlack
-        $0.layer.cornerRadius = 6.adjustedHeight
         $0.clipsToBounds = true
+        $0.backgroundColor = .wableBlack
+        $0.contentVerticalAlignment = .fill
+        $0.setImage(.btnApple, for: .normal)
+        $0.contentHorizontalAlignment = .fill
+        $0.layer.cornerRadius = 6.adjustedHeight
+        $0.imageView?.contentMode = .scaleAspectFit
     }
     
-    // MARK: - LifeCycle
+    // MARK: - Life Cycle
     
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
@@ -66,6 +66,7 @@ final class LoginViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -73,19 +74,15 @@ final class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
         setupConstraint()
         setupBinding()
     }
 }
 
-// MARK: - Private Extension
+// MARK: - Setup Method
 
 private extension LoginViewController {
-    
-    // MARK: - Setup
-
-    func setupView() {
+    func setupConstraint() {
         view.addSubviews(
             backgroundImageView,
             logoImageView,
@@ -94,40 +91,38 @@ private extension LoginViewController {
             kakaoButton,
             appleButton
         )
-    }
-    
-    func setupConstraint() {
+        
         backgroundImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
         logoImageView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(44)
-            $0.centerX.equalToSuperview()
             $0.adjustedWidthEqualTo(104)
             $0.adjustedHeightEqualTo(34)
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(44)
         }
         
         titleLabel.snp.makeConstraints {
-            $0.top.equalTo(logoImageView.snp.bottom).offset(26)
             $0.centerX.equalToSuperview()
+            $0.top.equalTo(logoImageView.snp.bottom).offset(26)
         }
         
         loginImageView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(42)
             $0.horizontalEdges.equalToSuperview()
+            $0.top.equalTo(titleLabel.snp.bottom).offset(42)
         }
         
         appleButton.snp.makeConstraints {
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(56)
-            $0.horizontalEdges.equalToSuperview().inset(16)
             $0.adjustedHeightEqualTo(50)
+            $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(56)
         }
         
         kakaoButton.snp.makeConstraints {
-            $0.bottom.equalTo(appleButton.snp.top).offset(-18)
-            $0.horizontalEdges.equalToSuperview().inset(16)
             $0.adjustedHeightEqualTo(50)
+            $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.bottom.equalTo(appleButton.snp.top).offset(-18)
         }
     }
     
@@ -175,8 +170,12 @@ private extension LoginViewController {
             }
             .store(in: cancelBag)
     }
-    
-    private func navigateToOnboarding() {
+}
+
+// MARK: - Helper Method
+
+private extension LoginViewController {
+    func navigateToOnboarding() {
         let noticeViewController = WableSheetViewController(
             title: "앗 잠깐!",
             message: StringLiterals.Onboarding.enterSheetTitle
@@ -194,9 +193,10 @@ private extension LoginViewController {
         present(noticeViewController, animated: true)
     }
     
-    private func navigateToHome() {
+    func navigateToHome() {
         let tabBarController = TabBarController()
         
         present(tabBarController, animated: true)
     }
 }
+
