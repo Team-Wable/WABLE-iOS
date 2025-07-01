@@ -60,22 +60,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 private extension SceneDelegate {
     func configureLoginScreen() {
-        let userProfileUseCase = UserProfileUseCase(repository: ProfileRepositoryImpl())
-        let fetchUserAuthUseCase = FetchUserAuthUseCase(
-            loginRepository: loginRepository,
-            userSessionRepository: userSessionRepository
-        )
-        let updateFCMTokenUseCase = UpdateFCMTokenUseCase(repository: ProfileRepositoryImpl())
-        let updateUserSessionUseCase = FetchUserInformationUseCase(repository: userSessionRepository)
-        
-        self.window?.rootViewController = LoginViewController(
-            viewModel: LoginViewModel(
-                userProfileUseCase: userProfileUseCase,
-                fetchUserAuthUseCase: fetchUserAuthUseCase,
-                updateFCMTokenUseCase: updateFCMTokenUseCase,
-                updateUserSessionUseCase: updateUserSessionUseCase
-            )
-        )
+        self.window?.rootViewController = LoginViewController(viewModel: LoginViewModel())
     }
     
     func configureMainScreen() {

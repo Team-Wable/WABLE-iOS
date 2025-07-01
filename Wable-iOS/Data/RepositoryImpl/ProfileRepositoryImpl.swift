@@ -89,12 +89,12 @@ extension ProfileRepositoryImpl: ProfileRepository {
     }
     
     func updateUserProfile(
-        profile: UserProfile? = nil,
-        isPushAlarmAllowed: Bool? = nil,
-        isAlarmAllowed: Bool? = nil,
-        image: UIImage? = nil,
-        fcmToken: String? = nil,
-        defaultProfileType: String? = nil
+        profile: UserProfile?,
+        isPushAlarmAllowed: Bool?,
+        isAlarmAllowed: Bool?,
+        image: UIImage?,
+        fcmToken: String?,
+        defaultProfileType: String?
     ) -> AnyPublisher<Void, WableError> {
         return provider.request(
             .updateUserProfile(
