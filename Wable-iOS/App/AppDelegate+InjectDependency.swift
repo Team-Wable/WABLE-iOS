@@ -12,6 +12,18 @@ extension AppDelegate {
     
     func injectDependency() {
         
+        // MARK: - UserSession
+        
+        diContainer.register(
+            for: UserSessionRepository.self,
+            object: UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage())
+        )
+        
+        // MARK: - Login
+        
+        diContainer.register(for: LoginRepository.self, object: LoginRepositoryImpl())
+        diContainer.register(for: TokenStorage.self, object: TokenStorage(keyChainStorage: KeychainStorage()))
+
         // MARK: - Overview
 
         diContainer.register(for: InformationRepository.self, object: InformationRepositoryImpl())
