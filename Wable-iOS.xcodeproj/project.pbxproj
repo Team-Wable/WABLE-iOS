@@ -204,7 +204,6 @@
 		DDED595E2D78C3E000A0BEF1 /* KakaoAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED595D2D78C3D900A0BEF1 /* KakaoAuthProvider.swift */; };
 		DDED59752D78F16400A0BEF1 /* FetchNicknameDuplicationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59742D78F15000A0BEF1 /* FetchNicknameDuplicationUseCase.swift */; };
 		DDED59782D78F1E500A0BEF1 /* UserProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59772D78F1DA00A0BEF1 /* UserProfileUseCase.swift */; };
-		DDED597C2D794F0D00A0BEF1 /* FetchUserAuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED597B2D794F0600A0BEF1 /* FetchUserAuthUseCase.swift */; };
 		DDED597E2D79578C00A0BEF1 /* AuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED597D2D79578800A0BEF1 /* AuthProvider.swift */; };
 		DDED59862D7965E900A0BEF1 /* OverviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59852D7965DB00A0BEF1 /* OverviewUseCase.swift */; };
 		DDED59882D7965F100A0BEF1 /* NotificationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED59872D7965EC00A0BEF1 /* NotificationUseCase.swift */; };
@@ -589,7 +588,6 @@
 		DDED595D2D78C3D900A0BEF1 /* KakaoAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthProvider.swift; sourceTree = "<group>"; };
 		DDED59742D78F15000A0BEF1 /* FetchNicknameDuplicationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchNicknameDuplicationUseCase.swift; sourceTree = "<group>"; };
 		DDED59772D78F1DA00A0BEF1 /* UserProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileUseCase.swift; sourceTree = "<group>"; };
-		DDED597B2D794F0600A0BEF1 /* FetchUserAuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserAuthUseCase.swift; sourceTree = "<group>"; };
 		DDED597D2D79578800A0BEF1 /* AuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthProvider.swift; sourceTree = "<group>"; };
 		DDED59852D7965DB00A0BEF1 /* OverviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewUseCase.swift; sourceTree = "<group>"; };
 		DDED59872D7965EC00A0BEF1 /* NotificationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUseCase.swift; sourceTree = "<group>"; };
@@ -1487,7 +1485,6 @@
 			isa = PBXGroup;
 			children = (
 				DE202FFC2DE7865300B04CAA /* AppVersion */,
-				DDED59552D78BF5800A0BEF1 /* Login */,
 				DE0D0CA32DD2012900FB64DC /* UserRole */,
 				DDED59732D78EFCF00A0BEF1 /* Onboarding */,
 				DD9EAE202D99C58600803A1A /* Home */,
@@ -1497,14 +1494,6 @@
 				DE64D7C82DCBA2BC00F55859 /* Viewit */,
 			);
 			path = UseCase;
-			sourceTree = "<group>";
-		};
-		DDED59552D78BF5800A0BEF1 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				DDED597B2D794F0600A0BEF1 /* FetchUserAuthUseCase.swift */,
-			);
-			path = Login;
 			sourceTree = "<group>";
 		};
 		DDED59582D78C31B00A0BEF1 /* Auth */ = {
@@ -2933,7 +2922,6 @@
 				DD4AFD472D90264500D56B94 /* OAuthEventManager.swift in Sources */,
 				DDED59862D7965E900A0BEF1 /* OverviewUseCase.swift in Sources */,
 				DE202FF62DE784FB00B04CAA /* AppVersion.swift in Sources */,
-				DDED597C2D794F0D00A0BEF1 /* FetchUserAuthUseCase.swift in Sources */,
 				DE7C53102D761E3300076E5D /* String+.swift in Sources */,
 				DD9EAE222D99C59900803A1A /* FetchContentListUseCase.swift in Sources */,
 				DD2968192D6DAD0200143851 /* ReportRepository.swift in Sources */,
