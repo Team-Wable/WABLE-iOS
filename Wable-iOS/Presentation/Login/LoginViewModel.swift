@@ -64,12 +64,14 @@ extension LoginViewModel: ViewModelType {
 private extension LoginViewModel {
     func fetchUserAuth(platform: SocialPlatform) -> AnyPublisher<Account, Never> {
         return loginRepository.fetchUserAuth(platform: platform, userName: nil)
-            .handleEvents(receiveOutput: { account in
+            .handleEvents(receiveOutput: { [weak self] account in
+                guard let self = self else { return }
+                
                 self.updateToken(accessToken: account.token.accessToken, refreshToken: account.token.refreshToken)
                 self.updateUserSession(account: account)
             })
-            .catch { error -> AnyPublisher<Account, Never> in
-                self.loginErrorSubject.send(error)
+            .catch { [weak self] error -> AnyPublisher<Account, Never> in
+                self?.loginErrorSubject.send(error)
                 return Empty<Account, Never>().eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
@@ -79,9 +81,10 @@ private extension LoginViewModel {
         do {
             try self.tokenStorage.save(accessToken, for: .wableAccessToken)
             try self.tokenStorage.save(refreshToken, for: .wableRefreshToken)
-        } catch {
-            guard let error = error as? WableError else { return }
+        } catch let error as WableError {
             loginErrorSubject.send(error)
+        } catch {
+            loginErrorSubject.send(.unknownError)
         }
     }
     
@@ -103,8 +106,8 @@ private extension LoginViewModel {
         guard let token = profileRepository.fetchFCMToken() else { return }
         
         profileRepository.updateUserProfile(nickname: account.user.nickname, fcmToken: token)
-            .catch { error -> AnyPublisher<Void, Never> in
-                self.loginErrorSubject.send(error)
+            .catch { [weak self] error -> AnyPublisher<Void, Never> in
+                self?.loginErrorSubject.send(error)
                 return .just(())
             }
             .sink(receiveValue: {})
@@ -125,8 +128,8 @@ private extension LoginViewModel {
                 fcmToken: nil,
                 defaultProfileType: nil
             )
-            .catch { error -> AnyPublisher<Void, Never> in
-                self.loginErrorSubject.send(error)
+            .catch { [weak self] error -> AnyPublisher<Void, Never> in
+                self?.loginErrorSubject.send(error)
                 return .just(())
             }
             .sink(receiveValue: {})
