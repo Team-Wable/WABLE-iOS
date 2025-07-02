@@ -859,6 +859,13 @@
 			path = SubView;
 			sourceTree = "<group>";
 		};
+		DD0E07702E15148000C7ADFD /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		DD29675D2D6DAC3100143851 /* DI */ = {
 			isa = PBXGroup;
 			children = (
@@ -1459,6 +1466,7 @@
 		DDCA70912D87CE3900A988B8 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				DD0E07702E15148000C7ADFD /* ViewModel */,
 				DDFB223D2D8BA64C00FEA24A /* View */,
 			);
 			path = Onboarding;

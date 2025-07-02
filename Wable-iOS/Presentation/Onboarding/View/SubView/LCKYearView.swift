@@ -62,7 +62,7 @@ final class LCKYearView: UIView {
         $0.configuration?.attributedTitle = "다음으로".pretendardString(with: .head2)
     }
     
-    // MARK: - LifeCycle
+    // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -76,14 +76,14 @@ final class LCKYearView: UIView {
     }
 }
 
-// MARK: - Private Extension
+// MARK: - Setup Method
 
 private extension LCKYearView {
-    
-    // MARK: - Setup Method
-    
     func setupView() {
         backgroundColor = .wableWhite
+    }
+    
+    func setupConstraint() {
         addSubviews(
             titleLabel,
             descriptionLabel,
@@ -92,9 +92,7 @@ private extension LCKYearView {
             yearCollectionView,
             nextButton
         )
-    }
-    
-    func setupConstraint() {
+        
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(10)
             $0.leading.equalToSuperview().inset(16)
