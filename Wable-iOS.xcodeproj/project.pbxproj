@@ -832,6 +832,33 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
+		DD0E076D2E15142500C7ADFD /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DD0E076E2E15143300C7ADFD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DD765D992D8746DD0029A317 /* LoginViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DD0E076F2E15144800C7ADFD /* SubView */ = {
+			isa = PBXGroup;
+			children = (
+				DDCA70922D88315C00A988B8 /* LCKYearView.swift */,
+				DDFB22472D8BBCB000FEA24A /* ProfileRegisterView.swift */,
+				DD514D0D2D8C99DC0095021D /* AgreementView.swift */,
+				DD514D092D8C957E0095021D /* AgreementItemView.swift */,
+			);
+			path = SubView;
+			sourceTree = "<group>";
+		};
 		DD29675D2D6DAC3100143851 /* DI */ = {
 			isa = PBXGroup;
 			children = (
@@ -1296,8 +1323,8 @@
 		DD765D982D8746D30029A317 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */,
-				DD765D992D8746DD0029A317 /* LoginViewController.swift */,
+				DD0E076D2E15142500C7ADFD /* ViewModel */,
+				DD0E076E2E15143300C7ADFD /* View */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1432,9 +1459,7 @@
 		DDCA70912D87CE3900A988B8 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				DDFB223C2D8BA64500FEA24A /* Cell */,
 				DDFB223D2D8BA64C00FEA24A /* View */,
-				DDFB223E2D8BA65200FEA24A /* ViewController */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -1594,23 +1619,14 @@
 		DDFB223D2D8BA64C00FEA24A /* View */ = {
 			isa = PBXGroup;
 			children = (
-				DDCA70922D88315C00A988B8 /* LCKYearView.swift */,
-				DDFB22472D8BBCB000FEA24A /* ProfileRegisterView.swift */,
-				DD514D0D2D8C99DC0095021D /* AgreementView.swift */,
-				DD514D092D8C957E0095021D /* AgreementItemView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		DDFB223E2D8BA65200FEA24A /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
 				DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */,
 				DDFB22412D8BA9C800FEA24A /* LCKTeamViewController.swift */,
 				DDFB22452D8BBB7900FEA24A /* ProfileRegisterViewController.swift */,
 				DD514D072D8C833D0095021D /* AgreementViewController.swift */,
+				DD0E076F2E15144800C7ADFD /* SubView */,
+				DDFB223C2D8BA64500FEA24A /* Cell */,
 			);
-			path = ViewController;
+			path = View;
 			sourceTree = "<group>";
 		};
 		DDFE04392DE618590040ED75 /* Amplitude */ = {
