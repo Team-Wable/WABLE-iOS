@@ -18,14 +18,14 @@ final class LCKTeamViewController: NavigationViewController {
     // MARK: - UIComponent
     
     private let titleLabel: UILabel = UILabel().then {
-        $0.attributedText = StringLiterals.Onboarding.teamSheetTitle.pretendardString(with: .head0)
         $0.textColor = .wableBlack
+        $0.attributedText = StringLiterals.Onboarding.teamSheetTitle.pretendardString(with: .head0)
     }
     
     private let descriptionLabel: UILabel = UILabel().then {
-        $0.attributedText = StringLiterals.Onboarding.teamSheetMessage.pretendardString(with: .body2)
-        $0.textColor = .gray600
         $0.numberOfLines = 2
+        $0.textColor = .gray600
+        $0.attributedText = StringLiterals.Onboarding.teamSheetMessage.pretendardString(with: .body2)
     }
 
     lazy var teamCollectionView: TeamCollectionView = TeamCollectionView(cellDidTapped: { [weak self] selectedTeam in
@@ -37,16 +37,16 @@ final class LCKTeamViewController: NavigationViewController {
     })
     
     lazy var skipButton: UIButton = UIButton(configuration: .plain()).then {
-        $0.configuration?.attributedTitle = StringLiterals.Onboarding.teamEmptyButtonTitle.pretendardString(with: .body2)
         $0.configuration?.baseForegroundColor = .gray600
+        $0.configuration?.attributedTitle = StringLiterals.Onboarding.teamEmptyButtonTitle.pretendardString(with: .body2)
     }
     
     lazy var nextButton: WableButton = WableButton(style: .gray).then {
-        $0.configuration?.attributedTitle = "다음으로".pretendardString(with: .head2)
         $0.isUserInteractionEnabled = false
+        $0.configuration?.attributedTitle = "다음으로".pretendardString(with: .head2)
     }
     
-    // MARK: - LifeCycle
+    // MARK: - Life Cycle
     
     init(lckYear: Int) {
         self.lckYear = lckYear
@@ -54,6 +54,7 @@ final class LCKTeamViewController: NavigationViewController {
         super.init(type: .flow)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -67,12 +68,14 @@ final class LCKTeamViewController: NavigationViewController {
     }
 }
 
-// MARK: - Private Extension
+// MARK: - Setup Method
 
 private extension LCKTeamViewController {
     func setupView() {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        
+    }
+    
+    func setupConstraint() {
         view.addSubviews(
             titleLabel,
             descriptionLabel,
@@ -80,9 +83,7 @@ private extension LCKTeamViewController {
             skipButton,
             nextButton
         )
-    }
-    
-    func setupConstraint() {
+        
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(navigationView.snp.bottom).offset(10)
             $0.leading.equalToSuperview().offset(16)
@@ -117,17 +118,16 @@ private extension LCKTeamViewController {
         skipButton.addTarget(self, action: #selector(skipButtonDidTap), for: .touchUpInside)
         nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
     }
-    
-    // MARK: - @objc Method
+}
 
+// MARK: - @objc Method
+
+private extension LCKTeamViewController {
     @objc func skipButtonDidTap() {
         AmplitudeManager.shared.trackEvent(tag: .clickDetourTeamSignup)
         
         navigationController?.pushViewController(
-            ProfileRegisterViewController(
-                lckYear: lckYear,
-                lckTeam: "LCK"
-            ),
+            ProfileRegisterViewController(lckYear: lckYear, lckTeam: "LCK"),
             animated: true
         )
     }
@@ -136,10 +136,7 @@ private extension LCKTeamViewController {
         AmplitudeManager.shared.trackEvent(tag: .clickNextTeamSignup)
         
         navigationController?.pushViewController(
-            ProfileRegisterViewController(
-                lckYear: lckYear,
-                lckTeam: lckTeam
-            ),
+            ProfileRegisterViewController(lckYear: lckYear, lckTeam: lckTeam),
             animated: true
         )
     }
