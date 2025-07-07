@@ -20,7 +20,7 @@ final class LCKYearViewController: NavigationViewController {
     
     private let rootView = LCKYearView()
     
-    // MARK: - LifeCycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
