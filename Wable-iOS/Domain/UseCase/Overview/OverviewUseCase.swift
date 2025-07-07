@@ -124,7 +124,7 @@ struct MockOverviewUseCaseImpl: OverviewUseCase {
             mockGameSchedules.append(GameSchedule(date: date, games: games))
         }
         
-        return .just([])
+        return .just(mockGameSchedules)
     }
     
     private func createMockTeamRanks() -> AnyPublisher<[LCKTeamRank], WableError> {
