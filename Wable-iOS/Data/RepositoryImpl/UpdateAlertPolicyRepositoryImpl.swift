@@ -8,7 +8,6 @@
 import Foundation
 
 final class UpdateAlertPolicyRepositoryImpl: UpdateAlertPolicyRepository {
-    
     private static let key = "lastSeenOptionalUpdateVersion"
     
     private let userDefaults: UserDefaults
