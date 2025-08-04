@@ -36,7 +36,7 @@ struct ContentInfo: Hashable {
 
 // MARK: - 게시물 정보 (임시)
 
-struct ContentTemp: Identifiable, Hashable {
+struct ContentTemp: Identifiable, Hashable, Likable {
     let id: Int
     let author: User
     let text: String
@@ -44,9 +44,10 @@ struct ContentTemp: Identifiable, Hashable {
     let imageURL: URL?
     let isDeleted: Bool?
     let createdDate: Date?
-
-    var status: PostStatus
-    var like: Like
+    
+    var isLiked: Bool
+    var likeCount: Int
     var opacity: Opacity
     var commentCount: Int
+    var status: PostStatus
 }
