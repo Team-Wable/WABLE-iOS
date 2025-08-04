@@ -12,7 +12,6 @@ import UIKit
 final class ProfileRegisterViewController: NavigationViewController {
     
     // MARK: Property
-    // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
     
     private let lckYear: Int
     private let lckTeam: String

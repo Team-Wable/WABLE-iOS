@@ -178,6 +178,7 @@
 		DD9EAE282D99C7DE00803A1A /* DeleteContentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE272D99C7D200803A1A /* DeleteContentUseCase.swift */; };
 		DD9EAE2E2D9A63FD00803A1A /* WritePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE2D2D9A63F400803A1A /* WritePostViewController.swift */; };
 		DD9EAE302D9A64A800803A1A /* HomeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */; };
+		DDA01B382E1BA55D00CB9926 /* ProfileRegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA01B372E1BA55400CB9926 /* ProfileRegisterViewModel.swift */; };
 		DDA2098D2D9BFB9F008042DA /* WritePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA2098C2D9BFB98008042DA /* WritePostViewModel.swift */; };
 		DDCA70902D87CE2700A988B8 /* LCKYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */; };
 		DDCA70932D88316200A988B8 /* LCKYearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA70922D88315C00A988B8 /* LCKYearView.swift */; };
@@ -562,6 +563,7 @@
 		DD9EAE272D99C7D200803A1A /* DeleteContentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteContentUseCase.swift; sourceTree = "<group>"; };
 		DD9EAE2D2D9A63F400803A1A /* WritePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePostViewController.swift; sourceTree = "<group>"; };
 		DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailViewController.swift; sourceTree = "<group>"; };
+		DDA01B372E1BA55400CB9926 /* ProfileRegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRegisterViewModel.swift; sourceTree = "<group>"; };
 		DDA2098C2D9BFB98008042DA /* WritePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePostViewModel.swift; sourceTree = "<group>"; };
 		DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearViewController.swift; sourceTree = "<group>"; };
 		DDCA70922D88315C00A988B8 /* LCKYearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearView.swift; sourceTree = "<group>"; };
@@ -862,6 +864,7 @@
 		DD0E07702E15148000C7ADFD /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				DDA01B372E1BA55400CB9926 /* ProfileRegisterViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2767,6 +2770,7 @@
 				DD2968312D6DAD1700143851 /* CommentLikedRepositoryImpl.swift in Sources */,
 				DE202FFE2DE7870F00B04CAA /* CheckAppUpdateRequirementUseCase.swift in Sources */,
 				DD2968322D6DAD1700143851 /* ContentRepositoryImpl.swift in Sources */,
+				DDA01B382E1BA55D00CB9926 /* ProfileRegisterViewModel.swift in Sources */,
 				DDCD66EC2D7DE5E000EF4C28 /* ConstraintMaker+.swift in Sources */,
 				DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */,
 				DD90EEAB2DC5F66900338EB2 /* CreateBannedUseCase.swift in Sources */,
@@ -3212,7 +3216,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Resource/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "와블";
+				INFOPLIST_KEY_CFBundleDisplayName = "술먹고미친와블";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "게시글이나 프로필을 변경할 때 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
