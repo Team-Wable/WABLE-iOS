@@ -33,3 +33,20 @@ struct ContentInfo: Hashable {
     var opacity: Opacity
     var commentCount: Int
 }
+
+// MARK: - 게시물 정보 (임시)
+
+struct ContentTemp: Identifiable, Hashable {
+    let id: Int
+    let author: User
+    let text: String
+    let title: String
+    let imageURL: URL?
+    let isDeleted: Bool?
+    let createdDate: Date?
+
+    var status: PostStatus
+    var like: Like
+    var opacity: Opacity
+    var commentCount: Int
+}
