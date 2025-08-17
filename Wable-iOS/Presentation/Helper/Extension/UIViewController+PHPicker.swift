@@ -10,6 +10,8 @@ import UIKit
 import Photos
 import PhotosUI
 
+// MARK: - PhotoPicker 관련 익스텐션
+
 extension UIViewController {
     func setPhotoPermission(delegate: PHPickerViewControllerDelegate) {
         switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
