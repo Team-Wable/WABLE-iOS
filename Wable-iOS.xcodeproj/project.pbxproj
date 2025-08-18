@@ -196,6 +196,7 @@
 		DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */; };
 		DDCD66FB2D7DF6CF00EF4C28 /* ViewitListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FA2D7DF6C600EF4C28 /* ViewitListViewController.swift */; };
 		DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD67042D7E271C00EF4C28 /* ToastView.swift */; };
+		DDCEBC952E586E9F00F38975 /* UIViewController+PHPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCEBC942E586E8F00F38975 /* UIViewController+PHPicker.swift */; };
 		DDE966102D8C62A4004E899B /* DefaultProfileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE9660F2D8C629A004E899B /* DefaultProfileType.swift */; };
 		DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */; };
 		DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */; };
@@ -582,6 +583,7 @@
 		DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		DDCD66FA2D7DF6C600EF4C28 /* ViewitListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitListViewController.swift; sourceTree = "<group>"; };
 		DDCD67042D7E271C00EF4C28 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		DDCEBC942E586E8F00F38975 /* UIViewController+PHPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PHPicker.swift"; sourceTree = "<group>"; };
 		DDE9660F2D8C629A004E899B /* DefaultProfileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultProfileType.swift; sourceTree = "<group>"; };
 		DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
 		DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsStorage.swift; sourceTree = "<group>"; };
@@ -2093,7 +2095,6 @@
 		DE8E86402D91A092000A4292 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				DD214B5B2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift */,
 				DD8B42A32DA15DA9007DC1CA /* UITextView+.swift */,
 				DE7C530F2D761E3300076E5D /* String+.swift */,
 				DE9C3BFB2D9AEC0600A5AFEC /* NSMutableAttributedString+.swift */,
@@ -2105,6 +2106,8 @@
 				DE7C53192D76202B00076E5D /* UITextField+.swift */,
 				DDCD66EB2D7DE5D900EF4C28 /* ConstraintMaker+.swift */,
 				DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */,
+				DDCEBC942E586E8F00F38975 /* UIViewController+PHPicker.swift */,
+				DD214B5B2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift */,
 				DE83891C2D9071E400C089E6 /* Date+.swift */,
 				DE98919C2D994BFF00D538D8 /* Publisher+Driver.swift */,
 				DE833B9C2DE22B0000812A80 /* Combine+UIKit */,
@@ -2805,6 +2808,7 @@
 				DD29683F2D6DAD2F00143851 /* FetchInfoNotifications.swift in Sources */,
 				DD2968402D6DAD2F00143851 /* FetchNewsNoticeNumber.swift in Sources */,
 				DD2968412D6DAD2F00143851 /* Empty.swift in Sources */,
+				DDCEBC952E586E9F00F38975 /* UIViewController+PHPicker.swift in Sources */,
 				DD2968422D6DAD2F00143851 /* FetchNotices.swift in Sources */,
 				DD29686E2D6DAD5F00143851 /* Bundle+.swift in Sources */,
 				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,

@@ -228,20 +228,7 @@ private extension WritePostViewController {
         
         AmplitudeManager.shared.trackEvent(tag: .clickAttachPhoto)
         
-        switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
-        case .denied, .restricted:
-            presentSettings()
-        case .authorized, .limited:
-            presentPhotoPicker()
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
-                DispatchQueue.main.async {
-                    status == .authorized ? self.presentPhotoPicker() : nil
-                }
-            }
-        default:
-            break
-        }
+        setPhotoPermission(delegate: self)
     }
     
     @objc func postButtonDidTap() {
@@ -313,33 +300,6 @@ private extension WritePostViewController {
         } else {
             updateCharacterCount()
         }
-    }
-    
-    func presentPhotoPicker() {
-        var configuration = PHPickerConfiguration()
-        configuration.filter = .images
-        configuration.selectionLimit = 1
-        
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-        
-        present(picker, animated: true)
-    }
-    
-    func presentSettings() {
-        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-        let alert = UIAlertController(
-            title: "설정",
-            message: StringLiterals.Empty.photoPermission,
-            preferredStyle: .alert
-        )
-        
-        alert.addAction(UIAlertAction(title: "닫기", style: .default))
-        alert.addAction(UIAlertAction(title: "권한 설정하기", style: .default) { _ in
-            UIApplication.shared.open(url)
-        })
-        
-        present(alert, animated: true, completion: nil)
     }
 }
 
