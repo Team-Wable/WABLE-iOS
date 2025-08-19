@@ -16,7 +16,7 @@ final class FetchUserContentUseCaseImpl: FetchUserContentListUseCase {
     @Injected private var repository: ContentRepository
     
     func execute(for userID: Int, last contentID: Int) async throws -> [ContentTemp] {
-        if userID < .zero {
+        if userID <= .zero {
             throw WableError.notFoundMember
         }
         
