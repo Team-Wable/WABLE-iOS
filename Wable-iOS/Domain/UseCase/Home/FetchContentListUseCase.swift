@@ -19,7 +19,7 @@ final class FetchContentListUseCase {
 // MARK: - Extension
 
 extension FetchContentListUseCase {
-    func execute(cursor: Int) -> AnyPublisher<[Content], WableError> {
+    func execute(cursor: Int) -> AnyPublisher<[ContentTemp], WableError> {
         return repository.fetchContentList(cursor: cursor)
     }
 }

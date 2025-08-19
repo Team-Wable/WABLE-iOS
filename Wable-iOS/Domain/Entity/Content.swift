@@ -16,7 +16,7 @@ struct Content: Hashable {
 
 struct UserContent: Identifiable, Hashable {
     let id: Int
-    let contentInfo: ContentInfo
+    let contentInfo: ContentTemp
 }
 
 // MARK: - 게시물 상세 정보

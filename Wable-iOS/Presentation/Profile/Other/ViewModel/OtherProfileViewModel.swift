@@ -75,7 +75,7 @@ final class OtherProfileViewModel {
     
     func toggleLikeContent(for contentID: Int) {
         guard let index = item.contentList.firstIndex(where: { $0.id == contentID }) else { return }
-        let isLiked = item.contentList[index].contentInfo.like.status
+        let isLiked = item.contentList[index].isLiked
         
         Task {
             do {
@@ -86,9 +86,9 @@ final class OtherProfileViewModel {
                     triggerType: TriggerType.Like.contentLike.rawValue
                 )
                 await MainActor.run {
-                    var contentInfo = item.contentList[index].contentInfo
-                    isLiked ? contentInfo.like.unlike() : contentInfo.like.like()
-                    item.contentList[index] = UserContent(id: contentID, contentInfo: contentInfo)
+                    var contentInfo = item.contentList[index]
+                    isLiked ? contentInfo.unlike() : contentInfo.like()
+                    item.contentList[index] = contentInfo
                 }
             } catch {
                 await handleError(error: error)
@@ -224,7 +224,7 @@ private extension OtherProfileViewModel {
         Task {
             async let userProfile: UserProfile = fetchUserProfileUseCase.execute(userID: userID)
             
-            async let contentList: [UserContent] = contentRepository.fetchUserContentList(
+            async let contentList: [ContentTemp] = contentRepository.fetchUserContentList(
                 memberID: userID,
                 cursor: IntegerLiterals.initialCursor
             )
