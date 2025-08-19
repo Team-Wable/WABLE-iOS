@@ -21,9 +21,9 @@ enum InformationMapper {
             let games = dto.games.compactMap { gameDTO in
                 Game(
                     date: gameDateFormatter.date(from: gameDTO.gameDate),
-                    homeTeam: LCKTeam(rawValue: gameDTO.aTeamName),
+                    homeTeam: gameDTO.aTeamName,
                     homeScore: gameDTO.aTeamScore,
-                    awayTeam: LCKTeam(rawValue: gameDTO.bTeamName),
+                    awayTeam: gameDTO.bTeamName,
                     awayScore: gameDTO.bTeamScore,
                     status: GameStatus(rawValue: gameDTO.gameStatus.uppercased())
                 )

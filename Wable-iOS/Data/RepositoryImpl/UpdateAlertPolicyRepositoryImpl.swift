@@ -8,8 +8,7 @@
 import Foundation
 
 final class UpdateAlertPolicyRepositoryImpl: UpdateAlertPolicyRepository {
-    
-    private static let key = "OptionalUpdateAlertShown"
+    private static let key = "lastSeenOptionalUpdateVersion"
     
     private let userDefaults: UserDefaults
     
@@ -17,21 +16,21 @@ final class UpdateAlertPolicyRepositoryImpl: UpdateAlertPolicyRepository {
         self.userDefaults = userDefaults
     }
     
-    func hasSeenOptionalAlert() -> Bool {
-        return userDefaults.bool(forKey: Self.key)
+    func hasSeenOptionalAlert(for version: String) -> Bool {
+        return userDefaults.string(forKey: Self.key) == version
     }
     
-    func markOptionalAlertShown() {
-        userDefaults.set(true, forKey: Self.key)
+    func markOptionalAlertShown(for version: String) {
+        userDefaults.set(version, forKey: Self.key)
     }
 }
 
 // MARK: - Mock
 
 struct MockUpdateAlertPolicyRepository: UpdateAlertPolicyRepository {
-    func hasSeenOptionalAlert() -> Bool {
+    func hasSeenOptionalAlert(for version: String) -> Bool {
         return false
     }
     
-    func markOptionalAlertShown() {}
+    func markOptionalAlertShown(for version: String) {}
 }
