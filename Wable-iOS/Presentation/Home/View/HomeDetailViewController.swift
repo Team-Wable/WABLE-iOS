@@ -581,15 +581,11 @@ private extension HomeDetailViewController {
             .receive(on: DispatchQueue.main)
             .withUnretained(self)
             .sink {owner, content in
-                guard let content = content,
-                      let activeUserID = owner.activeUserID
-                else {
-                    return
-                }
+                guard let content = content else { return }
                 
                 owner.updateContent(
                     ContentTemp(
-                        id: activeUserID,
+                        id: content.id,
                         author: content.author,
                         text: content.text,
                         title: content.title,
