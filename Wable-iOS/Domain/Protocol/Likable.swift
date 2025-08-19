@@ -18,11 +18,13 @@ protocol Likable {
 
 extension Likable {
     mutating func like() {
+        guard !isLiked else { return }
         isLiked = true
         likeCount += 1
     }
     
     mutating func unlike() {
+        guard isLiked else { return }
         isLiked = false
         if likeCount > 0 {
             likeCount -= 1
