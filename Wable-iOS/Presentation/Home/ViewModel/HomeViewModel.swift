@@ -57,15 +57,15 @@ extension HomeViewModel: ViewModelType {
         let activeUserID: AnyPublisher<Int?, Never>
         let badgeCount: AnyPublisher<Int?, Never>
         let isAdmin: AnyPublisher<Bool?, Never>
-        let contents: AnyPublisher<[Content], Never>
-        let selectedContent: AnyPublisher<Content, Never>
+        let contents: AnyPublisher<[ContentTemp], Never>
+        let selectedContent: AnyPublisher<ContentTemp, Never>
         let isLoading: AnyPublisher<Bool, Never>
         let isLoadingMore: AnyPublisher<Bool, Never>
         let isReportSucceed: AnyPublisher<Bool, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
-        let contentsSubject = CurrentValueSubject<[Content], Never>([])
+        let contentsSubject = CurrentValueSubject<[ContentTemp], Never>([])
         let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
         let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
         let isLastViewSubject = CurrentValueSubject<Bool, Never>(false)
@@ -108,7 +108,7 @@ extension HomeViewModel: ViewModelType {
                 isLastViewSubject.send(false)
             })
             .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<[Content], Never> in
+            .flatMap { owner, _ -> AnyPublisher<[ContentTemp], Never> in
                 return owner.fetchContentListUseCase.execute(cursor: IntegerLiterals.initialCursor)
                     .replaceError(with: [])
                     .eraseToAnyPublisher()
@@ -127,12 +127,12 @@ extension HomeViewModel: ViewModelType {
                 isLoadingMoreSubject.send(true)
             })
             .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<[Content], Never> in
+            .flatMap { owner, _ -> AnyPublisher<[ContentTemp], Never> in
                 guard let lastItem = contentsSubject.value.last else {
                     return .just([])
                 }
                 
-                let cursor = lastItem.content.id
+                let cursor = lastItem.id
                 return owner.fetchContentListUseCase.execute(cursor: cursor)
                     .replaceError(with: [])
                     .eraseToAnyPublisher()
@@ -157,41 +157,34 @@ extension HomeViewModel: ViewModelType {
                 .map { _ in info }
                 .asDriver(onErrorJustReturn: info)
             }
-            .sink(receiveValue: { contentID, isLiked in
-                var updatedContents = contentsSubject.value
-                
-                guard let index = updatedContents.firstIndex(where: { $0.content.id == contentID }) else { return }
-                
-                let originalContent = updatedContents[index]
-                let originalUserContent = originalContent.content
-                let originalContentInfo = originalUserContent.contentInfo
-                let originalLike = originalContentInfo.like
-                
-                let updatedLike = isLiked
-                ? Like(status: true, count: originalLike.count + 1)
-                : Like(status: false, count: max(0, originalLike.count - 1))
-                
-                let updatedContent = Content(
-                    content: UserContent(
-                        id: originalUserContent.id,
-                        contentInfo: ContentInfo(
-                            author: originalContentInfo.author,
-                            createdDate: originalContentInfo.createdDate,
-                            title: originalContentInfo.title,
-                            imageURL: originalContentInfo.imageURL,
-                            text: originalContentInfo.text,
-                            status: originalContentInfo.status,
-                            like: updatedLike,
-                            opacity: originalContentInfo.opacity,
-                            commentCount: originalContentInfo.commentCount
-                        )
-                    ),
-                    isDeleted: originalContent.isDeleted
-                )
-                
-                updatedContents[index] = updatedContent
-                contentsSubject.send(updatedContents)
-            })
+            .sink(
+                receiveValue: {
+                    contentID,
+                    isLiked in
+                    var updatedContents = contentsSubject.value
+                    
+                    guard let index = updatedContents.firstIndex(where: { $0.id == contentID }) else { return }
+                    
+                    let originalContent = updatedContents[index]
+                    
+                    let updatedContent = ContentTemp(
+                        id: originalContent.id,
+                        author: originalContent.author,
+                        text: originalContent.text,
+                        title: originalContent.title,
+                        imageURL: originalContent.imageURL,
+                        isDeleted: originalContent.isDeleted,
+                        createdDate: originalContent.createdDate,
+                        isLiked: isLiked,
+                        likeCount: isLiked ? originalContent.likeCount + 1 : originalContent.likeCount - 1,
+                        opacity: originalContent.opacity,
+                        commentCount: originalContent.commentCount,
+                        status: originalContent.status
+                    )
+                    
+                    updatedContents[index] = updatedContent
+                    contentsSubject.send(updatedContents)
+                })
             .store(in: cancelBag)
         
         input.didGhostTappedItem
@@ -205,28 +198,23 @@ extension HomeViewModel: ViewModelType {
                 var updatedContents = contentsSubject.value
                 
                 for i in 0..<updatedContents.count {
-                    if updatedContents[i].content.contentInfo.author.id == userID {
+                    if updatedContents[i].author.id == userID {
                         let content = updatedContents[i]
-                        let contentInfo = content.content.contentInfo
-                        let userContent = content.content
-                        let opacity = contentInfo.opacity.reduced()
+                        let opacity = content.opacity.reduced()
                         
-                        let updatedContent = Content(
-                            content: UserContent(
-                                id: userContent.id,
-                                contentInfo: ContentInfo(
-                                    author: contentInfo.author,
-                                    createdDate: contentInfo.createdDate,
-                                    title: contentInfo.title,
-                                    imageURL: contentInfo.imageURL,
-                                    text: contentInfo.text,
-                                    status: .ghost,
-                                    like: contentInfo.like,
-                                    opacity: opacity,
-                                    commentCount: contentInfo.commentCount
-                                )
-                            ),
-                            isDeleted: content.isDeleted
+                        let updatedContent = ContentTemp(
+                            id: content.id,
+                            author: content.author,
+                            text: content.text,
+                            title: content.title,
+                            imageURL: content.imageURL,
+                            isDeleted: content.isDeleted,
+                            createdDate: content.createdDate,
+                            isLiked: content.isLiked,
+                            likeCount: content.likeCount,
+                            opacity: opacity,
+                            commentCount: content.commentCount,
+                            status: .ghost
                         )
                         
                         updatedContents[i] = updatedContent
@@ -245,7 +233,7 @@ extension HomeViewModel: ViewModelType {
                     .asDriver(onErrorJustReturn: id)
             }
             .compactMap { contentID in
-                return contentsSubject.value.firstIndex(where: { $0.content.id == contentID })
+                return contentsSubject.value.firstIndex(where: { $0.id == contentID })
             }
             .sink(receiveValue: { index in
                 var updatedContents = contentsSubject.value
@@ -254,7 +242,7 @@ extension HomeViewModel: ViewModelType {
                 contentsSubject.send(updatedContents)
             })
             .store(in: cancelBag)
-
+        
         input.didReportTappedItem
             .withUnretained(self)
             .flatMap { owner, content -> AnyPublisher<Void, Never> in
@@ -279,34 +267,29 @@ extension HomeViewModel: ViewModelType {
             .sink(receiveValue: { userID in
                 var updatedContents = contentsSubject.value
                 
-                for i in 0..<updatedContents.count {
-                    if updatedContents[i].content.contentInfo.author.id == userID {
-                        let content = updatedContents[i]
-                        let contentInfo = content.content.contentInfo
-                        let userContent = content.content
-                        let opacity = contentInfo.opacity.reduced()
-                        
-                        let updatedContent = Content(
-                            content: UserContent(
-                                id: userContent.id,
-                                contentInfo: ContentInfo(
-                                    author: contentInfo.author,
-                                    createdDate: contentInfo.createdDate,
-                                    title: contentInfo.title,
-                                    imageURL: contentInfo.imageURL,
-                                    text: contentInfo.text,
-                                    status: .blind,
-                                    like: contentInfo.like,
-                                    opacity: opacity,
-                                    commentCount: contentInfo.commentCount
-                                )
-                            ),
-                            isDeleted: content.isDeleted
-                        )
-                        
-                        updatedContents[i] = updatedContent
-                    }
-                }
+    for i in 0..<updatedContents.count {
+        if updatedContents[i].author.id == userID {
+            let content = updatedContents[i]
+            let opacity = content.opacity.reduced()
+            
+            let updatedContent = ContentTemp(
+                id: content.id,
+                author: content.author,
+                text: content.text,
+                title: content.title,
+                imageURL: content.imageURL,
+                isDeleted: content.isDeleted,
+                createdDate: content.createdDate,
+                isLiked: content.isLiked,
+                likeCount: content.likeCount,
+                opacity: opacity,
+                commentCount: content.commentCount,
+                status: .blind
+            )
+            
+            updatedContents[i] = updatedContent
+        }
+    }
                 
                 contentsSubject.send(updatedContents)
             })

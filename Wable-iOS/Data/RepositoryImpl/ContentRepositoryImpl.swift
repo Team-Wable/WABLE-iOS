@@ -54,16 +54,16 @@ extension ContentRepositoryImpl: ContentRepository {
         }
     }
     
-    func fetchContentInfo(contentID: Int) -> AnyPublisher<ContentInfo, WableError> {
+    func fetchContentInfo(contentID: Int) -> AnyPublisher<ContentTemp, WableError> {
         provider.request(
             .fetchContentInfo(contentID: contentID),
             for: DTO.Response.FetchContent.self
         )
-        .map { ContentMapper.toDomain($0) }
+        .map { ContentMapper.toDomain($0, contentID) }
         .mapWableError()
     }
     
-    func fetchContentList(cursor: Int) -> AnyPublisher<[Content], WableError> {
+    func fetchContentList(cursor: Int) -> AnyPublisher<[ContentTemp], WableError> {
         provider.request(
             .fetchContentList(cursor: cursor),
             for: [DTO.Response.FetchContents].self
@@ -72,7 +72,7 @@ extension ContentRepositoryImpl: ContentRepository {
         .mapWableError()
     }
     
-    func fetchUserContentList(memberID: Int, cursor: Int) -> AnyPublisher<[UserContent], WableError> {
+    func fetchUserContentList(memberID: Int, cursor: Int) -> AnyPublisher<[ContentTemp], WableError> {
         provider.request(
             .fetchUserContentList(memberID: memberID, cursor: cursor),
             for: [DTO.Response.FetchUserContents].self
@@ -81,7 +81,7 @@ extension ContentRepositoryImpl: ContentRepository {
         .mapWableError()
     }
     
-    func fetchUserContentList(memberID: Int, cursor: Int) async throws -> [UserContent] {
+    func fetchUserContentList(memberID: Int, cursor: Int) async throws -> [ContentTemp] {
         do {
             let response = try await provider.request(
                 .fetchUserContentList(memberID: memberID, cursor: cursor),
