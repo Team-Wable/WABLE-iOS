@@ -46,7 +46,7 @@ struct CommentTemp: Likable {
     let isDeleted: Bool?
     let createdDate: Date?
     let parentContentID: Int?
-    let children: [ContentComment]?
+    let children: [ContentComment]
     
     var likeCount: Int
     var isLiked: Bool
