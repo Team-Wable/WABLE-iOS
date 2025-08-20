@@ -162,13 +162,14 @@
 		DD765D9A2D8746E30029A317 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D992D8746DD0029A317 /* LoginViewController.swift */; };
 		DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D9C2D8747900029A317 /* SplashViewController.swift */; };
 		DD7E79822DBFA48300570C23 /* UpdateUserBadgeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7E79812DBFA47000570C23 /* UpdateUserBadgeUseCase.swift */; };
+		DD8261D92E407E7900617F86 /* Likable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8261D82E407E7600617F86 /* Likable.swift */; };
 		DD8326962D95836F0014B62D /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8326952D95836B0014B62D /* HomeViewModel.swift */; };
 		DD8B42A42DA15DB0007DC1CA /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8B42A32DA15DA9007DC1CA /* UITextView+.swift */; };
 		DD8B42A82DA16B1F007DC1CA /* HomeDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8B42A72DA16B1A007DC1CA /* HomeDetailViewModel.swift */; };
 		DD90EEA82DC40D1800338EB2 /* FetchGhostUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD90EEA72DC40D1700338EB2 /* FetchGhostUseCase.swift */; };
 		DD90EEAB2DC5F66900338EB2 /* CreateBannedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD90EEAA2DC5F65100338EB2 /* CreateBannedUseCase.swift */; };
 		DD90EEAD2DC5F6CC00338EB2 /* CreateReportUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD90EEAC2DC5F6BB00338EB2 /* CreateReportUseCase.swift */; };
-		DD9980DB2D834CA900EBBFBC /* CommentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DA2D834CA900EBBFBC /* CommentInfo.swift */; };
+		DD9980DB2D834CA900EBBFBC /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DA2D834CA900EBBFBC /* Comment.swift */; };
 		DD9980DF2D834F4E00EBBFBC /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */; };
 		DD9980E02D834F4E00EBBFBC /* PostUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */; };
 		DD9980E12D834F4E00EBBFBC /* ContentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */; };
@@ -539,6 +540,7 @@
 		DD765D992D8746DD0029A317 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DD765D9C2D8747900029A317 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		DD7E79812DBFA47000570C23 /* UpdateUserBadgeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserBadgeUseCase.swift; sourceTree = "<group>"; };
+		DD8261D82E407E7600617F86 /* Likable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Likable.swift; sourceTree = "<group>"; };
 		DD8326952D95836B0014B62D /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		DD8B42A32DA15DA9007DC1CA /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
 		DD8B42A72DA16B1A007DC1CA /* HomeDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailViewModel.swift; sourceTree = "<group>"; };
@@ -552,7 +554,7 @@
 		DD90EEA72DC40D1700338EB2 /* FetchGhostUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchGhostUseCase.swift; sourceTree = "<group>"; };
 		DD90EEAA2DC5F65100338EB2 /* CreateBannedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBannedUseCase.swift; sourceTree = "<group>"; };
 		DD90EEAC2DC5F6BB00338EB2 /* CreateReportUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReportUseCase.swift; sourceTree = "<group>"; };
-		DD9980DA2D834CA900EBBFBC /* CommentInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInfo.swift; sourceTree = "<group>"; };
+		DD9980DA2D834CA900EBBFBC /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		DD9980DC2D834F4E00EBBFBC /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
 		DD9980DD2D834F4E00EBBFBC /* ContentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCollectionViewCell.swift; sourceTree = "<group>"; };
 		DD9980DE2D834F4E00EBBFBC /* PostUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUserInfoView.swift; sourceTree = "<group>"; };
@@ -1259,7 +1261,7 @@
 				DE67A9EE2D7213D90021BDE1 /* Opacity.swift */,
 				DE67A9EA2D7211070021BDE1 /* Like.swift */,
 				DD2967EF2D6DAC3100143851 /* Content.swift */,
-				DD9980DA2D834CA900EBBFBC /* CommentInfo.swift */,
+				DD9980DA2D834CA900EBBFBC /* Comment.swift */,
 				DD2967F02D6DAC3100143851 /* Notification.swift */,
 				DD2967F12D6DAC3100143851 /* GameSchedule.swift */,
 				DD2967F22D6DAC3100143851 /* LCKTeamRank.swift */,
@@ -1276,6 +1278,7 @@
 		DD2967F82D6DAC3100143851 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				DD8261D72E407E6200617F86 /* Protocol */,
 				DD2967E52D6DAC3100143851 /* RepositoryInterface */,
 				DDED59542D78BCE600A0BEF1 /* UseCase */,
 				DD2967F72D6DAC3100143851 /* Entity */,
@@ -1308,6 +1311,14 @@
 				DD765D9C2D8747900029A317 /* SplashViewController.swift */,
 			);
 			path = Splash;
+			sourceTree = "<group>";
+		};
+		DD8261D72E407E6200617F86 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				DD8261D82E407E7600617F86 /* Likable.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		DD87931D2D70452B001212AE /* OAuth */ = {
@@ -2719,7 +2730,7 @@
 				DE3CA2852DD448D900BF5E87 /* FetchUserContentListUseCase.swift in Sources */,
 				DD2968592D6DAD4400143851 /* CreateViewitPostRequest.swift in Sources */,
 				DD29685A2D6DAD4400143851 /* CreateCommentLiked.swift in Sources */,
-				DD9980DB2D834CA900EBBFBC /* CommentInfo.swift in Sources */,
+				DD9980DB2D834CA900EBBFBC /* Comment.swift in Sources */,
 				DEE5D61A2D91537C009E5A25 /* GameScheduleViewItem.swift in Sources */,
 				DE72BB102D93CC68008E5774 /* NotificationPageView.swift in Sources */,
 				DDFB22462D8BBB8600FEA24A /* ProfileRegisterViewController.swift in Sources */,
@@ -2938,6 +2949,7 @@
 				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
 				DEA10B472DD3B9BA001EBBA9 /* WithdrawalGuideDescriptionView.swift in Sources */,
 				DE64D7CA2DCBA2D700F55859 /* CreateViewitUseCase.swift in Sources */,
+				DD8261D92E407E7900617F86 /* Likable.swift in Sources */,
 				DE3CA2872DD4571E00BF5E87 /* FetchAccountInfoUseCase.swift in Sources */,
 				DD29681D2D6DAD0200143851 /* CommentRepository.swift in Sources */,
 				DE72BB1A2D93DC8C008E5774 /* ActivityNotificationViewController.swift in Sources */,

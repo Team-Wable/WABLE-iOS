@@ -255,7 +255,7 @@ extension ContentCollectionViewCell {
     ///   - cellType: 셀 타입 (홈 화면 셀 또는 상세 화면 셀)
     ///   - likeButtonTapHandler: 좋아요 버튼을 클릭했을 때 실행될 로직
     func configureCell(
-        info: ContentInfo,
+        info: ContentTemp,
         authorType: AuthorType,
         cellType: CellType = .list,
         contentImageViewTapHandler: (() -> Void)?,
@@ -329,7 +329,7 @@ extension ContentCollectionViewCell {
             ghostCell(opacity: info.opacity.alpha)
         }
         
-        likeButton.configureButton(isLiked: info.like.status, likeCount: info.like.count, postType: .content)
+        likeButton.configureButton(isLiked: info.isLiked, likeCount: info.likeCount, postType: .content)
         commentButton.configureButton(commentCount: info.commentCount)
         commentButton.isUserInteractionEnabled = cellType == .detail
         

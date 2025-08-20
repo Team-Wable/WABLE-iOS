@@ -23,7 +23,7 @@ final class MyProfileViewController: UIViewController {
     
     enum Item: Hashable {
         case profile(UserProfile)
-        case content(UserContent)
+        case content(ContentTemp)
         case comment(UserComment)
         case empty(ProfileEmptyCellItem)
     }
@@ -205,10 +205,10 @@ private extension MyProfileViewController {
             )
         }
         
-        let contentCellRegistration = CellRegistration<ContentCollectionViewCell, UserContent> {
+        let contentCellRegistration = CellRegistration<ContentCollectionViewCell, ContentTemp> {
             cell, indexPath, item in
             cell.configureCell(
-                info: item.contentInfo,
+                info: item,
                 authorType: .mine,
                 cellType: .list,
                 contentImageViewTapHandler: { [weak self] in

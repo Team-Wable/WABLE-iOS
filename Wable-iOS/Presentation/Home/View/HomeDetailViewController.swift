@@ -22,7 +22,7 @@ final class HomeDetailViewController: NavigationViewController {
     // MARK: - Item
     
     enum Item: Hashable {
-        case content(Content)
+        case content(ContentTemp)
         case comment(ContentComment)
     }
     
@@ -202,7 +202,7 @@ private extension HomeDetailViewController {
     func setupDataSource() {
         let contentCellRegistration = UICollectionView.CellRegistration <
             ContentCollectionViewCell,
-            Content
+            ContentTemp
         > {
             [weak self] cell,
             indexPath,
@@ -214,8 +214,8 @@ private extension HomeDetailViewController {
             }
             
             cell.configureCell(
-                info: item.content.contentInfo,
-                authorType: item.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
+                info: item,
+                authorType: item.author.id == self.activeUserID ? .mine : .others,
                 cellType: .detail,
                 contentImageViewTapHandler: {
                     guard let image = cell.contentImageView.image else { return }
@@ -231,7 +231,7 @@ private extension HomeDetailViewController {
                 settingButtonTapHandler: {
                     let viewController = WableBottomSheetController()
                     
-                    if self.activeUserID == item.content.contentInfo.author.id {
+                    if self.activeUserID == item.author.id {
                         viewController.addActions(WableBottomSheetAction(title: "삭제하기", handler: {
                             viewController.dismiss(animated: true, completion: {
                                 let viewController = WableSheetViewController(title: StringLiterals.Delete.contentSheetTitle, message: StringLiterals.Delete.contentSheetMessage)
@@ -243,7 +243,7 @@ private extension HomeDetailViewController {
                                         style: .primary,
                                         handler: {
                                             viewController.dismiss(animated: true, completion: {
-                                                self.didDeleteTappedSubject.send((item.content.id, .content))
+                                                self.didDeleteTappedSubject.send((item.id, .content))
                                             })
                                         }
                                     )
@@ -261,15 +261,15 @@ private extension HomeDetailViewController {
                                         completion: {
                                             self?.didReportTappedSubject.send(
                                                 (
-                                                    item.content.contentInfo.author.nickname,
-                                                    message ?? item.content.contentInfo.text
+                                                    item.author.nickname,
+                                                    message ?? item.text
                                                 )
                                             )
                                         })
                                 })
                         }
                         let banAction = WableBottomSheetAction(title: "밴하기") { [weak self] in
-                            self?.didBannedTappedSubject.send((item.content.contentInfo.author.id, item.content.id, .content))
+                            self?.didBannedTappedSubject.send((item.author.id, item.id, .content))
                         }
                         self.showBottomSheet(actions: reportAction, banAction)
                     } else {
@@ -284,8 +284,8 @@ private extension HomeDetailViewController {
                                                 completion: {
                                                     self?.didReportTappedSubject.send(
                                                         (
-                                                            item.content.contentInfo.author.nickname,
-                                                            message ?? item.content.contentInfo.text
+                                                            item.author.nickname,
+                                                            message ?? item.text
                                                         )
                                                     )
                                             })
@@ -298,13 +298,13 @@ private extension HomeDetailViewController {
                     self.present(viewController, animated: true)
                 },
                 profileImageViewTapHandler: {
-                    if self.activeUserID == item.content.contentInfo.author.id,
+                    if self.activeUserID == item.author.id,
                        let tabBarController = self.tabBarController {
                         tabBarController.selectedIndex = 4
                     } else {
                         let viewController = OtherProfileViewController(
                             viewModel: .init(
-                                userID: item.content.contentInfo.author.id,
+                                userID: item.author.id,
                                 fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
                                 checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
                                     repository: UserSessionRepositoryImpl(
@@ -326,7 +326,7 @@ private extension HomeDetailViewController {
                     }, onPrimary: { message in
                         AmplitudeManager.shared.trackEvent(tag: .clickApplyghostPopup)
                         
-                        self.didGhostTappedSubject.send((item.content.id, item.content.contentInfo.author.id, message, .content))
+                        self.didGhostTappedSubject.send((item.id, item.author.id, message, .content))
                     })
                 }
             )
@@ -338,7 +338,7 @@ private extension HomeDetailViewController {
                 self.didCommentTappedSubject.send()
                 
                 self.commentTextView.text = ""
-                self.updatePlaceholder(for: item.content.contentInfo.author.nickname, type: .ripple)
+                self.updatePlaceholder(for: item.author.nickname, type: .ripple)
                 
                 self.commentTextView.endEditing(true)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -348,7 +348,7 @@ private extension HomeDetailViewController {
             
             if let text = placeholderLabel.text,
                !text.contains(Constant.replyPlaceholder) && !text.contains(Constant.ripplePlaceholder) {
-                self.updatePlaceholder(for: item.content.contentInfo.author.nickname, type: .ripple)
+                self.updatePlaceholder(for: item.author.nickname, type: .ripple)
             }
         }
         
@@ -580,14 +580,25 @@ private extension HomeDetailViewController {
         output.content
             .receive(on: DispatchQueue.main)
             .withUnretained(self)
-            .sink { owner, contentInfo in
-                guard let contentInfo = contentInfo,
-                      let activeUserID = owner.activeUserID
-                else {
-                    return
-                }
+            .sink {owner, content in
+                guard let content = content else { return }
                 
-                owner.updateContent(Content(content: UserContent(id: activeUserID, contentInfo: contentInfo), isDeleted: false))
+                owner.updateContent(
+                    ContentTemp(
+                        id: content.id,
+                        author: content.author,
+                        text: content.text,
+                        title: content.title,
+                        imageURL: content.imageURL,
+                        isDeleted: false,
+                        createdDate: content.createdDate,
+                        isLiked: content.isLiked,
+                        likeCount: content.likeCount,
+                        opacity: content.opacity,
+                        commentCount: content.commentCount,
+                        status: content.status
+                    )
+                )
             }
             .store(in: cancelBag)
         
@@ -757,7 +768,7 @@ private extension HomeDetailViewController {
 // MARK: - Helper Method
 
 extension HomeDetailViewController {
-    func updateContent(_ content: Content) {
+    func updateContent(_ content: ContentTemp) {
         guard var snapshot = dataSource?.snapshot() else { return }
         
         snapshot.deleteItems(snapshot.itemIdentifiers(inSection: .content))
