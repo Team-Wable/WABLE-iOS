@@ -22,7 +22,7 @@ final class OtherProfileViewController: UIViewController {
     
     enum Item: Hashable {
         case profile(UserProfile)
-        case content(UserContent)
+        case content(ContentTemp)
         case comment(UserComment)
         case empty(ProfileEmptyCellItem)
     }
@@ -204,10 +204,10 @@ private extension OtherProfileViewController {
             )
         }
         
-        let contentCellRegistration = CellRegistration<ContentCollectionViewCell, UserContent> {
+        let contentCellRegistration = CellRegistration<ContentCollectionViewCell, ContentTemp> {
             cell, indexPath, item in
             cell.configureCell(
-                info: item.contentInfo,
+                info: item,
                 authorType: .others,
                 cellType: .list,
                 contentImageViewTapHandler: { [weak self] in
@@ -222,7 +222,7 @@ private extension OtherProfileViewController {
                     
                     let report = WableBottomSheetAction(title: "신고하기") { [weak self] in
                         self?.showReportSheet(onPrimary: { message in
-                            let info = item.contentInfo
+                            let info = item
                             self?.viewModel.reportContent(for: info.author.nickname, message: message ?? info.text)
                         })
                     }

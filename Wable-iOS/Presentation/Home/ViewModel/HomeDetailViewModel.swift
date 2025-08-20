@@ -77,7 +77,7 @@ extension HomeDetailViewModel: ViewModelType {
     struct Output {
         let activeUserID: AnyPublisher<Int?, Never>
         let isAdmin: AnyPublisher<Bool?, Never>
-        let content: AnyPublisher<ContentInfo?, Never>
+        let content: AnyPublisher<ContentTemp?, Never>
         let contentNotFound: AnyPublisher<Void, Never>
         let comments: AnyPublisher<[ContentComment], Never>
         let isLoading: AnyPublisher<Bool, Never>
@@ -89,7 +89,7 @@ extension HomeDetailViewModel: ViewModelType {
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
-        let contentSubject = CurrentValueSubject<ContentInfo?, Never>(nil)
+        let contentSubject = CurrentValueSubject<ContentTemp?, Never>(nil)
         let contentNotFoundSubject = PassthroughSubject<Void, Never>()
         let commentsSubject = CurrentValueSubject<[ContentComment], Never>([])
         let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
@@ -139,12 +139,12 @@ extension HomeDetailViewModel: ViewModelType {
                 isLastViewSubject.send(false)
             })
             .withUnretained(self)
-            .flatMap({ owner, _ -> AnyPublisher<(ContentInfo?, [ContentComment]), Never> in
+            .flatMap({ owner, _ -> AnyPublisher<(ContentTemp?, [ContentComment]), Never> in
                 let contentPublisher = owner.fetchContentInfoUseCase.execute(contentID: owner.contentID)
-                    .map { contentInfo -> ContentInfo? in
+                    .map { contentInfo -> ContentTemp? in
                         return contentInfo
                     }
-                    .catch { error -> AnyPublisher<ContentInfo?, Never> in
+                    .catch { error -> AnyPublisher<ContentTemp?, Never> in
                         WableLogger.log("\(error.localizedDescription)", for: .error)
                         if case WableError.notFoundContent = error {
                             contentNotFoundSubject.send()
@@ -186,21 +186,19 @@ extension HomeDetailViewModel: ViewModelType {
             .sink(receiveValue: { isLiked in
                 guard let content = contentSubject.value else { return }
                 
-                let originalLike = content.like
-                let updatedLike = isLiked
-                ? Like(status: true, count: originalLike.count + 1)
-                : Like(status: false, count: max(0, originalLike.count - 1))
-                
-                let updatedContent = ContentInfo(
+                let updatedContent = ContentTemp(
+                    id: content.id,
                     author: content.author,
-                    createdDate: content.createdDate,
+                    text: content.text,
                     title: content.title,
                     imageURL: content.imageURL,
-                    text: content.text,
-                    status: content.status,
-                    like: updatedLike,
+                    isDeleted: content.isDeleted,
+                    createdDate: content.createdDate,
+                    isLiked: isLiked,
+                    likeCount: isLiked ? content.likeCount + 1 : content.likeCount - 1,
                     opacity: content.opacity,
-                    commentCount: content.commentCount
+                    commentCount: content.commentCount,
+                    status: content.status
                 )
                 
                 contentSubject.send(updatedContent)
@@ -318,7 +316,7 @@ extension HomeDetailViewModel: ViewModelType {
             }
             .sink(receiveValue: { [weak self] userID in
                 guard let self = self,
-                      let contentInfo = contentSubject.value
+                      let content = contentSubject.value
                 else {
                     return
                 }
@@ -327,17 +325,20 @@ extension HomeDetailViewModel: ViewModelType {
                 
                 commentsSubject.send(updatedCommentInfo)
                 
-                if userID == contentInfo.author.id {
-                    let updatedContent = ContentInfo(
-                        author: contentInfo.author,
-                        createdDate: contentInfo.createdDate,
-                        title: contentInfo.title,
-                        imageURL: contentInfo.imageURL,
-                        text: contentInfo.text,
-                        status: .ghost,
-                        like: contentInfo.like,
-                        opacity: contentInfo.opacity.reduced(),
-                        commentCount: contentInfo.commentCount
+                if userID == content.author.id {
+                    let updatedContent = ContentTemp(
+                        id: content.id,
+                        author: content.author,
+                        text: content.text,
+                        title: content.title,
+                        imageURL: content.imageURL,
+                        isDeleted: content.isDeleted,
+                        createdDate: content.createdDate,
+                        isLiked: content.isLiked,
+                        likeCount: content.likeCount,
+                        opacity: content.opacity,
+                        commentCount: content.commentCount,
+                        status: .ghost
                     )
                     
                     contentSubject.send(updatedContent)
@@ -365,7 +366,7 @@ extension HomeDetailViewModel: ViewModelType {
             }
             .sink(receiveValue: { [weak self] userID in
                 guard let self = self,
-                      let contentInfo = contentSubject.value
+                      let content = contentSubject.value
                 else {
                     return
                 }
@@ -374,17 +375,20 @@ extension HomeDetailViewModel: ViewModelType {
                 
                 commentsSubject.send(updatedCommentInfo)
                 
-                if userID == contentInfo.author.id {
-                    let updatedContent = ContentInfo(
-                        author: contentInfo.author,
-                        createdDate: contentInfo.createdDate,
-                        title: contentInfo.title,
-                        imageURL: contentInfo.imageURL,
-                        text: contentInfo.text,
-                        status: .blind,
-                        like: contentInfo.like,
-                        opacity: contentInfo.opacity.reduced(),
-                        commentCount: contentInfo.commentCount
+                if userID == content.author.id {
+                    let updatedContent = ContentTemp(
+                        id: content.id,
+                        author: content.author,
+                        text: content.text,
+                        title: content.title,
+                        imageURL: content.imageURL,
+                        isDeleted: content.isDeleted,
+                        createdDate: content.createdDate,
+                        isLiked: content.isLiked,
+                        likeCount: content.likeCount,
+                        opacity: content.opacity,
+                        commentCount: content.commentCount,
+                        status: .blind
                     )
                     
                     contentSubject.send(updatedContent)

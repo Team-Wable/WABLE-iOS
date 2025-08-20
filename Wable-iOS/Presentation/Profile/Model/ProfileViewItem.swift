@@ -10,6 +10,6 @@ import Foundation
 struct ProfileViewItem {
     var currentSegment: ProfileSegment = .content
     var profileInfo: UserProfile?
-    var contentList: [UserContent] = []
+    var contentList: [ContentTemp] = []
     var commentList: [UserComment] = []
 }
