@@ -197,6 +197,7 @@
 		DDCD66FB2D7DF6CF00EF4C28 /* ViewitListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FA2D7DF6C600EF4C28 /* ViewitListViewController.swift */; };
 		DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD67042D7E271C00EF4C28 /* ToastView.swift */; };
 		DDCEBC952E586E9F00F38975 /* UIViewController+PHPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCEBC942E586E8F00F38975 /* UIViewController+PHPicker.swift */; };
+		DDCEBC972E58C16A00F38975 /* KeyboardDismissible.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCEBC962E58C15400F38975 /* KeyboardDismissible.swift */; };
 		DDE966102D8C62A4004E899B /* DefaultProfileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE9660F2D8C629A004E899B /* DefaultProfileType.swift */; };
 		DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */; };
 		DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */; };
@@ -584,6 +585,7 @@
 		DDCD66FA2D7DF6C600EF4C28 /* ViewitListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitListViewController.swift; sourceTree = "<group>"; };
 		DDCD67042D7E271C00EF4C28 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		DDCEBC942E586E8F00F38975 /* UIViewController+PHPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PHPicker.swift"; sourceTree = "<group>"; };
+		DDCEBC962E58C15400F38975 /* KeyboardDismissible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDismissible.swift; sourceTree = "<group>"; };
 		DDE9660F2D8C629A004E899B /* DefaultProfileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultProfileType.swift; sourceTree = "<group>"; };
 		DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
 		DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsStorage.swift; sourceTree = "<group>"; };
@@ -2044,6 +2046,7 @@
 				DDCA70982D8879C600A988B8 /* Enum */,
 				DE7C530A2D761DBF00076E5D /* Interface */,
 				DE7C53092D761DB900076E5D /* Helper */,
+				DE8E86402D91A092000A4292 /* Extension */,
 				DDCD66DB2D7C8A1600EF4C28 /* WableComponent */,
 				DD765D9B2D8747890029A317 /* Splash */,
 				DD765D982D8746D30029A317 /* Login */,
@@ -2063,12 +2066,12 @@
 			isa = PBXGroup;
 			children = (
 				DE83891A2D906C0C00C089E6 /* Types.swift */,
+				DE4AE8522DE8BA18003E20AB /* UIAlertShowable.swift */,
 				DE7C53172D761F3A00076E5D /* ReuseIdentifiable.swift */,
+				DDCEBC962E58C15400F38975 /* KeyboardDismissible.swift */,
 				DE4AE84E2DE8B645003E20AB /* WableSheetShowable.swift */,
 				DEC5268B2E085AAA000F7900 /* WableTextSheetShowable.swift */,
 				DE4AE8502DE8B6FF003E20AB /* WableBottomSheetShowable.swift */,
-				DE4AE8522DE8BA18003E20AB /* UIAlertShowable.swift */,
-				DE8E86402D91A092000A4292 /* Extension */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -2813,6 +2816,7 @@
 				DD29686E2D6DAD5F00143851 /* Bundle+.swift in Sources */,
 				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,
 				DE3CA27D2DD4294000BF5E87 /* MyProfileViewModel.swift in Sources */,
+				DDCEBC972E58C16A00F38975 /* KeyboardDismissible.swift in Sources */,
 				DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */,
 				DD29686F2D6DAD5F00143851 /* MoyaLoggingPlugin.swift in Sources */,
 				DEDFCED82DDC566A00B3CD97 /* OtherProfileViewModel.swift in Sources */,

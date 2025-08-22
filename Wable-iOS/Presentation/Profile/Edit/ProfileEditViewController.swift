@@ -9,7 +9,7 @@ import Photos
 import PhotosUI
 import UIKit
 
-final class ProfileEditViewController: NavigationViewController {
+final class ProfileEditViewController: NavigationViewController, KeyboardDismissible {
     
     // MARK: Property
     // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
@@ -58,7 +58,7 @@ final class ProfileEditViewController: NavigationViewController {
         setupConstraint()
         setupDelegate()
         setupAction()
-        setupTapGesture()
+        setupKeyboardDismiss()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -145,18 +145,7 @@ private extension ProfileEditViewController {
             .store(in: cancelBag)
     }
     
-    private func setupTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        
-        tapGesture.cancelsTouchesInView = false
-        view.addGestureRecognizer(tapGesture)
-    }
-    
     // MARK: - @objc Method
-    
-    @objc private func dismissKeyboard() {
-        view.endEditing(true)
-    }
     
     @objc func doneButtonDidTap() {
         guard let profile = sessionProfile else { return }

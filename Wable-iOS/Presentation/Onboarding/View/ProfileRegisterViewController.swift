@@ -9,7 +9,7 @@ import Photos
 import PhotosUI
 import UIKit
 
-final class ProfileRegisterViewController: NavigationViewController {
+final class ProfileRegisterViewController: NavigationViewController, KeyboardDismissible {
     
     // MARK: Property
     
@@ -17,6 +17,7 @@ final class ProfileRegisterViewController: NavigationViewController {
     private let lckTeam: String
     private var defaultImage: String? = nil
     private let useCase = FetchNicknameDuplicationUseCase(repository: AccountRepositoryImpl())
+//    private let viewModel: LoginViewModel
     private let cancelBag = CancelBag()
     
     // MARK: - UIComponent
@@ -32,6 +33,7 @@ final class ProfileRegisterViewController: NavigationViewController {
         super.init(type: .flow)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -39,31 +41,26 @@ final class ProfileRegisterViewController: NavigationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
+        
         setupConstraint()
         setupDelegate()
         setupAction()
-        setupTapGesture()
+        setupBinding()
+        setupKeyboardDismiss()
     }
 }
 
-// MARK: - Priviate Extension
+// MARK: - Setup Method
 
 private extension ProfileRegisterViewController {
     
     // MARK: - Setup Method
     
-    func setupView() {
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        
-        view.addSubview(rootView)
-        
-        defaultImage = rootView.defaultImageList[0].uppercased
-        
-        rootView.configureView()
-    }
-    
     func setupConstraint() {
+        view.addSubview(rootView)
+        defaultImage = rootView.defaultImageList[0].uppercased
+        rootView.configureView()
+        
         rootView.snp.makeConstraints {
             $0.top.equalTo(navigationView.snp.bottom)
             $0.horizontalEdges.bottom.equalToSuperview()
@@ -75,24 +72,21 @@ private extension ProfileRegisterViewController {
     }
     
     func setupAction() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         rootView.switchButton.addTarget(self, action: #selector(switchButtonDidTap), for: .touchUpInside)
         rootView.addButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
         rootView.duplicationCheckButton.addTarget(self, action: #selector(duplicationCheckButtonDidTap), for: .touchUpInside)
         rootView.nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
     }
     
-    private func setupTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    func setupBinding() {
         
-        view.addGestureRecognizer(tapGesture)
     }
-    
-    // MARK: - @objc Method
-    
-    @objc private func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    
+}
+
+// MARK: - @objc Method
+
+private extension ProfileRegisterViewController {
     @objc func switchButtonDidTap() {
         AmplitudeManager.shared.trackEvent(tag: .clickChangePictureProfileSignup)
         
