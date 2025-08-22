@@ -55,7 +55,6 @@ final class AgreementViewController: NavigationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
         setupConstraint()
         setupAction()
     }
@@ -67,13 +66,9 @@ private extension AgreementViewController {
     
     // MARK: - Setup Method
     
-    func setupView() {
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        
-        view.addSubview(rootView)
-    }
-    
     func setupConstraint() {
+        view.addSubview(rootView)
+        
         rootView.snp.makeConstraints {
             $0.top.equalTo(navigationView.snp.bottom)
             $0.horizontalEdges.bottom.equalToSuperview()

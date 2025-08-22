@@ -62,7 +62,6 @@ final class LCKTeamViewController: NavigationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
         setupConstraint()
         setupAction()
     }
@@ -71,10 +70,6 @@ final class LCKTeamViewController: NavigationViewController {
 // MARK: - Setup Method
 
 private extension LCKTeamViewController {
-    func setupView() {
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-    }
-    
     func setupConstraint() {
         view.addSubviews(
             titleLabel,

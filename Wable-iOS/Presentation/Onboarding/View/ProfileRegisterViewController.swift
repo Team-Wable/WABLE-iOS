@@ -72,7 +72,6 @@ private extension ProfileRegisterViewController {
     }
     
     func setupAction() {
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         rootView.switchButton.addTarget(self, action: #selector(switchButtonDidTap), for: .touchUpInside)
         rootView.addButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
         rootView.duplicationCheckButton.addTarget(self, action: #selector(duplicationCheckButtonDidTap), for: .touchUpInside)

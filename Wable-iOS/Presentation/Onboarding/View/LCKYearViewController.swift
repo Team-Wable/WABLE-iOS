@@ -25,7 +25,6 @@ final class LCKYearViewController: NavigationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
         setupConstraint()
         setupAction()
         setupDelegate()
@@ -107,10 +106,6 @@ extension LCKYearViewController: UICollectionViewDataSource {
 // MARK: - Setup Method
 
 private extension LCKYearViewController {
-    func setupView() {
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-    }
-    
     func setupConstraint() {
         view.addSubview(rootView)
         

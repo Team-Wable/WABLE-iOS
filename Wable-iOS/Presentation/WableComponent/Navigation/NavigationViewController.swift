@@ -42,6 +42,7 @@ private extension NavigationViewController {
     // MARK: - Setup
     
     func setupView() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         view.backgroundColor = .wableWhite
         
         view.addSubview(navigationView)
