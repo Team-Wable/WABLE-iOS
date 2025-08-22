@@ -7,36 +7,7 @@
 
 import Foundation
 
-// MARK: - 댓글 핵심 정보
-
-struct CommentInfo: Identifiable, Hashable {
-    let author: User
-    let id: Int
-    let text: String
-    let createdDate: Date?
-    
-    var status: PostStatus
-    var like: Like
-    var opacity: Opacity
-}
-
-// MARK: - 유저가 작성한 댓글
-
-struct UserComment: Hashable {
-    let comment: CommentInfo
-    let contentID: Int
-}
-
-// MARK: - 게시물 댓글
-
-struct ContentComment: Hashable {
-    let comment: CommentInfo    
-    let parentID: Int
-    let isDeleted: Bool
-    let childs: [ContentComment]
-}
-
-// MARK: - 댓글 정보 (임시)
+// MARK: - 댓글 정보
 
 struct CommentTemp: Identifiable, Hashable, Likable {
     let id: Int
