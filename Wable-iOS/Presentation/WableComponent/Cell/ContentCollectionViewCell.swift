@@ -255,7 +255,7 @@ extension ContentCollectionViewCell {
     ///   - cellType: 셀 타입 (홈 화면 셀 또는 상세 화면 셀)
     ///   - likeButtonTapHandler: 좋아요 버튼을 클릭했을 때 실행될 로직
     func configureCell(
-        info: ContentTemp,
+        info: Content,
         authorType: AuthorType,
         cellType: CellType = .list,
         contentImageViewTapHandler: (() -> Void)?,

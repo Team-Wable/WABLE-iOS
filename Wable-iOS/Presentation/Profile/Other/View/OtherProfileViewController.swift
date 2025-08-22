@@ -22,7 +22,7 @@ final class OtherProfileViewController: UIViewController {
     
     enum Item: Hashable {
         case profile(UserProfile)
-        case content(ContentTemp)
+        case content(Content)
         case comment(CommentTemp)
         case empty(ProfileEmptyCellItem)
     }
@@ -204,7 +204,7 @@ private extension OtherProfileViewController {
             )
         }
         
-        let contentCellRegistration = CellRegistration<ContentCollectionViewCell, ContentTemp> {
+        let contentCellRegistration = CellRegistration<ContentCollectionViewCell, Content> {
             cell, indexPath, item in
             cell.configureCell(
                 info: item,

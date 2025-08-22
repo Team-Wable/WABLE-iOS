@@ -57,15 +57,15 @@ extension HomeViewModel: ViewModelType {
         let activeUserID: AnyPublisher<Int?, Never>
         let badgeCount: AnyPublisher<Int?, Never>
         let isAdmin: AnyPublisher<Bool?, Never>
-        let contents: AnyPublisher<[ContentTemp], Never>
-        let selectedContent: AnyPublisher<ContentTemp, Never>
+        let contents: AnyPublisher<[Content], Never>
+        let selectedContent: AnyPublisher<Content, Never>
         let isLoading: AnyPublisher<Bool, Never>
         let isLoadingMore: AnyPublisher<Bool, Never>
         let isReportSucceed: AnyPublisher<Bool, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
-        let contentsSubject = CurrentValueSubject<[ContentTemp], Never>([])
+        let contentsSubject = CurrentValueSubject<[Content], Never>([])
         let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
         let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
         let isLastViewSubject = CurrentValueSubject<Bool, Never>(false)
@@ -108,7 +108,7 @@ extension HomeViewModel: ViewModelType {
                 isLastViewSubject.send(false)
             })
             .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<[ContentTemp], Never> in
+            .flatMap { owner, _ -> AnyPublisher<[Content], Never> in
                 return owner.fetchContentListUseCase.execute(cursor: IntegerLiterals.initialCursor)
                     .replaceError(with: [])
                     .eraseToAnyPublisher()
@@ -127,7 +127,7 @@ extension HomeViewModel: ViewModelType {
                 isLoadingMoreSubject.send(true)
             })
             .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<[ContentTemp], Never> in
+            .flatMap { owner, _ -> AnyPublisher<[Content], Never> in
                 guard let lastItem = contentsSubject.value.last else {
                     return .just([])
                 }
@@ -167,7 +167,7 @@ extension HomeViewModel: ViewModelType {
                     
                     let originalContent = updatedContents[index]
                     
-                    let updatedContent = ContentTemp(
+                    let updatedContent = Content(
                         id: originalContent.id,
                         author: originalContent.author,
                         text: originalContent.text,
@@ -202,7 +202,7 @@ extension HomeViewModel: ViewModelType {
                         let content = updatedContents[i]
                         let opacity = content.opacity.reduced()
                         
-                        let updatedContent = ContentTemp(
+                        let updatedContent = Content(
                             id: content.id,
                             author: content.author,
                             text: content.text,
@@ -272,7 +272,7 @@ extension HomeViewModel: ViewModelType {
             let content = updatedContents[i]
             let opacity = content.opacity.reduced()
             
-            let updatedContent = ContentTemp(
+            let updatedContent = Content(
                 id: content.id,
                 author: content.author,
                 text: content.text,

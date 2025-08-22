@@ -9,13 +9,13 @@ import Combine
 import Foundation
 
 protocol FetchUserContentListUseCase {
-    func execute(for userID: Int, last contentID: Int) async throws -> [ContentTemp]
+    func execute(for userID: Int, last contentID: Int) async throws -> [Content]
 }
 
 final class FetchUserContentUseCaseImpl: FetchUserContentListUseCase {
     @Injected private var repository: ContentRepository
     
-    func execute(for userID: Int, last contentID: Int) async throws -> [ContentTemp] {
+    func execute(for userID: Int, last contentID: Int) async throws -> [Content] {
         if userID <= .zero {
             throw WableError.notFoundMember
         }
