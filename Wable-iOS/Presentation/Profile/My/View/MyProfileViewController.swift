@@ -24,7 +24,7 @@ final class MyProfileViewController: UIViewController {
     enum Item: Hashable {
         case profile(UserProfile)
         case content(ContentTemp)
-        case comment(UserComment)
+        case comment(CommentTemp)
         case empty(ProfileEmptyCellItem)
     }
     
@@ -233,20 +233,20 @@ private extension MyProfileViewController {
             )
         }
         
-        let commentCellRegistration = CellRegistration<CommentCollectionViewCell, UserComment> {
+        let commentCellRegistration = CellRegistration<CommentCollectionViewCell, CommentTemp> {
             cell, indexPath, item in
             
             cell.configureCell(
-                info: item.comment,
+                info: item,
                 commentType: .ripple,
                 authorType: .mine,
-                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeComment(for: item.comment.id) },
+                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeComment(for: item.id) },
                 settingButtonTapHandler: { [weak self] in
                     let bottomSheet = WableBottomSheetController()
                     bottomSheet.addAction(
                         .init(
                             title: "삭제하기",
-                            handler: { [weak self] in self?.presentDeleteCommentActionSheet(for: item.comment.id) }
+                            handler: { [weak self] in self?.presentDeleteCommentActionSheet(for: item.id) }
                         )
                     )
                     self?.present(bottomSheet, animated: true)

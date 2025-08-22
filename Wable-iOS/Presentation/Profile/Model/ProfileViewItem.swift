@@ -11,5 +11,5 @@ struct ProfileViewItem {
     var currentSegment: ProfileSegment = .content
     var profileInfo: UserProfile?
     var contentList: [ContentTemp] = []
-    var commentList: [UserComment] = []
+    var commentList: [CommentTemp] = []
 }

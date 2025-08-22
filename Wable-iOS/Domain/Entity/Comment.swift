@@ -38,15 +38,15 @@ struct ContentComment: Hashable {
 
 // MARK: - 댓글 정보 (임시)
 
-struct CommentTemp: Likable {
+struct CommentTemp: Identifiable, Hashable, Likable {
+    let id: Int
     let author: User
     let text: String
-    let commentID: Int
     let contentID: Int
     let isDeleted: Bool?
     let createdDate: Date?
     let parentContentID: Int?
-    let children: [ContentComment]
+    let children: [CommentTemp]
     
     var likeCount: Int
     var isLiked: Bool
