@@ -781,11 +781,7 @@ extension HomeDetailViewController {
         guard var snapshot = dataSource?.snapshot() else { return }
         
         let commentItems = comments.flatMap { comment -> [Item] in
-            guard let isDeleted = comment.isDeleted,
-                  !isDeleted
-            else {
-                return []
-            }
+            guard comment.isDeleted != true else { return [] }
             
             var items: [Item] = [.comment(comment)]
             

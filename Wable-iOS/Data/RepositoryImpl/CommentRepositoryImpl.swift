@@ -140,7 +140,7 @@ struct MockCommentRepository: CommentRepository {
                 contentID: mockContentID,
                 isDeleted: nil,
                 createdDate: .now,
-                parentContentID: nil,
+                parentContentID: -1,
                 children: [],
                 likeCount: 0,
                 isLiked: false,
