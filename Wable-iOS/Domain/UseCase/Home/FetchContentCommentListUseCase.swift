@@ -20,7 +20,7 @@ final class FetchContentCommentListUseCase {
 // MARK: - Extension
 
 extension FetchContentCommentListUseCase {
-    func execute(contentID: Int, cursor: Int) -> AnyPublisher<[ContentComment], WableError> {
+    func execute(contentID: Int, cursor: Int) -> AnyPublisher<[CommentTemp], WableError> {
         return repository.fetchContentCommentList(contentID: contentID, cursor: cursor)
     }
 }
