@@ -229,7 +229,7 @@ private extension OtherProfileViewModel {
                 cursor: IntegerLiterals.initialCursor
             )
             
-            async let commentList: [CommentTemp] = commentRepository.fetchUserCommentList(
+            async let commentList: [Comment] = commentRepository.fetchUserCommentList(
                 memberID: userID,
                 cursor: IntegerLiterals.initialCursor
             )

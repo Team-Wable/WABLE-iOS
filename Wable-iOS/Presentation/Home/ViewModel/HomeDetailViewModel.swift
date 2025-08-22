@@ -63,7 +63,7 @@ extension HomeDetailViewModel: ViewModelType {
         let viewWillAppear: AnyPublisher<Void, Never>
         let viewDidRefresh: AnyPublisher<Void, Never>
         let didContentHeartTappedItem: AnyPublisher<Bool, Never>
-        let didCommentHeartTappedItem: AnyPublisher<(Bool, CommentTemp), Never>
+        let didCommentHeartTappedItem: AnyPublisher<(Bool, Comment), Never>
         let didCommentTappedItem: AnyPublisher<Void, Never>
         let didReplyTappedItem: AnyPublisher<(Int, Int), Never>
         let didCreateTappedItem: AnyPublisher<String, Never>
@@ -79,7 +79,7 @@ extension HomeDetailViewModel: ViewModelType {
         let isAdmin: AnyPublisher<Bool?, Never>
         let content: AnyPublisher<Content?, Never>
         let contentNotFound: AnyPublisher<Void, Never>
-        let comments: AnyPublisher<[CommentTemp], Never>
+        let comments: AnyPublisher<[Comment], Never>
         let isLoading: AnyPublisher<Bool, Never>
         let isLoadingMore: AnyPublisher<Bool, Never>
         let textViewState: AnyPublisher<CommentType, Never>
@@ -91,7 +91,7 @@ extension HomeDetailViewModel: ViewModelType {
     func transform(input: Input, cancelBag: CancelBag) -> Output {
         let contentSubject = CurrentValueSubject<Content?, Never>(nil)
         let contentNotFoundSubject = PassthroughSubject<Void, Never>()
-        let commentsSubject = CurrentValueSubject<[CommentTemp], Never>([])
+        let commentsSubject = CurrentValueSubject<[Comment], Never>([])
         let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
         let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
         let isLastViewSubject = CurrentValueSubject<Bool, Never>(false)
@@ -139,7 +139,7 @@ extension HomeDetailViewModel: ViewModelType {
                 isLastViewSubject.send(false)
             })
             .withUnretained(self)
-            .flatMap({ owner, _ -> AnyPublisher<(Content?, [CommentTemp]), Never> in
+            .flatMap({ owner, _ -> AnyPublisher<(Content?, [Comment]), Never> in
                 let contentPublisher = owner.fetchContentInfoUseCase.execute(contentID: owner.contentID)
                     .map { content -> Content? in
                         return content
@@ -207,7 +207,7 @@ extension HomeDetailViewModel: ViewModelType {
         
         input.didCommentHeartTappedItem
             .withUnretained(self)
-            .flatMap { owner, info -> AnyPublisher<(Bool, CommentTemp), Never> in
+            .flatMap { owner, info -> AnyPublisher<(Bool, Comment), Never> in
                 let (isLiked, comment) = info
                 return (isLiked ? owner.createCommentLikedUseCase.execute(commentID: comment.id, notificationText: comment.text)
                         : owner.deleteCommentLikedUseCase.execute(commentID: comment.id))
@@ -221,7 +221,7 @@ extension HomeDetailViewModel: ViewModelType {
                     if updatedComments[i].id == commentInfo.id {
                         let originalComment = updatedComments[i]
                         
-                        updatedComments[i] = CommentTemp(
+                        updatedComments[i] = Comment(
                             id: originalComment.id,
                             author: originalComment.author,
                             text: originalComment.text,
@@ -245,7 +245,7 @@ extension HomeDetailViewModel: ViewModelType {
                             let originalChild = updatedComments[i].children[j]
                             var updatedChilds = updatedComments[i].children
                             
-                            let updatedChildInfo = CommentTemp(
+                            let updatedChildInfo = Comment(
                                 id: originalChild.id,
                                 author: originalChild.author,
                                 text: originalChild.text,
@@ -262,7 +262,7 @@ extension HomeDetailViewModel: ViewModelType {
                             
                             updatedChilds[j] = updatedChildInfo
                             
-                            updatedComments[i] = CommentTemp(
+                            updatedComments[i] = Comment(
                                 id: updatedComments[i].id,
                                 author: updatedComments[i].author,
                                 text: updatedComments[i].text,
@@ -468,7 +468,7 @@ extension HomeDetailViewModel: ViewModelType {
                 isLoadingMoreSubject.send(true)
             })
             .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<[CommentTemp], Never> in
+            .flatMap { owner, _ -> AnyPublisher<[Comment], Never> in
                 guard let lastItem = commentsSubject.value.last else { return .just([]) }
                 
                 let cursor = lastItem.id
@@ -509,12 +509,12 @@ extension HomeDetailViewModel: ViewModelType {
 // MARK: - Helper Method
 
 private extension HomeDetailViewModel {
-    func updateGhostComments(comments: [CommentTemp], userID: Int) -> [CommentTemp] {
+    func updateGhostComments(comments: [Comment], userID: Int) -> [Comment] {
         return comments.map { comment in
-            let updatedComment: CommentTemp
+            let updatedComment: Comment
             
             if comment.author.id == userID {
-                updatedComment = CommentTemp(
+                updatedComment = Comment(
                     id: comment.id,
                     author: comment.author,
                     text: comment.text,
@@ -535,7 +535,7 @@ private extension HomeDetailViewModel {
             if !updatedComment.children.isEmpty {
                 let updatedChildren = updateGhostComments(comments: updatedComment.children, userID: userID)
                 
-                return CommentTemp(
+                return Comment(
                     id: updatedComment.id,
                     author: updatedComment.author,
                     text: updatedComment.text,
@@ -555,12 +555,12 @@ private extension HomeDetailViewModel {
         }
     }
     
-    func updateBannedComments(comments: [CommentTemp], userID: Int) -> [CommentTemp] {
+    func updateBannedComments(comments: [Comment], userID: Int) -> [Comment] {
         return comments.map { comment in
-            let updatedComment: CommentTemp
+            let updatedComment: Comment
             
             if comment.author.id == userID {
-                updatedComment = CommentTemp(
+                updatedComment = Comment(
                     id: comment.id,
                     author: comment.author,
                     text: comment.text,
@@ -581,7 +581,7 @@ private extension HomeDetailViewModel {
             if !updatedComment.children.isEmpty {
                 let updatedChildren = updateBannedComments(comments: updatedComment.children, userID: userID)
                 
-                return CommentTemp(
+                return Comment(
                     id: updatedComment.id,
                     author: updatedComment.author,
                     text: updatedComment.text,
@@ -601,12 +601,12 @@ private extension HomeDetailViewModel {
         }
     }
     
-    func updateDeleteComments(comments: [CommentTemp], commentID: Int) -> [CommentTemp] {
+    func updateDeleteComments(comments: [Comment], commentID: Int) -> [Comment] {
         return comments.map { comment in
-            let updatedComment: CommentTemp
+            let updatedComment: Comment
             
             if comment.id == commentID {
-                updatedComment = CommentTemp(
+                updatedComment = Comment(
                     id: commentID,
                     author: comment.author,
                     text: comment.text,
@@ -627,7 +627,7 @@ private extension HomeDetailViewModel {
             if !updatedComment.children.isEmpty {
                 let updatedChilds = updateDeleteComments(comments: updatedComment.children, commentID: commentID)
                 
-                return CommentTemp(
+                return Comment(
                     id: updatedComment.id,
                     author: updatedComment.author,
                     text: updatedComment.text,
@@ -647,8 +647,8 @@ private extension HomeDetailViewModel {
         }
     }
     
-    func flattenComments(_ comments: [CommentTemp]) -> [CommentTemp] {
-        var flattenedComments: [CommentTemp] = []
+    func flattenComments(_ comments: [Comment]) -> [Comment] {
+        var flattenedComments: [Comment] = []
         
         for comment in comments {
             flattenedComments.append(comment)

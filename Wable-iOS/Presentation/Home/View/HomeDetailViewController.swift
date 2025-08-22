@@ -23,7 +23,7 @@ final class HomeDetailViewController: NavigationViewController {
     
     enum Item: Hashable {
         case content(Content)
-        case comment(CommentTemp)
+        case comment(Comment)
     }
     
     // MARK: - typealias
@@ -37,7 +37,7 @@ final class HomeDetailViewController: NavigationViewController {
     private let willAppearSubject = PassthroughSubject<Void, Never>()
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
     private let didContentHeartTappedSubject = PassthroughSubject<Bool, Never>()
-    private let didCommentHeartTappedSubject = PassthroughSubject<(Bool, CommentTemp), Never>()
+    private let didCommentHeartTappedSubject = PassthroughSubject<(Bool, Comment), Never>()
     private let didReplyTappedSubject = PassthroughSubject<(Int, Int), Never>()
     private let didCommentTappedSubject = PassthroughSubject<Void, Never>()
     private let didGhostTappedSubject = PassthroughSubject<(Int, Int, String?, PostType), Never>()
@@ -354,7 +354,7 @@ private extension HomeDetailViewController {
         
         let commentCellRegistration = UICollectionView.CellRegistration <
             CommentCollectionViewCell,
-            CommentTemp
+            Comment
         > {
             [weak self] cell,
             indexPath,
@@ -777,7 +777,7 @@ extension HomeDetailViewController {
         dataSource?.apply(snapshot, animatingDifferences: true)
     }
     
-    func updateComments(_ comments: [CommentTemp]) {
+    func updateComments(_ comments: [Comment]) {
         guard var snapshot = dataSource?.snapshot() else { return }
         
         let commentItems = comments.flatMap { comment -> [Item] in

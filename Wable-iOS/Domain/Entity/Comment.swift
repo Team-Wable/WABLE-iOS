@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - 댓글 정보
 
-struct CommentTemp: Identifiable, Hashable, Likable {
+struct Comment: Identifiable, Hashable, Likable {
     let id: Int
     let author: User
     let text: String
@@ -17,7 +17,7 @@ struct CommentTemp: Identifiable, Hashable, Likable {
     let isDeleted: Bool?
     let createdDate: Date?
     let parentContentID: Int?
-    let children: [CommentTemp]
+    let children: [Comment]
     
     var likeCount: Int
     var isLiked: Bool
