@@ -9,13 +9,13 @@ import Combine
 import Foundation
 
 protocol FetchUserCommentListUseCase {
-    func execute(for userID: Int, last commentID: Int) async throws -> [UserComment]
+    func execute(for userID: Int, last commentID: Int) async throws -> [Comment]
 }
 
 final class FetchUserCommentListUseCaseImpl: FetchUserCommentListUseCase {
     @Injected private var repository: CommentRepository
     
-    func execute(for userID: Int, last commentID: Int) async throws -> [UserComment] {
+    func execute(for userID: Int, last commentID: Int) async throws -> [Comment] {
         if userID <= .zero {
             throw WableError.notFoundMember
         }

@@ -15,7 +15,7 @@ extension DTO.Response {
         let memberID: Int
         let memberProfileURL, memberNickname: String
         let isLiked, isGhost: Bool
-        let memberGhost, commentLikedNumber: Int
+        let memberGhost, likedCount: Int
         let commentText, time: String
         let commentID, contentID: Int
         let commentImageURL: String?
@@ -25,7 +25,9 @@ extension DTO.Response {
         enum CodingKeys: String, CodingKey {
             case memberID = "memberId"
             case memberProfileURL = "memberProfileUrl"
-            case memberNickname, isLiked, isGhost, memberGhost, commentLikedNumber, commentText, time
+            case memberNickname, isLiked, isGhost, memberGhost
+            case likedCount = "commentLikedNumber"
+            case commentText, time
             case commentID = "commentId"
             case contentID = "contentId"
             case commentImageURL = "commentImageUrl"

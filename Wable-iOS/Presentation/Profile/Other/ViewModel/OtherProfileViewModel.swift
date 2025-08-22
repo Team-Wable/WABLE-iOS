@@ -68,7 +68,7 @@ final class OtherProfileViewModel {
             guard let lastContentID = item.contentList.last?.id else { return }
             fetchMoreContentList(userID: userID, lastContentID: lastContentID)
         case .comment:
-            guard let lastCommentID = item.commentList.last?.comment.id else { return }
+            guard let lastCommentID = item.commentList.last?.id else { return }
             fetchMoreCommentList(userID: userID, lastCommentID: lastCommentID)
         }
     }
@@ -86,9 +86,9 @@ final class OtherProfileViewModel {
                     triggerType: TriggerType.Like.contentLike.rawValue
                 )
                 await MainActor.run {
-                    var contentInfo = item.contentList[index]
-                    isLiked ? contentInfo.unlike() : contentInfo.like()
-                    item.contentList[index] = contentInfo
+                    var content = item.contentList[index]
+                    isLiked ? content.unlike() : content.like()
+                    item.contentList[index] = content
                 }
             } catch {
                 await handleError(error: error)
@@ -97,9 +97,9 @@ final class OtherProfileViewModel {
     }
     
     func toggleLikeComment(for commentID: Int) {
-        guard let index = item.commentList.firstIndex(where: { $0.comment.id == commentID }) else { return }
+        guard let index = item.commentList.firstIndex(where: { $0.id == commentID }) else { return }
         let comment = item.commentList[index]
-        let isLiked = item.commentList[index].comment.like.status
+        let isLiked = item.commentList[index].isLiked
         
         Task {
             do {
@@ -108,13 +108,13 @@ final class OtherProfileViewModel {
                 : try await commentLikedRepository.createCommentLiked(
                     commentID: commentID,
                     triggerType: TriggerType.Like.commentLike.rawValue,
-                    notificationText: item.commentList[index].comment.text
+                    notificationText: item.commentList[index].text
                 )
                 
                 await MainActor.run {
-                    var commentInfo = comment.comment
-                    isLiked ? commentInfo.like.unlike() : commentInfo.like.like()
-                    item.commentList[index] = UserComment(comment: commentInfo, contentID: comment.contentID)
+                    var commentInfo = comment
+                    isLiked ? commentInfo.unlike() : commentInfo.like()
+                    item.commentList[index] = commentInfo
                 }
             } catch {
                 await handleError(error: error)
@@ -224,12 +224,12 @@ private extension OtherProfileViewModel {
         Task {
             async let userProfile: UserProfile = fetchUserProfileUseCase.execute(userID: userID)
             
-            async let contentList: [ContentTemp] = contentRepository.fetchUserContentList(
+            async let contentList: [Content] = contentRepository.fetchUserContentList(
                 memberID: userID,
                 cursor: IntegerLiterals.initialCursor
             )
             
-            async let commentList: [UserComment] = commentRepository.fetchUserCommentList(
+            async let commentList: [Comment] = commentRepository.fetchUserCommentList(
                 memberID: userID,
                 cursor: IntegerLiterals.initialCursor
             )
