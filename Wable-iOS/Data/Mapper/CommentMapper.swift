@@ -41,7 +41,7 @@ extension CommentMapper {
                 contentID: comment.contentID,
                 isDeleted: false,
                 createdDate: date,
-                parentContentID: nil,
+                parentContentID: -1,
                 children: [],
                 likeCount: comment.likedCount,
                 isLiked: comment.isLiked,
