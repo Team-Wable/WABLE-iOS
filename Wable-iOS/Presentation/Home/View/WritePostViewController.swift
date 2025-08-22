@@ -228,7 +228,7 @@ private extension WritePostViewController {
         
         AmplitudeManager.shared.trackEvent(tag: .clickAttachPhoto)
         
-        setPhotoPermission(delegate: self)
+        requestPhotoPickerAccess(delegate: self)
     }
     
     @objc func postButtonDidTap() {

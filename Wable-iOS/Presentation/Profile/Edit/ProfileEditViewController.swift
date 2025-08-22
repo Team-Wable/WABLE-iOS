@@ -193,7 +193,7 @@ private extension ProfileEditViewController {
     }
     
     @objc func addButtonDidTap() {
-        setPhotoPermission(delegate: self)
+        requestPhotoPickerAccess(delegate: self)
     }
     
     @objc func duplicationCheckButtonDidTap() {

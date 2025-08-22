@@ -96,22 +96,7 @@ private extension ProfileRegisterViewController {
     @objc func addButtonDidTap() {
         AmplitudeManager.shared.trackEvent(tag: .clickAddPictureProfileSignup)
         
-        switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
-        case .denied, .restricted:
-            presentSettings()
-        case .authorized, .limited:
-            presentPhotoPicker(delegate: self)
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
-                DispatchQueue.main.async {
-                    if status == .authorized {
-                        self.presentPhotoPicker(delegate: self)
-                    }
-                }
-            }
-        default:
-            break
-        }
+        requestPhotoPickerAccess(delegate: self)
     }
     
     @objc func duplicationCheckButtonDidTap() {
