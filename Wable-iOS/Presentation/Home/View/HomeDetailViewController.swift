@@ -22,7 +22,7 @@ final class HomeDetailViewController: NavigationViewController {
     // MARK: - Item
     
     enum Item: Hashable {
-        case content(ContentTemp)
+        case content(Content)
         case comment(CommentTemp)
     }
     
@@ -202,7 +202,7 @@ private extension HomeDetailViewController {
     func setupDataSource() {
         let contentCellRegistration = UICollectionView.CellRegistration <
             ContentCollectionViewCell,
-            ContentTemp
+            Content
         > {
             [weak self] cell,
             indexPath,
@@ -584,7 +584,7 @@ private extension HomeDetailViewController {
                 guard let content = content else { return }
                 
                 owner.updateContent(
-                    ContentTemp(
+                    Content(
                         id: content.id,
                         author: content.author,
                         text: content.text,
@@ -768,7 +768,7 @@ private extension HomeDetailViewController {
 // MARK: - Helper Method
 
 extension HomeDetailViewController {
-    func updateContent(_ content: ContentTemp) {
+    func updateContent(_ content: Content) {
         guard var snapshot = dataSource?.snapshot() else { return }
         
         snapshot.deleteItems(snapshot.itemIdentifiers(inSection: .content))

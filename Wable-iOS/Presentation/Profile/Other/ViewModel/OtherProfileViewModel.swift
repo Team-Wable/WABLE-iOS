@@ -86,9 +86,9 @@ final class OtherProfileViewModel {
                     triggerType: TriggerType.Like.contentLike.rawValue
                 )
                 await MainActor.run {
-                    var contentInfo = item.contentList[index]
-                    isLiked ? contentInfo.unlike() : contentInfo.like()
-                    item.contentList[index] = contentInfo
+                    var content = item.contentList[index]
+                    isLiked ? content.unlike() : content.like()
+                    item.contentList[index] = content
                 }
             } catch {
                 await handleError(error: error)
@@ -224,7 +224,7 @@ private extension OtherProfileViewModel {
         Task {
             async let userProfile: UserProfile = fetchUserProfileUseCase.execute(userID: userID)
             
-            async let contentList: [ContentTemp] = contentRepository.fetchUserContentList(
+            async let contentList: [Content] = contentRepository.fetchUserContentList(
                 memberID: userID,
                 cursor: IntegerLiterals.initialCursor
             )
