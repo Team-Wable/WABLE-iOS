@@ -22,8 +22,8 @@ final class HomeDetailViewController: NavigationViewController {
     // MARK: - Item
     
     enum Item: Hashable {
-        case content(ContentTemp)
-        case comment(ContentComment)
+        case content(Content)
+        case comment(Comment)
     }
     
     // MARK: - typealias
@@ -37,7 +37,7 @@ final class HomeDetailViewController: NavigationViewController {
     private let willAppearSubject = PassthroughSubject<Void, Never>()
     private let didRefreshSubject = PassthroughSubject<Void, Never>()
     private let didContentHeartTappedSubject = PassthroughSubject<Bool, Never>()
-    private let didCommentHeartTappedSubject = PassthroughSubject<(Bool, ContentComment), Never>()
+    private let didCommentHeartTappedSubject = PassthroughSubject<(Bool, Comment), Never>()
     private let didReplyTappedSubject = PassthroughSubject<(Int, Int), Never>()
     private let didCommentTappedSubject = PassthroughSubject<Void, Never>()
     private let didGhostTappedSubject = PassthroughSubject<(Int, Int, String?, PostType), Never>()
@@ -202,7 +202,7 @@ private extension HomeDetailViewController {
     func setupDataSource() {
         let contentCellRegistration = UICollectionView.CellRegistration <
             ContentCollectionViewCell,
-            ContentTemp
+            Content
         > {
             [weak self] cell,
             indexPath,
@@ -354,7 +354,7 @@ private extension HomeDetailViewController {
         
         let commentCellRegistration = UICollectionView.CellRegistration <
             CommentCollectionViewCell,
-            ContentComment
+            Comment
         > {
             [weak self] cell,
             indexPath,
@@ -362,16 +362,16 @@ private extension HomeDetailViewController {
             guard let self = self else { return }
             
             cell.configureCell(
-                info: item.comment,
-                commentType: item.parentID == -1 ? .ripple : .reply,
-                authorType: item.comment.author.id == activeUserID ? .mine : .others,
+                info: item,
+                commentType: item.parentContentID == -1 ? .ripple : .reply,
+                authorType: item.author.id == activeUserID ? .mine : .others,
                 likeButtonTapHandler: {
                     self.didCommentHeartTappedSubject.send((cell.likeButton.isLiked, item))
                 },
                 settingButtonTapHandler: {
                     let viewController = WableBottomSheetController()
                     
-                    if self.activeUserID == item.comment.author.id {
+                    if self.activeUserID == item.author.id {
                         viewController.addActions(WableBottomSheetAction(title: "삭제하기", handler: {
                             viewController.dismiss(animated: true, completion: {
                                 let viewController = WableSheetViewController(title: StringLiterals.Delete.commentSheetTitle, message: StringLiterals.Delete.commentSheetMessage)
@@ -389,7 +389,7 @@ private extension HomeDetailViewController {
                                         style: .primary,
                                         handler: {
                                             viewController.dismiss(animated: true, completion: {
-                                                self.didDeleteTappedSubject.send((item.comment.id, .comment))
+                                                self.didDeleteTappedSubject.send((item.id, .comment))
                                             })
                                         }
                                     )
@@ -405,12 +405,12 @@ private extension HomeDetailViewController {
                                     viewController.dismiss(
                                         animated: true,
                                         completion: {
-                                            self?.didReportTappedSubject.send((item.comment.author.nickname, message ?? item.comment.text))
+                                            self?.didReportTappedSubject.send((item.author.nickname, message ?? item.text))
                                         })
                                 })
                         }
                         let banAction = WableBottomSheetAction(title: "밴하기") { [weak self] in
-                            self?.didBannedTappedSubject.send((item.comment.author.id, item.comment.id, .comment))
+                            self?.didBannedTappedSubject.send((item.author.id, item.id, .comment))
                         }
                         self.showBottomSheet(actions: reportAction, banAction)
                     } else {
@@ -422,8 +422,8 @@ private extension HomeDetailViewController {
                                         completion: {
                                             self?.didReportTappedSubject.send(
                                                 (
-                                                    item.comment.author.nickname,
-                                                    message ?? item.comment.text
+                                                    item.author.nickname,
+                                                    message ?? item.text
                                                 )
                                             )
                                         })
@@ -435,13 +435,13 @@ private extension HomeDetailViewController {
                     self.present(viewController, animated: true)
                 },
                 profileImageViewTapHandler: {
-                    if self.activeUserID == item.comment.author.id,
+                    if self.activeUserID == item.author.id,
                        let tabBarController = self.tabBarController {
                         tabBarController.selectedIndex = 4
                     } else {
                         let viewController = OtherProfileViewController(
                             viewModel: .init(
-                                userID: item.comment.author.id,
+                                userID: item.author.id,
                                 fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
                                 checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
                                     repository: UserSessionRepositoryImpl(
@@ -463,17 +463,17 @@ private extension HomeDetailViewController {
                     }, onPrimary: { message in
                         AmplitudeManager.shared.trackEvent(tag: .clickApplyghostPopup)
                         
-                        self.didGhostTappedSubject.send((item.comment.id, item.comment.author.id, message, .comment))
+                        self.didGhostTappedSubject.send((item.id, item.author.id, message, .comment))
                     })
                 },
                 replyButtonTapHandler: {
                     AmplitudeManager.shared.trackEvent(tag: .clickWriteRecomment)
                     
                     self.createCommentButton.isEnabled = false
-                    self.didReplyTappedSubject.send((item.comment.id, item.comment.author.id))
+                    self.didReplyTappedSubject.send((item.id, item.author.id))
                     
                     self.commentTextView.text = ""
-                    self.updatePlaceholder(for: item.comment.author.nickname, type: .reply)
+                    self.updatePlaceholder(for: item.author.nickname, type: .reply)
                     
                     self.commentTextView.endEditing(true)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -584,7 +584,7 @@ private extension HomeDetailViewController {
                 guard let content = content else { return }
                 
                 owner.updateContent(
-                    ContentTemp(
+                    Content(
                         id: content.id,
                         author: content.author,
                         text: content.text,
@@ -768,7 +768,7 @@ private extension HomeDetailViewController {
 // MARK: - Helper Method
 
 extension HomeDetailViewController {
-    func updateContent(_ content: ContentTemp) {
+    func updateContent(_ content: Content) {
         guard var snapshot = dataSource?.snapshot() else { return }
         
         snapshot.deleteItems(snapshot.itemIdentifiers(inSection: .content))
@@ -777,17 +777,17 @@ extension HomeDetailViewController {
         dataSource?.apply(snapshot, animatingDifferences: true)
     }
     
-    func updateComments(_ comments: [ContentComment]) {
+    func updateComments(_ comments: [Comment]) {
         guard var snapshot = dataSource?.snapshot() else { return }
         
         let commentItems = comments.flatMap { comment -> [Item] in
-            guard !comment.isDeleted else { return [] }
+            guard comment.isDeleted != true else { return [] }
             
             var items: [Item] = [.comment(comment)]
             
-            if !comment.childs.isEmpty {
-                let childItems = comment.childs
-                    .filter { !$0.isDeleted }
+            if !comment.children.isEmpty {
+                let childItems = comment.children
+                    .filter { !($0.isDeleted ?? false) }
                     .map { Item.comment($0) }
                 
                 items.append(contentsOf: childItems)

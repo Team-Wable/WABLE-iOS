@@ -22,8 +22,8 @@ final class OtherProfileViewController: UIViewController {
     
     enum Item: Hashable {
         case profile(UserProfile)
-        case content(ContentTemp)
-        case comment(UserComment)
+        case content(Content)
+        case comment(Comment)
         case empty(ProfileEmptyCellItem)
     }
     
@@ -204,7 +204,7 @@ private extension OtherProfileViewController {
             )
         }
         
-        let contentCellRegistration = CellRegistration<ContentCollectionViewCell, ContentTemp> {
+        let contentCellRegistration = CellRegistration<ContentCollectionViewCell, Content> {
             cell, indexPath, item in
             cell.configureCell(
                 info: item,
@@ -257,20 +257,20 @@ private extension OtherProfileViewController {
             )
         }
         
-        let commentCellRegistration = CellRegistration<CommentCollectionViewCell, UserComment> {
+        let commentCellRegistration = CellRegistration<CommentCollectionViewCell, Comment> {
             cell, indexPath, item in
             
             cell.configureCell(
-                info: item.comment,
+                info: item,
                 commentType: .ripple,
                 authorType: .others,
-                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeComment(for: item.comment.id) },
+                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeComment(for: item.id) },
                 settingButtonTapHandler: { [weak self] in
                     guard let userRole = self?.viewModel.checkUserRole(), userRole != .owner else { return }
                     
                     let report = WableBottomSheetAction(title: "신고하기") { [weak self] in
                         self?.showReportSheet(onPrimary: { message in
-                            let comment = item.comment
+                            let comment = item
                             self?.viewModel.reportComment(for: comment.author.nickname, message: message ?? comment.text)
                         })
                     }
@@ -281,7 +281,7 @@ private extension OtherProfileViewController {
                     
                     let ban = WableBottomSheetAction(title: "밴하기") { [weak self] in
                         let confirm = WableSheetAction(title: Constant.Ban.title, style: .primary) { [weak self] in
-                            self?.viewModel.banComment(for: item.comment.id)
+                            self?.viewModel.banComment(for: item.id)
                         }
                         self?.showWableSheetWithCancel(
                             title: Constant.Ban.title,
@@ -299,7 +299,7 @@ private extension OtherProfileViewController {
                     }, onPrimary: { message in
                         AmplitudeManager.shared.trackEvent(tag: .clickApplyghostPopup)
                         
-                        self?.viewModel.ghostComment(for: item.comment.id, reason: message ?? "")
+                        self?.viewModel.ghostComment(for: item.id, reason: message ?? "")
                     })
                 },
                 replyButtonTapHandler: nil

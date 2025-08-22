@@ -19,7 +19,7 @@ final class FetchContentInfoUseCase {
 // MARK: - Extension
 
 extension FetchContentInfoUseCase {
-    func execute(contentID: Int) -> AnyPublisher<ContentTemp, WableError> {
+    func execute(contentID: Int) -> AnyPublisher<Content, WableError> {
         return repository.fetchContentInfo(contentID: contentID)
     }
 }

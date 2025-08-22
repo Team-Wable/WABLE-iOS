@@ -7,36 +7,9 @@
 
 import Foundation
 
-// MARK: - 게시물 리스트
+// MARK: - 게시물 정보
 
-struct Content: Hashable {
-    let content: UserContent
-    let isDeleted: Bool
-}
-
-struct UserContent: Identifiable, Hashable {
-    let id: Int
-    let contentInfo: ContentTemp
-}
-
-// MARK: - 게시물 상세 정보
-
-struct ContentInfo: Hashable {
-    let author: User
-    let createdDate: Date?
-    let title: String
-    let imageURL: URL?
-    let text: String
-    
-    var status: PostStatus
-    var like: Like
-    var opacity: Opacity
-    var commentCount: Int
-}
-
-// MARK: - 게시물 정보 (임시)
-
-struct ContentTemp: Identifiable, Hashable, Likable {
+struct Content: Identifiable, Hashable, Likable {
     let id: Int
     let author: User
     let text: String

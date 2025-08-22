@@ -19,7 +19,7 @@ final class HomeViewController: NavigationViewController {
     
     // MARK: - typealias
     
-    typealias Item = ContentTemp
+    typealias Item = Content
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     
@@ -173,7 +173,7 @@ private extension HomeViewController {
     }
     
     func setupDataSource() {
-        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, ContentTemp> {
+        let homeCellRegistration = CellRegistration<ContentCollectionViewCell, Content> {
             [weak self] cell, indexPath, item in
             guard let self = self else { return }
             

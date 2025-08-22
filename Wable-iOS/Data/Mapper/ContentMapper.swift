@@ -10,7 +10,7 @@ import Foundation
 enum ContentMapper { }
 
 extension ContentMapper {
-    static func toDomain(_ response: DTO.Response.FetchContent, _ id: Int) -> ContentTemp {
+    static func toDomain(_ response: DTO.Response.FetchContent, _ id: Int) -> Content {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:SS"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
@@ -29,7 +29,7 @@ extension ContentMapper {
             postStatus = .normal
         }
         
-        return ContentTemp(
+        return Content(
             id: id,
             author: User(
                 id: response.memberID,
@@ -50,7 +50,7 @@ extension ContentMapper {
         )
     }
     
-    static func toDomain(_ response: [DTO.Response.FetchContents]) -> [ContentTemp] {
+    static func toDomain(_ response: [DTO.Response.FetchContents]) -> [Content] {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:SS"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
@@ -70,7 +70,7 @@ extension ContentMapper {
                 postStatus = .normal
             }
             
-            return ContentTemp(
+            return Content(
                 id: content.contentID,
                 author: User(
                     id: content.memberID,
@@ -92,7 +92,7 @@ extension ContentMapper {
         }
     }
     
-    static func toDomain(_ response: [DTO.Response.FetchUserContents]) -> [ContentTemp] {
+    static func toDomain(_ response: [DTO.Response.FetchUserContents]) -> [Content] {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:SS"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
@@ -112,7 +112,7 @@ extension ContentMapper {
                 postStatus = .normal
             }
             
-            return ContentTemp(
+            return Content(
                 id: content.contentID,
                 author: User(
                     id: content.memberID,

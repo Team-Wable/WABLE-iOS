@@ -17,7 +17,7 @@ final class CommentRepositoryImpl {
 }
 
 extension CommentRepositoryImpl: CommentRepository {
-    func fetchUserCommentList(memberID: Int, cursor: Int) -> AnyPublisher<[UserComment], WableError> {
+    func fetchUserCommentList(memberID: Int, cursor: Int) -> AnyPublisher<[Comment], WableError> {
         return provider.request(
             .fetchUserCommentList(
                 memberID: memberID,
@@ -29,7 +29,7 @@ extension CommentRepositoryImpl: CommentRepository {
         .mapWableError()
     }
     
-    func fetchUserCommentList(memberID: Int, cursor: Int) async throws -> [UserComment] {
+    func fetchUserCommentList(memberID: Int, cursor: Int) async throws -> [Comment] {
         do {
             let response = try await provider.request(
                 .fetchUserCommentList(memberID: memberID, cursor: cursor),
@@ -41,7 +41,7 @@ extension CommentRepositoryImpl: CommentRepository {
         }
     }
     
-    func fetchContentCommentList(contentID: Int, cursor: Int) -> AnyPublisher<[ContentComment], WableError> {
+    func fetchContentCommentList(contentID: Int, cursor: Int) -> AnyPublisher<[Comment], WableError> {
         return provider.request(
             .fetchContentCommentList(
                 contentID: contentID,
@@ -49,7 +49,7 @@ extension CommentRepositoryImpl: CommentRepository {
             ),
             for: [DTO.Response.FetchContentComments].self
         )
-        .map(CommentMapper.toDomain)
+        .map { CommentMapper.toDomain(contentID, $0) }
         .mapWableError()
     }
     
@@ -90,16 +90,16 @@ extension CommentRepositoryImpl: CommentRepository {
 }
 
 struct MockCommentRepository: CommentRepository {
-    func fetchUserCommentList(memberID: Int, cursor: Int) -> AnyPublisher<[UserComment], WableError> {
+    func fetchUserCommentList(memberID: Int, cursor: Int) -> AnyPublisher<[Comment], WableError> {
         .fail(.unknownError)
     }
     
-    func fetchUserCommentList(memberID: Int, cursor: Int) async throws -> [UserComment] {        
+    func fetchUserCommentList(memberID: Int, cursor: Int) async throws -> [Comment] {
         if cursor < .zero {
             return Array(Self.mockUserComments.prefix(10))
         }
         
-        guard let index = Self.mockUserComments.firstIndex(where: { $0.comment.id == cursor }) else {
+        guard let index = Self.mockUserComments.firstIndex(where: { $0.id == cursor }) else {
             return []
         }
         let start = index + 1
@@ -107,7 +107,7 @@ struct MockCommentRepository: CommentRepository {
         return Array(Self.mockUserComments[start..<end])
     }
     
-    func fetchContentCommentList(contentID: Int, cursor: Int) -> AnyPublisher<[ContentComment], WableError> {
+    func fetchContentCommentList(contentID: Int, cursor: Int) -> AnyPublisher<[Comment], WableError> {
         .fail(.unknownError)
     }
     
@@ -123,7 +123,7 @@ struct MockCommentRepository: CommentRepository {
         .fail(.unknownError)
     }
     
-    static let mockUserComments: [UserComment] = {
+    static let mockUserComments: [Comment] = {
         let mockContentID = -1
         let mockUser = User(
             id: 167,
@@ -132,18 +132,20 @@ struct MockCommentRepository: CommentRepository {
             fanTeam: .t1
         )
         
-        let temp: [UserComment] = (1...52).map { number in
-            UserComment(
-                comment: CommentInfo(
-                    author: mockUser,
-                    id: number,
-                    text: "\(number)번째",
-                    createdDate: .now,
-                    status: .normal,
-                    like: Like(status: false, count: 0),
-                    opacity: .init(value: 0)
-                ),
-                contentID: mockContentID
+        let temp: [Comment] = (1...52).map { number in
+            Comment(
+                id: number,
+                author: mockUser,
+                text: "\(number)번째",
+                contentID: mockContentID,
+                isDeleted: nil,
+                createdDate: .now,
+                parentContentID: -1,
+                children: [],
+                likeCount: 0,
+                isLiked: false,
+                opacity: .init(value: 0),
+                status: .normal
             )
         }
         return temp
