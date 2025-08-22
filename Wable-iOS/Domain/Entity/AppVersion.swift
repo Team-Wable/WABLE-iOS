@@ -7,10 +7,14 @@
 
 import Foundation
 
-struct AppVersion {
+struct AppVersion: CustomStringConvertible {
     let major: Int
     let minor: Int
     let patch: Int
+    
+    var description: String {
+        return "\(major).\(minor).\(patch)"
+    }
     
     init(from versionString: String) {
         let components = versionString

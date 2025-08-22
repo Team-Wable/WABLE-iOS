@@ -10,7 +10,7 @@ import Foundation
 enum CommentMapper { }
 
 extension CommentMapper {
-    static func toDomain(_ response: [DTO.Response.FetchUserComments]) -> [UserComment] {
+    static func toDomain(_ response: [DTO.Response.FetchUserComments]) -> [Comment] {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
@@ -29,30 +29,29 @@ extension CommentMapper {
                 postStatus = .normal
             }
             
-            return UserComment(
-                comment: CommentInfo(
-                    author: User(
-                        id: comment.memberID,
-                        nickname: comment.memberNickname,
-                        profileURL: url,
-                        fanTeam: fanTeam
-                    ),
-                    id: comment.commentID,
-                    text: comment.commentText,
-                    createdDate: date,
-                    status: postStatus,
-                    like: Like(
-                        status: comment.isLiked,
-                        count: comment.commentLikedNumber
-                    ),
-                    opacity: Opacity(value: comment.memberGhost)
+            return Comment(
+                id: comment.commentID,
+                author: User(
+                    id: comment.memberID,
+                    nickname: comment.memberNickname,
+                    profileURL: url,
+                    fanTeam: fanTeam
                 ),
-                contentID: comment.contentID
+                text: comment.commentText,
+                contentID: comment.contentID,
+                isDeleted: false,
+                createdDate: date,
+                parentContentID: -1,
+                children: [],
+                likeCount: comment.likedCount,
+                isLiked: comment.isLiked,
+                opacity: Opacity(value: comment.memberGhost),
+                status: postStatus
             )
         }
     }
     
-    static func toDomain(_ response: [DTO.Response.FetchContentComments]) -> [ContentComment] {
+    static func toDomain(_ contentID: Int, _ response: [DTO.Response.FetchContentComments]) -> [Comment] {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
@@ -70,27 +69,24 @@ extension CommentMapper {
                 postStatus = .normal
             }
             
-            return ContentComment(
-                comment: CommentInfo(
-                    author: User(
-                        id: comment.memberID,
-                        nickname: comment.memberNickname,
-                        profileURL: url,
-                        fanTeam: fanTeam
-                    ),
-                    id: comment.commentID,
-                    text: comment.commentText,
-                    createdDate: date,
-                    status: postStatus,
-                    like: Like(
-                        status: comment.isLiked,
-                        count: comment.commentLikedNumber
-                    ),
-                    opacity: Opacity(value: comment.memberGhost)
+            return Comment(
+                id: comment.commentID,
+                author: User(
+                    id: comment.memberID,
+                    nickname: comment.memberNickname,
+                    profileURL: url,
+                    fanTeam: fanTeam
                 ),
-                parentID: comment.parentCommentID,
+                text: comment.commentText,
+                contentID: contentID,
                 isDeleted: comment.isDeleted,
-                childs: comment.childComments.map(toDomain) ?? []
+                createdDate: date,
+                parentContentID: comment.parentCommentID,
+                children: CommentMapper.toDomain(contentID, comment.childComments ?? []),
+                likeCount: comment.likedCount,
+                isLiked: comment.isLiked,
+                opacity: Opacity(value: comment.memberGhost),
+                status: postStatus
             )
         }
     }

@@ -18,7 +18,6 @@ final class CheckAppUpdateRequirementUseCaseImpl: CheckAppUpdateRequirementUseCa
     func execute() async throws -> UpdateRequirement {
         let appStoreVersion = try await appVersionRepository.fetchAppStoreVersion()
         let currentVersion = appVersionRepository.fetchCurrentVersion()
-        let isAlreadyShown = updateAlertPolicyRepository.hasSeenOptionalAlert()
         
         let requirement: UpdateRequirement
         if appStoreVersion.major > currentVersion.major {
@@ -31,12 +30,13 @@ final class CheckAppUpdateRequirementUseCaseImpl: CheckAppUpdateRequirementUseCa
             requirement = .none
         }
         
-        if requirement == .optional, isAlreadyShown {
+        let hasSeenOptionalAlert = updateAlertPolicyRepository.hasSeenOptionalAlert(for: appStoreVersion.description)
+        if requirement == .optional, hasSeenOptionalAlert {
             return .none
         }
         
-        if requirement == .optional, !isAlreadyShown {
-            updateAlertPolicyRepository.markOptionalAlertShown()
+        if requirement == .optional, !hasSeenOptionalAlert {
+            updateAlertPolicyRepository.markOptionalAlertShown(for: appStoreVersion.description)
             return .optional
         }
         

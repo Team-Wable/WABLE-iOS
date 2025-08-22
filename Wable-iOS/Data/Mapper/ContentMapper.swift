@@ -10,7 +10,7 @@ import Foundation
 enum ContentMapper { }
 
 extension ContentMapper {
-    static func toDomain(_ response: DTO.Response.FetchContent) -> ContentInfo {
+    static func toDomain(_ response: DTO.Response.FetchContent, _ id: Int) -> Content {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:SS"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
@@ -29,24 +29,24 @@ extension ContentMapper {
             postStatus = .normal
         }
         
-        return ContentInfo(
+        return Content(
+            id: id,
             author: User(
                 id: response.memberID,
                 nickname: response.memberNickname,
                 profileURL: memberProfileURL,
                 fanTeam: fanTeam
             ),
-            createdDate: date,
+            text: response.contentText,
             title: response.contentTitle,
             imageURL: contentImageURL,
-            text: response.contentText,
-            status: postStatus,
-            like: Like(
-                status: response.isLiked,
-                count: response.likedNumber
-            ),
+            isDeleted: nil,
+            createdDate: date,
+            isLiked: response.isLiked,
+            likeCount: response.likedNumber,
             opacity: Opacity(value: response.memberGhost),
-            commentCount: response.commentNumber
+            commentCount: response.commentNumber,
+            status: postStatus
         )
     }
     
@@ -71,34 +71,28 @@ extension ContentMapper {
             }
             
             return Content(
-                content: UserContent(
-                    id: content.contentID,
-                    contentInfo: ContentInfo(
-                        author: User(
-                            id: content.memberID,
-                            nickname: content.memberNickname,
-                            profileURL: memberProfileURL,
-                            fanTeam: fanTeam
-                        ),
-                        createdDate: date,
-                        title: content.contentTitle,
-                        imageURL: contentImageURL,
-                        text: content.contentText,
-                        status: postStatus,
-                        like: Like(
-                            status: content.isLiked,
-                            count: content.likedNumber
-                        ),
-                        opacity: Opacity(value: content.memberGhost),
-                        commentCount: content.commentNumber
-                    )
+                id: content.contentID,
+                author: User(
+                    id: content.memberID,
+                    nickname: content.memberNickname,
+                    profileURL: memberProfileURL,
+                    fanTeam: fanTeam
                 ),
-                isDeleted: content.isDeleted
+                text: content.contentText,
+                title: content.contentTitle,
+                imageURL: contentImageURL,
+                isDeleted: content.isDeleted,
+                createdDate: date,
+                isLiked: content.isLiked,
+                likeCount: content.likedNumber,
+                opacity: Opacity(value: content.memberGhost),
+                commentCount: content.commentNumber,
+                status: postStatus
             )
         }
     }
     
-    static func toDomain(_ response: [DTO.Response.FetchUserContents]) -> [UserContent] {
+    static func toDomain(_ response: [DTO.Response.FetchUserContents]) -> [Content] {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:SS"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
@@ -118,27 +112,24 @@ extension ContentMapper {
                 postStatus = .normal
             }
             
-            return UserContent(
+            return Content(
                 id: content.contentID,
-                contentInfo: ContentInfo(
-                    author: User(
-                        id: content.memberID,
-                        nickname: content.memberNickname,
-                        profileURL: memberProfileURL,
-                        fanTeam: fanTeam
-                    ),
-                    createdDate: date,
-                    title: content.contentTitle,
-                    imageURL: contentImageURL,
-                    text: content.contentText,
-                    status: postStatus,
-                    like: Like(
-                        status: content.isLiked,
-                        count: content.likedNumber
-                    ),
-                    opacity: Opacity(value: content.memberGhost),
-                    commentCount: content.commentNumber
-                )
+                author: User(
+                    id: content.memberID,
+                    nickname: content.memberNickname,
+                    profileURL: memberProfileURL,
+                    fanTeam: fanTeam
+                ),
+                text: content.contentText,
+                title: content.contentTitle,
+                imageURL: contentImageURL,
+                isDeleted: nil,
+                createdDate: date,
+                isLiked: content.isLiked,
+                likeCount: content.likedNumber,
+                opacity: Opacity(value: content.memberGhost),
+                commentCount: content.commentNumber,
+                status: postStatus
             )
         }
     }

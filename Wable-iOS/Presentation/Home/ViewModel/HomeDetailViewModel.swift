@@ -63,7 +63,7 @@ extension HomeDetailViewModel: ViewModelType {
         let viewWillAppear: AnyPublisher<Void, Never>
         let viewDidRefresh: AnyPublisher<Void, Never>
         let didContentHeartTappedItem: AnyPublisher<Bool, Never>
-        let didCommentHeartTappedItem: AnyPublisher<(Bool, ContentComment), Never>
+        let didCommentHeartTappedItem: AnyPublisher<(Bool, Comment), Never>
         let didCommentTappedItem: AnyPublisher<Void, Never>
         let didReplyTappedItem: AnyPublisher<(Int, Int), Never>
         let didCreateTappedItem: AnyPublisher<String, Never>
@@ -77,9 +77,9 @@ extension HomeDetailViewModel: ViewModelType {
     struct Output {
         let activeUserID: AnyPublisher<Int?, Never>
         let isAdmin: AnyPublisher<Bool?, Never>
-        let content: AnyPublisher<ContentInfo?, Never>
+        let content: AnyPublisher<Content?, Never>
         let contentNotFound: AnyPublisher<Void, Never>
-        let comments: AnyPublisher<[ContentComment], Never>
+        let comments: AnyPublisher<[Comment], Never>
         let isLoading: AnyPublisher<Bool, Never>
         let isLoadingMore: AnyPublisher<Bool, Never>
         let textViewState: AnyPublisher<CommentType, Never>
@@ -89,9 +89,9 @@ extension HomeDetailViewModel: ViewModelType {
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
-        let contentSubject = CurrentValueSubject<ContentInfo?, Never>(nil)
+        let contentSubject = CurrentValueSubject<Content?, Never>(nil)
         let contentNotFoundSubject = PassthroughSubject<Void, Never>()
-        let commentsSubject = CurrentValueSubject<[ContentComment], Never>([])
+        let commentsSubject = CurrentValueSubject<[Comment], Never>([])
         let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
         let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
         let isLastViewSubject = CurrentValueSubject<Bool, Never>(false)
@@ -139,12 +139,12 @@ extension HomeDetailViewModel: ViewModelType {
                 isLastViewSubject.send(false)
             })
             .withUnretained(self)
-            .flatMap({ owner, _ -> AnyPublisher<(ContentInfo?, [ContentComment]), Never> in
+            .flatMap({ owner, _ -> AnyPublisher<(Content?, [Comment]), Never> in
                 let contentPublisher = owner.fetchContentInfoUseCase.execute(contentID: owner.contentID)
-                    .map { contentInfo -> ContentInfo? in
-                        return contentInfo
+                    .map { content -> Content? in
+                        return content
                     }
-                    .catch { error -> AnyPublisher<ContentInfo?, Never> in
+                    .catch { error -> AnyPublisher<Content?, Never> in
                         WableLogger.log("\(error.localizedDescription)", for: .error)
                         if case WableError.notFoundContent = error {
                             contentNotFoundSubject.send()
@@ -186,21 +186,19 @@ extension HomeDetailViewModel: ViewModelType {
             .sink(receiveValue: { isLiked in
                 guard let content = contentSubject.value else { return }
                 
-                let originalLike = content.like
-                let updatedLike = isLiked
-                ? Like(status: true, count: originalLike.count + 1)
-                : Like(status: false, count: max(0, originalLike.count - 1))
-                
-                let updatedContent = ContentInfo(
+                let updatedContent = Content(
+                    id: content.id,
                     author: content.author,
-                    createdDate: content.createdDate,
+                    text: content.text,
                     title: content.title,
                     imageURL: content.imageURL,
-                    text: content.text,
-                    status: content.status,
-                    like: updatedLike,
+                    isDeleted: content.isDeleted,
+                    createdDate: content.createdDate,
+                    isLiked: isLiked,
+                    likeCount: isLiked ? content.likeCount + 1 : content.likeCount - 1,
                     opacity: content.opacity,
-                    commentCount: content.commentCount
+                    commentCount: content.commentCount,
+                    status: content.status
                 )
                 
                 contentSubject.send(updatedContent)
@@ -209,10 +207,10 @@ extension HomeDetailViewModel: ViewModelType {
         
         input.didCommentHeartTappedItem
             .withUnretained(self)
-            .flatMap { owner, info -> AnyPublisher<(Bool, ContentComment), Never> in
+            .flatMap { owner, info -> AnyPublisher<(Bool, Comment), Never> in
                 let (isLiked, comment) = info
-                return (isLiked ? owner.createCommentLikedUseCase.execute(commentID: comment.comment.id, notificationText: comment.comment.text)
-                        : owner.deleteCommentLikedUseCase.execute(commentID: comment.comment.id))
+                return (isLiked ? owner.createCommentLikedUseCase.execute(commentID: comment.id, notificationText: comment.text)
+                        : owner.deleteCommentLikedUseCase.execute(commentID: comment.id))
                 .map { _ in info }
                 .asDriver(onErrorJustReturn: info)
             }
@@ -220,67 +218,63 @@ extension HomeDetailViewModel: ViewModelType {
                 var updatedComments = commentsSubject.value
                 
                 for i in 0..<updatedComments.count {
-                    if updatedComments[i].comment.id == commentInfo.comment.id {
-                        let originalComment = updatedComments[i].comment
-                        let originalLike = originalComment.like
+                    if updatedComments[i].id == commentInfo.id {
+                        let originalComment = updatedComments[i]
                         
-                        let updatedLike = isLiked
-                        ? Like(status: true, count: originalLike.count + 1)
-                        : Like(status: false, count: max(0, originalLike.count - 1))
-                        
-                        let updatedCommentInfo = CommentInfo(
-                            author: originalComment.author,
+                        updatedComments[i] = Comment(
                             id: originalComment.id,
+                            author: originalComment.author,
                             text: originalComment.text,
+                            contentID: originalComment.contentID,
+                            isDeleted: originalComment.isDeleted,
                             createdDate: originalComment.createdDate,
-                            status: originalComment.status,
-                            like: updatedLike,
-                            opacity: originalComment.opacity
-                        )
-                        
-                        updatedComments[i] = ContentComment(
-                            comment: updatedCommentInfo,
-                            parentID: updatedComments[i].parentID,
-                            isDeleted: updatedComments[i].isDeleted,
-                            childs: updatedComments[i].childs
+                            parentContentID: originalComment.parentContentID,
+                            children: originalComment.children,
+                            likeCount: isLiked ? originalComment.likeCount + 1 : originalComment.likeCount - 1,
+                            isLiked: isLiked,
+                            opacity: originalComment.opacity,
+                            status: originalComment.status
                         )
                         
                         commentsSubject.send(updatedComments)
                         return
                     }
                     
-                    for j in 0..<updatedComments[i].childs.count {
-                        if updatedComments[i].childs[j].comment.id == commentInfo.comment.id {
-                            let originalChild = updatedComments[i].childs[j].comment
-                            let originalLike = originalChild.like
+                    for j in 0..<updatedComments[i].children.count {
+                        if updatedComments[i].children[j].id == commentInfo.id {
+                            let originalChild = updatedComments[i].children[j]
+                            var updatedChilds = updatedComments[i].children
                             
-                            let updatedLike = isLiked
-                            ? Like(status: true, count: originalLike.count + 1)
-                            : Like(status: false, count: max(0, originalLike.count - 1))
-                            
-                            let updatedChildInfo = CommentInfo(
-                                author: originalChild.author,
+                            let updatedChildInfo = Comment(
                                 id: originalChild.id,
+                                author: originalChild.author,
                                 text: originalChild.text,
+                                contentID: originalChild.contentID,
+                                isDeleted: originalChild.isDeleted,
                                 createdDate: originalChild.createdDate,
-                                status: originalChild.status,
-                                like: updatedLike,
-                                opacity: originalChild.opacity
+                                parentContentID: originalChild.parentContentID,
+                                children: originalChild.children,
+                                likeCount: isLiked ? originalChild.likeCount + 1 : originalChild.likeCount - 1,
+                                isLiked: isLiked,
+                                opacity: originalChild.opacity,
+                                status: originalChild.status
                             )
                             
-                            var updatedChilds = updatedComments[i].childs
-                            updatedChilds[j] = ContentComment(
-                                comment: updatedChildInfo,
-                                parentID: updatedChilds[j].parentID,
-                                isDeleted: updatedChilds[j].isDeleted,
-                                childs: updatedChilds[j].childs
-                            )
+                            updatedChilds[j] = updatedChildInfo
                             
-                            updatedComments[i] = ContentComment(
-                                comment: updatedComments[i].comment,
-                                parentID: updatedComments[i].parentID,
+                            updatedComments[i] = Comment(
+                                id: updatedComments[i].id,
+                                author: updatedComments[i].author,
+                                text: updatedComments[i].text,
+                                contentID: updatedComments[i].contentID,
                                 isDeleted: updatedComments[i].isDeleted,
-                                childs: updatedChilds
+                                createdDate: updatedComments[i].createdDate,
+                                parentContentID: updatedComments[i].parentContentID,
+                                children: updatedChilds,
+                                likeCount: updatedComments[i].likeCount,
+                                isLiked: updatedComments[i].isLiked,
+                                opacity: updatedComments[i].opacity,
+                                status: updatedComments[i].status
                             )
                             
                             commentsSubject.send(updatedComments)
@@ -318,7 +312,7 @@ extension HomeDetailViewModel: ViewModelType {
             }
             .sink(receiveValue: { [weak self] userID in
                 guard let self = self,
-                      let contentInfo = contentSubject.value
+                      let content = contentSubject.value
                 else {
                     return
                 }
@@ -327,17 +321,20 @@ extension HomeDetailViewModel: ViewModelType {
                 
                 commentsSubject.send(updatedCommentInfo)
                 
-                if userID == contentInfo.author.id {
-                    let updatedContent = ContentInfo(
-                        author: contentInfo.author,
-                        createdDate: contentInfo.createdDate,
-                        title: contentInfo.title,
-                        imageURL: contentInfo.imageURL,
-                        text: contentInfo.text,
-                        status: .ghost,
-                        like: contentInfo.like,
-                        opacity: contentInfo.opacity.reduced(),
-                        commentCount: contentInfo.commentCount
+                if userID == content.author.id {
+                    let updatedContent = Content(
+                        id: content.id,
+                        author: content.author,
+                        text: content.text,
+                        title: content.title,
+                        imageURL: content.imageURL,
+                        isDeleted: content.isDeleted,
+                        createdDate: content.createdDate,
+                        isLiked: content.isLiked,
+                        likeCount: content.likeCount,
+                        opacity: content.opacity,
+                        commentCount: content.commentCount,
+                        status: .ghost
                     )
                     
                     contentSubject.send(updatedContent)
@@ -365,7 +362,7 @@ extension HomeDetailViewModel: ViewModelType {
             }
             .sink(receiveValue: { [weak self] userID in
                 guard let self = self,
-                      let contentInfo = contentSubject.value
+                      let content = contentSubject.value
                 else {
                     return
                 }
@@ -374,17 +371,20 @@ extension HomeDetailViewModel: ViewModelType {
                 
                 commentsSubject.send(updatedCommentInfo)
                 
-                if userID == contentInfo.author.id {
-                    let updatedContent = ContentInfo(
-                        author: contentInfo.author,
-                        createdDate: contentInfo.createdDate,
-                        title: contentInfo.title,
-                        imageURL: contentInfo.imageURL,
-                        text: contentInfo.text,
-                        status: .blind,
-                        like: contentInfo.like,
-                        opacity: contentInfo.opacity.reduced(),
-                        commentCount: contentInfo.commentCount
+                if userID == content.author.id {
+                    let updatedContent = Content(
+                        id: content.id,
+                        author: content.author,
+                        text: content.text,
+                        title: content.title,
+                        imageURL: content.imageURL,
+                        isDeleted: content.isDeleted,
+                        createdDate: content.createdDate,
+                        isLiked: content.isLiked,
+                        likeCount: content.likeCount,
+                        opacity: content.opacity,
+                        commentCount: content.commentCount,
+                        status: .blind
                     )
                     
                     contentSubject.send(updatedContent)
@@ -468,12 +468,10 @@ extension HomeDetailViewModel: ViewModelType {
                 isLoadingMoreSubject.send(true)
             })
             .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<[ContentComment], Never> in
-                guard let lastItem = commentsSubject.value.last else {
-                    return .just([])
-                }
+            .flatMap { owner, _ -> AnyPublisher<[Comment], Never> in
+                guard let lastItem = commentsSubject.value.last else { return .just([]) }
                 
-                let cursor = lastItem.comment.id
+                let cursor = lastItem.id
                 return owner.fetchContentCommentListUseCase.execute(contentID: owner.contentID, cursor: cursor)
                     .replaceError(with: [])
                     .eraseToAnyPublisher()
@@ -511,37 +509,45 @@ extension HomeDetailViewModel: ViewModelType {
 // MARK: - Helper Method
 
 private extension HomeDetailViewModel {
-    func updateGhostComments(comments: [ContentComment], userID: Int) -> [ContentComment] {
+    func updateGhostComments(comments: [Comment], userID: Int) -> [Comment] {
         return comments.map { comment in
-            let updatedComment: ContentComment
+            let updatedComment: Comment
             
-            if comment.comment.author.id == userID {
-                updatedComment = ContentComment(
-                    comment: CommentInfo(
-                        author: comment.comment.author,
-                        id: comment.comment.id,
-                        text: comment.comment.text,
-                        createdDate: comment.comment.createdDate,
-                        status: .ghost,
-                        like: comment.comment.like,
-                        opacity: comment.comment.opacity.reduced()
-                    ),
-                    parentID: comment.parentID,
+            if comment.author.id == userID {
+                updatedComment = Comment(
+                    id: comment.id,
+                    author: comment.author,
+                    text: comment.text,
+                    contentID: comment.contentID,
                     isDeleted: comment.isDeleted,
-                    childs: comment.childs
+                    createdDate: comment.createdDate,
+                    parentContentID: comment.parentContentID,
+                    children: comment.children,
+                    likeCount: comment.likeCount,
+                    isLiked: comment.isLiked,
+                    opacity: comment.opacity.reduced(),
+                    status: .ghost
                 )
             } else {
                 updatedComment = comment
             }
             
-            if !updatedComment.childs.isEmpty {
-                let updatedChilds = updateGhostComments(comments: updatedComment.childs, userID: userID)
+            if !updatedComment.children.isEmpty {
+                let updatedChildren = updateGhostComments(comments: updatedComment.children, userID: userID)
                 
-                return ContentComment(
-                    comment: updatedComment.comment,
-                    parentID: updatedComment.parentID,
+                return Comment(
+                    id: updatedComment.id,
+                    author: updatedComment.author,
+                    text: updatedComment.text,
+                    contentID: updatedComment.contentID,
                     isDeleted: updatedComment.isDeleted,
-                    childs: updatedChilds
+                    createdDate: updatedComment.createdDate,
+                    parentContentID: updatedComment.parentContentID,
+                    children: updatedChildren,
+                    likeCount: updatedComment.likeCount,
+                    isLiked: updatedComment.isLiked,
+                    opacity: updatedComment.opacity,
+                    status: updatedComment.status
                 )
             }
             
@@ -549,37 +555,45 @@ private extension HomeDetailViewModel {
         }
     }
     
-    func updateBannedComments(comments: [ContentComment], userID: Int) -> [ContentComment] {
+    func updateBannedComments(comments: [Comment], userID: Int) -> [Comment] {
         return comments.map { comment in
-            let updatedComment: ContentComment
+            let updatedComment: Comment
             
-            if comment.comment.author.id == userID {
-                updatedComment = ContentComment(
-                    comment: CommentInfo(
-                        author: comment.comment.author,
-                        id: comment.comment.id,
-                        text: comment.comment.text,
-                        createdDate: comment.comment.createdDate,
-                        status: .blind,
-                        like: comment.comment.like,
-                        opacity: comment.comment.opacity.reduced()
-                    ),
-                    parentID: comment.parentID,
+            if comment.author.id == userID {
+                updatedComment = Comment(
+                    id: comment.id,
+                    author: comment.author,
+                    text: comment.text,
+                    contentID: comment.contentID,
                     isDeleted: comment.isDeleted,
-                    childs: comment.childs
+                    createdDate: comment.createdDate,
+                    parentContentID: comment.parentContentID,
+                    children: comment.children,
+                    likeCount: comment.likeCount,
+                    isLiked: comment.isLiked,
+                    opacity: comment.opacity.reduced(),
+                    status: .blind
                 )
             } else {
                 updatedComment = comment
             }
             
-            if !updatedComment.childs.isEmpty {
-                let updatedChilds = updateBannedComments(comments: updatedComment.childs, userID: userID)
+            if !updatedComment.children.isEmpty {
+                let updatedChildren = updateBannedComments(comments: updatedComment.children, userID: userID)
                 
-                return ContentComment(
-                    comment: updatedComment.comment,
-                    parentID: updatedComment.parentID,
+                return Comment(
+                    id: updatedComment.id,
+                    author: updatedComment.author,
+                    text: updatedComment.text,
+                    contentID: updatedComment.contentID,
                     isDeleted: updatedComment.isDeleted,
-                    childs: updatedChilds
+                    createdDate: updatedComment.createdDate,
+                    parentContentID: updatedComment.parentContentID,
+                    children: updatedChildren,
+                    likeCount: updatedComment.likeCount,
+                    isLiked: updatedComment.isLiked,
+                    opacity: updatedComment.opacity,
+                    status: updatedComment.status
                 )
             }
             
@@ -587,29 +601,45 @@ private extension HomeDetailViewModel {
         }
     }
     
-    func updateDeleteComments(comments: [ContentComment], commentID: Int) -> [ContentComment] {
+    func updateDeleteComments(comments: [Comment], commentID: Int) -> [Comment] {
         return comments.map { comment in
-            let updatedComment: ContentComment
+            let updatedComment: Comment
             
-            if comment.comment.id == commentID {
-                updatedComment = ContentComment(
-                    comment: comment.comment,
-                    parentID: comment.parentID,
+            if comment.id == commentID {
+                updatedComment = Comment(
+                    id: commentID,
+                    author: comment.author,
+                    text: comment.text,
+                    contentID: comment.contentID,
                     isDeleted: true,
-                    childs: comment.childs
+                    createdDate: comment.createdDate,
+                    parentContentID: comment.parentContentID,
+                    children: comment.children,
+                    likeCount: comment.likeCount,
+                    isLiked: comment.isLiked,
+                    opacity: comment.opacity,
+                    status: comment.status
                 )
             } else {
                 updatedComment = comment
             }
 
-            if !updatedComment.childs.isEmpty {
-                let updatedChilds = updateDeleteComments(comments: updatedComment.childs, commentID: commentID)
+            if !updatedComment.children.isEmpty {
+                let updatedChilds = updateDeleteComments(comments: updatedComment.children, commentID: commentID)
                 
-                return ContentComment(
-                    comment: updatedComment.comment,
-                    parentID: updatedComment.parentID,
+                return Comment(
+                    id: updatedComment.id,
+                    author: updatedComment.author,
+                    text: updatedComment.text,
+                    contentID: updatedComment.contentID,
                     isDeleted: updatedComment.isDeleted,
-                    childs: updatedChilds
+                    createdDate: updatedComment.createdDate,
+                    parentContentID: updatedComment.parentContentID,
+                    children: updatedChilds,
+                    likeCount: updatedComment.likeCount,
+                    isLiked: updatedComment.isLiked,
+                    opacity: updatedComment.opacity,
+                    status: updatedComment.status
                 )
             }
             
@@ -617,12 +647,12 @@ private extension HomeDetailViewModel {
         }
     }
     
-    func flattenComments(_ comments: [ContentComment]) -> [ContentComment] {
-        var flattenedComments: [ContentComment] = []
+    func flattenComments(_ comments: [Comment]) -> [Comment] {
+        var flattenedComments: [Comment] = []
         
         for comment in comments {
             flattenedComments.append(comment)
-            flattenedComments.append(contentsOf: comment.childs)
+            flattenedComments.append(contentsOf: comment.children)
         }
         
         return flattenedComments

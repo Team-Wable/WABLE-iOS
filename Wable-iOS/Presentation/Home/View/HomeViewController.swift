@@ -178,8 +178,8 @@ private extension HomeViewController {
             guard let self = self else { return }
             
             cell.configureCell(
-                info: item.content.contentInfo,
-                authorType: item.content.contentInfo.author.id == self.activeUserID ? .mine : .others,
+                info: item,
+                authorType: item.author.id == self.activeUserID ? .mine : .others,
                 cellType: .list,
                 contentImageViewTapHandler: {
                     guard let image = cell.contentImageView.image else {
@@ -191,12 +191,12 @@ private extension HomeViewController {
                 likeButtonTapHandler: {
                     AmplitudeManager.shared.trackEvent(tag: .clickLikePost)
                     
-                    self.didHeartTappedSubject.send((item.content.id, cell.likeButton.isLiked))
+                    self.didHeartTappedSubject.send((item.id, cell.likeButton.isLiked))
                 },
                 settingButtonTapHandler: {
                     let viewController = WableBottomSheetController()
                     
-                    if self.activeUserID == item.content.contentInfo.author.id {
+                    if self.activeUserID == item.author.id {
                         viewController.addActions(WableBottomSheetAction(title: "삭제하기", handler: {
                             viewController.dismiss(animated: true, completion: {
                                 let viewController = WableSheetViewController(title: StringLiterals.Delete.contentSheetTitle, message: StringLiterals.Delete.contentSheetMessage)
@@ -210,7 +210,7 @@ private extension HomeViewController {
                                             AmplitudeManager.shared.trackEvent(tag: .clickDeletePost)
                                             
                                             viewController.dismiss(animated: true, completion: {
-                                                self.didDeleteTappedSubject.send(item.content.id)
+                                                self.didDeleteTappedSubject.send(item.id)
                                             })
                                         }
                                     )
@@ -228,15 +228,15 @@ private extension HomeViewController {
                                         completion: {
                                             self?.didReportTappedSubject.send(
                                                 (
-                                                    item.content.contentInfo.author.nickname,
-                                                    message ?? item.content.contentInfo.text
+                                                    item.author.nickname,
+                                                    message ?? item.text
                                                 )
                                             )
                                         })
                                 })
                         }
                         let banAction = WableBottomSheetAction(title: "밴하기") { [weak self] in
-                            self?.didBannedTappedSubject.send((item.content.contentInfo.author.id, item.content.id))
+                            self?.didBannedTappedSubject.send((item.author.id, item.id))
                         }
                         self.showBottomSheet(actions: reportAction, banAction)
                     } else {
@@ -248,8 +248,8 @@ private extension HomeViewController {
                                         completion: {
                                             self?.didReportTappedSubject.send(
                                                 (
-                                                    item.content.contentInfo.author.nickname,
-                                                    message ?? item.content.contentInfo.text
+                                                    item.author.nickname,
+                                                    message ?? item.text
                                                 )
                                             )
                                         })
@@ -263,13 +263,13 @@ private extension HomeViewController {
                 profileImageViewTapHandler: { [weak self] in
                     guard let self = self else { return }
                     
-                    if self.activeUserID == item.content.contentInfo.author.id,
+                    if self.activeUserID == item.author.id,
                        let tabBarController = self.tabBarController {
                         tabBarController.selectedIndex = 4
                     } else {
                         let viewController = OtherProfileViewController(
                             viewModel: .init(
-                                userID: item.content.contentInfo.author.id,
+                                userID: item.author.id,
                                 fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
                                 checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
                                     repository: UserSessionRepositoryImpl(
@@ -291,8 +291,7 @@ private extension HomeViewController {
                         AmplitudeManager.shared.trackEvent(tag: .clickWithdrawghostPopup)
                     }, onPrimary: { message in
                         AmplitudeManager.shared.trackEvent(tag: .clickApplyghostPopup)
-                        
-                        self.didGhostTappedSubject.send((item.content.id, item.content.contentInfo.author.id, message))
+                        self.didGhostTappedSubject.send((item.id, item.author.id, message))
                     })
                 }
             )
@@ -384,7 +383,7 @@ private extension HomeViewController {
             .sink { [weak self] content in
                 let viewController = HomeDetailViewController(
                     viewModel: HomeDetailViewModel(
-                        contentID: content.content.id,
+                        contentID: content.id,
                         fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
                         fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
                         createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),

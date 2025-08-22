@@ -23,8 +23,8 @@ final class MyProfileViewController: UIViewController {
     
     enum Item: Hashable {
         case profile(UserProfile)
-        case content(UserContent)
-        case comment(UserComment)
+        case content(Content)
+        case comment(Comment)
         case empty(ProfileEmptyCellItem)
     }
     
@@ -205,10 +205,10 @@ private extension MyProfileViewController {
             )
         }
         
-        let contentCellRegistration = CellRegistration<ContentCollectionViewCell, UserContent> {
+        let contentCellRegistration = CellRegistration<ContentCollectionViewCell, Content> {
             cell, indexPath, item in
             cell.configureCell(
-                info: item.contentInfo,
+                info: item,
                 authorType: .mine,
                 cellType: .list,
                 contentImageViewTapHandler: { [weak self] in
@@ -233,20 +233,20 @@ private extension MyProfileViewController {
             )
         }
         
-        let commentCellRegistration = CellRegistration<CommentCollectionViewCell, UserComment> {
+        let commentCellRegistration = CellRegistration<CommentCollectionViewCell, Comment> {
             cell, indexPath, item in
             
             cell.configureCell(
-                info: item.comment,
+                info: item,
                 commentType: .ripple,
                 authorType: .mine,
-                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeComment(for: item.comment.id) },
+                likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeComment(for: item.id) },
                 settingButtonTapHandler: { [weak self] in
                     let bottomSheet = WableBottomSheetController()
                     bottomSheet.addAction(
                         .init(
                             title: "삭제하기",
-                            handler: { [weak self] in self?.presentDeleteCommentActionSheet(for: item.comment.id) }
+                            handler: { [weak self] in self?.presentDeleteCommentActionSheet(for: item.id) }
                         )
                     )
                     self?.present(bottomSheet, animated: true)

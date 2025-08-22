@@ -8,6 +8,6 @@
 import Foundation
 
 protocol UpdateAlertPolicyRepository {
-    func hasSeenOptionalAlert() -> Bool
-    func markOptionalAlertShown()
+    func hasSeenOptionalAlert(for version: String) -> Bool
+    func markOptionalAlertShown(for version: String)
 }

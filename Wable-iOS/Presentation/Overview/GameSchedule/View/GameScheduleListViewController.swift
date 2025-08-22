@@ -134,11 +134,11 @@ private extension GameScheduleListViewController {
             let gameStatus = game.status ?? .progress
             let gameTimeText = gameTimeFormatter.string(from: game.date ?? Date())
             
-            let homeTeamName = game.homeTeam?.rawValue ?? "TBD"
-            let homeTeamLogoImage = UIImage(named: homeTeamName.lowercased())
+            let homeTeamName = game.homeTeam
+            let homeTeamLogoImage = UIImage(named: homeTeamName.lowercased()) ?? .tbd
             
-            let awayTeamName = game.awayTeam?.rawValue ?? "TBD"
-            let awayTeamLogoImage = UIImage(named: awayTeamName.lowercased())
+            let awayTeamName = game.awayTeam
+            let awayTeamLogoImage = UIImage(named: awayTeamName.lowercased()) ?? .tbd
             
             cell.configure(
                 gameStatusImage: gameStatus.image,

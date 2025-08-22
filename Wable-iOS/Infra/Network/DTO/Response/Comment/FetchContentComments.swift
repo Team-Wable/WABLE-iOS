@@ -18,7 +18,7 @@ extension DTO.Response {
         let isGhost: Bool
         let memberGhost: Int
         let isLiked: Bool
-        let commentLikedNumber: Int
+        let likedCount: Int
         let commentText, time: String
         let isDeleted: Bool
         let commentImageURL: String?
@@ -31,7 +31,9 @@ extension DTO.Response {
             case commentID = "commentId"
             case memberID = "memberId"
             case memberProfileURL = "memberProfileUrl"
-            case memberNickname, isGhost, memberGhost, isLiked, commentLikedNumber, commentText, time, isDeleted
+            case memberNickname, isGhost, memberGhost, isLiked
+            case likedCount = "commentLikedNumber"
+            case commentText, time, isDeleted
             case commentImageURL = "commentImageUrl"
             case memberFanTeam
             case parentCommentID = "parentCommentId"

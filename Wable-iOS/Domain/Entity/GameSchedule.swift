@@ -18,9 +18,9 @@ struct GameSchedule: Hashable {
 
 struct Game: Hashable {
     let date: Date?
-    let homeTeam: LCKTeam?
+    let homeTeam: String
     let homeScore: Int
-    let awayTeam: LCKTeam?
+    let awayTeam: String
     let awayScore: Int
     let status: GameStatus?
 }

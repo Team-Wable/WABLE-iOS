@@ -112,9 +112,9 @@ struct MockOverviewUseCaseImpl: OverviewUseCase {
                 
                 let game = Game(
                     date: date,
-                    homeTeam: lckTeams[homeTeamIndex],
+                    homeTeam: lckTeams[homeTeamIndex].rawValue,
                     homeScore: index * 2 + 1,
-                    awayTeam: lckTeams[awayTeamIndex],
+                    awayTeam: lckTeams[awayTeamIndex].rawValue,
                     awayScore: index * 2 + 2,
                     status: .scheduled
                 )
@@ -124,7 +124,7 @@ struct MockOverviewUseCaseImpl: OverviewUseCase {
             mockGameSchedules.append(GameSchedule(date: date, games: games))
         }
         
-        return .just([])
+        return .just(mockGameSchedules)
     }
     
     private func createMockTeamRanks() -> AnyPublisher<[LCKTeamRank], WableError> {
