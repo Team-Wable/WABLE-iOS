@@ -216,7 +216,7 @@ extension CommentCollectionViewCell {
     ///   - likeButtonTapHandler: 좋아요 버튼을 클릭했을 때 실행될 로직
     ///   - replyButtonTapHandler: 답글쓰기 버튼을 클릭했을 때 실행될 로직
     func configureCell(
-        info: CommentTemp,
+        info: Comment,
         commentType: CommentType,
         authorType: AuthorType,
         likeButtonTapHandler: (() -> Void)?,
@@ -251,7 +251,7 @@ extension CommentCollectionViewCell {
         likeButton.configureButton(isLiked: info.isLiked, likeCount: info.likeCount, postType: .comment)
     }
     
-    func configureCommentType(info: CommentTemp, commentType: CommentType) {
+    func configureCommentType(info: Comment, commentType: CommentType) {
         contentLabel.attributedText = info.text.pretendardString(with: .body4)
         
         switch commentType {
@@ -266,7 +266,7 @@ extension CommentCollectionViewCell {
         }
     }
     
-    func configurePostStatus(info: CommentTemp) {
+    func configurePostStatus(info: Comment) {
         switch info.status {
         case .normal:
             ghostCell(opacity: info.opacity.alpha)

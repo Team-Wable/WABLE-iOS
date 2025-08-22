@@ -17,7 +17,7 @@ final class CommentRepositoryImpl {
 }
 
 extension CommentRepositoryImpl: CommentRepository {
-    func fetchUserCommentList(memberID: Int, cursor: Int) -> AnyPublisher<[CommentTemp], WableError> {
+    func fetchUserCommentList(memberID: Int, cursor: Int) -> AnyPublisher<[Comment], WableError> {
         return provider.request(
             .fetchUserCommentList(
                 memberID: memberID,
@@ -29,7 +29,7 @@ extension CommentRepositoryImpl: CommentRepository {
         .mapWableError()
     }
     
-    func fetchUserCommentList(memberID: Int, cursor: Int) async throws -> [CommentTemp] {
+    func fetchUserCommentList(memberID: Int, cursor: Int) async throws -> [Comment] {
         do {
             let response = try await provider.request(
                 .fetchUserCommentList(memberID: memberID, cursor: cursor),
@@ -41,7 +41,7 @@ extension CommentRepositoryImpl: CommentRepository {
         }
     }
     
-    func fetchContentCommentList(contentID: Int, cursor: Int) -> AnyPublisher<[CommentTemp], WableError> {
+    func fetchContentCommentList(contentID: Int, cursor: Int) -> AnyPublisher<[Comment], WableError> {
         return provider.request(
             .fetchContentCommentList(
                 contentID: contentID,
@@ -90,11 +90,11 @@ extension CommentRepositoryImpl: CommentRepository {
 }
 
 struct MockCommentRepository: CommentRepository {
-    func fetchUserCommentList(memberID: Int, cursor: Int) -> AnyPublisher<[CommentTemp], WableError> {
+    func fetchUserCommentList(memberID: Int, cursor: Int) -> AnyPublisher<[Comment], WableError> {
         .fail(.unknownError)
     }
     
-    func fetchUserCommentList(memberID: Int, cursor: Int) async throws -> [CommentTemp] {
+    func fetchUserCommentList(memberID: Int, cursor: Int) async throws -> [Comment] {
         if cursor < .zero {
             return Array(Self.mockUserComments.prefix(10))
         }
@@ -107,7 +107,7 @@ struct MockCommentRepository: CommentRepository {
         return Array(Self.mockUserComments[start..<end])
     }
     
-    func fetchContentCommentList(contentID: Int, cursor: Int) -> AnyPublisher<[CommentTemp], WableError> {
+    func fetchContentCommentList(contentID: Int, cursor: Int) -> AnyPublisher<[Comment], WableError> {
         .fail(.unknownError)
     }
     
@@ -123,7 +123,7 @@ struct MockCommentRepository: CommentRepository {
         .fail(.unknownError)
     }
     
-    static let mockUserComments: [CommentTemp] = {
+    static let mockUserComments: [Comment] = {
         let mockContentID = -1
         let mockUser = User(
             id: 167,
@@ -132,8 +132,8 @@ struct MockCommentRepository: CommentRepository {
             fanTeam: .t1
         )
         
-        let temp: [CommentTemp] = (1...52).map { number in
-            CommentTemp(
+        let temp: [Comment] = (1...52).map { number in
+            Comment(
                 id: number,
                 author: mockUser,
                 text: "\(number)번째",

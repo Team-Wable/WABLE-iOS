@@ -10,7 +10,7 @@ import Foundation
 enum CommentMapper { }
 
 extension CommentMapper {
-    static func toDomain(_ response: [DTO.Response.FetchUserComments]) -> [CommentTemp] {
+    static func toDomain(_ response: [DTO.Response.FetchUserComments]) -> [Comment] {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
@@ -29,7 +29,7 @@ extension CommentMapper {
                 postStatus = .normal
             }
             
-            return CommentTemp(
+            return Comment(
                 id: comment.commentID,
                 author: User(
                     id: comment.memberID,
@@ -51,7 +51,7 @@ extension CommentMapper {
         }
     }
     
-    static func toDomain(_ contentID: Int, _ response: [DTO.Response.FetchContentComments]) -> [CommentTemp] {
+    static func toDomain(_ contentID: Int, _ response: [DTO.Response.FetchContentComments]) -> [Comment] {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
@@ -69,7 +69,7 @@ extension CommentMapper {
                 postStatus = .normal
             }
             
-            return CommentTemp(
+            return Comment(
                 id: comment.commentID,
                 author: User(
                     id: comment.memberID,
