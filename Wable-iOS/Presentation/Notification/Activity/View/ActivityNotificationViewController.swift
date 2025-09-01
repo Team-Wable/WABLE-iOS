@@ -21,7 +21,7 @@ final class ActivityNotificationViewController: UIViewController {
     }
     
     // MARK: - typealias
-
+    
     typealias Item = ActivityNotification
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
@@ -48,7 +48,7 @@ final class ActivityNotificationViewController: UIViewController {
     }
     
     // MARK: - Property
-
+    
     private var dataSource: DataSource?
     
     private let viewModel: ViewModel
@@ -268,11 +268,23 @@ private extension ActivityNotificationViewController {
         
         output.user
             .receive(on: DispatchQueue.main)
-            .sink { userID in
-                WableLogger.log("유저 아이디: \(userID)", for: .debug)
+            .sink { [weak self] userID in
+                let otherProfileViewController = OtherProfileViewController(
+                    viewModel: .init(
+                        userID: userID,
+                        fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
+                        checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
+                            repository: UserSessionRepositoryImpl(
+                                userDefaults: UserDefaultsStorage(
+                                    jsonEncoder: JSONEncoder(),
+                                    jsonDecoder: JSONDecoder()
+                                )
+                            )
+                        )
+                    )
+                )
                 
-                // TODO: 유저 프로필로 이동
-                
+                self?.navigationController?.pushViewController(otherProfileViewController, animated: true)
             }
             .store(in: cancelBag)
     }
