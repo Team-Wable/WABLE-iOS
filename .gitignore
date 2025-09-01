@@ -90,6 +90,10 @@ Dependencies/
 **/xcshareddata/WorkspaceSettings.xcsettings
 *.xcconfig
 
-
 ## Google
 GoogleService-Info.plist
+
+# Fastlane
+fastlane/.env
+fastlane/*.p8
+fastlane/report.xml
