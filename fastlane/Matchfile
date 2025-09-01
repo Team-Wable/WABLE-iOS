@@ -1,0 +1,9 @@
+git_url(ENV["CERTIFICATES_URL"])  # 인증서 저장소 URL
+storage_mode("git")
+type("appstore")  # 또는 development, adhoc, enterprise
+
+app_identifier([ENV["APP_IDENTIFIER"]])
+username(ENV["APPLE_ID"])
+
+git_branch("master")
+clone_branch_directly(true)
