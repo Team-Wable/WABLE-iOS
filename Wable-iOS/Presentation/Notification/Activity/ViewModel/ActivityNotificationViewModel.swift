@@ -156,9 +156,7 @@ extension ActivityNotificationViewModel: ViewModelType {
         let user = input.profileImageViewDidTap
             .filter { $0 < notificationsSubject.value.count }
             .filter { 
-                guard let type = notificationsSubject.value[$0].type else {
-                    return false
-                }
+                guard let type = notificationsSubject.value[$0].type else { return false }
                 return TriggerType.ActivityNotification.profileInteractionTypes.contains(type)
              }
             .map { notificationsSubject.value[$0].triggerUserID }
