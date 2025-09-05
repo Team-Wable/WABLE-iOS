@@ -122,7 +122,7 @@ private extension ViewitListViewModel {
             .withUnretained(self)
             .flatMap { owner, index -> AnyPublisher<(Int, Viewit), Never> in
                 let viewit = owner.viewitListRelay.value[index]
-                let likePublisher: AnyPublisher<Viewit?, WableError> = viewit.like.status
+                let likePublisher: AnyPublisher<Viewit?, WableError> = viewit.isLiked
                 ? owner.likeUseCase.unlike(viewit: viewit)
                 : owner.likeUseCase.like(viewit: viewit)
                 
