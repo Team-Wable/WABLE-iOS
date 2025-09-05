@@ -146,7 +146,8 @@ struct MockViewitRepository: ViewitRepository {
                 text: "최신 트렌드는 SwiftUI지만 아직 UIKit이 필요한 상황들이 많이 있어요. 이 영상이 그 이유를 잘 설명해줍니다.",
                 time: Date().addingTimeInterval(-3600 * 48),
                 status: .normal,
-                isLiked: false, likeCount: 42
+                isLiked: false, 
+                likeCount: 42
             ),
             Viewit(
                 userID: 4,
