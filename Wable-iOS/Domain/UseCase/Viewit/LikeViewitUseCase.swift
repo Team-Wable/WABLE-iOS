@@ -20,7 +20,7 @@ final class LikeViewitUseCaseImpl: LikeViewitUseCase {
         return repository.postViewitLiked(viewitID: viewit.id)
             .map {
                 var likedViewit = viewit
-                likedViewit.like.like()
+                likedViewit.like()
                 return likedViewit
             }
             .eraseToAnyPublisher()
@@ -30,7 +30,7 @@ final class LikeViewitUseCaseImpl: LikeViewitUseCase {
         return repository.deleteViewitLiked(viewitID: viewit.id)
             .map {
                 var unlikedViewit = viewit
-                unlikedViewit.like.unlike()
+                unlikedViewit.unlike()
                 return unlikedViewit
             }
             .eraseToAnyPublisher()

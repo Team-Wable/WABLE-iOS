@@ -40,10 +40,8 @@ extension ViewitMapper {
                 text: content.viewitText,
                 time: time,
                 status: postStatus,
-                like: Like(
-                    status: content.isLiked,
-                    count: content.likedNumber
-                )
+                isLiked: content.isLiked,
+                likeCount: content.likedNumber
             )
         }
     }

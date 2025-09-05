@@ -114,8 +114,8 @@ private extension ViewitListViewController {
                 thumbnailImageURL: item.thumbnailURL,
                 title: item.title,
                 siteName: item.siteName,
-                isLiked: item.like.status,
-                likeCount: item.like.count,
+                isLiked: item.isLiked,
+                likeCount: item.likeCount,
                 isBlind: item.status == .blind
             )
             
