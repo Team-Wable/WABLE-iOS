@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - 뷰잇 정보
 
-struct Viewit: Identifiable, Hashable {
+struct Viewit: Identifiable, Hashable, Likable {
     let userID: Int
     let userNickname: String
     let userProfileURL: URL?
@@ -23,5 +23,6 @@ struct Viewit: Identifiable, Hashable {
     let time: Date?
     
     var status: PostStatus
-    var like: Like
+    var isLiked: Bool
+    var likeCount: Int
 }

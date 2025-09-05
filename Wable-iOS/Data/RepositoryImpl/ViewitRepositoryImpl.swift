@@ -116,7 +116,8 @@ struct MockViewitRepository: ViewitRepository {
                 text: "요즘 개발자들에게 꼭 필요한 iOS 최신 기능들! 이 영상 완전 추천해요~",
                 time: Date(),
                 status: .blind,
-                like: Like(status: false, count: 24)
+                isLiked: false, 
+                likeCount: 24
             ),
             Viewit(
                 userID: 2,
@@ -130,7 +131,8 @@ struct MockViewitRepository: ViewitRepository {
                 text: "Swift 언어의 최신 기능들이 정말 잘 정리되어 있어요. 초보자부터 숙련자까지 모두에게 도움이 될 듯!",
                 time: Date().addingTimeInterval(-3600 * 24),
                 status: .normal,
-                like: Like(status: true, count: 56)
+                isLiked: true, 
+                likeCount: 56
             ),
             Viewit(
                 userID: 3,
@@ -144,7 +146,8 @@ struct MockViewitRepository: ViewitRepository {
                 text: "최신 트렌드는 SwiftUI지만 아직 UIKit이 필요한 상황들이 많이 있어요. 이 영상이 그 이유를 잘 설명해줍니다.",
                 time: Date().addingTimeInterval(-3600 * 48),
                 status: .normal,
-                like: Like(status: false, count: 42)
+                isLiked: false, 
+                likeCount: 42
             ),
             Viewit(
                 userID: 4,
@@ -158,7 +161,8 @@ struct MockViewitRepository: ViewitRepository {
                 text: "앱 디자인 트렌드가 어떻게 변하고 있는지 정말 잘 보여주는 영상입니다. 개발자와 디자이너 모두에게 추천!",
                 time: Date().addingTimeInterval(-3600 * 72),
                 status: .blind,
-                like: Like(status: false, count: 18)
+                isLiked: false, 
+                likeCount: 18
             ),
             Viewit(
                 userID: 5,
@@ -172,7 +176,8 @@ struct MockViewitRepository: ViewitRepository {
                 text: "MVVM, Clean Architecture에 대해 정말 쉽게 설명해주는 영상이에요. 구현 예제도 있어서 바로 적용할 수 있어요!",
                 time: Date().addingTimeInterval(-3600 * 96),
                 status: .normal,
-                like: Like(status: true, count: 103)
+                isLiked: true, 
+                likeCount: 103
             )
         ]
         
