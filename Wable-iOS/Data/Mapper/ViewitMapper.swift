@@ -21,12 +21,7 @@ extension ViewitMapper {
             let videoURL = URL(string: viewit.viewitLink ?? "")
             let time = dateFormatter.date(from: viewit.time)
             
-            let postStatus: PostStatus
-            if viewit.isBlind {
-                postStatus = .blind
-            } else {
-                postStatus = .normal
-            }
+            let postStatus: PostStatus = viewit.isBlind ? .blind : .normal
             
             return Viewit(
                 userID: viewit.memberID,
