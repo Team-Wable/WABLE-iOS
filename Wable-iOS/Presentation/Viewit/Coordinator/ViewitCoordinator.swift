@@ -40,8 +40,9 @@ final class ViewitCoordinator: Coordinator {
         let vc = ViewitListViewController(viewModel: vm)
         
         vc.showCreateViewit = { [weak self, weak vc] in
-            guard let vc = vc else { return }
-            self?.showCreateViewit(from: vc)
+            self?.showCreateViewit {
+                vc?.refresh()
+            }
         }
         
         vc.showProfile = { [weak self] id in
@@ -57,10 +58,10 @@ final class ViewitCoordinator: Coordinator {
 }
 
 private extension ViewitCoordinator {
-    func showCreateViewit(from delegate: CreateViewitViewDelegate) {
+    func showCreateViewit(completion: @escaping (() -> Void)) {
         let useCase = CreateViewitUseCaseImpl()
         let vc = CreateViewitViewController(viewModel: .init(useCase: useCase))
-        vc.delegate = delegate
+        vc.onFinishCreateViewit = completion
         navigationController.present(vc, animated: true)
     }
     
