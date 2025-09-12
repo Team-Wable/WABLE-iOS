@@ -288,7 +288,6 @@
 		DE6459CF2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6459CE2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift */; };
 		DE6459D52D97B8C2005569B8 /* InformationNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6459D42D97B8C2005569B8 /* InformationNotificationViewController.swift */; };
 		DE64D7CA2DCBA2D700F55859 /* CreateViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE64D7C92DCBA2D700F55859 /* CreateViewitUseCase.swift */; };
-		DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EA2D7211070021BDE1 /* Like.swift */; };
 		DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EE2D7213D90021BDE1 /* Opacity.swift */; };
 		DE6C3E3E2D91A8E00046DB30 /* NewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6C3E3D2D91A8E00046DB30 /* NewsViewModel.swift */; };
 		DE7004842D8E87DC00B7AB71 /* RankListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7004832D8E87DC00B7AB71 /* RankListViewController.swift */; };
@@ -661,7 +660,6 @@
 		DE6459CE2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+InjectDependency.swift"; sourceTree = "<group>"; };
 		DE6459D42D97B8C2005569B8 /* InformationNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationViewController.swift; sourceTree = "<group>"; };
 		DE64D7C92DCBA2D700F55859 /* CreateViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewitUseCase.swift; sourceTree = "<group>"; };
-		DE67A9EA2D7211070021BDE1 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		DE67A9EE2D7213D90021BDE1 /* Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opacity.swift; sourceTree = "<group>"; };
 		DE6C3E3D2D91A8E00046DB30 /* NewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewModel.swift; sourceTree = "<group>"; };
 		DE7004832D8E87DC00B7AB71 /* RankListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankListViewController.swift; sourceTree = "<group>"; };
@@ -1259,7 +1257,6 @@
 				DD2967EA2D6DAC3100143851 /* AccountInfo.swift */,
 				DD2967ED2D6DAC3100143851 /* UserProfile.swift */,
 				DE67A9EE2D7213D90021BDE1 /* Opacity.swift */,
-				DE67A9EA2D7211070021BDE1 /* Like.swift */,
 				DD2967EF2D6DAC3100143851 /* Content.swift */,
 				DD9980DA2D834CA900EBBFBC /* Comment.swift */,
 				DD2967F02D6DAC3100143851 /* Notification.swift */,
@@ -2939,7 +2936,6 @@
 				DE6C3E3E2D91A8E00046DB30 /* NewsViewModel.swift in Sources */,
 				DD29681A2D6DAD0200143851 /* ViewitRepository.swift in Sources */,
 				DE833B9B2DE22A8500812A80 /* Publishers+UIControlEvent.swift in Sources */,
-				DE67A9EB2D7211070021BDE1 /* Like.swift in Sources */,
 				DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */,
 				DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */,
 				DD29681B2D6DAD0200143851 /* ProfileRepository.swift in Sources */,
