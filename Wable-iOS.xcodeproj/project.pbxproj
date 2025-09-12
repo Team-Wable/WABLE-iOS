@@ -346,6 +346,7 @@
 		DEA10B5A2DD3E8E9001EBBA9 /* ProfileViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B592DD3E8E9001EBBA9 /* ProfileViewItem.swift */; };
 		DEA10B5C2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */; };
 		DEA10B5E2DD3F48E001EBBA9 /* ProfileSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B5D2DD3F48E001EBBA9 /* ProfileSegment.swift */; };
+		DEA3B3262E743D63000C77D0 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA3B3252E743D63000C77D0 /* Coordinator.swift */; };
 		DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7142DA92E7100D35646 /* CommunityView.swift */; };
 		DEA9E7172DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
@@ -716,6 +717,7 @@
 		DEA10B592DD3E8E9001EBBA9 /* ProfileViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewItem.swift; sourceTree = "<group>"; };
 		DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSegmentedHeaderView.swift; sourceTree = "<group>"; };
 		DEA10B5D2DD3F48E001EBBA9 /* ProfileSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSegment.swift; sourceTree = "<group>"; };
+		DEA3B3252E743D63000C77D0 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		DEA9E7142DA92E7100D35646 /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
 		DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegisterCompleteViewController.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
@@ -863,6 +865,7 @@
 		DD2967642D6DAC3100143851 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				DEA3B3242E743D52000C77D0 /* Coordinator */,
 				DDFE04392DE618590040ED75 /* Amplitude */,
 				DE93210E2DE4C3DE00629B88 /* Literals */,
 				DD29676E2D6DAC3100143851 /* Bundle */,
@@ -2246,6 +2249,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		DEA3B3242E743D52000C77D0 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				DEA3B3252E743D63000C77D0 /* Coordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		DEAFE04F2D8C43D90097E91C /* GameSchedule */ = {
 			isa = PBXGroup;
 			children = (
@@ -2844,6 +2855,7 @@
 				DE33902E2D8EC3B700638BB4 /* NoticeCell.swift in Sources */,
 				DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */,
 				DD2968372D6DAD1700143851 /* ProfileRepositoryImpl.swift in Sources */,
+				DEA3B3262E743D63000C77D0 /* Coordinator.swift in Sources */,
 				DED1345C2DCFA002008463BD /* AppEnvironment.swift in Sources */,
 				DD2968382D6DAD1700143851 /* ReportRepositoryImpl.swift in Sources */,
 				DD29687C2D6DB27F00143851 /* OAuthenticator.swift in Sources */,
