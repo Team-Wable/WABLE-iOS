@@ -347,6 +347,7 @@
 		DEA10B5C2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */; };
 		DEA10B5E2DD3F48E001EBBA9 /* ProfileSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA10B5D2DD3F48E001EBBA9 /* ProfileSegment.swift */; };
 		DEA3B3262E743D63000C77D0 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA3B3252E743D63000C77D0 /* Coordinator.swift */; };
+		DEA3B32D2E7442C0000C77D0 /* ViewitCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA3B32C2E7442C0000C77D0 /* ViewitCoordinator.swift */; };
 		DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7142DA92E7100D35646 /* CommunityView.swift */; };
 		DEA9E7172DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
@@ -718,6 +719,7 @@
 		DEA10B5B2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSegmentedHeaderView.swift; sourceTree = "<group>"; };
 		DEA10B5D2DD3F48E001EBBA9 /* ProfileSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSegment.swift; sourceTree = "<group>"; };
 		DEA3B3252E743D63000C77D0 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		DEA3B32C2E7442C0000C77D0 /* ViewitCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitCoordinator.swift; sourceTree = "<group>"; };
 		DEA9E7142DA92E7100D35646 /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
 		DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegisterCompleteViewController.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
@@ -1824,6 +1826,7 @@
 		DE59BBA22D8A9DBC0040ADCB /* Viewit */ = {
 			isa = PBXGroup;
 			children = (
+				DEA3B32B2E7442B4000C77D0 /* Coordinator */,
 				DECC36DC2DC3B20600336B7B /* List */,
 				DECC36DB2DC3B20000336B7B /* Create */,
 			);
@@ -2253,6 +2256,14 @@
 			isa = PBXGroup;
 			children = (
 				DEA3B3252E743D63000C77D0 /* Coordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		DEA3B32B2E7442B4000C77D0 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				DEA3B32C2E7442C0000C77D0 /* ViewitCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -2835,6 +2846,7 @@
 				DD29684D2D6DAD2F00143851 /* FetchContentComments.swift in Sources */,
 				DD29684E2D6DAD2F00143851 /* FetchUserNotifications.swift in Sources */,
 				DEA9E7172DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift in Sources */,
+				DEA3B32D2E7442C0000C77D0 /* ViewitCoordinator.swift in Sources */,
 				DD29684F2D6DAD2F00143851 /* FetchViewits.swift in Sources */,
 				DE59BB9A2D8A9D3A0040ADCB /* NotificationPageViewController.swift in Sources */,
 				DEDFCED62DDC565B00B3CD97 /* OtherProfileEmptyCell.swift in Sources */,
@@ -3179,7 +3191,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.4.1;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS.Dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development com.wable.Wable-iOS";

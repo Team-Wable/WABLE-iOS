@@ -26,6 +26,10 @@ final class ViewitListViewController: UIViewController {
     
     // MARK: - Property
     
+    var showCreateViewit: (() -> Void)?
+    var showProfile: ((Int?) -> Void)?
+    var openURL: ((URL) -> Void)?
+    
     private var dataSource: DataSource?
     
     private let viewModel: ViewModel
@@ -129,14 +133,9 @@ private extension ViewitListViewController {
                 self?.meatballRelay.send(item.id)
             }
             
-            cell.cardDidTapClosure = {
-                guard let url = item.siteURL,
-                      UIApplication.shared.canOpenURL(url)
-                else {
-                    return WableLogger.log("사이트를 열 수 없습니다: \(item.siteURL?.absoluteString ?? "")", for: .error)
-                }
-                
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            cell.cardDidTapClosure = { [weak self] in
+                guard let url = item.siteURL else { return }
+                self?.openURL?(url)
             }
             
             cell.likeDidTapClosure = { [weak self] in
@@ -152,10 +151,7 @@ private extension ViewitListViewController {
     func setupAction() {
         rootView.createButton.publisher(for: .touchUpInside)
             .sink { [weak self] _ in
-                let useCase = CreateViewitUseCaseImpl()
-                let writeViewController = CreateViewitViewController(viewModel: .init(useCase: useCase))
-                writeViewController.delegate = self
-                self?.present(writeViewController, animated: true)
+                self?.showCreateViewit?()
             }
             .store(in: cancelBag)
         
@@ -212,12 +208,7 @@ private extension ViewitListViewController {
         
         output.moveToProfile
             .sink { [weak self] userID in
-                switch userID {
-                case .some(let value):
-                    self?.navigateToOtherProfile(for: value)
-                case .none:
-                    self?.showMyProfile()
-                }
+                self?.showProfile?(userID)
             }
             .store(in: cancelBag)
         
@@ -291,30 +282,6 @@ private extension ViewitListViewController {
             message: StringLiterals.Ban.sheetMessage,
             action: primaryAction
         )
-    }
-    
-    func showMyProfile() {
-        let myProfileTabIndex = 4
-        navigationController?.tabBarController?.selectedIndex = myProfileTabIndex
-    }
-    
-    func navigateToOtherProfile(for userID: Int) {
-        let otherProfileViewController = OtherProfileViewController(
-            viewModel: .init(
-                userID: userID,
-                fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
-                checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
-                    repository: UserSessionRepositoryImpl(
-                        userDefaults: UserDefaultsStorage(
-                            jsonEncoder: JSONEncoder(),
-                            jsonDecoder: JSONDecoder()
-                        )
-                    )
-                )
-            )
-        )
-        
-        navigationController?.pushViewController(otherProfileViewController, animated: true)
     }
     
     // MARK: - Action Method
