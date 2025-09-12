@@ -16,7 +16,7 @@ final class ViewitCoordinator: Coordinator {
     }
     
     func start() {
-        let vm = ViewitListViewModel(
+        let viewModel = ViewitListViewModel(
             useCase: ViewitUseCaseImpl(),
             likeUseCase: LikeViewitUseCaseImpl(),
             reportUseCase: ReportViewitUseCaseImpl(),
@@ -37,32 +37,32 @@ final class ViewitCoordinator: Coordinator {
                 )
             )
         )
-        let vc = ViewitListViewController(viewModel: vm)
+        let viewController = ViewitListViewController(viewModel: viewModel)
         
-        vc.showCreateViewit = { [weak self, weak vc] in
+        viewController.showCreateViewit = { [weak self, weak viewController] in
             self?.showCreateViewit {
-                vc?.refresh()
+                viewController?.refresh()
             }
         }
         
-        vc.showProfile = { [weak self] id in
+        viewController.showProfile = { [weak self] id in
             self?.showProfile(for: id)
         }
         
-        vc.openURL = { [weak self] url in
+        viewController.openURL = { [weak self] url in
             self?.openURL(url)
         }
         
-        navigationController.pushViewController(vc, animated: false)
+        navigationController.pushViewController(viewController, animated: false)
     }
 }
 
 private extension ViewitCoordinator {
     func showCreateViewit(completion: @escaping (() -> Void)) {
         let useCase = CreateViewitUseCaseImpl()
-        let vc = CreateViewitViewController(viewModel: .init(useCase: useCase))
-        vc.onFinishCreateViewit = completion
-        navigationController.present(vc, animated: true)
+        let viewController = CreateViewitViewController(viewModel: .init(useCase: useCase))
+        viewController.onFinishCreateViewit = completion
+        navigationController.present(viewController, animated: true)
     }
     
     func showProfile(for userID: Int?) {
