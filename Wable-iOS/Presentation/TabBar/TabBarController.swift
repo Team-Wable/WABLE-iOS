@@ -14,6 +14,7 @@ final class TabBarController: UITabBarController {
 
     private var previousIndex: Int = 0
     private var shouldShowLoadingScreen: Bool
+    private var viewitCoordinator: ViewitCoordinator?
     
     // MARK: - UIComponent
     
@@ -52,33 +53,6 @@ final class TabBarController: UITabBarController {
     private let overviewViewController = OverviewPageViewController().then {
         $0.tabBarItem.title = "소식"
         $0.tabBarItem.image = .icInfoPress
-    }
-    
-    private let viewitViewController = ViewitListViewController(
-        viewModel: .init(
-            useCase: ViewitUseCaseImpl(),
-            likeUseCase: LikeViewitUseCaseImpl(),
-            reportUseCase: ReportViewitUseCaseImpl(),
-            checkUserRoleUseCase: CheckUserRoleUseCaseImpl(
-                repository: UserSessionRepositoryImpl(
-                    userDefaults: UserDefaultsStorage(
-                        jsonEncoder: JSONEncoder(),
-                        jsonDecoder: JSONDecoder()
-                    )
-                )
-            ),
-            userSessionUseCase: FetchUserInformationUseCase(
-                repository: UserSessionRepositoryImpl(
-                    userDefaults: UserDefaultsStorage(
-                        jsonEncoder: JSONEncoder(),
-                        jsonDecoder: JSONDecoder()
-                    )
-                )
-            )
-        )
-    ).then {
-        $0.tabBarItem.title = "뷰잇"
-        $0.tabBarItem.image = .icViewit
     }
     
     private let profileViewController = MyProfileViewController(
@@ -135,7 +109,10 @@ private extension TabBarController {
         let homeNavigationController = UINavigationController(rootViewController: homeViewController)
         let communityNavigationController = UINavigationController(rootViewController: communityViewController)
         let overviewNavigationController = UINavigationController(rootViewController: overviewViewController)
-        let viewitNavigationController = UINavigationController(rootViewController: viewitViewController)
+        let viewitNavigationController = UINavigationController()
+        viewitCoordinator = ViewitCoordinator(navigationController: viewitNavigationController)
+        viewitCoordinator?.start()
+        viewitNavigationController.tabBarItem = UITabBarItem(title: "뷰잇", image: .icViewit, selectedImage: nil)
         let profileNavigationController = UINavigationController(rootViewController: profileViewController)
         
         configureTabBar()

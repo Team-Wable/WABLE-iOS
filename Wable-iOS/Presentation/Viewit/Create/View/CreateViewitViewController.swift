@@ -10,10 +10,6 @@ import UIKit
 import SnapKit
 import Then
 
-protocol CreateViewitViewDelegate: AnyObject {
-    func finishCreateViewit()
-}
-
 final class CreateViewitViewController: UIViewController {
     
     // MARK: - typealias
@@ -28,7 +24,7 @@ final class CreateViewitViewController: UIViewController {
     
     // MARK: - Property
     
-    weak var delegate: CreateViewitViewDelegate?
+    var onFinishCreateViewit: (() -> Void)?
     
     private let viewModel: ViewModel
     private let cancelBag = CancelBag()
@@ -181,7 +177,7 @@ private extension CreateViewitViewController {
         output.successUpload
             .sink { [weak self] _ in
                 self?.dismiss(animated: true) {
-                    self?.delegate?.finishCreateViewit()
+                    self?.onFinishCreateViewit?()
                 }
             }
             .store(in: cancelBag)
