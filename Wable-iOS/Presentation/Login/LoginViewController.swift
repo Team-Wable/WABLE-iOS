@@ -17,6 +17,9 @@ final class LoginViewController: UIViewController {
     private let viewModel: LoginViewModel
     private let cancelBag = CancelBag()
     
+    var navigateToOnboarding: (() -> Void)?
+    var navigateToHome: (() -> Void)?
+    
     // MARK: UIComponent
     
     private let backgroundImageView: UIImageView = UIImageView(image: .imgLoginBackground).then {
@@ -152,7 +155,7 @@ private extension LoginViewController {
                 let condition = sessionInfo.isNewUser || sessionInfo.user.nickname == ""
                 
                 if condition { AmplitudeManager.shared.trackEvent(tag: .clickAgreePopupSignup) }
-                condition ? owner.navigateToOnboarding() : owner.navigateToHome()
+                condition ? owner.navigateToOnboarding?() : owner.navigateToHome?()
             }
             .store(in: cancelBag)
         
@@ -171,32 +174,3 @@ private extension LoginViewController {
             .store(in: cancelBag)
     }
 }
-
-// MARK: - Helper Method
-
-private extension LoginViewController {
-    func navigateToOnboarding() {
-        let noticeViewController = WableSheetViewController(
-            title: "앗 잠깐!",
-            message: StringLiterals.Onboarding.enterSheetTitle
-        )
-        
-        noticeViewController.addAction(.init(title: "확인", style: .primary, handler: {
-            let navigationController = UINavigationController(rootViewController: LCKYearViewController(type: .flow)).then {
-                $0.navigationBar.isHidden = true
-                $0.modalPresentationStyle = .fullScreen
-            }
-            
-            self.present(navigationController, animated: true)
-        }))
-        
-        present(noticeViewController, animated: true)
-    }
-    
-    func navigateToHome() {
-        let tabBarController = TabBarController()
-        
-        present(tabBarController, animated: true)
-    }
-}
-

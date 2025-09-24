@@ -179,6 +179,7 @@
 		DD9EAE282D99C7DE00803A1A /* DeleteContentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE272D99C7D200803A1A /* DeleteContentUseCase.swift */; };
 		DD9EAE2E2D9A63FD00803A1A /* WritePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE2D2D9A63F400803A1A /* WritePostViewController.swift */; };
 		DD9EAE302D9A64A800803A1A /* HomeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */; };
+		DDA138D82E84235600F7B63C /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA138D72E84235600F7B63C /* LoginCoordinator.swift */; };
 		DDA2098D2D9BFB9F008042DA /* WritePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA2098C2D9BFB98008042DA /* WritePostViewModel.swift */; };
 		DDCA70902D87CE2700A988B8 /* LCKYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */; };
 		DDCA70932D88316200A988B8 /* LCKYearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA70922D88315C00A988B8 /* LCKYearView.swift */; };
@@ -565,6 +566,7 @@
 		DD9EAE272D99C7D200803A1A /* DeleteContentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteContentUseCase.swift; sourceTree = "<group>"; };
 		DD9EAE2D2D9A63F400803A1A /* WritePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePostViewController.swift; sourceTree = "<group>"; };
 		DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailViewController.swift; sourceTree = "<group>"; };
+		DDA138D72E84235600F7B63C /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		DDA2098C2D9BFB98008042DA /* WritePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePostViewModel.swift; sourceTree = "<group>"; };
 		DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearViewController.swift; sourceTree = "<group>"; };
 		DDCA70922D88315C00A988B8 /* LCKYearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearView.swift; sourceTree = "<group>"; };
@@ -1303,6 +1305,7 @@
 			children = (
 				DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */,
 				DD765D992D8746DD0029A317 /* LoginViewController.swift */,
+				DDA138D72E84235600F7B63C /* LoginCoordinator.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -2948,6 +2951,7 @@
 				DD9EAE2E2D9A63FD00803A1A /* WritePostViewController.swift in Sources */,
 				DD51A44C2DD458A8004295B6 /* ProfileEditViewController.swift in Sources */,
 				DD2967FF2D6DAC8900143851 /* SceneDelegate.swift in Sources */,
+				DDA138D82E84235600F7B63C /* LoginCoordinator.swift in Sources */,
 				DD2968172D6DAD0200143851 /* ContentRepository.swift in Sources */,
 				DDED595E2D78C3E000A0BEF1 /* KakaoAuthProvider.swift in Sources */,
 				DD2968182D6DAD0200143851 /* CommunityRepository.swift in Sources */,

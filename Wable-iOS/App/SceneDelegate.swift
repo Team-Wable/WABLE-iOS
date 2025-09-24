@@ -23,6 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private let userSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage())
     private let checkAppUpdateRequirementUseCase = CheckAppUpdateRequirementUseCaseImpl()
     
+    private var loginCoordinator: LoginCoordinator?
+    
     // MARK: - UIComponent
     
     var window: UIWindow?
@@ -60,7 +62,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 private extension SceneDelegate {
     func configureLoginScreen() {
-        self.window?.rootViewController = LoginViewController(viewModel: LoginViewModel())
+        let navigationController = UINavigationController()
+        navigationController.navigationBar.isHidden = true
+        loginCoordinator = LoginCoordinator(navigationController: navigationController)
+        loginCoordinator?.start()
+        self.window?.rootViewController = navigationController
     }
     
     func configureMainScreen() {
