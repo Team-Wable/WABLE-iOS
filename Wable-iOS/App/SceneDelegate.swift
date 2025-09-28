@@ -15,15 +15,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // MARK: - Property
     
     private let cancelBag = CancelBag()
-    private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
     private let tokenProvider = OAuthTokenProvider()
-    
-    private let loginRepository = LoginRepositoryImpl()
-    private let profileRepository = ProfileRepositoryImpl()
-    private let userSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage())
     private let checkAppUpdateRequirementUseCase = CheckAppUpdateRequirementUseCaseImpl()
     
     private var loginCoordinator: LoginCoordinator?
+    private var diContainer: AppDIContainer { AppDIContainer.shared }
+    
+    private lazy var tokenStorage: TokenStorage = diContainer.resolve(for: TokenStorage.self, env: .production)
+    private lazy var loginRepository: LoginRepository = diContainer.resolve(for: LoginRepository.self, env: .production)
+    private lazy var profileRepository: ProfileRepository = diContainer.resolve(for: ProfileRepository.self, env: .production)
+    private lazy var userSessionRepository: UserSessionRepository = diContainer.resolve(for: UserSessionRepository.self, env: .production)
     
     // MARK: - UIComponent
     
@@ -70,48 +71,18 @@ private extension SceneDelegate {
     }
     
     func configureMainScreen() {
-        if let id = userSessionRepository.fetchActiveUserID() {
-            profileRepository.fetchUserProfile(memberID: id)
-                .receive(on: DispatchQueue.main)
-                .sink { _ in
-                } receiveValue: { [weak self] info in
-                    guard let self = self else { return }
-                    let token = self.profileRepository.fetchFCMToken()
-                    
-                    self.userSessionRepository.updateUserSession(
-                        userID: id,
-                        nickname: info.user.nickname,
-                        profileURL: info.user.profileURL,
-                        isAutoLoginEnabled: true
-                    )
-                    
-                    self.profileRepository.updateUserProfile(nickname: info.user.nickname, fcmToken: token)
-                        .sink { completion in
-                            switch completion {
-                            case .failure(let error):
-                                WableLogger.log("토큰 업데이트 실패: \(error)", for: .error)
-                            default:
-                                break
-                            }
-                        } receiveValue: { _ in
-                            WableLogger.log("토큰 업데이트 성공", for: .debug)
-                        }
-                        .store(in: cancelBag)
-
-                }
-                .store(in: cancelBag)
-        }
-        
         self.window?.rootViewController = TabBarController(shouldShowLoadingScreen: true)
     }
     
     func proceedToAppLaunch() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) { [weak self] in
             guard let self = self else { return }
+            let session = userSessionRepository.fetchActiveUserSession()
+            let shouldAutoLogin = session?.isAutoLoginEnabled == true && session?.nickname != ""
             
-            if let session = userSessionRepository.fetchActiveUserSession(),
-               let isAutoLoginEnabled = session.isAutoLoginEnabled {
-                (session.nickname != "" && isAutoLoginEnabled) ? configureMainScreen() : configureLoginScreen()
+            if shouldAutoLogin {
+                updateFCMToken()
+                configureMainScreen()
             } else {
                 configureLoginScreen()
             }
@@ -146,6 +117,25 @@ private extension SceneDelegate {
 // MARK: - Helper Method
 
 private extension SceneDelegate {
+    func updateFCMToken() {
+        guard let session = userSessionRepository.fetchActiveUserSession(),
+              let token = profileRepository.fetchFCMToken() else { return }
+        
+        profileRepository.updateUserProfile(nickname: session.nickname, fcmToken: token)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    WableLogger.log("토큰 업데이트 실패: \(error)", for: .error)
+                default:
+                    break
+                }
+            } receiveValue: { _ in
+                WableLogger.log("토큰 업데이트 성공", for: .debug)
+            }
+            .store(in: cancelBag)
+    }
+    
     func checkUpdate() {
         Task {
             do {
