@@ -15,16 +15,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // MARK: - Property
     
     private let cancelBag = CancelBag()
+    private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
     private let tokenProvider = OAuthTokenProvider()
+    private let loginRepository = LoginRepositoryImpl()
+    private let profileRepository = ProfileRepositoryImpl()
     private let checkAppUpdateRequirementUseCase = CheckAppUpdateRequirementUseCaseImpl()
+    private let userSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage())
     
     private var loginCoordinator: LoginCoordinator?
-    private var diContainer: AppDIContainer { AppDIContainer.shared }
-    
-    private lazy var tokenStorage: TokenStorage = diContainer.resolve(for: TokenStorage.self, env: .production)
-    private lazy var loginRepository: LoginRepository = diContainer.resolve(for: LoginRepository.self, env: .production)
-    private lazy var profileRepository: ProfileRepository = diContainer.resolve(for: ProfileRepository.self, env: .production)
-    private lazy var userSessionRepository: UserSessionRepository = diContainer.resolve(for: UserSessionRepository.self, env: .production)
     
     // MARK: - UIComponent
     
