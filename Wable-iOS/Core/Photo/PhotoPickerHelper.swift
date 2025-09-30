@@ -71,17 +71,6 @@ private extension PhotoPickerHelper {
     }
 }
 
-// MARK: - PHPickerViewControllerDelegate
-
-extension PhotoPickerHelper: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        picker.dismiss(animated: true)
-
-        guard let result = results.first else { return }
-        loadImage(from: result.itemProvider)
-    }
-}
-
 // MARK: - Helper Method
 
 extension PhotoPickerHelper {
@@ -142,5 +131,16 @@ extension PhotoPickerHelper {
         })
 
         viewController.present(alert, animated: true)
+    }
+}
+
+// MARK: - PHPickerViewControllerDelegate
+
+extension PhotoPickerHelper: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+
+        guard let result = results.first else { return }
+        loadImage(from: result.itemProvider)
     }
 }
