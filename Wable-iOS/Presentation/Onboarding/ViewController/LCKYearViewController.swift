@@ -12,12 +12,9 @@ final class LCKYearViewController: NavigationViewController {
     
     // MARK: - Property
     
-    var isPullDownEnabled = false
-    
     private var selectedYearIndex: Int?
-    private var yearCount: Int {
-        return Calendar.current.component(.year, from: .now) - Constant.startYear + 1
-    }
+    private var isPullDownEnabled = false
+    private var yearCount: Int { return Calendar.current.component(.year, from: .now) - Constant.startYear + 1 }
     
     // MARK: - UIComponent
     
@@ -28,68 +25,46 @@ final class LCKYearViewController: NavigationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
         setupConstraint()
-        setupAction()
         setupDelegate()
-        setDefaultYear()
+        setupAction()
+        updateDefaultYear()
     }
 }
 
-// MARK: - Private Extension
+// MARK: - Setup Method
 
 private extension LCKYearViewController {
-    
-    // MARK: - Setup
-    
-    func setupView() {
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        
-        view.addSubview(rootView)
-    }
-    
     func setupConstraint() {
+        view.addSubview(rootView)
+        
         rootView.snp.makeConstraints {
             $0.top.equalTo(navigationView.snp.bottom)
             $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
     
-    func setupAction() {
-        rootView.pullDownButton.addTarget(self, action: #selector(pullDownButtonDidTap), for: .touchUpInside)
-        rootView.nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
-    }
-    
     func setupDelegate() {
-        rootView.yearCollectionView.dataSource = self
         rootView.yearCollectionView.delegate = self
+        rootView.yearCollectionView.dataSource = self
     }
     
-    func setDefaultYear() {
-        let defaultIndex = yearCount - 1
-        let defaultYear = Constant.startYear + defaultIndex
-        
-        selectedYearIndex = defaultIndex
-        rootView.pullDownButton.configuration?.attributedTitle = "\(defaultYear)".pretendardString(with: .body1)
-        
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            let indexPath = IndexPath(item: defaultIndex, section: 0)
-            
-            self.rootView.yearCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
-            self.updateCellAppearance(indexPath: indexPath)
-        }
+    func setupAction() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        rootView.nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
+        rootView.pullDownButton.addTarget(self, action: #selector(pullDownButtonDidTap), for: .touchUpInside)
     }
-    
-    // MARK: - @objc Method
-    
+}
+
+// MARK: - @objc Method
+
+extension LCKYearViewController {
     @objc func pullDownButtonDidTap() {
         guard var configuration = rootView.pullDownButton.configuration else {
             return
         }
         
         configuration.image = isPullDownEnabled ? .btnDropdownDown : .btnDropdownUp
-        
         rootView.yearCollectionView.isHidden = isPullDownEnabled
         rootView.pullDownButton.configuration = configuration
         
@@ -105,20 +80,37 @@ private extension LCKYearViewController {
     }
     
     @objc func nextButtonDidTap() {
-        guard let selectedIndex = selectedYearIndex else {
-            setDefaultYear()
-            return
-        }
+        guard let selectedIndex = selectedYearIndex else { return }
+        let selectedYear = Constant.startYear + selectedIndex
         
         AmplitudeManager.shared.trackEvent(tag: .clickNextYearSignup)
-        
-        navigationController?.pushViewController(LCKTeamViewController(lckYear: Constant.startYear + selectedIndex), animated: true)
+        navigationController?.pushViewController(LCKTeamViewController(lckYear: selectedYear), animated: true)
     }
 }
 
 // MARK: - Helper Method
 
 private extension LCKYearViewController {
+    func updateDefaultYear() {
+        let defaultIndex = yearCount - 1
+        let defaultYear = Constant.startYear + defaultIndex
+        
+        selectedYearIndex = defaultIndex
+        rootView.pullDownButton.configuration?.attributedTitle = "\(defaultYear)".pretendardString(with: .body1)
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let indexPath = IndexPath(item: defaultIndex, section: 0)
+            
+            self.updateCellAppearance(indexPath: indexPath)
+            self.rootView.yearCollectionView.selectItem(
+                at: indexPath,
+                animated: false,
+                scrollPosition: .centeredVertically
+            )
+        }
+    }
+    
     func updateCellAppearance(indexPath: IndexPath) {
         for visibleCell in rootView.yearCollectionView.visibleCells {
             if let yearCell = visibleCell as? LCKYearCollectionViewCell {
@@ -130,8 +122,8 @@ private extension LCKYearViewController {
         
         if let cell = rootView.yearCollectionView.cellForItem(at: indexPath) as? LCKYearCollectionViewCell {
             cell.backgroundColor = .purple10
-            cell.yearLabel.attributedText = cell.yearLabel.text?.pretendardString(with: .body1)
             cell.yearLabel.textColor = .purple50
+            cell.yearLabel.attributedText = cell.yearLabel.text?.pretendardString(with: .body1)
         }
     }
 }
@@ -142,16 +134,17 @@ private extension LCKYearViewController {
 extension LCKYearViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedYearIndex = indexPath.item
-        
         updateCellAppearance(indexPath: indexPath)
         
-        rootView.pullDownButton.configuration?.attributedTitle = String(Constant.startYear + indexPath.item).pretendardString(with: .body1)
+        let currentYear = Constant.startYear + indexPath.item
+        rootView.pullDownButton.configuration?.attributedTitle =  String(currentYear).pretendardString(with: .body1)
         
-        UIView.animate(withDuration: 0.3, animations: {
-            self.rootView.yearCollectionView.alpha = 0
-        }) { _ in
-            self.rootView.yearCollectionView.isHidden = true
+        UIView.animate(
+            withDuration: 0.3,
+            animations: { self.rootView.yearCollectionView.alpha = 0 }
+        ) { _ in
             self.isPullDownEnabled = false
+            self.rootView.yearCollectionView.isHidden = true
             
             if var configuration = self.rootView.pullDownButton.configuration {
                 configuration.image = .btnDropdownDown
@@ -170,7 +163,10 @@ extension LCKYearViewController: UICollectionViewDataSource {
         return yearCount
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: LCKYearCollectionViewCell.reuseIdentifier,
             for: indexPath
@@ -180,10 +176,11 @@ extension LCKYearViewController: UICollectionViewDataSource {
         
         if let selectedIndex = selectedYearIndex {
             let condition = indexPath.item == selectedIndex
+            let selectedYear = Constant.startYear + indexPath.item
             
             cell.backgroundColor = condition ? .purple10 : .clear
-            cell.yearLabel.attributedText = String(Constant.startYear + indexPath.item).pretendardString(with: condition ? .body1 : .body2)
             cell.yearLabel.textColor = condition ? .purple50 : .wableBlack
+            cell.yearLabel.attributedText = String(selectedYear).pretendardString(with: condition ? .body1 : .body2)
         }
         
         return cell
