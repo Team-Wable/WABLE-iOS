@@ -11,10 +11,12 @@ import SafariServices
 import UIKit
 
 final class AgreementViewController: NavigationViewController {
-    
+
     // MARK: Property
     // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
     
+    var navigateToHome: (() -> Void)?
+
     private let nickname: String
     private let lckTeam: String
     private let lckYear: Int
@@ -31,23 +33,24 @@ final class AgreementViewController: NavigationViewController {
         )
     )
     private let cancelBag = CancelBag()
-    
-    // MARK: - UIComponent
-    
+
+    // MARK: UIComponent
+
     private let rootView = AgreementView()
-    
-    // MARK: - LifeCycle
-    
+
+    // MARK: - Life Cycle
+
     init(nickname: String, lckTeam: String, lckYear: Int, profileImage: UIImage? = nil, defaultImage: String? = nil) {
         self.nickname = nickname
         self.lckTeam = lckTeam
         self.lckYear = lckYear
         self.profileImage = profileImage
         self.defaultImage = defaultImage
-        
+
         super.init(type: .flow)
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -198,24 +201,24 @@ private extension AgreementViewController {
                     .sink(
                         receiveCompletion: { _ in
                         },
-                        receiveValue: { _ in
+                        receiveValue: { [weak self] _ in
+                            guard let self else { return }
+
                             WableLogger.log("세션 저장 완료", for: .debug)
-                            
-                            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                                  let loginViewController = windowScene.windows.first?.rootViewController
-                            else {
-                                return
-                            }
-                            
-                            let tabBarController = TabBarController()
-                            
+
                             self.dismiss(animated: false) {
-                                loginViewController.present(tabBarController, animated: true) {
+                                self.navigateToHome?()
+
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                                          let topViewController = windowScene.windows.first?.rootViewController?.presentedViewController
+                                    else { return }
+
                                     let noticeViewController = WableSheetViewController(
                                         title: StringLiterals.Onboarding.completeSheetTitle,
                                         message: "\(self.nickname)님\n와블의 일원이 되신 것을 환영해요.\nLCK 함께 보며 같이 즐겨요 :)"
                                     )
-                                    
+
                                     noticeViewController.addAction(
                                         .init(
                                             title: StringLiterals.Onboarding.completeButtonTitle,
@@ -224,8 +227,8 @@ private extension AgreementViewController {
                                                 AmplitudeManager.shared.trackEvent(tag: .clickJoinPopupSignup)
                                             })
                                     )
-                                    
-                                    tabBarController.present(noticeViewController, animated: true)
+
+                                    topViewController.present(noticeViewController, animated: true)
                                 }
                             }
                         })

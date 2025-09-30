@@ -18,6 +18,7 @@
 		DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BAA2D80071E00B1661F /* CommentButton.swift */; };
 		DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */; };
 		DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */; };
+		DD20D9702E8C2C41008D63DB /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */; };
 		DD214B582E028FB80065D995 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD214B572E028FB80065D995 /* ProfileEditView.swift */; };
 		DD214B5A2E029E480065D995 /* TeamCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD214B592E029E430065D995 /* TeamCollectionView.swift */; };
 		DD214B5C2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD214B5B2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift */; };
@@ -401,6 +402,7 @@
 		DD005BAA2D80071E00B1661F /* CommentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentButton.swift; sourceTree = "<group>"; };
 		DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteContentLikedUseCase.swift; sourceTree = "<group>"; };
+		DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
 		DD214B572E028FB80065D995 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		DD214B592E029E430065D995 /* TeamCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamCollectionView.swift; sourceTree = "<group>"; };
 		DD214B5B2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+KeyboardHandling.swift"; sourceTree = "<group>"; };
@@ -836,6 +838,14 @@
 				0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		DD20D9712E8C2C4A008D63DB /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		DD29675D2D6DAC3100143851 /* DI */ = {
@@ -1448,6 +1458,8 @@
 		DDCA70912D87CE3900A988B8 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				DD20D9712E8C2C4A008D63DB /* Coordinator */,
+				DDEA63572E850250005FED9F /* ViewModel */,
 				DDFB223C2D8BA64500FEA24A /* Cell */,
 				DDFB223D2D8BA64C00FEA24A /* View */,
 				DDFB223E2D8BA65200FEA24A /* ViewController */,
@@ -2718,6 +2730,7 @@
 				DD2968122D6DACF700143851 /* Community.swift in Sources */,
 				DECC36DF2DC3B24000336B7B /* CreateViewitViewController.swift in Sources */,
 				DE4AE8532DE8BA18003E20AB /* UIAlertShowable.swift in Sources */,
+				DD20D9702E8C2C41008D63DB /* OnboardingCoordinator.swift in Sources */,
 				DD2968132D6DACF700143851 /* TriggerType.swift in Sources */,
 				DD9980DF2D834F4E00EBBFBC /* CommentCollectionViewCell.swift in Sources */,
 				DE0DC22F2E0B008F00FF061E /* StringLiterals+PhotoDetail.swift in Sources */,
