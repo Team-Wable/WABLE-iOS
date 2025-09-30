@@ -139,29 +139,7 @@ final class ProfileInfoCell: UICollectionViewCell {
             self.ghostProgressBar.setProgress(Float(100 + ghostValue) / 100, animated: true)
         }
         
-        let randomProfileImage = [
-            UIImage.imgProfilePurple,
-            UIImage.imgProfileBlue,
-            UIImage.imgProfileGreen
-        ].randomElement()
-        
-        guard let profileImageURL,
-              !profileImageURL.absoluteString.isEmpty
-        else {
-            profileImageView.image = randomProfileImage
-            return
-        }
-        
-        switch profileImageURL.absoluteString {
-        case "PURPLE":
-            profileImageView.image = .imgProfilePurple
-        case "GREEN":
-            profileImageView.image = .imgProfileGreen
-        case "BLUE":
-            profileImageView.image = .imgProfileBlue
-        default:
-            profileImageView.kf.setImage(with: profileImageURL, placeholder: randomProfileImage)
-        }
+        profileImageView.setProfileImage(with: profileImageURL)
     }
 }
 

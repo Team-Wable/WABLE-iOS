@@ -5,20 +5,22 @@
 //  Created by YOUJIM on 3/20/25.
 //
 
+import Combine
 import UIKit
 
 final class ProfileRegisterViewController: NavigationViewController {
 
     // MARK: - Property
+    
+    var navigateToAgreement: ((String, Int, String, UIImage?, String?) -> Void)?
 
-    private let lckYear: Int
-    private let lckTeam: String
-    private let useCase = FetchNicknameDuplicationUseCase(repository: AccountRepositoryImpl())
     private let cancelBag = CancelBag()
+    private let viewModel: ProfileRegisterViewModel
+    private let nicknameTextChangedRelay = PassthroughRelay<String>()
+    private let nicknameDuplicationCheckRelay = PassthroughRelay<String>()
+    
     private var defaultImage: String?
     private lazy var photoPickerHelper = PhotoPickerHelper(presentingViewController: self)
-
-    var navigateToAgreement: ((String, Int, String, UIImage?, String?) -> Void)?
 
     // MARK: - UIComponent
 
@@ -27,8 +29,7 @@ final class ProfileRegisterViewController: NavigationViewController {
     // MARK: - Life Cycle
 
     init(lckYear: Int, lckTeam: String) {
-        self.lckYear = lckYear
-        self.lckTeam = lckTeam
+        self.viewModel = ProfileRegisterViewModel(lckYear: lckYear, lckTeam: lckTeam)
 
         super.init(type: .flow)
     }
@@ -45,6 +46,7 @@ final class ProfileRegisterViewController: NavigationViewController {
         setupConstraints()
         setupDelegate()
         setupAction()
+        setupBinding()
     }
 }
 
@@ -52,7 +54,6 @@ final class ProfileRegisterViewController: NavigationViewController {
 
 private extension ProfileRegisterViewController {
     func setupView() {
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         defaultImage = rootView.defaultImageList[0].uppercased
         rootView.configureView()
     }
@@ -71,13 +72,36 @@ private extension ProfileRegisterViewController {
     }
 
     func setupAction() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
 
         rootView.switchButton.addTarget(self, action: #selector(switchButtonDidTap), for: .touchUpInside)
         rootView.addButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
-        rootView.checkButton.addTarget(self, action: #selector(duplicationCheckButtonDidTap), for: .touchUpInside)
+        rootView.checkButton.addTarget(self, action: #selector(checkButtonDidTap), for: .touchUpInside)
         rootView.nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
+    }
+
+    func setupBinding() {
+        let input = ProfileRegisterViewModel.Input(
+            nicknameTextChanged: nicknameTextChangedRelay.eraseToAnyPublisher(),
+            nicknameDuplicationCheckTrigger: nicknameDuplicationCheckRelay.eraseToAnyPublisher()
+        )
+
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+
+        output.nicknameValidation
+            .sink { [weak self] result in
+                self?.updateTextField(validationResult: result)
+            }
+            .store(in: cancelBag)
+
+        output.nicknameDuplicationResult
+            .sink { [weak self] isValid in
+                self?.updateDuplication(isValid: isValid)
+            }
+            .store(in: cancelBag)
     }
 }
 
@@ -101,12 +125,12 @@ private extension ProfileRegisterViewController {
         }
     }
 
-    @objc func duplicationCheckButtonDidTap() {
+    @objc func checkButtonDidTap() {
         rootView.nickNameTextField.endEditing(true)
 
         guard let text = rootView.nickNameTextField.text else { return }
 
-        checkNicknameDuplication(text)
+        nicknameDuplicationCheckRelay.send(text)
     }
 
     @objc func nextButtonDidTap() {
@@ -114,13 +138,10 @@ private extension ProfileRegisterViewController {
 
         AmplitudeManager.shared.trackEvent(tag: .clickNextProfileSignup)
 
-        navigateToAgreement?(
-            name,
-            lckYear,
-            lckTeam,
-            defaultImage == nil ? rootView.profileImageView.image : nil,
-            defaultImage
-        )
+        let data = viewModel.getRegistrationData(nickname: name)
+        let image = defaultImage == nil ? rootView.profileImageView.image : nil
+
+        navigateToAgreement?(data.nickname, data.lckYear, data.lckTeam, image, defaultImage)
     }
 }
 
@@ -137,25 +158,39 @@ private extension ProfileRegisterViewController {
         defaultImage = nil
     }
 
-    func checkNicknameDuplication(_ nickname: String) {
-        useCase.execute(nickname: nickname)
-            .receive(on: DispatchQueue.main)
-            .sink(
-                receiveCompletion: { [weak self] completion in
-                    self?.updateNicknameDuplicationUI(isValid: completion == .finished)
-                },
-                receiveValue: { _ in }
-            )
-            .store(in: cancelBag)
-    }
-
-    func updateNicknameDuplicationUI(isValid: Bool) {
+    func updateDuplication(isValid: Bool) {
         rootView.conditiionLabel.text = isValid
             ? StringLiterals.ProfileSetting.checkVaildMessage
             : StringLiterals.ProfileSetting.checkDuplicateError
         rootView.conditiionLabel.textColor = isValid ? .success : .error
         rootView.nextButton.isUserInteractionEnabled = isValid
         rootView.nextButton.updateStyle(isValid ? .primary : .gray)
+    }
+
+    func updateTextField(validationResult: ProfileRegisterViewModel.ValidationResult) {
+        switch validationResult {
+        case .empty:
+            rootView.conditiionLabel.text = StringLiterals.ProfileSetting.checkDefaultMessage
+            rootView.conditiionLabel.textColor = .gray600
+            rootView.checkButton.isUserInteractionEnabled = false
+            rootView.checkButton.configuration?.baseForegroundColor = .gray600
+            rootView.checkButton.configuration?.baseBackgroundColor = .gray200
+        case .valid:
+            rootView.conditiionLabel.text = StringLiterals.ProfileSetting.checkDefaultMessage
+            rootView.conditiionLabel.textColor = .gray600
+            rootView.checkButton.isUserInteractionEnabled = true
+            rootView.checkButton.configuration?.baseForegroundColor = .white
+            rootView.checkButton.configuration?.baseBackgroundColor = .wableBlack
+        case .invalidFormat:
+            rootView.conditiionLabel.text = StringLiterals.ProfileSetting.checkInvaildError
+            rootView.conditiionLabel.textColor = .error
+            rootView.checkButton.isUserInteractionEnabled = false
+            rootView.checkButton.configuration?.baseForegroundColor = .gray600
+            rootView.checkButton.configuration?.baseBackgroundColor = .gray200
+        }
+
+        rootView.nextButton.updateStyle(.gray)
+        rootView.nextButton.isUserInteractionEnabled = false
     }
 }
 
@@ -169,9 +204,7 @@ extension ProfileRegisterViewController: UITextFieldDelegate {
 
     func textFieldDidChangeSelection(_ textField: UITextField) {
         guard let text = textField.text else { return }
-
-        let isValid = validateNickname(text)
-        updateTextFieldUI(isValid: isValid, isEmpty: text.isEmpty)
+        nicknameTextChangedRelay.send(text)
     }
 
     func textField(
@@ -184,35 +217,10 @@ extension ProfileRegisterViewController: UITextFieldDelegate {
     }
 }
 
-// MARK: - Helper Method
-
-private extension ProfileRegisterViewController {
-    func validateNickname(_ text: String) -> Bool {
-        guard let regex = try? NSRegularExpression(pattern: Constant.nicknamePattern) else { return false }
-        let range = NSRange(location: 0, length: text.utf16.count)
-        return regex.firstMatch(in: text, options: [], range: range) != nil
-    }
-
-    func updateTextFieldUI(isValid: Bool, isEmpty: Bool) {
-        let shouldEnableCheck = isValid && !isEmpty
-
-        rootView.conditiionLabel.text = shouldEnableCheck || isEmpty
-            ? StringLiterals.ProfileSetting.checkDefaultMessage
-            : StringLiterals.ProfileSetting.checkInvaildError
-        rootView.conditiionLabel.textColor = shouldEnableCheck || isEmpty ? .gray600 : .error
-        rootView.checkButton.isUserInteractionEnabled = shouldEnableCheck
-        rootView.checkButton.configuration?.baseForegroundColor = shouldEnableCheck ? .white : .gray600
-        rootView.checkButton.configuration?.baseBackgroundColor = shouldEnableCheck ? .wableBlack : .gray200
-        rootView.nextButton.updateStyle(.gray)
-        rootView.nextButton.isUserInteractionEnabled = false
-    }
-}
-
 // MARK: - Constant
 
 private extension ProfileRegisterViewController {
     enum Constant {
-        static let nicknamePattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"
         static let maxNicknameLength = 10
     }
 }
