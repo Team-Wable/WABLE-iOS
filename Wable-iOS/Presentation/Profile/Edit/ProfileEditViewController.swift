@@ -199,7 +199,7 @@ private extension ProfileEditViewController {
     
     @objc func switchButtonDidTap() {
         rootView.configureDefaultImage()
-        defaultImage = rootView.defaultImageList[0].uppercased
+        defaultImage = rootView.currentDefaultImage.uppercased
         hasUserSelectedImage = false
         updateDoneButtonState()
     }
