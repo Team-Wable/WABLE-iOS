@@ -14,11 +14,7 @@ final class ProfileRegisterView: UIView {
     
     // MARK: Property
 
-    var defaultImageList = [
-        DefaultProfileType.blue,
-        DefaultProfileType.green,
-        DefaultProfileType.purple
-    ]
+    private(set) var currentDefaultImage: DefaultProfileType = .blue
     
     // MARK: - UIComponent
     
@@ -58,7 +54,7 @@ final class ProfileRegisterView: UIView {
         $0.addPadding(left: 16)
     }
     
-    let duplicationCheckButton: UIButton = UIButton(configuration: .filled()).then {
+    let checkButton: UIButton = UIButton(configuration: .filled()).then {
         $0.configuration?.attributedTitle = "중복확인".pretendardString(with: .body3)
         $0.configuration?.baseForegroundColor = .gray600
         $0.configuration?.baseBackgroundColor = .gray200
@@ -89,13 +85,12 @@ final class ProfileRegisterView: UIView {
     }
 }
 
-// MARK: Public Extension
+// MARK: - Helper Extension
 
 extension ProfileRegisterView {
     func configureDefaultImage() {
-        defaultImageList.shuffle()
-        
-        profileImageView.image = UIImage(named: defaultImageList[0].rawValue)
+        currentDefaultImage = DefaultProfileType.random()
+        profileImageView.image = currentDefaultImage.image
     }
 }
 
@@ -113,7 +108,7 @@ private extension ProfileRegisterView {
             switchButton,
             addButton,
             nickNameTextField,
-            duplicationCheckButton,
+            checkButton,
             conditiionLabel,
             nextButton
         )
@@ -151,11 +146,11 @@ private extension ProfileRegisterView {
         nickNameTextField.snp.makeConstraints {
             $0.top.equalTo(profileImageView.snp.bottom).offset(44)
             $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalTo(duplicationCheckButton.snp.leading).offset(-8)
+            $0.trailing.equalTo(checkButton.snp.leading).offset(-8)
             $0.adjustedHeightEqualTo(48)
         }
         
-        duplicationCheckButton.snp.makeConstraints {
+        checkButton.snp.makeConstraints {
             $0.centerY.equalTo(nickNameTextField)
             $0.trailing.equalToSuperview().inset(16)
             $0.adjustedWidthEqualTo(94)
@@ -208,24 +203,6 @@ extension ProfileRegisterView {
         nextButton.isUserInteractionEnabled = true
         nextButton.updateStyle(.primary)
         
-        guard let profileImageURL = profileImageURL else {
-            configureDefaultImage()
-            
-            return
-        }
-        
-        switch profileImageURL.absoluteString {
-        case "PURPLE":
-            profileImageView.image = .imgProfilePurple
-        case "GREEN":
-            profileImageView.image = .imgProfileGreen
-        case "BLUE":
-            profileImageView.image = .imgProfileBlue
-        default:
-            profileImageView.kf.setImage(
-                with: profileImageURL,
-                placeholder: [UIImage.imgProfilePurple, UIImage.imgProfileBlue, UIImage.imgProfileGreen].randomElement()
-            )
-        }
+        profileImageView.setProfileImage(with: profileImageURL)
     }
 }
