@@ -12,7 +12,7 @@ import UIKit
 
 final class LoginViewController: UIViewController {
     
-    // MARK: Property
+    // MARK: - Property
     
     private let viewModel: LoginViewModel
     private let cancelBag = CancelBag()
