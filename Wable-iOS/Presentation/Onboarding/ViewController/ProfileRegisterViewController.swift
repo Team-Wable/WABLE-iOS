@@ -10,29 +10,33 @@ import PhotosUI
 import UIKit
 
 final class ProfileRegisterViewController: NavigationViewController {
-    
-    // MARK: Property
+
+    // MARK: - Property
     // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
     
+    var navigateToAgreement: ((String, Int, String, UIImage?, String?) -> Void)?
+
     private let lckYear: Int
     private let lckTeam: String
-    private var defaultImage: String? = nil
     private let useCase = FetchNicknameDuplicationUseCase(repository: AccountRepositoryImpl())
     private let cancelBag = CancelBag()
     
+    private var defaultImage: String?
+    
     // MARK: - UIComponent
-    
+
     private let rootView = ProfileRegisterView()
-    
-    // MARK: - LifeCycle
-    
+
+    // MARK: - Life Cycle
+
     init(lckYear: Int, lckTeam: String) {
         self.lckYear = lckYear
         self.lckTeam = lckTeam
-        
+
         super.init(type: .flow)
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -141,18 +145,15 @@ private extension ProfileRegisterViewController {
     
     @objc func nextButtonDidTap() {
         guard let name = rootView.nickNameTextField.text else { return }
-        
+
         AmplitudeManager.shared.trackEvent(tag: .clickNextProfileSignup)
-        
-        navigationController?.pushViewController(
-            AgreementViewController(
-                nickname: name,
-                lckTeam: lckTeam,
-                lckYear: lckYear,
-                profileImage: defaultImage == nil ? rootView.profileImageView.image : nil,
-                defaultImage: defaultImage
-            ),
-            animated: true
+
+        navigateToAgreement?(
+            name,
+            lckYear,
+            lckTeam,
+            defaultImage == nil ? rootView.profileImageView.image : nil,
+            defaultImage
         )
     }
     
