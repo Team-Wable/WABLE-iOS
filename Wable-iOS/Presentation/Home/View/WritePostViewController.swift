@@ -13,13 +13,14 @@ import PhotosUI
 final class WritePostViewController: NavigationViewController {
     
     // MARK: - Property
-    
-    var onPostCompleted: VoidClosure?
-    
+
     private let viewModel: WritePostViewModel
     private let postButtonTapRelay = PassthroughRelay<(title: String, content: String?, image: UIImage?)>()
     private var cancelBag = CancelBag()
+    private lazy var photoPickerHelper = PhotoPickerHelper(presentingViewController: self)
     private var isPosting = false
+
+    var onPostCompleted: VoidClosure?
     
     // MARK: - UIComponents
     
@@ -228,17 +229,12 @@ private extension WritePostViewController {
 
         AmplitudeManager.shared.trackEvent(tag: .clickAttachPhoto)
 
-        PermissionManager.shared.requestPhotoLibraryAccess { [weak self] isAuthorized in
+        photoPickerHelper.presentPhotoPicker { [weak self] image in
             guard let self else { return }
 
-            if isAuthorized {
-                self.presentPhotoPicker()
-            } else {
-                PermissionManager.shared.showSettingsAlert(
-                    from: self,
-                    message: StringLiterals.Empty.photoPermission
-                )
-            }
+            self.imageView.image = image
+            self.imageView.isHidden = false
+            self.deleteButton.isHidden = false
         }
     }
     
@@ -313,34 +309,6 @@ private extension WritePostViewController {
         }
     }
     
-    func presentPhotoPicker() {
-        var configuration = PHPickerConfiguration()
-        configuration.filter = .images
-        configuration.selectionLimit = 1
-
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-
-        present(picker, animated: true)
-    }
-}
-
-// MARK: - PHPickerViewControllerDelegate
-
-extension WritePostViewController: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        results.first?.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
-            guard let image = image as? UIImage else { return }
-            
-            DispatchQueue.main.async {
-                self.imageView.image = image
-                self.imageView.isHidden = false
-                self.deleteButton.isHidden = false
-            }
-        }
-        
-        dismiss(animated: true)
-    }
 }
 
 // MARK: - UITextViewDelegate

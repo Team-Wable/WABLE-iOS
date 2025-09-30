@@ -113,7 +113,7 @@ private extension PhotoDetailViewController {
     func saveImage() {
         Task {
             do {
-                guard await PermissionManager.shared.requestPhotoLibraryAccess() else { return }
+                guard await PhotoPickerHelper.requestPhotoLibraryAccess() else { return }
                 try await saveImageToPhotoLibrary(image)
                 await MainActor.run {
                     ToastView(status: .complete, message: StringLiterals.PhotoDetail.successMessage).show()

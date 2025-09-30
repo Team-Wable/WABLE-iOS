@@ -10,10 +10,10 @@ import PhotosUI
 import UIKit
 
 final class ProfileEditViewController: NavigationViewController {
-    
+
     // MARK: Property
     // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
-    
+
     private let profileUseCase = UserProfileUseCase(repository: ProfileRepositoryImpl())
     private let nicknameUseCase = FetchNicknameDuplicationUseCase(repository: AccountRepositoryImpl())
     private let userSessionUseCase = FetchUserInformationUseCase(
@@ -25,7 +25,8 @@ final class ProfileEditViewController: NavigationViewController {
         )
     )
     private let cancelBag = CancelBag()
-    
+    private lazy var photoPickerHelper = PhotoPickerHelper(presentingViewController: self)
+
     private var lckTeam = "LCK"
     private var sessionProfile: UserProfile? = nil
     private var defaultImage: String? = nil
@@ -204,17 +205,13 @@ private extension ProfileEditViewController {
     }
     
     @objc func addButtonDidTap() {
-        PermissionManager.shared.requestPhotoLibraryAccess { [weak self] isAuthorized in
+        photoPickerHelper.presentPhotoPicker { [weak self] image in
             guard let self else { return }
 
-            if isAuthorized {
-                self.presentPhotoPicker()
-            } else {
-                PermissionManager.shared.showSettingsAlert(
-                    from: self,
-                    message: StringLiterals.Empty.photoPermission
-                )
-            }
+            self.rootView.profileImageView.image = image
+            self.defaultImage = nil
+            self.hasUserSelectedImage = true
+            self.updateDoneButtonState()
         }
     }
     
@@ -238,17 +235,6 @@ private extension ProfileEditViewController {
     }
     
     // MARK: - Function Method
-    
-    func presentPhotoPicker() {
-        var configuration = PHPickerConfiguration()
-        configuration.filter = .images
-        configuration.selectionLimit = 1
-
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-
-        present(picker, animated: true)
-    }
 
     func updateDoneButtonState() {
         guard let profile = sessionProfile else { return }
@@ -289,24 +275,6 @@ extension ProfileEditViewController {
     }
 }
 
-// MARK: - PHPickerViewControllerDelegate
-
-extension ProfileEditViewController: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        results.first?.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
-            guard let image = image as? UIImage else { return }
-            
-            DispatchQueue.main.async {
-                self.rootView.profileImageView.image = image
-                self.defaultImage = nil
-                self.hasUserSelectedImage = true
-                self.updateDoneButtonState()
-            }
-        }
-        
-        dismiss(animated: true)
-    }
-}
 
 // MARK: - UITextFieldDelegate
 
