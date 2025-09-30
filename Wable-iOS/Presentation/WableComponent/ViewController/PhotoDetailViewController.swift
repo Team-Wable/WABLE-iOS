@@ -113,7 +113,7 @@ private extension PhotoDetailViewController {
     func saveImage() {
         Task {
             do {
-                guard try await requestPhotoPermissionIfNeeded() else { return }
+                guard await PermissionManager.shared.requestPhotoLibraryAccess() else { return }
                 try await saveImageToPhotoLibrary(image)
                 await MainActor.run {
                     ToastView(status: .complete, message: StringLiterals.PhotoDetail.successMessage).show()
@@ -126,22 +126,7 @@ private extension PhotoDetailViewController {
             }
         }
     }
-    
-    func requestPhotoPermissionIfNeeded() async throws -> Bool {
-        let currentStatus = PHPhotoLibrary.authorizationStatus(for: .addOnly)
-        
-        if isPermissionGranted(currentStatus) {
-            return true
-        }
-        
-        let newStatus = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
-        return isPermissionGranted(newStatus)
-    }
-    
-    func isPermissionGranted(_ status: PHAuthorizationStatus) -> Bool {
-        return status == .authorized || status == .limited
-    }
-    
+
     func saveImageToPhotoLibrary(_ image: UIImage) async throws {
         try await PHPhotoLibrary.shared().performChanges {
             PHAssetChangeRequest.creationRequestForAsset(from: image)
