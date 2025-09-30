@@ -62,7 +62,7 @@ final class ProfileEditView: UIView {
     }
     
     lazy var teamCollectionView: TeamCollectionView = {
-        return TeamCollectionView(cellDidTapped: { [weak self] selectedTeam in
+        return TeamCollectionView(didTapped: { [weak self] selectedTeam in
             guard let self = self else { return }
             
             myTeamLabel.text = selectedTeam
