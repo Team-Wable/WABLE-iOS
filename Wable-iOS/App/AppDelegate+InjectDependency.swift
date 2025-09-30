@@ -19,6 +19,11 @@ extension AppDelegate {
             object: UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage())
         )
         
+        // MARK: - Account
+        
+        diContainer.register(for: AccountRepository.self, object: AccountRepositoryImpl())
+
+        
         // MARK: - Login
         
         diContainer.register(for: LoginRepository.self, object: LoginRepositoryImpl())
