@@ -54,8 +54,8 @@ final class ProfileRegisterViewController: NavigationViewController {
 
 private extension ProfileRegisterViewController {
     func setupView() {
-        defaultImage = rootView.defaultImageList[0].uppercased
         rootView.configureView()
+        defaultImage = rootView.currentDefaultImage.uppercased
     }
 
     func setupConstraints() {
@@ -150,7 +150,7 @@ private extension ProfileRegisterViewController {
 private extension ProfileRegisterViewController {
     func updateToDefaultImage() {
         rootView.configureDefaultImage()
-        defaultImage = rootView.defaultImageList[0].uppercased
+        defaultImage = rootView.currentDefaultImage.uppercased
     }
 
     func updateProfileImage(_ image: UIImage) {
