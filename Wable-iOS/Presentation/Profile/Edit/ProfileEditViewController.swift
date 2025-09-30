@@ -204,19 +204,17 @@ private extension ProfileEditViewController {
     }
     
     @objc func addButtonDidTap() {
-        switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
-        case .denied, .restricted:
-            presentSettings()
-        case .authorized, .limited:
-            presentPhotoPicker()
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
-                DispatchQueue.main.async {
-                    status == .authorized ? self.presentPhotoPicker() : nil
-                }
+        PermissionManager.shared.requestPhotoLibraryAccess { [weak self] isAuthorized in
+            guard let self else { return }
+
+            if isAuthorized {
+                self.presentPhotoPicker()
+            } else {
+                PermissionManager.shared.showSettingsAlert(
+                    from: self,
+                    message: StringLiterals.Empty.photoPermission
+                )
             }
-        default:
-            break
         }
     }
     
@@ -245,29 +243,13 @@ private extension ProfileEditViewController {
         var configuration = PHPickerConfiguration()
         configuration.filter = .images
         configuration.selectionLimit = 1
-        
+
         let picker = PHPickerViewController(configuration: configuration)
         picker.delegate = self
-        
+
         present(picker, animated: true)
     }
-    
-    func presentSettings() {
-        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-        let alert = UIAlertController(
-            title: "설정",
-            message: StringLiterals.Empty.photoPermission,
-            preferredStyle: .alert
-        )
-        
-        alert.addAction(UIAlertAction(title: "닫기", style: .default))
-        alert.addAction(UIAlertAction(title: "권한 설정하기", style: .default) { _ in
-            UIApplication.shared.open(url)
-        })
-        
-        present(alert, animated: true, completion: nil)
-    }
-    
+
     func updateDoneButtonState() {
         guard let profile = sessionProfile else { return }
         

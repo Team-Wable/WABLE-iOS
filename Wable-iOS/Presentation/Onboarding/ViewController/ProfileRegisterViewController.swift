@@ -12,7 +12,6 @@ import UIKit
 final class ProfileRegisterViewController: NavigationViewController {
 
     // MARK: - Property
-    // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
     
     var navigateToAgreement: ((String, Int, String, UIImage?, String?) -> Void)?
 
@@ -22,7 +21,7 @@ final class ProfileRegisterViewController: NavigationViewController {
     private let cancelBag = CancelBag()
     
     private var defaultImage: String?
-    
+
     // MARK: - UIComponent
 
     private let rootView = ProfileRegisterView()
@@ -40,15 +39,14 @@ final class ProfileRegisterViewController: NavigationViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupView()
-        setupConstraint()
+        setupConstraints()
         setupDelegate()
         setupAction()
-        setupTapGesture()
     }
 }
 
@@ -107,23 +105,10 @@ private extension ProfileRegisterViewController {
     
     @objc func addButtonDidTap() {
         AmplitudeManager.shared.trackEvent(tag: .clickAddPictureProfileSignup)
-        
-        switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
-        case .denied, .restricted:
-            presentSettings()
-        case .authorized, .limited:
-            presentPhotoPicker()
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
-                DispatchQueue.main.async {
-                    status == .authorized ? self.presentPhotoPicker() : nil
-                }
-            }
-        default:
-            break
-        }
+
+        handlePhotoLibraryAuthorization()
     }
-    
+
     @objc func duplicationCheckButtonDidTap() {
         rootView.nickNameTextField.endEditing(true)
         
@@ -163,44 +148,31 @@ private extension ProfileRegisterViewController {
         var configuration = PHPickerConfiguration()
         configuration.filter = .images
         configuration.selectionLimit = 1
-        
+
         let picker = PHPickerViewController(configuration: configuration)
         picker.delegate = self
-        
+
         present(picker, animated: true)
     }
-    
-    func presentSettings() {
-        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-        let alert = UIAlertController(
-            title: "설정",
-            message: StringLiterals.Empty.photoPermission,
-            preferredStyle: .alert
-        )
-        
-        alert.addAction(UIAlertAction(title: "닫기", style: .default))
-        alert.addAction(UIAlertAction(title: "권한 설정하기", style: .default) { _ in
-            UIApplication.shared.open(url)
-        })
-        
-        present(alert, animated: true, completion: nil)
-    }
 }
+
 
 // MARK: - PHPickerViewControllerDelegate
 
 extension ProfileRegisterViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        results.first?.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+        dismiss(animated: true)
+
+        guard let itemProvider = results.first?.itemProvider else { return }
+
+        itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, _ in
             guard let image = image as? UIImage else { return }
-            
+
             DispatchQueue.main.async {
-                self.rootView.profileImageView.image = image
-                self.defaultImage = nil
+                self?.rootView.profileImageView.image = image
+                self?.defaultImage = nil
             }
         }
-        
-        dismiss(animated: true)
     }
 }
 
@@ -215,7 +187,6 @@ extension ProfileRegisterViewController: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         guard let text = textField.text else { return }
-        let regex = try? NSRegularExpression(pattern: "^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$")
         let range = NSRange(location: 0, length: text.utf16.count)
         let condition = regex?.firstMatch(in: text, options: [], range: range) != nil
         
