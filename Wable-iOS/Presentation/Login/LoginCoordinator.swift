@@ -11,6 +11,7 @@ import UIKit
 final class LoginCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
+    var onFinish: (() -> Void)?
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -47,6 +48,9 @@ private extension LoginCoordinator {
             navigationController.modalPresentationStyle = .fullScreen
 
             let coordinator = OnboardingCoordinator(navigationController: navigationController)
+            coordinator.onFinish = { [weak self] in
+                self?.childDidFinish(coordinator)
+            }
             self.childCoordinators.append(coordinator)
             coordinator.start()
 

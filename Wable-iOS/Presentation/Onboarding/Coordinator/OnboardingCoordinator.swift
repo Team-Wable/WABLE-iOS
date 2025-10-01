@@ -10,6 +10,7 @@ import UIKit
 final class OnboardingCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
+    var onFinish: (() -> Void)?
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -74,7 +75,9 @@ private extension OnboardingCoordinator {
             duration: 0.5,
             options: [.transitionCrossDissolve],
             animations: { window.rootViewController = tabBarController },
-            completion: nil
+            completion: { [weak self] _ in
+                self?.onFinish?()
+            }
         )
     }
 }
