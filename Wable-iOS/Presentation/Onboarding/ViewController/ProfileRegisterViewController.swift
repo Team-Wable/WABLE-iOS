@@ -11,15 +11,15 @@ import UIKit
 final class ProfileRegisterViewController: NavigationViewController {
 
     // MARK: - Property
-    
-    var navigateToAgreement: ((String, Int, String, UIImage?, String?) -> Void)?
+
+    var navigateToAgreement: ((OnboardingProfileInfo) -> Void)?
 
     private let cancelBag = CancelBag()
     private let viewModel: ProfileRegisterViewModel
     private let nicknameTextChangedRelay = PassthroughRelay<String>()
     private let nicknameDuplicationCheckRelay = PassthroughRelay<String>()
-    
-    private var defaultImage: String?
+
+    private var profileImageType: ProfileImageType?
     private lazy var photoPickerHelper = PhotoPickerHelper(presentingViewController: self)
 
     // MARK: - UIComponent
@@ -28,8 +28,8 @@ final class ProfileRegisterViewController: NavigationViewController {
 
     // MARK: - Life Cycle
 
-    init(lckYear: Int, lckTeam: String) {
-        self.viewModel = ProfileRegisterViewModel(lckYear: lckYear, lckTeam: lckTeam)
+    init(profileInfo: OnboardingProfileInfo) {
+        self.viewModel = ProfileRegisterViewModel(profileInfo: profileInfo)
 
         super.init(type: .flow)
     }
@@ -55,7 +55,7 @@ final class ProfileRegisterViewController: NavigationViewController {
 private extension ProfileRegisterViewController {
     func setupView() {
         rootView.configureView()
-        defaultImage = rootView.currentDefaultImage.uppercased
+        profileImageType = .default(rootView.currentDefaultImage)
     }
 
     func setupConstraints() {
@@ -77,10 +77,10 @@ private extension ProfileRegisterViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
 
-        rootView.switchButton.addTarget(self, action: #selector(switchButtonDidTap), for: .touchUpInside)
         rootView.addButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
-        rootView.checkButton.addTarget(self, action: #selector(checkButtonDidTap), for: .touchUpInside)
         rootView.nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
+        rootView.checkButton.addTarget(self, action: #selector(checkButtonDidTap), for: .touchUpInside)
+        rootView.switchButton.addTarget(self, action: #selector(switchButtonDidTap), for: .touchUpInside)
     }
 
     func setupBinding() {
@@ -119,7 +119,6 @@ private extension ProfileRegisterViewController {
 
     @objc func addButtonDidTap() {
         AmplitudeManager.shared.trackEvent(tag: .clickAddPictureProfileSignup)
-
         photoPickerHelper.presentPhotoPicker { [weak self] image in
             self?.updateProfileImage(image)
         }
@@ -135,13 +134,10 @@ private extension ProfileRegisterViewController {
 
     @objc func nextButtonDidTap() {
         guard let name = rootView.nickNameTextField.text else { return }
+        let updatedProfileInfo = viewModel.getProfileInfo(nickname: name, profileImageType: profileImageType)
 
         AmplitudeManager.shared.trackEvent(tag: .clickNextProfileSignup)
-
-        let data = viewModel.getRegistrationData(nickname: name)
-        let image = defaultImage == nil ? rootView.profileImageView.image : nil
-
-        navigateToAgreement?(data.nickname, data.lckYear, data.lckTeam, image, defaultImage)
+        navigateToAgreement?(updatedProfileInfo)
     }
 }
 
@@ -150,12 +146,12 @@ private extension ProfileRegisterViewController {
 private extension ProfileRegisterViewController {
     func updateToDefaultImage() {
         rootView.configureDefaultImage()
-        defaultImage = rootView.currentDefaultImage.uppercased
+        profileImageType = .default(rootView.currentDefaultImage)
     }
 
     func updateProfileImage(_ image: UIImage) {
         rootView.profileImageView.image = image
-        defaultImage = nil
+        profileImageType = .custom(image)
     }
 
     func updateDuplication(isValid: Bool) {
@@ -167,7 +163,7 @@ private extension ProfileRegisterViewController {
         rootView.nextButton.updateStyle(isValid ? .primary : .gray)
     }
 
-    func updateTextField(validationResult: ProfileRegisterViewModel.ValidationResult) {
+    func updateTextField(validationResult: NicknameValidationResult) {
         switch validationResult {
         case .empty:
             rootView.conditiionLabel.text = StringLiterals.ProfileSetting.checkDefaultMessage

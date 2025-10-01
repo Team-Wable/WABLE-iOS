@@ -12,40 +12,22 @@ import UIKit
 
 final class AgreementViewController: NavigationViewController {
 
-    // MARK: Property
-    // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
-    
+    // MARK: - Property
+
     var navigateToHome: (() -> Void)?
 
-    private let nickname: String
-    private let lckTeam: String
-    private let lckYear: Int
-    private let profileImage: UIImage?
-    private let defaultImage: String?
-    private let updateFCMTokenUseCase = UpdateFCMTokenUseCase(repository: ProfileRepositoryImpl())
-    private let profileUseCase = UserProfileUseCase(repository: ProfileRepositoryImpl())
-    private let userInformationUseCase = FetchUserInformationUseCase(
-        repository: UserSessionRepositoryImpl(
-            userDefaults: UserDefaultsStorage(
-                jsonEncoder: JSONEncoder(),
-                jsonDecoder: JSONDecoder()
-            )
-        )
-    )
+    private let viewModel: AgreementViewModel
     private let cancelBag = CancelBag()
+    private let completeButtonTappedRelay = PassthroughRelay<Bool>()
 
-    // MARK: UIComponent
+    // MARK: - UIComponent
 
     private let rootView = AgreementView()
 
     // MARK: - Life Cycle
 
-    init(nickname: String, lckTeam: String, lckYear: Int, profileImage: UIImage? = nil, defaultImage: String? = nil) {
-        self.nickname = nickname
-        self.lckTeam = lckTeam
-        self.lckYear = lckYear
-        self.profileImage = profileImage
-        self.defaultImage = defaultImage
+    init(profileInfo: OnboardingProfileInfo) {
+        self.viewModel = AgreementViewModel(profileInfo: profileInfo)
 
         super.init(type: .flow)
     }
@@ -57,33 +39,27 @@ final class AgreementViewController: NavigationViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupView()
-        setupConstraint()
+
+        setupConstraints()
         setupAction()
+        setupBinding()
     }
 }
 
-// MARK: - Priviate Extension
+// MARK: - Setup Method
 
 private extension AgreementViewController {
-    
-    // MARK: - Setup Method
-    
-    func setupView() {
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        
-        view.addSubview(rootView)
-    }
-    
-    func setupConstraint() {
+    func setupConstraints() {
         rootView.snp.makeConstraints {
+            view.addSubview(rootView)
+            
             $0.top.equalTo(navigationView.snp.bottom)
             $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
     
     func setupAction() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         [
             rootView.personalInfoAgreementItemView.checkButton,
             rootView.privacyPolicyAgreementItemView.checkButton,
@@ -102,12 +78,34 @@ private extension AgreementViewController {
             action: #selector(infoButtonDidTap(_:)),
             for: .touchUpInside
         )
-        rootView.allAgreementItemView.checkButton.addTarget(self, action: #selector(allCheckButtonDidTap), for: .touchUpInside)
+        rootView.allAgreementItemView.checkButton.addTarget(
+            self,
+            action: #selector(allCheckButtonDidTap),
+            for: .touchUpInside
+        )
         rootView.nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
     }
-    
-    // MARK: - @objc Method
-    
+
+    func setupBinding() {
+        let input = AgreementViewModel.Input(completeButtonTapped: completeButtonTappedRelay.eraseToAnyPublisher())
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+
+        output.registrationCompleted
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.navigateToHome?()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                    owner.presentWelcomeSheet()
+                }
+            }
+            .store(in: cancelBag)
+    }
+}
+
+// MARK: - @objc Method
+
+private extension AgreementViewController {
     @objc func checkButtonDidTap(_ sender: UIButton) {
         sender.isSelected.toggle()
         
@@ -120,11 +118,9 @@ private extension AgreementViewController {
     }
     
     @objc func infoButtonDidTap(_ sender: UIButton) {
-        guard let url = URL(
-            string: sender == rootView.personalInfoAgreementItemView.infoButton ? StringLiterals.URL.terms : StringLiterals.URL.privacyPolicy
-        ) else {
-            return
-        }
+        let condition = sender == rootView.personalInfoAgreementItemView.infoButton
+        let urlString = condition ? StringLiterals.URL.terms : StringLiterals.URL.privacyPolicy
+        guard let url = URL(string: urlString) else { return }
         
         let viewController = SFSafariViewController(url: url)
         viewController.modalPresentationStyle = .formSheet
@@ -149,98 +145,13 @@ private extension AgreementViewController {
     
     @objc func nextButtonDidTap() {
         AmplitudeManager.shared.trackEvent(tag: .clickCompleteTncSignup)
-        
-        userInformationUseCase.fetchActiveUserInfo()
-            .withUnretained(self)
-            .sink {
-                owner,
-                userSession in
-                guard let userSession = userSession else { return }
-                
-                owner.profileUseCase.updateProfile(
-                    profile: UserProfile(
-                        user: User(
-                            id: userSession.id,
-                            nickname: owner.nickname,
-                            profileURL: userSession.profileURL,
-                            fanTeam: LCKTeam(rawValue: owner.lckTeam)
-                        ),
-                        introduction: "",
-                        ghostCount: 0,
-                        lckYears: owner.lckYear,
-                        userLevel: 1
-                    ),
-                    isPushAlarmAllowed: owner.rootView.marketingAgreementItemView.checkButton.isSelected,
-                    isAlarmAllowed: owner.rootView.marketingAgreementItemView.checkButton.isSelected,
-                    image: owner.profileImage,
-                    defaultProfileType: owner.defaultImage
-                )
-                .receive(on: DispatchQueue.main)
-                .sink { _ in
-                } receiveValue: { [weak self] _ in
-                    guard let self = self else { return }
-                    
-                    self.updateFCMTokenUseCase.execute(nickname: owner.nickname)
-                        .sink { completion in
-                            if case .failure(let error) = completion {
-                                WableLogger.log("FCM 토큰 저장 중 에러 발생: \(error)", for: .error)
-                            }
-                        } receiveValue: { () in
-                        }
-                        .store(in: cancelBag)
-                    
-                    self.userInformationUseCase.updateUserSession(
-                        userID: userSession.id,
-                        nickname: userSession.nickname,
-                        profileURL: userSession.profileURL,
-                        isPushAlarmAllowed: userSession.isPushAlarmAllowed,
-                        isAdmin: userSession.isAdmin,
-                        isAutoLoginEnabled: true,
-                        notificationBadgeCount: userSession.notificationBadgeCount
-                    )
-                    .sink(
-                        receiveCompletion: { _ in
-                        },
-                        receiveValue: { [weak self] _ in
-                            guard let self else { return }
-
-                            WableLogger.log("세션 저장 완료", for: .debug)
-
-                            self.dismiss(animated: false) {
-                                self.navigateToHome?()
-
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                    guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                                          let topViewController = windowScene.windows.first?.rootViewController?.presentedViewController
-                                    else { return }
-
-                                    let noticeViewController = WableSheetViewController(
-                                        title: StringLiterals.Onboarding.completeSheetTitle,
-                                        message: "\(self.nickname)님\n와블의 일원이 되신 것을 환영해요.\nLCK 함께 보며 같이 즐겨요 :)"
-                                    )
-
-                                    noticeViewController.addAction(
-                                        .init(
-                                            title: StringLiterals.Onboarding.completeButtonTitle,
-                                            style: .primary,
-                                            handler: {
-                                                AmplitudeManager.shared.trackEvent(tag: .clickJoinPopupSignup)
-                                            })
-                                    )
-
-                                    topViewController.present(noticeViewController, animated: true)
-                                }
-                            }
-                        })
-                    .store(in: cancelBag)
-                }
-                .store(in: owner.cancelBag)
-            }
-            .store(in: cancelBag)
+        completeButtonTappedRelay.send(rootView.marketingAgreementItemView.checkButton.isSelected)
     }
-    
-    // MARK: - Function Method
-    
+}
+
+// MARK: - Helper Method
+
+private extension AgreementViewController {
     func configureNextButton() {
         let condition = rootView.personalInfoAgreementItemView.checkButton.isSelected
         && rootView.privacyPolicyAgreementItemView.checkButton.isSelected
@@ -256,5 +167,25 @@ private extension AgreementViewController {
         rootView.privacyPolicyAgreementItemView.checkButton.isSelected &&
         rootView.ageAgreementItemView.checkButton.isSelected &&
         rootView.marketingAgreementItemView.checkButton.isSelected
+    }
+    
+    func presentWelcomeSheet() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController = windowScene.windows.first?.rootViewController
+        else { return }
+
+        let noticeViewController = WableSheetViewController(
+            title: StringLiterals.Onboarding.completeSheetTitle,
+            message: self.viewModel.getWelcomeMessage()
+        )
+
+        noticeViewController.addAction(.init(
+                title: StringLiterals.Onboarding.completeButtonTitle,
+                style: .primary,
+                handler: { AmplitudeManager.shared.trackEvent(tag: .clickJoinPopupSignup) }
+            )
+        )
+
+        rootViewController.present(noticeViewController, animated: true)
     }
 }
