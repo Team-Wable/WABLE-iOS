@@ -8,32 +8,20 @@
 import Combine
 import Foundation
 
-// MARK: - Enum
-
-extension ProfileRegisterViewModel {
-    enum ValidationResult {
-        case empty
-        case valid
-        case invalidFormat
-    }
-}
-
 final class ProfileRegisterViewModel {
 
     // MARK: - Property
 
-    private let lckYear: Int
-    private let lckTeam: String
+    private let profileInfo: OnboardingProfileInfo
     private let nicknameDuplicationSuccessSubject = PassthroughSubject<Bool, Never>()
-    private let nicknameValidationSubject = PassthroughSubject<ValidationResult, Never>()
+    private let nicknameValidationSubject = PassthroughSubject<NicknameValidationResult, Never>()
 
     @Injected private var accountRepository: AccountRepository
 
     // MARK: - Life Cycle
 
-    init(lckYear: Int, lckTeam: String) {
-        self.lckYear = lckYear
-        self.lckTeam = lckTeam
+    init(profileInfo: OnboardingProfileInfo) {
+        self.profileInfo = profileInfo
     }
 }
 
@@ -46,7 +34,7 @@ extension ProfileRegisterViewModel: ViewModelType {
     }
 
     struct Output {
-        let nicknameValidation: AnyPublisher<ValidationResult, Never>
+        let nicknameValidation: AnyPublisher<NicknameValidationResult, Never>
         let nicknameDuplicationResult: AnyPublisher<Bool, Never>
     }
 
@@ -63,7 +51,7 @@ extension ProfileRegisterViewModel: ViewModelType {
         input.nicknameDuplicationCheckTrigger
             .withUnretained(self)
             .flatMap { owner, nickname in
-                owner.checkNicknameDuplication(nickname)
+                owner.fetchNicknameDuplication(nickname)
             }
             .sink { [weak self] isValid in
                 self?.nicknameDuplicationSuccessSubject.send(isValid)
@@ -80,13 +68,17 @@ extension ProfileRegisterViewModel: ViewModelType {
 // MARK: - Helper Method
 
 extension ProfileRegisterViewModel {
-    func getRegistrationData(nickname: String) -> (nickname: String, lckYear: Int, lckTeam: String) {
-        return (nickname, lckYear, lckTeam)
+    func getProfileInfo(nickname: String, profileImageType: ProfileImageType?) -> OnboardingProfileInfo {
+        var updatedProfileInfo = profileInfo
+        updatedProfileInfo.nickname = nickname
+        updatedProfileInfo.profileImageType = profileImageType
+
+        return updatedProfileInfo
     }
 }
 
 private extension ProfileRegisterViewModel {
-    func validateNickname(_ text: String) -> ValidationResult {
+    func validateNickname(_ text: String) -> NicknameValidationResult {
         guard !text.isEmpty else { return .empty }
         guard let regex = try? NSRegularExpression(pattern: Constant.nicknamePattern) else { return .invalidFormat }
 
@@ -96,10 +88,8 @@ private extension ProfileRegisterViewModel {
         return isValid ? .valid : .invalidFormat
     }
 
-    func checkNicknameDuplication(_ nickname: String) -> AnyPublisher<Bool, Never> {
-        let useCase = FetchNicknameDuplicationUseCase(repository: accountRepository)
-
-        return useCase.execute(nickname: nickname)
+    func fetchNicknameDuplication(_ nickname: String) -> AnyPublisher<Bool, Never> {
+        return accountRepository.fetchNicknameDuplication(nickname: nickname)
             .map { _ in true }
             .catch { _ -> AnyPublisher<Bool, Never> in return .just(false) }
             .eraseToAnyPublisher()
