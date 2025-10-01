@@ -15,7 +15,7 @@ final class LCKTeamViewController: NavigationViewController {
     private let lckYear: Int
     private var lckTeam = "LCK"
 
-    var navigateToProfileRegister: ((Int, String) -> Void)?
+    var navigateToProfileRegister: ((OnboardingProfileInfo) -> Void)?
 
     // MARK: - UIComponent
 
@@ -122,11 +122,21 @@ private extension LCKTeamViewController {
 private extension LCKTeamViewController {
     @objc func skipButtonDidTap() {
         AmplitudeManager.shared.trackEvent(tag: .clickDetourTeamSignup)
-        navigateToProfileRegister?(lckYear, "LCK")
+
+        var profileInfo = OnboardingProfileInfo()
+        profileInfo.lckYear = lckYear
+        profileInfo.lckTeam = "LCK"
+
+        navigateToProfileRegister?(profileInfo)
     }
 
     @objc func nextButtonDidTap() {
         AmplitudeManager.shared.trackEvent(tag: .clickNextTeamSignup)
-        navigateToProfileRegister?(lckYear, lckTeam)
+
+        var profileInfo = OnboardingProfileInfo()
+        profileInfo.lckYear = lckYear
+        profileInfo.lckTeam = lckTeam
+
+        navigateToProfileRegister?(profileInfo)
     }
 }

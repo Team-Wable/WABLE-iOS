@@ -36,45 +36,45 @@ private extension OnboardingCoordinator {
     func showLCKTeam(year: Int) {
         let viewController = LCKTeamViewController(lckYear: year)
 
-        viewController.navigateToProfileRegister = { [weak self] year, team in
-            self?.showProfileRegister(year: year, team: team)
+        viewController.navigateToProfileRegister = { [weak self] profileInfo in
+            self?.showProfileRegister(profileInfo: profileInfo)
         }
 
         navigationController.pushViewController(viewController, animated: true)
     }
 
-    func showProfileRegister(year: Int, team: String) {
-        let viewController = ProfileRegisterViewController(lckYear: year, lckTeam: team)
+    func showProfileRegister(profileInfo: OnboardingProfileInfo) {
+        let viewController = ProfileRegisterViewController(profileInfo: profileInfo)
 
-        viewController.navigateToAgreement = { [weak self] nickname, year, team, profileImage, defaultImage in
-            self?.showAgreement(
-                nickname: nickname,
-                year: year,
-                team: team,
-                profileImage: profileImage,
-                defaultImage: defaultImage
-            )
+        viewController.navigateToAgreement = { [weak self] profileInfo in
+            self?.showAgreement(profileInfo: profileInfo)
         }
 
         navigationController.pushViewController(viewController, animated: true)
     }
 
-    func showAgreement(nickname: String, year: Int, team: String, profileImage: UIImage?, defaultImage: String?) {
-        let viewController = AgreementViewController(
-            nickname: nickname,
-            lckTeam: team,
-            lckYear: year,
-            profileImage: profileImage,
-            defaultImage: defaultImage
-        )
+    func showAgreement(profileInfo: OnboardingProfileInfo) {
+        let viewController = AgreementViewController(profileInfo: profileInfo)
 
         viewController.navigateToHome = { [weak self] in self?.showHome() }
         navigationController.pushViewController(viewController, animated: true)
     }
 
     func showHome() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first
+        else {
+            return WableLogger.log("SceneDelegate 찾을 수 없음.", for: .debug)
+        }
+
         let tabBarController = TabBarController()
-        tabBarController.modalPresentationStyle = .fullScreen
-        navigationController.present(tabBarController, animated: true)
+
+        UIView.transition(
+            with: window,
+            duration: 0.5,
+            options: [.transitionCrossDissolve],
+            animations: { window.rootViewController = tabBarController },
+            completion: nil
+        )
     }
 }
