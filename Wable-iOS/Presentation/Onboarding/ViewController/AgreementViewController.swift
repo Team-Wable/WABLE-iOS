@@ -50,9 +50,9 @@ final class AgreementViewController: NavigationViewController {
 
 private extension AgreementViewController {
     func setupConstraints() {
+        view.addSubview(rootView)
+        
         rootView.snp.makeConstraints {
-            view.addSubview(rootView)
-            
             $0.top.equalTo(navigationView.snp.bottom)
             $0.horizontalEdges.bottom.equalToSuperview()
         }
