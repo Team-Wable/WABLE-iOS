@@ -25,20 +25,7 @@ final class PhotoPickerHelper: NSObject {
 
     func presentPhotoPicker(onImageSelected: @escaping (UIImage) -> Void) {
         self.onImageSelected = onImageSelected
-
-        PhotoPickerHelper.requestPhotoLibraryAccess { [weak self] isAuthorized in
-            guard let self else { return }
-
-            if isAuthorized {
-                self.showPhotoPicker()
-            } else {
-                guard let viewController = self.presentingViewController else { return }
-                PhotoPickerHelper.showSettingsAlert(
-                    from: viewController,
-                    message: StringLiterals.Empty.photoPermission
-                )
-            }
-        }
+        showPhotoPicker()
     }
 }
 
