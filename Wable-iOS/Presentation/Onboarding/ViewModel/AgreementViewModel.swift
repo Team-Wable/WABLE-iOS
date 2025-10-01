@@ -103,8 +103,21 @@ private extension AgreementViewModel {
         .flatMap { [weak self] _ in
             self?.updateFCMToken() ?? Empty().eraseToAnyPublisher()
         }
-        .flatMap { [weak self] _ in
-            self?.saveUserSession(userSession) ?? Empty().eraseToAnyPublisher()
+        .flatMap { [weak self] _ -> AnyPublisher<Void, Never> in
+            guard let self else { return Empty().eraseToAnyPublisher() }
+            
+            userSessionRepository.updateUserSession(
+                userID: userSession.id,
+                nickname: self.profileInfo.nickname ?? userSession.nickname,
+                profileURL: userSession.profileURL,
+                isPushAlarmAllowed: isMarketingAgreed,
+                isAdmin: userSession.isAdmin,
+                isAutoLoginEnabled: true,
+                notificationBadgeCount: userSession.notificationBadgeCount ?? 0
+            )
+
+            WableLogger.log("세션 저장 완료", for: .debug)
+            return .just(())
         }
         .catch { error -> AnyPublisher<Void, Never> in
             WableLogger.log("프로필 업데이트 중 에러 발생: \(error)", for: .error)
@@ -126,22 +139,7 @@ private extension AgreementViewModel {
             }
             .eraseToAnyPublisher()
     }
-
-    func saveUserSession(_ userSession: UserSession) -> AnyPublisher<Void, Never> {
-        userSessionRepository.updateUserSession(
-            userID: userSession.id,
-            nickname: userSession.nickname,
-            profileURL: userSession.profileURL,
-            isPushAlarmAllowed: userSession.isPushAlarmAllowed,
-            isAdmin: userSession.isAdmin,
-            isAutoLoginEnabled: true,
-            notificationBadgeCount: userSession.notificationBadgeCount
-        )
-
-        WableLogger.log("세션 저장 완료", for: .debug)
-        return .just(())
-    }
-
+    
     func extractImageData(from profileImageType: ProfileImageType?) -> (image: UIImage?, defaultProfileType: String?) {
         switch profileImageType {
         case .custom(let image):
