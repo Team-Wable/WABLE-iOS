@@ -60,7 +60,6 @@ final class ProfileEditViewController: NavigationViewController {
         super.viewWillAppear(animated)
 
         viewWillAppearRelay.send()
-        rootView.nickNameTextField.text = nil
     }
 }
 
@@ -115,6 +114,7 @@ private extension ProfileEditViewController {
                     profileImageURL: profile.user.profileURL,
                     team: profile.user.fanTeam
                 )
+                owner.rootView.nickNameTextField.text = profile.user.nickname
             }
             .store(in: cancelBag)
 
