@@ -19,7 +19,7 @@ final class MyProfileViewModel {
     private var isLastPageForComment = false
     private var loadingMoreTask: Task<Void, Never>?
     
-    private let userID: Int?
+    let userID: Int?
     private let userSessionUseCase: FetchUserInformationUseCase
     private let fetchUserProfileUseCase: FetchUserProfileUseCase
     private let removeUserSessionUseCase: RemoveUserSessionUseCase
