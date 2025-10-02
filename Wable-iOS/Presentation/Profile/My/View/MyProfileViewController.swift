@@ -200,7 +200,11 @@ private extension MyProfileViewController {
                 introduction: "\(fanTeamName)을(를) 응원하고 있어요.\n\(item.lckYears)부터 LCK를 보기 시작했어요.",
                 ghostValue: item.ghostCount,
                 editButtonTapHandler: { [weak self] in
-                    self?.navigationController?.pushViewController(ProfileEditViewController(), animated: true)
+                    guard let userID = self?.viewModel.userID else { return }
+                    self?.navigationController?.pushViewController(
+                        ProfileEditViewController(userID: userID),
+                        animated: true
+                    )
                 }
             )
         }

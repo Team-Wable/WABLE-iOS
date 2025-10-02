@@ -14,8 +14,8 @@ final class ProfileEditView: UIView {
     
     // MARK: Property
 
-    var defaultImageList = DefaultProfileType.allCases
-    
+    private(set) var currentDefaultImage: DefaultProfileType = .blue
+
     private let cellTapped: ((String) -> Void)?
     
     // MARK: - UIComponent
@@ -62,7 +62,7 @@ final class ProfileEditView: UIView {
     }
     
     lazy var teamCollectionView: TeamCollectionView = {
-        return TeamCollectionView(cellDidTapped: { [weak self] selectedTeam in
+        return TeamCollectionView(didTapped: { [weak self] selectedTeam in
             guard let self = self else { return }
             
             myTeamLabel.text = selectedTeam
@@ -96,13 +96,12 @@ final class ProfileEditView: UIView {
     }
 }
 
-// MARK: Public Extension
+// MARK: - Public Extension
 
 extension ProfileEditView {
     func configureDefaultImage() {
-        defaultImageList.shuffle()
-        
-        profileImageView.image = UIImage(named: defaultImageList[0].rawValue)
+        currentDefaultImage = DefaultProfileType.random()
+        profileImageView.image = currentDefaultImage.image
     }
 }
 
@@ -195,23 +194,6 @@ extension ProfileEditView {
     func configureView(profileImageURL: URL? = .none, team: LCKTeam?) {
         myTeamLabel.text = team?.rawValue ?? "LCK"
         teamCollectionView.selectInitialTeam(team: team)
-        
-        if let profileImageURL = profileImageURL {
-            switch profileImageURL.absoluteString {
-            case "PURPLE":
-                profileImageView.image = .imgProfilePurple
-            case "GREEN":
-                profileImageView.image = .imgProfileGreen
-            case "BLUE":
-                profileImageView.image = .imgProfileBlue
-            default:
-                profileImageView.kf.setImage(
-                    with: profileImageURL,
-                    placeholder: [UIImage.imgProfilePurple, UIImage.imgProfileBlue, UIImage.imgProfileGreen].randomElement()
-                )
-            }
-        } else {
-            configureDefaultImage()
-        }
+        profileImageView.setProfileImage(with: profileImageURL)
     }
 }

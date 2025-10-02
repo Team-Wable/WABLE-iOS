@@ -9,23 +9,25 @@
 import UIKit
 
 final class LCKYearViewController: NavigationViewController {
-    
+
     // MARK: - Property
-    
+
     private var selectedYearIndex: Int?
     private var isPullDownEnabled = false
-    private var yearCount: Int { return Calendar.current.component(.year, from: .now) - Constant.startYear + 1 }
-    
-    // MARK: - UIComponent
-    
+    private var yearCount: Int { Calendar.current.component(.year, from: .now) - Constant.startYear + 1 }
+
+    var navigateToLCKTeam: ((Int) -> Void)?
+
+    // MARK: UIComponent
+
     private let rootView = LCKYearView()
-    
-    // MARK: - LifeCycle
-    
+
+    // MARK: - Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupConstraint()
+
+        setupConstraints()
         setupDelegate()
         setupAction()
         updateDefaultYear()
@@ -35,9 +37,9 @@ final class LCKYearViewController: NavigationViewController {
 // MARK: - Setup Method
 
 private extension LCKYearViewController {
-    func setupConstraint() {
+    func setupConstraints() {
         view.addSubview(rootView)
-        
+
         rootView.snp.makeConstraints {
             $0.top.equalTo(navigationView.snp.bottom)
             $0.horizontalEdges.bottom.equalToSuperview()
@@ -82,9 +84,9 @@ extension LCKYearViewController {
     @objc func nextButtonDidTap() {
         guard let selectedIndex = selectedYearIndex else { return }
         let selectedYear = Constant.startYear + selectedIndex
-        
+
         AmplitudeManager.shared.trackEvent(tag: .clickNextYearSignup)
-        navigationController?.pushViewController(LCKTeamViewController(lckYear: selectedYear), animated: true)
+        navigateToLCKTeam?(selectedYear)
     }
 }
 

@@ -13,13 +13,14 @@ import PhotosUI
 final class WritePostViewController: NavigationViewController {
     
     // MARK: - Property
-    
-    var onPostCompleted: VoidClosure?
-    
+
     private let viewModel: WritePostViewModel
     private let postButtonTapRelay = PassthroughRelay<(title: String, content: String?, image: UIImage?)>()
     private var cancelBag = CancelBag()
+    private lazy var photoPickerHelper = PhotoPickerHelper(presentingViewController: self)
     private var isPosting = false
+
+    var onPostCompleted: VoidClosure?
     
     // MARK: - UIComponents
     
@@ -225,22 +226,15 @@ private extension WritePostViewController {
 private extension WritePostViewController {
     @objc func addButtonDidTap() {
         guard !isPosting else { return }
-        
+
         AmplitudeManager.shared.trackEvent(tag: .clickAttachPhoto)
-        
-        switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
-        case .denied, .restricted:
-            presentSettings()
-        case .authorized, .limited:
-            presentPhotoPicker()
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
-                DispatchQueue.main.async {
-                    status == .authorized ? self.presentPhotoPicker() : nil
-                }
-            }
-        default:
-            break
+
+        photoPickerHelper.presentPhotoPicker { [weak self] image in
+            guard let self else { return }
+
+            self.imageView.image = image
+            self.imageView.isHidden = false
+            self.deleteButton.isHidden = false
         }
     }
     
@@ -315,50 +309,6 @@ private extension WritePostViewController {
         }
     }
     
-    func presentPhotoPicker() {
-        var configuration = PHPickerConfiguration()
-        configuration.filter = .images
-        configuration.selectionLimit = 1
-        
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-        
-        present(picker, animated: true)
-    }
-    
-    func presentSettings() {
-        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-        let alert = UIAlertController(
-            title: "설정",
-            message: StringLiterals.Empty.photoPermission,
-            preferredStyle: .alert
-        )
-        
-        alert.addAction(UIAlertAction(title: "닫기", style: .default))
-        alert.addAction(UIAlertAction(title: "권한 설정하기", style: .default) { _ in
-            UIApplication.shared.open(url)
-        })
-        
-        present(alert, animated: true, completion: nil)
-    }
-}
-
-// MARK: - PHPickerViewControllerDelegate
-
-extension WritePostViewController: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        results.first?.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
-            guard let image = image as? UIImage else { return }
-            
-            DispatchQueue.main.async {
-                self.imageView.image = image
-                self.imageView.isHidden = false
-                self.deleteButton.isHidden = false
-            }
-        }
-        
-        dismiss(animated: true)
-    }
 }
 
 // MARK: - UITextViewDelegate
