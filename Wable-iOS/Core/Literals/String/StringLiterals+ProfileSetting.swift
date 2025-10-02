@@ -20,5 +20,6 @@ extension StringLiterals {
         static let checkInvaildError = "닉네임에 사용할 수 없는 문자가 포함되어 있어요."
         static let checkDuplicateError = "이미 사용 중인 닉네임입니다."
         static let checkVaildMessage = "사용 가능한 닉네임입니다."
+        static let nicknamePattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"
     }
 }

@@ -10,6 +10,7 @@ import UIKit
 final class ViewitCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
+    var onFinish: (() -> Void)?
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController

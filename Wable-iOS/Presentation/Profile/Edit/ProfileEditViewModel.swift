@@ -130,7 +130,7 @@ private extension ProfileEditViewModel {
 
     func validateNickname(_ text: String) -> NicknameValidationResult {
         guard !text.isEmpty else { return .empty }
-        guard let regex = try? NSRegularExpression(pattern: Constant.nicknamePattern) else { return .invalidFormat }
+        guard let regex = try? NSRegularExpression(pattern: StringLiterals.ProfileSetting.nicknamePattern) else { return .invalidFormat }
 
         let range = NSRange(location: 0, length: text.utf16.count)
         let isValid = regex.firstMatch(in: text, options: [], range: range) != nil
@@ -189,13 +189,5 @@ private extension ProfileEditViewModel {
         case .none:
             return (nil, nil)
         }
-    }
-}
-
-// MARK: - Constant
-
-private extension ProfileEditViewModel {
-    enum Constant {
-        static let nicknamePattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"
     }
 }
