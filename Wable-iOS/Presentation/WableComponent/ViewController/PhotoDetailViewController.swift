@@ -7,6 +7,7 @@
 
 import UIKit
 import Photos
+import Combine
 
 import SnapKit
 import Then
@@ -30,8 +31,9 @@ final class PhotoDetailViewController: UIViewController {
     
     
     // MARK: - Property
-    
+
     private let image: UIImage
+    private let cancelBag = CancelBag()
     
     // MARK: - Initializer
     
@@ -59,10 +61,9 @@ final class PhotoDetailViewController: UIViewController {
     }
 }
 
+// MARK: - Setup Method
+
 private extension PhotoDetailViewController {
-    
-    // MARK: - Setup Method
-    
     func setupView() {
         view.backgroundColor = .wableBlack
         
@@ -107,49 +108,29 @@ private extension PhotoDetailViewController {
         }
         saveButton.addAction(saveAction, for: .touchUpInside)
     }
-    
-    // MARK: - Photo Method
-    
+}
+
+// MARK: - Helper Method
+
+private extension PhotoDetailViewController {
     func saveImage() {
-        Task {
-            do {
-                guard try await requestPhotoPermissionIfNeeded() else { return }
-                try await saveImageToPhotoLibrary(image)
-                await MainActor.run {
-                    ToastView(status: .complete, message: StringLiterals.PhotoDetail.successMessage).show()
-                }
-            } catch {
-                await MainActor.run {
-                    ToastView(status: .error, message: StringLiterals.PhotoDetail.errorMessage).show()
-                }
+        PhotoPickerHelper.saveImage(
+            image,
+            onSuccess: {
+                ToastView(status: .complete, message: StringLiterals.PhotoDetail.successMessage).show()
+            },
+            onFailure: { error in
+                ToastView(status: .error, message: StringLiterals.PhotoDetail.errorMessage).show()
                 WableLogger.log("\(error)", for: .error)
             }
-        }
+        )
+        .store(in: cancelBag)
     }
-    
-    func requestPhotoPermissionIfNeeded() async throws -> Bool {
-        let currentStatus = PHPhotoLibrary.authorizationStatus(for: .addOnly)
-        
-        if isPermissionGranted(currentStatus) {
-            return true
-        }
-        
-        let newStatus = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
-        return isPermissionGranted(newStatus)
-    }
-    
-    func isPermissionGranted(_ status: PHAuthorizationStatus) -> Bool {
-        return status == .authorized || status == .limited
-    }
-    
-    func saveImageToPhotoLibrary(_ image: UIImage) async throws {
-        try await PHPhotoLibrary.shared().performChanges {
-            PHAssetChangeRequest.creationRequestForAsset(from: image)
-        }
-    }
-    
-    // MARK: - Computed Property
-    
+}
+
+// MARK: - Computed Property
+
+private extension PhotoDetailViewController {
     var optimalImageViewSize: CGSize {
         let screenSize = UIScreen.main.bounds.size
         let imageSize = image.size

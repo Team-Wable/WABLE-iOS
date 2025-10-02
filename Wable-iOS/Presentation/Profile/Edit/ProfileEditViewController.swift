@@ -5,45 +5,39 @@
 //  Created by YOUJIM on 3/20/25.
 //
 
+import Combine
 import Photos
 import PhotosUI
 import UIKit
 
 final class ProfileEditViewController: NavigationViewController {
-    
+
     // MARK: Property
-    // TODO: 유즈케이스 리팩 후에 뷰모델 만들어 넘기기
-    
-    private let profileUseCase = UserProfileUseCase(repository: ProfileRepositoryImpl())
-    private let nicknameUseCase = FetchNicknameDuplicationUseCase(repository: AccountRepositoryImpl())
-    private let userSessionUseCase = FetchUserInformationUseCase(
-        repository: UserSessionRepositoryImpl(
-            userDefaults: UserDefaultsStorage(
-                jsonEncoder: JSONEncoder(),
-                jsonDecoder: JSONDecoder()
-            )
-        )
-    )
+
     private let cancelBag = CancelBag()
-    
-    private var lckTeam = "LCK"
-    private var sessionProfile: UserProfile? = nil
-    private var defaultImage: String? = nil
-    private var hasUserSelectedImage = false
-    
+    private let viewModel: ProfileEditViewModel
+    private let viewWillAppearRelay = PassthroughRelay<Void>()
+    private let nicknameTextChangedRelay = PassthroughRelay<String>()
+    private let nicknameDuplicationCheckRelay = PassthroughRelay<String>()
+    private let lckTeamChangedRelay = PassthroughRelay<String>()
+    private let profileImageChangedRelay = PassthroughRelay<ProfileImageType>()
+    private let saveButtonTappedRelay = PassthroughRelay<String>()
+
+    private lazy var photoPickerHelper = PhotoPickerHelper(presentingViewController: self)
+
     // MARK: - UIComponent
-    
+
     private lazy var rootView = ProfileEditView(cellTapped: { [weak self] selectedTeam in
-        guard let self = self else { return }
-        
-        lckTeam = selectedTeam
+        self?.lckTeamChangedRelay.send(selectedTeam)
     })
     
     // MARK: - LifeCycle
-    
-    init() {
+
+    init(userID: Int) {
+        self.viewModel = ProfileEditViewModel(userID: userID)
+
         super.init(type: .page(type: .profileEdit, title: "프로필 편집"))
-        
+
         hidesBottomBarWhenPushed = true
     }
     
@@ -53,21 +47,19 @@ final class ProfileEditViewController: NavigationViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupView()
-        setupConstraint()
+        setupConstraints()
         setupDelegate()
         setupAction()
         setupTapGesture()
+        setupBinding()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        self.updateSessionInfo()
-        rootView.nickNameTextField.text = nil
-        hasUserSelectedImage = false
-        defaultImage = nil
+
+        viewWillAppearRelay.send()
     }
 }
 
@@ -84,7 +76,7 @@ private extension ProfileEditViewController {
         hidesBottomBarWhenPushed = true
     }
     
-    func setupConstraint() {
+    func setupConstraints() {
         rootView.snp.makeConstraints {
             $0.top.equalTo(navigationView.snp.bottom)
             $0.horizontalEdges.bottom.equalToSuperview()
@@ -99,48 +91,54 @@ private extension ProfileEditViewController {
         rootView.switchButton.addTarget(self, action: #selector(switchButtonDidTap), for: .touchUpInside)
         rootView.addButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
         rootView.duplicationCheckButton.addTarget(self, action: #selector(duplicationCheckButtonDidTap), for: .touchUpInside)
-        navigationView.doneButton
-            .publisher(for: .touchUpInside)
-            .sink { [weak self] _ in
-                guard let self = self,
-                      let profile = sessionProfile
-                else {
-                    return
-                }
-                
-                let nicknameText = rootView.nickNameTextField.text ?? ""
-                let hasNicknameChanged = !nicknameText.isEmpty && nicknameText != profile.user.nickname
-                let hasImageChanged = defaultImage != nil || hasUserSelectedImage
-                let hasTeamChanged = lckTeam != (profile.user.fanTeam?.rawValue ?? "LCK")
-                
-                if hasNicknameChanged || hasImageChanged || hasTeamChanged {
-                    let finalNickname = hasNicknameChanged ? nicknameText : profile.user.nickname
-                    
-                    profileUseCase.updateProfile(
-                        profile: UserProfile(
-                            user: User(
-                                id: profile.user.id,
-                                nickname: finalNickname,
-                                profileURL: profile.user.profileURL,
-                                fanTeam: LCKTeam(rawValue: lckTeam)
-                            ),
-                            introduction: profile.introduction,
-                            ghostCount: profile.ghostCount,
-                            lckYears: profile.lckYears,
-                            userLevel: profile.userLevel
-                        ),
-                        image: defaultImage == nil ? rootView.profileImageView.image : nil,
-                        defaultProfileType: defaultImage
-                    )
-                    .replaceError(with: ())
-                    .withUnretained(self)
-                    .sink(receiveValue: { owner, _ in
-                        owner.navigationController?.popViewController(animated: true)
-                    })
-                    .store(in: cancelBag)
-                } else {
-                    navigationController?.popViewController(animated: true)
-                }
+        navigationView.doneButton.addTarget(self, action: #selector(doneButtonDidTap), for: .touchUpInside)
+    }
+
+    func setupBinding() {
+        let input = ProfileEditViewModel.Input(
+            viewWillAppear: viewWillAppearRelay.eraseToAnyPublisher(),
+            nicknameTextChanged: nicknameTextChangedRelay.eraseToAnyPublisher(),
+            nicknameDuplicationCheckTrigger: nicknameDuplicationCheckRelay.eraseToAnyPublisher(),
+            lckTeamChanged: lckTeamChangedRelay.eraseToAnyPublisher(),
+            profileImageChanged: profileImageChangedRelay.eraseToAnyPublisher(),
+            saveButtonTapped: saveButtonTappedRelay.eraseToAnyPublisher()
+        )
+
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+
+        output.profileLoaded
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, profile in
+                owner.rootView.configureView(
+                    profileImageURL: profile.user.profileURL,
+                    team: profile.user.fanTeam
+                )
+                owner.rootView.nickNameTextField.text = profile.user.nickname
+            }
+            .store(in: cancelBag)
+
+        output.nicknameValidation
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, result in
+                owner.updateTextField(validationResult: result)
+            }
+            .store(in: cancelBag)
+
+        output.nicknameDuplicationResult
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, isValid in
+                owner.updateDuplication(isValid: isValid)
+            }
+            .store(in: cancelBag)
+
+        output.profileUpdateCompleted
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.navigationController?.popViewController(animated: true)
             }
             .store(in: cancelBag)
     }
@@ -159,172 +157,70 @@ private extension ProfileEditViewController {
     }
     
     @objc func doneButtonDidTap() {
-        guard let profile = sessionProfile else { return }
-        
-        let nicknameText = rootView.nickNameTextField.text ?? ""
-        let hasNicknameChanged = !nicknameText.isEmpty && nicknameText != profile.user.nickname
-        let hasImageChanged = defaultImage != nil || hasUserSelectedImage
-        let hasTeamChanged = lckTeam != (profile.user.fanTeam?.rawValue ?? "LCK")
-        
-        if hasNicknameChanged || hasImageChanged || hasTeamChanged {
-            let finalNickname = hasNicknameChanged ? nicknameText : profile.user.nickname
-            
-            profileUseCase.updateProfile(
-                profile: UserProfile(
-                    user: User(
-                        id: profile.user.id,
-                        nickname: finalNickname,
-                        profileURL: profile.user.profileURL,
-                        fanTeam: LCKTeam(rawValue: lckTeam)
-                    ),
-                    introduction: profile.introduction,
-                    ghostCount: profile.ghostCount,
-                    lckYears: profile.lckYears,
-                    userLevel: profile.userLevel
-                ),
-                image: defaultImage == nil ? rootView.profileImageView.image : nil,
-                defaultProfileType: defaultImage
-            )
-            .replaceError(with: ())
-            .withUnretained(self)
-            .sink(receiveValue: { owner, _ in
-                owner.navigationController?.popViewController(animated: true)
-            })
-            .store(in: cancelBag)
-        } else {
-            navigationController?.popViewController(animated: true)
-        }
+        let nickname = rootView.nickNameTextField.text ?? ""
+        saveButtonTappedRelay.send(nickname)
     }
     
     @objc func switchButtonDidTap() {
         rootView.configureDefaultImage()
-        defaultImage = rootView.defaultImageList[0].uppercased
-        hasUserSelectedImage = false
-        updateDoneButtonState()
+        profileImageChangedRelay.send(.default(rootView.currentDefaultImage))
     }
-    
+
     @objc func addButtonDidTap() {
-        switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
-        case .denied, .restricted:
-            presentSettings()
-        case .authorized, .limited:
-            presentPhotoPicker()
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
-                DispatchQueue.main.async {
-                    status == .authorized ? self.presentPhotoPicker() : nil
-                }
-            }
-        default:
-            break
+        photoPickerHelper.presentPhotoPicker { [weak self] image in
+            guard let self else { return }
+
+            self.rootView.profileImageView.image = image
+            self.profileImageChangedRelay.send(.custom(image))
         }
     }
     
     @objc func duplicationCheckButtonDidTap() {
         rootView.nickNameTextField.endEditing(true)
-        
+
         guard let text = rootView.nickNameTextField.text else { return }
 
-        nicknameUseCase.execute(nickname: text)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                let condition = completion == .finished
-                
-                self?.rootView.conditionLabel.text = condition ? StringLiterals.ProfileSetting.checkVaildMessage : StringLiterals.ProfileSetting.checkDuplicateError
-                self?.rootView.conditionLabel.textColor = condition ? .success : .error
-                self?.navigationView.doneButton.isUserInteractionEnabled = condition
-                self?.navigationView.doneButton.updateStyle(condition ? .primary : .gray)
-            }, receiveValue: { _ in
-            })
-            .store(in: cancelBag)
+        nicknameDuplicationCheckRelay.send(text)
     }
     
     // MARK: - Function Method
-    
-    func presentPhotoPicker() {
-        var configuration = PHPickerConfiguration()
-        configuration.filter = .images
-        configuration.selectionLimit = 1
-        
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-        
-        present(picker, animated: true)
-    }
-    
-    func presentSettings() {
-        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-        let alert = UIAlertController(
-            title: "설정",
-            message: StringLiterals.Empty.photoPermission,
-            preferredStyle: .alert
-        )
-        
-        alert.addAction(UIAlertAction(title: "닫기", style: .default))
-        alert.addAction(UIAlertAction(title: "권한 설정하기", style: .default) { _ in
-            UIApplication.shared.open(url)
-        })
-        
-        present(alert, animated: true, completion: nil)
-    }
-    
-    func updateDoneButtonState() {
-        guard let profile = sessionProfile else { return }
-        
-        let nicknameText = rootView.nickNameTextField.text ?? ""
-        let hasNicknameChanged = !nicknameText.isEmpty && nicknameText != profile.user.nickname
-        let hasImageChanged = defaultImage != nil || hasUserSelectedImage
-        
-        let shouldEnable = hasNicknameChanged || hasImageChanged
-        
-        navigationView.doneButton.isUserInteractionEnabled = shouldEnable
-        navigationView.doneButton.updateStyle(shouldEnable ? .primary : .gray)
-    }
-}
 
-extension ProfileEditViewController {
-    func updateSessionInfo() {
-        userSessionUseCase.fetchActiveUserID()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] sessionID in
-                guard let self = self,
-                      let sessionID = sessionID else { return }
-                
-                profileUseCase.fetchProfile(userID: sessionID)
-                    .receive(on: DispatchQueue.main)
-                    .sink { _ in } receiveValue: { [weak self] profile in
-                        guard let self = self else { return }
-                        
-                        self.sessionProfile = profile
-                        self.rootView.configureView(
-                            profileImageURL: profile.user.profileURL,
-                            team: profile.user.fanTeam
-                        )
-                    }
-                    .store(in: cancelBag)
-            }
-            .store(in: cancelBag)
-    }
-}
-
-// MARK: - PHPickerViewControllerDelegate
-
-extension ProfileEditViewController: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        results.first?.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
-            guard let image = image as? UIImage else { return }
-            
-            DispatchQueue.main.async {
-                self.rootView.profileImageView.image = image
-                self.defaultImage = nil
-                self.hasUserSelectedImage = true
-                self.updateDoneButtonState()
-            }
+    func updateTextField(validationResult: NicknameValidationResult) {
+        switch validationResult {
+        case .empty:
+            rootView.conditionLabel.text = StringLiterals.ProfileSetting.checkDefaultMessage
+            rootView.conditionLabel.textColor = .gray600
+            rootView.duplicationCheckButton.isUserInteractionEnabled = false
+            rootView.duplicationCheckButton.configuration?.baseForegroundColor = .gray600
+            rootView.duplicationCheckButton.configuration?.baseBackgroundColor = .gray200
+        case .valid:
+            rootView.conditionLabel.text = StringLiterals.ProfileSetting.checkDefaultMessage
+            rootView.conditionLabel.textColor = .gray600
+            rootView.duplicationCheckButton.isUserInteractionEnabled = true
+            rootView.duplicationCheckButton.configuration?.baseForegroundColor = .white
+            rootView.duplicationCheckButton.configuration?.baseBackgroundColor = .wableBlack
+        case .invalidFormat:
+            rootView.conditionLabel.text = StringLiterals.ProfileSetting.checkInvaildError
+            rootView.conditionLabel.textColor = .error
+            rootView.duplicationCheckButton.isUserInteractionEnabled = false
+            rootView.duplicationCheckButton.configuration?.baseForegroundColor = .gray600
+            rootView.duplicationCheckButton.configuration?.baseBackgroundColor = .gray200
         }
-        
-        dismiss(animated: true)
+
+        navigationView.doneButton.updateStyle(.gray)
+        navigationView.doneButton.isUserInteractionEnabled = false
+    }
+
+    func updateDuplication(isValid: Bool) {
+        rootView.conditionLabel.text = isValid
+            ? StringLiterals.ProfileSetting.checkVaildMessage
+            : StringLiterals.ProfileSetting.checkDuplicateError
+        rootView.conditionLabel.textColor = isValid ? .success : .error
+        navigationView.doneButton.isUserInteractionEnabled = isValid
+        navigationView.doneButton.updateStyle(isValid ? .primary : .gray)
     }
 }
+
 
 // MARK: - UITextFieldDelegate
 
@@ -337,17 +233,8 @@ extension ProfileEditViewController: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         guard let text = textField.text else { return }
-        let regex = try? NSRegularExpression(pattern: "^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$")
-        let range = NSRange(location: 0, length: text.utf16.count)
-        let condition = regex?.firstMatch(in: text, options: [], range: range) != nil
-        
-        self.rootView.conditionLabel.text = condition || text == "" ? StringLiterals.ProfileSetting.checkDefaultMessage : StringLiterals.ProfileSetting.checkInvaildError
-        self.rootView.conditionLabel.textColor = condition || text == "" ? .gray600 : .error
-        self.rootView.duplicationCheckButton.isUserInteractionEnabled = condition
-        self.rootView.duplicationCheckButton.configuration?.baseForegroundColor = condition ? .white : .gray600
-        self.rootView.duplicationCheckButton.configuration?.baseBackgroundColor = condition ? .wableBlack : .gray200
-        self.navigationView.doneButton.updateStyle(.gray)
-        self.navigationView.doneButton.isUserInteractionEnabled = false
+
+        nicknameTextChangedRelay.send(text)
     }
     
     func textField(
