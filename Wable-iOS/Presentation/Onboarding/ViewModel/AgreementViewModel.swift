@@ -103,9 +103,9 @@ private extension AgreementViewModel {
         .flatMap { [weak self] _ in
             self?.updateFCMToken() ?? Empty().eraseToAnyPublisher()
         }
-        .flatMap { [weak self] _ -> AnyPublisher<Void, Never> in
-            guard let self else { return Empty().eraseToAnyPublisher() }
-            
+        .handleEvents(receiveOutput: { [weak self] _ in
+            guard let self else { return }
+
             userSessionRepository.updateUserSession(
                 userID: userSession.id,
                 nickname: self.profileInfo.nickname ?? userSession.nickname,
@@ -117,8 +117,7 @@ private extension AgreementViewModel {
             )
 
             WableLogger.log("세션 저장 완료", for: .debug)
-            return .just(())
-        }
+        })
         .catch { error -> AnyPublisher<Void, Never> in
             WableLogger.log("프로필 업데이트 중 에러 발생: \(error)", for: .error)
             return Empty().eraseToAnyPublisher()

@@ -5,6 +5,7 @@
 //  Created by YOUJIM on 10/1/25.
 //
 
+import Combine
 import Photos
 import PhotosUI
 import UIKit
@@ -61,38 +62,24 @@ private extension PhotoPickerHelper {
 // MARK: - Helper Method
 
 extension PhotoPickerHelper {
-    static func requestPhotoLibraryAccess(completion: @escaping (Bool) -> Void) {
+    static func requestPhotoLibraryAccess() -> AnyPublisher<Bool, Never> {
         let status = PHPhotoLibrary.authorizationStatus(for: .addOnly)
 
         switch status {
         case .authorized, .limited:
-            completion(true)
+            return Just(true).eraseToAnyPublisher()
         case .denied, .restricted:
-            completion(false)
+            return Just(false).eraseToAnyPublisher()
         case .notDetermined:
-            PHPhotoLibrary.requestAuthorization(for: .addOnly) { newStatus in
-                DispatchQueue.main.async {
-                    completion(newStatus == .authorized || newStatus == .limited)
+            return Future<Bool, Never> { promise in
+                PHPhotoLibrary.requestAuthorization(for: .addOnly) { newStatus in
+                    promise(.success(newStatus == .authorized || newStatus == .limited))
                 }
             }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
         @unknown default:
-            completion(false)
-        }
-    }
-
-    static func requestPhotoLibraryAccess() async -> Bool {
-        let status = PHPhotoLibrary.authorizationStatus(for: .addOnly)
-
-        switch status {
-        case .authorized, .limited:
-            return true
-        case .denied, .restricted:
-            return false
-        case .notDetermined:
-            let newStatus = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
-            return newStatus == .authorized || newStatus == .limited
-        @unknown default:
-            return false
+            return Just(false).eraseToAnyPublisher()
         }
     }
 
@@ -118,6 +105,46 @@ extension PhotoPickerHelper {
         })
 
         viewController.present(alert, animated: true)
+    }
+
+    static func saveImageToPhotoLibrary(_ image: UIImage) -> AnyPublisher<Void, Error> {
+        Future { promise in
+            PHPhotoLibrary.shared().performChanges {
+                PHAssetChangeRequest.creationRequestForAsset(from: image)
+            } completionHandler: { success, error in
+                if let error = error {
+                    promise(.failure(error))
+                } else {
+                    promise(.success(()))
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+
+    static func saveImage(
+        _ image: UIImage,
+        onSuccess: @escaping () -> Void,
+        onFailure: @escaping (Error) -> Void
+    ) -> AnyCancellable {
+        requestPhotoLibraryAccess()
+            .flatMap { isAuthorized -> AnyPublisher<Void, Error> in
+                guard isAuthorized else {
+                    return Empty().eraseToAnyPublisher()
+                }
+                return saveImageToPhotoLibrary(image)
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        onFailure(error)
+                    }
+                },
+                receiveValue: { _ in
+                    onSuccess()
+                }
+            )
     }
 }
 
