@@ -59,6 +59,7 @@ final class GameScheduleCell: UICollectionViewCell {
 
     private let versusLabel = UILabel().then {
         $0.attributedText = "VS".pretendardString(with: .head1)
+        $0.textColor = .wableBlack
     }
     
     private let awayTeamNameLabel = UILabel().then {
