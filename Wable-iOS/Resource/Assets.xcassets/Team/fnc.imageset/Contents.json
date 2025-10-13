@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "fox.png",
+      "filename" : "fnc.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "fox@2x.png",
+      "filename" : "fnc@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "fox@3x.png",
+      "filename" : "fnc@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
