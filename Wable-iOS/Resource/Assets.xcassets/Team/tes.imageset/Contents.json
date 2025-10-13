@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "kdf.png",
+      "filename" : "tes.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "kdf@2x.png",
+      "filename" : "tes@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "kdf@3x.png",
+      "filename" : "tes@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

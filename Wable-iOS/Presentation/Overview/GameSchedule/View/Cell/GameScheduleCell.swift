@@ -56,6 +56,11 @@ final class GameScheduleCell: UICollectionViewCell {
         $0.attributedText = "0".pretendardString(with: .head0)
         $0.textColor = .wableBlack
     }
+
+    private let versusLabel = UILabel().then {
+        $0.attributedText = "VS".pretendardString(with: .head1)
+        $0.textColor = .wableBlack
+    }
     
     private let awayTeamNameLabel = UILabel().then {
         $0.attributedText = "TBD".pretendardString(with: .body3)
@@ -133,9 +138,10 @@ private extension GameScheduleCell {
         scoreView.addSubviews(
             homeTeamLogoImageView,
             homeTeamNameLabel,
-            homeTeamScoreLabel,
-            colonImageView,
-            awayTeamScoreLabel,
+            // homeTeamScoreLabel,
+            // colonImageView,
+            // awayTeamScoreLabel,
+            versusLabel,
             awayTeamNameLabel,
             awayTeamLogoImageView
         )
@@ -177,19 +183,24 @@ private extension GameScheduleCell {
             make.leading.equalTo(homeTeamLogoImageView.snp.trailing).offset(8)
         }
         
-        homeTeamScoreLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.trailing.equalTo(colonImageView.snp.leading).offset(-24)
-        }
+        /// 점수 레이블 숨김 처리로 인한 주석 처리
+        // homeTeamScoreLabel.snp.makeConstraints { make in
+        //     make.centerY.equalToSuperview()
+        //     make.trailing.equalTo(colonImageView.snp.leading).offset(-24)
+        // }
         
-        colonImageView.snp.makeConstraints { make in
+        // colonImageView.snp.makeConstraints { make in
+        //     make.center.equalToSuperview()
+        //     make.adjustedWidthEqualTo(4)
+        // }
+        
+        // awayTeamScoreLabel.snp.makeConstraints { make in
+        //     make.centerY.equalToSuperview()
+        //     make.leading.equalTo(colonImageView.snp.trailing).offset(24)
+        // }
+
+        versusLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.adjustedWidthEqualTo(4)
-        }
-        
-        awayTeamScoreLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalTo(colonImageView.snp.trailing).offset(24)
         }
         
         awayTeamNameLabel.snp.makeConstraints { make in
