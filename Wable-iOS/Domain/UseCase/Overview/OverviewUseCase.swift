@@ -61,7 +61,7 @@ struct MockOverviewUseCaseImpl: OverviewUseCase {
     
     private var randomDelaySecond: Double { .random(in: 0.3...1.0) }
     
-    private let lckTeams: [LCKTeam] = [.t1, .gen, .hle, .dk, .kt, .ns, .drx, .bro, .bfx, .dnf]
+    // 주의: 팀명 배열은 createMockGameSchedules() 내부에서만 정의해 사용합니다.
         
     func fetchGameCategory() -> AnyPublisher<String, WableError> {
         return .just("2025 LCK SPRING")
@@ -100,22 +100,29 @@ struct MockOverviewUseCaseImpl: OverviewUseCase {
     }
     
     private func createMockGameSchedules() -> AnyPublisher<[GameSchedule], WableError> {
+        let teamNames: [String] = [
+            "T1", "GEN", "HLE", "DK", "KT", "NS", "DRX", "BRO", "BFX", "DNF",
+            "VKS", "AL", "BLG", "CFO", "FLY", "FNC", "G2", "IG", "MKOI", "PSG", 
+            "TES", "TSW", "100T", "TBD"
+        ]
         var mockGameSchedules: [GameSchedule] = []
         
         for dayOffset in 0...6 {
             let date = Calendar.current.date(byAdding: .day, value: dayOffset, to: Date())!
             var games: [Game] = []
             
-            for index in 0...4 {
-                let homeTeamIndex = index * 2 % lckTeams.count
-                let awayTeamIndex = (index * 2 + 1) % lckTeams.count
-                
+            let rotatedTeams: [String] = (0..<teamNames.count).map { teamNames[($0 + dayOffset) % teamNames.count] }
+            for pairIndex in stride(from: 0, to: rotatedTeams.count, by: 2) {
+                let homeTeam = rotatedTeams[pairIndex]
+                let awayTeam = rotatedTeams[pairIndex + 1]
+
+                let gameNumber = pairIndex / 2
                 let game = Game(
                     date: date,
-                    homeTeam: lckTeams[homeTeamIndex].rawValue,
-                    homeScore: index * 2 + 1,
-                    awayTeam: lckTeams[awayTeamIndex].rawValue,
-                    awayScore: index * 2 + 2,
+                    homeTeam: homeTeam,
+                    homeScore: gameNumber * 2 + 1,
+                    awayTeam: awayTeam,
+                    awayScore: gameNumber * 2 + 2,
                     status: .scheduled
                 )
                 games.append(game)
