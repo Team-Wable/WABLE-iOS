@@ -9,8 +9,10 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-    
+
     // MARK: Property
+
+    var onLogout: (() -> Void)?
 
     private var previousIndex: Int = 0
     private var shouldShowLoadingScreen: Bool
@@ -114,7 +116,11 @@ private extension TabBarController {
         viewitCoordinator?.start()
         viewitNavigationController.tabBarItem = UITabBarItem(title: "뷰잇", image: .icViewit, selectedImage: nil)
         let profileNavigationController = UINavigationController(rootViewController: profileViewController)
-        
+
+        profileViewController.onLogout = { [weak self] in
+            self?.onLogout?()
+        }
+
         configureTabBar()
 
         setViewControllers(

@@ -13,7 +13,9 @@
 		0547F4C82C621ABC001E3039 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0547F4C72C621ABC001E3039 /* Color.xcassets */; };
 		0586D89B2D09A68200436080 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0586D8992D09A68200436080 /* Pretendard-Regular.otf */; };
 		0586D89C2D09A68200436080 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */; };
+		2C9059C26644859C87248150 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B7CB308A2494B49BBE0BC2 /* AppCoordinator.swift */; };
 		3C8B4E052C76247800174943 /* wable_tab.json in Resources */ = {isa = PBXBuildFile; fileRef = 3C8B4E042C76247800174943 /* wable_tab.json */; };
+		C83B4C1EB77093628C57171E /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D6BA58067777BC670497DB /* MainCoordinator.swift */; };
 		DD005BA92D7FFFE400B1661F /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BA82D7FFFE000B1661F /* LikeButton.swift */; };
 		DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BAA2D80071E00B1661F /* CommentButton.swift */; };
 		DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */; };
@@ -402,7 +404,9 @@
 		0547F4C72C621ABC001E3039 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		0586D8992D09A68200436080 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
+		21D6BA58067777BC670497DB /* MainCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		3C8B4E042C76247800174943 /* wable_tab.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = wable_tab.json; sourceTree = "<group>"; };
+		46B7CB308A2494B49BBE0BC2 /* AppCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		DD005BA82D7FFFE000B1661F /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
 		DD005BAA2D80071E00B1661F /* CommentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentButton.swift; sourceTree = "<group>"; };
 		DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContentLikedUseCase.swift; sourceTree = "<group>"; };
@@ -1389,6 +1393,7 @@
 				DD8CEF472D6A007900DBE580 /* AppDelegate.swift */,
 				DE6459CE2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift */,
 				DD8CEF482D6A007900DBE580 /* SceneDelegate.swift */,
+				DDC4BB972EA08F120077CFD0 /* Coordinator */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -1481,6 +1486,15 @@
 				DDCD67042D7E271C00EF4C28 /* ToastView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DDC4BB972EA08F120077CFD0 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				46B7CB308A2494B49BBE0BC2 /* AppCoordinator.swift */,
+				21D6BA58067777BC670497DB /* MainCoordinator.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		DDCA70912D87CE3900A988B8 /* Onboarding */ = {
@@ -3073,6 +3087,8 @@
 				DE4AE8512DE8B6FF003E20AB /* WableBottomSheetShowable.swift in Sources */,
 				DD2968232D6DAD0200143851 /* NotificationRepository.swift in Sources */,
 				DD2968002D6DAC8900143851 /* AppDelegate.swift in Sources */,
+				2C9059C26644859C87248150 /* AppCoordinator.swift in Sources */,
+				C83B4C1EB77093628C57171E /* MainCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3242,7 +3258,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS.Dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3284,7 +3300,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

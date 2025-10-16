@@ -153,9 +153,9 @@ private extension LoginViewController {
             .withUnretained(self)
             .sink { owner, sessionInfo in
                 let condition = sessionInfo.isNewUser || sessionInfo.user.nickname == ""
-                
+
                 if condition { AmplitudeManager.shared.trackEvent(tag: .clickAgreePopupSignup) }
-                condition ? owner.navigateToHome?() : owner.navigateToOnboarding?()
+                condition ? owner.navigateToOnboarding?() : owner.navigateToHome?()
             }
             .store(in: cancelBag)
         
