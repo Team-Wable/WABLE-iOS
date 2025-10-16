@@ -157,11 +157,10 @@ private extension CurationViewController {
                 self.loadingFooterIndicator.removeFromSuperview()
                 supplementaryView.addSubview(self.loadingFooterIndicator)
                 self.loadingFooterIndicator.snp.makeConstraints { make in
-                    make.verticalEdges.equalToSuperview()
-                    make.centerX.equalToSuperview()
+                    make.verticalEdges.centerX.equalToSuperview()
                 }
             }
-            // 로딩 중이 아닐 때는 숨김
+            
             self.loadingFooterIndicator.isHidden = !self.loadingFooterIndicator.isAnimating
         }
 
@@ -233,13 +232,13 @@ private extension CurationViewController {
     static var collectionViewLayout: UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(256)
+            heightDimension: .fractionalHeight(1.0)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(256)
+            heightDimension: .estimated(256.adjustedHeight)
         )
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: groupSize,
@@ -247,6 +246,8 @@ private extension CurationViewController {
         )
         
         let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 12
+        section.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0)
 
         let footerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),

@@ -17,7 +17,7 @@ final class CurationCell: UICollectionViewCell {
     // MARK: - UIComponents
 
     private let profileImageView = UIImageView(image: .logoSymbolSmall).then {
-        $0.contentMode = .scaleAspectFit
+        $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 20
     }
@@ -30,10 +30,6 @@ final class CurationCell: UICollectionViewCell {
     private let timeLabel = UILabel().then {
         $0.attributedText = "· 2시간 전".pretendardString(with: .caption4)
         $0.textColor = .gray500
-    }
-    
-    private let headerStackView = UIStackView(axis: .horizontal).then {
-        $0.spacing = 8
     }
     
     private let cardButton = UIButton().then {
@@ -136,14 +132,10 @@ final class CurationCell: UICollectionViewCell {
 private extension CurationCell {
     func setupView() {
         contentView.addSubviews(
-            headerStackView,
-            cardButton
-        )
-
-        headerStackView.addArrangedSubviews(
             profileImageView,
             authorLabel,
-            timeLabel
+            timeLabel,
+            cardButton
         )
 
         cardButton.addSubviews(
@@ -161,24 +153,30 @@ private extension CurationCell {
     
     func setupConstraint() {
         profileImageView.snp.makeConstraints { make in
-            make.size.equalTo(28)
+            make.top.equalToSuperview()
+            make.adjustedWidthEqualTo(28)
+            make.leading.equalToSuperview().offset(16)
+            make.height.equalTo(profileImageView.snp.width)
         }
-
-        headerStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(12)
-            make.leading.equalToSuperview().inset(16)
+        
+        authorLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(profileImageView)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(8)
+        }
+        
+        timeLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(profileImageView)
+            make.leading.equalTo(authorLabel.snp.trailing).offset(8)
         }
 
         cardButton.snp.makeConstraints { make in
-            make.top.equalTo(headerStackView.snp.bottom).offset(8)
+            make.top.equalTo(profileImageView.snp.bottom).offset(8)
             make.horizontalEdges.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview().offset(-12)
-            make.height.greaterThanOrEqualTo(220)
+            make.bottom.equalToSuperview()
         }
 
         thumbnailImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.height.equalTo(thumbnailImageView.snp.width).multipliedBy(220/344)
         }
 
         titleLabel.snp.makeConstraints { make in
@@ -197,7 +195,8 @@ private extension CurationCell {
         openIconImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(16)
-            make.size.equalTo(32)
+            make.adjustedWidthEqualTo(32)
+            make.adjustedHeightEqualTo(32)
         }
 
         descriptionView.snp.makeConstraints { make in
