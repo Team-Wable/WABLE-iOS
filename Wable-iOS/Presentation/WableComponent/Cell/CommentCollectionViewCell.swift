@@ -47,9 +47,15 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     
     let infoView: PostUserInfoView = PostUserInfoView()
     
-    private let contentLabel: UILabel = UILabel().then {
+    private let contentTextView: UITextView = UITextView().then {
+        $0.dataDetectorTypes = [.link]
+        $0.isEditable = false
+        $0.isScrollEnabled = false
+        $0.textContainerInset = .zero
+        $0.textContainer.lineFragmentPadding = 0
+        $0.setPretendard(with: .body4)
         $0.textColor = .gray800
-        $0.numberOfLines = 0
+        $0.backgroundColor = .clear
     }
     
     private let blindImageView: UIImageView = UIImageView(image: .imgReplyIsBlind).then {
@@ -87,8 +93,8 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         }
         
         blindImageView.isHidden = true
-        contentLabel.isHidden = false
-        
+        contentTextView.isHidden = false
+
         blindImageView.snp.removeConstraints()
         
         replyButton.isHidden = false
@@ -105,7 +111,7 @@ private extension CommentCollectionViewCell {
         contentView.addSubviews(
             infoView,
             ghostButton,
-            contentLabel,
+            contentTextView,
             likeButton,
             replyButton,
             blindImageView,
@@ -129,7 +135,7 @@ private extension CommentCollectionViewCell {
             $0.centerY.equalTo(ghostButton)
         }
         
-        contentLabel.snp.makeConstraints {
+        contentTextView.snp.makeConstraints {
             $0.top.equalTo(infoView.snp.bottom).offset(4)
             $0.leading.equalTo(likeButton)
             $0.trailing.equalToSuperview().inset(16)
@@ -197,7 +203,7 @@ private extension CommentCollectionViewCell {
     func ghostCell(opacity: Float) {
         [
             infoView,
-            contentLabel
+            contentTextView
         ].forEach {
             $0.alpha = CGFloat(opacity)
         }
@@ -234,8 +240,8 @@ extension CommentCollectionViewCell {
         ghostButton.isHidden = authorType == .mine || info.status == .ghost
         configureCommentType(info: info, commentType: commentType)
         configurePostStatus(info: info)
-        
-        contentLabel.attributedText = info.text.pretendardString(with: .body4)
+
+        contentTextView.text = info.text
         
         guard let createdDate = info.createdDate else { return }
         infoView.configureView(
@@ -252,8 +258,8 @@ extension CommentCollectionViewCell {
     }
     
     func configureCommentType(info: Comment, commentType: CommentType) {
-        contentLabel.attributedText = info.text.pretendardString(with: .body4)
-        
+        contentTextView.text = info.text
+
         switch commentType {
         case .ripple:
             replyButton.isHidden = false
@@ -286,7 +292,7 @@ extension CommentCollectionViewCell {
             }
             
             DispatchQueue.main.async {
-                self.contentLabel.isHidden = true
+                self.contentTextView.isHidden = true
                 self.blindImageView.isHidden = false
             }
             
