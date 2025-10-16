@@ -52,8 +52,10 @@ final class MyProfileViewController: UIViewController {
 
     // MARK: - Property
 
+    var onLogout: (() -> Void)?
+
     private var dataSource: DataSource?
-    
+
     private let viewModel: MyProfileViewModel
     private let willDisplaySubject = PassthroughSubject<Void, Never>()
     private let cancelBag = CancelBag()
@@ -463,21 +465,7 @@ private extension MyProfileViewController {
     }
     
     func presentLoginView() {
-        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
-              let window = sceneDelegate.window
-        else {
-            return WableLogger.log("SceneDelegate 찾을 수 없음.", for: .debug)
-        }
-        
-        let loginViewController = LoginViewController(viewModel: LoginViewModel())
-        
-        UIView.transition(
-            with: window,
-            duration: 0.5,
-            options: [.transitionCrossDissolve],
-            animations: { window.rootViewController = loginViewController },
-            completion: nil
-        )
+        onLogout?()
     }
     
     func presentDeleteContentActionSheet(for contentID: Int) {

@@ -61,8 +61,6 @@ private extension LoginCoordinator {
     }
 
     func showHome() {
-        let tabBarController = TabBarController()
-        tabBarController.modalPresentationStyle = .fullScreen
-        navigationController.present(tabBarController, animated: true)
+        onFinish?()
     }
 }
