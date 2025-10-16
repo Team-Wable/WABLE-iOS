@@ -11,10 +11,11 @@ import Combine
 final class CurationViewModel {
 
     private var lastItemID: UUID?
-
-    private(set) var hasMore: Bool = false
+    private var hasMore: Bool = false
+    private let processingQueue = DispatchQueue(label: "com.wable.curation.items", qos: .userInitiated)
 
     private let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
+    private let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
     private let itemsSubject = CurrentValueSubject<[CurationItem], Never>([])
 }
 
@@ -27,44 +28,38 @@ extension CurationViewModel: ViewModelType {
     struct Output {
         let items: AnyPublisher<[CurationItem], Never>
         let isLoading: AnyPublisher<Bool, Never>
+        let isLoadingMore: AnyPublisher<Bool, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
         input.load
-            .handleEvents(receiveOutput: { [weak self] _ in
-                self?.isLoadingSubject.send(true)
-            })
+            .handleEvents(receiveOutput: { [weak self] _ in self?.isLoadingSubject.send(true) })
             .flatMap { [weak self] _ -> AnyPublisher<[CurationItem], Never> in
                 self?.fetchItems(cursor: nil) ?? Empty().eraseToAnyPublisher()
             }
-            .handleEvents(receiveOutput: { [weak self] _ in 
-                self?.isLoadingSubject.send(false)
-            })
-            .sink { [weak self] newItems in self?.itemsSubject.send(newItems) }
+            .handleEvents(receiveOutput: { [weak self] _ in self?.isLoadingSubject.send(false) })
+            .sink { [weak self] newItems in self?.updateItemsReplacing(with: newItems) }
             .store(in: cancelBag)
 
         input.loadMore
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .filter { [weak self] _ in self?.canTriggerLoadMore() ?? false }
+            .handleEvents(receiveOutput: { [weak self] _ in self?.isLoadingMoreSubject.send(true) })
             .flatMap { [weak self] _ -> AnyPublisher<[CurationItem], Never> in
-                guard let self = self, self.hasMore, !self.isLoadingSubject.value else {
-                    return Empty().eraseToAnyPublisher()
-                }
+                guard let self = self else { return Just([]).eraseToAnyPublisher() }
                 return self.fetchItems(cursor: self.lastItemID)
             }
-            .sink { [weak self] newItems in
-                guard let self = self, !newItems.isEmpty else {
-                    self?.hasMore = false
-                    return
-                }
-                self.itemsSubject.value.append(contentsOf: newItems)
-            }
+            .receive(on: DispatchQueue.main)
+            .handleEvents(receiveOutput: { [weak self] _ in self?.isLoadingMoreSubject.send(false) })
+            .sink { [weak self] newItems in self?.handleLoadMoreResponse(newItems) }
             .store(in: cancelBag)
         
         let items = itemsSubject
+            .receive(on: processingQueue)
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .handleEvents(receiveOutput: { [weak self] items in
                 self?.lastItemID = items.last?.id
-                self?.hasMore = items.count >= IntegerLiterals.defaultCountPerPage
             })
             .eraseToAnyPublisher()
 
@@ -73,9 +68,15 @@ extension CurationViewModel: ViewModelType {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
 
+        let isLoadingMore = isLoadingMoreSubject
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+
         return Output(
             items: items,
-            isLoading: isLoading
+            isLoading: isLoading,
+            isLoadingMore: isLoadingMore
         )
     }
 }
@@ -83,6 +84,33 @@ extension CurationViewModel: ViewModelType {
 // MARK: - Helper Methods
 
 private extension CurationViewModel {
+    func canTriggerLoadMore() -> Bool {
+        hasMore && !isLoadingSubject.value && !isLoadingMoreSubject.value
+    }
+
+    func updateItemsReplacing(with newItems: [CurationItem]) {
+        updatePaginationState(after: newItems)
+        itemsSubject.send(newItems)
+    }
+
+    func appendItems(_ newItems: [CurationItem]) {
+        var current = itemsSubject.value
+        current.append(contentsOf: newItems)
+        itemsSubject.send(current)
+    }
+
+    func updatePaginationState(after newItems: [CurationItem]) {
+        hasMore = newItems.count >= IntegerLiterals.defaultCountPerPage
+    }
+
+    func handleLoadMoreResponse(_ newItems: [CurationItem]) {
+        guard !newItems.isEmpty else {
+            hasMore = false
+            return
+        }
+        updatePaginationState(after: newItems)
+        appendItems(newItems)
+    }
     func fetchItems(cursor: UUID?) -> AnyPublisher<[CurationItem], Never> {
         // 실제로는 여기서 UseCase나 Repository를 호출
         // 예: return curationUseCase.fetchCurationItems(cursor: cursor, pageSize: pageSize)
@@ -117,7 +145,7 @@ private extension CurationViewModel {
                 time: "5분 전",
                 title: "영상 제목입니다 (아이템 \(startIndex + index + 1))",
                 source: "네이버",
-                thumbnailURL: nil
+                thumbnailURL: URL(string: "https://fastly.picsum.photos/id/176/343/220.jpg?hmac=h_eZSSP2OjzuGIVmDs1OZ_dYT3BzPbCC_QAnMZp5Sn8")
             )
         }
     }

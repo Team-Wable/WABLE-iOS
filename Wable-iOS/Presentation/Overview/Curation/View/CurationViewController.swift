@@ -41,8 +41,14 @@ final class CurationViewController: UIViewController {
         $0.textAlignment = .center
     }
     
+    private let loadingFooterIndicator = UIActivityIndicatorView(style: .large).then {
+        $0.color = .gray600
+    }
+    
     // MARK: - Properties
 
+    var openURL: ((URL) -> Void)?
+    
     private var dataSource: DataSource?
 
     private let viewModel: CurationViewModel
@@ -110,8 +116,6 @@ private extension CurationViewController {
     }
 
     func setupAction() {
-//        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
-
         refreshControl.publisher(for: .valueChanged)
             .sink { [weak self] _ in
                 self?.loadSubject.send()
@@ -138,28 +142,38 @@ private extension CurationViewController {
                 source: item.source
             ) {
                 UIApplication.shared.open(URL(string: "https://www.naver.com")!)
+//                self.openURL?()
             }
         }
 
         let footerRegistration = UICollectionView.SupplementaryRegistration<UICollectionReusableView>(
             elementKind: UICollectionView.elementKindSectionFooter
-        ) { supplementaryView, elementKind, indexPath in
+        ) { [weak self] supplementaryView, _, _ in
+            guard let self = self else { return }
             supplementaryView.backgroundColor = .clear
-            
-            let indicator = UIActivityIndicatorView(style: .medium)
-            indicator.color = .gray600
-            indicator.startAnimating()
-            
             supplementaryView.subviews.forEach { $0.removeFromSuperview() }
-            supplementaryView.addSubview(indicator)
-            
-            indicator.snp.makeConstraints { make in
-                make.center.equalToSuperview()
+
+            if self.loadingFooterIndicator.superview !== supplementaryView {
+                self.loadingFooterIndicator.removeFromSuperview()
+                supplementaryView.addSubview(self.loadingFooterIndicator)
+                self.loadingFooterIndicator.snp.makeConstraints { make in
+                    make.verticalEdges.equalToSuperview()
+                    make.centerX.equalToSuperview()
+                }
             }
+            // 로딩 중이 아닐 때는 숨김
+            self.loadingFooterIndicator.isHidden = !self.loadingFooterIndicator.isAnimating
         }
 
         dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
             collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
+        }
+        
+        dataSource?.supplementaryViewProvider = { collectionView, kind, indexPath in
+            collectionView.dequeueConfiguredReusableSupplementary(
+                using: footerRegistration,
+                for: indexPath
+            )
         }
     }
 
@@ -182,6 +196,10 @@ private extension CurationViewController {
             .filter { !$0 }
             .sink { [weak self] _ in self?.refreshControl.endRefreshing() }
             .store(in: cancelBag)
+
+        output.isLoadingMore
+            .sink { [weak self] isLoadingMore in self?.setLoadingFooterAnimating(isLoadingMore) }
+            .store(in: cancelBag)
     }
 }
 
@@ -193,6 +211,11 @@ private extension CurationViewController {
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)
         dataSource?.apply(snapshot, animatingDifferences: false)
+    }
+
+    func setLoadingFooterAnimating(_ isAnimating: Bool) {
+        loadingFooterIndicator.isHidden = !isAnimating
+        isAnimating ? loadingFooterIndicator.startAnimating() : loadingFooterIndicator.stopAnimating()
     }
 }
 
@@ -224,19 +247,18 @@ private extension CurationViewController {
         )
         
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 16
-        
-//        let footerSize = NSCollectionLayoutSize(
-//            widthDimension: .fractionalWidth(1.0),
-//            heightDimension: .absolute(60)
-//        )
-//        let footer = NSCollectionLayoutBoundarySupplementaryItem(
-//            layoutSize: footerSize,
-//            elementKind: UICollectionView.elementKindSectionFooter,
-//            alignment: .bottom
-//        )
-//        section.boundarySupplementaryItems = [footer]
-        
+
+        let footerSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(60)
+        )
+        let footer = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: footerSize,
+            elementKind: UICollectionView.elementKindSectionFooter,
+            alignment: .bottom
+        )
+        section.boundarySupplementaryItems = [footer]
+
         return UICollectionViewCompositionalLayout(section: section)
     }
 }
