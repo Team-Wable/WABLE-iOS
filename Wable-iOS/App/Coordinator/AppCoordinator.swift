@@ -91,6 +91,7 @@ final class AppCoordinator: Coordinator {
 
     private func handleLogout() {
         userSessionRepository.updateActiveUserID(nil)
+        HomeViewController.hasShownLoadingScreen = false
         showLogin()
     }
 }
