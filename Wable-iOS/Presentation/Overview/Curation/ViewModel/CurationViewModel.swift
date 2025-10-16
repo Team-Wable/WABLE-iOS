@@ -143,8 +143,8 @@ private extension CurationViewModel {
         return (0..<itemsToGenerate).map { index in
             CurationItem(
                 time: "5분 전",
-                title: "영상 제목입니다 (아이템 \(startIndex + index + 1))",
-                source: "네이버",
+                title: "영상 제목입니다 (아이템 \(startIndex + index + 1)) Elit laborum officia adipiscing consequat exercitation laborum sint adipiscing ea excepteur nulla si",
+                source: "Nulla voluptate commodo ex labore reprehenderit voluptate dolore eu non reprehenderit aute dolor ips",
                 thumbnailURL: URL(string: "https://fastly.picsum.photos/id/176/343/220.jpg?hmac=h_eZSSP2OjzuGIVmDs1OZ_dYT3BzPbCC_QAnMZp5Sn8")
             )
         }
