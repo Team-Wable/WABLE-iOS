@@ -11,21 +11,18 @@ import UIKit
 import KakaoSDKAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    
+
     // MARK: - Property
-    
+
     private let cancelBag = CancelBag()
-    private let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
-    private let tokenProvider = OAuthTokenProvider()
-    private let loginRepository = LoginRepositoryImpl()
     private let profileRepository = ProfileRepositoryImpl()
     private let checkAppUpdateRequirementUseCase = CheckAppUpdateRequirementUseCaseImpl()
     private let userSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage())
-    
-    private var loginCoordinator: LoginCoordinator?
-    
+
+    private var appCoordinator: AppCoordinator?
+
     // MARK: - UIComponent
-    
+
     var window: UIWindow?
     
     // MARK: - WillConnentTo
@@ -60,30 +57,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 // MARK: - Configure Extension
 
 private extension SceneDelegate {
-    func configureLoginScreen() {
-        let navigationController = UINavigationController()
-        navigationController.navigationBar.isHidden = true
-        loginCoordinator = LoginCoordinator(navigationController: navigationController)
-        loginCoordinator?.start()
-        self.window?.rootViewController = navigationController
-    }
-    
-    func configureMainScreen() {
-        self.window?.rootViewController = TabBarController(shouldShowLoadingScreen: true)
+    func showLoginScreen() {
+        userSessionRepository.updateActiveUserID(nil)
+        appCoordinator?.showLogin()
     }
     
     func proceedToAppLaunch() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) { [weak self] in
-            guard let self = self else { return }
-            let session = userSessionRepository.fetchActiveUserSession()
-            let shouldAutoLogin = session?.isAutoLoginEnabled == true && session?.nickname != ""
-            
-            if shouldAutoLogin {
-                updateFCMToken()
-                configureMainScreen()
-            } else {
-                configureLoginScreen()
-            }
+            guard let self = self, let window = self.window else { return }
+
+            self.appCoordinator = AppCoordinator(
+                window: window,
+                userSessionRepository: self.userSessionRepository,
+                profileRepository: self.profileRepository
+            )
+            self.appCoordinator?.start()
         }
     }
 }
@@ -104,9 +92,8 @@ private extension SceneDelegate {
     }
 
     func handleTokenExpired() {
-        userSessionRepository.updateActiveUserID(nil)
-        configureLoginScreen()
-        
+        showLoginScreen()
+
         let toast = ToastView(status: .caution, message: "세션이 만료되었습니다. 다시 로그인해주세요.")
         toast.show()
     }
@@ -115,25 +102,6 @@ private extension SceneDelegate {
 // MARK: - Helper Method
 
 private extension SceneDelegate {
-    func updateFCMToken() {
-        guard let session = userSessionRepository.fetchActiveUserSession(),
-              let token = profileRepository.fetchFCMToken() else { return }
-        
-        profileRepository.updateUserProfile(nickname: session.nickname, fcmToken: token)
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .failure(let error):
-                    WableLogger.log("토큰 업데이트 실패: \(error)", for: .error)
-                default:
-                    break
-                }
-            } receiveValue: { _ in
-                WableLogger.log("토큰 업데이트 성공", for: .debug)
-            }
-            .store(in: cancelBag)
-    }
-    
     func checkUpdate() {
         Task {
             do {
