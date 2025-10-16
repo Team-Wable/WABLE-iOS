@@ -27,11 +27,13 @@ final class CurationViewController: UIViewController {
 
     private let collectionView = UICollectionView(
         frame: .zero,
-        collectionViewLayout: CurationViewController.makeLayout()
+        collectionViewLayout: CurationViewController.collectionViewLayout
     ).then {
         $0.backgroundColor = .white
         $0.showsVerticalScrollIndicator = false
     }
+
+    private let refreshControl = UIRefreshControl()
 
     private let emptyLabel = UILabel().then {
         $0.attributedText = Constants.emptyDescription.pretendardString(with: .body2)
@@ -43,9 +45,16 @@ final class CurationViewController: UIViewController {
 
     private var dataSource: DataSource?
 
+    private let viewModel: CurationViewModel
+    private let loadSubject = PassthroughSubject<Void, Never>()
+    private let loadMoreSubject = PassthroughSubject<Void, Never>()
+    private let cancelBag = CancelBag()
+
     // MARK: - Life Cycle
 
-    init() {
+    init(viewModel: CurationViewModel = .init()) {
+        self.viewModel = viewModel
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -56,11 +65,32 @@ final class CurationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupView()
         setupLayout()
         setupDataSource()
-        applySnapshot()
+        setupAction()
+        setupBinding()
+        
+        loadSubject.send()
+    }
+
+    @objc private func handleRefresh() {
+        loadSubject.send()
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension CurationViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let itemCount = dataSource?.snapshot().numberOfItems,
+              indexPath.item >= itemCount - 3
+        else {
+            return
+        }
+        
+        loadMoreSubject.send()
     }
 }
 
@@ -70,16 +100,32 @@ private extension CurationViewController {
     func setupView() {
         view.backgroundColor = .white
         
-        view.addSubview(collectionView)
+        view.addSubviews(
+            collectionView,
+            emptyLabel
+        )
+
+        collectionView.refreshControl = refreshControl
+        collectionView.delegate = self
     }
 
     func setupAction() {
-        
+//        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+
+        refreshControl.publisher(for: .valueChanged)
+            .sink { [weak self] _ in
+                self?.loadSubject.send()
+            }
+            .store(in: cancelBag)
     }
     
     func setupLayout() {
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+
+        emptyLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 
@@ -95,19 +141,57 @@ private extension CurationViewController {
             }
         }
 
+        let footerRegistration = UICollectionView.SupplementaryRegistration<UICollectionReusableView>(
+            elementKind: UICollectionView.elementKindSectionFooter
+        ) { supplementaryView, elementKind, indexPath in
+            supplementaryView.backgroundColor = .clear
+            
+            let indicator = UIActivityIndicatorView(style: .medium)
+            indicator.color = .gray600
+            indicator.startAnimating()
+            
+            supplementaryView.subviews.forEach { $0.removeFromSuperview() }
+            supplementaryView.addSubview(indicator)
+            
+            indicator.snp.makeConstraints { make in
+                make.center.equalToSuperview()
+            }
+        }
+
         dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
             collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
         }
+    }
+
+    func setupBinding() {
+        let input = CurationViewModel.Input(
+            load: loadSubject.eraseToAnyPublisher(),
+            loadMore: loadMoreSubject.eraseToAnyPublisher()
+        )
+        
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.items
+            .sink { [weak self] items in
+                self?.applySnapshot(items: items)
+                self?.emptyLabel.isHidden = !items.isEmpty
+            }
+            .store(in: cancelBag)
+
+        output.isLoading
+            .filter { !$0 }
+            .sink { [weak self] _ in self?.refreshControl.endRefreshing() }
+            .store(in: cancelBag)
     }
 }
 
 // MARK: - Helper Methods
 
 private extension CurationViewController {
-    func applySnapshot() {
+    func applySnapshot(items: [CurationItem]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(CurationItem.mocks, toSection: .main)
+        snapshot.appendItems(items, toSection: .main)
         dataSource?.apply(snapshot, animatingDifferences: false)
     }
 }
@@ -123,7 +207,7 @@ private extension CurationViewController {
 // MARK: - UICollectionViewCompositionalLayout
 
 private extension CurationViewController {
-    static func makeLayout() -> UICollectionViewCompositionalLayout {
+    static var collectionViewLayout: UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .estimated(256)
@@ -141,6 +225,17 @@ private extension CurationViewController {
         
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 16
+        
+//        let footerSize = NSCollectionLayoutSize(
+//            widthDimension: .fractionalWidth(1.0),
+//            heightDimension: .absolute(60)
+//        )
+//        let footer = NSCollectionLayoutBoundarySupplementaryItem(
+//            layoutSize: footerSize,
+//            elementKind: UICollectionView.elementKindSectionFooter,
+//            alignment: .bottom
+//        )
+//        section.boundarySupplementaryItems = [footer]
         
         return UICollectionViewCompositionalLayout(section: section)
     }
