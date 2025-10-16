@@ -12,6 +12,8 @@ final class AccountInfoViewModel {
     @Published private(set) var items: [AccountInfoCellItem] = []
     @Published private(set) var errorMessage: String?
     
+    @Injected private var appVersionRepository: AppVersionRepository
+    
     private let useCase: FetchAccountInfoUseCase
     
     init(useCase: FetchAccountInfoUseCase) {
@@ -19,12 +21,13 @@ final class AccountInfoViewModel {
     }
     
     func viewDidLoad() {
+        let currentAppVersion = appVersionRepository.fetchCurrentVersion().description
         Task {
             do {
                 let accountInfo = try await useCase.execute()
                 items = [
                     .init(title: "소셜 로그인", description: accountInfo.socialPlatform?.rawValue ?? ""),
-                    .init(title: "버전 정보", description: accountInfo.version),
+                    .init(title: "버전 정보", description: currentAppVersion),
                     .init(title: "아이디", description: accountInfo.displayMemberID),
                     .init(title: "가입일", description: formatDate(accountInfo.createdDate ?? .now)),
                     .init(title: "이용약관", description: "자세히 보기", isUserInteractive: true)
