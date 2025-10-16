@@ -142,7 +142,8 @@ private extension CurationViewController {
                 source: item.source
             ) {
                 UIApplication.shared.open(URL(string: "https://www.naver.com")!)
-//                self.openURL?()
+                // TODO: - 추후 URL 이동 방식 변경 (코디네이터 이용)
+                // self.openURL?()
             }
         }
 
