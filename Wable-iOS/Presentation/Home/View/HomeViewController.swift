@@ -24,9 +24,9 @@ final class HomeViewController: NavigationViewController {
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     
     // MARK: - Property
-    
+
     var shouldShowLoadingScreen: Bool = false
-    private static var hasShownLoadingScreen = false
+    static var hasShownLoadingScreen = false
     
     private let viewModel: HomeViewModel
     private let willAppearSubject = PassthroughSubject<Void, Never>()
