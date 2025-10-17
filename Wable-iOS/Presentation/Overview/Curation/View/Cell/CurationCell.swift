@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 import Kingfisher
 import SnapKit
 import Then
@@ -28,7 +27,7 @@ final class CurationCell: UICollectionViewCell {
     }
 
     private let timeLabel = UILabel().then {
-        $0.attributedText = "· 2시간 전".pretendardString(with: .caption4)
+        $0.attributedText = "".pretendardString(with: .caption4)
         $0.textColor = .gray500
     }
     
@@ -44,7 +43,6 @@ final class CurationCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.backgroundColor = .gray200
-        $0.isAccessibilityElement = false
     }
 
     private let descriptionView = UIView(backgroundColor: UIColor("F7F7F7")).then {
@@ -52,14 +50,14 @@ final class CurationCell: UICollectionViewCell {
     }
     
     private let titleLabel = UILabel().then {
-        $0.attributedText = "영상 제목입니다.".pretendardString(with: .body3)
+        $0.attributedText = "".pretendardString(with: .body3)
         $0.textColor = .wableBlack
         $0.numberOfLines = 1
         $0.lineBreakMode = .byTruncatingTail
     }
 
     private let sourceLabel = UILabel().then {
-        $0.attributedText = "링크 사이트 이름".pretendardString(with: .body4)
+        $0.attributedText = "".pretendardString(with: .body4)
         $0.textColor = .gray600
         $0.numberOfLines = 1
         $0.lineBreakMode = .byTruncatingTail
