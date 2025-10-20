@@ -97,3 +97,6 @@ GoogleService-Info.plist
 fastlane/.env
 fastlane/*.p8
 fastlane/report.xml
+
+## Claude
+.claude/
