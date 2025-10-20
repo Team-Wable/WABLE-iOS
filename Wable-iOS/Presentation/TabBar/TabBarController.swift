@@ -16,6 +16,7 @@ final class TabBarController: UITabBarController {
 
     private var previousIndex: Int = 0
     private var shouldShowLoadingScreen: Bool
+    private var quizCoordinator: QuizCoordinator?
     private var viewitCoordinator: ViewitCoordinator?
     
     // MARK: - UIComponent
@@ -111,11 +112,20 @@ private extension TabBarController {
         let homeNavigationController = UINavigationController(rootViewController: homeViewController)
         let communityNavigationController = UINavigationController(rootViewController: communityViewController)
         let overviewNavigationController = UINavigationController(rootViewController: overviewViewController)
+        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
+        
         let viewitNavigationController = UINavigationController()
         viewitCoordinator = ViewitCoordinator(navigationController: viewitNavigationController)
         viewitCoordinator?.start()
         viewitNavigationController.tabBarItem = UITabBarItem(title: "뷰잇", image: .icViewit, selectedImage: nil)
-        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
+        
+        let quizNavigationController = UINavigationController()
+        viewitNavigationController.tabBarItem = UITabBarItem(title: "퀴즈", image: .icQuiz, selectedImage: nil)
+        
+        // TODO: hasCompleted 나중에 기능 구현하기
+        quizCoordinator = QuizCoordinator(navigationController: quizNavigationController, hasCompleted: false)
+        quizCoordinator?.start()
+        
 
         profileViewController.onLogout = { [weak self] in
             self?.onLogout?()
