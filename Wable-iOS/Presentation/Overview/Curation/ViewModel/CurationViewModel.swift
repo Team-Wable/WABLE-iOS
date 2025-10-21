@@ -11,7 +11,7 @@ import Combine
 final class CurationViewModel {
     private let useCase: OverviewUseCase
 
-    private var lastItemID: Int?
+    private var lastItemID: Int = IntegerLiterals.initialCursor
     private var hasMore: Bool = false
     private let processingQueue = DispatchQueue(label: "com.wable.curation.items", qos: .userInitiated)
 
@@ -51,7 +51,7 @@ extension CurationViewModel: ViewModelType {
             .filter { [weak self] _ in self?.canTriggerLoadMore() ?? false }
             .handleEvents(receiveOutput: { [weak self] _ in self?.isLoadingMoreSubject.send(true) })
             .flatMap { [weak self] _ -> AnyPublisher<[CurationItem], Never> in
-                guard let self = self else { return Just([]).eraseToAnyPublisher() }
+                guard let self = self else { return .empty() }
                 return self.fetchItems(cursor: self.lastItemID)
             }
             .receive(on: DispatchQueue.main)
@@ -64,7 +64,8 @@ extension CurationViewModel: ViewModelType {
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .handleEvents(receiveOutput: { [weak self] items in
-                self?.lastItemID = items.last?.id
+                guard let lastItemID = items.last?.id else { return }
+                self?.lastItemID = lastItemID
             })
             .eraseToAnyPublisher()
 
@@ -116,17 +117,60 @@ private extension CurationViewModel {
         updatePaginationState(after: newItems)
         appendItems(newItems)
     }
+    
     func fetchItems(cursor: Int) -> AnyPublisher<[CurationItem], Never> {
-        // 실제로는 여기서 UseCase나 Repository를 호출
-        // 예: return curationUseCase.fetchCurationItems(cursor: cursor, pageSize: pageSize)
-        // return useCase.fetchCurations(with: 0)
-        
-        // Mock 구현: 서버 요청 시뮬레이션
-        return Future<[CurationItem], Never> { promise in
-            DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-                promise(.success([]))
+        return useCase
+            .fetchCurations(with: cursor)
+            .map { [weak self] curations in curations.compactMap { self?.mapToCurationItem($0) }}
+            .catch { error -> AnyPublisher<[CurationItem], Never> in
+                WableLogger.log("Failed to fetch curations: \(error)", for: .error)
+                return .just([])
             }
+            .eraseToAnyPublisher()
+    }
+    
+    func mapToCurationItem(_ curation: Curation) -> CurationItem {
+        return CurationItem(
+            id: curation.id,
+            title: curation.title,
+            createdAt: curation.time.elapsedText,
+            siteName: extractSiteName(from: curation.url),
+            url: curation.url,
+            thumbnailURL: curation.thumbnailURL
+        )
+    }
+
+    func extractSiteName(from url: URL) -> String {
+        guard let host = url.host?.lowercased() else { return url.absoluteString }
+        
+        let hostWithoutWWW = host.hasPrefix("www.")
+            ? String(host.dropFirst(4))
+            : host
+        
+        return mapHostToBrandName(hostWithoutWWW)
+    }
+    
+    func mapHostToBrandName(_ host: String) -> String {
+        if host == "youtu.be" || host.hasSuffix("youtube.com") {
+            return "YouTube"
+        } else if host.hasSuffix("instagram.com") {
+            return "Instagram"
+        } else if host.hasSuffix("twitter.com") || host.hasSuffix("x.com") {
+            return "X"
+        } else if host.hasSuffix("facebook.com") {
+            return "Facebook"
+        } else if host.hasSuffix("tiktok.com") {
+            return "TikTok"
+        } else if host == "naver.me" || host.hasSuffix("naver.com") {
+            return "NAVER"
+        } else if host.hasSuffix("daum.net") {
+            return "Daum"
+        } else if host == "goo.gl" || host.hasSuffix("google.com") {
+            return "Google"
+        } else if host.hasSuffix("kakao.com") {
+            return "Kakao"
+        } else {
+            return host
         }
-        .eraseToAnyPublisher()
     }
 }
