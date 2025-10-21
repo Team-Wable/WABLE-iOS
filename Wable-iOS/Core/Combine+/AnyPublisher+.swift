@@ -19,4 +19,9 @@ extension AnyPublisher {
         return Fail(error: failure)
             .eraseToAnyPublisher()
     }
+
+    static func empty() -> AnyPublisher<Output, Failure> {
+        return Empty()
+            .eraseToAnyPublisher()
+    }
 }
