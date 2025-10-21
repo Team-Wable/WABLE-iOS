@@ -68,4 +68,13 @@ final class InformationRepositoryImpl: InformationRepository {
         .map(InformationMapper.toDomain(_:))
         .mapWableError()
     }
+
+    func fetchCurations(cursor: Int) -> AnyPublisher<[Curation], WableError> {
+        return provider.request(
+            .fetchCurations(cursor: cursor),
+            for: [DTO.Response.FetchCurations].self
+        )
+        .map(InformationMapper.toDomain(_:))
+        .mapWableError()
+    }
 }

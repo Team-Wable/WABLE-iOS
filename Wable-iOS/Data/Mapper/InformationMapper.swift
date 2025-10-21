@@ -79,4 +79,28 @@ enum InformationMapper {
             )
         }
     }
+
+    static func toDomain(_ dtos: [DTO.Response.FetchCurations]) -> [Curation] {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
+
+        return dtos.compactMap { dto in
+            guard let url = URL(string: dto.urlString),
+                  let thumbnailURL = URL(string: dto.thumbnailURLString),
+                  let time = dateFormatter.date(from: dto.createdAt)
+            else {
+                WableLogger.log("Failed to map Curation DTO to Domain", for: .debug)
+                return nil
+            }
+
+            return Curation(
+                id: dto.id,
+                title: dto.title,
+                time: time,
+                url: url,
+                thumbnailURL: thumbnailURL
+            )
+        }
+    }
 }
