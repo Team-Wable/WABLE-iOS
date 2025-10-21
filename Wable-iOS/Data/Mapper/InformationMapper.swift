@@ -92,19 +92,13 @@ enum InformationMapper {
                 WableLogger.log("Failed to map Curation DTO to Domain", for: .debug)
                 return nil
             }
-
-            let thumbnailURL: URL? = if let thumbnailString = dto.thumbnailURLString {
-                URL(string: thumbnailString)
-            } else {
-                nil
-            }
-
+            
             return Curation(
                 id: dto.id,
                 title: dto.title ?? "제목 없음",
                 time: time,
                 url: url,
-                thumbnailURL: thumbnailURL
+                thumbnailURL: dto.thumbnailURLString.flatMap { URL(string: $0) }
             )
         }
     }
