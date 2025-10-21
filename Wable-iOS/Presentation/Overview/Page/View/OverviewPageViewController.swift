@@ -95,25 +95,6 @@ extension OverviewPageViewController: UIPageViewControllerDataSource {
     }
 }
 
-// MARK: - NewsViewControllerDelegate
-
-extension OverviewPageViewController: NewsViewControllerDelegate {
-    func navigateToNewsDetail(with news: Announcement) {
-        let date = news.createdDate ?? Date()
-        let detailViewController = AnnouncementDetailViewController().then {
-            $0.configure(
-                type: .news,
-                title: news.title,
-                time: date.elapsedText,
-                imageURL: news.imageURL,
-                bodyText: news.text
-            )
-        }
-        
-        navigationController?.pushViewController(detailViewController, animated: true)
-    }
-}
-
 // MARK: - NoticeViewControllerDelegate
 
 extension OverviewPageViewController: NoticeViewControllerDelegate {
