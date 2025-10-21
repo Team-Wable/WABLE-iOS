@@ -140,16 +140,19 @@ private extension OverviewPageViewController {
         let useCase = OverviewUseCaseImpl()
         
         let gameScheduleViewController = GameScheduleListViewController(viewModel: .init(useCase: useCase))
+        
         let rankViewController = RankListViewController(viewModel: .init(useCase: useCase))
-        let newsViewController = NewsViewController(viewModel: .init(useCase: useCase))
-        newsViewController.delegate = self
+        
+        let curationViewController = CurationViewController(viewModel: .init(useCase: useCase))
+        curationViewController.onCellTap = { UIApplication.shared.open($0) }
+        
         let noticeViewController = NoticeViewController(viewModel: .init(useCase: useCase))
         noticeViewController.delegate = self
         
         [
             gameScheduleViewController,
             rankViewController,
-            newsViewController,
+            curationViewController,
             noticeViewController
         ].forEach {
             viewControllers.append($0)
@@ -212,6 +215,9 @@ private extension OverviewPageViewController {
         case 1:
             AmplitudeManager.shared.trackEvent(tag: .clickRanking)
         case 2:
+            
+            // TODO: 추후 큐레이션으로 교체 예정
+            
             AmplitudeManager.shared.trackEvent(tag: .clickNews)
         case 3:
             AmplitudeManager.shared.trackEvent(tag: .clickAnnouncement)

@@ -48,7 +48,7 @@ final class CurationViewController: UIViewController {
     
     // MARK: - Properties
 
-    var openURL: ((URL) -> Void)?
+    var onCellTap: ((_ url: URL) -> Void)?
     
     private var dataSource: DataSource?
 
@@ -90,7 +90,11 @@ final class CurationViewController: UIViewController {
 // MARK: - UICollectionViewDelegate
 
 extension CurationViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
         guard let itemCount = dataSource?.snapshot().numberOfItems,
               indexPath.item >= itemCount - 3
         else {
@@ -141,10 +145,8 @@ private extension CurationViewController {
                 thumbnailURL: item.thumbnailURL,
                 title: item.title,
                 siteName: item.siteName
-            ) {
-                UIApplication.shared.open(URL(string: "https://www.naver.com")!)
-                // TODO: - 추후 URL 이동 방식 변경 (코디네이터 이용)
-                // self.openURL?()
+            ) { [weak self] in
+                self?.onCellTap?(item.url)
             }
         }
 
