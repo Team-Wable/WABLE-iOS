@@ -39,7 +39,7 @@ extension InformationTargetType: BaseTargetType {
         case .fetchNotices:
             "/v1/information/notice"
         case .fetchCurations:
-            "/v1/information/curation"
+            "/v1/curation"
         }
     }
     

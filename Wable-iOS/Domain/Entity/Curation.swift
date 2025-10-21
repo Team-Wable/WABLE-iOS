@@ -14,5 +14,5 @@ struct Curation: Hashable, Identifiable {
     let title: String
     let time: Date
     let url: URL
-    let thumbnailURL: URL
+    let thumbnailURL: URL?
 }

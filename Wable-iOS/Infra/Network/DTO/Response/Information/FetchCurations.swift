@@ -13,10 +13,10 @@ extension DTO.Response {
 
     struct FetchCurations: Decodable {
         let id: Int
-        let title: String
+        let title: String?
         let createdAt: String
         let urlString: String
-        let thumbnailURLString: String
+        let thumbnailURLString: String?
 
         enum CodingKeys: String, CodingKey {
             case id = "curationId"
