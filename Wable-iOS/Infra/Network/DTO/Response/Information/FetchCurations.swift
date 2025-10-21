@@ -13,13 +13,17 @@ extension DTO.Response {
 
     struct FetchCurations: Decodable {
         let id: Int
-        let urlString: String
+        let title: String
         let createdAt: String
+        let urlString: String
+        let thumbnailURLString: String
 
         enum CodingKeys: String, CodingKey {
             case id = "curationId"
-            case urlString = "curationLink"
+            case title = "curationTitle"
             case createdAt = "time"
+            case urlString = "curationLink"
+            case thumbnailURLString = "curationThumbnail"
         }
     }
 }
