@@ -58,7 +58,7 @@ final class CurationViewController: UIViewController {
 
     // MARK: - Life Cycle
 
-    init(viewModel: CurationViewModel = .init()) {
+    init(viewModel: CurationViewModel) {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
@@ -136,10 +136,10 @@ private extension CurationViewController {
     func setupDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<CurationCell, CurationItem> { cell, indexPath, item in
             cell.configure(
-                time: item.time,
+                createdAt: item.createdAt,
                 thumbnailURL: item.thumbnailURL,
                 title: item.title,
-                source: item.source
+                siteName: item.siteName
             ) {
                 UIApplication.shared.open(URL(string: "https://www.naver.com")!)
                 // TODO: - 추후 URL 이동 방식 변경 (코디네이터 이용)
