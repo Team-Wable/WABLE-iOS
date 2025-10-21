@@ -114,14 +114,7 @@ final class CurationCell: UICollectionViewCell {
         siteNameLabel.text = siteName
         onTapCard = onTap
 
-        thumbnailImageView.kf.setImage(with: thumbnailURL) { [weak self] result in
-            switch result {
-            case .success:
-                self?.thumbnailImageView.isHidden = false
-            case .failure:
-                self?.thumbnailImageView.isHidden = false
-            }
-        }
+        thumbnailImageView.kf.setImage(with: thumbnailURL)
     }
 }
 
