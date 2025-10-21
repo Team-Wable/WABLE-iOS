@@ -104,7 +104,7 @@ final class CurationCell: UICollectionViewCell {
     
     func configure(
         createdAt: String,
-        thumbnailURL: URL,
+        thumbnailURL: URL?,
         title: String,
         siteName: String,
         onTap: @escaping () -> Void
