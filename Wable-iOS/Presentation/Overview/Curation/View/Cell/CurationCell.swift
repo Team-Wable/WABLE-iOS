@@ -27,7 +27,7 @@ final class CurationCell: UICollectionViewCell {
     }
 
     private let createdAtLabel = UILabel().then {
-        $0.attributedText = "".pretendardString(with: .caption4)
+        $0.attributedText = " ".pretendardString(with: .caption4)
         $0.textColor = .gray500
     }
     
@@ -50,14 +50,14 @@ final class CurationCell: UICollectionViewCell {
     }
     
     private let titleLabel = UILabel().then {
-        $0.attributedText = "".pretendardString(with: .body3)
+        $0.attributedText = " ".pretendardString(with: .body3)
         $0.textColor = .wableBlack
         $0.numberOfLines = 1
         $0.lineBreakMode = .byTruncatingTail
     }
 
     private let siteNameLabel = UILabel().then {
-        $0.attributedText = "".pretendardString(with: .body4)
+        $0.attributedText = " ".pretendardString(with: .body4)
         $0.textColor = .gray600
         $0.numberOfLines = 1
         $0.lineBreakMode = .byTruncatingTail

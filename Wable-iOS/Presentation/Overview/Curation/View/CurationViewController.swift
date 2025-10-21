@@ -39,6 +39,7 @@ final class CurationViewController: UIViewController {
         $0.attributedText = Constants.emptyDescription.pretendardString(with: .body2)
         $0.textColor = .gray500
         $0.textAlignment = .center
+        $0.isHidden = true
     }
     
     private let loadingFooterIndicator = UIActivityIndicatorView(style: .large).then {
