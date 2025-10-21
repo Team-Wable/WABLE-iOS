@@ -278,6 +278,7 @@
 		DE3390352D8EF40B00638BB4 /* AnnouncementDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3390342D8EF40B00638BB4 /* AnnouncementDetailViewController.swift */; };
 		DE3908CD2DD2623C00997ABE /* AlarmSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3908CC2DD2623C00997ABE /* AlarmSettingViewController.swift */; };
 		DE3908D02DD2663200997ABE /* AlarmSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3908CF2DD2663200997ABE /* AlarmSettingViewModel.swift */; };
+		DE3B49302EA70931001FE4D8 /* Curation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3B492F2EA70931001FE4D8 /* Curation.swift */; };
 		DE3CA27D2DD4294000BF5E87 /* MyProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3CA27C2DD4294000BF5E87 /* MyProfileViewModel.swift */; };
 		DE3CA2812DD43D0F00BF5E87 /* FetchUserProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3CA2802DD43D0F00BF5E87 /* FetchUserProfileUseCase.swift */; };
 		DE3CA2832DD4464E00BF5E87 /* FetchUserCommentListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3CA2822DD4464E00BF5E87 /* FetchUserCommentListUseCase.swift */; };
@@ -666,6 +667,7 @@
 		DE3390342D8EF40B00638BB4 /* AnnouncementDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementDetailViewController.swift; sourceTree = "<group>"; };
 		DE3908CC2DD2623C00997ABE /* AlarmSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSettingViewController.swift; sourceTree = "<group>"; };
 		DE3908CF2DD2663200997ABE /* AlarmSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSettingViewModel.swift; sourceTree = "<group>"; };
+		DE3B492F2EA70931001FE4D8 /* Curation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Curation.swift; sourceTree = "<group>"; };
 		DE3CA27C2DD4294000BF5E87 /* MyProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewModel.swift; sourceTree = "<group>"; };
 		DE3CA2802DD43D0F00BF5E87 /* FetchUserProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserProfileUseCase.swift; sourceTree = "<group>"; };
 		DE3CA2822DD4464E00BF5E87 /* FetchUserCommentListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserCommentListUseCase.swift; sourceTree = "<group>"; };
@@ -1298,6 +1300,7 @@
 				DD2967E82D6DAC3100143851 /* Token.swift */,
 				DD2967E92D6DAC3100143851 /* Account.swift */,
 				DD2967EA2D6DAC3100143851 /* AccountInfo.swift */,
+				DE3B492F2EA70931001FE4D8 /* Curation.swift */,
 				DD2967ED2D6DAC3100143851 /* UserProfile.swift */,
 				DE67A9EE2D7213D90021BDE1 /* Opacity.swift */,
 				DD2967EF2D6DAC3100143851 /* Content.swift */,
@@ -2970,6 +2973,7 @@
 				DDCA70952D883D4100A988B8 /* NavigationViewController.swift in Sources */,
 				DE72BB182D93D4E1008E5774 /* NotificationCell.swift in Sources */,
 				DD2968502D6DAD2F00143851 /* FetchUserComments.swift in Sources */,
+				DE3B49302EA70931001FE4D8 /* Curation.swift in Sources */,
 				DD2968332D6DAD1700143851 /* CommentRepositoryImpl.swift in Sources */,
 				DE7004892D8E907300B7AB71 /* RankHeaderView.swift in Sources */,
 				DD94FF882E8CBBA7002D512E /* NicknameValidationResult.swift in Sources */,
