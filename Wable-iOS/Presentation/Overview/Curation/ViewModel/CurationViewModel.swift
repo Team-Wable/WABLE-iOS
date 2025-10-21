@@ -9,14 +9,19 @@ import Foundation
 import Combine
 
 final class CurationViewModel {
+    private let useCase: OverviewUseCase
 
-    private var lastItemID: UUID?
+    private var lastItemID: Int?
     private var hasMore: Bool = false
     private let processingQueue = DispatchQueue(label: "com.wable.curation.items", qos: .userInitiated)
 
     private let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
     private let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
     private let itemsSubject = CurrentValueSubject<[CurationItem], Never>([])
+
+    init(useCase: OverviewUseCase) {
+        self.useCase = useCase
+    }
 }
 
 extension CurationViewModel: ViewModelType {
@@ -35,7 +40,7 @@ extension CurationViewModel: ViewModelType {
         input.load
             .handleEvents(receiveOutput: { [weak self] _ in self?.isLoadingSubject.send(true) })
             .flatMap { [weak self] _ -> AnyPublisher<[CurationItem], Never> in
-                self?.fetchItems(cursor: nil) ?? Empty().eraseToAnyPublisher()
+                self?.fetchItems(cursor: IntegerLiterals.initialCursor) ?? Empty().eraseToAnyPublisher()
             }
             .handleEvents(receiveOutput: { [weak self] _ in self?.isLoadingSubject.send(false) })
             .sink { [weak self] newItems in self?.updateItemsReplacing(with: newItems) }
@@ -111,42 +116,17 @@ private extension CurationViewModel {
         updatePaginationState(after: newItems)
         appendItems(newItems)
     }
-    func fetchItems(cursor: UUID?) -> AnyPublisher<[CurationItem], Never> {
+    func fetchItems(cursor: Int) -> AnyPublisher<[CurationItem], Never> {
         // 실제로는 여기서 UseCase나 Repository를 호출
         // 예: return curationUseCase.fetchCurationItems(cursor: cursor, pageSize: pageSize)
+        // return useCase.fetchCurations(with: 0)
         
         // Mock 구현: 서버 요청 시뮬레이션
-        return Future<[CurationItem], Never> { [weak self] promise in
-            guard let self = self else {
-                promise(.success([]))
-                return
-            }
-            
+        return Future<[CurationItem], Never> { promise in
             DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-                let currentItemCount = self.itemsSubject.value.count
-                let newItems = self.generateMockItems(
-                    cursor: cursor,
-                    pageSize: IntegerLiterals.defaultCountPerPage,
-                    startIndex: cursor == nil ? 0 : currentItemCount
-                )
-                promise(.success(newItems))
+                promise(.success([]))
             }
         }
         .eraseToAnyPublisher()
-    }
-    
-    func generateMockItems(cursor: UUID?, pageSize: Int, startIndex: Int) -> [CurationItem] {
-        // 총 45개까지만 있다고 가정
-        let remainingItems = max(0, 45 - startIndex)
-        let itemsToGenerate = min(pageSize, remainingItems)
-        
-        return (0..<itemsToGenerate).map { index in
-            CurationItem(
-                time: "5분 전",
-                title: "영상 제목입니다 (아이템 \(startIndex + index + 1)) Elit laborum officia adipiscing consequat exercitation laborum sint adipiscing ea excepteur nulla si",
-                source: "Nulla voluptate commodo ex labore reprehenderit voluptate dolore eu non reprehenderit aute dolor ips",
-                thumbnailURL: URL(string: "https://fastly.picsum.photos/id/176/343/220.jpg?hmac=h_eZSSP2OjzuGIVmDs1OZ_dYT3BzPbCC_QAnMZp5Sn8")
-            )
-        }
     }
 }
