@@ -213,6 +213,8 @@
 		DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD67042D7E271C00EF4C28 /* ToastView.swift */; };
 		DDE966102D8C62A4004E899B /* DefaultProfileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE9660F2D8C629A004E899B /* DefaultProfileType.swift */; };
 		DDEA63592E850268005FED9F /* AgreementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEA63582E85025C005FED9F /* AgreementViewModel.swift */; };
+		DDEA82032EA90EBD00F5F212 /* FacebookAEM in Frameworks */ = {isa = PBXBuildFile; productRef = DDEA82022EA90EBD00F5F212 /* FacebookAEM */; };
+		DDEA82052EA90EBD00F5F212 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = DDEA82042EA90EBD00F5F212 /* FacebookCore */; };
 		DDED594C2D784EB100A0BEF1 /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */; };
 		DDED594D2D784EB100A0BEF1 /* UserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594B2D784EB100A0BEF1 /* UserDefaultsStorage.swift */; };
 		DDED594F2D784EC000A0BEF1 /* LocalKeyValueProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDED594E2D784EC000A0BEF1 /* LocalKeyValueProvider.swift */; };
@@ -810,6 +812,7 @@
 				DDF2CC922D71FB41000F1919 /* Kingfisher in Frameworks */,
 				DDF2CC842D71FA8A000F1919 /* Then in Frameworks */,
 				DDF2CC872D71FA96000F1919 /* SnapKit in Frameworks */,
+				DDEA82032EA90EBD00F5F212 /* FacebookAEM in Frameworks */,
 				DDF2CC8D2D71FB28000F1919 /* CombineMoya in Frameworks */,
 				DDF2CC9C2D71FECB000F1919 /* FirebaseCore in Frameworks */,
 				DDF2CC8F2D71FB28000F1919 /* Moya in Frameworks */,
@@ -818,6 +821,7 @@
 				DDF2CC992D71FC7E000F1919 /* KakaoSDKUser in Frameworks */,
 				DE8E86432D91A0DA000A4292 /* LookinServer in Frameworks */,
 				DE8873BE2DC7419000AB16F8 /* SwiftSoup in Frameworks */,
+				DDEA82052EA90EBD00F5F212 /* FacebookCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2747,6 +2751,8 @@
 				DDF2CCA02D71FF27000F1919 /* AmplitudeSwift */,
 				DE8E86422D91A0DA000A4292 /* LookinServer */,
 				DE8873BD2DC7419000AB16F8 /* SwiftSoup */,
+				DDEA82022EA90EBD00F5F212 /* FacebookAEM */,
+				DDEA82042EA90EBD00F5F212 /* FacebookCore */,
 			);
 			productName = "Wable-iOS";
 			productReference = 0547F4962C60D968001E3039 /* Wable-iOS.app */;
@@ -2787,6 +2793,7 @@
 				DDF2CC9F2D71FF27000F1919 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
 				DE8E86412D91A0DA000A4292 /* XCRemoteSwiftPackageReference "LookinServer" */,
 				DE8873BC2DC7419000AB16F8 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				DDEA82012EA90EBD00F5F212 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			productRefGroup = 0547F4972C60D968001E3039 /* Products */;
 			projectDirPath = "";
@@ -3445,6 +3452,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		DDEA82012EA90EBD00F5F212 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.1.0;
+			};
+		};
 		DDF2CC822D71FA8A000F1919 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
@@ -3528,6 +3543,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DDEA82022EA90EBD00F5F212 /* FacebookAEM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DDEA82012EA90EBD00F5F212 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookAEM;
+		};
+		DDEA82042EA90EBD00F5F212 /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DDEA82012EA90EBD00F5F212 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
+		};
 		DDF2CC832D71FA8A000F1919 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DDF2CC822D71FA8A000F1919 /* XCRemoteSwiftPackageReference "Then" */;
