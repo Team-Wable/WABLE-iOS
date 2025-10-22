@@ -120,11 +120,10 @@ private extension TabBarController {
         viewitNavigationController.tabBarItem = UITabBarItem(title: "뷰잇", image: .icViewit, selectedImage: nil)
         
         let quizNavigationController = UINavigationController()
-        viewitNavigationController.tabBarItem = UITabBarItem(title: "퀴즈", image: .icQuiz, selectedImage: nil)
-        
         // TODO: hasCompleted 나중에 기능 구현하기
         quizCoordinator = QuizCoordinator(navigationController: quizNavigationController, hasCompleted: false)
         quizCoordinator?.start()
+        quizNavigationController.tabBarItem = UITabBarItem(title: "퀴즈", image: .icQuiz, selectedImage: nil)
         
 
         profileViewController.onLogout = { [weak self] in
@@ -137,8 +136,8 @@ private extension TabBarController {
             [
                 homeNavigationController,
                 communityNavigationController,
+                quizNavigationController,
                 overviewNavigationController,
-                viewitNavigationController,
                 profileNavigationController
             ],
             animated: false
@@ -175,9 +174,25 @@ private extension TabBarController {
 // MARK: - UITabBarControllerDelegate
 
 extension TabBarController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        if let index = viewControllers?.firstIndex(of: viewController), index == 2 {
+            // TODO: hasCompleted 나중에 기능 구현하기
+            let hasCompletedQuiz = false
+
+            if !hasCompletedQuiz {
+                if let viewController = selectedViewController as? UINavigationController {
+                    let quizViewController = QuizViewController(type: .page(type: .detail, title: ""))
+                    viewController.pushViewController(quizViewController, animated: true)
+                }
+                return false
+            }
+        }
+        return true
+    }
+
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         let currentIndex = selectedIndex
-        
+
         if let navigationController = viewController as? UINavigationController {
             if navigationController.viewControllers.first is HomeViewController {
                 if tabBarController.selectedIndex == 0 {
@@ -185,16 +200,17 @@ extension TabBarController: UITabBarControllerDelegate {
                 }
             }
         }
-        
+
         switch currentIndex {
         case 0:
             AmplitudeManager.shared.trackEvent(tag: .clickHomeBotnavi)
         case 1:
             AmplitudeManager.shared.trackEvent(tag: .clickCommunityBotnavi)
         case 2:
-            AmplitudeManager.shared.trackEvent(tag: .clickNewsBotnavi)
+//            AmplitudeManager.shared.trackEvent(tag: .clickQuizBotnavi)
+            break
         case 3:
-            AmplitudeManager.shared.trackEvent(tag: .clickViewitBotnavi)
+            AmplitudeManager.shared.trackEvent(tag: .clickNewsBotnavi)
         case 4:
             AmplitudeManager.shared.trackEvent(tag: .clickMyprofileBotnavi)
         default:
