@@ -174,8 +174,6 @@ extension TabBarController: UITabBarControllerDelegate {
                 }
                 return false
             }
-            
-            
         }
         return true
     }
