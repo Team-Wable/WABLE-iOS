@@ -148,6 +148,9 @@
 		DD2A2F082EA693110024076B /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F072EA693070024076B /* QuizViewController.swift */; };
 		DD2A2F0A2EA693570024076B /* QuizCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F092EA693490024076B /* QuizCoordinator.swift */; };
 		DD2A2F0C2EA694260024076B /* NextQuizInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F0B2EA6941E0024076B /* NextQuizInfoViewController.swift */; };
+		DD2A2F0E2EA8A1680024076B /* QuizResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F0D2EA8A15D0024076B /* QuizResultViewController.swift */; };
+		DD2A2F112EA8A2BD0024076B /* QuizResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F102EA8A2B70024076B /* QuizResultViewModel.swift */; };
+		DD2A2F142EA8B6DD0024076B /* QuizRewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F132EA8B69B0024076B /* QuizRewardView.swift */; };
 		DD3935B62DDDB9F700B6CA94 /* MyProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3935B42DDDB9F700B6CA94 /* MyProfileView.swift */; };
 		DD4AFD452D8FF19F00D56B94 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */; };
 		DD4AFD472D90264500D56B94 /* OAuthEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AFD462D90263400D56B94 /* OAuthEventManager.swift */; };
@@ -543,6 +546,10 @@
 		DD2A2F072EA693070024076B /* QuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
 		DD2A2F092EA693490024076B /* QuizCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCoordinator.swift; sourceTree = "<group>"; };
 		DD2A2F0B2EA6941E0024076B /* NextQuizInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextQuizInfoViewController.swift; sourceTree = "<group>"; };
+		DD2A2F0D2EA8A15D0024076B /* QuizResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultViewController.swift; sourceTree = "<group>"; };
+		DD2A2F102EA8A2B70024076B /* QuizResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultViewModel.swift; sourceTree = "<group>"; };
+		DD2A2F132EA8B69B0024076B /* QuizRewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRewardView.swift; sourceTree = "<group>"; };
+		DD2A2F152EA905180024076B /* Wable-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "Wable-iOS.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD3935B42DDDB9F700B6CA94 /* MyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileView.swift; sourceTree = "<group>"; };
 		DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		DD4AFD462D90263400D56B94 /* OAuthEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthEventManager.swift; sourceTree = "<group>"; };
@@ -845,6 +852,7 @@
 				DD2967D52D6DAC3100143851 /* Data */,
 				DD2967F82D6DAC3100143851 /* Domain */,
 				DE7C53082D761DA500076E5D /* Presentation */,
+				DD2A2F152EA905180024076B /* Wable-iOS.xcodeproj */,
 			);
 			path = "Wable-iOS";
 			sourceTree = "<group>";
@@ -1334,11 +1342,30 @@
 		DD2A2F062EA692E70024076B /* Quiz */ = {
 			isa = PBXGroup;
 			children = (
+				DD2A2F122EA8B6960024076B /* View */,
+				DD2A2F0F2EA8A2AF0024076B /* ViewModel */,
+				DD2A2F0D2EA8A15D0024076B /* QuizResultViewController.swift */,
 				DD2A2F0B2EA6941E0024076B /* NextQuizInfoViewController.swift */,
 				DD2A2F092EA693490024076B /* QuizCoordinator.swift */,
 				DD2A2F072EA693070024076B /* QuizViewController.swift */,
 			);
 			path = Quiz;
+			sourceTree = "<group>";
+		};
+		DD2A2F0F2EA8A2AF0024076B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DD2A2F102EA8A2B70024076B /* QuizResultViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DD2A2F122EA8B6960024076B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DD2A2F132EA8B69B0024076B /* QuizRewardView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		DD3935B52DDDB9F700B6CA94 /* Subview */ = {
@@ -2942,6 +2969,7 @@
 				DE8E863D2D918759000A4292 /* RankViewModel.swift in Sources */,
 				DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */,
 				DE0BFB602DA4F63800F06656 /* CommunityInviteCell.swift in Sources */,
+				DD2A2F142EA8B6DD0024076B /* QuizRewardView.swift in Sources */,
 				DE0BFB5E2DA4EC4D00F06656 /* CommunityRegisterCell.swift in Sources */,
 				DEA10B492DD3C3BA001EBBA9 /* WithdrawalGuideView.swift in Sources */,
 				DEA10B442DD3B7ED001EBBA9 /* WithdrawalGuideViewController.swift in Sources */,
@@ -3030,6 +3058,7 @@
 				DD29686A2D6DAD5500143851 /* ContentLikedTargetType.swift in Sources */,
 				DD29686B2D6DAD5500143851 /* CommunityTargetType.swift in Sources */,
 				DD29686C2D6DAD5500143851 /* ProfileTargetType.swift in Sources */,
+				DD2A2F0E2EA8A1680024076B /* QuizResultViewController.swift in Sources */,
 				DD29686D2D6DAD5500143851 /* AccountTargetType.swift in Sources */,
 				DD514D102D8CA3780095021D /* AttributedString+.swift in Sources */,
 				DD214B5A2E029E480065D995 /* TeamCollectionView.swift in Sources */,
@@ -3109,6 +3138,7 @@
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
 				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
 				DEA10B472DD3B9BA001EBBA9 /* WithdrawalGuideDescriptionView.swift in Sources */,
+				DD2A2F112EA8A2BD0024076B /* QuizResultViewModel.swift in Sources */,
 				DE64D7CA2DCBA2D700F55859 /* CreateViewitUseCase.swift in Sources */,
 				DEE6CBE32EA0D12E001A83A7 /* CurationViewController.swift in Sources */,
 				DD8261D92E407E7900617F86 /* Likable.swift in Sources */,
