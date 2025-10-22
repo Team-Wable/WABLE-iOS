@@ -128,7 +128,7 @@ private extension GameScheduleListViewController {
         
         let gameScheduleCellRegistration = CellRegistration<GameScheduleCell, Game> { cell, indexPath, game in
             let gameTimeFormatter = DateFormatter().then {
-                $0.dateFormat = "HH:MM"
+                $0.dateFormat = "HH:mm"
             }
             
             let gameStatus = game.status ?? .progress
