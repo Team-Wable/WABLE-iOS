@@ -25,7 +25,22 @@ public final class QuizCoordinator: Coordinator {
 
 public extension QuizCoordinator {
     func showNextQuizInfoView() {
+<<<<<<< HEAD:Wable-iOS/Presentation/Quiz/Coordinator/QuizCoordinator.swift
         let viewController = NextQuizInfoViewController(type: .quiz, viewModel: .init())
         navigationController.setViewControllers([viewController], animated: false)
+=======
+        let viewController = NextQuizInfoViewController()
+        navigationController.setViewControllers([viewController], animated: false)
+    }
+    
+    func showResultView(isCorrect: Bool) {
+        let viewController = QuizResultViewController(
+            viewModel: QuizResultViewModel(
+                answer: isCorrect, totalTime: 0
+            )
+        )
+        
+        navigationController.present(viewController, animated: true)
+>>>>>>> 906e044 ([Fix] #294 - 퀴즈 탭 선택 시 현재 화면에서 push되도록 네비게이션 로직 수정):Wable-iOS/Presentation/Quiz/QuizCoordinator.swift
     }
 }
