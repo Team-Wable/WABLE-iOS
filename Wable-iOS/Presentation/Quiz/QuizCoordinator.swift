@@ -13,27 +13,28 @@ public final class QuizCoordinator: Coordinator {
     public var onFinish: (() -> Void)?
     private var hasCompleted: Bool
     
-    init(navigationController: UINavigationController,
-         hasCompleted: Bool
-    ) {
+    init(navigationController: UINavigationController, hasCompleted: Bool) {
         self.navigationController = navigationController
         self.hasCompleted = hasCompleted
     }
     
     func start() {
-        hasCompleted ? showQuizView() : showNextQuizInfoView()
+        showNextQuizInfoView()
     }
 }
 
 public extension QuizCoordinator {
-    func showQuizView() {
-        let viewController = QuizViewController()
-        
-        navigationController.present(viewController, animated: true)
-    }
-    
     func showNextQuizInfoView() {
         let viewController = NextQuizInfoViewController()
+        navigationController.setViewControllers([viewController], animated: false)
+    }
+    
+    func showResultView(isCorrect: Bool) {
+        let viewController = QuizResultViewController(
+            viewModel: QuizResultViewModel(
+                answer: isCorrect, totalTime: 0
+            )
+        )
         
         navigationController.present(viewController, animated: true)
     }
