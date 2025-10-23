@@ -30,8 +30,13 @@ extension AppDelegate {
         diContainer.register(for: TokenStorage.self, object: TokenStorage(keyChainStorage: KeychainStorage()))
 
         // MARK: - Overview
-
-        diContainer.register(for: InformationRepository.self, object: InformationRepositoryImpl())
+        
+        diContainer.register(for: InformationRepository.self) { env in
+            switch env {
+            case .mock: MockInformationRepository()
+            case .production: InformationRepositoryImpl()
+            }
+        }
         
         
         // MARK: - Report

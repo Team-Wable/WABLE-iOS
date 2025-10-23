@@ -26,8 +26,8 @@ final class CurationCell: UICollectionViewCell {
         $0.textColor = .wableBlack
     }
 
-    private let timeLabel = UILabel().then {
-        $0.attributedText = "".pretendardString(with: .caption4)
+    private let createdAtLabel = UILabel().then {
+        $0.attributedText = " ".pretendardString(with: .caption4)
         $0.textColor = .gray500
     }
     
@@ -50,14 +50,14 @@ final class CurationCell: UICollectionViewCell {
     }
     
     private let titleLabel = UILabel().then {
-        $0.attributedText = "".pretendardString(with: .body3)
+        $0.attributedText = " ".pretendardString(with: .body3)
         $0.textColor = .wableBlack
         $0.numberOfLines = 1
         $0.lineBreakMode = .byTruncatingTail
     }
 
-    private let sourceLabel = UILabel().then {
-        $0.attributedText = "".pretendardString(with: .body4)
+    private let siteNameLabel = UILabel().then {
+        $0.attributedText = " ".pretendardString(with: .body4)
         $0.textColor = .gray600
         $0.numberOfLines = 1
         $0.lineBreakMode = .byTruncatingTail
@@ -103,25 +103,18 @@ final class CurationCell: UICollectionViewCell {
     }
     
     func configure(
-        time: String,
+        createdAt: String,
         thumbnailURL: URL?,
         title: String,
-        source: String,
+        siteName: String,
         onTap: @escaping () -> Void
     ) {
-        timeLabel.text = "· \(time)"
+        createdAtLabel.text = "· \(createdAt)"
         titleLabel.text = title
-        sourceLabel.text = source
+        siteNameLabel.text = siteName
         onTapCard = onTap
 
-        thumbnailImageView.kf.setImage(with: thumbnailURL) { [weak self] result in
-            switch result {
-            case .success:
-                self?.thumbnailImageView.isHidden = false
-            case .failure:
-                self?.thumbnailImageView.isHidden = false
-            }
-        }
+        thumbnailImageView.kf.setImage(with: thumbnailURL)
     }
 }
 
@@ -132,7 +125,7 @@ private extension CurationCell {
         contentView.addSubviews(
             profileImageView,
             authorLabel,
-            timeLabel,
+            createdAtLabel,
             cardButton
         )
 
@@ -144,7 +137,7 @@ private extension CurationCell {
         
         descriptionView.addSubviews(
             titleLabel,
-            sourceLabel,
+            siteNameLabel,
             openIconImageView
         )
     }
@@ -161,8 +154,8 @@ private extension CurationCell {
             make.centerY.equalTo(profileImageView)
             make.leading.equalTo(profileImageView.snp.trailing).offset(8)
         }
-        
-        timeLabel.snp.makeConstraints { make in
+
+        createdAtLabel.snp.makeConstraints { make in
             make.centerY.equalTo(profileImageView)
             make.leading.equalTo(authorLabel.snp.trailing).offset(8)
         }
@@ -183,7 +176,7 @@ private extension CurationCell {
             make.trailing.equalTo(openIconImageView.snp.leading).offset(-16)
         }
 
-        sourceLabel.snp.makeConstraints { make in
+        siteNameLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
             make.leading.equalTo(titleLabel)
             make.bottom.equalToSuperview().offset(-12)

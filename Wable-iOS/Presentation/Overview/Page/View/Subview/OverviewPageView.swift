@@ -20,7 +20,7 @@ final class OverviewPageView: UIView {
         $0.configureView()
     }
     
-    let segmentedControl = WableBadgeSegmentedControl(items: ["경기", "순위", "뉴스", "공지사항"]).then {
+    let segmentedControl = WableBadgeSegmentedControl(items: ["경기", "순위", "큐레이션", "공지사항"]).then {
         $0.selectedSegmentIndex = 0
     }
     
