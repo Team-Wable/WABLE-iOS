@@ -295,7 +295,7 @@
 		DE54B0422D833B0B009A7C34 /* WableSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */; };
 		DE59BB9A2D8A9D3A0040ADCB /* NotificationPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BB992D8A9D3A0040ADCB /* NotificationPageViewController.swift */; };
 		DE59BBA92D8A9EFD0040ADCB /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */; };
-		DE62BD6A2EA4E06D005D7DA3 /* FetchCurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62BD692EA4E06D005D7DA3 /* FetchCurations.swift */; };
+		DE62BD6A2EA4E06D005D7DA3 /* FetchCurationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62BD692EA4E06D005D7DA3 /* FetchCurationList.swift */; };
 		DE6459CF2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6459CE2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift */; };
 		DE6459D52D97B8C2005569B8 /* InformationNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6459D42D97B8C2005569B8 /* InformationNotificationViewController.swift */; };
 		DE64D7CA2DCBA2D700F55859 /* CreateViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE64D7C92DCBA2D700F55859 /* CreateViewitUseCase.swift */; };
@@ -680,7 +680,7 @@
 		DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSheetViewController.swift; sourceTree = "<group>"; };
 		DE59BB992D8A9D3A0040ADCB /* NotificationPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageViewController.swift; sourceTree = "<group>"; };
 		DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
-		DE62BD692EA4E06D005D7DA3 /* FetchCurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCurations.swift; sourceTree = "<group>"; };
+		DE62BD692EA4E06D005D7DA3 /* FetchCurationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCurationList.swift; sourceTree = "<group>"; };
 		DE6459CE2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+InjectDependency.swift"; sourceTree = "<group>"; };
 		DE6459D42D97B8C2005569B8 /* InformationNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationViewController.swift; sourceTree = "<group>"; };
 		DE64D7C92DCBA2D700F55859 /* CreateViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewitUseCase.swift; sourceTree = "<group>"; };
@@ -1127,7 +1127,7 @@
 				DD2967B02D6DAC3100143851 /* FetchNewsNoticeNumber.swift */,
 				DD2967B12D6DAC3100143851 /* FetchNews.swift */,
 				DD2967B22D6DAC3100143851 /* FetchNotices.swift */,
-				DE62BD692EA4E06D005D7DA3 /* FetchCurations.swift */,
+				DE62BD692EA4E06D005D7DA3 /* FetchCurationList.swift */,
 			);
 			path = Information;
 			sourceTree = "<group>";
@@ -2986,7 +2986,7 @@
 				DEA10B2E2DD39A08001EBBA9 /* WithdrawalReasonViewModel.swift in Sources */,
 				DD4AFD452D8FF19F00D56B94 /* LoginViewModel.swift in Sources */,
 				DD5098142DA2C36600F666DE /* DeleteCommentLikedUseCase.swift in Sources */,
-				DE62BD6A2EA4E06D005D7DA3 /* FetchCurations.swift in Sources */,
+				DE62BD6A2EA4E06D005D7DA3 /* FetchCurationList.swift in Sources */,
 				DD2967FA2D6DAC4800143851 /* Publisher+.swift in Sources */,
 				DEE5D6162D9130E5009E5A25 /* GameScheduleViewModel.swift in Sources */,
 				DD5098122DA2C35500F666DE /* CreateCommentLikedUseCase.swift in Sources */,

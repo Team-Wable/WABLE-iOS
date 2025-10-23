@@ -1,5 +1,5 @@
 //
-//  FetchCurations.swift
+//  FetchCurationList.swift
 //  Wable-iOS
 //
 //  Created by 김진웅 on 10/19/25.
@@ -11,7 +11,7 @@ extension DTO.Response {
 
     // MARK: - 큐레이션 목록 조회
 
-    struct FetchCurations: Decodable {
+    struct FetchCurationList: Decodable {
         let id: Int
         let title: String?
         let createdAt: String

@@ -15,5 +15,5 @@ protocol InformationRepository {
     func fetchNewsNoticeNumber() -> AnyPublisher<(newsNumber: Int, noticeNumber: Int), WableError>
     func fetchNews(cursor: Int) -> AnyPublisher<[Announcement], WableError>
     func fetchNotice(cursor: Int) -> AnyPublisher<[Announcement], WableError>
-    func fetchCurations(cursor: Int) -> AnyPublisher<[Curation], WableError>
+    func fetchCurationList(cursor: Int) -> AnyPublisher<[Curation], WableError>
 }

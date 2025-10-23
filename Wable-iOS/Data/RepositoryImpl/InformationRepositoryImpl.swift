@@ -69,10 +69,10 @@ final class InformationRepositoryImpl: InformationRepository {
         .mapWableError()
     }
     
-    func fetchCurations(cursor: Int) -> AnyPublisher<[Curation], WableError> {
+    func fetchCurationList(cursor: Int) -> AnyPublisher<[Curation], WableError> {
         return provider.request(
-            .fetchCurations(cursor: cursor),
-            for: [DTO.Response.FetchCurations].self
+            .fetchCurationList(cursor: cursor),
+            for: [DTO.Response.FetchCurationList].self
         )
         .map(InformationMapper.toDomain(_:))
         .mapWableError()
@@ -118,7 +118,7 @@ struct MockInformationRepository: InformationRepository {
             .eraseToAnyPublisher()
     }
     
-    func fetchCurations(cursor: Int) -> AnyPublisher<[Curation], WableError> {
+    func fetchCurationList(cursor: Int) -> AnyPublisher<[Curation], WableError> {
         return createMockCurations(lastItemID: cursor)
             .delay(for: .seconds(randomDelaySecond), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
@@ -229,7 +229,7 @@ struct MockInformationRepository: InformationRepository {
                 id: id,
                 title: "큐레이션 영상 제목 \(id)",
                 time: time,
-                url: url,
+                siteURL: url,
                 thumbnailURL: thumb
             )
         }

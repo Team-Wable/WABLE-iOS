@@ -13,6 +13,6 @@ struct Curation: Hashable, Identifiable {
     let id: Int
     let title: String
     let time: Date
-    let url: URL
+    let siteURL: URL
     let thumbnailURL: URL?
 }
