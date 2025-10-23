@@ -286,6 +286,7 @@
 		DE3390352D8EF40B00638BB4 /* AnnouncementDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3390342D8EF40B00638BB4 /* AnnouncementDetailViewController.swift */; };
 		DE3908CD2DD2623C00997ABE /* AlarmSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3908CC2DD2623C00997ABE /* AlarmSettingViewController.swift */; };
 		DE3908D02DD2663200997ABE /* AlarmSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3908CF2DD2663200997ABE /* AlarmSettingViewModel.swift */; };
+		DE3B49302EA70931001FE4D8 /* Curation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3B492F2EA70931001FE4D8 /* Curation.swift */; };
 		DE3CA27D2DD4294000BF5E87 /* MyProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3CA27C2DD4294000BF5E87 /* MyProfileViewModel.swift */; };
 		DE3CA2812DD43D0F00BF5E87 /* FetchUserProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3CA2802DD43D0F00BF5E87 /* FetchUserProfileUseCase.swift */; };
 		DE3CA2832DD4464E00BF5E87 /* FetchUserCommentListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3CA2822DD4464E00BF5E87 /* FetchUserCommentListUseCase.swift */; };
@@ -302,17 +303,14 @@
 		DE54B0422D833B0B009A7C34 /* WableSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */; };
 		DE59BB9A2D8A9D3A0040ADCB /* NotificationPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BB992D8A9D3A0040ADCB /* NotificationPageViewController.swift */; };
 		DE59BBA92D8A9EFD0040ADCB /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */; };
+		DE62BD6A2EA4E06D005D7DA3 /* FetchCurationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE62BD692EA4E06D005D7DA3 /* FetchCurationList.swift */; };
 		DE6459CF2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6459CE2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift */; };
 		DE6459D52D97B8C2005569B8 /* InformationNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6459D42D97B8C2005569B8 /* InformationNotificationViewController.swift */; };
 		DE64D7CA2DCBA2D700F55859 /* CreateViewitUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE64D7C92DCBA2D700F55859 /* CreateViewitUseCase.swift */; };
 		DE67A9EF2D7213D90021BDE1 /* Opacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A9EE2D7213D90021BDE1 /* Opacity.swift */; };
-		DE6C3E3E2D91A8E00046DB30 /* NewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6C3E3D2D91A8E00046DB30 /* NewsViewModel.swift */; };
 		DE7004842D8E87DC00B7AB71 /* RankListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7004832D8E87DC00B7AB71 /* RankListViewController.swift */; };
 		DE7004872D8E882B00B7AB71 /* RankCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7004862D8E882B00B7AB71 /* RankCell.swift */; };
 		DE7004892D8E907300B7AB71 /* RankHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7004882D8E907300B7AB71 /* RankHeaderView.swift */; };
-		DE70048D2D8EA85400B7AB71 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE70048C2D8EA85400B7AB71 /* NewsViewController.swift */; };
-		DE7004902D8EA93A00B7AB71 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE70048F2D8EA93A00B7AB71 /* NewsCell.swift */; };
-		DE7004922D8EB5CF00B7AB71 /* NewsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7004912D8EB5CF00B7AB71 /* NewsHeaderView.swift */; };
 		DE72BB102D93CC68008E5774 /* NotificationPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB0F2D93CC68008E5774 /* NotificationPageView.swift */; };
 		DE72BB132D93CD9D008E5774 /* WableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB122D93CD9D008E5774 /* WableSegmentedControl.swift */; };
 		DE72BB182D93D4E1008E5774 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE72BB172D93D4E1008E5774 /* NotificationCell.swift */; };
@@ -680,6 +678,7 @@
 		DE3390342D8EF40B00638BB4 /* AnnouncementDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementDetailViewController.swift; sourceTree = "<group>"; };
 		DE3908CC2DD2623C00997ABE /* AlarmSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSettingViewController.swift; sourceTree = "<group>"; };
 		DE3908CF2DD2663200997ABE /* AlarmSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSettingViewModel.swift; sourceTree = "<group>"; };
+		DE3B492F2EA70931001FE4D8 /* Curation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Curation.swift; sourceTree = "<group>"; };
 		DE3CA27C2DD4294000BF5E87 /* MyProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewModel.swift; sourceTree = "<group>"; };
 		DE3CA2802DD43D0F00BF5E87 /* FetchUserProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserProfileUseCase.swift; sourceTree = "<group>"; };
 		DE3CA2822DD4464E00BF5E87 /* FetchUserCommentListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserCommentListUseCase.swift; sourceTree = "<group>"; };
@@ -696,17 +695,14 @@
 		DE54B0412D833B0B009A7C34 /* WableSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSheetViewController.swift; sourceTree = "<group>"; };
 		DE59BB992D8A9D3A0040ADCB /* NotificationPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageViewController.swift; sourceTree = "<group>"; };
 		DE59BBA82D8A9EFD0040ADCB /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
+		DE62BD692EA4E06D005D7DA3 /* FetchCurationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCurationList.swift; sourceTree = "<group>"; };
 		DE6459CE2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+InjectDependency.swift"; sourceTree = "<group>"; };
 		DE6459D42D97B8C2005569B8 /* InformationNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationViewController.swift; sourceTree = "<group>"; };
 		DE64D7C92DCBA2D700F55859 /* CreateViewitUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewitUseCase.swift; sourceTree = "<group>"; };
 		DE67A9EE2D7213D90021BDE1 /* Opacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opacity.swift; sourceTree = "<group>"; };
-		DE6C3E3D2D91A8E00046DB30 /* NewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewModel.swift; sourceTree = "<group>"; };
 		DE7004832D8E87DC00B7AB71 /* RankListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankListViewController.swift; sourceTree = "<group>"; };
 		DE7004862D8E882B00B7AB71 /* RankCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankCell.swift; sourceTree = "<group>"; };
 		DE7004882D8E907300B7AB71 /* RankHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankHeaderView.swift; sourceTree = "<group>"; };
-		DE70048C2D8EA85400B7AB71 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
-		DE70048F2D8EA93A00B7AB71 /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
-		DE7004912D8EB5CF00B7AB71 /* NewsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsHeaderView.swift; sourceTree = "<group>"; };
 		DE72BB0F2D93CC68008E5774 /* NotificationPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageView.swift; sourceTree = "<group>"; };
 		DE72BB122D93CD9D008E5774 /* WableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WableSegmentedControl.swift; sourceTree = "<group>"; };
 		DE72BB172D93D4E1008E5774 /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
@@ -1149,6 +1145,7 @@
 				DD2967B02D6DAC3100143851 /* FetchNewsNoticeNumber.swift */,
 				DD2967B12D6DAC3100143851 /* FetchNews.swift */,
 				DD2967B22D6DAC3100143851 /* FetchNotices.swift */,
+				DE62BD692EA4E06D005D7DA3 /* FetchCurationList.swift */,
 			);
 			path = Information;
 			sourceTree = "<group>";
@@ -1313,6 +1310,7 @@
 				DD2967E82D6DAC3100143851 /* Token.swift */,
 				DD2967E92D6DAC3100143851 /* Account.swift */,
 				DD2967EA2D6DAC3100143851 /* AccountInfo.swift */,
+				DE3B492F2EA70931001FE4D8 /* Curation.swift */,
 				DD2967ED2D6DAC3100143851 /* UserProfile.swift */,
 				DE67A9EE2D7213D90021BDE1 /* Opacity.swift */,
 				DD2967EF2D6DAC3100143851 /* Content.swift */,
@@ -1929,7 +1927,6 @@
 				DE277A862D8C09A3006D2B53 /* Page */,
 				DEAFE04F2D8C43D90097E91C /* GameSchedule */,
 				DE7004812D8E878C00B7AB71 /* Rank */,
-				DE70048A2D8EA82400B7AB71 /* News */,
 				DE33902A2D8EC38F00638BB4 /* Notice */,
 				DE3390322D8EF3E100638BB4 /* Detail */,
 				DEE6CBE22EA0D12E001A83A7 /* Curation */,
@@ -2012,14 +2009,6 @@
 			path = Viewit;
 			sourceTree = "<group>";
 		};
-		DE6C3E3C2D91A8D50046DB30 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				DE6C3E3D2D91A8E00046DB30 /* NewsViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		DE7004812D8E878C00B7AB71 /* Rank */ = {
 			isa = PBXGroup;
 			children = (
@@ -2044,33 +2033,6 @@
 			children = (
 				DE7004862D8E882B00B7AB71 /* RankCell.swift */,
 				DE7004882D8E907300B7AB71 /* RankHeaderView.swift */,
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
-		DE70048A2D8EA82400B7AB71 /* News */ = {
-			isa = PBXGroup;
-			children = (
-				DE6C3E3C2D91A8D50046DB30 /* ViewModel */,
-				DE70048B2D8EA84A00B7AB71 /* View */,
-			);
-			path = News;
-			sourceTree = "<group>";
-		};
-		DE70048B2D8EA84A00B7AB71 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				DE70048C2D8EA85400B7AB71 /* NewsViewController.swift */,
-				DE70048E2D8EA92A00B7AB71 /* Cell */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		DE70048E2D8EA92A00B7AB71 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				DE70048F2D8EA93A00B7AB71 /* NewsCell.swift */,
-				DE7004912D8EB5CF00B7AB71 /* NewsHeaderView.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -2956,7 +2918,6 @@
 				DEE6CBEC2EA0E6AE001A83A7 /* CurationViewModel.swift in Sources */,
 				DD29683E2D6DAD2F00143851 /* UpdateToken.swift in Sources */,
 				DE20BAD72D903985000126A4 /* AnnouncementDetailView.swift in Sources */,
-				DE70048D2D8EA85400B7AB71 /* NewsViewController.swift in Sources */,
 				DE6459CF2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift in Sources */,
 				DE833BA02DE22C8D00812A80 /* Publishers+UIControlProperty.swift in Sources */,
 				DE8E863B2D918735000A4292 /* RankViewItem.swift in Sources */,
@@ -3021,13 +2982,13 @@
 				DDCA70952D883D4100A988B8 /* NavigationViewController.swift in Sources */,
 				DE72BB182D93D4E1008E5774 /* NotificationCell.swift in Sources */,
 				DD2968502D6DAD2F00143851 /* FetchUserComments.swift in Sources */,
+				DE3B49302EA70931001FE4D8 /* Curation.swift in Sources */,
 				DD2968332D6DAD1700143851 /* CommentRepositoryImpl.swift in Sources */,
 				DE7004892D8E907300B7AB71 /* RankHeaderView.swift in Sources */,
 				DD94FF882E8CBBA7002D512E /* NicknameValidationResult.swift in Sources */,
 				DDCD66FB2D7DF6CF00EF4C28 /* ViewitListViewController.swift in Sources */,
 				DD2968342D6DAD1700143851 /* InformationRepositoryImpl.swift in Sources */,
 				DD2968352D6DAD1700143851 /* GhostRepositoryImpl.swift in Sources */,
-				DE7004922D8EB5CF00B7AB71 /* NewsHeaderView.swift in Sources */,
 				DD2968362D6DAD1700143851 /* ContentLikedRepositoryImpl.swift in Sources */,
 				DD765D9A2D8746E30029A317 /* LoginViewController.swift in Sources */,
 				DEA10B342DD39D9E001EBBA9 /* WithdrawalReasonCell.swift in Sources */,
@@ -3080,6 +3041,7 @@
 				DEA10B2E2DD39A08001EBBA9 /* WithdrawalReasonViewModel.swift in Sources */,
 				DD4AFD452D8FF19F00D56B94 /* LoginViewModel.swift in Sources */,
 				DD5098142DA2C36600F666DE /* DeleteCommentLikedUseCase.swift in Sources */,
+				DE62BD6A2EA4E06D005D7DA3 /* FetchCurationList.swift in Sources */,
 				DD2967FA2D6DAC4800143851 /* Publisher+.swift in Sources */,
 				DEE5D6162D9130E5009E5A25 /* GameScheduleViewModel.swift in Sources */,
 				DD5098122DA2C35500F666DE /* CreateCommentLikedUseCase.swift in Sources */,
@@ -3093,7 +3055,6 @@
 				DD2967FB2D6DAC4800143851 /* DIContainer.swift in Sources */,
 				DE9891AA2D99925900D538D8 /* ActivityNotificationTriggerType+.swift in Sources */,
 				DEF148442DA7B966003B2AD8 /* RegisterResult.swift in Sources */,
-				DE7004902D8EA93A00B7AB71 /* NewsCell.swift in Sources */,
 				DD2968022D6DAC9B00143851 /* ViewController.swift in Sources */,
 				DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */,
 				DE3390352D8EF40B00638BB4 /* AnnouncementDetailViewController.swift in Sources */,
@@ -3135,7 +3096,6 @@
 				DE7C53102D761E3300076E5D /* String+.swift in Sources */,
 				DD9EAE222D99C59900803A1A /* FetchContentListUseCase.swift in Sources */,
 				DD2968192D6DAD0200143851 /* ReportRepository.swift in Sources */,
-				DE6C3E3E2D91A8E00046DB30 /* NewsViewModel.swift in Sources */,
 				DD29681A2D6DAD0200143851 /* ViewitRepository.swift in Sources */,
 				DE833B9B2DE22A8500812A80 /* Publishers+UIControlEvent.swift in Sources */,
 				DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */,

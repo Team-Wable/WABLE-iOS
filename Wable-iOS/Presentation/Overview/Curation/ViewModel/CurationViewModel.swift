@@ -9,14 +9,19 @@ import Foundation
 import Combine
 
 final class CurationViewModel {
+    private let useCase: OverviewUseCase
 
-    private var lastItemID: UUID?
+    private var lastItemID: Int = IntegerLiterals.initialCursor
     private var hasMore: Bool = false
     private let processingQueue = DispatchQueue(label: "com.wable.curation.items", qos: .userInitiated)
 
     private let isLoadingSubject = CurrentValueSubject<Bool, Never>(false)
     private let isLoadingMoreSubject = CurrentValueSubject<Bool, Never>(false)
     private let itemsSubject = CurrentValueSubject<[CurationItem], Never>([])
+
+    init(useCase: OverviewUseCase) {
+        self.useCase = useCase
+    }
 }
 
 extension CurationViewModel: ViewModelType {
@@ -35,7 +40,7 @@ extension CurationViewModel: ViewModelType {
         input.load
             .handleEvents(receiveOutput: { [weak self] _ in self?.isLoadingSubject.send(true) })
             .flatMap { [weak self] _ -> AnyPublisher<[CurationItem], Never> in
-                self?.fetchItems(cursor: nil) ?? Empty().eraseToAnyPublisher()
+                self?.fetchItems(cursor: IntegerLiterals.initialCursor) ?? Empty().eraseToAnyPublisher()
             }
             .handleEvents(receiveOutput: { [weak self] _ in self?.isLoadingSubject.send(false) })
             .sink { [weak self] newItems in self?.updateItemsReplacing(with: newItems) }
@@ -46,7 +51,7 @@ extension CurationViewModel: ViewModelType {
             .filter { [weak self] _ in self?.canTriggerLoadMore() ?? false }
             .handleEvents(receiveOutput: { [weak self] _ in self?.isLoadingMoreSubject.send(true) })
             .flatMap { [weak self] _ -> AnyPublisher<[CurationItem], Never> in
-                guard let self = self else { return Just([]).eraseToAnyPublisher() }
+                guard let self = self else { return .empty() }
                 return self.fetchItems(cursor: self.lastItemID)
             }
             .receive(on: DispatchQueue.main)
@@ -59,7 +64,8 @@ extension CurationViewModel: ViewModelType {
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .handleEvents(receiveOutput: { [weak self] items in
-                self?.lastItemID = items.last?.id
+                guard let lastItemID = items.last?.id else { return }
+                self?.lastItemID = lastItemID
             })
             .eraseToAnyPublisher()
 
@@ -111,42 +117,60 @@ private extension CurationViewModel {
         updatePaginationState(after: newItems)
         appendItems(newItems)
     }
-    func fetchItems(cursor: UUID?) -> AnyPublisher<[CurationItem], Never> {
-        // 실제로는 여기서 UseCase나 Repository를 호출
-        // 예: return curationUseCase.fetchCurationItems(cursor: cursor, pageSize: pageSize)
-        
-        // Mock 구현: 서버 요청 시뮬레이션
-        return Future<[CurationItem], Never> { [weak self] promise in
-            guard let self = self else {
-                promise(.success([]))
-                return
+    
+    func fetchItems(cursor: Int) -> AnyPublisher<[CurationItem], Never> {
+        return useCase
+            .fetchCurationList(with: cursor)
+            .map { [weak self] curations in curations.compactMap { self?.mapToCurationItem($0) }}
+            .catch { error -> AnyPublisher<[CurationItem], Never> in
+                WableLogger.log("Failed to fetch curations: \(error)", for: .error)
+                return .just([])
             }
-            
-            DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-                let currentItemCount = self.itemsSubject.value.count
-                let newItems = self.generateMockItems(
-                    cursor: cursor,
-                    pageSize: IntegerLiterals.defaultCountPerPage,
-                    startIndex: cursor == nil ? 0 : currentItemCount
-                )
-                promise(.success(newItems))
-            }
-        }
-        .eraseToAnyPublisher()
+            .eraseToAnyPublisher()
     }
     
-    func generateMockItems(cursor: UUID?, pageSize: Int, startIndex: Int) -> [CurationItem] {
-        // 총 45개까지만 있다고 가정
-        let remainingItems = max(0, 45 - startIndex)
-        let itemsToGenerate = min(pageSize, remainingItems)
+    func mapToCurationItem(_ curation: Curation) -> CurationItem {
+        return CurationItem(
+            id: curation.id,
+            title: curation.title,
+            createdAt: curation.time.elapsedText,
+            siteName: extractSiteName(from: curation.siteURL),
+            siteURL: curation.siteURL,
+            thumbnailURL: curation.thumbnailURL
+        )
+    }
+
+    func extractSiteName(from url: URL) -> String {
+        guard let host = url.host?.lowercased() else { return url.absoluteString }
         
-        return (0..<itemsToGenerate).map { index in
-            CurationItem(
-                time: "5분 전",
-                title: "영상 제목입니다 (아이템 \(startIndex + index + 1)) Elit laborum officia adipiscing consequat exercitation laborum sint adipiscing ea excepteur nulla si",
-                source: "Nulla voluptate commodo ex labore reprehenderit voluptate dolore eu non reprehenderit aute dolor ips",
-                thumbnailURL: URL(string: "https://fastly.picsum.photos/id/176/343/220.jpg?hmac=h_eZSSP2OjzuGIVmDs1OZ_dYT3BzPbCC_QAnMZp5Sn8")
-            )
+        let hostWithoutWWW = host.hasPrefix("www.")
+            ? String(host.dropFirst(4))
+            : host
+        
+        return mapHostToBrandName(hostWithoutWWW)
+    }
+    
+    func mapHostToBrandName(_ host: String) -> String {
+        if host == "youtu.be" || host.hasSuffix("youtube.com") {
+            return "YouTube"
+        } else if host.hasSuffix("instagram.com") {
+            return "Instagram"
+        } else if host.hasSuffix("twitter.com") || host.hasSuffix("x.com") {
+            return "X"
+        } else if host.hasSuffix("facebook.com") {
+            return "Facebook"
+        } else if host.hasSuffix("tiktok.com") {
+            return "TikTok"
+        } else if host == "naver.me" || host.hasSuffix("naver.com") {
+            return "NAVER"
+        } else if host.hasSuffix("daum.net") {
+            return "Daum"
+        } else if host == "goo.gl" || host.hasSuffix("google.com") {
+            return "Google"
+        } else if host.hasSuffix("kakao.com") {
+            return "Kakao"
+        } else {
+            return host
         }
     }
 }
