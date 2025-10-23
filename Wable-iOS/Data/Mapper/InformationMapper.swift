@@ -80,7 +80,7 @@ enum InformationMapper {
         }
     }
 
-    static func toDomain(_ dtos: [DTO.Response.FetchCurations]) -> [Curation] {
+    static func toDomain(_ dtos: [DTO.Response.FetchCurationList]) -> [Curation] {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
@@ -97,7 +97,7 @@ enum InformationMapper {
                 id: dto.id,
                 title: dto.title ?? "제목 없음",
                 time: time,
-                url: url,
+                siteURL: url,
                 thumbnailURL: dto.thumbnailURLString.flatMap { URL(string: $0) }
             )
         }

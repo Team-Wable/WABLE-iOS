@@ -17,7 +17,7 @@ protocol OverviewUseCase {
     func fetchNews(with lastItemID: Int) -> AnyPublisher<[Announcement], WableError>
     func fetchNotices(with lastItemID: Int) -> AnyPublisher<[Announcement], WableError>
     func checkNewAnnouncements() -> AnyPublisher<(Bool, Bool), WableError>
-    func fetchCurations(with lastItemID: Int) -> AnyPublisher<[Curation], WableError>
+    func fetchCurationList(with lastItemID: Int) -> AnyPublisher<[Curation], WableError>
 }
 
 // MARK: - OverviewUseCaseImpl
@@ -55,7 +55,7 @@ final class OverviewUseCaseImpl: OverviewUseCase {
         return .just((false, false))
     }
 
-    func fetchCurations(with lastItemID: Int) -> AnyPublisher<[Curation], WableError> {
-        return repository.fetchCurations(cursor: lastItemID)
+    func fetchCurationList(with lastItemID: Int) -> AnyPublisher<[Curation], WableError> {
+        return repository.fetchCurationList(cursor: lastItemID)
     }
 }

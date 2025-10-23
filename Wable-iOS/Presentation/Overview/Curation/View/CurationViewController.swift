@@ -146,7 +146,7 @@ private extension CurationViewController {
                 title: item.title,
                 siteName: item.siteName
             ) { [weak self] in
-                self?.onCellTap?(item.url)
+                self?.onCellTap?(item.siteURL)
             }
         }
 

@@ -120,7 +120,7 @@ private extension CurationViewModel {
     
     func fetchItems(cursor: Int) -> AnyPublisher<[CurationItem], Never> {
         return useCase
-            .fetchCurations(with: cursor)
+            .fetchCurationList(with: cursor)
             .map { [weak self] curations in curations.compactMap { self?.mapToCurationItem($0) }}
             .catch { error -> AnyPublisher<[CurationItem], Never> in
                 WableLogger.log("Failed to fetch curations: \(error)", for: .error)
@@ -134,8 +134,8 @@ private extension CurationViewModel {
             id: curation.id,
             title: curation.title,
             createdAt: curation.time.elapsedText,
-            siteName: extractSiteName(from: curation.url),
-            url: curation.url,
+            siteName: extractSiteName(from: curation.siteURL),
+            siteURL: curation.siteURL,
             thumbnailURL: curation.thumbnailURL
         )
     }

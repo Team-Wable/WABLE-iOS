@@ -16,7 +16,7 @@ enum InformationTargetType {
     case fetchNewsNoticeNumber
     case fetchNews(cursor: Int)
     case fetchNotices(cursor: Int)
-    case fetchCurations(cursor: Int)
+    case fetchCurationList(cursor: Int)
 }
 
 extension InformationTargetType: BaseTargetType {
@@ -38,14 +38,14 @@ extension InformationTargetType: BaseTargetType {
             "/v1/information/news"
         case .fetchNotices:
             "/v1/information/notice"
-        case .fetchCurations:
+        case .fetchCurationList:
             "/v1/curation"
         }
     }
     
     var query: [String : Any]? {
         switch self {
-        case .fetchNews(let cursor), .fetchNotices(let cursor), .fetchCurations(let cursor):
+        case .fetchNews(let cursor), .fetchNotices(let cursor), .fetchCurationList(let cursor):
             return ["cursor": cursor]
         default:
             return nil
