@@ -7,6 +7,7 @@
 
 import UIKit
 
+import FacebookCore
 import FirebaseCore
 import FirebaseMessaging
 import KakaoSDKCommon
@@ -61,6 +62,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         KakaoSDK.initSDK(appKey: Bundle.kakaoAppKey)
         
+        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        
         return true
     }
 
@@ -108,7 +111,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       print("🟠", #function)
       completionHandler(.newData)
     }
-
 }
 
 // MARK: - MessagingDelegate
