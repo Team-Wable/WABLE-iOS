@@ -379,6 +379,8 @@
 		DED1344E2DCF6C73008463BD /* ViewitListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED1344D2DCF6C73008463BD /* ViewitListViewModel.swift */; };
 		DED1345C2DCFA002008463BD /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED1345B2DCFA002008463BD /* AppEnvironment.swift */; };
 		DED4BE3D2D8C531E009B65CB /* GameTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED4BE3C2D8C531E009B65CB /* GameTypeCell.swift */; };
+		DED4E6772EABB16400FA2700 /* OverviewPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED4E6762EABB16400FA2700 /* OverviewPageViewModel.swift */; };
+		DED4E6792EABB34700FA2700 /* OverviewPageNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED4E6782EABB34700FA2700 /* OverviewPageNavigation.swift */; };
 		DEDC29142D7208A00073D512 /* GameStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29132D7208A00073D512 /* GameStatus.swift */; };
 		DEDC29162D72099C0073D512 /* InformationNotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29152D72099C0073D512 /* InformationNotificationType.swift */; };
 		DEDC29182D720D030073D512 /* PostStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC29172D720D030073D512 /* PostStatus.swift */; };
@@ -766,6 +768,8 @@
 		DED1344D2DCF6C73008463BD /* ViewitListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitListViewModel.swift; sourceTree = "<group>"; };
 		DED1345B2DCFA002008463BD /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		DED4BE3C2D8C531E009B65CB /* GameTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTypeCell.swift; sourceTree = "<group>"; };
+		DED4E6762EABB16400FA2700 /* OverviewPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPageViewModel.swift; sourceTree = "<group>"; };
+		DED4E6782EABB34700FA2700 /* OverviewPageNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPageNavigation.swift; sourceTree = "<group>"; };
 		DEDC29112D7207610073D512 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		DEDC29132D7208A00073D512 /* GameStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStatus.swift; sourceTree = "<group>"; };
 		DEDC29152D72099C0073D512 /* InformationNotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationNotificationType.swift; sourceTree = "<group>"; };
@@ -1770,6 +1774,7 @@
 		DE277A862D8C09A3006D2B53 /* Page */ = {
 			isa = PBXGroup;
 			children = (
+				DED4E6752EABB15800FA2700 /* ViewModel */,
 				DEAAC6962EAB88B800C7C717 /* Model */,
 				DEE5D60E2D9121D4009E5A25 /* View */,
 			);
@@ -2318,6 +2323,7 @@
 			isa = PBXGroup;
 			children = (
 				DEAAC6972EAB88C200C7C717 /* OverviewSegment.swift */,
+				DED4E6782EABB34700FA2700 /* OverviewPageNavigation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2449,6 +2455,14 @@
 			isa = PBXGroup;
 			children = (
 				DED1344D2DCF6C73008463BD /* ViewitListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DED4E6752EABB15800FA2700 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DED4E6762EABB16400FA2700 /* OverviewPageViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2904,6 +2918,7 @@
 				DD2968402D6DAD2F00143851 /* FetchNewsNoticeNumber.swift in Sources */,
 				DD2968412D6DAD2F00143851 /* Empty.swift in Sources */,
 				DD2968422D6DAD2F00143851 /* FetchNotices.swift in Sources */,
+				DED4E6772EABB16400FA2700 /* OverviewPageViewModel.swift in Sources */,
 				DD29686E2D6DAD5F00143851 /* Bundle+.swift in Sources */,
 				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,
 				DE3CA27D2DD4294000BF5E87 /* MyProfileViewModel.swift in Sources */,
@@ -2984,6 +2999,7 @@
 				DE54B03C2D82C43F009A7C34 /* PhotoDetailViewController.swift in Sources */,
 				DE72BB132D93CD9D008E5774 /* WableSegmentedControl.swift in Sources */,
 				DD2968612D6DAD5500143851 /* ViewitTargetType.swift in Sources */,
+				DED4E6792EABB34700FA2700 /* OverviewPageNavigation.swift in Sources */,
 				DD2968622D6DAD5500143851 /* CommentLikedTargetType.swift in Sources */,
 				DD2968632D6DAD5500143851 /* ContentTargetType.swift in Sources */,
 				DD547AB92D7E43A600B8BA5A /* GhostButton.swift in Sources */,

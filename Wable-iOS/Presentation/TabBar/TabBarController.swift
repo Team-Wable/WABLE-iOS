@@ -52,7 +52,9 @@ final class TabBarController: UITabBarController {
         $0.tabBarItem.image = .icCommunity
     }
     
-    private let overviewViewController = OverviewPageViewController().then {
+    private let overviewViewController = OverviewPageViewController(
+        viewModel: OverviewPageViewModel()
+    ).then {
         $0.tabBarItem.title = "소식"
         $0.tabBarItem.image = .icInfoPress
     }

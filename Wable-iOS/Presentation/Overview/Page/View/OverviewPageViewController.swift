@@ -6,30 +6,42 @@
 //
 
 import UIKit
+import Combine
 
 import SnapKit
 
 final class OverviewPageViewController: UIViewController {
     
-    // MARK: - Property
-
-    private var currentSegment: OverviewSegment = .gameSchedule {
-        didSet {
-            guard oldValue != currentSegment else { return }
-            trackPageChangeEvent(for: currentSegment)
-        }
-    }
-
-    private var viewControllers = [UIViewController]()
+    // MARK: - UIComponent
     
     private let pageViewController = UIPageViewController(
         transitionStyle: .scroll,
         navigationOrientation: .horizontal
     )
     private let rootView = OverviewPageView()
+
+    // MARK: Property
+
+    private var viewControllers = [UIViewController]()
+
+    private let viewModel: OverviewPageViewModel
+    private let segmentDidChangeSubject = PassthroughSubject<OverviewSegment, Never>()
+    private let pageSwipeCompletedSubject = PassthroughSubject<OverviewSegment, Never>()
+    private let cancelBag = CancelBag()
     
     // MARK: - Life Cycle
+
+    init(viewModel: OverviewPageViewModel) {
+        self.viewModel = viewModel
+
+        super.init(nibName: nil, bundle: nil)
+    }
     
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func loadView() {
         view = rootView
     }
@@ -41,6 +53,7 @@ final class OverviewPageViewController: UIViewController {
         setupPageController()
         setupNavigationBar()
         setupAction()
+        setupBinding()
     }
 }
 
@@ -61,8 +74,7 @@ extension OverviewPageViewController: UIPageViewControllerDelegate {
             return
         }
         
-        currentSegment = segment
-        segmentedControl.selectedSegmentIndex = currentSegment.rawValue
+        pageSwipeCompletedSubject.send(segment)
     }
 }
 
@@ -156,7 +168,11 @@ private extension OverviewPageViewController {
         pageViewController.dataSource = self
         
         pageViewController
-            .setViewControllers([viewControllers[currentSegment.rawValue]], direction: .forward, animated: false)
+            .setViewControllers(
+                [viewControllers[OverviewSegment.gameSchedule.rawValue]],
+                direction: .forward,
+                animated: false
+            )
     }
     
     func setupNavigationBar() {
@@ -166,6 +182,32 @@ private extension OverviewPageViewController {
     func setupAction() {
         segmentedControl.addTarget(self, action: #selector(segmentedControlDidChange(_:)), for: .valueChanged)
     }
+    
+    func setupBinding() {
+        let input = OverviewPageViewModel.Input(
+            segmentDidChange: segmentDidChangeSubject.eraseToAnyPublisher(),
+            pageSwipeCompleted: pageSwipeCompletedSubject.eraseToAnyPublisher()
+        )
+        
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.currentSegment
+            .sink { [weak self] segment in
+                self?.segmentedControl.selectedSegmentIndex = segment.rawValue
+            }
+            .store(in: cancelBag)
+        
+        output.pagination
+            .withUnretained(self)
+            .sink { owner, value in
+                owner.pageViewController.setViewControllers(
+                    [owner.viewControllers[value.segment.rawValue]],
+                    direction: value.direction,
+                    animated: true
+                )
+            }
+            .store(in: cancelBag)
+    }
 }
 
 // MARK: - Action Method
@@ -173,15 +215,7 @@ private extension OverviewPageViewController {
 private extension OverviewPageViewController {
     @objc func segmentedControlDidChange(_ sender: WableBadgeSegmentedControl) {
         guard let segment = OverviewSegment(rawValue: sender.selectedSegmentIndex) else { return }
-        let direction: UIPageViewController.NavigationDirection = segment.rawValue > currentSegment.rawValue ? .forward : .reverse
-        
-        pageViewController.setViewControllers(
-            [viewControllers[segment.rawValue]],
-            direction: direction,
-            animated: true
-        ) { [unowned self] _ in
-            currentSegment = segment
-        }
+        segmentDidChangeSubject.send(segment)
     }
 }
 
@@ -190,19 +224,6 @@ private extension OverviewPageViewController {
 private extension OverviewPageViewController {
     func index(for viewController: UIViewController) -> Int? {
         return viewControllers.firstIndex(of: viewController)
-    }
-    
-    func trackPageChangeEvent(for segment: OverviewSegment) {
-        switch segment {
-        case .gameSchedule:
-            AmplitudeManager.shared.trackEvent(tag: .clickGameschedule)
-        case .teamRank:
-            AmplitudeManager.shared.trackEvent(tag: .clickRanking)
-        case .curation:
-            AmplitudeManager.shared.trackEvent(tag: .clickNews)
-        case .notice:
-            AmplitudeManager.shared.trackEvent(tag: .clickAnnouncement)
-        }
     }
 }
 
