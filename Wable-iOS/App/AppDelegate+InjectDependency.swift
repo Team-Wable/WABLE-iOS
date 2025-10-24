@@ -108,5 +108,12 @@ extension AppDelegate {
             case .production: CommunityRepositoryImpl()
             }
         }
+
+        diContainer.register(for: UserActivityRepository.self) { env in
+            switch env {
+            case .mock: MockUserActivityRepository()
+            case .production: UserActivityRepositoryImpl(storage: UserDefaultsStorage())
+            }
+        }
     }
 }

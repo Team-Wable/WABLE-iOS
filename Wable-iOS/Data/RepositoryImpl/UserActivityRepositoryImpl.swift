@@ -13,13 +13,14 @@ final class UserActivityRepositoryImpl: UserActivityRepository {
         static let activityDictionary = "activityDictionary"
     }
 
-    private let storage: UserDefaultsStorage
+    private let storage: LocalKeyValueProvider
     private let queue = DispatchQueue(label: "com.wable.userActivity.queue", attributes: .concurrent)
     
     private var activities: [UInt: UserActivity] = [:]
 
-    init(storage: UserDefaultsStorage) {
+    init(storage: LocalKeyValueProvider) {
         self.storage = storage
+        
         loadActivities()
     }
 
@@ -72,5 +73,23 @@ final class UserActivityRepositoryImpl: UserActivityRepository {
             
             self.activities = loadedActivities
         }
+    }
+}
+
+// MARK: - MockUserActivityRepository
+
+struct MockUserActivityRepository: UserActivityRepository {
+    private var mockActivities: [UInt: UserActivity] = [:]
+    
+    func fetchUserActivity(for userID: UInt) -> AnyPublisher<UserActivity, WableError> {
+        if let activity = mockActivities[userID] {
+            return .just(activity)
+        } else {
+            return .just(.default)
+        }
+    }
+    
+    func updateUserActivity(for userID: UInt, _ activity: UserActivity) -> AnyPublisher<Void, WableError> {
+        return .just(())
     }
 }
