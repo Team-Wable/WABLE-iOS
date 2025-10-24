@@ -22,7 +22,7 @@ extension ProfileMapper {
         return AccountInfo(
             memberID: response.memberID,
             createdDate: createdDate,
-            displayMemberID: response.showMemberID,
+            displayMemberID: response.showMemberID ?? "",
             socialPlatform: socialPlatform,
             version: response.versionInformation
         )
