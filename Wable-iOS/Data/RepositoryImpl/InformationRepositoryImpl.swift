@@ -77,6 +77,15 @@ final class InformationRepositoryImpl: InformationRepository {
         .map(InformationMapper.toDomain(_:))
         .mapWableError()
     }
+
+    func fetchLatestCurationID() -> AnyPublisher<Int, WableError> {
+        return provider.request(
+            .fetchLatestCurationID,
+            for: DTO.Response.FetchLatestCurationID.self
+        )
+        .map { $0.latestCurationID }
+        .mapWableError()
+    }
 }
 
 // MARK: - MockInformationRepository
@@ -123,10 +132,21 @@ struct MockInformationRepository: InformationRepository {
             .delay(for: .seconds(randomDelaySecond), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-    
-    private var randomDelaySecond: Double { .random(in: 0.3...1.0) }
 
-    private func createMockGameSchedules() -> AnyPublisher<[GameSchedule], WableError> {
+    func fetchLatestCurationID() -> AnyPublisher<Int, WableError> {
+        return .just(45)
+            .delay(for: .seconds(randomDelaySecond), scheduler: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+}
+
+// MARK: - MockInformationRepository Helper Methods
+
+private extension MockInformationRepository {
+    var randomDelaySecond: Double { .random(in: 0.3...1.0) }
+
+    func createMockGameSchedules() -> AnyPublisher<[GameSchedule], WableError> {
         let teamNames: [String] = [
             "T1", "GEN", "HLE", "DK", "KT", "NS", "DRX", "BRO", "BFX", "DNF",
             "VKS", "AL", "BLG", "CFO", "FLY", "FNC", "G2", "IG", "MKOI", "PSG", 
@@ -160,8 +180,8 @@ struct MockInformationRepository: InformationRepository {
         
         return .just(mockGameSchedules)
     }
-    
-    private func createMockTeamRanks() -> AnyPublisher<[LCKTeamRank], WableError> {
+
+    func createMockTeamRanks() -> AnyPublisher<[LCKTeamRank], WableError> {
         let mockLCKTeamRanks: [LCKTeamRank] = [
             LCKTeamRank(team: .t1, rank: 1, winCount: 15, defeatCount: 3, winningRate: 83, scoreGap: +20),
             LCKTeamRank(team: .gen, rank: 2, winCount: 14, defeatCount: 4, winningRate: 78, scoreGap: +18),
@@ -178,7 +198,7 @@ struct MockInformationRepository: InformationRepository {
         return .just(mockLCKTeamRanks)
     }
     
-    private func createMockAnnouncements(lastItemID: Int, prefix: String) -> AnyPublisher<[Announcement], WableError> {
+    func createMockAnnouncements(lastItemID: Int, prefix: String) -> AnyPublisher<[Announcement], WableError> {
         let range: ClosedRange<Int>
         
         switch lastItemID {
@@ -204,8 +224,8 @@ struct MockInformationRepository: InformationRepository {
         
         return .just(announcements)
     }
-    
-    private func createMockCurations(lastItemID: Int) -> AnyPublisher<[Curation], WableError> {
+
+    func createMockCurations(lastItemID: Int) -> AnyPublisher<[Curation], WableError> {
         let range: ClosedRange<Int>
 
         switch lastItemID {
@@ -237,7 +257,7 @@ struct MockInformationRepository: InformationRepository {
         return .just(curations)
     }
     
-    private enum Constant {
+    enum Constant {
         static let imageURLText: String = "https://picsum.photos/300"
     }
 }
