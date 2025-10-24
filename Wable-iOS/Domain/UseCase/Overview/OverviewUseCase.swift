@@ -18,31 +18,34 @@ protocol OverviewUseCase {
     func fetchNotices(with lastItemID: Int) -> AnyPublisher<[Announcement], WableError>
     func checkNewAnnouncements() -> AnyPublisher<(Bool, Bool), WableError>
     func fetchCurationList(with lastItemID: Int) -> AnyPublisher<[Curation], WableError>
+    func checkUnviewedCuration() -> AnyPublisher<Bool, WableError>
 }
 
 // MARK: - OverviewUseCaseImpl
 
 final class OverviewUseCaseImpl: OverviewUseCase {
-    @Injected private var repository: InformationRepository
+    @Injected private var informationRepository: InformationRepository
+    @Injected private var userSessionRepository: UserSessionRepository
+    @Injected private var userActivityRepository: UserActivityRepository
         
     func fetchGameCategory() -> AnyPublisher<String, WableError> {
-        return repository.fetchGameCategory()
+        return informationRepository.fetchGameCategory()
     }
     
     func fetchGameSchedules() -> AnyPublisher<[GameSchedule], WableError> {
-        return repository.fetchGameSchedules()
+        return informationRepository.fetchGameSchedules()
     }
     
     func fetchTeamRanks() -> AnyPublisher<[LCKTeamRank], WableError> {
-        return repository.fetchTeamRanks()
+        return informationRepository.fetchTeamRanks()
     }
     
     func fetchNews(with lastItemID: Int) -> AnyPublisher<[Announcement], WableError> {
-        return repository.fetchNews(cursor: lastItemID)
+        return informationRepository.fetchNews(cursor: lastItemID)
     }
     
     func fetchNotices(with lastItemID: Int) -> AnyPublisher<[Announcement], WableError> {
-        return repository.fetchNotice(cursor: lastItemID)
+        return informationRepository.fetchNotice(cursor: lastItemID)
     }
     
     func checkNewAnnouncements() -> AnyPublisher<(Bool, Bool), WableError> {
@@ -56,6 +59,31 @@ final class OverviewUseCaseImpl: OverviewUseCase {
     }
 
     func fetchCurationList(with lastItemID: Int) -> AnyPublisher<[Curation], WableError> {
-        return repository.fetchCurationList(cursor: lastItemID)
+        return informationRepository.fetchCurationList(cursor: lastItemID)
+    }
+    
+    func checkUnviewedCuration() -> AnyPublisher<Bool, WableError> {
+        guard let activeUserID = userSessionRepository.fetchActiveUserID(),
+              activeUserID >= 0,
+              let userID = UInt(exactly: activeUserID) 
+        else {
+            return .fail(.invalidMember)
+        }
+        
+        let lastViewedCurationID = userActivityRepository.fetchUserActivity(for: userID)
+            .catch { error -> AnyPublisher<UserActivity, WableError> in
+                WableLogger.log("Failed to fetch user activity: \(error)", for: .error)
+                return .just(.default)
+            }
+            .eraseToAnyPublisher()
+        
+        return Publishers.Zip(
+            informationRepository.fetchLatestCurationID(),
+            lastViewedCurationID
+        )
+        .map { latestCurationID, userActivity in
+            return latestCurationID > Int(userActivity.lastViewedCurationID)
+        }
+        .eraseToAnyPublisher()
     }
 }
