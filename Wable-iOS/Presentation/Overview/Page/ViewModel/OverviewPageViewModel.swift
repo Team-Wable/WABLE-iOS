@@ -10,9 +10,9 @@ import Combine
 
 final class OverviewPageViewModel {
     let useCase: OverviewUseCase
-
+    
     private let currentSegmentSubject = CurrentValueSubject<OverviewSegment, Never>(.gameSchedule)
-
+    
     init(useCase: OverviewUseCase) {
         self.useCase = useCase
     }
@@ -22,12 +22,14 @@ extension OverviewPageViewModel: ViewModelType {
     struct Input {
         let segmentDidChange: AnyPublisher<OverviewSegment, Never>
         let pageSwipeCompleted: AnyPublisher<OverviewSegment, Never>
+        let didLoad: AnyPublisher<Void, Never>
     }
     
     struct Output {
         let currentSegment: AnyPublisher<OverviewSegment, Never>
         let pagination: AnyPublisher<OverviewPageNavigation, Never>
-        let showCurationBadge: AnyPublisher<Bool, Never>
+        let showBadge: AnyPublisher<OverviewSegment, Never>
+        let hideBadge: AnyPublisher<OverviewSegment, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
@@ -37,12 +39,12 @@ extension OverviewPageViewModel: ViewModelType {
                 self?.currentSegmentSubject.send(segment)
             }
             .store(in: cancelBag)
-
+        
         let initialPagination = OverviewPageNavigation(
             segment: currentSegmentSubject.value,
             direction: .forward
         )
-
+        
         let pagination = input.segmentDidChange
             .removeDuplicates()
             .handleEvents(receiveOutput: { [weak self] segment in
@@ -54,7 +56,7 @@ extension OverviewPageViewModel: ViewModelType {
             }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
-
+        
         let currentSegment = currentSegmentSubject
             .dropFirst()
             .removeDuplicates()
@@ -64,19 +66,43 @@ extension OverviewPageViewModel: ViewModelType {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
         
-        let badgeUpdateOnCurationView = currentSegmentSubject
-            .filter { $0 == .curation }
-            .map { _ in false }
-            .eraseToAnyPublisher()
-        
-        let showCurationBadge = Publishers.Merge(checkUnviewedCuration(), badgeUpdateOnCurationView)
+        let showBadge = input.didLoad
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<OverviewSegment, Never> in
+                let curation = owner.checkUnviewedCuration()
+                    .filter { $0 }
+                    .map { _ in OverviewSegment.curation }
+                    .eraseToAnyPublisher()
+                
+                let notice = owner.checkUnviewedNotice()
+                    .filter { $0 }
+                    .map { _ in OverviewSegment.notice }
+                    .eraseToAnyPublisher()
+                
+                return Publishers.Merge(curation, notice)
+                    .eraseToAnyPublisher()
+            }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
-
+        
+        let hideBadge = currentSegmentSubject
+            .removeDuplicates()
+            .compactMap { segment -> OverviewSegment? in
+                switch segment {
+                case .curation, .notice:
+                    return segment
+                default:
+                    return nil
+                }
+            }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+        
         return Output(
-            currentSegment: currentSegment, 
+            currentSegment: currentSegment,
             pagination: pagination,
-            showCurationBadge: showCurationBadge
+            showBadge: showBadge,
+            hideBadge: hideBadge
         )
     }
 }
@@ -96,11 +122,20 @@ private extension OverviewPageViewModel {
             AmplitudeManager.shared.trackEvent(tag: .clickAnnouncement)
         }
     }
-
+    
     func checkUnviewedCuration() -> AnyPublisher<Bool, Never> {
         return useCase.checkUnviewedCuration()
             .catch { error -> AnyPublisher<Bool, Never> in
                 WableLogger.log("Failed to check unviewed curation: \(error)", for: .error)
+                return .just(false)
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func checkUnviewedNotice() -> AnyPublisher<Bool, Never> {
+        return useCase.checkUnviewedNotice()
+            .catch { error -> AnyPublisher<Bool, Never> in
+                WableLogger.log("Failed to check unviewed notice: \(error)", for: .error)
                 return .just(false)
             }
             .eraseToAnyPublisher()

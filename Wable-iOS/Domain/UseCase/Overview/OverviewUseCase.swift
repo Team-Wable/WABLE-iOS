@@ -20,6 +20,8 @@ protocol OverviewUseCase {
     func fetchCurationList(with lastItemID: Int) -> AnyPublisher<[Curation], WableError>
     func checkUnviewedCuration() -> AnyPublisher<Bool, WableError>
     func updateLastViewedCurationID(to curationID: Int) -> AnyPublisher<Void, WableError>
+    func checkUnviewedNotice() -> AnyPublisher<Bool, WableError>
+    func updateLastViewedNoticeCount(to noticeCount: Int) -> AnyPublisher<Void, WableError>
 }
 
 // MARK: - OverviewUseCaseImpl
@@ -28,7 +30,7 @@ final class OverviewUseCaseImpl: OverviewUseCase {
     @Injected private var informationRepository: InformationRepository
     @Injected private var userSessionRepository: UserSessionRepository
     @Injected private var userActivityRepository: UserActivityRepository
-        
+    
     func fetchGameCategory() -> AnyPublisher<String, WableError> {
         return informationRepository.fetchGameCategory()
     }
@@ -65,7 +67,6 @@ final class OverviewUseCaseImpl: OverviewUseCase {
     
     func checkUnviewedCuration() -> AnyPublisher<Bool, WableError> {
         guard let activeUserID = userSessionRepository.fetchActiveUserID(),
-              activeUserID >= 0,
               let userID = UInt(exactly: activeUserID) 
         else {
             return .fail(.invalidMember)
@@ -76,21 +77,16 @@ final class OverviewUseCaseImpl: OverviewUseCase {
                 WableLogger.log("Failed to fetch user activity: \(error)", for: .error)
                 return .just(.default)
             }
+            .map { Int($0.lastViewedCurationID) }
             .eraseToAnyPublisher()
         
-        return Publishers.Zip(
-            informationRepository.fetchLatestCurationID(),
-            lastViewedCurationID
-        )
-        .map { latestCurationID, userActivity in
-            return latestCurationID > Int(userActivity.lastViewedCurationID)
-        }
-        .eraseToAnyPublisher()
+        return Publishers.Zip(informationRepository.fetchLatestCurationID(), lastViewedCurationID)
+            .map { $0 > $1 }
+            .eraseToAnyPublisher()
     }
     
     func updateLastViewedCurationID(to curationID: Int) -> AnyPublisher<Void, WableError> {
         guard let activeUserID = userSessionRepository.fetchActiveUserID(),
-              activeUserID >= 0,
               let userID = UInt(exactly: activeUserID) 
         else {
             return .fail(.invalidMember)
@@ -105,10 +101,59 @@ final class OverviewUseCaseImpl: OverviewUseCase {
                 WableLogger.log("Failed to fetch user activity: \(error)", for: .error)
                 return .just(.default)
             }
-            .filter { $0.lastViewedCurationID != curationID }
+            .filter { $0.lastViewedCurationID < validCurationID }
             .flatMap { [userActivityRepository] activity -> AnyPublisher<Void, WableError> in
                 var updatedActivity = activity
                 updatedActivity.lastViewedCurationID = validCurationID
+                return userActivityRepository.updateUserActivity(for: userID, updatedActivity)
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func checkUnviewedNotice() -> AnyPublisher<Bool, WableError> {
+        guard let activeUserID = userSessionRepository.fetchActiveUserID(),
+              let userID = UInt(exactly: activeUserID) 
+        else {
+            return .fail(.invalidMember)
+        }
+
+        let lastViewedNoticeCount = userActivityRepository.fetchUserActivity(for: userID)
+            .catch { error -> AnyPublisher<UserActivity, WableError> in
+                WableLogger.log("Failed to fetch user activity: \(error)", for: .error)
+                return .just(.default)
+            }
+            .map { Int($0.lastViewedNoticeCount) }
+            .eraseToAnyPublisher()
+
+        let latestNoticeCount = informationRepository.fetchNewsNoticeNumber()
+            .map(\.noticeNumber)
+            .eraseToAnyPublisher()
+        
+        return Publishers.Zip(latestNoticeCount, lastViewedNoticeCount)
+            .map { $0 > $1 }
+            .eraseToAnyPublisher()
+    }
+
+    func updateLastViewedNoticeCount(to noticeCount: Int) -> AnyPublisher<Void, WableError> {
+        guard let activeUserID = userSessionRepository.fetchActiveUserID(),
+              let userID = UInt(exactly: activeUserID) 
+        else {
+            return .fail(.invalidMember)
+        }
+        
+        guard let validNoticeCount = UInt(exactly: noticeCount) else {
+            return .fail(.validationException)
+        }
+        
+        return userActivityRepository.fetchUserActivity(for: userID)
+            .catch { error -> AnyPublisher<UserActivity, WableError> in
+                WableLogger.log("Failed to fetch user activity: \(error)", for: .error)
+                return .just(.default)
+            }
+            .filter { $0.lastViewedNoticeCount < validNoticeCount }
+            .flatMap { [userActivityRepository] activity -> AnyPublisher<Void, WableError> in
+                var updatedActivity = activity
+                updatedActivity.lastViewedNoticeCount = validNoticeCount
                 return userActivityRepository.updateUserActivity(for: userID, updatedActivity)
             }
             .eraseToAnyPublisher()

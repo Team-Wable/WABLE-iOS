@@ -27,6 +27,7 @@ final class OverviewPageViewController: UIViewController {
     private let viewModel: OverviewPageViewModel
     private let segmentDidChangeSubject = PassthroughSubject<OverviewSegment, Never>()
     private let pageSwipeCompletedSubject = PassthroughSubject<OverviewSegment, Never>()
+    private let didLoadSubject = PassthroughSubject<Void, Never>()
     private let cancelBag = CancelBag()
     
     // MARK: - Life Cycle
@@ -54,6 +55,9 @@ final class OverviewPageViewController: UIViewController {
         setupNavigationBar()
         setupAction()
         setupBinding()
+
+        // Trigger initial badge checks after bindings are set
+        didLoadSubject.send(())
     }
 }
 
@@ -185,7 +189,8 @@ private extension OverviewPageViewController {
     func setupBinding() {
         let input = OverviewPageViewModel.Input(
             segmentDidChange: segmentDidChangeSubject.eraseToAnyPublisher(),
-            pageSwipeCompleted: pageSwipeCompletedSubject.eraseToAnyPublisher()
+            pageSwipeCompleted: pageSwipeCompletedSubject.eraseToAnyPublisher(),
+            didLoad: didLoadSubject.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input, cancelBag: cancelBag)
@@ -207,13 +212,15 @@ private extension OverviewPageViewController {
             }
             .store(in: cancelBag)
         
-        output.showCurationBadge
-            .sink { [weak self] shouldShow in
-                if shouldShow {
-                    self?.segmentedControl.showBadge(at: OverviewSegment.curation.rawValue)
-                } else {
-                    self?.segmentedControl.hideBadge(at: OverviewSegment.curation.rawValue)
-                }
+        output.showBadge
+            .sink { [weak self] segment in
+                self?.segmentedControl.showBadge(at: segment.rawValue)
+            }
+            .store(in: cancelBag)
+
+        output.hideBadge
+            .sink { [weak self] segment in
+                self?.segmentedControl.hideBadge(at: segment.rawValue)
             }
             .store(in: cancelBag)
     }
