@@ -93,7 +93,7 @@ final class OverviewUseCaseImpl: OverviewUseCase {
         let latestNoticeCount = informationRepository.fetchNewsNoticeNumber()
             .map(\.noticeNumber)
             .eraseToAnyPublisher()
-
+        
         return Publishers.Zip(latestNoticeCount, lastViewedNoticeCount)
             .map { $0 > $1 }
             .eraseToAnyPublisher()
