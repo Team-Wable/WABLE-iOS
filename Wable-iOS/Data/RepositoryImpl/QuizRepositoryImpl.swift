@@ -26,7 +26,6 @@ extension QuizRepositoryImpl: QuizRepository {
             answer: answer,
             totalTime: totalTime
         )
-        
         return provider.request(.updateQuizGrade(request: request), for: DTO.Response.UpdateQuizGradeResponse.self)
             .map(QuizMapper.toDomain)
             .mapWableError()
