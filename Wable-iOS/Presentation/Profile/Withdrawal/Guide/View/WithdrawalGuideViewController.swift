@@ -77,7 +77,6 @@ private extension WithdrawalGuideViewController {
             .store(in: cancelBag)
         
         output.isWithdrawSuccess
-            .filter { $0 }
             .sink { [weak self] _ in self?.presentLoginView() }
             .store(in: cancelBag)
         

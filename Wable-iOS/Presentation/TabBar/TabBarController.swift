@@ -67,13 +67,7 @@ final class TabBarController: UITabBarController {
                 )
             ),
             fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
-            removeUserSessionUseCase: RemoveUserSessionUseCaseImpl(
-                repository: UserSessionRepositoryImpl(
-                    userDefaults: UserDefaultsStorage(
-                        jsonEncoder: .init(), jsonDecoder: .init()
-                    )
-                )
-            )
+            removeUserSessionUseCase: RemoveUserSessionUseCaseImpl()
         )
     ).then {
         $0.tabBarItem.title = "마이"

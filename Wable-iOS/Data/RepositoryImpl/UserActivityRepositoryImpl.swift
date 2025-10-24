@@ -62,6 +62,27 @@ final class UserActivityRepositoryImpl: UserActivityRepository {
         }
         .eraseToAnyPublisher()
     }
+
+    func removeUserActivity(for userID: UInt) -> AnyPublisher<Void, WableError> {
+        return Future { [weak self] promise in
+            guard let self = self else {
+                promise(.failure(.unknownError))
+                return
+            }
+            
+            self.queue.async(flags: .barrier) {
+                self.activities.removeValue(forKey: userID)
+                
+                do {
+                    try self.storage.setValue(self.activities, for: Keys.activityDictionary)
+                    promise(.success(()))
+                } catch {
+                    promise(.failure(.validationException))
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
     
     private func loadActivities() {
         queue.async(flags: .barrier) { [weak self] in
@@ -86,6 +107,10 @@ struct MockUserActivityRepository: UserActivityRepository {
     }
     
     func updateUserActivity(for userID: UInt, _ activity: UserActivity) -> AnyPublisher<Void, WableError> {
+        return .just(())
+    }
+
+    func removeUserActivity(for userID: UInt) -> AnyPublisher<Void, WableError> {
         return .just(())
     }
 }

@@ -11,4 +11,5 @@ import Combine
 protocol UserActivityRepository {
     func fetchUserActivity(for userID: UInt) -> AnyPublisher<UserActivity, WableError>
     func updateUserActivity(for userID: UInt, _ activity: UserActivity) -> AnyPublisher<Void, WableError>
+    func removeUserActivity(for userID: UInt) -> AnyPublisher<Void, WableError>
 }
