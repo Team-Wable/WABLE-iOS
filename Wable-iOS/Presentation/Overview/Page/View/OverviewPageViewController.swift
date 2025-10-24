@@ -131,9 +131,8 @@ extension OverviewPageViewController: NoticeViewControllerDelegate {
 // MARK: - Setup Method
 
 private extension OverviewPageViewController {
-    func setupViewControllers() {
-        let useCase = OverviewUseCaseImpl()
-        
+    func setupViewControllers() {        
+        let useCase = viewModel.useCase
         let gameScheduleViewController = GameScheduleListViewController(viewModel: .init(useCase: useCase))
         
         let rankViewController = RankListViewController(viewModel: .init(useCase: useCase))
@@ -205,6 +204,16 @@ private extension OverviewPageViewController {
                     direction: value.direction,
                     animated: true
                 )
+            }
+            .store(in: cancelBag)
+        
+        output.showCurationBadge
+            .sink { [weak self] shouldShow in
+                if shouldShow {
+                    self?.segmentedControl.showBadge(at: OverviewSegment.curation.rawValue)
+                } else {
+                    self?.segmentedControl.hideBadge(at: OverviewSegment.curation.rawValue)
+                }
             }
             .store(in: cancelBag)
     }

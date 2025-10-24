@@ -9,10 +9,13 @@ import UIKit
 import Combine
 
 final class OverviewPageViewModel {
-    
-    // MARK: - Properties
-    
+    let useCase: OverviewUseCase
+
     private let currentSegmentSubject = CurrentValueSubject<OverviewSegment, Never>(.gameSchedule)
+
+    init(useCase: OverviewUseCase) {
+        self.useCase = useCase
+    }
 }
 
 extension OverviewPageViewModel: ViewModelType {
@@ -24,6 +27,7 @@ extension OverviewPageViewModel: ViewModelType {
     struct Output {
         let currentSegment: AnyPublisher<OverviewSegment, Never>
         let pagination: AnyPublisher<OverviewPageNavigation, Never>
+        let showCurationBadge: AnyPublisher<Bool, Never>
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
@@ -59,10 +63,20 @@ extension OverviewPageViewModel: ViewModelType {
             })
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
+        
+        let badgeUpdateOnCurationView = currentSegmentSubject
+            .filter { $0 == .curation }
+            .map { _ in false }
+            .eraseToAnyPublisher()
+        
+        let showCurationBadge = Publishers.Merge(checkUnviewedCuration(), badgeUpdateOnCurationView)
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
 
         return Output(
             currentSegment: currentSegment, 
             pagination: pagination,
+            showCurationBadge: showCurationBadge
         )
     }
 }
@@ -81,5 +95,14 @@ private extension OverviewPageViewModel {
         case .notice:
             AmplitudeManager.shared.trackEvent(tag: .clickAnnouncement)
         }
+    }
+
+    func checkUnviewedCuration() -> AnyPublisher<Bool, Never> {
+        return useCase.checkUnviewedCuration()
+            .catch { error -> AnyPublisher<Bool, Never> in
+                WableLogger.log("Failed to check unviewed curation: \(error)", for: .error)
+                return .just(false)
+            }
+            .eraseToAnyPublisher()
     }
 }

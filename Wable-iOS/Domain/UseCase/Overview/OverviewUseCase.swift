@@ -19,6 +19,7 @@ protocol OverviewUseCase {
     func checkNewAnnouncements() -> AnyPublisher<(Bool, Bool), WableError>
     func fetchCurationList(with lastItemID: Int) -> AnyPublisher<[Curation], WableError>
     func checkUnviewedCuration() -> AnyPublisher<Bool, WableError>
+    func updateLastViewedCurationID(to curationID: Int) -> AnyPublisher<Void, WableError>
 }
 
 // MARK: - OverviewUseCaseImpl
@@ -85,5 +86,31 @@ final class OverviewUseCaseImpl: OverviewUseCase {
             return latestCurationID > Int(userActivity.lastViewedCurationID)
         }
         .eraseToAnyPublisher()
+    }
+    
+    func updateLastViewedCurationID(to curationID: Int) -> AnyPublisher<Void, WableError> {
+        guard let activeUserID = userSessionRepository.fetchActiveUserID(),
+              activeUserID >= 0,
+              let userID = UInt(exactly: activeUserID) 
+        else {
+            return .fail(.invalidMember)
+        }
+        
+        guard let validCurationID = UInt(exactly: curationID) else {
+            return .fail(.validationException)
+        }
+        
+        return userActivityRepository.fetchUserActivity(for: userID)
+            .catch { error -> AnyPublisher<UserActivity, WableError> in
+                WableLogger.log("Failed to fetch user activity: \(error)", for: .error)
+                return .just(.default)
+            }
+            .filter { $0.lastViewedCurationID != curationID }
+            .flatMap { [userActivityRepository] activity -> AnyPublisher<Void, WableError> in
+                var updatedActivity = activity
+                updatedActivity.lastViewedCurationID = validCurationID
+                return userActivityRepository.updateUserActivity(for: userID, updatedActivity)
+            }
+            .eraseToAnyPublisher()
     }
 }

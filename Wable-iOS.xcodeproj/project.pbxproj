@@ -1774,8 +1774,8 @@
 		DE277A862D8C09A3006D2B53 /* Page */ = {
 			isa = PBXGroup;
 			children = (
-				DED4E6752EABB15800FA2700 /* ViewModel */,
 				DEAAC6962EAB88B800C7C717 /* Model */,
+				DED4E6752EABB15800FA2700 /* ViewModel */,
 				DEE5D60E2D9121D4009E5A25 /* View */,
 			);
 			path = Page;

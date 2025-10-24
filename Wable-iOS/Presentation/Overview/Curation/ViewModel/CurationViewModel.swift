@@ -59,6 +59,15 @@ extension CurationViewModel: ViewModelType {
             .sink { [weak self] newItems in self?.handleLoadMoreResponse(newItems) }
             .store(in: cancelBag)
         
+        itemsSubject
+            .compactMap { $0.first?.id }
+            .removeDuplicates()
+            .flatMap { [weak self] latestCurationID -> AnyPublisher<Void, Never> in
+                self?.updateLastViewedCurationID(to: latestCurationID) ?? .empty()
+            }
+            .sink { _ in }
+            .store(in: cancelBag)
+        
         let items = itemsSubject
             .receive(on: processingQueue)
             .removeDuplicates()
@@ -172,5 +181,14 @@ private extension CurationViewModel {
         } else {
             return host
         }
+    }
+    
+    func updateLastViewedCurationID(to curationID: Int) -> AnyPublisher<Void, Never> {
+        return useCase.updateLastViewedCurationID(to: curationID)
+            .catch { error -> AnyPublisher<Void, Never> in
+                WableLogger.log("Failed to update last viewed curation ID: \(error)", for: .error)
+                return .empty()
+            }
+            .eraseToAnyPublisher()
     }
 }
