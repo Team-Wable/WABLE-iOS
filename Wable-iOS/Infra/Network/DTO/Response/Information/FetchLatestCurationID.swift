@@ -18,8 +18,4 @@ extension DTO.Response {
             case latestCurationID = "curationId"
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 25089b3 ([Feat] #300 - 최신 큐레이션 번호 조회 API 구성)
