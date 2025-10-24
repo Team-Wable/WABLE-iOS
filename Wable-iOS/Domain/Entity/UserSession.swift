@@ -17,3 +17,9 @@ struct UserSession: Codable, Identifiable {
     let isAutoLoginEnabled: Bool?
     let notificationBadgeCount: Int?
 }
+
+struct UserActivity: Codable {
+    static let `default` = UserActivity(lastViewedCurationID: 0)
+
+    var lastViewedCurationID: UInt
+}

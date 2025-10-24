@@ -360,6 +360,8 @@
 		DEA9E7152DA92E7100D35646 /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7142DA92E7100D35646 /* CommunityView.swift */; };
 		DEA9E7172DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */; };
 		DEAAC68F2EAB5E8600C7C717 /* FetchLatestCurationID.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAC68E2EAB5E8600C7C717 /* FetchLatestCurationID.swift */; };
+		DEAAC6912EAB6B8700C7C717 /* UserActivityRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAC6902EAB6B8700C7C717 /* UserActivityRepository.swift */; };
+		DEAAC6932EAB718300C7C717 /* UserActivityRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAC6922EAB718300C7C717 /* UserActivityRepositoryImpl.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
 		DEAFE0562D8C45980097E91C /* GameScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */; };
 		DEAFE0592D8C4E0B0097E91C /* GameStatus+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0582D8C4E0B0097E91C /* GameStatus+.swift */; };
@@ -744,6 +746,8 @@
 		DEA9E7142DA92E7100D35646 /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
 		DEA9E7162DA955CA00D35646 /* CommunityRegisterCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRegisterCompleteViewController.swift; sourceTree = "<group>"; };
 		DEAAC68E2EAB5E8600C7C717 /* FetchLatestCurationID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLatestCurationID.swift; sourceTree = "<group>"; };
+		DEAAC6902EAB6B8700C7C717 /* UserActivityRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActivityRepository.swift; sourceTree = "<group>"; };
+		DEAAC6922EAB718300C7C717 /* UserActivityRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActivityRepositoryImpl.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
 		DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleCell.swift; sourceTree = "<group>"; };
 		DEAFE0582D8C4E0B0097E91C /* GameStatus+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameStatus+.swift"; sourceTree = "<group>"; };
@@ -1213,6 +1217,7 @@
 			isa = PBXGroup;
 			children = (
 				DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */,
+				DEAAC6922EAB718300C7C717 /* UserActivityRepositoryImpl.swift */,
 				DD2967BD2D6DAC3100143851 /* LoginRepositoryImpl.swift */,
 				DD2967BE2D6DAC3100143851 /* AccountRepositoryImpl.swift */,
 				DD2967BF2D6DAC3100143851 /* ProfileRepositoryImpl.swift */,
@@ -1271,6 +1276,7 @@
 			isa = PBXGroup;
 			children = (
 				DDCCA3922D738CD100658122 /* UserSessionRepository.swift */,
+				DEAAC6902EAB6B8700C7C717 /* UserActivityRepository.swift */,
 				DD2967D82D6DAC3100143851 /* LoginRepository.swift */,
 				DD2967D92D6DAC3100143851 /* AccountRepository.swift */,
 				DD2967DA2D6DAC3100143851 /* ProfileRepository.swift */,
@@ -2864,6 +2870,7 @@
 				DE7C530C2D761DCA00076E5D /* ViewModelType.swift in Sources */,
 				DDEA63592E850268005FED9F /* AgreementViewModel.swift in Sources */,
 				DE8873C32DC7536900AB16F8 /* ViewitInputView.swift in Sources */,
+				DEAAC6932EAB718300C7C717 /* UserActivityRepositoryImpl.swift in Sources */,
 				DE3CA2812DD43D0F00BF5E87 /* FetchUserProfileUseCase.swift in Sources */,
 				DD94FF812E8CABC7002D512E /* ProfileImageType.swift in Sources */,
 				DDCD66EA2D7DD72F00EF4C28 /* LottieType.swift in Sources */,
@@ -2880,6 +2887,7 @@
 				DE833BA02DE22C8D00812A80 /* Publishers+UIControlProperty.swift in Sources */,
 				DE8E863B2D918735000A4292 /* RankViewItem.swift in Sources */,
 				DE9891A02D995EE800D538D8 /* InformationNotificationType+.swift in Sources */,
+				DEAAC6912EAB6B8700C7C717 /* UserActivityRepository.swift in Sources */,
 				DD29683F2D6DAD2F00143851 /* FetchInfoNotifications.swift in Sources */,
 				DD2968402D6DAD2F00143851 /* FetchNewsNoticeNumber.swift in Sources */,
 				DD2968412D6DAD2F00143851 /* Empty.swift in Sources */,
