@@ -22,6 +22,10 @@
 		DD055F7A2EAB3D3C0003DFF7 /* FetchQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F792EAB3D300003DFF7 /* FetchQuiz.swift */; };
 		DD055F7E2EAB3DDA0003DFF7 /* UpdateQuizGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F7D2EAB3DCE0003DFF7 /* UpdateQuizGrade.swift */; };
 		DD055F802EAB3EAF0003DFF7 /* QuizTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F7F2EAB3EAA0003DFF7 /* QuizTargetType.swift */; };
+		DD055F822EABCF200003DFF7 /* QuizRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F812EABCF180003DFF7 /* QuizRepository.swift */; };
+		DD055F842EABD06A0003DFF7 /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F832EABD0680003DFF7 /* Quiz.swift */; };
+		DD055F862EABD0EA0003DFF7 /* QuizRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F852EABD0E20003DFF7 /* QuizRepositoryImpl.swift */; };
+		DD055F882EABD5E80003DFF7 /* QuizMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F872EABD5E30003DFF7 /* QuizMapper.swift */; };
 		DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */; };
 		DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */; };
 		DD20D9702E8C2C41008D63DB /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */; };
@@ -427,6 +431,10 @@
 		DD055F792EAB3D300003DFF7 /* FetchQuiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchQuiz.swift; sourceTree = "<group>"; };
 		DD055F7D2EAB3DCE0003DFF7 /* UpdateQuizGrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuizGrade.swift; sourceTree = "<group>"; };
 		DD055F7F2EAB3EAA0003DFF7 /* QuizTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizTargetType.swift; sourceTree = "<group>"; };
+		DD055F812EABCF180003DFF7 /* QuizRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRepository.swift; sourceTree = "<group>"; };
+		DD055F832EABD0680003DFF7 /* Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quiz.swift; sourceTree = "<group>"; };
+		DD055F852EABD0E20003DFF7 /* QuizRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRepositoryImpl.swift; sourceTree = "<group>"; };
+		DD055F872EABD5E30003DFF7 /* QuizMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizMapper.swift; sourceTree = "<group>"; };
 		DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
@@ -1256,6 +1264,7 @@
 		DD2967CA2D6DAC3100143851 /* RepositoryImpl */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F852EABD0E20003DFF7 /* QuizRepositoryImpl.swift */,
 				DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */,
 				DD2967BD2D6DAC3100143851 /* LoginRepositoryImpl.swift */,
 				DD2967BE2D6DAC3100143851 /* AccountRepositoryImpl.swift */,
@@ -1280,6 +1289,7 @@
 		DD2967D42D6DAC3100143851 /* Mapper */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F872EABD5E30003DFF7 /* QuizMapper.swift */,
 				DD2967CB2D6DAC3100143851 /* ErrorMapper.swift */,
 				DD2967CC2D6DAC3100143851 /* LoginMapper.swift */,
 				DD2967CD2D6DAC3100143851 /* ProfileMapper.swift */,
@@ -1314,6 +1324,7 @@
 		DD2967E52D6DAC3100143851 /* RepositoryInterface */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F812EABCF180003DFF7 /* QuizRepository.swift */,
 				DDCCA3922D738CD100658122 /* UserSessionRepository.swift */,
 				DD2967D82D6DAC3100143851 /* LoginRepository.swift */,
 				DD2967D92D6DAC3100143851 /* AccountRepository.swift */,
@@ -1338,6 +1349,7 @@
 		DD2967F72D6DAC3100143851 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F832EABD0680003DFF7 /* Quiz.swift */,
 				DDCCA3942D73928400658122 /* UserSession.swift */,
 				DD2967E72D6DAC3100143851 /* User.swift */,
 				DD2967E82D6DAC3100143851 /* Token.swift */,
@@ -2873,6 +2885,7 @@
 				DEE5D6112D9121E5009E5A25 /* OverviewPageView.swift in Sources */,
 				DD2968112D6DACF700143851 /* Viewit.swift in Sources */,
 				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
+				DD055F842EABD06A0003DFF7 /* Quiz.swift in Sources */,
 				DD514D082D8C83560095021D /* AgreementViewController.swift in Sources */,
 				DDFB22482D8BBCB300FEA24A /* ProfileRegisterView.swift in Sources */,
 				DD2968122D6DACF700143851 /* Community.swift in Sources */,
@@ -2997,6 +3010,7 @@
 				DE6459D52D97B8C2005569B8 /* InformationNotificationViewController.swift in Sources */,
 				DD8326962D95836F0014B62D /* HomeViewModel.swift in Sources */,
 				DD2968442D6DAD2F00143851 /* FetchUserProfile.swift in Sources */,
+				DD055F882EABD5E80003DFF7 /* QuizMapper.swift in Sources */,
 				DE7C530E2D761DFB00076E5D /* UIFont+.swift in Sources */,
 				DD9EAE242D99C66200803A1A /* FetchContentInfoUseCase.swift in Sources */,
 				DD2968452D6DAD2F00143851 /* FetchCommunites.swift in Sources */,
@@ -3064,6 +3078,7 @@
 				DEF148542DA7EF7B003B2AD8 /* CommunityRegistration.swift in Sources */,
 				DD2968682D6DAD5500143851 /* BaseTargetType.swift in Sources */,
 				DE9593352D9A1465009B00D3 /* ActivityNotificationViewModel.swift in Sources */,
+				DD055F862EABD0EA0003DFF7 /* QuizRepositoryImpl.swift in Sources */,
 				DD2968692D6DAD5500143851 /* CommentTargetType.swift in Sources */,
 				DD29686A2D6DAD5500143851 /* ContentLikedTargetType.swift in Sources */,
 				DD29686B2D6DAD5500143851 /* CommunityTargetType.swift in Sources */,
@@ -3101,6 +3116,7 @@
 				DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */,
 				DE3390352D8EF40B00638BB4 /* AnnouncementDetailViewController.swift in Sources */,
 				DEE5D6132D9126D8009E5A25 /* WableBadgeSegmentedControl.swift in Sources */,
+				DD055F822EABCF200003DFF7 /* QuizRepository.swift in Sources */,
 				DD90EEAD2DC5F6CC00338EB2 /* CreateReportUseCase.swift in Sources */,
 				DE3CA2892DD466F100BF5E87 /* WithdrawUseCase.swift in Sources */,
 				DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */,
