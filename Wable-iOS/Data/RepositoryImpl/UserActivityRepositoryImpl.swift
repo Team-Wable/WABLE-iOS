@@ -82,11 +82,7 @@ struct MockUserActivityRepository: UserActivityRepository {
     private var mockActivities: [UInt: UserActivity] = [:]
     
     func fetchUserActivity(for userID: UInt) -> AnyPublisher<UserActivity, WableError> {
-        if let activity = mockActivities[userID] {
-            return .just(activity)
-        } else {
-            return .just(.default)
-        }
+        return .just(.default)
     }
     
     func updateUserActivity(for userID: UInt, _ activity: UserActivity) -> AnyPublisher<Void, WableError> {
