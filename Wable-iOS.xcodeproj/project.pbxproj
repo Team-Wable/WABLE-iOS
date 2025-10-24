@@ -18,6 +18,10 @@
 		C83B4C1EB77093628C57171E /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D6BA58067777BC670497DB /* MainCoordinator.swift */; };
 		DD005BA92D7FFFE400B1661F /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BA82D7FFFE000B1661F /* LikeButton.swift */; };
 		DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BAA2D80071E00B1661F /* CommentButton.swift */; };
+		DD055F772EAB3BCD0003DFF7 /* UpdateQuizGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F762EAB3BAB0003DFF7 /* UpdateQuizGrade.swift */; };
+		DD055F7A2EAB3D3C0003DFF7 /* FetchQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F792EAB3D300003DFF7 /* FetchQuiz.swift */; };
+		DD055F7E2EAB3DDA0003DFF7 /* UpdateQuizGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F7D2EAB3DCE0003DFF7 /* UpdateQuizGrade.swift */; };
+		DD055F802EAB3EAF0003DFF7 /* QuizTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F7F2EAB3EAA0003DFF7 /* QuizTargetType.swift */; };
 		DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */; };
 		DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */; };
 		DD20D9702E8C2C41008D63DB /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */; };
@@ -426,6 +430,10 @@
 		46B7CB308A2494B49BBE0BC2 /* AppCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		DD005BA82D7FFFE000B1661F /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
 		DD005BAA2D80071E00B1661F /* CommentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentButton.swift; sourceTree = "<group>"; };
+		DD055F762EAB3BAB0003DFF7 /* UpdateQuizGrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuizGrade.swift; sourceTree = "<group>"; };
+		DD055F792EAB3D300003DFF7 /* FetchQuiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchQuiz.swift; sourceTree = "<group>"; };
+		DD055F7D2EAB3DCE0003DFF7 /* UpdateQuizGrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuizGrade.swift; sourceTree = "<group>"; };
+		DD055F7F2EAB3EAA0003DFF7 /* QuizTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizTargetType.swift; sourceTree = "<group>"; };
 		DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
@@ -890,6 +898,28 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
+		DD055F732EAA877C0003DFF7 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DD055F752EAB3BA20003DFF7 /* Quiz */ = {
+			isa = PBXGroup;
+			children = (
+				DD055F762EAB3BAB0003DFF7 /* UpdateQuizGrade.swift */,
+			);
+			path = Quiz;
+			sourceTree = "<group>";
+		};
+		DD055F782EAB3D230003DFF7 /* Quiz */ = {
+			isa = PBXGroup;
+			children = (
+				DD055F7D2EAB3DCE0003DFF7 /* UpdateQuizGrade.swift */,
+				DD055F792EAB3D300003DFF7 /* FetchQuiz.swift */,
+			);
+			path = Quiz;
+			sourceTree = "<group>";
+		};
 		DD20D9712E8C2C4A008D63DB /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
@@ -961,6 +991,7 @@
 		DD29677D2D6DAC3100143851 /* TargetType */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F7F2EAB3EAA0003DFF7 /* QuizTargetType.swift */,
 				DD29676F2D6DAC3100143851 /* BaseTargetType.swift */,
 				DD2967702D6DAC3100143851 /* LoginTargetType.swift */,
 				DD2967712D6DAC3100143851 /* AccountTargetType.swift */,
@@ -1080,6 +1111,7 @@
 		DD2967992D6DAC3100143851 /* Request */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F752EAB3BA20003DFF7 /* Quiz */,
 				DD2967822D6DAC3100143851 /* Login */,
 				DD2967852D6DAC3100143851 /* Account */,
 				DD2967872D6DAC3100143851 /* Profile */,
@@ -1187,6 +1219,7 @@
 		DD2967B92D6DAC3100143851 /* Response */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F782EAB3D230003DFF7 /* Quiz */,
 				DD29679B2D6DAC3100143851 /* Empty */,
 				DD29679E2D6DAC3100143851 /* Login */,
 				DD2967A12D6DAC3100143851 /* Profile */,
@@ -2804,6 +2837,12 @@
 			);
 			productRefGroup = 0547F4972C60D968001E3039 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = DD055F732EAA877C0003DFF7 /* Products */;
+					ProjectRef = DD2A2F152EA905180024076B /* Wable-iOS.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				0547F4952C60D968001E3039 /* Wable-iOS */,
@@ -2947,6 +2986,7 @@
 				DD2968312D6DAD1700143851 /* CommentLikedRepositoryImpl.swift in Sources */,
 				DE202FFE2DE7870F00B04CAA /* CheckAppUpdateRequirementUseCase.swift in Sources */,
 				DD2968322D6DAD1700143851 /* ContentRepositoryImpl.swift in Sources */,
+				DD055F7A2EAB3D3C0003DFF7 /* FetchQuiz.swift in Sources */,
 				DDCD66EC2D7DE5E000EF4C28 /* ConstraintMaker+.swift in Sources */,
 				DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */,
 				DD90EEAB2DC5F66900338EB2 /* CreateBannedUseCase.swift in Sources */,
@@ -2967,6 +3007,7 @@
 				DEE6CBEC2EA0E6AE001A83A7 /* CurationViewModel.swift in Sources */,
 				DD29683E2D6DAD2F00143851 /* UpdateToken.swift in Sources */,
 				DE20BAD72D903985000126A4 /* AnnouncementDetailView.swift in Sources */,
+				DD055F772EAB3BCD0003DFF7 /* UpdateQuizGrade.swift in Sources */,
 				DE6459CF2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift in Sources */,
 				DE833BA02DE22C8D00812A80 /* Publishers+UIControlProperty.swift in Sources */,
 				DE8E863B2D918735000A4292 /* RankViewItem.swift in Sources */,
@@ -2977,6 +3018,7 @@
 				DD2968412D6DAD2F00143851 /* Empty.swift in Sources */,
 				DD2968422D6DAD2F00143851 /* FetchNotices.swift in Sources */,
 				DED4E6772EABB16400FA2700 /* OverviewPageViewModel.swift in Sources */,
+				DD055F7E2EAB3DDA0003DFF7 /* UpdateQuizGrade.swift in Sources */,
 				DD29686E2D6DAD5F00143851 /* Bundle+.swift in Sources */,
 				DDED59532D785B9700A0BEF1 /* TokenError.swift in Sources */,
 				DE3CA27D2DD4294000BF5E87 /* MyProfileViewModel.swift in Sources */,
@@ -3152,6 +3194,7 @@
 				DE833B9B2DE22A8500812A80 /* Publishers+UIControlEvent.swift in Sources */,
 				DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */,
 				DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */,
+				DD055F802EAB3EAF0003DFF7 /* QuizTargetType.swift in Sources */,
 				DD29681B2D6DAD0200143851 /* ProfileRepository.swift in Sources */,
 				DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */,
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
