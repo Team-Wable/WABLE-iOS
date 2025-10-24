@@ -362,6 +362,7 @@
 		DEAAC68F2EAB5E8600C7C717 /* FetchLatestCurationID.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAC68E2EAB5E8600C7C717 /* FetchLatestCurationID.swift */; };
 		DEAAC6912EAB6B8700C7C717 /* UserActivityRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAC6902EAB6B8700C7C717 /* UserActivityRepository.swift */; };
 		DEAAC6932EAB718300C7C717 /* UserActivityRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAC6922EAB718300C7C717 /* UserActivityRepositoryImpl.swift */; };
+		DEAAC6982EAB88C200C7C717 /* OverviewSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAC6972EAB88C200C7C717 /* OverviewSegment.swift */; };
 		DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */; };
 		DEAFE0562D8C45980097E91C /* GameScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */; };
 		DEAFE0592D8C4E0B0097E91C /* GameStatus+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAFE0582D8C4E0B0097E91C /* GameStatus+.swift */; };
@@ -748,6 +749,7 @@
 		DEAAC68E2EAB5E8600C7C717 /* FetchLatestCurationID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLatestCurationID.swift; sourceTree = "<group>"; };
 		DEAAC6902EAB6B8700C7C717 /* UserActivityRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActivityRepository.swift; sourceTree = "<group>"; };
 		DEAAC6922EAB718300C7C717 /* UserActivityRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActivityRepositoryImpl.swift; sourceTree = "<group>"; };
+		DEAAC6972EAB88C200C7C717 /* OverviewSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewSegment.swift; sourceTree = "<group>"; };
 		DEAFE0502D8C44810097E91C /* GameScheduleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleListViewController.swift; sourceTree = "<group>"; };
 		DEAFE0552D8C45980097E91C /* GameScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScheduleCell.swift; sourceTree = "<group>"; };
 		DEAFE0582D8C4E0B0097E91C /* GameStatus+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameStatus+.swift"; sourceTree = "<group>"; };
@@ -1768,6 +1770,7 @@
 		DE277A862D8C09A3006D2B53 /* Page */ = {
 			isa = PBXGroup;
 			children = (
+				DEAAC6962EAB88B800C7C717 /* Model */,
 				DEE5D60E2D9121D4009E5A25 /* View */,
 			);
 			path = Page;
@@ -2311,6 +2314,14 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
+		DEAAC6962EAB88B800C7C717 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DEAAC6972EAB88C200C7C717 /* OverviewSegment.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		DEAFE04F2D8C43D90097E91C /* GameSchedule */ = {
 			isa = PBXGroup;
 			children = (
@@ -2791,6 +2802,7 @@
 				DD29680D2D6DACF700143851 /* Content.swift in Sources */,
 				DE277A882D8C09AD006D2B53 /* OverviewPageViewController.swift in Sources */,
 				DE8873B72DC7407C00AB16F8 /* URLPreviewRepository.swift in Sources */,
+				DEAAC6982EAB88C200C7C717 /* OverviewSegment.swift in Sources */,
 				DD29680E2D6DACF700143851 /* Token.swift in Sources */,
 				DEB60AEE2DD20B8F00FE8BFD /* AccountInfoViewController.swift in Sources */,
 				DD29680F2D6DACF700143851 /* SocialPlatform.swift in Sources */,

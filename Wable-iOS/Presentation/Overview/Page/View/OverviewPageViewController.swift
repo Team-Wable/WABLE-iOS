@@ -12,13 +12,14 @@ import SnapKit
 final class OverviewPageViewController: UIViewController {
     
     // MARK: - Property
-    
-    private var currentIndex = 0 {
+
+    private var currentSegment: OverviewSegment = .gameSchedule {
         didSet {
-            guard oldValue != currentIndex else { return }
-            trackPageChangeEvent(for: currentIndex)
+            guard oldValue != currentSegment else { return }
+            trackPageChangeEvent(for: currentSegment)
         }
     }
+
     private var viewControllers = [UIViewController]()
     
     private let pageViewController = UIPageViewController(
@@ -54,13 +55,14 @@ extension OverviewPageViewController: UIPageViewControllerDelegate {
     ) {
         guard completed,
               let visibleViewController = pageViewController.viewControllers?.first,
-              let index = index(for: visibleViewController)
+              let index = index(for: visibleViewController),
+              let segment = OverviewSegment(rawValue: index)
         else {
             return
         }
         
-        currentIndex = index
-        segmentedControl.selectedSegmentIndex = currentIndex
+        currentSegment = segment
+        segmentedControl.selectedSegmentIndex = currentSegment.rawValue
     }
 }
 
@@ -153,7 +155,8 @@ private extension OverviewPageViewController {
         pageViewController.delegate = self
         pageViewController.dataSource = self
         
-        pageViewController.setViewControllers([viewControllers[currentIndex]], direction: .forward, animated: false)
+        pageViewController
+            .setViewControllers([viewControllers[currentSegment.rawValue]], direction: .forward, animated: false)
     }
     
     func setupNavigationBar() {
@@ -169,15 +172,15 @@ private extension OverviewPageViewController {
 
 private extension OverviewPageViewController {
     @objc func segmentedControlDidChange(_ sender: WableBadgeSegmentedControl) {
-        let selectedSegmentIndex = sender.selectedSegmentIndex
-        let direction: UIPageViewController.NavigationDirection = selectedSegmentIndex > currentIndex ? .forward : .reverse
+        guard let segment = OverviewSegment(rawValue: sender.selectedSegmentIndex) else { return }
+        let direction: UIPageViewController.NavigationDirection = segment.rawValue > currentSegment.rawValue ? .forward : .reverse
         
         pageViewController.setViewControllers(
-            [viewControllers[selectedSegmentIndex]],
+            [viewControllers[segment.rawValue]],
             direction: direction,
             animated: true
         ) { [unowned self] _ in
-            currentIndex = selectedSegmentIndex
+            currentSegment = segment
         }
     }
 }
@@ -189,21 +192,16 @@ private extension OverviewPageViewController {
         return viewControllers.firstIndex(of: viewController)
     }
     
-    func trackPageChangeEvent(for index: Int) {
-        switch index {
-        case 0:
+    func trackPageChangeEvent(for segment: OverviewSegment) {
+        switch segment {
+        case .gameSchedule:
             AmplitudeManager.shared.trackEvent(tag: .clickGameschedule)
-        case 1:
+        case .teamRank:
             AmplitudeManager.shared.trackEvent(tag: .clickRanking)
-        case 2:
-            
-            // TODO: 추후 큐레이션으로 교체 예정
-            
+        case .curation:
             AmplitudeManager.shared.trackEvent(tag: .clickNews)
-        case 3:
+        case .notice:
             AmplitudeManager.shared.trackEvent(tag: .clickAnnouncement)
-        default:
-            break
         }
     }
 }
