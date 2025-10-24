@@ -12,7 +12,11 @@ import Moya
 
 enum QuizTargetType {
     case fetchQuiz
+<<<<<<< HEAD
     case updateQuizGrade(request: DTO.Request.UpdateQuizGradeRequest)
+=======
+    case updateQuizGrade(request: DTO.Request.UpdateQuizGrade)
+>>>>>>> c4ce0ce ([Add] #294 - 퀴즈 API 관련 DTO 및 TargetType 파일 추가)
 }
 
 extension QuizTargetType: BaseTargetType {
@@ -20,7 +24,11 @@ extension QuizTargetType: BaseTargetType {
         switch self {
         case .fetchQuiz:
             "/v1/quiz"
+<<<<<<< HEAD
         case .updateQuizGrade:
+=======
+        case .updateQuizGrade(request: let request):
+>>>>>>> c4ce0ce ([Add] #294 - 퀴즈 API 관련 DTO 및 TargetType 파일 추가)
             "/v1/quiz/grade"
         }
     }
@@ -45,9 +53,15 @@ extension QuizTargetType: BaseTargetType {
     var method: Moya.Method {
         switch self {
         case .fetchQuiz:
+<<<<<<< HEAD
             return .get
         case .updateQuizGrade:
             return .patch
+=======
+            return .patch
+        case .updateQuizGrade:
+            return .get
+>>>>>>> c4ce0ce ([Add] #294 - 퀴즈 API 관련 DTO 및 TargetType 파일 추가)
         }
     }
 }

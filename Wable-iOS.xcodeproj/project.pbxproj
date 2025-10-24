@@ -3056,6 +3056,7 @@
 				DEE6CBEC2EA0E6AE001A83A7 /* CurationViewModel.swift in Sources */,
 				DD29683E2D6DAD2F00143851 /* UpdateToken.swift in Sources */,
 				DE20BAD72D903985000126A4 /* AnnouncementDetailView.swift in Sources */,
+				DD055F772EAB3BCD0003DFF7 /* UpdateQuizGrade.swift in Sources */,
 				DE6459CF2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift in Sources */,
 				DE833BA02DE22C8D00812A80 /* Publishers+UIControlProperty.swift in Sources */,
 				DE8E863B2D918735000A4292 /* RankViewItem.swift in Sources */,
