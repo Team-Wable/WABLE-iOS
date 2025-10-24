@@ -17,6 +17,7 @@ final class TabBarController: UITabBarController {
     private var previousIndex: Int = 0
     private var shouldShowLoadingScreen: Bool
     private var viewitCoordinator: ViewitCoordinator?
+    private var profileCoordinator: ProfileCoordinator?
     
     // MARK: - UIComponent
     
@@ -59,21 +60,6 @@ final class TabBarController: UITabBarController {
         $0.tabBarItem.image = .icInfoPress
     }
     
-    private let profileViewController = MyProfileViewController(
-        viewModel: .init(
-            userinformationUseCase: FetchUserInformationUseCase(
-                repository: UserSessionRepositoryImpl(
-                    userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
-                )
-            ),
-            fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
-            removeUserSessionUseCase: RemoveUserSessionUseCaseImpl()
-        )
-    ).then {
-        $0.tabBarItem.title = "마이"
-        $0.tabBarItem.image = .icMyPress
-    }
-    
     // MARK: - LifeCycle
 
     init(shouldShowLoadingScreen: Bool = false) {
@@ -111,11 +97,13 @@ private extension TabBarController {
         viewitCoordinator = ViewitCoordinator(navigationController: viewitNavigationController)
         viewitCoordinator?.start()
         viewitNavigationController.tabBarItem = UITabBarItem(title: "뷰잇", image: .icViewit, selectedImage: nil)
-        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
-
-        profileViewController.onLogout = { [weak self] in
+        let profileNavigationController = UINavigationController()
+        profileCoordinator = ProfileCoordinator(navigationController: profileNavigationController)
+        profileCoordinator?.onLogout = { [weak self] in
             self?.onLogout?()
         }
+        profileCoordinator?.start()
+        profileNavigationController.tabBarItem = UITabBarItem(title: "마이", image: .icMyPress, selectedImage: nil)
 
         configureTabBar()
 

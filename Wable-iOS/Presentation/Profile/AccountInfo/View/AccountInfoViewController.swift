@@ -39,6 +39,8 @@ final class AccountInfoViewController: UIViewController {
     
     // MARK: - Property
     
+    var showWithdrawalReason: (() -> Void)?
+    
     private var dataSource: DataSource?
     
     private let viewModel: AccountInfoViewModel
@@ -158,8 +160,7 @@ private extension AccountInfoViewController {
     @objc func withdrawButtonDidTap() {
         AmplitudeManager.shared.trackEvent(tag: .clickDeleteAccount)
         
-        let viewController = WithdrawalReasonViewController()
-        navigationController?.pushViewController(viewController, animated: true)
+        showWithdrawalReason?()
     }
     
     // MARK: - Helper Method

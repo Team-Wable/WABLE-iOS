@@ -39,6 +39,8 @@ final class WithdrawalReasonViewController: UIViewController {
     
     // MARK: - Property
 
+    var showWithdrawalGuide: (([WithdrawalReason]) -> Void)?
+    
     private var dataSource: DataSource?
     
     private let viewModel = WithdrawalReasonViewModel()
@@ -166,14 +168,7 @@ private extension WithdrawalReasonViewController {
             .store(in: cancelBag)
         
         output.selectedReasons
-            .sink { [weak self] selectedReasons in
-                let viewModel = WithdrawalGuideViewModel(
-                    selectedReasons: selectedReasons,
-                    withdrawUseCase: WithdrawUseCaseImpl()
-                )
-                let viewController = WithdrawalGuideViewController(viewModel: viewModel)
-                self?.navigationController?.pushViewController(viewController, animated: true)
-            }
+            .sink { [weak self] selectedReasons in self?.showWithdrawalGuide?(selectedReasons) }
             .store(in: cancelBag)
     }
     
