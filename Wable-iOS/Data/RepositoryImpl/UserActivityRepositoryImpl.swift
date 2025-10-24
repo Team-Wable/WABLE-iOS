@@ -20,6 +20,7 @@ final class UserActivityRepositoryImpl: UserActivityRepository {
 
     init(storage: LocalKeyValueProvider) {
         self.storage = storage
+        
         loadActivities()
     }
 
