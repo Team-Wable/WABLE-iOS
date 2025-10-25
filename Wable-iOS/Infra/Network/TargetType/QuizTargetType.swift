@@ -12,7 +12,7 @@ import Moya
 
 enum QuizTargetType {
     case fetchQuiz
-    case updateQuizGrade(request: DTO.Request.UpdateQuizGrade)
+    case updateQuizGrade(request: DTO.Request.UpdateQuizGradeRequest)
 }
 
 extension QuizTargetType: BaseTargetType {
@@ -20,7 +20,7 @@ extension QuizTargetType: BaseTargetType {
         switch self {
         case .fetchQuiz:
             "/v1/quiz"
-        case .updateQuizGrade(request: let request):
+        case .updateQuizGrade:
             "/v1/quiz/grade"
         }
     }
@@ -45,9 +45,9 @@ extension QuizTargetType: BaseTargetType {
     var method: Moya.Method {
         switch self {
         case .fetchQuiz:
-            return .patch
-        case .updateQuizGrade:
             return .get
+        case .updateQuizGrade:
+            return .patch
         }
     }
 }

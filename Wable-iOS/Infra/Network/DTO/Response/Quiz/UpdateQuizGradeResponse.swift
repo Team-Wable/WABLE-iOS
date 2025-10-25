@@ -1,5 +1,5 @@
 //
-//  UpdateQuizGrade.swift
+//  UpdateQuizGradeResponse.swift
 //  Wable-iOS
 //
 //  Created by Youjin Lee on 10/24/25.
@@ -8,7 +8,7 @@
 import Foundation
 
 extension DTO.Response {
-    struct UpdateQuizGrade: Decodable {
+    struct UpdateQuizGradeResponse: Decodable {
         let answer: String
         let topPercent: Int
         let continueDay: Int

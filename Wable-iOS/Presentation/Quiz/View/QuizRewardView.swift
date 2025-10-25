@@ -16,9 +16,9 @@ public final class QuizRewardView: UIView {
     // MARK: - Enum
     
     public enum State {
-        case xp(isCorrect: Bool)
-        case top(percent: Int)
-        case speed(speed: Int)
+        case xp
+        case top
+        case speed
     }
     
     // MARK: Property
@@ -52,18 +52,20 @@ public final class QuizRewardView: UIView {
 // MARK: - Configure Method
 
 public extension QuizRewardView {
-    func configureView() {
+    func configureView(isCorrect: Bool? = nil, topPercent: Int? = nil, speed: Int? = nil) {
         switch state {
-        case .xp(isCorrect: let isCorrect):
+        case .xp:
+            guard let isCorrect = isCorrect else { return }
             let xp = isCorrect ? 8 : 3
             contentLabel.text = "\(xp)"
             titleLabel.textColor = .sky50
-        case .top(percent: let percent):
-            contentLabel.text = "\(percent)%"
+        case .top:
+            guard let topPercent = topPercent else { return }
+            contentLabel.text = "\(topPercent)%"
             titleLabel.textColor = .blue50
-        case .speed(speed: let speed):
-            let speedString = calculateSpeed(speed: speed)
-            contentLabel.text = speedString
+        case .speed:
+            guard let speed = speed else { return }
+            contentLabel.text = calculateSpeed(speed: speed)
             titleLabel.textColor = .purple50
         }
     }
