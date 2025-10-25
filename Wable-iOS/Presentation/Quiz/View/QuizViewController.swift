@@ -142,6 +142,7 @@ private extension QuizViewController {
             .store(in: cancelBag)
 
         output.answerInfo
+<<<<<<< HEAD:Wable-iOS/Presentation/Quiz/View/QuizViewController.swift
             .withLatestFrom(output.quizInfo) { answerInfo, quiz in
                 (quiz: quiz, answerInfo: answerInfo)
             }
@@ -156,6 +157,16 @@ private extension QuizViewController {
                     )
                 )
                 let resultViewController = QuizResultViewController(viewModel: viewModel)
+=======
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, result in
+                let resultViewController = QuizResultViewController(
+                    viewModel: QuizResultViewModel(),
+                    answer: result.isCorrect,
+                    totalTime: result.totalTime
+                )
+>>>>>>> fabc822 (feat: #294 - 퀴즈 화면 UI 구현 및 네비게이션 설정):Wable-iOS/Presentation/Quiz/QuizViewController.swift
                 resultViewController.modalPresentationStyle = .fullScreen
                 owner.present(resultViewController, animated: true)
             }
@@ -166,11 +177,19 @@ private extension QuizViewController {
             .withUnretained(self)
             .sink { owner, error in
                 let toast = WableSheetViewController(
+<<<<<<< HEAD:Wable-iOS/Presentation/Quiz/View/QuizViewController.swift
                     title: StringLiterals.Quiz.loadingErrorTitle,
                     message: "\(error.localizedDescription)\n\(StringLiterals.Quiz.loadingErrorMessage)"
                 )
                 toast.addAction(.init(title: "확인", style: .primary, handler: { [weak self] in
                     self?.navigationController?.popViewController(animated: true)
+=======
+                    title: "퀴즈 로딩 중 오류가 발생했어요",
+                    message: "\(error.localizedDescription)\n다시 시도해주세요."
+                )
+                toast.addAction(.init(title: "확인", style: .primary, handler: {
+                    self.navigationController?.popViewController(animated: true)
+>>>>>>> fabc822 (feat: #294 - 퀴즈 화면 UI 구현 및 네비게이션 설정):Wable-iOS/Presentation/Quiz/QuizViewController.swift
                 }))
                 
                 owner.present(toast, animated: true)

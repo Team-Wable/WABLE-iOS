@@ -18,6 +18,14 @@ public final class QuizResultViewController: UIViewController {
 
     private let viewModel: QuizResultViewModel
     private let cancelBag = CancelBag()
+<<<<<<< HEAD:Wable-iOS/Presentation/Quiz/View/QuizResultViewController.swift
+=======
+    private let rewardButtonDidTapSubject = PassthroughSubject<(quizId: Int, answer: Bool, totalTime: Int), Never>()
+
+    private let quizId: Int
+    private let answer: Bool
+    private let totalTime: Int
+>>>>>>> fabc822 (feat: #294 - 퀴즈 화면 UI 구현 및 네비게이션 설정):Wable-iOS/Presentation/Quiz/QuizResultViewController.swift
     
     // MARK: - UIComponent
     
@@ -50,8 +58,14 @@ public final class QuizResultViewController: UIViewController {
     
     // MARK: - LifeCycle
 
-    init(viewModel: QuizResultViewModel) {
+    init(viewModel: QuizResultViewModel, quizId: Int = 1, answer: Bool, totalTime: Int) {
         self.viewModel = viewModel
+<<<<<<< HEAD:Wable-iOS/Presentation/Quiz/View/QuizResultViewController.swift
+=======
+        self.quizId = quizId
+        self.answer = answer
+        self.totalTime = totalTime
+>>>>>>> fabc822 (feat: #294 - 퀴즈 화면 UI 구현 및 네비게이션 설정):Wable-iOS/Presentation/Quiz/QuizResultViewController.swift
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -66,6 +80,7 @@ public final class QuizResultViewController: UIViewController {
         setupView()
         setupBinding()
         setupAction()
+        configureView(isCorrect: answer)
     }
 }
 
@@ -125,17 +140,36 @@ private extension QuizResultViewController {
     }
     
     func setupBinding() {
+<<<<<<< HEAD:Wable-iOS/Presentation/Quiz/View/QuizResultViewController.swift
         let output = viewModel.transform(input: .init(), cancelBag: cancelBag)
+=======
+        let output = viewModel.transform(
+            input: .init(
+                rewardButtonDidTap: rewardButtonDidTapSubject.eraseToAnyPublisher()
+            ),
+            cancelBag: cancelBag
+        )
+>>>>>>> fabc822 (feat: #294 - 퀴즈 화면 UI 구현 및 네비게이션 설정):Wable-iOS/Presentation/Quiz/QuizResultViewController.swift
 
         output.updateQuizResult
             .receive(on: DispatchQueue.main)
             .withUnretained(self)
+<<<<<<< HEAD:Wable-iOS/Presentation/Quiz/View/QuizResultViewController.swift
             .sink(receiveValue: { owner, result in
                 owner.configureView(isCorrect: result.result.isCorrect)
                 owner.speedView.configureView(speed: result.speed)
                 owner.topView.configureView(topPercent: result.result.topPercent)
                 owner.xpView.configureView(isCorrect: result.result.isCorrect)
             })
+=======
+            .sink { owner, topPercent in
+                // TODO: 스피드 넣어주고 유저디폴트에서 상태 변환
+//                owner.speedView.configureView(speed: <#T##Int?#>)
+//                owner.topView.configureView(topPercent: topPercent)
+//                owner.xpView.configureView(isCorrect: xpValue)
+//                
+            }
+>>>>>>> fabc822 (feat: #294 - 퀴즈 화면 UI 구현 및 네비게이션 설정):Wable-iOS/Presentation/Quiz/QuizResultViewController.swift
             .store(in: cancelBag)
 
         output.error
@@ -143,8 +177,13 @@ private extension QuizResultViewController {
             .withUnretained(self)
             .sink { owner, error in
                 let toast = WableSheetViewController(
+<<<<<<< HEAD:Wable-iOS/Presentation/Quiz/View/QuizResultViewController.swift
                     title: StringLiterals.Quiz.rewardErrorTitle,
                     message: "\(error.localizedDescription)\n\(StringLiterals.Quiz.loadingErrorMessage)"
+=======
+                    title: "리워드 처리 중 오류가 발생했어요",
+                    message: "\(error.localizedDescription)\n다시 시도해주세요."
+>>>>>>> fabc822 (feat: #294 - 퀴즈 화면 UI 구현 및 네비게이션 설정):Wable-iOS/Presentation/Quiz/QuizResultViewController.swift
                 )
 
                 toast.addAction(.init(title: "확인", style: .primary))
@@ -162,6 +201,8 @@ private extension QuizResultViewController {
 
 private extension QuizResultViewController {
     @objc func rewardButtonDidTap() {
+        rewardButtonDidTapSubject.send((quizId: quizId, answer: answer, totalTime: totalTime))
+
         let keyWindow = UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .flatMap { $0.windows }
