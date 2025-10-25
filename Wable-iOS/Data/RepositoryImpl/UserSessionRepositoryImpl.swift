@@ -54,7 +54,8 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
         isPushAlarmAllowed: Bool? = nil,
         isAdmin: Bool? = nil,
         isAutoLoginEnabled: Bool? = nil,
-        notificationBadgeCount: Int? = nil
+        notificationBadgeCount: Int? = nil,
+        quizCompletedAt: Date? = nil
     ) {
         var sessions = fetchAllUserSessions()
         let existingSession = sessions[userID]
@@ -66,7 +67,8 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
             isPushAlarmAllowed: isPushAlarmAllowed ?? existingSession?.isPushAlarmAllowed ?? false,
             isAdmin: isAdmin ?? existingSession?.isAdmin ?? false,
             isAutoLoginEnabled: isAutoLoginEnabled ?? existingSession?.isAutoLoginEnabled ?? true,
-            notificationBadgeCount: notificationBadgeCount ?? existingSession?.notificationBadgeCount ?? 0
+            notificationBadgeCount: notificationBadgeCount ?? existingSession?.notificationBadgeCount ?? 0,
+            quizCompletedAt: quizCompletedAt ?? existingSession?.quizCompletedAt
         )
         
         sessions[userID] = updatedSession
