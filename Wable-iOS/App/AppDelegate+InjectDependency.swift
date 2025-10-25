@@ -101,11 +101,20 @@ extension AppDelegate {
         }
         
         // MARK: - Community
-        
+
         diContainer.register(for: CommunityRepository.self) { env in
             switch env {
             case .mock: MockCommunityRepository()
             case .production: CommunityRepositoryImpl()
+            }
+        }
+
+        // MARK: - Quiz
+
+        diContainer.register(for: QuizRepository.self) { env in
+            switch env {
+            case .mock: MockQuizRepository()
+            case .production: QuizRepositoryImpl()
             }
         }
     }
