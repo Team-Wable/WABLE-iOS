@@ -19,9 +19,10 @@ final class QuizViewModel {
     private let quizInfoSubject = CurrentValueSubject<Quiz?, Never>(nil)
     private let answerInfoSubject = PassthroughSubject<(answer: Bool, totalTime: Int), Never>()
     private let errorSubject = PassthroughSubject<WableError, Never>()
+    private var quizStartTime: Date?
     
     @Injected private var quizRepository: QuizRepository
-    private var quizStartTime: Date?
+    @Injected private var userSessionRepository: UserSessionRepository
 }
 
 extension QuizViewModel: ViewModelType {
@@ -48,14 +49,15 @@ extension QuizViewModel: ViewModelType {
             .withLatestFrom(quizInfoSubject.compactMap { $0 }) { userAnswer, quiz in
                 return (userAnswer: userAnswer, quiz: quiz)
             }
-            .compactMap { [weak self] userAnswer, quiz in
+            .compactMap { [weak self] (data: (userAnswer: Bool, quiz: Quiz)) -> (answer: Bool, totalTime: Int)? in
                 guard let startTime = self?.quizStartTime else { return nil }
                 let totalTime = Int(Date().timeIntervalSince(startTime))
-                
-                return (answer: userAnswer, totalTime: totalTime)
+
+                return (answer: data.userAnswer, totalTime: totalTime)
             }
             .withUnretained(self)
             .sink(receiveValue: { owner, result in
+                owner.updateQuizCompletedAt()
                 owner.answerInfoSubject.send(result)
             })
             .store(in: cancelBag)
@@ -78,5 +80,20 @@ private extension QuizViewModel {
                 return Empty<Quiz, Never>().eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
+    }
+    
+    func updateQuizCompletedAt() {
+        guard let userSession = userSessionRepository.fetchActiveUserSession() else { return }
+
+        userSessionRepository.updateUserSession(
+            userID: userSession.id,
+            nickname: userSession.nickname,
+            profileURL: userSession.profileURL,
+            isPushAlarmAllowed: userSession.isPushAlarmAllowed,
+            isAdmin: userSession.isAdmin,
+            isAutoLoginEnabled: userSession.isAutoLoginEnabled,
+            notificationBadgeCount: userSession.notificationBadgeCount,
+            quizCompletedAt: Date()
+        )
     }
 }
