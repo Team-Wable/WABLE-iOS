@@ -2,18 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>FacebookAdvertiserIDCollectionEnabled</key>
-	<true/>
-	<key>FacebookAutoLogAppEventsEnabled</key>
-	<true/>
-	<key>FacebookDisplayName</key>
-	<string>$(FACEBOOK_APP_NAME)</string>
-	<key>FacebookAppID</key>
-	<string>$(FACEBOOK_APP_ID)</string>
-	<key>FacebookClientToken</key>
-	<string>$(FACEBOOK_CLIENT_TOKEN)</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>AMPLITUDE_APP_KEY</key>
 	<string>$(AMPLITUDE_APP_KEY)</string>
 	<key>BASE_URL</key>
@@ -30,6 +18,16 @@
 			</array>
 		</dict>
 	</array>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<true/>
+	<key>FacebookAppID</key>
+	<string>$(FACEBOOK_APP_ID)</string>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<true/>
+	<key>FacebookClientToken</key>
+	<string>$(FACEBOOK_CLIENT_TOKEN)</string>
+	<key>FacebookDisplayName</key>
+	<string>$(FACEBOOK_APP_NAME)</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -46,6 +44,7 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Pricedown-Black.otf</string>
 		<string>Pretendard-Regular.otf</string>
 		<string>Pretendard-SemiBold.otf</string>
 	</array>
