@@ -18,4 +18,12 @@ extension QuizMapper {
             answer: response.answer
         )
     }
+    
+    static func toDomain(_ response: DTO.Response.UpdateQuizGradeResponse) -> QuizResult {
+        return QuizResult(
+            isCorrect: response.answer,
+            topPercent: response.topPercent,
+            continueDay: response.continueDay
+        )
+    }
 }

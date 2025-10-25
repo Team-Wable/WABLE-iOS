@@ -9,6 +9,6 @@ import Combine
 import Foundation
 
 protocol QuizRepository {
-    func updateQuizAnswer(id: Int, answer: Bool, totalTime: Int) -> AnyPublisher<Int, WableError>
+    func updateQuizAnswer(id: Int, answer: Bool, totalTime: Int) -> AnyPublisher<QuizResult, WableError>
     func fetchQuiz() -> AnyPublisher<Quiz, WableError>
 }
