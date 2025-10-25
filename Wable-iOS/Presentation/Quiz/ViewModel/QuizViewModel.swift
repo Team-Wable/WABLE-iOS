@@ -17,11 +17,11 @@ final class QuizViewModel {
     // MARK: Property
 
     private let quizInfoSubject = CurrentValueSubject<Quiz?, Never>(nil)
-    private let isAnswerSubject = PassthroughSubject<(isCorrect: Bool, totalTime: Int), Never>()
+    private let answerInfoSubject = PassthroughSubject<(answer: Bool, totalTime: Int), Never>()
     private let errorSubject = PassthroughSubject<WableError, Never>()
-    private var quizStartTime: Date?
-
+    
     @Injected private var quizRepository: QuizRepository
+    private var quizStartTime: Date?
 }
 
 extension QuizViewModel: ViewModelType {
@@ -31,7 +31,7 @@ extension QuizViewModel: ViewModelType {
     
     struct Output {
         let quizInfo: AnyPublisher<Quiz, Never>
-        let answerInfo: AnyPublisher<(isCorrect: Bool, totalTime: Int), Never>
+        let answerInfo: AnyPublisher<(answer: Bool, totalTime: Int), Never>
         let error: AnyPublisher<WableError, Never>
     }
     
@@ -51,18 +51,18 @@ extension QuizViewModel: ViewModelType {
             .compactMap { [weak self] userAnswer, quiz in
                 guard let startTime = self?.quizStartTime else { return nil }
                 let totalTime = Int(Date().timeIntervalSince(startTime))
-                let isCorrect = userAnswer == quiz.answer
-                return (isCorrect: isCorrect, totalTime: totalTime)
+                
+                return (answer: userAnswer, totalTime: totalTime)
             }
             .withUnretained(self)
             .sink(receiveValue: { owner, result in
-                owner.isAnswerSubject.send(result)
+                owner.answerInfoSubject.send(result)
             })
             .store(in: cancelBag)
 
         return Output(
             quizInfo: quizInfoSubject.compactMap { $0 }.eraseToAnyPublisher(),
-            answerInfo: isAnswerSubject.eraseToAnyPublisher(),
+            answerInfo: answerInfoSubject.eraseToAnyPublisher(),
             error: errorSubject.eraseToAnyPublisher()
         )
     }
