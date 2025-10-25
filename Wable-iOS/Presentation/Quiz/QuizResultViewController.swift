@@ -18,11 +18,6 @@ public final class QuizResultViewController: UIViewController {
 
     private let viewModel: QuizResultViewModel
     private let cancelBag = CancelBag()
-    private let rewardButtonDidTapSubject = PassthroughSubject<(quizId: Int, answer: Bool, totalTime: Int), Never>()
-
-    private let quizId: Int
-    private let answer: Bool
-    private let totalTime: Int
     
     // MARK: - UIComponent
     
@@ -55,11 +50,8 @@ public final class QuizResultViewController: UIViewController {
     
     // MARK: - LifeCycle
 
-    init(viewModel: QuizResultViewModel, quizId: Int = 1, answer: Bool, totalTime: Int) {
+    init(viewModel: QuizResultViewModel) {
         self.viewModel = viewModel
-        self.quizId = quizId
-        self.answer = answer
-        self.totalTime = totalTime
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -74,7 +66,6 @@ public final class QuizResultViewController: UIViewController {
         setupView()
         setupBinding()
         setupAction()
-        configureView(isCorrect: answer)
     }
 }
 
@@ -112,7 +103,7 @@ private extension QuizResultViewController {
         }
         
         xpView.snp.makeConstraints { make in
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(16)
+            make.bottom.equalTo(rewardButton.snp.top).offset(-82)
             make.leading.equalToSuperview().offset(36)
         }
         
@@ -134,23 +125,17 @@ private extension QuizResultViewController {
     }
     
     func setupBinding() {
-        let output = viewModel.transform(
-            input: .init(
-                rewardButtonDidTap: rewardButtonDidTapSubject.eraseToAnyPublisher()
-            ),
-            cancelBag: cancelBag
-        )
+        let output = viewModel.transform(input: .init(), cancelBag: cancelBag)
 
         output.updateQuizResult
             .receive(on: DispatchQueue.main)
             .withUnretained(self)
-            .sink { owner, topPercent in
-                // TODO: 스피드 넣어주고 유저디폴트에서 상태 변환
-//                owner.speedView.configureView(speed: <#T##Int?#>)
-//                owner.topView.configureView(topPercent: topPercent)
-//                owner.xpView.configureView(isCorrect: xpValue)
-//                
-            }
+            .sink(receiveValue: { owner, result in
+                owner.configureView(isCorrect: result.result.isCorrect)
+                owner.speedView.configureView(speed: result.speed)
+                owner.topView.configureView(topPercent: result.result.topPercent)
+                owner.xpView.configureView(isCorrect: result.result.isCorrect)
+            })
             .store(in: cancelBag)
 
         output.error
@@ -177,8 +162,6 @@ private extension QuizResultViewController {
 
 private extension QuizResultViewController {
     @objc func rewardButtonDidTap() {
-        rewardButtonDidTapSubject.send((quizId: quizId, answer: answer, totalTime: totalTime))
-
         let keyWindow = UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .flatMap { $0.windows }
