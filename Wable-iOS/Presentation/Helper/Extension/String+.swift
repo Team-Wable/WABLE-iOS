@@ -36,6 +36,33 @@ extension String {
         return NSMutableAttributedString(string: self, attributes: attributes)
     }
     
+    // MARK: - pricedownString
+
+    /// 주어진 `Pricedown` 스타일을 적용한 `NSMutableAttributedString`을 반환합니다.
+    ///
+    /// - Parameter style: 적용할 `UIFont.Pricedown` 스타일
+    /// - Returns: `NSMutableAttributedString` 객체
+    ///
+    /// 사용 예시 (`UILabel`에서 `attributedText` 설정):
+    /// ```swift
+    /// let label = UILabel()
+    /// label.attributedText = "Hello, world!".pricedownString(with: .black)
+    /// ```
+    func pricedownString(with style: UIFont.Pricedown) -> NSMutableAttributedString {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.minimumLineHeight = style.lineHeight
+        paragraphStyle.maximumLineHeight = style.lineHeight
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.pricedown(style),
+            .kern: style.kerning,
+            .paragraphStyle: paragraphStyle,
+            .baselineOffset: style.baselineOffset
+        ]
+        
+        return NSMutableAttributedString(string: self, attributes: attributes)
+    }
+    
     /// 주어진 `Pretendard` 스타일을 적용한 `AttributedString`을 반환합니다.
     ///
     /// - Parameter style: 적용할 `UIFont.Pretendard` 스타일
