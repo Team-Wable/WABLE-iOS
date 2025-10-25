@@ -9,7 +9,7 @@ import Foundation
 
 extension DTO.Response {
     struct UpdateQuizGradeResponse: Decodable {
-        let answer: String
+        let answer: Bool
         let topPercent: Int
         let continueDay: Int
         

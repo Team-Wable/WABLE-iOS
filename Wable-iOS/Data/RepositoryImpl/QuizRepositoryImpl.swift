@@ -20,7 +20,7 @@ final class QuizRepositoryImpl {
 }
 
 extension QuizRepositoryImpl: QuizRepository {
-    func updateQuizAnswer(id: Int, answer: Bool, totalTime: Int) -> AnyPublisher<Int, WableError> {
+    func updateQuizAnswer(id: Int, answer: Bool, totalTime: Int) -> AnyPublisher<QuizResult, WableError> {
         let request = DTO.Request.UpdateQuizGradeRequest(
             id: id,
             answer: answer,
@@ -28,9 +28,7 @@ extension QuizRepositoryImpl: QuizRepository {
         )
 
         return provider.request(.updateQuizGrade(request: request), for: DTO.Response.UpdateQuizGradeResponse.self)
-            .compactMap { response in
-                response.topPercent
-            }
+            .map(QuizMapper.toDomain)
             .mapWableError()
     }
     
@@ -44,10 +42,14 @@ extension QuizRepositoryImpl: QuizRepository {
 struct MockQuizRepository: QuizRepository {
     private var randomDelay: TimeInterval { Double.random(in: 0.7...1.3) }
     
-    func updateQuizAnswer(id: Int, answer: Bool, totalTime: Int) -> AnyPublisher<Int, WableError> {
-        return .just(Int.random(in: 1...99))
-            .delay(for: .seconds(randomDelay), scheduler: DispatchQueue.main)
-            .eraseToAnyPublisher()
+    func updateQuizAnswer(id: Int, answer: Bool, totalTime: Int) -> AnyPublisher<QuizResult, WableError> {
+        return .just(QuizResult(
+            isCorrect: false,
+            topPercent: Int.random(in: 1...99),
+            continueDay: Int.random(in: 1...99)
+        ))
+        .delay(for: .seconds(randomDelay), scheduler: DispatchQueue.main)
+        .eraseToAnyPublisher()
     }
     
     func fetchQuiz() -> AnyPublisher<Quiz, WableError> {
