@@ -89,6 +89,8 @@ private extension LoginViewModel {
     }
     
     func updateUserSession(account: Account) {
+        let existingSession = userSessionRepository.fetchUserSession(forUserID: account.user.id)
+
         userSessionRepository.updateUserSession(
             userID: account.user.id,
             nickname: account.user.nickname,
@@ -96,7 +98,8 @@ private extension LoginViewModel {
             isPushAlarmAllowed: account.isPushAlarmAllowed ?? false,
             isAdmin: account.isAdmin,
             isAutoLoginEnabled: true,
-            notificationBadgeCount: nil
+            notificationBadgeCount: nil,
+            quizCompletedAt: existingSession?.quizCompletedAt
         )
         
         userSessionRepository.updateActiveUserID(account.user.id)
