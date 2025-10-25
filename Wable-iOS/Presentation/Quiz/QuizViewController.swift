@@ -142,14 +142,20 @@ private extension QuizViewController {
             .store(in: cancelBag)
 
         output.answerInfo
+            .withLatestFrom(output.quizInfo) { answerInfo, quiz in
+                (quiz: quiz, answerInfo: answerInfo)
+            }
             .receive(on: DispatchQueue.main)
             .withUnretained(self)
-            .sink { owner, result in
-                let resultViewController = QuizResultViewController(
-                    viewModel: QuizResultViewModel(),
-                    answer: result.isCorrect,
-                    totalTime: result.totalTime
+            .sink { owner, data in
+                let viewModel = QuizResultViewModel(
+                    quizInfo: (
+                        id: data.quiz.id,
+                        userAnswer: data.answerInfo.answer,
+                        totalTime: data.answerInfo.totalTime
+                    )
                 )
+                let resultViewController = QuizResultViewController(viewModel: viewModel)
                 resultViewController.modalPresentationStyle = .fullScreen
                 owner.present(resultViewController, animated: true)
             }
