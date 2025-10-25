@@ -25,7 +25,7 @@ public final class QuizCoordinator: Coordinator {
 
 public extension QuizCoordinator {
     func showNextQuizInfoView() {
-        let viewController = NextQuizInfoViewController()
+        let viewController = NextQuizInfoViewController(type: .quiz, viewModel: .init())
         navigationController.setViewControllers([viewController], animated: false)
     }
     
