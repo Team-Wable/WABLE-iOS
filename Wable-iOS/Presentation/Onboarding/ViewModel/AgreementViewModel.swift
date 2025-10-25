@@ -113,7 +113,8 @@ private extension AgreementViewModel {
                 isPushAlarmAllowed: isMarketingAgreed,
                 isAdmin: userSession.isAdmin,
                 isAutoLoginEnabled: true,
-                notificationBadgeCount: userSession.notificationBadgeCount ?? 0
+                notificationBadgeCount: userSession.notificationBadgeCount ?? 0,
+                quizCompletedAt: nil
             )
 
             WableLogger.log("세션 저장 완료", for: .debug)
