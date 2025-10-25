@@ -166,8 +166,8 @@ private extension QuizViewController {
             .withUnretained(self)
             .sink { owner, error in
                 let toast = WableSheetViewController(
-                    title: "퀴즈 로딩 중 오류가 발생했어요",
-                    message: "\(error.localizedDescription)\n다시 시도해주세요."
+                    title: StringLiterals.Quiz.loadingErrorTitle,
+                    message: "\(error.localizedDescription)\n\(StringLiterals.Quiz.loadingErrorMessage)"
                 )
                 toast.addAction(.init(title: "확인", style: .primary, handler: {
                     self.navigationController?.popViewController(animated: true)

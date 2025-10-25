@@ -162,7 +162,7 @@ extension TabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if let index = viewControllers?.firstIndex(of: viewController), index == 2 {
             // TODO: hasCompleted 나중에 기능 구현하기
-            let hasCompletedQuiz = false
+            let hasCompletedQuiz = true
 
             if !hasCompletedQuiz {
                 if let viewController = selectedViewController as? UINavigationController {
@@ -174,6 +174,8 @@ extension TabBarController: UITabBarControllerDelegate {
                 }
                 return false
             }
+            
+            
         }
         return true
     }
@@ -186,6 +188,15 @@ extension TabBarController: UITabBarControllerDelegate {
                 if tabBarController.selectedIndex == 0 {
                     homeViewController.scrollToTop()
                 }
+            }
+
+            // 퀴즈 탭 선택 시 NextQuizInfoViewController 재로드 (시간 업데이트)
+            if currentIndex == 2 {
+                let newQuizViewController = NextQuizInfoViewController(
+                    type: .quiz,
+                    viewModel: NextQuizInfoViewModel()
+                )
+                navigationController.setViewControllers([newQuizViewController], animated: false)
             }
         }
 

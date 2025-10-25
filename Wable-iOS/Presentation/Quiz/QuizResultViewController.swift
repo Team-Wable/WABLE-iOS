@@ -143,8 +143,8 @@ private extension QuizResultViewController {
             .withUnretained(self)
             .sink { owner, error in
                 let toast = WableSheetViewController(
-                    title: "리워드 처리 중 오류가 발생했어요",
-                    message: "\(error.localizedDescription)\n다시 시도해주세요."
+                    title: StringLiterals.Quiz.rewardErrorTitle,
+                    message: "\(error.localizedDescription)\n\(StringLiterals.Quiz.loadingErrorMessage)"
                 )
 
                 toast.addAction(.init(title: "확인", style: .primary))
@@ -184,18 +184,9 @@ private extension QuizResultViewController {
 private extension QuizResultViewController {
     func configureView(isCorrect: Bool) {
         answerImageView.image = isCorrect ? .imgQuizSuccess : .imgQuizFail
-        titleLabel.text = isCorrect ? Constant.correctTitle : Constant.incorrectTitle
-        descriptionLabel.text = isCorrect ? Constant.correctDescription : Constant.incorrectDescription
-    }
-}
-
-// MARK: - Constant
-
-private extension QuizResultViewController {
-    private enum Constant {
-        static let correctTitle: String = "걸어다니는 LCK 백과사전"
-        static let correctDescription: String = "정답을 맞추셨어요. 대단해요!"
-        static let incorrectTitle: String = "LCK의 평범한 시청자!"
-        static let incorrectDescription: String = "정답은 틀렸지만, 좋은 시도였어요!\n다음 기회를 노려봐요"
+        titleLabel.text = isCorrect ? StringLiterals.Quiz.correctTitle : StringLiterals.Quiz.incorrectTitle
+        descriptionLabel.text = isCorrect ?
+        StringLiterals.Quiz.correctDescription :
+        StringLiterals.Quiz.incorrectDescription
     }
 }
