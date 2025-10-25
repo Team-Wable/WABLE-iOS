@@ -42,6 +42,7 @@ enum NavigationType {
     case flow
     case page(type: PageType, title: String)
     case hub(title: String = "", isBeta: Bool = false)
+    case quiz
     
     var isHub: Bool {
         if case .hub = self {
@@ -289,6 +290,16 @@ extension NavigationView {
             ]
             
             isBeta ? visibleViewList.append(betaImageView) : nil
+        case .quiz:
+            backgroundColor = .wableBlack
+            hubTitleLabel.attributedText = "퀴즈".pretendardString(with: .head2)
+            hubImageView.image = .icQuiz.withTintColor(.purple50)
+            
+            visibleViewList = [
+                hubImageView,
+                hubTitleLabel,
+                homeUnderLineView
+            ]
         }
         
         visibleViewList.forEach { $0.isHidden = false }

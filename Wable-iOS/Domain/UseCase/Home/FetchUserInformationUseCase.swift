@@ -45,7 +45,8 @@ extension FetchUserInformationUseCase {
         isPushAlarmAllowed: Bool? = nil,
         isAdmin: Bool? = nil,
         isAutoLoginEnabled: Bool? = nil,
-        notificationBadgeCount: Int? = nil
+        notificationBadgeCount: Int? = nil,
+        quizCompletedAt: Date? = nil
     ) -> AnyPublisher<Void, Never> {
         return Just(
             repository.updateUserSession(
@@ -55,7 +56,8 @@ extension FetchUserInformationUseCase {
                 isPushAlarmAllowed: isPushAlarmAllowed,
                 isAdmin: isAdmin,
                 isAutoLoginEnabled: isAutoLoginEnabled,
-                notificationBadgeCount: notificationBadgeCount
+                notificationBadgeCount: notificationBadgeCount,
+                quizCompletedAt: quizCompletedAt
             )
         )
         .eraseToAnyPublisher()
