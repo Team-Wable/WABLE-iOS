@@ -50,7 +50,7 @@ public final class QuizResultViewController: UIViewController {
     
     // MARK: - LifeCycle
 
-    init(viewModel: QuizResultViewModel) {
+    init(viewModel: QuizResultViewModel, quizId: Int = 1, answer: Bool, totalTime: Int) {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
@@ -66,6 +66,7 @@ public final class QuizResultViewController: UIViewController {
         setupView()
         setupBinding()
         setupAction()
+        configureView(isCorrect: answer)
     }
 }
 
