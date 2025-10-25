@@ -27,6 +27,7 @@
 		DD055F8A2EACA1DB0003DFF7 /* QuizViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F892EACA1D40003DFF7 /* QuizViewModel.swift */; };
 		DD055F8C2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F8B2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift */; };
 		DD055F8E2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F8D2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift */; };
+		DD055F902EAD2C5D0003DFF7 /* QuizResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F8F2EAD2C5A0003DFF7 /* QuizResult.swift */; };
 		DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */; };
 		DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */; };
 		DD20D9702E8C2C41008D63DB /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */; };
@@ -437,6 +438,7 @@
 		DD055F892EACA1D40003DFF7 /* QuizViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewModel.swift; sourceTree = "<group>"; };
 		DD055F8B2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuizGradeRequest.swift; sourceTree = "<group>"; };
 		DD055F8D2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuizGradeResponse.swift; sourceTree = "<group>"; };
+		DD055F8F2EAD2C5A0003DFF7 /* QuizResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResult.swift; sourceTree = "<group>"; };
 		DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
@@ -1351,6 +1353,7 @@
 		DD2967F72D6DAC3100143851 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F8F2EAD2C5A0003DFF7 /* QuizResult.swift */,
 				DD055F832EABD0680003DFF7 /* Quiz.swift */,
 				DDCCA3942D73928400658122 /* UserSession.swift */,
 				DD2967E72D6DAC3100143851 /* User.swift */,
@@ -2931,6 +2934,7 @@
 				DD2968592D6DAD4400143851 /* CreateViewitPostRequest.swift in Sources */,
 				DD29685A2D6DAD4400143851 /* CreateCommentLiked.swift in Sources */,
 				DD9980DB2D834CA900EBBFBC /* Comment.swift in Sources */,
+				DD055F902EAD2C5D0003DFF7 /* QuizResult.swift in Sources */,
 				DEE5D61A2D91537C009E5A25 /* GameScheduleViewItem.swift in Sources */,
 				DE72BB102D93CC68008E5774 /* NotificationPageView.swift in Sources */,
 				DDFB22462D8BBB8600FEA24A /* ProfileRegisterViewController.swift in Sources */,
