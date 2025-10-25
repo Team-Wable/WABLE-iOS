@@ -19,6 +19,8 @@ final class TabBarController: UITabBarController {
     private var quizCoordinator: QuizCoordinator?
     private var viewitCoordinator: ViewitCoordinator?
     
+    @Injected private var userSessionRepository: UserSessionRepository
+    
     // MARK: - UIComponent
     
     private lazy var homeViewController = HomeViewController(
@@ -120,8 +122,8 @@ private extension TabBarController {
         viewitNavigationController.tabBarItem = UITabBarItem(title: "뷰잇", image: .icViewit, selectedImage: nil)
         
         let quizNavigationController = UINavigationController()
-        // TODO: hasCompleted 나중에 기능 구현하기
-        quizCoordinator = QuizCoordinator(navigationController: quizNavigationController, hasCompleted: false)
+        let hasCompleted = checkTodayQuizCompletion()
+        quizCoordinator = QuizCoordinator(navigationController: quizNavigationController, hasCompleted: hasCompleted)
         quizCoordinator?.start()
         quizNavigationController.tabBarItem = UITabBarItem(title: "퀴즈", image: .icQuiz, selectedImage: nil)
         
@@ -176,10 +178,9 @@ private extension TabBarController {
 extension TabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if let index = viewControllers?.firstIndex(of: viewController), index == 2 {
-            // TODO: hasCompleted 나중에 기능 구현하기
-            let hasCompletedQuiz = true
+            let hasCompleted = checkTodayQuizCompletion()
 
-            if !hasCompletedQuiz {
+            if !hasCompleted {
                 if let viewController = selectedViewController as? UINavigationController {
                     let quizViewController = QuizViewController(
                         type: .page(type: .quiz, title: "퀴즈"),
@@ -205,7 +206,6 @@ extension TabBarController: UITabBarControllerDelegate {
                 }
             }
 
-            // 퀴즈 탭 선택 시 NextQuizInfoViewController 재로드 (시간 업데이트)
             if currentIndex == 2 {
                 let newQuizViewController = NextQuizInfoViewController(
                     type: .quiz,
@@ -236,5 +236,21 @@ extension TabBarController: UITabBarControllerDelegate {
         }
         
         previousIndex = currentIndex
+    }
+}
+
+// MARK: - Helper Methods
+
+private extension TabBarController {
+    func checkTodayQuizCompletion() -> Bool {
+        guard let userSession = userSessionRepository.fetchActiveUserSession(),
+              let quizCompletedAt = userSession.quizCompletedAt else {
+            return false
+        }
+
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone(abbreviation: "KST") ?? TimeZone.current
+
+        return calendar.isDateInToday(quizCompletedAt)
     }
 }
