@@ -28,6 +28,9 @@
 		DD055F8C2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F8B2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift */; };
 		DD055F8E2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F8D2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift */; };
 		DD055F902EAD2C5D0003DFF7 /* QuizResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F8F2EAD2C5A0003DFF7 /* QuizResult.swift */; };
+		DD055F922EAD38FE0003DFF7 /* NextQuizInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F912EAD38F50003DFF7 /* NextQuizInfoViewModel.swift */; };
+		DD055F942EAD3B5B0003DFF7 /* Pricedown-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = DD055F932EAD3B5B0003DFF7 /* Pricedown-Black.otf */; };
+		DD055F962EAD468F0003DFF7 /* StringLiterals+Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F952EAD46860003DFF7 /* StringLiterals+Quiz.swift */; };
 		DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */; };
 		DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */; };
 		DD20D9702E8C2C41008D63DB /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */; };
@@ -446,6 +449,9 @@
 		DD055F8B2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuizGradeRequest.swift; sourceTree = "<group>"; };
 		DD055F8D2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuizGradeResponse.swift; sourceTree = "<group>"; };
 		DD055F8F2EAD2C5A0003DFF7 /* QuizResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResult.swift; sourceTree = "<group>"; };
+		DD055F912EAD38F50003DFF7 /* NextQuizInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextQuizInfoViewModel.swift; sourceTree = "<group>"; };
+		DD055F932EAD3B5B0003DFF7 /* Pricedown-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pricedown-Black.otf"; sourceTree = "<group>"; };
+		DD055F952EAD46860003DFF7 /* StringLiterals+Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringLiterals+Quiz.swift"; sourceTree = "<group>"; };
 		DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
@@ -906,6 +912,7 @@
 			children = (
 				0586D8992D09A68200436080 /* Pretendard-Regular.otf */,
 				0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */,
+				DD055F932EAD3B5B0003DFF7 /* Pricedown-Black.otf */,
 			);
 			path = Font;
 			sourceTree = "<group>";
@@ -1424,6 +1431,7 @@
 		DD2A2F0F2EA8A2AF0024076B /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F912EAD38F50003DFF7 /* NextQuizInfoViewModel.swift */,
 				DD055F892EACA1D40003DFF7 /* QuizViewModel.swift */,
 				DD2A2F102EA8A2B70024076B /* QuizResultViewModel.swift */,
 			);
@@ -1750,6 +1758,7 @@
 		DDF97CB42DE4EAC7009FC612 /* String */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F952EAD46860003DFF7 /* StringLiterals+Quiz.swift */,
 				DDF97CA12DE4EAC7009FC612 /* StringLiterals.swift */,
 				DDF97CA22DE4EAC7009FC612 /* StringLiterals+Ban.swift */,
 				DDF97CA32DE4EAC7009FC612 /* StringLiterals+Community.swift */,
@@ -2873,6 +2882,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD055F942EAD3B5B0003DFF7 /* Pricedown-Black.otf in Resources */,
 				054308EA2CB7F582001861F1 /* wable_loading.json in Resources */,
 				DD2968012D6DAC9300143851 /* LaunchScreen.storyboard in Resources */,
 				DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */,
@@ -3188,6 +3198,7 @@
 				DD214B5C2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift in Sources */,
 				DDFB22402D8BA68900FEA24A /* LCKTeamCollectionViewCell.swift in Sources */,
 				DDCA70972D88797200A988B8 /* AuthorType.swift in Sources */,
+				DD055F922EAD38FE0003DFF7 /* NextQuizInfoViewModel.swift in Sources */,
 				DD2967FC2D6DAC4800143851 /* Injected.swift in Sources */,
 				DD2967FD2D6DAC4800143851 /* CancelBag.swift in Sources */,
 				DEF148422DA7B7E5003B2AD8 /* IsUserRegistered.swift in Sources */,
@@ -3282,6 +3293,7 @@
 				DD2A2F082EA693110024076B /* QuizViewController.swift in Sources */,
 				2C9059C26644859C87248150 /* AppCoordinator.swift in Sources */,
 				C83B4C1EB77093628C57171E /* MainCoordinator.swift in Sources */,
+				DD055F962EAD468F0003DFF7 /* StringLiterals+Quiz.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3440,6 +3452,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Resource/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "술먹고미친와블";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "게시글이나 프로필을 변경할 때 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -3481,7 +3494,8 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Resource/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "와블";
+				INFOPLIST_KEY_CFBundleDisplayName = "술먹고미친와블";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "게시글이나 프로필을 변경할 때 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
