@@ -101,7 +101,7 @@ extension AppDelegate {
         }
         
         // MARK: - Community
-        
+
         diContainer.register(for: CommunityRepository.self) { env in
             switch env {
             case .mock: MockCommunityRepository()
