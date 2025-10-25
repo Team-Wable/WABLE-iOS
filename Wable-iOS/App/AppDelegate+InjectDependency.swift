@@ -108,7 +108,7 @@ extension AppDelegate {
             case .production: CommunityRepositoryImpl()
             }
         }
-
+        
         // MARK: - UserActivity
         
         diContainer.register(for: UserActivityRepository.self) { env in
@@ -117,7 +117,7 @@ extension AppDelegate {
             case .production: UserActivityRepositoryImpl(storage: UserDefaultsStorage())
             }
         }
-                
+        
         // MARK: - Quiz
 
         diContainer.register(for: QuizRepository.self) { env in
