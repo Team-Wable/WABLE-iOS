@@ -101,7 +101,7 @@ extension AppDelegate {
         }
         
         // MARK: - Community
-        
+
         diContainer.register(for: CommunityRepository.self) { env in
             switch env {
             case .mock: MockCommunityRepository()
@@ -109,10 +109,21 @@ extension AppDelegate {
             }
         }
 
+        // MARK: - UserActivity
+        
         diContainer.register(for: UserActivityRepository.self) { env in
             switch env {
             case .mock: MockUserActivityRepository()
             case .production: UserActivityRepositoryImpl(storage: UserDefaultsStorage())
+            }
+        }
+                
+        // MARK: - Quiz
+
+        diContainer.register(for: QuizRepository.self) { env in
+            switch env {
+            case .mock: MockQuizRepository()
+            case .production: QuizRepositoryImpl()
             }
         }
     }
