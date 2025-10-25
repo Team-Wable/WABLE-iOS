@@ -16,6 +16,7 @@ struct UserSession: Codable, Identifiable {
     let isAdmin: Bool
     let isAutoLoginEnabled: Bool?
     let notificationBadgeCount: Int?
+    var quizCompletedAt: Date?
 }
 
 // MARK: - 유저 활동
