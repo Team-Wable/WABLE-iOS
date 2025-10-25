@@ -35,6 +35,7 @@ enum NavigationType {
         case detail
         case profile
         case profileEdit
+        case quiz
     }
     
     case home(hasNewNotification: Bool)
@@ -270,6 +271,11 @@ extension NavigationView {
                     backButton,
                     doneButton,
                     pageUnderLineView
+                ]
+            case .quiz:
+                visibleViewList = [
+                    pageTitleLabel,
+                    backButton
                 ]
             }
         case .hub(title: let text, isBeta: let isBeta):

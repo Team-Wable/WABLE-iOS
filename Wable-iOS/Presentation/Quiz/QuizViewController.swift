@@ -6,12 +6,19 @@
 //
 
 import UIKit
+import Combine
 
+import Kingfisher
 import SnapKit
 import Then
 
 final class QuizViewController: NavigationViewController {
-    
+
+    // MARK: - Property
+
+    private let viewModel: QuizViewModel
+    private let cancelBag = CancelBag()
+
     // MARK: - UIComponent
     
     private let quizImageView: UIImageView = UIImageView().then {
@@ -20,8 +27,9 @@ final class QuizViewController: NavigationViewController {
     
     private let descriptionLabel: UILabel = UILabel().then {
         $0.textColor = .wableBlack
+        $0.attributedText = " ".pretendardString(with: .head2)
         $0.textAlignment = .center
-        $0.attributedText = " ".pretendardString(with: .head1)
+        $0.numberOfLines = 4
     }
     
     private lazy var correctButton: UIButton = UIButton(configuration: .plain()).then {
@@ -43,9 +51,10 @@ final class QuizViewController: NavigationViewController {
     
     // MARK: - Life Cycle
 
-    override init(type: NavigationType) {
+    init(type: NavigationType, viewModel: QuizViewModel) {
+        self.viewModel = viewModel
         super.init(type: type)
-        
+
         hidesBottomBarWhenPushed = true
     }
 
@@ -58,6 +67,7 @@ final class QuizViewController: NavigationViewController {
 
         setupView()
         setupAction()
+        setupBinding()
     }
 }
 
@@ -106,7 +116,60 @@ private extension QuizViewController {
     func setupAction() {
         correctButton.addTarget(self, action: #selector(correctButtonDidTap), for: .touchUpInside)
         incorrectButton.addTarget(self, action: #selector(incorrectButtonDidTap), for: .touchUpInside)
-        submitButton.addTarget(self, action: #selector(submitButtonDidTap), for: .touchUpInside)
+    }
+
+    func setupBinding() {
+        let output = viewModel.transform(
+            input: .init(
+                submitButtonDidTap: submitButton
+                    .publisher(for: .touchUpInside)
+                    .compactMap { [weak self] in self?.correctButton.isSelected }
+                    .eraseToAnyPublisher()
+            ),
+            cancelBag: cancelBag
+        )
+
+        output.quizInfo
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, quiz in
+                if let url = URL(string: quiz.imageURL) {
+                    owner.quizImageView.kf.setImage(with: url)
+                }
+                
+                owner.descriptionLabel.text = quiz.text
+            }
+            .store(in: cancelBag)
+
+        output.answerInfo
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, result in
+                let resultViewController = QuizResultViewController(
+                    viewModel: QuizResultViewModel(),
+                    answer: result.isCorrect,
+                    totalTime: result.totalTime
+                )
+                resultViewController.modalPresentationStyle = .fullScreen
+                owner.present(resultViewController, animated: true)
+            }
+            .store(in: cancelBag)
+
+        output.error
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, error in
+                let toast = WableSheetViewController(
+                    title: "퀴즈 로딩 중 오류가 발생했어요",
+                    message: "\(error.localizedDescription)\n다시 시도해주세요."
+                )
+                toast.addAction(.init(title: "확인", style: .primary, handler: {
+                    self.navigationController?.popViewController(animated: true)
+                }))
+                
+                owner.present(toast, animated: true)
+            }
+            .store(in: cancelBag)
     }
 }
 
@@ -121,14 +184,6 @@ private extension QuizViewController {
     @objc func incorrectButtonDidTap() {
         enableSubmitButton()
         updateCorrectState(false)
-    }
-    
-    @objc func submitButtonDidTap() {
-        let state = correctButton.isSelected
-        let viewController = QuizResultViewController(viewModel: QuizResultViewModel(answer: state, totalTime: 0))
-        viewController.modalPresentationStyle = .fullScreen
-        
-        present(viewController, animated: true)
     }
     
     func enableSubmitButton() {

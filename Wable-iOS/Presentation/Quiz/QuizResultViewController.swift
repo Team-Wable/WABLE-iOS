@@ -7,6 +7,7 @@
 
 
 import UIKit
+import Combine
 
 import SnapKit
 import Then
@@ -14,8 +15,14 @@ import Then
 public final class QuizResultViewController: UIViewController {
     
     // MARK: Property
-    
+
     private let viewModel: QuizResultViewModel
+    private let cancelBag = CancelBag()
+    private let rewardButtonDidTapSubject = PassthroughSubject<(quizId: Int, answer: Bool, totalTime: Int), Never>()
+
+    private let quizId: Int
+    private let answer: Bool
+    private let totalTime: Int
     
     // MARK: - UIComponent
     
@@ -36,11 +43,11 @@ public final class QuizResultViewController: UIViewController {
         $0.numberOfLines = 0
     }
     
-    private let xpView: QuizRewardView = QuizRewardView(state: .xp(isCorrect: false))
+    private let xpView: QuizRewardView = QuizRewardView(state: .xp)
     
-    private let topView: QuizRewardView = QuizRewardView(state: .top(percent: 0))
+    private let topView: QuizRewardView = QuizRewardView(state: .top)
     
-    private let speedView: QuizRewardView = QuizRewardView(state: .speed(speed: 0))
+    private let speedView: QuizRewardView = QuizRewardView(state: .speed)
     
     private let rewardButton: WableButton = WableButton(style: .primary).then {
         $0.configuration?.attributedTitle = "XP 받기".pretendardString(with: .head2)
@@ -48,9 +55,12 @@ public final class QuizResultViewController: UIViewController {
     
     // MARK: - LifeCycle
 
-    init(viewModel: QuizResultViewModel) {
+    init(viewModel: QuizResultViewModel, quizId: Int = 1, answer: Bool, totalTime: Int) {
         self.viewModel = viewModel
-        
+        self.quizId = quizId
+        self.answer = answer
+        self.totalTime = totalTime
+
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -60,10 +70,11 @@ public final class QuizResultViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupView()
         setupBinding()
         setupAction()
+        configureView(isCorrect: answer)
     }
 }
 
@@ -97,6 +108,7 @@ private extension QuizResultViewController {
         
         descriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            make.centerX.equalToSuperview()
         }
         
         xpView.snp.makeConstraints { make in
@@ -122,7 +134,38 @@ private extension QuizResultViewController {
     }
     
     func setupBinding() {
-        
+        let output = viewModel.transform(
+            input: .init(
+                rewardButtonDidTap: rewardButtonDidTapSubject.eraseToAnyPublisher()
+            ),
+            cancelBag: cancelBag
+        )
+
+        output.updateQuizResult
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, topPercent in
+                // TODO: 스피드 넣어주고 유저디폴트에서 상태 변환
+//                owner.speedView.configureView(speed: <#T##Int?#>)
+//                owner.topView.configureView(topPercent: topPercent)
+//                owner.xpView.configureView(isCorrect: xpValue)
+//                
+            }
+            .store(in: cancelBag)
+
+        output.error
+            .receive(on: DispatchQueue.main)
+            .withUnretained(self)
+            .sink { owner, error in
+                let toast = WableSheetViewController(
+                    title: "리워드 처리 중 오류가 발생했어요",
+                    message: "\(error.localizedDescription)\n다시 시도해주세요."
+                )
+
+                toast.addAction(.init(title: "확인", style: .primary))
+                owner.present(toast, animated: true)
+            }
+            .store(in: cancelBag)
     }
     
     func setupAction() {
@@ -134,6 +177,8 @@ private extension QuizResultViewController {
 
 private extension QuizResultViewController {
     @objc func rewardButtonDidTap() {
+        rewardButtonDidTapSubject.send((quizId: quizId, answer: answer, totalTime: totalTime))
+
         let keyWindow = UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .flatMap { $0.windows }
@@ -145,8 +190,6 @@ private extension QuizResultViewController {
             currentNavController.popToRootViewController(animated: false)
             tabBarController?.selectedIndex = 2
         }
-        
-        // TODO: 유저디폴트에서 상태 변환
 
         dismiss(animated: true)
     }

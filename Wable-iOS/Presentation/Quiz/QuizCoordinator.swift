@@ -31,11 +31,11 @@ public extension QuizCoordinator {
     
     func showResultView(isCorrect: Bool) {
         let viewController = QuizResultViewController(
-            viewModel: QuizResultViewModel(
-                answer: isCorrect, totalTime: 0
-            )
+            viewModel: QuizResultViewModel(),
+            answer: isCorrect,
+            totalTime: 0
         )
-        
+
         navigationController.present(viewController, animated: true)
     }
 }

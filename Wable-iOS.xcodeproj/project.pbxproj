@@ -18,14 +18,15 @@
 		C83B4C1EB77093628C57171E /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D6BA58067777BC670497DB /* MainCoordinator.swift */; };
 		DD005BA92D7FFFE400B1661F /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BA82D7FFFE000B1661F /* LikeButton.swift */; };
 		DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BAA2D80071E00B1661F /* CommentButton.swift */; };
-		DD055F772EAB3BCD0003DFF7 /* UpdateQuizGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F762EAB3BAB0003DFF7 /* UpdateQuizGrade.swift */; };
 		DD055F7A2EAB3D3C0003DFF7 /* FetchQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F792EAB3D300003DFF7 /* FetchQuiz.swift */; };
-		DD055F7E2EAB3DDA0003DFF7 /* UpdateQuizGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F7D2EAB3DCE0003DFF7 /* UpdateQuizGrade.swift */; };
 		DD055F802EAB3EAF0003DFF7 /* QuizTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F7F2EAB3EAA0003DFF7 /* QuizTargetType.swift */; };
 		DD055F822EABCF200003DFF7 /* QuizRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F812EABCF180003DFF7 /* QuizRepository.swift */; };
 		DD055F842EABD06A0003DFF7 /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F832EABD0680003DFF7 /* Quiz.swift */; };
 		DD055F862EABD0EA0003DFF7 /* QuizRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F852EABD0E20003DFF7 /* QuizRepositoryImpl.swift */; };
 		DD055F882EABD5E80003DFF7 /* QuizMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F872EABD5E30003DFF7 /* QuizMapper.swift */; };
+		DD055F8A2EACA1DB0003DFF7 /* QuizViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F892EACA1D40003DFF7 /* QuizViewModel.swift */; };
+		DD055F8C2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F8B2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift */; };
+		DD055F8E2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F8D2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift */; };
 		DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */; };
 		DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */; };
 		DD20D9702E8C2C41008D63DB /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */; };
@@ -434,14 +435,15 @@
 		46B7CB308A2494B49BBE0BC2 /* AppCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		DD005BA82D7FFFE000B1661F /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
 		DD005BAA2D80071E00B1661F /* CommentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentButton.swift; sourceTree = "<group>"; };
-		DD055F762EAB3BAB0003DFF7 /* UpdateQuizGrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuizGrade.swift; sourceTree = "<group>"; };
 		DD055F792EAB3D300003DFF7 /* FetchQuiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchQuiz.swift; sourceTree = "<group>"; };
-		DD055F7D2EAB3DCE0003DFF7 /* UpdateQuizGrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuizGrade.swift; sourceTree = "<group>"; };
 		DD055F7F2EAB3EAA0003DFF7 /* QuizTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizTargetType.swift; sourceTree = "<group>"; };
 		DD055F812EABCF180003DFF7 /* QuizRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRepository.swift; sourceTree = "<group>"; };
 		DD055F832EABD0680003DFF7 /* Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quiz.swift; sourceTree = "<group>"; };
 		DD055F852EABD0E20003DFF7 /* QuizRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRepositoryImpl.swift; sourceTree = "<group>"; };
 		DD055F872EABD5E30003DFF7 /* QuizMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizMapper.swift; sourceTree = "<group>"; };
+		DD055F892EACA1D40003DFF7 /* QuizViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewModel.swift; sourceTree = "<group>"; };
+		DD055F8B2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuizGradeRequest.swift; sourceTree = "<group>"; };
+		DD055F8D2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuizGradeResponse.swift; sourceTree = "<group>"; };
 		DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
@@ -914,7 +916,7 @@
 		DD055F752EAB3BA20003DFF7 /* Quiz */ = {
 			isa = PBXGroup;
 			children = (
-				DD055F762EAB3BAB0003DFF7 /* UpdateQuizGrade.swift */,
+				DD055F8B2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
@@ -922,7 +924,7 @@
 		DD055F782EAB3D230003DFF7 /* Quiz */ = {
 			isa = PBXGroup;
 			children = (
-				DD055F7D2EAB3DCE0003DFF7 /* UpdateQuizGrade.swift */,
+				DD055F8D2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift */,
 				DD055F792EAB3D300003DFF7 /* FetchQuiz.swift */,
 			);
 			path = Quiz;
@@ -1419,6 +1421,7 @@
 		DD2A2F0F2EA8A2AF0024076B /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F892EACA1D40003DFF7 /* QuizViewModel.swift */,
 				DD2A2F102EA8A2B70024076B /* QuizResultViewModel.swift */,
 			);
 			path = ViewModel;
@@ -3020,7 +3023,6 @@
 				DEE6CBEC2EA0E6AE001A83A7 /* CurationViewModel.swift in Sources */,
 				DD29683E2D6DAD2F00143851 /* UpdateToken.swift in Sources */,
 				DE20BAD72D903985000126A4 /* AnnouncementDetailView.swift in Sources */,
-				DD055F772EAB3BCD0003DFF7 /* UpdateQuizGrade.swift in Sources */,
 				DE6459CF2D97AA9D005569B8 /* AppDelegate+InjectDependency.swift in Sources */,
 				DE833BA02DE22C8D00812A80 /* Publishers+UIControlProperty.swift in Sources */,
 				DE8E863B2D918735000A4292 /* RankViewItem.swift in Sources */,
@@ -3119,6 +3121,7 @@
 				DD2968632D6DAD5500143851 /* ContentTargetType.swift in Sources */,
 				DD547AB92D7E43A600B8BA5A /* GhostButton.swift in Sources */,
 				DEE6CBE92EA0DD46001A83A7 /* CurationItem.swift in Sources */,
+				DD055F8E2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift in Sources */,
 				DD2968642D6DAD5500143851 /* NotificationTargetType.swift in Sources */,
 				DD94FF7F2E8C4766002D512E /* UIImageView+.swift in Sources */,
 				DD2968652D6DAD5500143851 /* ReportTargetType.swift in Sources */,
@@ -3175,6 +3178,7 @@
 				DEA10B372DD3A45C001EBBA9 /* WithdrawalReasonCellItem.swift in Sources */,
 				DD94FF842E8CAD7C002D512E /* OnboardingProfileInfo.swift in Sources */,
 				DEAFE05B2D8C4E930097E91C /* GameScheduleHeaderView.swift in Sources */,
+				DD055F8A2EACA1DB0003DFF7 /* QuizViewModel.swift in Sources */,
 				DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */,
 				DECC36DA2DC3A4D800336B7B /* CreateViewitViewModel.swift in Sources */,
 				DD214B5C2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift in Sources */,
@@ -3248,6 +3252,7 @@
 				DE7004842D8E87DC00B7AB71 /* RankListViewController.swift in Sources */,
 				DD2968272D6DAD0B00143851 /* LoginMapper.swift in Sources */,
 				DDED594F2D784EC000A0BEF1 /* LocalKeyValueProvider.swift in Sources */,
+				DD055F8C2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift in Sources */,
 				DEA10B5C2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift in Sources */,
 				DE00E0A02DCE47C7004CB455 /* ViewitUseCase.swift in Sources */,
 				DD514D0E2D8C99DC0095021D /* AgreementView.swift in Sources */,
