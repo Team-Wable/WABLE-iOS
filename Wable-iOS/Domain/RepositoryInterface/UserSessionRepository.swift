@@ -22,7 +22,8 @@ protocol UserSessionRepository {
                            isPushAlarmAllowed: Bool?,
                            isAdmin: Bool?,
                            isAutoLoginEnabled: Bool?,
-                           notificationBadgeCount: Int?)
+                           notificationBadgeCount: Int?,
+                           quizCompletedAt: Date?)
     func updateActiveUserID(_ userID: Int?)
     func removeUserSession(forUserID userID: Int)
 }
