@@ -23,6 +23,7 @@ public final class QuizRewardView: UIView {
     
     // MARK: Property
     
+    private static let maxDisplaySeconds = 99 * 60
     private let state: State
     
     // MARK: - UIComponent
@@ -105,7 +106,7 @@ public extension QuizRewardView {
 
 private extension QuizRewardView {
     func calculateSpeed(speed: Int) -> String {
-        if speed > 5940 { return "99:00" }
+        if speed > QuizRewardView.maxDisplaySeconds { return "99:00" }
 
         let minute = speed / 60
         let second = speed % 60
