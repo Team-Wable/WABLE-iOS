@@ -111,14 +111,12 @@ private extension WableBadgeSegmentedControl {
     func layoutBadges() {
         buttons.enumerated().forEach { index, button in
             guard let titleLabel = button.titleLabel else { return }
-            let titleSize = titleLabel.intrinsicContentSize
             
-            badgeViews[index].frame = CGRect(
-                x: button.frame.origin.x + titleLabel.frame.origin.x + titleSize.width - 2,
-                y: titleLabel.frame.origin.y - Constants.badgeSize,
-                width: Constants.badgeSize,
-                height: Constants.badgeSize
-            )
+            badgeViews[index].snp.makeConstraints { make in
+                make.top.equalTo(titleLabel.snp.top).offset(-2)
+                make.leading.equalTo(titleLabel.snp.trailing).offset(2)
+                make.size.equalTo(Constants.badgeSize)
+            }
         }
     }
     
