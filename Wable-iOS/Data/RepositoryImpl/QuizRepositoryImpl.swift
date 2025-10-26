@@ -56,7 +56,7 @@ struct MockQuizRepository: QuizRepository {
         return .just(
             Quiz(
                 id: Int.random(in: 1...9999),
-                imageURL: "https://i.namu.wiki/i/fCEPJxFsbeApqrKcOytGSfHscsihhok9e7Dk_-I628_I0vdWaFyWOMEqor_2BGm1DgJPg8zHfrcbu31FBMPj3A.webp",
+                imageURL: "https://i.ytimg.com/vi/yebNIHKAC4A/hqdefault.jpg",
                 text: "이 룬은 칼날비라는 룬으로 적에게 기본 공격을 3번 가하면 일정 시간 동안 공격 속도가 크게 증가하는 룬이다.",
                 answer: true
             )

@@ -169,8 +169,8 @@ private extension QuizViewController {
                     title: StringLiterals.Quiz.loadingErrorTitle,
                     message: "\(error.localizedDescription)\n\(StringLiterals.Quiz.loadingErrorMessage)"
                 )
-                toast.addAction(.init(title: "확인", style: .primary, handler: {
-                    self.navigationController?.popViewController(animated: true)
+                toast.addAction(.init(title: "확인", style: .primary, handler: { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
                 }))
                 
                 owner.present(toast, animated: true)
