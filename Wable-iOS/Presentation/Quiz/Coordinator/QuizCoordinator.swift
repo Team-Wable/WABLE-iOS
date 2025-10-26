@@ -28,14 +28,4 @@ public extension QuizCoordinator {
         let viewController = NextQuizInfoViewController(type: .quiz, viewModel: .init())
         navigationController.setViewControllers([viewController], animated: false)
     }
-    
-//    func showResultView(isCorrect: Bool) {
-//        let viewController = QuizResultViewController(
-//            viewModel: QuizResultViewModel(),
-//            answer: isCorrect,
-//            totalTime: 0
-//        )
-//
-//        navigationController.present(viewController, animated: true)
-//    }
 }
