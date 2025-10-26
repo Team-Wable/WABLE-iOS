@@ -96,7 +96,6 @@ private extension TabBarController {
         let homeNavigationController = UINavigationController(rootViewController: homeViewController)
         let communityNavigationController = UINavigationController(rootViewController: communityViewController)
         let overviewNavigationController = UINavigationController(rootViewController: overviewViewController)
-        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
         
         let viewitNavigationController = UINavigationController()
         viewitCoordinator = ViewitCoordinator(navigationController: viewitNavigationController)
