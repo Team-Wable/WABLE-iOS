@@ -22,8 +22,6 @@ final class TabBarController: UITabBarController {
     
     @Injected private var userSessionRepository: UserSessionRepository
     
-    @Injected private var userSessionRepository: UserSessionRepository
-    
     // MARK: - UIComponent
     
     private lazy var homeViewController = HomeViewController(

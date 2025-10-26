@@ -224,9 +224,6 @@
 		DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */; };
 		DDCD66FB2D7DF6CF00EF4C28 /* ViewitListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD66FA2D7DF6C600EF4C28 /* ViewitListViewController.swift */; };
 		DDCD67052D7E272200EF4C28 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCD67042D7E271C00EF4C28 /* ToastView.swift */; };
-		DDE03FDE2EAE0659003EB3B3 /* QuizCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE03FDD2EAE0659003EB3B3 /* QuizCoordinator.swift */; };
-		DDE03FE12EAE068D003EB3B3 /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE03FE02EAE068D003EB3B3 /* QuizViewController.swift */; };
-		DDE03FE22EAE068D003EB3B3 /* NextQuizInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE03FDF2EAE068D003EB3B3 /* NextQuizInfoViewController.swift */; };
 		DDE966102D8C62A4004E899B /* DefaultProfileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE9660F2D8C629A004E899B /* DefaultProfileType.swift */; };
 		DDEA63592E850268005FED9F /* AgreementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEA63582E85025C005FED9F /* AgreementViewModel.swift */; };
 		DDEA82032EA90EBD00F5F212 /* FacebookAEM in Frameworks */ = {isa = PBXBuildFile; productRef = DDEA82022EA90EBD00F5F212 /* FacebookAEM */; };
@@ -875,6 +872,7 @@
 			children = (
 				0547F4982C60D968001E3039 /* Wable-iOS */,
 				0547F4972C60D968001E3039 /* Products */,
+				DDE03FF02EAE1056003EB3B3 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1693,6 +1691,16 @@
 				DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */,
 			);
 			path = Navigation;
+			sourceTree = "<group>";
+		};
+		DDE03FF02EAE1056003EB3B3 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				DDE03FDD2EAE0659003EB3B3 /* QuizCoordinator.swift */,
+				DDE03FE02EAE068D003EB3B3 /* QuizViewController.swift */,
+				DDE03FDF2EAE068D003EB3B3 /* NextQuizInfoViewController.swift */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		DDEA63572E850250005FED9F /* ViewModel */ = {
@@ -3049,7 +3057,6 @@
 				DE3CA2812DD43D0F00BF5E87 /* FetchUserProfileUseCase.swift in Sources */,
 				DD94FF812E8CABC7002D512E /* ProfileImageType.swift in Sources */,
 				DDCD66EA2D7DD72F00EF4C28 /* LottieType.swift in Sources */,
-				DDE03FDE2EAE0659003EB3B3 /* QuizCoordinator.swift in Sources */,
 				DD29683B2D6DAD2F00143851 /* CreateAccountResponse.swift in Sources */,
 				DD29683C2D6DAD2F00143851 /* FetchGameCategory.swift in Sources */,
 				DD2A2F0C2EA694260024076B /* NextQuizInfoViewController.swift in Sources */,
@@ -3147,8 +3154,6 @@
 				DD2968382D6DAD1700143851 /* ReportRepositoryImpl.swift in Sources */,
 				DD29687C2D6DB27F00143851 /* OAuthenticator.swift in Sources */,
 				DD94FF862E8CB986002D512E /* ProfileEditViewModel.swift in Sources */,
-				DDE03FE12EAE068D003EB3B3 /* QuizViewController.swift in Sources */,
-				DDE03FE22EAE068D003EB3B3 /* NextQuizInfoViewController.swift in Sources */,
 				DDED59512D7850E600A0BEF1 /* LocalError.swift in Sources */,
 				DD2968602D6DAD5500143851 /* GhostTargetType.swift in Sources */,
 				DE54B03C2D82C43F009A7C34 /* PhotoDetailViewController.swift in Sources */,
