@@ -78,6 +78,12 @@ final class NextQuizInfoViewController: NavigationViewController {
         setupBinding()
         setupAction()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        updateRemainTime()
+    }
 }
 
 private extension NextQuizInfoViewController {
@@ -165,5 +171,9 @@ private extension NextQuizInfoViewController {
         let safariController = SFSafariViewController(url: url)
 
         self.present(safariController, animated: true)
+    }
+
+    func updateRemainTime() {
+        refreshControl.sendActions(for: .valueChanged)
     }
 }
