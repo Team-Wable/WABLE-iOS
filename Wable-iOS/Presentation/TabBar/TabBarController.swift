@@ -16,7 +16,10 @@ final class TabBarController: UITabBarController {
 
     private var previousIndex: Int = 0
     private var shouldShowLoadingScreen: Bool
+    private var quizCoordinator: QuizCoordinator?
     private var viewitCoordinator: ViewitCoordinator?
+    
+    @Injected private var userSessionRepository: UserSessionRepository
     
     // MARK: - UIComponent
     
@@ -111,11 +114,19 @@ private extension TabBarController {
         let homeNavigationController = UINavigationController(rootViewController: homeViewController)
         let communityNavigationController = UINavigationController(rootViewController: communityViewController)
         let overviewNavigationController = UINavigationController(rootViewController: overviewViewController)
+        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
+        
         let viewitNavigationController = UINavigationController()
         viewitCoordinator = ViewitCoordinator(navigationController: viewitNavigationController)
         viewitCoordinator?.start()
         viewitNavigationController.tabBarItem = UITabBarItem(title: "뷰잇", image: .icViewit, selectedImage: nil)
-        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
+        
+        let quizNavigationController = UINavigationController()
+        let hasCompleted = checkTodayQuizCompletion()
+        quizCoordinator = QuizCoordinator(navigationController: quizNavigationController, hasCompleted: hasCompleted)
+        quizCoordinator?.start()
+        quizNavigationController.tabBarItem = UITabBarItem(title: "퀴즈", image: .icQuiz, selectedImage: nil)
+        
 
         profileViewController.onLogout = { [weak self] in
             self?.onLogout?()
@@ -127,8 +138,8 @@ private extension TabBarController {
             [
                 homeNavigationController,
                 communityNavigationController,
+                quizNavigationController,
                 overviewNavigationController,
-                viewitNavigationController,
                 profileNavigationController
             ],
             animated: false
@@ -165,26 +176,55 @@ private extension TabBarController {
 // MARK: - UITabBarControllerDelegate
 
 extension TabBarController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        if let index = viewControllers?.firstIndex(of: viewController), index == 2 {
+            let hasCompleted = checkTodayQuizCompletion()
+
+            if !hasCompleted {
+                if let viewController = selectedViewController as? UINavigationController {
+                    let quizViewController = QuizViewController(
+                        type: .page(type: .quiz, title: "퀴즈"),
+                        viewModel: .init()
+                    )
+                    viewController.pushViewController(quizViewController, animated: true)
+                }
+                return false
+            }
+            
+            
+        }
+        return true
+    }
+
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         let currentIndex = selectedIndex
-        
+
         if let navigationController = viewController as? UINavigationController {
             if navigationController.viewControllers.first is HomeViewController {
                 if tabBarController.selectedIndex == 0 {
                     homeViewController.scrollToTop()
                 }
             }
+
+            if currentIndex == 2 {
+                let newQuizViewController = NextQuizInfoViewController(
+                    type: .quiz,
+                    viewModel: NextQuizInfoViewModel()
+                )
+                navigationController.setViewControllers([newQuizViewController], animated: false)
+            }
         }
-        
+
         switch currentIndex {
         case 0:
             AmplitudeManager.shared.trackEvent(tag: .clickHomeBotnavi)
         case 1:
             AmplitudeManager.shared.trackEvent(tag: .clickCommunityBotnavi)
         case 2:
-            AmplitudeManager.shared.trackEvent(tag: .clickNewsBotnavi)
+//            AmplitudeManager.shared.trackEvent(tag: .clickQuizBotnavi)
+            break
         case 3:
-            AmplitudeManager.shared.trackEvent(tag: .clickViewitBotnavi)
+            AmplitudeManager.shared.trackEvent(tag: .clickNewsBotnavi)
         case 4:
             AmplitudeManager.shared.trackEvent(tag: .clickMyprofileBotnavi)
         default:
@@ -196,5 +236,21 @@ extension TabBarController: UITabBarControllerDelegate {
         }
         
         previousIndex = currentIndex
+    }
+}
+
+// MARK: - Helper Methods
+
+private extension TabBarController {
+    func checkTodayQuizCompletion() -> Bool {
+        guard let userSession = userSessionRepository.fetchActiveUserSession(),
+              let quizCompletedAt = userSession.quizCompletedAt else {
+            return false
+        }
+
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone(abbreviation: "KST") ?? TimeZone.current
+
+        return calendar.isDateInToday(quizCompletedAt)
     }
 }

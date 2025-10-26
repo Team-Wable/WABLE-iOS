@@ -18,6 +18,19 @@
 		C83B4C1EB77093628C57171E /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D6BA58067777BC670497DB /* MainCoordinator.swift */; };
 		DD005BA92D7FFFE400B1661F /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BA82D7FFFE000B1661F /* LikeButton.swift */; };
 		DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD005BAA2D80071E00B1661F /* CommentButton.swift */; };
+		DD055F7A2EAB3D3C0003DFF7 /* FetchQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F792EAB3D300003DFF7 /* FetchQuiz.swift */; };
+		DD055F802EAB3EAF0003DFF7 /* QuizTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F7F2EAB3EAA0003DFF7 /* QuizTargetType.swift */; };
+		DD055F822EABCF200003DFF7 /* QuizRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F812EABCF180003DFF7 /* QuizRepository.swift */; };
+		DD055F842EABD06A0003DFF7 /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F832EABD0680003DFF7 /* Quiz.swift */; };
+		DD055F862EABD0EA0003DFF7 /* QuizRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F852EABD0E20003DFF7 /* QuizRepositoryImpl.swift */; };
+		DD055F882EABD5E80003DFF7 /* QuizMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F872EABD5E30003DFF7 /* QuizMapper.swift */; };
+		DD055F8A2EACA1DB0003DFF7 /* QuizViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F892EACA1D40003DFF7 /* QuizViewModel.swift */; };
+		DD055F8C2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F8B2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift */; };
+		DD055F8E2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F8D2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift */; };
+		DD055F902EAD2C5D0003DFF7 /* QuizResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F8F2EAD2C5A0003DFF7 /* QuizResult.swift */; };
+		DD055F922EAD38FE0003DFF7 /* NextQuizInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F912EAD38F50003DFF7 /* NextQuizInfoViewModel.swift */; };
+		DD055F942EAD3B5B0003DFF7 /* Pricedown-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = DD055F932EAD3B5B0003DFF7 /* Pricedown-Black.otf */; };
+		DD055F962EAD468F0003DFF7 /* StringLiterals+Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD055F952EAD46860003DFF7 /* StringLiterals+Quiz.swift */; };
 		DD1F30452D9D71DE003DB820 /* CreateContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */; };
 		DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */; };
 		DD20D9702E8C2C41008D63DB /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */; };
@@ -145,6 +158,12 @@
 		DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD2968772D6DAE2200143851 /* GoogleService-Info.plist */; };
 		DD29687C2D6DB27F00143851 /* OAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687B2D6DB27200143851 /* OAuthenticator.swift */; };
 		DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687D2D6DC70100143851 /* OAuthCredential.swift */; };
+		DD2A2F082EA693110024076B /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F072EA693070024076B /* QuizViewController.swift */; };
+		DD2A2F0A2EA693570024076B /* QuizCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F092EA693490024076B /* QuizCoordinator.swift */; };
+		DD2A2F0C2EA694260024076B /* NextQuizInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F0B2EA6941E0024076B /* NextQuizInfoViewController.swift */; };
+		DD2A2F0E2EA8A1680024076B /* QuizResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F0D2EA8A15D0024076B /* QuizResultViewController.swift */; };
+		DD2A2F112EA8A2BD0024076B /* QuizResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F102EA8A2B70024076B /* QuizResultViewModel.swift */; };
+		DD2A2F142EA8B6DD0024076B /* QuizRewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F132EA8B69B0024076B /* QuizRewardView.swift */; };
 		DD3935B62DDDB9F700B6CA94 /* MyProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3935B42DDDB9F700B6CA94 /* MyProfileView.swift */; };
 		DD4AFD452D8FF19F00D56B94 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */; };
 		DD4AFD472D90264500D56B94 /* OAuthEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AFD462D90263400D56B94 /* OAuthEventManager.swift */; };
@@ -413,6 +432,19 @@
 		46B7CB308A2494B49BBE0BC2 /* AppCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		DD005BA82D7FFFE000B1661F /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
 		DD005BAA2D80071E00B1661F /* CommentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentButton.swift; sourceTree = "<group>"; };
+		DD055F792EAB3D300003DFF7 /* FetchQuiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchQuiz.swift; sourceTree = "<group>"; };
+		DD055F7F2EAB3EAA0003DFF7 /* QuizTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizTargetType.swift; sourceTree = "<group>"; };
+		DD055F812EABCF180003DFF7 /* QuizRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRepository.swift; sourceTree = "<group>"; };
+		DD055F832EABD0680003DFF7 /* Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quiz.swift; sourceTree = "<group>"; };
+		DD055F852EABD0E20003DFF7 /* QuizRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRepositoryImpl.swift; sourceTree = "<group>"; };
+		DD055F872EABD5E30003DFF7 /* QuizMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizMapper.swift; sourceTree = "<group>"; };
+		DD055F892EACA1D40003DFF7 /* QuizViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewModel.swift; sourceTree = "<group>"; };
+		DD055F8B2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuizGradeRequest.swift; sourceTree = "<group>"; };
+		DD055F8D2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuizGradeResponse.swift; sourceTree = "<group>"; };
+		DD055F8F2EAD2C5A0003DFF7 /* QuizResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResult.swift; sourceTree = "<group>"; };
+		DD055F912EAD38F50003DFF7 /* NextQuizInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextQuizInfoViewModel.swift; sourceTree = "<group>"; };
+		DD055F932EAD3B5B0003DFF7 /* Pricedown-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pricedown-Black.otf"; sourceTree = "<group>"; };
+		DD055F952EAD46860003DFF7 /* StringLiterals+Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringLiterals+Quiz.swift"; sourceTree = "<group>"; };
 		DD1F30442D9D71C7003DB820 /* CreateContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD1F30462D9D71E1003DB820 /* DeleteContentLikedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteContentLikedUseCase.swift; sourceTree = "<group>"; };
 		DD20D96F2E8C2C41008D63DB /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
@@ -537,6 +569,13 @@
 		DD29687A2D6DAE8E00143851 /* Wable-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wable-iOS.entitlements"; sourceTree = "<group>"; };
 		DD29687B2D6DB27200143851 /* OAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthenticator.swift; sourceTree = "<group>"; };
 		DD29687D2D6DC70100143851 /* OAuthCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthCredential.swift; sourceTree = "<group>"; };
+		DD2A2F072EA693070024076B /* QuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
+		DD2A2F092EA693490024076B /* QuizCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCoordinator.swift; sourceTree = "<group>"; };
+		DD2A2F0B2EA6941E0024076B /* NextQuizInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextQuizInfoViewController.swift; sourceTree = "<group>"; };
+		DD2A2F0D2EA8A15D0024076B /* QuizResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultViewController.swift; sourceTree = "<group>"; };
+		DD2A2F102EA8A2B70024076B /* QuizResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultViewModel.swift; sourceTree = "<group>"; };
+		DD2A2F132EA8B69B0024076B /* QuizRewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRewardView.swift; sourceTree = "<group>"; };
+		DD2A2F152EA905180024076B /* Wable-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "Wable-iOS.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD3935B42DDDB9F700B6CA94 /* MyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileView.swift; sourceTree = "<group>"; };
 		DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		DD4AFD462D90263400D56B94 /* OAuthEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthEventManager.swift; sourceTree = "<group>"; };
@@ -839,6 +878,7 @@
 				DD2967D52D6DAC3100143851 /* Data */,
 				DD2967F82D6DAC3100143851 /* Domain */,
 				DE7C53082D761DA500076E5D /* Presentation */,
+				DD2A2F152EA905180024076B /* Wable-iOS.xcodeproj */,
 			);
 			path = "Wable-iOS";
 			sourceTree = "<group>";
@@ -858,8 +898,31 @@
 			children = (
 				0586D8992D09A68200436080 /* Pretendard-Regular.otf */,
 				0586D89A2D09A68200436080 /* Pretendard-SemiBold.otf */,
+				DD055F932EAD3B5B0003DFF7 /* Pricedown-Black.otf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		DD055F732EAA877C0003DFF7 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DD055F752EAB3BA20003DFF7 /* Quiz */ = {
+			isa = PBXGroup;
+			children = (
+				DD055F8B2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift */,
+			);
+			path = Quiz;
+			sourceTree = "<group>";
+		};
+		DD055F782EAB3D230003DFF7 /* Quiz */ = {
+			isa = PBXGroup;
+			children = (
+				DD055F8D2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift */,
+				DD055F792EAB3D300003DFF7 /* FetchQuiz.swift */,
+			);
+			path = Quiz;
 			sourceTree = "<group>";
 		};
 		DD20D9712E8C2C4A008D63DB /* Coordinator */ = {
@@ -933,6 +996,7 @@
 		DD29677D2D6DAC3100143851 /* TargetType */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F7F2EAB3EAA0003DFF7 /* QuizTargetType.swift */,
 				DD29676F2D6DAC3100143851 /* BaseTargetType.swift */,
 				DD2967702D6DAC3100143851 /* LoginTargetType.swift */,
 				DD2967712D6DAC3100143851 /* AccountTargetType.swift */,
@@ -1052,6 +1116,7 @@
 		DD2967992D6DAC3100143851 /* Request */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F752EAB3BA20003DFF7 /* Quiz */,
 				DD2967822D6DAC3100143851 /* Login */,
 				DD2967852D6DAC3100143851 /* Account */,
 				DD2967872D6DAC3100143851 /* Profile */,
@@ -1158,6 +1223,7 @@
 		DD2967B92D6DAC3100143851 /* Response */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F782EAB3D230003DFF7 /* Quiz */,
 				DD29679B2D6DAC3100143851 /* Empty */,
 				DD29679E2D6DAC3100143851 /* Login */,
 				DD2967A12D6DAC3100143851 /* Profile */,
@@ -1209,6 +1275,7 @@
 		DD2967CA2D6DAC3100143851 /* RepositoryImpl */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F852EABD0E20003DFF7 /* QuizRepositoryImpl.swift */,
 				DDCCA3962D73987600658122 /* UserSessionRepositoryImpl.swift */,
 				DD2967BD2D6DAC3100143851 /* LoginRepositoryImpl.swift */,
 				DD2967BE2D6DAC3100143851 /* AccountRepositoryImpl.swift */,
@@ -1233,6 +1300,7 @@
 		DD2967D42D6DAC3100143851 /* Mapper */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F872EABD5E30003DFF7 /* QuizMapper.swift */,
 				DD2967CB2D6DAC3100143851 /* ErrorMapper.swift */,
 				DD2967CC2D6DAC3100143851 /* LoginMapper.swift */,
 				DD2967CD2D6DAC3100143851 /* ProfileMapper.swift */,
@@ -1267,6 +1335,7 @@
 		DD2967E52D6DAC3100143851 /* RepositoryInterface */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F812EABCF180003DFF7 /* QuizRepository.swift */,
 				DDCCA3922D738CD100658122 /* UserSessionRepository.swift */,
 				DD2967D82D6DAC3100143851 /* LoginRepository.swift */,
 				DD2967D92D6DAC3100143851 /* AccountRepository.swift */,
@@ -1291,6 +1360,8 @@
 		DD2967F72D6DAC3100143851 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F8F2EAD2C5A0003DFF7 /* QuizResult.swift */,
+				DD055F832EABD0680003DFF7 /* Quiz.swift */,
 				DDCCA3942D73928400658122 /* UserSession.swift */,
 				DD2967E72D6DAC3100143851 /* User.swift */,
 				DD2967E82D6DAC3100143851 /* Token.swift */,
@@ -1325,6 +1396,37 @@
 				DD2967D72D6DAC3100143851 /* Error */,
 			);
 			path = Domain;
+			sourceTree = "<group>";
+		};
+		DD2A2F062EA692E70024076B /* Quiz */ = {
+			isa = PBXGroup;
+			children = (
+				DD2A2F122EA8B6960024076B /* View */,
+				DD2A2F0F2EA8A2AF0024076B /* ViewModel */,
+				DD9F46582EADE03B006074F7 /* Coordinator */,
+			);
+			path = Quiz;
+			sourceTree = "<group>";
+		};
+		DD2A2F0F2EA8A2AF0024076B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DD055F912EAD38F50003DFF7 /* NextQuizInfoViewModel.swift */,
+				DD055F892EACA1D40003DFF7 /* QuizViewModel.swift */,
+				DD2A2F102EA8A2B70024076B /* QuizResultViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DD2A2F122EA8B6960024076B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DD2A2F0D2EA8A15D0024076B /* QuizResultViewController.swift */,
+				DD2A2F0B2EA6941E0024076B /* NextQuizInfoViewController.swift */,
+				DD2A2F072EA693070024076B /* QuizViewController.swift */,
+				DD9F46572EADE030006074F7 /* Subview */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		DD3935B52DDDB9F700B6CA94 /* Subview */ = {
@@ -1463,6 +1565,22 @@
 				DDA2098C2D9BFB98008042DA /* WritePostViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DD9F46572EADE030006074F7 /* Subview */ = {
+			isa = PBXGroup;
+			children = (
+				DD2A2F132EA8B69B0024076B /* QuizRewardView.swift */,
+			);
+			path = Subview;
+			sourceTree = "<group>";
+		};
+		DD9F46582EADE03B006074F7 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				DD2A2F092EA693490024076B /* QuizCoordinator.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		DDAD41A32D873E1D00EF312C /* Button */ = {
@@ -1639,6 +1757,7 @@
 		DDF97CB42DE4EAC7009FC612 /* String */ = {
 			isa = PBXGroup;
 			children = (
+				DD055F952EAD46860003DFF7 /* StringLiterals+Quiz.swift */,
 				DDF97CA12DE4EAC7009FC612 /* StringLiterals.swift */,
 				DDF97CA22DE4EAC7009FC612 /* StringLiterals+Ban.swift */,
 				DDF97CA32DE4EAC7009FC612 /* StringLiterals+Community.swift */,
@@ -2048,6 +2167,7 @@
 		DE7C53082D761DA500076E5D /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				DD2A2F062EA692E70024076B /* Quiz */,
 				DDCA70982D8879C600A988B8 /* Enum */,
 				DE7C530A2D761DBF00076E5D /* Interface */,
 				DE7C53092D761DB900076E5D /* Helper */,
@@ -2715,6 +2835,12 @@
 			);
 			productRefGroup = 0547F4972C60D968001E3039 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = DD055F732EAA877C0003DFF7 /* Products */;
+					ProjectRef = DD2A2F152EA905180024076B /* Wable-iOS.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				0547F4952C60D968001E3039 /* Wable-iOS */,
@@ -2727,6 +2853,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD055F942EAD3B5B0003DFF7 /* Pricedown-Black.otf in Resources */,
 				054308EA2CB7F582001861F1 /* wable_loading.json in Resources */,
 				DD2968012D6DAC9300143851 /* LaunchScreen.storyboard in Resources */,
 				DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */,
@@ -2790,6 +2917,7 @@
 				DEE5D6112D9121E5009E5A25 /* OverviewPageView.swift in Sources */,
 				DD2968112D6DACF700143851 /* Viewit.swift in Sources */,
 				DDCD66F52D7DF5B700EF4C28 /* CommunityViewController.swift in Sources */,
+				DD055F842EABD06A0003DFF7 /* Quiz.swift in Sources */,
 				DD514D082D8C83560095021D /* AgreementViewController.swift in Sources */,
 				DDFB22482D8BBCB300FEA24A /* ProfileRegisterView.swift in Sources */,
 				DD2968122D6DACF700143851 /* Community.swift in Sources */,
@@ -2823,6 +2951,7 @@
 				DDCD66E52D7DC0EB00EF4C28 /* NavigationView.swift in Sources */,
 				DE8E863F2D91A032000A4292 /* AmplitudeManager.swift in Sources */,
 				DD2968572D6DAD4400143851 /* CreateReport.swift in Sources */,
+				DD2A2F0A2EA693570024076B /* QuizCoordinator.swift in Sources */,
 				DD2968582D6DAD4400143851 /* CreateContentLiked.swift in Sources */,
 				DE9891A32D9981DC00D538D8 /* ActivityNotification+.swift in Sources */,
 				DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */,
@@ -2831,6 +2960,7 @@
 				DD2968592D6DAD4400143851 /* CreateViewitPostRequest.swift in Sources */,
 				DD29685A2D6DAD4400143851 /* CreateCommentLiked.swift in Sources */,
 				DD9980DB2D834CA900EBBFBC /* Comment.swift in Sources */,
+				DD055F902EAD2C5D0003DFF7 /* QuizResult.swift in Sources */,
 				DEE5D61A2D91537C009E5A25 /* GameScheduleViewItem.swift in Sources */,
 				DE72BB102D93CC68008E5774 /* NotificationPageView.swift in Sources */,
 				DDFB22462D8BBB8600FEA24A /* ProfileRegisterViewController.swift in Sources */,
@@ -2854,6 +2984,7 @@
 				DD2968312D6DAD1700143851 /* CommentLikedRepositoryImpl.swift in Sources */,
 				DE202FFE2DE7870F00B04CAA /* CheckAppUpdateRequirementUseCase.swift in Sources */,
 				DD2968322D6DAD1700143851 /* ContentRepositoryImpl.swift in Sources */,
+				DD055F7A2EAB3D3C0003DFF7 /* FetchQuiz.swift in Sources */,
 				DDCD66EC2D7DE5E000EF4C28 /* ConstraintMaker+.swift in Sources */,
 				DEAFE0512D8C44810097E91C /* GameScheduleListViewController.swift in Sources */,
 				DD90EEAB2DC5F66900338EB2 /* CreateBannedUseCase.swift in Sources */,
@@ -2865,6 +2996,7 @@
 				DDCD66EA2D7DD72F00EF4C28 /* LottieType.swift in Sources */,
 				DD29683B2D6DAD2F00143851 /* CreateAccountResponse.swift in Sources */,
 				DD29683C2D6DAD2F00143851 /* FetchGameCategory.swift in Sources */,
+				DD2A2F0C2EA694260024076B /* NextQuizInfoViewController.swift in Sources */,
 				DDA2098D2D9BFB9F008042DA /* WritePostViewModel.swift in Sources */,
 				DE0D0C9C2DD1E35B00FB64DC /* UserRole.swift in Sources */,
 				DE0D0CAA2DD2041100FB64DC /* LikeViewitUseCase.swift in Sources */,
@@ -2891,6 +3023,7 @@
 				DE8E863D2D918759000A4292 /* RankViewModel.swift in Sources */,
 				DE8D126A2D859FB000D02993 /* WableBottomSheetController.swift in Sources */,
 				DE0BFB602DA4F63800F06656 /* CommunityInviteCell.swift in Sources */,
+				DD2A2F142EA8B6DD0024076B /* QuizRewardView.swift in Sources */,
 				DE0BFB5E2DA4EC4D00F06656 /* CommunityRegisterCell.swift in Sources */,
 				DEA10B492DD3C3BA001EBBA9 /* WithdrawalGuideView.swift in Sources */,
 				DEA10B442DD3B7ED001EBBA9 /* WithdrawalGuideViewController.swift in Sources */,
@@ -2908,6 +3041,7 @@
 				DE6459D52D97B8C2005569B8 /* InformationNotificationViewController.swift in Sources */,
 				DD8326962D95836F0014B62D /* HomeViewModel.swift in Sources */,
 				DD2968442D6DAD2F00143851 /* FetchUserProfile.swift in Sources */,
+				DD055F882EABD5E80003DFF7 /* QuizMapper.swift in Sources */,
 				DE7C530E2D761DFB00076E5D /* UIFont+.swift in Sources */,
 				DD9EAE242D99C66200803A1A /* FetchContentInfoUseCase.swift in Sources */,
 				DD2968452D6DAD2F00143851 /* FetchCommunites.swift in Sources */,
@@ -2964,6 +3098,7 @@
 				DD2968632D6DAD5500143851 /* ContentTargetType.swift in Sources */,
 				DD547AB92D7E43A600B8BA5A /* GhostButton.swift in Sources */,
 				DEE6CBE92EA0DD46001A83A7 /* CurationItem.swift in Sources */,
+				DD055F8E2EACABC50003DFF7 /* UpdateQuizGradeResponse.swift in Sources */,
 				DD2968642D6DAD5500143851 /* NotificationTargetType.swift in Sources */,
 				DD94FF7F2E8C4766002D512E /* UIImageView+.swift in Sources */,
 				DD2968652D6DAD5500143851 /* ReportTargetType.swift in Sources */,
@@ -2975,10 +3110,12 @@
 				DEF148542DA7EF7B003B2AD8 /* CommunityRegistration.swift in Sources */,
 				DD2968682D6DAD5500143851 /* BaseTargetType.swift in Sources */,
 				DE9593352D9A1465009B00D3 /* ActivityNotificationViewModel.swift in Sources */,
+				DD055F862EABD0EA0003DFF7 /* QuizRepositoryImpl.swift in Sources */,
 				DD2968692D6DAD5500143851 /* CommentTargetType.swift in Sources */,
 				DD29686A2D6DAD5500143851 /* ContentLikedTargetType.swift in Sources */,
 				DD29686B2D6DAD5500143851 /* CommunityTargetType.swift in Sources */,
 				DD29686C2D6DAD5500143851 /* ProfileTargetType.swift in Sources */,
+				DD2A2F0E2EA8A1680024076B /* QuizResultViewController.swift in Sources */,
 				DD29686D2D6DAD5500143851 /* AccountTargetType.swift in Sources */,
 				DD514D102D8CA3780095021D /* AttributedString+.swift in Sources */,
 				DD214B5A2E029E480065D995 /* TeamCollectionView.swift in Sources */,
@@ -3011,17 +3148,20 @@
 				DE8FF1912D8155DD00C41880 /* WableButton.swift in Sources */,
 				DE3390352D8EF40B00638BB4 /* AnnouncementDetailViewController.swift in Sources */,
 				DEE5D6132D9126D8009E5A25 /* WableBadgeSegmentedControl.swift in Sources */,
+				DD055F822EABCF200003DFF7 /* QuizRepository.swift in Sources */,
 				DD90EEAD2DC5F6CC00338EB2 /* CreateReportUseCase.swift in Sources */,
 				DE3CA2892DD466F100BF5E87 /* WithdrawUseCase.swift in Sources */,
 				DD005BAB2D80071E00B1661F /* CommentButton.swift in Sources */,
 				DEA10B372DD3A45C001EBBA9 /* WithdrawalReasonCellItem.swift in Sources */,
 				DD94FF842E8CAD7C002D512E /* OnboardingProfileInfo.swift in Sources */,
 				DEAFE05B2D8C4E930097E91C /* GameScheduleHeaderView.swift in Sources */,
+				DD055F8A2EACA1DB0003DFF7 /* QuizViewModel.swift in Sources */,
 				DE7C53182D761F3A00076E5D /* ReuseIdentifiable.swift in Sources */,
 				DECC36DA2DC3A4D800336B7B /* CreateViewitViewModel.swift in Sources */,
 				DD214B5C2E02C6D40065D995 /* UIViewController+KeyboardHandling.swift in Sources */,
 				DDFB22402D8BA68900FEA24A /* LCKTeamCollectionViewCell.swift in Sources */,
 				DDCA70972D88797200A988B8 /* AuthorType.swift in Sources */,
+				DD055F922EAD38FE0003DFF7 /* NextQuizInfoViewModel.swift in Sources */,
 				DD2967FC2D6DAC4800143851 /* Injected.swift in Sources */,
 				DD2967FD2D6DAC4800143851 /* CancelBag.swift in Sources */,
 				DEF148422DA7B7E5003B2AD8 /* IsUserRegistered.swift in Sources */,
@@ -3052,11 +3192,13 @@
 				DE833B9B2DE22A8500812A80 /* Publishers+UIControlEvent.swift in Sources */,
 				DDFB22422D8BA9D200FEA24A /* LCKTeamViewController.swift in Sources */,
 				DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */,
+				DD055F802EAB3EAF0003DFF7 /* QuizTargetType.swift in Sources */,
 				DD29681B2D6DAD0200143851 /* ProfileRepository.swift in Sources */,
 				DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */,
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
 				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
 				DEA10B472DD3B9BA001EBBA9 /* WithdrawalGuideDescriptionView.swift in Sources */,
+				DD2A2F112EA8A2BD0024076B /* QuizResultViewModel.swift in Sources */,
 				DE64D7CA2DCBA2D700F55859 /* CreateViewitUseCase.swift in Sources */,
 				DEE6CBE32EA0D12E001A83A7 /* CurationViewController.swift in Sources */,
 				DD8261D92E407E7900617F86 /* Likable.swift in Sources */,
@@ -3088,6 +3230,7 @@
 				DE7004842D8E87DC00B7AB71 /* RankListViewController.swift in Sources */,
 				DD2968272D6DAD0B00143851 /* LoginMapper.swift in Sources */,
 				DDED594F2D784EC000A0BEF1 /* LocalKeyValueProvider.swift in Sources */,
+				DD055F8C2EACABAE0003DFF7 /* UpdateQuizGradeRequest.swift in Sources */,
 				DEA10B5C2DD3F21F001EBBA9 /* ProfileSegmentedHeaderView.swift in Sources */,
 				DE00E0A02DCE47C7004CB455 /* ViewitUseCase.swift in Sources */,
 				DD514D0E2D8C99DC0095021D /* AgreementView.swift in Sources */,
@@ -3110,8 +3253,10 @@
 				DE4AE8512DE8B6FF003E20AB /* WableBottomSheetShowable.swift in Sources */,
 				DD2968232D6DAD0200143851 /* NotificationRepository.swift in Sources */,
 				DD2968002D6DAC8900143851 /* AppDelegate.swift in Sources */,
+				DD2A2F082EA693110024076B /* QuizViewController.swift in Sources */,
 				2C9059C26644859C87248150 /* AppCoordinator.swift in Sources */,
 				C83B4C1EB77093628C57171E /* MainCoordinator.swift in Sources */,
+				DD055F962EAD468F0003DFF7 /* StringLiterals+Quiz.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3270,6 +3415,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Resource/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "술먹고미친와블";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "게시글이나 프로필을 변경할 때 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -3311,7 +3457,8 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Resource/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "와블";
+				INFOPLIST_KEY_CFBundleDisplayName = "술먹고미친와블";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "게시글이나 프로필을 변경할 때 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
