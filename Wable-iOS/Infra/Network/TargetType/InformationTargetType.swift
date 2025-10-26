@@ -17,6 +17,7 @@ enum InformationTargetType {
     case fetchNews(cursor: Int)
     case fetchNotices(cursor: Int)
     case fetchCurationList(cursor: Int)
+    case fetchLatestCurationID
 }
 
 extension InformationTargetType: BaseTargetType {
@@ -40,6 +41,8 @@ extension InformationTargetType: BaseTargetType {
             "/v1/information/notice"
         case .fetchCurationList:
             "/v1/curation"
+        case .fetchLatestCurationID:
+            "/v1/curation/number"
         }
     }
     

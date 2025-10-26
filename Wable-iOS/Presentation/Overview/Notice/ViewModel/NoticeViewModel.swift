@@ -83,6 +83,15 @@ extension NoticeViewModel: ViewModelType {
             .map { noticesSubject.value[$0] }
             .eraseToAnyPublisher()
         
+        noticesSubject
+            .compactMap { $0.first?.id }
+            .removeDuplicates()
+            .flatMap { [weak self] latestNoticeID -> AnyPublisher<Void, Never> in
+                self?.updateLastViewedNoticeCount(to: latestNoticeID) ?? .empty()
+            }
+            .sink { _ in }
+            .store(in: cancelBag)
+
         return Output(
             notices: noticesSubject.eraseToAnyPublisher(),
             selectedNotice: selectedNotice,
@@ -106,5 +115,14 @@ private extension NoticeViewModel {
     
     func isLastPage(_ notices: [Announcement]) -> Bool {
         return notices.isEmpty || notices.count < IntegerLiterals.defaultCountPerPage
+    }
+
+    func updateLastViewedNoticeCount(to noticeCount: Int) -> AnyPublisher<Void, Never> {
+        return useCase.updateLastViewedNoticeCount(to: noticeCount)
+            .catch { error -> AnyPublisher<Void, Never> in
+                WableLogger.log("에러 발생: \(error.localizedDescription)", for: .error)
+                return .just(())
+            }
+            .eraseToAnyPublisher()
     }
 }

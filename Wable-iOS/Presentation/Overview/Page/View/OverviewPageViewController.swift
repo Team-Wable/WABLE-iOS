@@ -6,29 +6,43 @@
 //
 
 import UIKit
+import Combine
 
 import SnapKit
 
 final class OverviewPageViewController: UIViewController {
     
-    // MARK: - Property
-    
-    private var currentIndex = 0 {
-        didSet {
-            guard oldValue != currentIndex else { return }
-            trackPageChangeEvent(for: currentIndex)
-        }
-    }
-    private var viewControllers = [UIViewController]()
+    // MARK: - UIComponent
     
     private let pageViewController = UIPageViewController(
         transitionStyle: .scroll,
         navigationOrientation: .horizontal
     )
     private let rootView = OverviewPageView()
+
+    // MARK: Property
+
+    private var viewControllers = [UIViewController]()
+
+    private let viewModel: OverviewPageViewModel
+    private let segmentDidChangeSubject = PassthroughSubject<OverviewSegment, Never>()
+    private let pageSwipeCompletedSubject = PassthroughSubject<OverviewSegment, Never>()
+    private let didLoadSubject = PassthroughSubject<Void, Never>()
+    private let cancelBag = CancelBag()
     
     // MARK: - Life Cycle
+
+    init(viewModel: OverviewPageViewModel) {
+        self.viewModel = viewModel
+
+        super.init(nibName: nil, bundle: nil)
+    }
     
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func loadView() {
         view = rootView
     }
@@ -40,6 +54,10 @@ final class OverviewPageViewController: UIViewController {
         setupPageController()
         setupNavigationBar()
         setupAction()
+        setupBinding()
+
+        // Trigger initial badge checks after bindings are set
+        didLoadSubject.send(())
     }
 }
 
@@ -54,13 +72,13 @@ extension OverviewPageViewController: UIPageViewControllerDelegate {
     ) {
         guard completed,
               let visibleViewController = pageViewController.viewControllers?.first,
-              let index = index(for: visibleViewController)
+              let index = index(for: visibleViewController),
+              let segment = OverviewSegment(rawValue: index)
         else {
             return
         }
         
-        currentIndex = index
-        segmentedControl.selectedSegmentIndex = currentIndex
+        pageSwipeCompletedSubject.send(segment)
     }
 }
 
@@ -117,9 +135,8 @@ extension OverviewPageViewController: NoticeViewControllerDelegate {
 // MARK: - Setup Method
 
 private extension OverviewPageViewController {
-    func setupViewControllers() {
-        let useCase = OverviewUseCaseImpl()
-        
+    func setupViewControllers() {        
+        let useCase = viewModel.useCase
         let gameScheduleViewController = GameScheduleListViewController(viewModel: .init(useCase: useCase))
         
         let rankViewController = RankListViewController(viewModel: .init(useCase: useCase))
@@ -153,7 +170,12 @@ private extension OverviewPageViewController {
         pageViewController.delegate = self
         pageViewController.dataSource = self
         
-        pageViewController.setViewControllers([viewControllers[currentIndex]], direction: .forward, animated: false)
+        pageViewController
+            .setViewControllers(
+                [viewControllers[OverviewSegment.gameSchedule.rawValue]],
+                direction: .forward,
+                animated: false
+            )
     }
     
     func setupNavigationBar() {
@@ -163,22 +185,53 @@ private extension OverviewPageViewController {
     func setupAction() {
         segmentedControl.addTarget(self, action: #selector(segmentedControlDidChange(_:)), for: .valueChanged)
     }
+    
+    func setupBinding() {
+        let input = OverviewPageViewModel.Input(
+            segmentDidChange: segmentDidChangeSubject.eraseToAnyPublisher(),
+            pageSwipeCompleted: pageSwipeCompletedSubject.eraseToAnyPublisher(),
+            didLoad: didLoadSubject.eraseToAnyPublisher()
+        )
+        
+        let output = viewModel.transform(input: input, cancelBag: cancelBag)
+        
+        output.currentSegment
+            .sink { [weak self] segment in
+                self?.segmentedControl.selectedSegmentIndex = segment.rawValue
+            }
+            .store(in: cancelBag)
+        
+        output.pagination
+            .withUnretained(self)
+            .sink { owner, value in
+                owner.pageViewController.setViewControllers(
+                    [owner.viewControllers[value.segment.rawValue]],
+                    direction: value.direction,
+                    animated: true
+                )
+            }
+            .store(in: cancelBag)
+        
+        output.showBadge
+            .sink { [weak self] segment in
+                self?.segmentedControl.showBadge(at: segment.rawValue)
+            }
+            .store(in: cancelBag)
+
+        output.hideBadge
+            .sink { [weak self] segment in
+                self?.segmentedControl.hideBadge(at: segment.rawValue)
+            }
+            .store(in: cancelBag)
+    }
 }
 
 // MARK: - Action Method
 
 private extension OverviewPageViewController {
     @objc func segmentedControlDidChange(_ sender: WableBadgeSegmentedControl) {
-        let selectedSegmentIndex = sender.selectedSegmentIndex
-        let direction: UIPageViewController.NavigationDirection = selectedSegmentIndex > currentIndex ? .forward : .reverse
-        
-        pageViewController.setViewControllers(
-            [viewControllers[selectedSegmentIndex]],
-            direction: direction,
-            animated: true
-        ) { [unowned self] _ in
-            currentIndex = selectedSegmentIndex
-        }
+        guard let segment = OverviewSegment(rawValue: sender.selectedSegmentIndex) else { return }
+        segmentDidChangeSubject.send(segment)
     }
 }
 
@@ -187,24 +240,6 @@ private extension OverviewPageViewController {
 private extension OverviewPageViewController {
     func index(for viewController: UIViewController) -> Int? {
         return viewControllers.firstIndex(of: viewController)
-    }
-    
-    func trackPageChangeEvent(for index: Int) {
-        switch index {
-        case 0:
-            AmplitudeManager.shared.trackEvent(tag: .clickGameschedule)
-        case 1:
-            AmplitudeManager.shared.trackEvent(tag: .clickRanking)
-        case 2:
-            
-            // TODO: 추후 큐레이션으로 교체 예정
-            
-            AmplitudeManager.shared.trackEvent(tag: .clickNews)
-        case 3:
-            AmplitudeManager.shared.trackEvent(tag: .clickAnnouncement)
-        default:
-            break
-        }
     }
 }
 

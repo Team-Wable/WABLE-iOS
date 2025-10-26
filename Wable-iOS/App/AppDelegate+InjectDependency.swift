@@ -22,13 +22,13 @@ extension AppDelegate {
         // MARK: - Account
         
         diContainer.register(for: AccountRepository.self, object: AccountRepositoryImpl())
-
+        
         
         // MARK: - Login
         
         diContainer.register(for: LoginRepository.self, object: LoginRepositoryImpl())
         diContainer.register(for: TokenStorage.self, object: TokenStorage(keyChainStorage: KeychainStorage()))
-
+        
         // MARK: - Overview
         
         diContainer.register(for: InformationRepository.self) { env in
@@ -49,7 +49,7 @@ extension AppDelegate {
         }
         
         // MARK: - Viewit
-
+        
         diContainer.register(for: ViewitRepository.self) { env in
             switch env {
             case .mock: MockViewitRepository()
@@ -70,16 +70,16 @@ extension AppDelegate {
         diContainer.register(for: CommentLikedRepository.self, object: CommentLikedRepositoryImpl())
         
         // MARK: - Content
-
+        
         diContainer.register(for: ContentRepository.self, object: ContentRepositoryImpl())
         diContainer.register(for: ContentLikedRepository.self, object: ContentLikedRepositoryImpl())
         
         // MARK: - Profile
-
+        
         diContainer.register(for: ProfileRepository.self, object: ProfileRepositoryImpl())
         
         // MARK: - Ghost
-
+        
         diContainer.register(for: GhostRepository.self) { env in
             return GhostRepositoryImpl()
         }
@@ -108,9 +108,18 @@ extension AppDelegate {
             case .production: CommunityRepositoryImpl()
             }
         }
-
+        
+        // MARK: - UserActivity
+        
+        diContainer.register(for: UserActivityRepository.self) { env in
+            switch env {
+            case .mock: MockUserActivityRepository()
+            case .production: UserActivityRepositoryImpl(storage: UserDefaultsStorage())
+            }
+        }
+        
         // MARK: - Quiz
-
+        
         diContainer.register(for: QuizRepository.self) { env in
             switch env {
             case .mock: MockQuizRepository()

@@ -53,6 +53,13 @@ final class MyProfileViewController: UIViewController {
     // MARK: - Property
 
     var onLogout: (() -> Void)?
+    var showAccountInfo: (() -> Void)?
+    var showAlarmSetting: (() -> Void)?
+    var showWritePost: (() -> Void)?
+    var showHomeDetail: ((Int) -> Void)?
+    var showPhotoDetail: ((UIImage) -> Void)?
+    var openURL: ((URL) -> Void)?
+    var showProfileEdit: ((Int) -> Void)?
 
     private var dataSource: DataSource?
 
@@ -104,35 +111,7 @@ extension MyProfileViewController: UICollectionViewDelegate {
         }
         
         let contentID = viewModel.didSelect(index: indexPath.item)
-        
-        let viewController = HomeDetailViewController(
-            viewModel: HomeDetailViewModel(
-                contentID: contentID,
-                fetchContentInfoUseCase: FetchContentInfoUseCase(repository: ContentRepositoryImpl()),
-                fetchContentCommentListUseCase: FetchContentCommentListUseCase(repository: CommentRepositoryImpl()),
-                createCommentUseCase: CreateCommentUseCase(repository: CommentRepositoryImpl()),
-                deleteCommentUseCase: DeleteCommentUseCase(repository: CommentRepositoryImpl()),
-                createContentLikedUseCase: CreateContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
-                deleteContentLikedUseCase: DeleteContentLikedUseCase(repository: ContentLikedRepositoryImpl()),
-                createCommentLikedUseCase: CreateCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
-                deleteCommentLikedUseCase: DeleteCommentLikedUseCase(repository: CommentLikedRepositoryImpl()),
-                fetchUserInformationUseCase: FetchUserInformationUseCase(
-                    repository: UserSessionRepositoryImpl(
-                        userDefaults: UserDefaultsStorage(
-                            jsonEncoder: JSONEncoder(),
-                            jsonDecoder: JSONDecoder()
-                        )
-                    )
-                ),
-                fetchGhostUseCase: FetchGhostUseCase(repository: GhostRepositoryImpl()),
-                createReportUseCase: CreateReportUseCase(repository: ReportRepositoryImpl()),
-                createBannedUseCase: CreateBannedUseCase(repository: ReportRepositoryImpl()),
-                deleteContentUseCase: DeleteContentUseCase(repository: ContentRepositoryImpl())
-            ),
-            cancelBag: CancelBag()
-        )
-        
-        navigationController?.pushViewController(viewController, animated: true)
+        showHomeDetail?(contentID)
     }
     
     func collectionView(
@@ -203,10 +182,7 @@ private extension MyProfileViewController {
                 ghostValue: item.ghostCount,
                 editButtonTapHandler: { [weak self] in
                     guard let userID = self?.viewModel.userID else { return }
-                    self?.navigationController?.pushViewController(
-                        ProfileEditViewController(userID: userID),
-                        animated: true
-                    )
+                    self?.showProfileEdit?(userID)
                 }
             )
         }
@@ -220,8 +196,7 @@ private extension MyProfileViewController {
                 contentImageViewTapHandler: { [weak self] in
                     guard let image = cell.contentImageView.image else { return }
                     
-                    let photoDetailViewController = PhotoDetailViewController(image: image)
-                    self?.navigationController?.pushViewController(photoDetailViewController, animated: true)
+                    self?.showPhotoDetail?(image)
                 },
                 likeButtonTapHandler: { [weak self] in self?.viewModel.toggleLikeContent(for: item.id) },
                 settingButtonTapHandler: { [weak self] in
@@ -273,17 +248,7 @@ private extension MyProfileViewController {
             [weak self] cell, indexPath, item in
             cell.configure(currentSegment: item.segment, nickname: item.nickname)
             
-            cell.writeButtonDidTapClosure = { [weak self] in
-                let viewController = WritePostViewController(
-                    viewModel: WritePostViewModel(
-                        createContentUseCase: CreateContentUseCase(
-                            repository: ContentRepositoryImpl()
-                        )
-                    )
-                )
-                
-                self?.navigationController?.pushViewController(viewController, animated: true)
-            }
+            cell.writeButtonDidTapClosure = { [weak self] in self?.showWritePost?() }
         }
         
         dataSource = DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
@@ -340,7 +305,7 @@ private extension MyProfileViewController {
     func setupBinding() {
         viewModel.$nickname
             .receive(on: RunLoop.main)
-            .sink { [weak self] in self?.navigationView.setNavigationTitle(text: $0 ?? "알 수 없는 유저") }
+            .sink { [weak self] in self?.navigationView.setNavigationTitle(text: $0 ?? "") }
             .store(in: cancelBag)
         
         viewModel.$item
@@ -381,8 +346,8 @@ private extension MyProfileViewController {
 
     @objc func menuButtonDidTap() {
         let bottomSheet = WableBottomSheetController()
-        let accountInfoAction = WableBottomSheetAction(title: "계정 정보") { [weak self] in self?.navigateToAccountInfo() }
-        let alarmSettingAction = WableBottomSheetAction(title: "알림 설정") { [weak self] in self?.navigateToAlarmSetting() }
+        let accountInfoAction = WableBottomSheetAction(title: "계정 정보") { [weak self] in self?.showAccountInfo?() }
+        let alarmSettingAction = WableBottomSheetAction(title: "알림 설정") { [weak self] in self?.showAlarmSetting?() }
         let feedbackAction = WableBottomSheetAction(title: "피드백 남기기") { [weak self] in self?.presentGoogleForm() }
         let helpAction = WableBottomSheetAction(title: "고객센터") { [weak self] in self?.presentGoogleForm() }
         let logoutAction = WableBottomSheetAction(title: "로그아웃") { [weak self] in self?.presentLogoutActionSheet() }
@@ -433,22 +398,11 @@ private extension MyProfileViewController {
         
         dataSource?.apply(snapshot)
     }
-
-    func navigateToAccountInfo() {
-        let viewModel = AccountInfoViewModel(useCase: FetchAccountInfoUseCaseImpl())
-        let viewController = AccountInfoViewController(viewModel: viewModel)
-        navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func navigateToAlarmSetting() {
-        let viewModel = AlarmSettingViewModel()
-        let viewController = AlarmSettingViewController(viewModel: viewModel)
-        navigationController?.pushViewController(viewController, animated: true)
-    }
     
     func presentGoogleForm() {
         guard let url = URL(string: StringLiterals.URL.feedbackForm) else { return }
-        present(SFSafariViewController(url: url), animated: true)
+        
+        openURL?(url)
     }
     
     func presentLogoutActionSheet() {

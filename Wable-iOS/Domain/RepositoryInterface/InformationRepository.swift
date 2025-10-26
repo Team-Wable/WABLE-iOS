@@ -16,4 +16,5 @@ protocol InformationRepository {
     func fetchNews(cursor: Int) -> AnyPublisher<[Announcement], WableError>
     func fetchNotice(cursor: Int) -> AnyPublisher<[Announcement], WableError>
     func fetchCurationList(cursor: Int) -> AnyPublisher<[Curation], WableError>
+    func fetchLatestCurationID() -> AnyPublisher<Int, WableError>
 }

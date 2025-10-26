@@ -10,59 +10,65 @@ import Foundation
 
 final class WithdrawalGuideViewModel: ViewModelType {
     struct Input {
-        let checkbox: Driver<Void>
-        let withdraw: Driver<Void>
+        let checkbox: AnyPublisher<Void, Never>
+        let withdraw: AnyPublisher<Void, Never>
     }
     
     struct Output {
-        let isNextEnabled: Driver<Bool>
-        let isWithdrawSuccess: Driver<Bool>
-        let errorMessage: Driver<String>
+        let isNextEnabled: AnyPublisher<Bool, Never>
+        let isWithdrawSuccess: AnyPublisher<Void, Never>
+        let errorMessage: AnyPublisher<String, Never>
     }
     
     private let selectedReasons: [WithdrawalReason]
     private let withdrawUseCase: WithdrawUseCase
-    private let removeUserSessionUseCase: RemoveUserSessionUseCase
+    private let errorMessageSubject = PassthroughSubject<String, Never>()
     
     init(
         selectedReasons: [WithdrawalReason],
         withdrawUseCase: WithdrawUseCase,
-        removeUserSessionUseCase: RemoveUserSessionUseCase
     ) {
         self.selectedReasons = selectedReasons
         self.withdrawUseCase = withdrawUseCase
-        self.removeUserSessionUseCase = removeUserSessionUseCase
     }
     
     func transform(input: Input, cancelBag: CancelBag) -> Output {
-        let isNextEnabledRelay = CurrentValueRelay<Bool>(false)
-        let errorMessageRelay = PassthroughRelay<String>()
+        let isNextEnabledSubject = CurrentValueSubject<Bool, Never>(false)
         
         input.checkbox
-            .sink { _ in isNextEnabledRelay.value.toggle() }
+            .sink { _ in isNextEnabledSubject.value.toggle() }
             .store(in: cancelBag)
         
         let isWithdrawSuccess = input.withdraw
             .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.withdrawUseCase.execute(reasons: owner.selectedReasons)
-                    .catch { error -> AnyPublisher<Bool, Never> in
-                        errorMessageRelay.send(error.localizedDescription)
-                        return .just(false)
-                    }
-                    .filter { $0 }
-                    .eraseToAnyPublisher()
+            .flatMap { owner, _ -> AnyPublisher<Void, Never> in
+                return owner.withdraw()
             }
-            .handleEvents(receiveOutput: { [weak self] isSuccess in
-                guard isSuccess else { return }
-                self?.removeUserSessionUseCase.removeUserSession()
-            })
+            .asDriver()
+        
+        let errorMessage = errorMessageSubject
+            .filter { !$0.isEmpty }
+            .removeDuplicates()
             .asDriver()
         
         return Output(
-            isNextEnabled: isNextEnabledRelay.asDriver(),
+            isNextEnabled: isNextEnabledSubject.asDriver(),
             isWithdrawSuccess: isWithdrawSuccess,
-            errorMessage: errorMessageRelay.asDriver()
+            errorMessage: errorMessage
         )
+    }
+}
+
+// MARK: - Helper Method
+
+private extension WithdrawalGuideViewModel {
+    func withdraw() -> AnyPublisher<Void, Never> {
+        return withdrawUseCase.execute(reasons: selectedReasons)
+            .catch { [weak self] error -> AnyPublisher<Void, Never> in
+                WableLogger.log("회원 탈퇴 실패: \(error.localizedDescription)", for: .error)
+                self?.errorMessageSubject.send(error.localizedDescription)
+                return .empty()
+            }
+            .eraseToAnyPublisher()
     }
 }

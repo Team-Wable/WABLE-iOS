@@ -12,11 +12,7 @@ protocol RemoveUserSessionUseCase {
 }
 
 final class RemoveUserSessionUseCaseImpl: RemoveUserSessionUseCase {
-    private let repository: UserSessionRepository
-    
-    init(repository: UserSessionRepository) {
-        self.repository = repository
-    }
+    @Injected private var repository: UserSessionRepository
     
     func removeUserSession() {
         guard let userID = repository.fetchActiveUserID() else {

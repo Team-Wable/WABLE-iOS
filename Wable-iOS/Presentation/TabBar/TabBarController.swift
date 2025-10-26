@@ -18,6 +18,7 @@ final class TabBarController: UITabBarController {
     private var shouldShowLoadingScreen: Bool
     private var quizCoordinator: QuizCoordinator?
     private var viewitCoordinator: ViewitCoordinator?
+    private var profileCoordinator: ProfileCoordinator?
     
     @Injected private var userSessionRepository: UserSessionRepository
     
@@ -55,30 +56,11 @@ final class TabBarController: UITabBarController {
         $0.tabBarItem.image = .icCommunity
     }
     
-    private let overviewViewController = OverviewPageViewController().then {
+    private let overviewViewController = OverviewPageViewController(
+        viewModel: OverviewPageViewModel(useCase: OverviewUseCaseImpl())
+    ).then {
         $0.tabBarItem.title = "소식"
         $0.tabBarItem.image = .icInfoPress
-    }
-    
-    private let profileViewController = MyProfileViewController(
-        viewModel: .init(
-            userinformationUseCase: FetchUserInformationUseCase(
-                repository: UserSessionRepositoryImpl(
-                    userDefaults: UserDefaultsStorage(jsonEncoder: .init(), jsonDecoder: .init())
-                )
-            ),
-            fetchUserProfileUseCase: FetchUserProfileUseCaseImpl(),
-            removeUserSessionUseCase: RemoveUserSessionUseCaseImpl(
-                repository: UserSessionRepositoryImpl(
-                    userDefaults: UserDefaultsStorage(
-                        jsonEncoder: .init(), jsonDecoder: .init()
-                    )
-                )
-            )
-        )
-    ).then {
-        $0.tabBarItem.title = "마이"
-        $0.tabBarItem.image = .icMyPress
     }
     
     // MARK: - LifeCycle
@@ -114,7 +96,6 @@ private extension TabBarController {
         let homeNavigationController = UINavigationController(rootViewController: homeViewController)
         let communityNavigationController = UINavigationController(rootViewController: communityViewController)
         let overviewNavigationController = UINavigationController(rootViewController: overviewViewController)
-        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
         
         let viewitNavigationController = UINavigationController()
         viewitCoordinator = ViewitCoordinator(navigationController: viewitNavigationController)
@@ -127,10 +108,13 @@ private extension TabBarController {
         quizCoordinator?.start()
         quizNavigationController.tabBarItem = UITabBarItem(title: "퀴즈", image: .icQuiz, selectedImage: nil)
         
-
-        profileViewController.onLogout = { [weak self] in
+        let profileNavigationController = UINavigationController()
+        profileCoordinator = ProfileCoordinator(navigationController: profileNavigationController)
+        profileCoordinator?.onLogout = { [weak self] in
             self?.onLogout?()
         }
+        profileCoordinator?.start()
+        profileNavigationController.tabBarItem = UITabBarItem(title: "마이", image: .icMyPress, selectedImage: nil)
 
         configureTabBar()
 
@@ -190,8 +174,6 @@ extension TabBarController: UITabBarControllerDelegate {
                 }
                 return false
             }
-            
-            
         }
         return true
     }

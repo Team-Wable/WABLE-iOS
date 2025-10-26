@@ -9,6 +9,10 @@ import UIKit
 
 final class WithdrawalGuideViewController: UIViewController {
     
+    // MARK: - Property
+    
+    var onWithdraw: (() -> Void)?
+
     private let viewModel: WithdrawalGuideViewModel
     private let checkboxRelay = PassthroughRelay<Void>()
     private let withdrawRelay = PassthroughRelay<Void>()
@@ -77,8 +81,7 @@ private extension WithdrawalGuideViewController {
             .store(in: cancelBag)
         
         output.isWithdrawSuccess
-            .filter { $0 }
-            .sink { [weak self] _ in self?.presentLoginView() }
+            .sink { [weak self] _ in self?.onWithdraw?() }
             .store(in: cancelBag)
         
         output.errorMessage
