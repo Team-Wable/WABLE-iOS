@@ -168,8 +168,7 @@ extension TabBarController: UITabBarControllerDelegate {
                 if let viewController = selectedViewController as? UINavigationController {
                     let quizViewController = QuizViewController(
                         type: .page(type: .quiz, title: "퀴즈"),
-                        viewModel: .init()
-                    )
+                        viewModel: .init())
                     viewController.pushViewController(quizViewController, animated: true)
                 }
                 return false

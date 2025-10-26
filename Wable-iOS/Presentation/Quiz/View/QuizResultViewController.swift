@@ -50,7 +50,7 @@ public final class QuizResultViewController: UIViewController {
     
     // MARK: - LifeCycle
 
-    init(viewModel: QuizResultViewModel, quizId: Int = 1, answer: Bool, totalTime: Int) {
+    init(viewModel: QuizResultViewModel) {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
@@ -66,7 +66,6 @@ public final class QuizResultViewController: UIViewController {
         setupView()
         setupBinding()
         setupAction()
-        configureView(isCorrect: answer)
     }
 }
 
@@ -145,7 +144,7 @@ private extension QuizResultViewController {
             .sink { owner, error in
                 let toast = WableSheetViewController(
                     title: StringLiterals.Quiz.rewardErrorTitle,
-                    message: "\(error.localizedDescription)\n\(StringLiterals.Quiz.loadingErrorMessage)
+                    message: "\(error.localizedDescription)\n\(StringLiterals.Quiz.loadingErrorMessage)"
                 )
 
                 toast.addAction(.init(title: "확인", style: .primary))
@@ -163,8 +162,6 @@ private extension QuizResultViewController {
 
 private extension QuizResultViewController {
     @objc func rewardButtonDidTap() {
-        rewardButtonDidTapSubject.send((quizId: quizId, answer: answer, totalTime: totalTime))
-
         let keyWindow = UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .flatMap { $0.windows }
