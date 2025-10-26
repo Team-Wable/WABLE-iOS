@@ -82,6 +82,8 @@ extension UserSessionRepositoryImpl: UserSessionRepository {
     func updateActiveUserID(_ userID: Int?) {
         if let userID = userID {
             try? userDefaults.setValue(userID, for: Keys.activeUserID)
+        } else {
+            try? userDefaults.removeValue(for: Keys.activeUserID)
         }
     }
     
