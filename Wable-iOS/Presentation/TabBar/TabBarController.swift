@@ -104,7 +104,7 @@ private extension TabBarController {
         
         let quizNavigationController = UINavigationController()
         let hasCompleted = checkTodayQuizCompletion()
-        quizCoordinator = QuizCoordinator(navigationController: quizNavigationController)
+        quizCoordinator = QuizCoordinator(navigationController: quizNavigationController, hasCompleted: hasCompleted)
         quizCoordinator?.start()
         quizNavigationController.tabBarItem = UITabBarItem(title: "퀴즈", image: .icQuiz, selectedImage: nil)
         
