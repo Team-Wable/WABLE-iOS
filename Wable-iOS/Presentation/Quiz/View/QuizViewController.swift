@@ -35,13 +35,17 @@ final class QuizViewController: NavigationViewController {
     private lazy var correctButton: UIButton = UIButton(configuration: .plain()).then {
         $0.configuration?.background.backgroundColor = .clear
         $0.setImage(.btnCorrectDefault, for: .normal)
-        $0.setImage(.btnCorrectSelected, for: .selected)
+        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 16.adjustedWidth
+        $0.layer.borderColor = UIColor.blue50.cgColor
     }
 
     private lazy var incorrectButton: UIButton = UIButton(configuration: .plain()).then {
         $0.configuration?.background.backgroundColor = .clear
         $0.setImage(.btnIncorrectDefault, for: .normal)
-        $0.setImage(.btnIncorrectSelected, for: .selected)
+        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 16.adjustedWidth
+        $0.layer.borderColor = UIColor.error.cgColor
     }
     
     private lazy var submitButton: WableButton = WableButton(style: .gray).then {
@@ -198,6 +202,8 @@ private extension QuizViewController {
     }
     
     func updateCorrectState(_ isCorrect: Bool) {
+        correctButton.layer.borderWidth = isCorrect ? 1 : 0
+        incorrectButton.layer.borderWidth = isCorrect ? 0 : 1
         correctButton.isSelected = isCorrect
         incorrectButton.isSelected = !isCorrect
     }
