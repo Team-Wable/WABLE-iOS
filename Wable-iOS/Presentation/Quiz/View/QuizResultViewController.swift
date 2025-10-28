@@ -162,6 +162,7 @@ private extension QuizResultViewController {
 
 private extension QuizResultViewController {
     @objc func rewardButtonDidTap() {
+        AmplitudeManager.shared.trackEvent(tag: .clickGetXP)
         let keyWindow = UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .flatMap { $0.windows }

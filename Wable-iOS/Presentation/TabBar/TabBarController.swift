@@ -165,6 +165,7 @@ extension TabBarController: UITabBarControllerDelegate {
             let hasCompleted = checkTodayQuizCompletion()
 
             if !hasCompleted {
+                AmplitudeManager.shared.trackEvent(tag: .clickQuizBotnavi)
                 if let viewController = selectedViewController as? UINavigationController {
                     let quizViewController = QuizViewController(
                         type: .page(type: .quiz, title: "퀴즈"),
@@ -203,8 +204,7 @@ extension TabBarController: UITabBarControllerDelegate {
         case 1:
             AmplitudeManager.shared.trackEvent(tag: .clickCommunityBotnavi)
         case 2:
-//            AmplitudeManager.shared.trackEvent(tag: .clickQuizBotnavi)
-            break
+            AmplitudeManager.shared.trackEvent(tag: .clickQuizBotnavi)
         case 3:
             AmplitudeManager.shared.trackEvent(tag: .clickNewsBotnavi)
         case 4:

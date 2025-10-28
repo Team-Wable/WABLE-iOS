@@ -28,6 +28,11 @@ extension AmplitudeManager {
     // MARK: - EventTag
 
     enum EventTag: CaseIterable {
+        case clickQuizBotnavi
+        case clickQuizSubmit
+        case clickGetXP
+        case clickCuration
+        case clickContentCuration
         case clickCommunityBotnavi
         case clickViewitBotnavi
         case clickHomeBotnavi
@@ -78,6 +83,11 @@ extension AmplitudeManager {
         
         var value: String {
             switch self {
+            case .clickQuizBotnavi: return "click_quiz_botnavi"
+            case .clickQuizSubmit: return "click_quiz_submit"
+            case .clickGetXP: return "click_get_xp"
+            case .clickCuration: return "click_curation"
+            case .clickContentCuration: return "click_content_curation"
             case .clickCommunityBotnavi: return "click_community_botnavi"
             case .clickViewitBotnavi: return "click_viewit_botnavi"
             case .clickHomeBotnavi: return "click_home_botnavi"

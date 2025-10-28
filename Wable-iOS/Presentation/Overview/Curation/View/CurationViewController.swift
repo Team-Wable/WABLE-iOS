@@ -146,6 +146,7 @@ private extension CurationViewController {
                 title: item.title,
                 siteName: item.siteName
             ) { [weak self] in
+                AmplitudeManager.shared.trackEvent(tag: .clickContentCuration)
                 self?.onCellTap?(item.siteURL)
             }
         }
