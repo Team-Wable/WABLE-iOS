@@ -117,7 +117,7 @@ private extension OverviewPageViewModel {
         case .teamRank:
             AmplitudeManager.shared.trackEvent(tag: .clickRanking)
         case .curation:
-            AmplitudeManager.shared.trackEvent(tag: .clickNews)
+            AmplitudeManager.shared.trackEvent(tag: .clickCuration)
         case .notice:
             AmplitudeManager.shared.trackEvent(tag: .clickAnnouncement)
         }

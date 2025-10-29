@@ -231,9 +231,6 @@ private extension OverviewPageViewController {
 private extension OverviewPageViewController {
     @objc func segmentedControlDidChange(_ sender: WableBadgeSegmentedControl) {
         guard let segment = OverviewSegment(rawValue: sender.selectedSegmentIndex) else { return }
-        if sender.selectedSegmentIndex == 2 {
-            AmplitudeManager.shared.trackEvent(tag: .clickCuration)
-        }
         
         segmentDidChangeSubject.send(segment)
     }
