@@ -127,6 +127,9 @@ private extension QuizViewController {
             input: .init(
                 submitButtonDidTap: submitButton
                     .publisher(for: .touchUpInside)
+                    .handleEvents(receiveOutput:  { _ in
+                        AmplitudeManager.shared.trackEvent(tag: .clickQuizSubmit)
+                    })
                     .compactMap { [weak self] in self?.correctButton.isSelected }
                     .eraseToAnyPublisher()
             ),
