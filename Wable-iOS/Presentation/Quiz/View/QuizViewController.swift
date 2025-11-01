@@ -164,6 +164,7 @@ private extension QuizViewController {
                 )
                 let resultViewController = QuizResultViewController(viewModel: viewModel)
                 resultViewController.modalPresentationStyle = .fullScreen
+                resultViewController.modalTransitionStyle = .crossDissolve
                 owner.present(resultViewController, animated: true)
             }
             .store(in: cancelBag)
