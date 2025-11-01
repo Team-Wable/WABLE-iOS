@@ -3505,7 +3505,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Resource/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = Wable;
+				INFOPLIST_KEY_CFBundleDisplayName = "와블";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "게시글이나 프로필을 변경할 때 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
