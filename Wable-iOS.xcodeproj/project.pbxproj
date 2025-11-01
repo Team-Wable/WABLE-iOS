@@ -581,7 +581,6 @@
 		DD2A2F0D2EA8A15D0024076B /* QuizResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultViewController.swift; sourceTree = "<group>"; };
 		DD2A2F102EA8A2B70024076B /* QuizResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultViewModel.swift; sourceTree = "<group>"; };
 		DD2A2F132EA8B69B0024076B /* QuizRewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRewardView.swift; sourceTree = "<group>"; };
-		DD2A2F152EA905180024076B /* Wable-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "Wable-iOS.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD3935B42DDDB9F700B6CA94 /* MyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileView.swift; sourceTree = "<group>"; };
 		DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		DD4AFD462D90263400D56B94 /* OAuthEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthEventManager.swift; sourceTree = "<group>"; };
@@ -649,9 +648,6 @@
 		DDCD66F42D7DF5B000EF4C28 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		DDCD66FA2D7DF6C600EF4C28 /* ViewitListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewitListViewController.swift; sourceTree = "<group>"; };
 		DDCD67042D7E271C00EF4C28 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
-		DDE03FDD2EAE0659003EB3B3 /* QuizCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCoordinator.swift; sourceTree = "<group>"; };
-		DDE03FDF2EAE068D003EB3B3 /* NextQuizInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextQuizInfoViewController.swift; sourceTree = "<group>"; };
-		DDE03FE02EAE068D003EB3B3 /* QuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
 		DDE9660F2D8C629A004E899B /* DefaultProfileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultProfileType.swift; sourceTree = "<group>"; };
 		DDEA63582E85025C005FED9F /* AgreementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewModel.swift; sourceTree = "<group>"; };
 		DDED594A2D784EB100A0BEF1 /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
@@ -870,7 +866,6 @@
 			children = (
 				0547F4982C60D968001E3039 /* Wable-iOS */,
 				0547F4972C60D968001E3039 /* Products */,
-				DDE03FF02EAE1056003EB3B3 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -894,7 +889,6 @@
 				DD2967D52D6DAC3100143851 /* Data */,
 				DD2967F82D6DAC3100143851 /* Domain */,
 				DE7C53082D761DA500076E5D /* Presentation */,
-				DD2A2F152EA905180024076B /* Wable-iOS.xcodeproj */,
 			);
 			path = "Wable-iOS";
 			sourceTree = "<group>";
@@ -917,11 +911,6 @@
 				DD055F932EAD3B5B0003DFF7 /* Pricedown-Black.otf */,
 			);
 			path = Font;
-			sourceTree = "<group>";
-		};
-		DD055F732EAA877C0003DFF7 /* Products */ = {
-			isa = PBXGroup;
-			name = Products;
 			sourceTree = "<group>";
 		};
 		DD055F752EAB3BA20003DFF7 /* Quiz */ = {
@@ -1689,16 +1678,6 @@
 				DDCD66E42D7DC0DB00EF4C28 /* NavigationView.swift */,
 			);
 			path = Navigation;
-			sourceTree = "<group>";
-		};
-		DDE03FF02EAE1056003EB3B3 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				DDE03FDD2EAE0659003EB3B3 /* QuizCoordinator.swift */,
-				DDE03FE02EAE068D003EB3B3 /* QuizViewController.swift */,
-				DDE03FDF2EAE068D003EB3B3 /* NextQuizInfoViewController.swift */,
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		DDEA63572E850250005FED9F /* ViewModel */ = {
@@ -2890,12 +2869,6 @@
 			);
 			productRefGroup = 0547F4972C60D968001E3039 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = DD055F732EAA877C0003DFF7 /* Products */;
-					ProjectRef = DD2A2F152EA905180024076B /* Wable-iOS.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				0547F4952C60D968001E3039 /* Wable-iOS */,
@@ -3471,12 +3444,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Resource/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "술먹고미친와블";
+				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "게시글이나 프로필을 변경할 때 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -3489,7 +3462,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3514,12 +3487,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HGVD26K7DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wable-iOS/Resource/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "술먹고미친와블";
+				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "게시글이나 프로필을 변경할 때 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -3532,7 +3505,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wable.Wable-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

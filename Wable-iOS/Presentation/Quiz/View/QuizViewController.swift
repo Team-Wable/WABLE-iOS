@@ -211,5 +211,3 @@ private extension QuizViewController {
         incorrectButton.isSelected = !isCorrect
     }
 }
-
-

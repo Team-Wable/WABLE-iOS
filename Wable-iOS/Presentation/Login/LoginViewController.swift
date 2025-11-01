@@ -35,10 +35,10 @@ final class LoginViewController: UIViewController {
     }
     
     private let titleLabel: UILabel = UILabel().then {
+        $0.attributedText = StringLiterals.Login.title.pretendardString(with: .head0)
         $0.numberOfLines = 0
         $0.textColor = .wableBlack
         $0.textAlignment = .center
-        $0.attributedText = StringLiterals.Login.title.pretendardString(with: .head0)
     }
     
     private lazy var kakaoButton: UIButton = UIButton().then {

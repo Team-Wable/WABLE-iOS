@@ -44,6 +44,12 @@ public final class QuizResultViewController: UIViewController {
     
     private let speedView: QuizRewardView = QuizRewardView(state: .speed)
     
+    private lazy var rewardStackView: UIStackView = UIStackView(arrangedSubviews: [xpView, topView, speedView]).then {
+        $0.axis = .horizontal
+        $0.spacing = 6
+        $0.distribution = .fillEqually
+    }
+    
     private let rewardButton: WableButton = WableButton(style: .primary).then {
         $0.configuration?.attributedTitle = "XP 받기".pretendardString(with: .head2)
     }
@@ -79,9 +85,7 @@ private extension QuizResultViewController {
             answerImageView,
             titleLabel,
             descriptionLabel,
-            xpView,
-            topView,
-            speedView,
+            rewardStackView,
             rewardButton
         )
         
@@ -102,19 +106,9 @@ private extension QuizResultViewController {
             make.centerX.equalToSuperview()
         }
         
-        xpView.snp.makeConstraints { make in
+        rewardStackView.snp.makeConstraints { make in
             make.bottom.equalTo(rewardButton.snp.top).offset(-82)
-            make.leading.equalToSuperview().offset(36)
-        }
-        
-        topView.snp.makeConstraints { make in
-            make.top.equalTo(xpView)
-            make.leading.equalTo(xpView.snp.trailing).offset(6)
-        }
-        
-        speedView.snp.makeConstraints { make in
-            make.top.equalTo(xpView)
-            make.leading.equalTo(topView.snp.trailing).offset(6)
+            make.horizontalEdges.equalToSuperview().inset(36)
         }
         
         rewardButton.snp.makeConstraints { make in

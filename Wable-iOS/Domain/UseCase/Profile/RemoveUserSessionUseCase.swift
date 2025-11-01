@@ -16,10 +16,6 @@ final class RemoveUserSessionUseCaseImpl: RemoveUserSessionUseCase {
     @Injected private var tokenStorage: TokenStorage
 
     func removeUserSession() {
-        guard let userID = repository.fetchActiveUserID() else {
-            return WableLogger.log("유저 아이디를 찾을 수 없음.", for: .debug)
-        }
-
         do {
             try tokenStorage.delete(.wableAccessToken)
             try tokenStorage.delete(.wableRefreshToken)
