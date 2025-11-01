@@ -581,7 +581,6 @@
 		DD2A2F0D2EA8A15D0024076B /* QuizResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultViewController.swift; sourceTree = "<group>"; };
 		DD2A2F102EA8A2B70024076B /* QuizResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultViewModel.swift; sourceTree = "<group>"; };
 		DD2A2F132EA8B69B0024076B /* QuizRewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRewardView.swift; sourceTree = "<group>"; };
-		DD2A2F152EA905180024076B /* Wable-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "Wable-iOS.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD3935B42DDDB9F700B6CA94 /* MyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileView.swift; sourceTree = "<group>"; };
 		DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		DD4AFD462D90263400D56B94 /* OAuthEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthEventManager.swift; sourceTree = "<group>"; };
@@ -890,7 +889,6 @@
 				DD2967D52D6DAC3100143851 /* Data */,
 				DD2967F82D6DAC3100143851 /* Domain */,
 				DE7C53082D761DA500076E5D /* Presentation */,
-				DD2A2F152EA905180024076B /* Wable-iOS.xcodeproj */,
 			);
 			path = "Wable-iOS";
 			sourceTree = "<group>";
@@ -913,11 +911,6 @@
 				DD055F932EAD3B5B0003DFF7 /* Pricedown-Black.otf */,
 			);
 			path = Font;
-			sourceTree = "<group>";
-		};
-		DD055F732EAA877C0003DFF7 /* Products */ = {
-			isa = PBXGroup;
-			name = Products;
 			sourceTree = "<group>";
 		};
 		DD055F752EAB3BA20003DFF7 /* Quiz */ = {
@@ -2876,12 +2869,6 @@
 			);
 			productRefGroup = 0547F4972C60D968001E3039 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = DD055F732EAA877C0003DFF7 /* Products */;
-					ProjectRef = DD2A2F152EA905180024076B /* Wable-iOS.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				0547F4952C60D968001E3039 /* Wable-iOS */,
