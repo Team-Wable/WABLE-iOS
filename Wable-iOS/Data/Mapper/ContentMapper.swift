@@ -12,8 +12,9 @@ enum ContentMapper { }
 extension ContentMapper {
     static func toDomain(_ response: DTO.Response.FetchContent, _ id: Int) -> Content {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:SS"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
         let memberProfileURL = URL(string: response.memberProfileURL)
         let contentImageURL = URL(string: response.contentImageURL ?? "")
@@ -52,8 +53,9 @@ extension ContentMapper {
     
     static func toDomain(_ response: [DTO.Response.FetchContents]) -> [Content] {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:SS"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
         return response.map { content in
             let memberProfileURL = URL(string: content.memberProfileURL)
@@ -94,8 +96,9 @@ extension ContentMapper {
     
     static func toDomain(_ response: [DTO.Response.FetchUserContents]) -> [Content] {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:SS"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
         return response.map { content in
             let memberProfileURL = URL(string: content.memberProfileURL)
