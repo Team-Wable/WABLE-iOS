@@ -138,7 +138,9 @@ private extension PostUserInfoView {
     /// 게시물 작성 시간을 상대적인 시간 문자열로 변환
     /// - Parameter date: 게시물 작성 날짜
     /// - Returns: "지금", "n분 전", "n시간 전" 등의 형식으로 변환된 문자열
-    func configurePostTime(date: Date) -> String {
+    func configurePostTime(date: Date?) -> String {
+        guard let date = date else { return "" }
+        
         let now = Date()
         let timeInterval = now.timeIntervalSince(date)
         let seconds = Int(timeInterval)
@@ -187,7 +189,7 @@ extension PostUserInfoView {
         userName: String,
         userFanTeam: LCKTeam?,
         opacity: Int,
-        createdDate: Date,
+        createdDate: Date?,
         postType: PostType
     ) {
         switch postType {
