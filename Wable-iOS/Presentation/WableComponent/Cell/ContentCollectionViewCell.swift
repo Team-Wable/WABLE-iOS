@@ -271,14 +271,12 @@ extension ContentCollectionViewCell {
         self.profileImageViewTapHandler = profileImageViewTapHandler
         self.settingButtonTapHandler = settingButtonTapHandler
         
-        guard let createdDate = info.createdDate else { return }
-        
         infoView.configureView(
             userProfileURL: info.author.profileURL,
             userName: info.author.nickname,
             userFanTeam: info.author.fanTeam,
             opacity: info.opacity.value,
-            createdDate: createdDate,
+            createdDate: info.createdDate,
             postType: .content
         )
         

@@ -242,19 +242,17 @@ extension CommentCollectionViewCell {
         configurePostStatus(info: info)
 
         contentTextView.text = info.text
+        replyButton.configureButton()
+        likeButton.configureButton(isLiked: info.isLiked, likeCount: info.likeCount, postType: .comment)
         
-        guard let createdDate = info.createdDate else { return }
         infoView.configureView(
             userProfileURL: info.author.profileURL,
             userName: info.author.nickname,
             userFanTeam: info.author.fanTeam,
             opacity: info.opacity.value,
-            createdDate: createdDate,
+            createdDate: info.createdDate,
             postType: .comment
         )
-        
-        replyButton.configureButton()
-        likeButton.configureButton(isLiked: info.isLiked, likeCount: info.likeCount, postType: .comment)
     }
     
     func configureCommentType(info: Comment, commentType: CommentType) {

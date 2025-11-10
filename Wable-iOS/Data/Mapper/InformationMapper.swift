@@ -52,6 +52,7 @@ enum InformationMapper {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
         return dtos.compactMap { dto in
             Announcement(
@@ -84,6 +85,7 @@ enum InformationMapper {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
 
         return dtos.compactMap { dto in
             guard let url = URL(string: dto.urlString),

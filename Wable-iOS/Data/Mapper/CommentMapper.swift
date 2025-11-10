@@ -14,6 +14,7 @@ extension CommentMapper {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.timeZone = TimeZone(abbreviation: "KST")
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
         return response.map { comment in
             let url = URL(string: comment.memberProfileURL)
@@ -54,6 +55,7 @@ extension CommentMapper {
     static func toDomain(_ contentID: Int, _ response: [DTO.Response.FetchContentComments]) -> [Comment] {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
         return response.map { comment in
             let url = URL(string: comment.memberProfileURL)
