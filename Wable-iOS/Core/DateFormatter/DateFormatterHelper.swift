@@ -19,34 +19,36 @@ public final class DateFormatterHelper {
 
 public extension DateFormatterHelper {
     static func date(from string: String, type: DateFormatType) -> Date? {
-        let formatter = getFormatter(for: type)
-        return formatter.date(from: string)
+        return cacheQueue.sync {
+            let formatter = getFormatterUnsafe(for: type)
+            return formatter.date(from: string)
+        }
     }
     
     static func string(from date: Date, type: DateFormatType) -> String {
-        let formatter = getFormatter(for: type)
-        return formatter.string(from: date)
+        return cacheQueue.sync {
+            let formatter = getFormatterUnsafe(for: type)
+            return formatter.string(from: date)
+        }
     }
 }
 
 // MARK: - Private Methods
 
 private extension DateFormatterHelper {
-    private static func getFormatter(for type: DateFormatType) -> DateFormatter {
-        return cacheQueue.sync {
-            let key = type.rawValue as NSString
-            
-            if let cached = formatterCache.object(forKey: key) {
-                return cached
-            }
-            
-            let formatter = DateFormatter()
-            formatter.dateFormat = type.rawValue
-            formatter.locale = Locale(identifier: "ko_KR")
-            formatter.timeZone = .current
-            
-            formatterCache.setObject(formatter, forKey: key)
-            return formatter
+    private static func getFormatterUnsafe(for type: DateFormatType) -> DateFormatter {
+        let key = type.rawValue as NSString
+        
+        if let cached = formatterCache.object(forKey: key) {
+            return cached
         }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = type.rawValue
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.timeZone = .current
+        
+        formatterCache.setObject(formatter, forKey: key)
+        return formatter
     }
 }
