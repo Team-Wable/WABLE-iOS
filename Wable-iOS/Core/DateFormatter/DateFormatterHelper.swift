@@ -20,14 +20,14 @@ public final class DateFormatterHelper {
 public extension DateFormatterHelper {
     static func date(from string: String, type: DateFormatType) -> Date? {
         return cacheQueue.sync {
-            let formatter = getFormatterUnsafe(for: type)
+            let formatter = getFormatter(for: type)
             return formatter.date(from: string)
         }
     }
     
     static func string(from date: Date, type: DateFormatType) -> String {
         return cacheQueue.sync {
-            let formatter = getFormatterUnsafe(for: type)
+            let formatter = getFormatter(for: type)
             return formatter.string(from: date)
         }
     }
@@ -36,7 +36,7 @@ public extension DateFormatterHelper {
 // MARK: - Private Methods
 
 private extension DateFormatterHelper {
-    private static func getFormatterUnsafe(for type: DateFormatType) -> DateFormatter {
+    private static func getFormatter(for type: DateFormatType) -> DateFormatter {
         let key = type.rawValue as NSString
         
         if let cached = formatterCache.object(forKey: key) {
