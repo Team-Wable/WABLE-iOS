@@ -209,8 +209,8 @@
 		DD9EAE302D9A64A800803A1A /* HomeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */; };
 		DDA138D82E84235600F7B63C /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA138D72E84235600F7B63C /* LoginCoordinator.swift */; };
 		DDA2098D2D9BFB9F008042DA /* WritePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA2098C2D9BFB98008042DA /* WritePostViewModel.swift */; };
-		DDB0DACF2EC4A6D0001D87D1 /* DateFormatterHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB0DACD2EC4A6D0001D87D1 /* DateFormatterHelper.swift */; };
 		DDB0DAD02EC4A6D0001D87D1 /* DateFormatType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB0DACE2EC4A6D0001D87D1 /* DateFormatType.swift */; };
+		DDB0DAD22EC507E3001D87D1 /* DateFormatterHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB0DAD12EC507E3001D87D1 /* DateFormatterHelper.swift */; };
 		DDCA70902D87CE2700A988B8 /* LCKYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */; };
 		DDCA70932D88316200A988B8 /* LCKYearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA70922D88315C00A988B8 /* LCKYearView.swift */; };
 		DDCA70952D883D4100A988B8 /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA70942D883D3B00A988B8 /* NavigationViewController.swift */; };
@@ -635,8 +635,8 @@
 		DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailViewController.swift; sourceTree = "<group>"; };
 		DDA138D72E84235600F7B63C /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		DDA2098C2D9BFB98008042DA /* WritePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePostViewModel.swift; sourceTree = "<group>"; };
-		DDB0DACD2EC4A6D0001D87D1 /* DateFormatterHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterHelper.swift; sourceTree = "<group>"; };
 		DDB0DACE2EC4A6D0001D87D1 /* DateFormatType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatType.swift; sourceTree = "<group>"; };
+		DDB0DAD12EC507E3001D87D1 /* DateFormatterHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterHelper.swift; sourceTree = "<group>"; };
 		DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearViewController.swift; sourceTree = "<group>"; };
 		DDCA70922D88315C00A988B8 /* LCKYearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearView.swift; sourceTree = "<group>"; };
 		DDCA70942D883D3B00A988B8 /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
@@ -1632,7 +1632,7 @@
 		DDB0DACC2EC4A6BC001D87D1 /* DateFormatter */ = {
 			isa = PBXGroup;
 			children = (
-				DDB0DACD2EC4A6D0001D87D1 /* DateFormatterHelper.swift */,
+				DDB0DAD12EC507E3001D87D1 /* DateFormatterHelper.swift */,
 				DDB0DACE2EC4A6D0001D87D1 /* DateFormatType.swift */,
 			);
 			path = DateFormatter;
@@ -2963,6 +2963,7 @@
 				DD055F842EABD06A0003DFF7 /* Quiz.swift in Sources */,
 				DD514D082D8C83560095021D /* AgreementViewController.swift in Sources */,
 				DDFB22482D8BBCB300FEA24A /* ProfileRegisterView.swift in Sources */,
+				DDB0DAD22EC507E3001D87D1 /* DateFormatterHelper.swift in Sources */,
 				DD2968122D6DACF700143851 /* Community.swift in Sources */,
 				DECC36DF2DC3B24000336B7B /* CreateViewitViewController.swift in Sources */,
 				DE4AE8532DE8BA18003E20AB /* UIAlertShowable.swift in Sources */,
@@ -3089,7 +3090,6 @@
 				DE6459D52D97B8C2005569B8 /* InformationNotificationViewController.swift in Sources */,
 				DD8326962D95836F0014B62D /* HomeViewModel.swift in Sources */,
 				DD2968442D6DAD2F00143851 /* FetchUserProfile.swift in Sources */,
-				DDB0DACF2EC4A6D0001D87D1 /* DateFormatterHelper.swift in Sources */,
 				DDB0DAD02EC4A6D0001D87D1 /* DateFormatType.swift in Sources */,
 				DD055F882EABD5E80003DFF7 /* QuizMapper.swift in Sources */,
 				DE7C530E2D761DFB00076E5D /* UIFont+.swift in Sources */,

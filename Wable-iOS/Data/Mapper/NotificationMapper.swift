@@ -9,33 +9,23 @@ import Foundation
 
 enum NotificationMapper {
     static func toDomain(_ dtos: [DTO.Response.FetchInfoNotifications]) -> [InformationNotification] {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
         return dtos.compactMap { dto in
             InformationNotification(
                 id: dto.infoNotificationID,
                 type: InformationNotificationType(rawValue: dto.infoNotificationType),
-                time: dateFormatter.date(from: dto.time),
+                time: DateFormatterHelper.date(from: dto.time, type: .fullDateTime),
                 imageURL: URL(string: dto.imageURL)
             )
         }
     }
     
     static func toDomain(_ dtos: [DTO.Response.FetchUserNotifications]) -> [ActivityNotification] {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
         return dtos.compactMap { dto in
             ActivityNotification(
                 id: dto.notificationID,
                 triggerID: dto.notificationTriggerID,
                 type: TriggerType.ActivityNotification.from(dto.notificationTriggerType),
-                time: dateFormatter.date(from: dto.time),
+                time: DateFormatterHelper.date(from: dto.time, type: .fullDateTime),
                 targetContentText: dto.notificationText,
                 userID: dto.memberID,
                 userNickname: dto.memberNickname,

@@ -35,16 +35,16 @@ private extension DateFormatterHelper {
     private static func getFormatter(for type: DateFormatType) -> DateFormatter {
         return cacheQueue.sync {
             let key = type.rawValue as NSString
-
+            
             if let cached = formatterCache.object(forKey: key) {
                 return cached
             }
-
+            
             let formatter = DateFormatter()
             formatter.dateFormat = type.rawValue
             formatter.locale = Locale(identifier: "ko_KR")
             formatter.timeZone = .current
-
+            
             formatterCache.setObject(formatter, forKey: key)
             return formatter
         }

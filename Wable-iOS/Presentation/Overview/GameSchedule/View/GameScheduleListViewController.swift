@@ -127,12 +127,8 @@ private extension GameScheduleListViewController {
         }
         
         let gameScheduleCellRegistration = CellRegistration<GameScheduleCell, Game> { cell, indexPath, game in
-            let gameTimeFormatter = DateFormatter().then {
-                $0.dateFormat = "HH:mm"
-            }
-            
             let gameStatus = game.status ?? .progress
-            let gameTimeText = gameTimeFormatter.string(from: game.date ?? Date())
+            let gameTimeText = DateFormatterHelper.string(from: game.date ?? Date(), type: .timeOnly)
             
             let homeTeamName = game.homeTeam
             let homeTeamLogoImage = UIImage(named: homeTeamName.lowercased()) ?? .tbd

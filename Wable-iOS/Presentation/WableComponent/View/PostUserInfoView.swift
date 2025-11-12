@@ -164,10 +164,7 @@ private extension PostUserInfoView {
             let months = seconds / (30 * 24 * 60 * 60)
             return "· \(months)달 전"
         default:
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy년 MM월 dd일"
-            dateFormatter.locale = Locale(identifier: "ko_KR")
-            return dateFormatter.string(from: date)
+            return DateFormatterHelper.string(from: date, type: .koreanDate)
         }
     }
 }
