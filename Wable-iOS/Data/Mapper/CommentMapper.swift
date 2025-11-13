@@ -11,15 +11,10 @@ enum CommentMapper { }
 
 extension CommentMapper {
     static func toDomain(_ response: [DTO.Response.FetchUserComments]) -> [Comment] {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
         return response.map { comment in
             let url = URL(string: comment.memberProfileURL)
             let fanTeam = LCKTeam(rawValue: comment.memberFanTeam)
-            let date = dateFormatter.date(from: comment.time)
+            let date = DateFormatterHelper.date(from: comment.time, type: .fullDateTime)
             
             let postStatus: PostStatus
             if let isBlind = comment.isBlind, isBlind {
@@ -53,14 +48,10 @@ extension CommentMapper {
     }
     
     static func toDomain(_ contentID: Int, _ response: [DTO.Response.FetchContentComments]) -> [Comment] {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
         return response.map { comment in
             let url = URL(string: comment.memberProfileURL)
             let fanTeam = LCKTeam(rawValue: comment.memberFanTeam)
-            let date = dateFormatter.date(from: comment.time)
+            let date = DateFormatterHelper.date(from: comment.time, type: .fullDateTime)
             
             let postStatus: PostStatus
             if comment.isBlind {

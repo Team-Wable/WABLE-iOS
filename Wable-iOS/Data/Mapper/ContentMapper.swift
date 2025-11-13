@@ -11,15 +11,10 @@ enum ContentMapper { }
 
 extension ContentMapper {
     static func toDomain(_ response: DTO.Response.FetchContent, _ id: Int) -> Content {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
         let memberProfileURL = URL(string: response.memberProfileURL)
         let contentImageURL = URL(string: response.contentImageURL ?? "")
         let fanTeam = LCKTeam(rawValue: response.memberFanTeam)
-        let date = dateFormatter.date(from: response.time)
+        let date = DateFormatterHelper.date(from: response.time, type: .fullDateTime)
         
         let postStatus: PostStatus
         if let isBlind = response.isBlind, isBlind {
@@ -52,16 +47,11 @@ extension ContentMapper {
     }
     
     static func toDomain(_ response: [DTO.Response.FetchContents]) -> [Content] {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
         return response.map { content in
             let memberProfileURL = URL(string: content.memberProfileURL)
             let contentImageURL = URL(string: content.contentImageURL)
             let fanTeam = LCKTeam(rawValue: content.memberFanTeam)
-            let date = dateFormatter.date(from: content.time)
+            let date = DateFormatterHelper.date(from: content.time, type: .fullDateTime)
             
             let postStatus: PostStatus
             if let isBlind = content.isBlind, isBlind {
@@ -95,16 +85,11 @@ extension ContentMapper {
     }
     
     static func toDomain(_ response: [DTO.Response.FetchUserContents]) -> [Content] {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
         return response.map { content in
             let memberProfileURL = URL(string: content.memberProfileURL)
             let contentImageURL = URL(string: content.contentImageURL ?? "")
             let fanTeam = LCKTeam(rawValue: content.memberFanTeam)
-            let date = dateFormatter.date(from: content.time)
+            let date = DateFormatterHelper.date(from: content.time, type: .fullDateTime)
             
             let postStatus: PostStatus
             if let isBlind = content.isBlind, isBlind {

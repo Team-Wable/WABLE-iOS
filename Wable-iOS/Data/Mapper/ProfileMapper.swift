@@ -11,11 +11,7 @@ enum ProfileMapper { }
 
 extension ProfileMapper {
     static func toDomain(_ response: DTO.Response.FetchAccountInfo) -> AccountInfo {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd"
-        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
-        
-        let createdDate = dateFormatter.date(from: response.joinDate)
+        let createdDate = DateFormatterHelper.date(from: response.joinDate, type: .dotSeparatedDate)
         let splitKeyword = response.socialPlatform.split(separator: " ").map { "\($0)" }.first
         let socialPlatform = SocialPlatform(rawValue: splitKeyword ?? response.socialPlatform)
         

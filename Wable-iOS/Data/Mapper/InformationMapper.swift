@@ -9,18 +9,10 @@ import Foundation
 
 enum InformationMapper {
     static func toDomain(_ dtos: [DTO.Response.FetchGameSchedules]) -> [GameSchedule] {
-        let gameDateFormatter = DateFormatter()
-        gameDateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        gameDateFormatter.timeZone = TimeZone(abbreviation: "KST")
-        
-        let scheduleDateFormatter = DateFormatter()
-        scheduleDateFormatter.dateFormat = "yyyy-MM-dd"
-        scheduleDateFormatter.timeZone = TimeZone(abbreviation: "KST")
-        
         return dtos.compactMap { dto in
             let games = dto.games.compactMap { gameDTO in
                 Game(
-                    date: gameDateFormatter.date(from: gameDTO.gameDate),
+                    date: DateFormatterHelper.date(from: gameDTO.gameDate, type: .dateTimeWithMinute),
                     homeTeam: gameDTO.aTeamName,
                     homeScore: gameDTO.aTeamScore,
                     awayTeam: gameDTO.bTeamName,
@@ -29,7 +21,7 @@ enum InformationMapper {
                 )
             }
             return GameSchedule(
-                date: scheduleDateFormatter.date(from: dto.date),
+                date: DateFormatterHelper.date(from: dto.date, type: .dashSeparatedDate),
                 games: games
             )
         }
@@ -49,47 +41,33 @@ enum InformationMapper {
     }
     
     static func toDomain(_ dtos: [DTO.Response.FetchNews]) -> [Announcement] {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
         return dtos.compactMap { dto in
             Announcement(
                 id: dto.newsID,
                 title: dto.newsTitle,
                 imageURL: URL(string: dto.newsImageURL ?? ""),
                 text: dto.newsText,
-                createdDate: dateFormatter.date(from: dto.time)
+                createdDate: DateFormatterHelper.date(from: dto.time, type: .fullDateTime)
             )
         }
     }
     
     static func toDomain(_ dtos: [DTO.Response.FetchNotices]) -> [Announcement] {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
-
         return dtos.compactMap { dto in
             Announcement(
                 id: dto.noticeID,
                 title: dto.noticeTitle,
                 imageURL: URL(string: dto.noticeImageURL ?? ""),
                 text: dto.noticeText,
-                createdDate: dateFormatter.date(from: dto.time)
+                createdDate: DateFormatterHelper.date(from: dto.time, type: .fullDateTime)
             )
         }
     }
 
     static func toDomain(_ dtos: [DTO.Response.FetchCurationList]) -> [Curation] {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-
         return dtos.compactMap { dto in
             guard let url = URL(string: dto.urlString),
-                  let time = dateFormatter.date(from: dto.createdAt)
+                  let time = DateFormatterHelper.date(from: dto.createdAt, type: .fullDateTime)
             else {
                 WableLogger.log("Failed to map Curation DTO to Domain", for: .debug)
                 return nil
