@@ -166,7 +166,6 @@
 		DD2A2F142EA8B6DD0024076B /* QuizRewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F132EA8B69B0024076B /* QuizRewardView.swift */; };
 		DD3935B62DDDB9F700B6CA94 /* MyProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3935B42DDDB9F700B6CA94 /* MyProfileView.swift */; };
 		DD4AFD452D8FF19F00D56B94 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */; };
-		DD4AFD472D90264500D56B94 /* OAuthEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4AFD462D90263400D56B94 /* OAuthEventManager.swift */; };
 		DD50980C2DA2C1A300F666DE /* FetchContentCommentListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD50980B2DA2C18F00F666DE /* FetchContentCommentListUseCase.swift */; };
 		DD50980E2DA2C1BA00F666DE /* CreateCommentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD50980D2DA2C1AF00F666DE /* CreateCommentUseCase.swift */; };
 		DD5098102DA2C1C500F666DE /* DeleteCommentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD50980F2DA2C1BE00F666DE /* DeleteCommentUseCase.swift */; };
@@ -209,6 +208,7 @@
 		DD9EAE302D9A64A800803A1A /* HomeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */; };
 		DDA138D82E84235600F7B63C /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA138D72E84235600F7B63C /* LoginCoordinator.swift */; };
 		DDA2098D2D9BFB9F008042DA /* WritePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA2098C2D9BFB98008042DA /* WritePostViewModel.swift */; };
+		DDAE3D6E2EC8EEC9006BABEC /* TokenInterceptorPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE3D6D2EC8EEBC006BABEC /* TokenInterceptorPlugin.swift */; };
 		DDB0DAD02EC4A6D0001D87D1 /* DateFormatType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB0DACE2EC4A6D0001D87D1 /* DateFormatType.swift */; };
 		DDB0DAD22EC507E3001D87D1 /* DateFormatterHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB0DAD12EC507E3001D87D1 /* DateFormatterHelper.swift */; };
 		DDCA70902D87CE2700A988B8 /* LCKYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */; };
@@ -585,7 +585,6 @@
 		DD2A2F132EA8B69B0024076B /* QuizRewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRewardView.swift; sourceTree = "<group>"; };
 		DD3935B42DDDB9F700B6CA94 /* MyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileView.swift; sourceTree = "<group>"; };
 		DD4AFD442D8FF19B00D56B94 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		DD4AFD462D90263400D56B94 /* OAuthEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthEventManager.swift; sourceTree = "<group>"; };
 		DD50980B2DA2C18F00F666DE /* FetchContentCommentListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchContentCommentListUseCase.swift; sourceTree = "<group>"; };
 		DD50980D2DA2C1AF00F666DE /* CreateCommentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCommentUseCase.swift; sourceTree = "<group>"; };
 		DD50980F2DA2C1BE00F666DE /* DeleteCommentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCommentUseCase.swift; sourceTree = "<group>"; };
@@ -635,6 +634,7 @@
 		DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailViewController.swift; sourceTree = "<group>"; };
 		DDA138D72E84235600F7B63C /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		DDA2098C2D9BFB98008042DA /* WritePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePostViewModel.swift; sourceTree = "<group>"; };
+		DDAE3D6D2EC8EEBC006BABEC /* TokenInterceptorPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenInterceptorPlugin.swift; sourceTree = "<group>"; };
 		DDB0DACE2EC4A6D0001D87D1 /* DateFormatType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatType.swift; sourceTree = "<group>"; };
 		DDB0DAD12EC507E3001D87D1 /* DateFormatterHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterHelper.swift; sourceTree = "<group>"; };
 		DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearViewController.swift; sourceTree = "<group>"; };
@@ -1262,10 +1262,10 @@
 		DD2967BB2D6DAC3100143851 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				DDAE3D6C2EC8EEB1006BABEC /* Plugin */,
 				DD87931D2D70452B001212AE /* OAuth */,
 				DD29676A2D6DAC3100143851 /* APIProvider.swift */,
 				DD29676B2D6DAC3100143851 /* NetworkError.swift */,
-				DD29676C2D6DAC3100143851 /* MoyaLoggingPlugin.swift */,
 				DD29677D2D6DAC3100143851 /* TargetType */,
 				DD2967BA2D6DAC3100143851 /* DTO */,
 			);
@@ -1479,7 +1479,6 @@
 		DD87931D2D70452B001212AE /* OAuth */ = {
 			isa = PBXGroup;
 			children = (
-				DD4AFD462D90263400D56B94 /* OAuthEventManager.swift */,
 				DD29687D2D6DC70100143851 /* OAuthCredential.swift */,
 				DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */,
 				DD29687B2D6DB27200143851 /* OAuthenticator.swift */,
@@ -1627,6 +1626,15 @@
 				DDCD67042D7E271C00EF4C28 /* ToastView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DDAE3D6C2EC8EEB1006BABEC /* Plugin */ = {
+			isa = PBXGroup;
+			children = (
+				DDAE3D6D2EC8EEBC006BABEC /* TokenInterceptorPlugin.swift */,
+				DD29676C2D6DAC3100143851 /* MoyaLoggingPlugin.swift */,
+			);
+			path = Plugin;
 			sourceTree = "<group>";
 		};
 		DDB0DACC2EC4A6BC001D87D1 /* DateFormatter */ = {
@@ -2943,6 +2951,7 @@
 				DDF97CC62DE4EAC7009FC612 /* StringLiterals+ProfileSetting.swift in Sources */,
 				DDF97CC72DE4EAC7009FC612 /* StringLiterals+Login.swift in Sources */,
 				DD29680A2D6DACF700143851 /* User.swift in Sources */,
+				DDAE3D6E2EC8EEC9006BABEC /* TokenInterceptorPlugin.swift in Sources */,
 				DD29680B2D6DACF700143851 /* UserProfile.swift in Sources */,
 				DE202FFA2DE785E800B04CAA /* AppVersionRepository.swift in Sources */,
 				DEDFCED42DDC564D00B3CD97 /* OtherProfileViewController.swift in Sources */,
@@ -3233,7 +3242,6 @@
 				DD2968172D6DAD0200143851 /* ContentRepository.swift in Sources */,
 				DDED595E2D78C3E000A0BEF1 /* KakaoAuthProvider.swift in Sources */,
 				DD2968182D6DAD0200143851 /* CommunityRepository.swift in Sources */,
-				DD4AFD472D90264500D56B94 /* OAuthEventManager.swift in Sources */,
 				DDED59862D7965E900A0BEF1 /* OverviewUseCase.swift in Sources */,
 				DE202FF62DE784FB00B04CAA /* AppVersion.swift in Sources */,
 				DE7C53102D761E3300076E5D /* String+.swift in Sources */,
