@@ -7,14 +7,14 @@
 
 
 import Combine
-import Foundation
 
-import CombineMoya
 import Moya
 
-final class OAuthTokenProvider {
+public final class OAuthTokenProvider {
     private let provider = APIProvider<LoginTargetType>()
-    
+}
+
+extension OAuthTokenProvider {
     func updateTokenStatus() -> AnyPublisher<Token, WableError> {
         return provider.request(
             .fetchTokenStatus,
