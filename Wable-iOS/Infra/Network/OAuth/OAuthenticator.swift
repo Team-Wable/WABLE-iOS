@@ -11,8 +11,6 @@ import Foundation
 import Alamofire
 
 final class OAuthenticator: Authenticator {
-    typealias Credential = OAuthCredential
-    
     private let tokenStorage: TokenStorage
     
     init(tokenStorage: TokenStorage) {
