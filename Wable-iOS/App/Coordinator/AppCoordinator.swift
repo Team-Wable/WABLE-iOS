@@ -8,7 +8,7 @@
 import UIKit
 
 final class AppCoordinator: Coordinator {
-
+    
     // MARK: - Property
 
     var childCoordinators: [Coordinator] = []
@@ -16,27 +16,21 @@ final class AppCoordinator: Coordinator {
     var onFinish: (() -> Void)?
 
     private let window: UIWindow
-    private let userSessionRepository: UserSessionRepository
-    private let profileRepository: ProfileRepository
+    
+    @Injected private var profileRepository: ProfileRepository
 
     // MARK: - Initializer
 
-    init(
-        window: UIWindow,
-        userSessionRepository: UserSessionRepository,
-        profileRepository: ProfileRepository
-    ) {
+    init(window: UIWindow) {
         self.window = window
-        self.userSessionRepository = userSessionRepository
-        self.profileRepository = profileRepository
         self.navigationController = UINavigationController()
     }
 
     // MARK: - Start
+    
+    func start() { }
 
-    func start() {
-        let hasActiveSession = checkActiveSession()
-
+    func start(hasActiveSession: Bool) {
         if hasActiveSession {
             updateFCMToken()
             showMain()
@@ -90,24 +84,22 @@ final class AppCoordinator: Coordinator {
     // MARK: - Helper
 
     private func handleLogout() {
-        userSessionRepository.updateActiveUserID(nil)
         HomeViewController.hasShownLoadingScreen = false
         showLogin()
+    }
+
+    func handleTokenExpired() {
+        HomeViewController.hasShownLoadingScreen = false
+        showLogin()
+
+        let toast = ToastView(status: .caution, message: "세션이 만료되었습니다. 다시 로그인해주세요.")
+        toast.show()
     }
 }
 
 // MARK: - Helper Method
 
 private extension AppCoordinator {
-    func checkActiveSession() -> Bool {
-        guard let session = userSessionRepository.fetchActiveUserSession(),
-              let isAutoLoginEnabled = session.isAutoLoginEnabled else {
-            return false
-        }
-
-        return isAutoLoginEnabled && !session.nickname.isEmpty
-    }
-
     func updateFCMToken() {
         guard let session = userSessionRepository.fetchActiveUserSession(),
               let token = profileRepository.fetchFCMToken() else { return }
