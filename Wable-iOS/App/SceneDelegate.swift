@@ -77,7 +77,7 @@ private extension SceneDelegate {
         OAuthEventManager.shared.tokenExpiredSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.appCoordinator?.handleTokenExpired()
+                self?.appCoordinator?.showTokenExpiredError()
             }
             .store(in: cancelBag)
     }

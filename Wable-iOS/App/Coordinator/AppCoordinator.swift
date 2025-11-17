@@ -75,7 +75,7 @@ final class AppCoordinator: Coordinator {
 
         let mainCoordinator = MainCoordinator(window: window)
         mainCoordinator.onLogout = { [weak self] in
-            self?.handleLogout()
+            self?.navigateToLogin()
         }
         mainCoordinator.start()
 
@@ -84,12 +84,12 @@ final class AppCoordinator: Coordinator {
 
     // MARK: - Helper
 
-    private func handleLogout() {
+    private func navigateToLogin() {
         HomeViewController.hasShownLoadingScreen = false
         showLogin()
     }
 
-    func handleTokenExpired() {
+    func showTokenExpiredError() {
         HomeViewController.hasShownLoadingScreen = false
         showLogin()
 
