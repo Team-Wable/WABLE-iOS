@@ -36,7 +36,7 @@ final class MyProfileViewModel {
         self.userSessionUseCase = userinformationUseCase
         self.fetchUserProfileUseCase = fetchUserProfileUseCase
         self.removeUserSessionUseCase = removeUserSessionUseCase
-        
+
         self.userID = userinformationUseCase.fetchActiveUserID()
     }
     
