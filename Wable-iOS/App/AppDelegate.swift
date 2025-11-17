@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // TODO: Repository를 UseCase로 변경
     
     let userBadgeUseCase = UpdateUserBadgeUseCase(repository: AccountRepositoryImpl())
-    let userSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage(jsonEncoder: JSONEncoder(), jsonDecoder: JSONDecoder()))
+    let userSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage())
     let profileRepository = ProfileRepositoryImpl()
     let contentRepository = ContentRepositoryImpl()
     let commentRepository = CommentRepositoryImpl()
@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// 앱 실행 후 초기화 시 호출
     /// Firebase 초기화 & 알람 관련 delegate 설정 및 알람 권한 요청 (Alert 표시)
     ///
-
+    
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
