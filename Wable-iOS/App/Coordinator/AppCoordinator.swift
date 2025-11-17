@@ -16,7 +16,8 @@ final class AppCoordinator: Coordinator {
     var onFinish: (() -> Void)?
 
     private let window: UIWindow
-    
+
+    @Injected private var userSessionRepository: UserSessionRepository
     @Injected private var profileRepository: ProfileRepository
 
     // MARK: - Initializer
