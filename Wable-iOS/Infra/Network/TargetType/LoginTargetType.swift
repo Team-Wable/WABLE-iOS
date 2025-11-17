@@ -51,4 +51,23 @@ extension LoginTargetType: BaseTargetType {
             return .post
         }
     }
+
+    var headers: [String : String]? {
+        var headers = ["Content-Type": "application/json"]
+        
+        switch self {
+        case .fetchTokenStatus:
+            let tokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
+            
+            if let accessToken = try? tokenStorage.load(.wableAccessToken),
+               let refreshToken = try? tokenStorage.load(.wableRefreshToken) {
+                headers["Authorization"] = "Bearer \(accessToken)"
+                headers["Refresh"] = "Bearer \(refreshToken)"
+            }
+            
+            return headers
+        default:
+            return headers
+        }
+    }
 }

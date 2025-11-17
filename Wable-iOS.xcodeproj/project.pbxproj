@@ -156,8 +156,8 @@
 		DD2968732D6DAD5F00143851 /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29676A2D6DAC3100143851 /* APIProvider.swift */; };
 		DD2968742D6DAD5F00143851 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29676B2D6DAC3100143851 /* NetworkError.swift */; };
 		DD2968792D6DAE3500143851 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD2968772D6DAE2200143851 /* GoogleService-Info.plist */; };
-		DD29687C2D6DB27F00143851 /* OAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687B2D6DB27200143851 /* OAuthenticator.swift */; };
-		DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29687D2D6DC70100143851 /* OAuthCredential.swift */; };
+		DD29D8D72EC9F20300FDF889 /* OAuthRequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29D8D62EC9F20300FDF889 /* OAuthRequestInterceptor.swift */; };
+		DD29D8D92ECABD9A00FDF889 /* OAuthEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD29D8D82ECABD9A00FDF889 /* OAuthEventManager.swift */; };
 		DD2A2F082EA693110024076B /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F072EA693070024076B /* QuizViewController.swift */; };
 		DD2A2F0A2EA693570024076B /* QuizCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F092EA693490024076B /* QuizCoordinator.swift */; };
 		DD2A2F0C2EA694260024076B /* NextQuizInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A2F0B2EA6941E0024076B /* NextQuizInfoViewController.swift */; };
@@ -178,7 +178,6 @@
 		DD514D102D8CA3780095021D /* AttributedString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D0F2D8CA36D0095021D /* AttributedString+.swift */; };
 		DD51A44C2DD458A8004295B6 /* ProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD51A44B2DD458A8004295B6 /* ProfileEditViewController.swift */; };
 		DD547AB92D7E43A600B8BA5A /* GhostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD547AB82D7E439E00B8BA5A /* GhostButton.swift */; };
-		DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */; };
 		DD765D9A2D8746E30029A317 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D992D8746DD0029A317 /* LoginViewController.swift */; };
 		DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D9C2D8747900029A317 /* SplashViewController.swift */; };
 		DD7E79822DBFA48300570C23 /* UpdateUserBadgeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7E79812DBFA47000570C23 /* UpdateUserBadgeUseCase.swift */; };
@@ -208,7 +207,6 @@
 		DD9EAE302D9A64A800803A1A /* HomeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */; };
 		DDA138D82E84235600F7B63C /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA138D72E84235600F7B63C /* LoginCoordinator.swift */; };
 		DDA2098D2D9BFB9F008042DA /* WritePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA2098C2D9BFB98008042DA /* WritePostViewModel.swift */; };
-		DDAE3D6E2EC8EEC9006BABEC /* TokenInterceptorPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAE3D6D2EC8EEBC006BABEC /* TokenInterceptorPlugin.swift */; };
 		DDB0DAD02EC4A6D0001D87D1 /* DateFormatType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB0DACE2EC4A6D0001D87D1 /* DateFormatType.swift */; };
 		DDB0DAD22EC507E3001D87D1 /* DateFormatterHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB0DAD12EC507E3001D87D1 /* DateFormatterHelper.swift */; };
 		DDCA70902D87CE2700A988B8 /* LCKYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */; };
@@ -575,8 +573,8 @@
 		DD2967F62D6DAC3100143851 /* Viewit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Viewit.swift; sourceTree = "<group>"; };
 		DD2968772D6DAE2200143851 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DD29687A2D6DAE8E00143851 /* Wable-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wable-iOS.entitlements"; sourceTree = "<group>"; };
-		DD29687B2D6DB27200143851 /* OAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthenticator.swift; sourceTree = "<group>"; };
-		DD29687D2D6DC70100143851 /* OAuthCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthCredential.swift; sourceTree = "<group>"; };
+		DD29D8D62EC9F20300FDF889 /* OAuthRequestInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthRequestInterceptor.swift; sourceTree = "<group>"; };
+		DD29D8D82ECABD9A00FDF889 /* OAuthEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthEventManager.swift; sourceTree = "<group>"; };
 		DD2A2F072EA693070024076B /* QuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
 		DD2A2F092EA693490024076B /* QuizCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCoordinator.swift; sourceTree = "<group>"; };
 		DD2A2F0B2EA6941E0024076B /* NextQuizInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextQuizInfoViewController.swift; sourceTree = "<group>"; };
@@ -597,7 +595,6 @@
 		DD514D0F2D8CA36D0095021D /* AttributedString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedString+.swift"; sourceTree = "<group>"; };
 		DD51A44B2DD458A8004295B6 /* ProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditViewController.swift; sourceTree = "<group>"; };
 		DD547AB82D7E439E00B8BA5A /* GhostButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostButton.swift; sourceTree = "<group>"; };
-		DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenProvider.swift; sourceTree = "<group>"; };
 		DD765D992D8746DD0029A317 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DD765D9C2D8747900029A317 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		DD7E79812DBFA47000570C23 /* UpdateUserBadgeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserBadgeUseCase.swift; sourceTree = "<group>"; };
@@ -634,7 +631,6 @@
 		DD9EAE2F2D9A649D00803A1A /* HomeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailViewController.swift; sourceTree = "<group>"; };
 		DDA138D72E84235600F7B63C /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		DDA2098C2D9BFB98008042DA /* WritePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePostViewModel.swift; sourceTree = "<group>"; };
-		DDAE3D6D2EC8EEBC006BABEC /* TokenInterceptorPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenInterceptorPlugin.swift; sourceTree = "<group>"; };
 		DDB0DACE2EC4A6D0001D87D1 /* DateFormatType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatType.swift; sourceTree = "<group>"; };
 		DDB0DAD12EC507E3001D87D1 /* DateFormatterHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterHelper.swift; sourceTree = "<group>"; };
 		DDCA708F2D87CE0500A988B8 /* LCKYearViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LCKYearViewController.swift; sourceTree = "<group>"; };
@@ -1479,9 +1475,8 @@
 		DD87931D2D70452B001212AE /* OAuth */ = {
 			isa = PBXGroup;
 			children = (
-				DD29687D2D6DC70100143851 /* OAuthCredential.swift */,
-				DD69C58F2D71A3B6000A3349 /* OAuthTokenProvider.swift */,
-				DD29687B2D6DB27200143851 /* OAuthenticator.swift */,
+				DD29D8D62EC9F20300FDF889 /* OAuthRequestInterceptor.swift */,
+				DD29D8D82ECABD9A00FDF889 /* OAuthEventManager.swift */,
 			);
 			path = OAuth;
 			sourceTree = "<group>";
@@ -1631,7 +1626,6 @@
 		DDAE3D6C2EC8EEB1006BABEC /* Plugin */ = {
 			isa = PBXGroup;
 			children = (
-				DDAE3D6D2EC8EEBC006BABEC /* TokenInterceptorPlugin.swift */,
 				DD29676C2D6DAC3100143851 /* MoyaLoggingPlugin.swift */,
 			);
 			path = Plugin;
@@ -2951,7 +2945,6 @@
 				DDF97CC62DE4EAC7009FC612 /* StringLiterals+ProfileSetting.swift in Sources */,
 				DDF97CC72DE4EAC7009FC612 /* StringLiterals+Login.swift in Sources */,
 				DD29680A2D6DACF700143851 /* User.swift in Sources */,
-				DDAE3D6E2EC8EEC9006BABEC /* TokenInterceptorPlugin.swift in Sources */,
 				DD29680B2D6DACF700143851 /* UserProfile.swift in Sources */,
 				DE202FFA2DE785E800B04CAA /* AppVersionRepository.swift in Sources */,
 				DEDFCED42DDC564D00B3CD97 /* OtherProfileViewController.swift in Sources */,
@@ -3007,7 +3000,6 @@
 				DD2A2F0A2EA693570024076B /* QuizCoordinator.swift in Sources */,
 				DD2968582D6DAD4400143851 /* CreateContentLiked.swift in Sources */,
 				DE9891A32D9981DC00D538D8 /* ActivityNotification+.swift in Sources */,
-				DD29687E2D6DC70700143851 /* OAuthCredential.swift in Sources */,
 				DEF08E292DDB73200024B33C /* ProfileEmptyCellItem.swift in Sources */,
 				DE3CA2852DD448D900BF5E87 /* FetchUserContentListUseCase.swift in Sources */,
 				DD2968592D6DAD4400143851 /* CreateViewitPostRequest.swift in Sources */,
@@ -3029,6 +3021,7 @@
 				DD29685F2D6DAD4400143851 /* UpdateGhost.swift in Sources */,
 				DD2968162D6DACF700143851 /* GameSchedule.swift in Sources */,
 				DD29682E2D6DAD1700143851 /* CommunityRepositoryImpl.swift in Sources */,
+				DD29D8D92ECABD9A00FDF889 /* OAuthEventManager.swift in Sources */,
 				DD29682F2D6DAD1700143851 /* ViewitRepositoryImpl.swift in Sources */,
 				DED4E6802EAC097800FA2700 /* ProfileCoordinator.swift in Sources */,
 				DDE966102D8C62A4004E899B /* DefaultProfileType.swift in Sources */,
@@ -3146,7 +3139,6 @@
 				DEA3B3262E743D63000C77D0 /* Coordinator.swift in Sources */,
 				DED1345C2DCFA002008463BD /* AppEnvironment.swift in Sources */,
 				DD2968382D6DAD1700143851 /* ReportRepositoryImpl.swift in Sources */,
-				DD29687C2D6DB27F00143851 /* OAuthenticator.swift in Sources */,
 				DD94FF862E8CB986002D512E /* ProfileEditViewModel.swift in Sources */,
 				DDED59512D7850E600A0BEF1 /* LocalError.swift in Sources */,
 				DD2968602D6DAD5500143851 /* GhostTargetType.swift in Sources */,
@@ -3190,6 +3182,7 @@
 				DEA10B2E2DD39A08001EBBA9 /* WithdrawalReasonViewModel.swift in Sources */,
 				DD4AFD452D8FF19F00D56B94 /* LoginViewModel.swift in Sources */,
 				DD5098142DA2C36600F666DE /* DeleteCommentLikedUseCase.swift in Sources */,
+				DD29D8D72EC9F20300FDF889 /* OAuthRequestInterceptor.swift in Sources */,
 				DE62BD6A2EA4E06D005D7DA3 /* FetchCurationList.swift in Sources */,
 				DD2967FA2D6DAC4800143851 /* Publisher+.swift in Sources */,
 				DEE5D6162D9130E5009E5A25 /* GameScheduleViewModel.swift in Sources */,
@@ -3255,7 +3248,6 @@
 				DD29681B2D6DAD0200143851 /* ProfileRepository.swift in Sources */,
 				DD1F30472D9D71E1003DB820 /* DeleteContentLikedUseCase.swift in Sources */,
 				DD29681C2D6DAD0200143851 /* InformationRepository.swift in Sources */,
-				DD69C5902D71A3BE000A3349 /* OAuthTokenProvider.swift in Sources */,
 				DEA10B472DD3B9BA001EBBA9 /* WithdrawalGuideDescriptionView.swift in Sources */,
 				DD2A2F112EA8A2BD0024076B /* QuizResultViewModel.swift in Sources */,
 				DE64D7CA2DCBA2D700F55859 /* CreateViewitUseCase.swift in Sources */,
