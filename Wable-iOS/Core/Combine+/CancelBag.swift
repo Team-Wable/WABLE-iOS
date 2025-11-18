@@ -8,7 +8,9 @@
 import Combine
 import Foundation
 
-final class CancelBag {
+final class CancelBag: @unchecked Sendable {
+    private let lock = NSLock()
+
     fileprivate var subscriptions: Set<AnyCancellable> = .init()
     
     deinit {
@@ -16,13 +18,29 @@ final class CancelBag {
     }
     
     func cancel() {
-        subscriptions.forEach { $0.cancel() }
-        subscriptions.removeAll()
+        self.lock.work {
+            subscriptions.forEach { $0.cancel() }
+            subscriptions.removeAll()
+        }
+    }
+    
+    func store(_ cancellable: AnyCancellable) {
+        lock.work {
+            subscriptions.insert(cancellable)
+        }
+    }
+}
+
+private extension NSLock {
+    func work(_ work: () -> Void) {
+        self.lock()
+        defer { self.unlock() }
+        work()
     }
 }
 
 extension AnyCancellable {
     func store(in cancelBag: CancelBag) {
-        cancelBag.subscriptions.insert(self)
+        cancelBag.store(self)
     }
 }

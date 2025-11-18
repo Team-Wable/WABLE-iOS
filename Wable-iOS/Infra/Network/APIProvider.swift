@@ -13,44 +13,30 @@ import CombineMoya
 import Moya
 
 final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
-    private let jsonDecoder: JSONDecoder = .init()
-    private let interceptor: AuthenticationInterceptor<OAuthenticator>
+    
+    // MARK: Property
+    
+    private let jsonDecoder: JSONDecoder
+    
+    // MARK: - LifeCycle
     
     init() {
-        
-        let authenticator = OAuthenticator(
-            tokenStorage: TokenStorage(keyChainStorage: KeychainStorage())
+        self.jsonDecoder = .init()
+
+        let interceptor = OAuthRequestInterceptor(
+            tokenStorage: TokenStorage(keyChainStorage: KeychainStorage()),
+            removeUserSessionUseCase: RemoveUserSessionUseCaseImpl(),
+            logoutHandler: { OAuthEventManager.shared.tokenExpiredSubject.send() },
+            cancelBag: CancelBag()
         )
-        
-        let credential = OAuthCredential(
-            accessToken: "",
-            refreshToken: "",
-            requiresRefresh: false
-        )
-        
-        self.interceptor = AuthenticationInterceptor(
-            authenticator: authenticator,
-            credential: credential
-        )
-        
-        let logoutHandler = {
-            let userSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage(
-                userDefaults: UserDefaults.standard,
-                jsonEncoder: JSONEncoder(),
-                jsonDecoder: JSONDecoder()
-            ))
-            
-            userSessionRepository.updateActiveUserID(nil)
-            
-            OAuthEventManager.shared.tokenExpiredSubject.send()
-        }
-        
-        let session = Session(interceptor: interceptor)
-        let plugin: [PluginType] = [MoyaLoggingPlugin(logoutHandler: logoutHandler)]
-        
-        super.init(session: session, plugins: plugin)
+
+        super.init(session: Session(interceptor: interceptor), plugins: [MoyaLoggingPlugin()])
     }
-    
+}
+
+// MARK: - Helper Methods
+
+extension APIProvider {
     func request<D: Decodable>(
         _ target: Target,
         for type: D.Type
@@ -96,8 +82,13 @@ final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
             throw NetworkError.unknown(error)
         }
     }
-    
-    private func validateResponse<D>(_ baseResponse: BaseResponse<D>) throws -> D {
+}
+
+
+// MARK: - Private Helper Methods
+
+private extension APIProvider {
+    func validateResponse<D>(_ baseResponse: BaseResponse<D>) throws -> D {
         guard baseResponse.success else {
             throw convertNetworkError(statusCode: baseResponse.status, message: baseResponse.message)
         }
@@ -114,7 +105,7 @@ final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
         return data
     }
     
-    private func convertNetworkError(statusCode: Int, message: String) -> NetworkError {
+    func convertNetworkError(statusCode: Int, message: String) -> NetworkError {
         switch statusCode {
         case 400..<500:
             return .statusError(code: statusCode, message: message)

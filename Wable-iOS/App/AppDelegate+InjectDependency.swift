@@ -19,6 +19,14 @@ extension AppDelegate {
             object: UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage())
         )
         
+        // MARK: - Token
+        
+        diContainer.register(
+            for: TokenStorage.self,
+            object: TokenStorage(keyChainStorage: KeychainStorage())
+        )
+
+        
         // MARK: - Account
         
         diContainer.register(for: AccountRepository.self, object: AccountRepositoryImpl())

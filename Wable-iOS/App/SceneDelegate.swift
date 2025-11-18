@@ -14,10 +14,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     // MARK: - Property
 
-    private let cancelBag = CancelBag()
-    private let profileRepository = ProfileRepositoryImpl()
     private let checkAppUpdateRequirementUseCase = CheckAppUpdateRequirementUseCaseImpl()
-    private let userSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage())
+    private let cancelBag = CancelBag()
+
+    @Injected private var userSessionRepository: UserSessionRepository
+    @Injected private var profileRepository: ProfileRepository
 
     private var appCoordinator: AppCoordinator?
 
@@ -57,45 +58,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 // MARK: - Configure Extension
 
 private extension SceneDelegate {
-    func showLoginScreen() {
-        userSessionRepository.updateActiveUserID(nil)
-        appCoordinator?.showLogin()
-    }
-    
     func proceedToAppLaunch() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) { [weak self] in
             guard let self = self, let window = self.window else { return }
+            
+            let hasActiveSession = checkActiveSession()
 
-            self.appCoordinator = AppCoordinator(
-                window: window,
-                userSessionRepository: self.userSessionRepository,
-                profileRepository: self.profileRepository
-            )
-            self.appCoordinator?.start()
+            self.appCoordinator = AppCoordinator(window: window)
+            self.appCoordinator?.start(hasActiveSession: hasActiveSession)
         }
     }
 }
 
-// MARK: - Private Extension
+// MARK: - Setup
 
 private extension SceneDelegate {
-    
-    // MARK: - Setup
-
     func setupBinding() {
         OAuthEventManager.shared.tokenExpiredSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.handleTokenExpired()
+                self?.appCoordinator?.showTokenExpiredError()
             }
             .store(in: cancelBag)
-    }
-
-    func handleTokenExpired() {
-        showLoginScreen()
-
-        let toast = ToastView(status: .caution, message: "세션이 만료되었습니다. 다시 로그인해주세요.")
-        toast.show()
     }
 }
 
@@ -118,6 +102,15 @@ private extension SceneDelegate {
                 await MainActor.run { proceedToAppLaunch() }
             }
         }
+    }
+    
+    func checkActiveSession() -> Bool {
+        guard let session = userSessionRepository.fetchActiveUserSession(),
+              let isAutoLoginEnabled = session.isAutoLoginEnabled else {
+            return false
+        }
+
+        return isAutoLoginEnabled && !session.nickname.isEmpty
     }
     
     func showUpdateAlert(for requirement: UpdateRequirement) {

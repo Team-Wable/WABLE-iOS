@@ -12,15 +12,23 @@ protocol RemoveUserSessionUseCase {
 }
 
 final class RemoveUserSessionUseCaseImpl: RemoveUserSessionUseCase {
-    @Injected private var repository: UserSessionRepository
-    @Injected private var tokenStorage: TokenStorage
+    private let repository: UserSessionRepository
+    private let tokenStorage: TokenStorage
+
+    init(
+        repository: UserSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage()),
+        tokenStorage: TokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
+    ) {
+        self.repository = repository
+        self.tokenStorage = tokenStorage
+    }
 
     func removeUserSession() {
         do {
             try tokenStorage.delete(.wableAccessToken)
             try tokenStorage.delete(.wableRefreshToken)
         } catch {
-            WableLogger.log("토큰 삭제 실패: \(error.localizedDescription)", for: .debug)
+            WableLogger.log("토큰 삭제 실패: \(error.localizedDescription)", for: .error)
         }
 
         repository.updateActiveUserID(nil)

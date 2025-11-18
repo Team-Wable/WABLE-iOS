@@ -12,23 +12,6 @@ import Moya
 
 final class MoyaLoggingPlugin: PluginType {
     
-    // MARK: Property
-    
-    typealias LogoutHandler = () -> Void
-    private let cancelBag = CancelBag()
-    private let logoutHandler: LogoutHandler?
-    private let tokenStorage: TokenStorage
-    
-    // MARK: - LifeCycle
-
-    init(
-        logoutHandler: LogoutHandler? = nil,
-        tokenStorage: TokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
-    ) {
-        self.logoutHandler = logoutHandler
-        self.tokenStorage = tokenStorage
-    }
-    
     // MARK: - Request 보낼 시 호출
     
     func willSend(_ request: RequestType, target: TargetType) {
@@ -63,12 +46,8 @@ final class MoyaLoggingPlugin: PluginType {
         switch result {
         case let .success(response):
             self.onSucceed(response, target: target)
-            self.checkForAuthError(response)
         case let .failure(error):
             self.onFail(error, target: target)
-            if let response = error.response {
-                self.checkForAuthError(response)
-            }
         }
     }
     
@@ -99,52 +78,5 @@ final class MoyaLoggingPlugin: PluginType {
         log.append("\(error.failureReason ?? error.errorDescription ?? "unknown error")\n")
         log.append("<-- END HTTP")
         print(log)
-    }
-}
-
-// MARK: - Private Extension
-
-private extension MoyaLoggingPlugin {
-    private func checkForAuthError(_ response: Response) {
-        guard let condtion = response.response?.url?.absoluteString.contains("v1/auth/token"),
-              response.statusCode == 401 && !condtion else { return }
-        
-        let tokenProvider = OAuthTokenProvider()
-        
-        tokenProvider.updateTokenStatus()
-            .withUnretained(self)
-            .sink { [weak self] completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    if error == .signinRequired {
-                        try? self?.tokenStorage.delete(.wableAccessToken)
-                        try? self?.tokenStorage.delete(.wableRefreshToken)
-                        
-                        self?.logoutHandler?()
-                    }
-                }
-            } receiveValue: { owner, token in
-                do {
-                    try owner.tokenStorage.save(token.accessToken, for: .wableAccessToken)
-                    try owner.tokenStorage.save(token.refreshToken, for: .wableRefreshToken)
-                    
-                    guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                          let rootViewController = windowScene.windows.first?.rootViewController
-                    else {
-                        return
-                    }
-                    
-                    let viewController = WableSheetViewController(title: "알 수 없는 오류입니다.\n재시도하세요.")
-                    viewController.addAction(WableSheetAction.init(title: "확인", style: .primary))
-                    
-                    rootViewController.present(viewController, animated: true)
-                } catch {
-                    WableLogger.log("토큰 재발급 중 문제 발생", for: .error)
-                    owner.logoutHandler?()
-                }
-            }
-            .store(in: cancelBag)
     }
 }

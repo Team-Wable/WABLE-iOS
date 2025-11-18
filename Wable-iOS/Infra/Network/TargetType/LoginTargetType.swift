@@ -51,4 +51,8 @@ extension LoginTargetType: BaseTargetType {
             return .post
         }
     }
+
+    var headers: [String : String]? {
+        return ["Content-Type": "application/json"]
+    }
 }

@@ -74,13 +74,18 @@ extension KeychainStorage: LocalKeyValueProvider {
     func removeValue(for key: String) throws {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: key
+            kSecAttrAccount as String: key,
+            kSecAttrService as String: Bundle.identifier
         ]
-        
-        let status = SecItemDelete(query as CFDictionary)
-        
-        if status != errSecSuccess {
+
+        switch SecItemDelete(query as CFDictionary) {
+        case errSecSuccess:
+            WableLogger.log("키체인 삭제 완료", for: .debug)
+        case errSecItemNotFound:
+            WableLogger.log("삭제할 \(key)이 존재하지 않음", for: .error)
             throw LocalError.deleteFailed
+        default:
+            WableLogger.log("키체인 삭제 완료: \(key)", for: .debug)
         }
     }
 }
