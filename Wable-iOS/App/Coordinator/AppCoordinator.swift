@@ -29,14 +29,16 @@ final class AppCoordinator: Coordinator {
 
     // MARK: - Start
     
-    func start() { }
+    func start() {
+        showLogin()
+    }
 
     func start(hasActiveSession: Bool) {
         if hasActiveSession {
             updateFCMToken()
             showMain()
         } else {
-            showLogin()
+            start()
         }
     }
 
