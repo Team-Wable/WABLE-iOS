@@ -14,14 +14,14 @@ final class OAuthRequestInterceptor: RequestInterceptor {
 
     // MARK: - Property
     
-    private let logoutHandler: (@Sendable () -> Void)?
+    private let logoutHandler: (@Sendable () -> Void)
     private let oauthProvider: OAuthProvider
     private let cancelBag: CancelBag
 
     // MARK: - LifeCycle
     
     init(
-        logoutHandler: (@Sendable () -> Void)?,
+        logoutHandler: @escaping (@Sendable () -> Void),
         oauthProvider: OAuthProvider,
         cancelBag: CancelBag
     ) {
@@ -146,7 +146,7 @@ private extension OAuthRequestInterceptor {
 
             if error == .signinRequired {
                 oauthProvider.removeSession()
-                logoutHandler?()
+                logoutHandler()
             }
             completion(.doNotRetry)
         }
@@ -160,7 +160,7 @@ private extension OAuthRequestInterceptor {
         } catch {
             WableLogger.log("토큰 저장 실패: \(error)", for: .error)
             oauthProvider.removeSession()
-            logoutHandler?()
+            logoutHandler()
             completion(.doNotRetry)
         }
     }
