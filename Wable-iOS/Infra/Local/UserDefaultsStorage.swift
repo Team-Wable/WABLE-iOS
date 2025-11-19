@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct UserDefaultsStorage {
+@preconcurrency struct UserDefaultsStorage {
     private let userDefaults: UserDefaults
     private let jsonEncoder: JSONEncoder
     private let jsonDecoder: JSONDecoder

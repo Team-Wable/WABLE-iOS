@@ -22,11 +22,10 @@ final class APIProvider<Target: BaseTargetType>: MoyaProvider<Target> {
     
     init() {
         self.jsonDecoder = .init()
-
+        
         let interceptor = OAuthRequestInterceptor(
-            tokenStorage: TokenStorage(keyChainStorage: KeychainStorage()),
-            removeUserSessionUseCase: RemoveUserSessionUseCaseImpl(),
             logoutHandler: { OAuthEventManager.shared.tokenExpiredSubject.send() },
+            oauthProvider: OAuthProvider(),
             cancelBag: CancelBag()
         )
 

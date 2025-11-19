@@ -178,6 +178,7 @@
 		DD514D102D8CA3780095021D /* AttributedString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD514D0F2D8CA36D0095021D /* AttributedString+.swift */; };
 		DD51A44C2DD458A8004295B6 /* ProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD51A44B2DD458A8004295B6 /* ProfileEditViewController.swift */; };
 		DD547AB92D7E43A600B8BA5A /* GhostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD547AB82D7E439E00B8BA5A /* GhostButton.swift */; };
+		DD6DF3522ECC7D72005AC6A2 /* OAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6DF3512ECC7D6C005AC6A2 /* OAuthProvider.swift */; };
 		DD765D9A2D8746E30029A317 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D992D8746DD0029A317 /* LoginViewController.swift */; };
 		DD765D9D2D8747950029A317 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765D9C2D8747900029A317 /* SplashViewController.swift */; };
 		DD7E79822DBFA48300570C23 /* UpdateUserBadgeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7E79812DBFA47000570C23 /* UpdateUserBadgeUseCase.swift */; };
@@ -595,6 +596,7 @@
 		DD514D0F2D8CA36D0095021D /* AttributedString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedString+.swift"; sourceTree = "<group>"; };
 		DD51A44B2DD458A8004295B6 /* ProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditViewController.swift; sourceTree = "<group>"; };
 		DD547AB82D7E439E00B8BA5A /* GhostButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostButton.swift; sourceTree = "<group>"; };
+		DD6DF3512ECC7D6C005AC6A2 /* OAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthProvider.swift; sourceTree = "<group>"; };
 		DD765D992D8746DD0029A317 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DD765D9C2D8747900029A317 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		DD7E79812DBFA47000570C23 /* UpdateUserBadgeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserBadgeUseCase.swift; sourceTree = "<group>"; };
@@ -1475,6 +1477,7 @@
 		DD87931D2D70452B001212AE /* OAuth */ = {
 			isa = PBXGroup;
 			children = (
+				DD6DF3512ECC7D6C005AC6A2 /* OAuthProvider.swift */,
 				DD29D8D62EC9F20300FDF889 /* OAuthRequestInterceptor.swift */,
 				DD29D8D82ECABD9A00FDF889 /* OAuthEventManager.swift */,
 			);
@@ -3295,6 +3298,7 @@
 				DD29682B2D6DAD0B00143851 /* CommentMapper.swift in Sources */,
 				DDCD66F32D7DF5AB00EF4C28 /* HomeViewController.swift in Sources */,
 				DD3935B62DDDB9F700B6CA94 /* MyProfileView.swift in Sources */,
+				DD6DF3522ECC7D72005AC6A2 /* OAuthProvider.swift in Sources */,
 				DE3CA28B2DD4697700BF5E87 /* RemoveUserSessionUseCase.swift in Sources */,
 				DD29682C2D6DAD0B00143851 /* ContentMapper.swift in Sources */,
 				DE83891B2D906C0C00C089E6 /* Types.swift in Sources */,
