@@ -8,22 +8,34 @@
 import Foundation
 
 protocol RemoveUserSessionUseCase {
-    func removeUserSession()
+    func removeUserSession(for nickname: String)
 }
 
 final class RemoveUserSessionUseCaseImpl: RemoveUserSessionUseCase {
-    private let repository: UserSessionRepository
-    private let tokenStorage: TokenStorage
+    private let cancelBag: CancelBag
+    
+    @Injected private var profileRepository: ProfileRepository
+    @Injected private var repository: UserSessionRepository
+    @Injected private var tokenStorage: TokenStorage
 
-    init(
-        repository: UserSessionRepository = UserSessionRepositoryImpl(userDefaults: UserDefaultsStorage()),
-        tokenStorage: TokenStorage = TokenStorage(keyChainStorage: KeychainStorage())
-    ) {
-        self.repository = repository
-        self.tokenStorage = tokenStorage
+    init(cancelBag: CancelBag = CancelBag()) {
+        self.cancelBag = cancelBag
     }
 
-    func removeUserSession() {
+    func removeUserSession(for nickname: String) {
+        profileRepository.clearFCMToken(for: nickname)
+            .sink(
+                receiveCompletion: { completion in
+                    if case let .failure(error) = completion {
+                        WableLogger.log("FCM 토큰 제거 실패: \(error)", for: .error)
+                    } else {
+                        WableLogger.log("FCM 토큰 제거 성공", for: .debug)
+                    }
+                },
+                receiveValue: { _ in }
+            )
+            .store(in: cancelBag)
+        
         do {
             try tokenStorage.delete(.wableAccessToken)
             try tokenStorage.delete(.wableRefreshToken)

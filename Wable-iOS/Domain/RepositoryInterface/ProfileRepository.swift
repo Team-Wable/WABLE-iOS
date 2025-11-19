@@ -15,6 +15,7 @@ protocol ProfileRepository {
     func fetchUserProfile(memberID: Int) async throws -> UserProfile
     func fetchFCMToken() -> String?
     func updateFCMToken(token: String)
+    func clearFCMToken(for nickname: String) -> AnyPublisher<Void, WableError>
     func updateUserProfile(nickname: String, fcmToken: String?) -> AnyPublisher<Void, WableError>
     func updateUserProfile(
         profile: UserProfile?,

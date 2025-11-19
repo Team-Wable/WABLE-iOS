@@ -53,7 +53,11 @@ final class MyProfileViewModel {
     }
     
     func logoutDidTap() {
-        removeUserSessionUseCase.removeUserSession()
+        guard let nickname else {
+            return WableLogger.log("유저 닉네임을 알 수 없음.", for: .debug)
+        }
+        
+        removeUserSessionUseCase.removeUserSession(for: nickname)
     }
     
     func didSelect(index: Int) -> Int {

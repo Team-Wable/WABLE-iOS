@@ -57,6 +57,29 @@ extension ProfileRepositoryImpl: ProfileRepository {
             WableLogger.log("FCM 토큰 업데이트에 실패했습니다.", for: .error)
         }
     }
+
+    func clearFCMToken(for nickname: String) -> AnyPublisher<Void, WableError> {
+        return provider.request(
+            .updateUserProfile(
+                request: DTO.Request.UpdateUserProfile(
+                    info: DTO.Request.ProfileInfo(
+                        nickname: nickname,
+                        isAlarmAllowed: nil,
+                        memberIntro: nil,
+                        isPushAlarmAllowed: nil,
+                        fcmToken: "",
+                        memberLCKYears: nil,
+                        memberFanTeam: nil,
+                        memberDefaultProfileImage: nil
+                    ),
+                    file: nil
+                )
+            ),
+            for: DTO.Response.Empty.self
+        )
+        .asVoid()
+        .mapWableError()
+    }
     
     func fetchAccountInfo() async throws -> AccountInfo {
         do {
